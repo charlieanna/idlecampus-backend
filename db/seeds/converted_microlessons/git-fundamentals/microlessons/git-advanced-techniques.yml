@@ -1,637 +1,110 @@
 slug: git-advanced-techniques
-title: Advanced Git Techniques - Rebase, Cherry-pick, and Stash
-difficulty: intermediate
+title: Advanced Git Techniques
+difficulty: hard
 sequence_order: 6
-estimated_minutes: 25
+estimated_minutes: 20
 key_concepts:
-  - Git rebase
-  - Interactive rebase
+  - Rebase
   - Cherry-pick
-  - Git stash
-  - History rewriting
-  - Reflog
+  - Stash
+  - Reset
 prerequisites:
-  - lesson-1
-  - git-branching-strategies
   - git-merging-conflict-resolution
-  - git-remote-collaboration
 content_md: |
-  # Advanced Git Techniques
+  # Advanced Git Techniques 🧙‍♂️
 
-  Master powerful Git commands for managing complex workflows. These techniques make you a Git power user.
+  # Git Rebase
 
-  ## Git Rebase
-
-  **Rebase**: Replay commits from one branch onto another, creating a linear history
-
-  ### Basic Rebase
-
-  **Scenario:** Your feature branch is behind main
-
-  ```
-  Before rebase:
-  main:    A---B---E---F
-                \
-  feature:      C---D
-
-  After rebase:
-  main:    A---B---E---F
-                        \
-  feature:              C'---D'
-  ```
+  Rewrites history to make it linear. Moves your commits to the tip of another branch.
 
   ```bash
-  # Update feature branch with main's changes
-  git checkout feature/my-feature
-  git rebase main
+  # Situation:
+  # main:    A --- B
+  # feature:        \--- C
 
-  # If conflicts occur:
-  # 1. Resolve conflicts in files
-  # 2. git add <resolved-files>
-  # 3. git rebase --continue
-
-  # Or abort rebase:
-  git rebase --abort
-  ```
-
-  ### Rebase vs Merge
-
-  **Merge:**
-  ```bash
-  git checkout feature
-  git merge main
-  # Creates merge commit, preserves branch history
-  ```
-
-  **Rebase:**
-  ```bash
   git checkout feature
   git rebase main
-  # Replays commits, linear history, no merge commit
+
+  # Result (linear history):
+  # A --- B --- C'
   ```
 
-  **When to use rebase:**
-  - ✅ Local feature branches (not pushed yet)
-  - ✅ Keeping feature branch up-to-date with main
-  - ✅ Cleaning up local commit history
-  - ✅ Before creating pull request (clean history)
+  **Warning:** NEVER rebase public branches (shared with others). Only rebase local branches before pushing.
 
-  **When NOT to rebase:**
-  - ❌ Public/shared branches (rewrites history)
-  - ❌ Main or master branch
-  - ❌ After pushing (teammates depend on your commits)
-  - ❌ Commits others have based work on
+  # Git Cherry-Pick
 
-  ### Interactive Rebase
-
-  **Interactive rebase**: Edit, combine, reorder, or delete commits
+  Apply a specific commit from one branch to another.
 
   ```bash
-  # Rebase last 5 commits interactively
-  git rebase -i HEAD~5
-
-  # Rebase back to specific commit
-  git rebase -i abc123
-
-  # Rebase entire branch from main
-  git rebase -i main
+  git cherry-pick abc1234
   ```
 
-  **Interactive rebase editor:**
-  ```
-  pick abc123 Add login feature
-  pick def456 Fix typo
-  pick ghi789 Add tests
-  pick jkl012 Fix bug
-  pick mno345 Update docs
+  Useful for:
+  - Backporting bug fixes to older versions.
+  - Picking one feature from a abandoned branch.
 
-  # Commands:
-  # p, pick = use commit
-  # r, reword = use commit, edit message
-  # e, edit = use commit, stop for amending
-  # s, squash = combine with previous commit
-  # f, fixup = like squash, discard commit message
-  # d, drop = remove commit
-  ```
+  # Git Stash
 
-  **Common operations:**
-
-  #### Squash Commits
-
-  ```
-  pick abc123 Add login feature
-  squash def456 Fix typo
-  squash ghi789 Add more validation
-  pick jkl012 Add tests
-  ```
-  Result: First 3 commits combined into one
-
-  #### Reword Commit Messages
-
-  ```
-  pick abc123 Add login feature
-  reword def456 Fix typo  # Will prompt to edit message
-  pick ghi789 Add tests
-  ```
-
-  #### Drop Commits
-
-  ```
-  pick abc123 Add login feature
-  drop def456 Debugging code
-  pick ghi789 Add tests
-  ```
-  Result: Debugging commit removed
-
-  #### Reorder Commits
-
-  ```
-  pick ghi789 Add tests
-  pick abc123 Add login feature  # Moved up
-  pick def456 Update docs
-  ```
-
-  ### Practical Rebase Workflow
+  Temporarily save uncommitted changes to clean your working directory.
 
   ```bash
-  # Scenario: Clean up messy commits before PR
-
-  # Current commits:
-  # - Add feature
-  # - wip
-  # - fix typo
-  # - more fixes
-  # - final version
-
-  # Interactive rebase:
-  git rebase -i HEAD~5
-
-  # In editor:
-  pick abc123 Add feature
-  squash def456 wip
-  squash ghi789 fix typo
-  squash jkl012 more fixes
-  squash mno345 final version
-
-  # Result: One clean commit "Add feature" with all changes
-
-  # Now push:
-  git push --force-with-lease origin feature/my-feature
-  ```
-
-  ## Git Cherry-Pick
-
-  **Cherry-pick**: Apply specific commit(s) from one branch to another
-
-  ### Basic Cherry-Pick
-
-  ```bash
-  # Apply single commit to current branch
-  git cherry-pick abc123
-
-  # Apply multiple commits
-  git cherry-pick abc123 def456 ghi789
-
-  # Apply commit range
-  git cherry-pick abc123..def456
-  ```
-
-  **Use cases:**
-
-  #### 1. Hotfix Applied to Multiple Branches
-
-  ```bash
-  # Fix bug on main
-  git checkout main
-  git commit -m "Fix security vulnerability" # Creates abc123
-
-  # Apply same fix to release branch
-  git checkout release/v2.0
-  git cherry-pick abc123  # Applies fix to release branch
-  ```
-
-  #### 2. Bring Specific Feature from Another Branch
-
-  ```bash
-  # You need just one commit from feature branch
-  git log feature/other-feature  # Find commit def456
-
-  git checkout feature/my-feature
-  git cherry-pick def456  # Bring that specific commit
-  ```
-
-  #### 3. Undo Accidental Commit to Wrong Branch
-
-  ```bash
-  # Committed to main instead of feature branch
-  git log  # Note commit abc123
-
-  git branch feature/correct-branch  # Create branch with commit
-  git reset --hard HEAD~1  # Undo commit on main
-  git checkout feature/correct-branch  # Now on correct branch
-  ```
-
-  ### Cherry-Pick Options
-
-  ```bash
-  # Cherry-pick without committing (review first)
-  git cherry-pick -n abc123
-  git cherry-pick --no-commit abc123
-
-  # Cherry-pick and edit commit message
-  git cherry-pick -e abc123
-  git cherry-pick --edit abc123
-
-  # Cherry-pick with sign-off
-  git cherry-pick -s abc123
-
-  # Abort cherry-pick (if conflicts)
-  git cherry-pick --abort
-
-  # Continue after resolving conflicts
-  git cherry-pick --continue
-  ```
-
-  ### Cherry-Pick Conflicts
-
-  ```bash
-  # Cherry-pick causes conflict
-  git cherry-pick abc123
-  # CONFLICT (content): Merge conflict in file.js
-
-  # Resolve conflicts
-  # Edit file.js, remove conflict markers
-
-  # Stage resolved files
-  git add file.js
-
-  # Continue cherry-pick
-  git cherry-pick --continue
-
-  # Or abort if needed
-  git cherry-pick --abort
-  ```
-
-  ## Git Stash
-
-  **Stash**: Temporarily save uncommitted changes and revert to clean working directory
-
-  ### Basic Stash Operations
-
-  ```bash
-  # Save current changes to stash
+  # Save changes
   git stash
 
-  # Save with descriptive message
-  git stash save "WIP: working on login feature"
-  # Or modern syntax:
-  git stash push -m "WIP: working on login feature"
-
-  # List all stashes
+  # List stashes
   git stash list
-  # Output:
-  # stash@{0}: WIP: working on login feature
-  # stash@{1}: On main: quick fix
 
-  # Show stash contents
-  git stash show stash@{0}
-  git stash show -p stash@{0}  # Show full diff
-
-  # Apply stash (keeps stash in list)
-  git stash apply
-  git stash apply stash@{0}
-
-  # Pop stash (apply and remove from list)
+  # Apply last stash
   git stash pop
-  git stash pop stash@{0}
-
-  # Drop stash
-  git stash drop stash@{0}
-
-  # Clear all stashes
-  git stash clear
   ```
 
-  ### Stash Scenarios
+  # Git Reset
 
-  #### Scenario 1: Switch Branches with Uncommitted Changes
+  Undo changes.
+
+  - **Soft:** Moves HEAD, keeps changes staged.
+  - **Mixed (default):** Moves HEAD, keeps changes unstaged.
+  - **Hard:** Moves HEAD, destroys changes.
 
   ```bash
-  # Working on feature branch
-  git checkout feature/dashboard
-  # Make changes but not ready to commit
+  # Undo last commit, keep changes
+  git reset --soft HEAD~1
 
-  # Urgent: Need to switch to main for hotfix
-  git stash save "Dashboard work in progress"
-  git checkout main
-  # Fix bug
-  git add .
-  git commit -m "Fix critical bug"
-
-  # Return to feature work
-  git checkout feature/dashboard
-  git stash pop  # Restore your work
+  # DESTROY last commit and changes
+  git reset --hard HEAD~1
   ```
-
-  #### Scenario 2: Test Changes Without Committing
-
-  ```bash
-  # Make experimental changes
-  # Want to test without changes
-
-  git stash  # Hide changes
-  # Run tests on clean code
-  npm test
-
-  git stash pop  # Restore changes
-  ```
-
-  #### Scenario 3: Apply Changes to Different Branch
-
-  ```bash
-  # Made changes on wrong branch
-  git stash save "Changes meant for feature branch"
-  git checkout feature/correct-branch
-  git stash pop  # Apply to correct branch
-  ```
-
-  ### Advanced Stash Options
-
-  ```bash
-  # Stash including untracked files
-  git stash -u
-  git stash --include-untracked
-
-  # Stash including ignored files
-  git stash -a
-  git stash --all
-
-  # Stash only specific files
-  git stash push -m "Partial stash" file1.js file2.js
-
-  # Create branch from stash
-  git stash branch new-branch-name stash@{0}
-  # Creates branch, applies stash, drops stash
-  ```
-
-  ### Stash vs Commit
-
-  **Use stash when:**
-  - Changes not ready for commit
-  - Need to switch context quickly
-  - Experimenting with code
-  - Want to save without creating commit
-
-  **Use commit when:**
-  - Changes are logical unit of work
-  - Ready to save permanently
-  - Want to share with team
-  - Changes are tested
-
-  ## Git Reflog
-
-  **Reflog**: Reference log of where HEAD has been
-
-  **Use case:** Recover "lost" commits, undo mistakes
-
-  ```bash
-  # View reflog
-  git reflog
-
-  # Output:
-  # abc123 HEAD@{0}: commit: Add feature
-  # def456 HEAD@{1}: checkout: moving from main to feature
-  # ghi789 HEAD@{2}: reset: moving to HEAD~1
-  # jkl012 HEAD@{3}: commit: Oops, shouldn't have committed
-
-  # Recover lost commit
-  git checkout jkl012
-  git cherry-pick jkl012
-  # Or:
-  git reset --hard jkl012
-  ```
-
-  ### Recovering from Mistakes
-
-  #### Accidental Reset
-
-  ```bash
-  # Accidentally reset
-  git reset --hard HEAD~3  # Oops! Lost 3 commits
-
-  # Check reflog
-  git reflog
-  # Find commit before reset
-
-  # Recover
-  git reset --hard HEAD@{1}  # Back to before reset
-  ```
-
-  #### Accidental Branch Delete
-
-  ```bash
-  # Deleted branch
-  git branch -D feature/important  # Oops!
-
-  # Find last commit on that branch
-  git reflog | grep feature/important
-
-  # Recreate branch
-  git branch feature/important abc123
-  ```
-
-  ## Git Bisect
-
-  **Bisect**: Binary search to find commit that introduced bug
-
-  ```bash
-  # Start bisect
-  git bisect start
-
-  # Mark current commit as bad
-  git bisect bad
-
-  # Mark known good commit
-  git bisect good abc123
-
-  # Git checks out middle commit
-  # Test if bug exists
-
-  # If bug exists:
-  git bisect bad
-
-  # If bug doesn't exist:
-  git bisect good
-
-  # Repeat until Git finds first bad commit
-
-  # End bisect
-  git bisect reset
-  ```
-
-  **Automated bisect:**
-  ```bash
-  git bisect start HEAD abc123
-  git bisect run npm test
-  # Automatically finds first failing commit
-  ```
-
-  ## Best Practices
-
-  ### Rebase
-
-  ✅ **Do:**
-  - Rebase local feature branches
-  - Clean up commits before PR
-  - Keep feature branch up-to-date with main
-
-  ❌ **Don't:**
-  - Rebase public/shared branches
-  - Rebase after pushing (unless you coordinate with team)
-  - Rebase main/master
-
-  ### Cherry-Pick
-
-  ✅ **Do:**
-  - Apply hotfixes to multiple branches
-  - Move commits to correct branch
-  - Bring specific features
-
-  ❌ **Don't:**
-  - Cherry-pick entire branches (use merge)
-  - Use instead of proper merging workflow
-  - Cherry-pick too frequently (indicates branching strategy issues)
-
-  ### Stash
-
-  ✅ **Do:**
-  - Stash before switching branches
-  - Use descriptive stash messages
-  - Apply stash soon (don't accumulate)
-
-  ❌ **Don't:**
-  - Use stash as long-term storage
-  - Accumulate dozens of stashes
-  - Forget about stashed changes
-
-  ## Real-World Workflows
-
-  ### Workflow 1: Clean Up Commits Before PR
-
-  ```bash
-  # Your messy commits:
-  git log --oneline
-  # abc123 Add feature
-  # def456 Fix bug
-  # ghi789 WIP
-  # jkl012 More WIP
-  # mno345 Final touches
-
-  # Clean up:
-  git rebase -i HEAD~5
-  # Squash WIP commits, reword messages
-
-  # Force push (since history rewritten):
-  git push --force-with-lease origin feature/my-feature
-
-  # Now PR has clean commit history
-  ```
-
-  ### Workflow 2: Update Feature Branch with Main
-
-  ```bash
-  # Feature branch is old
-  git checkout feature/long-project
-  git fetch origin
-
-  # Option A: Rebase (linear history)
-  git rebase origin/main
-  # Resolve conflicts
-  git push --force-with-lease origin feature/long-project
-
-  # Option B: Merge (preserves history)
-  git merge origin/main
-  # Resolve conflicts
-  git push origin feature/long-project
-  ```
-
-  ### Workflow 3: Emergency Hotfix to Multiple Versions
-
-  ```bash
-  # Fix on main
-  git checkout main
-  git commit -m "Fix security vulnerability" # abc123
-
-  # Apply to v2.0 release
-  git checkout release/v2.0
-  git cherry-pick abc123
-
-  # Apply to v1.9 release
-  git checkout release/v1.9
-  git cherry-pick abc123
-  ```
-
-  ## Common Mistakes
-
-  ❌ **Rebasing public branches**
-  → Rewrites history, breaks teammates' work
-
-  ❌ **Force pushing without --force-with-lease**
-  → Can overwrite others' work
-
-  ❌ **Stashing and forgetting**
-  → Lost work, confusion
-
-  ❌ **Cherry-picking instead of merging**
-  → Creates duplicate commits, messy history
-
-  ❌ **Interactive rebase without understanding**
-  → Can lose commits, create conflicts
-
-  ## Tips for Mastery
-
-  1. **Practice in safe environment**: Test on dummy repo first
-  2. **Use reflog as safety net**: Can recover from most mistakes
-  3. **Communicate rebase/force-push**: Tell team when rewriting history
-  4. **Prefer --force-with-lease**: Safer than --force
-  5. **Keep stashes short-lived**: Don't use as storage
-  6. **Commit before experimenting**: Easy to reset if needed
-
-  **Next**: Learn Git best practices and common troubleshooting techniques!
-
 exercises:
   - type: mcq
     sequence_order: 1
-    question: "What is the key difference between 'git merge' and 'git rebase', and when should you use rebase?"
+    question: "When is it safe to use 'git rebase'?"
     options:
-      - "Merge is faster than rebase"
-      - "Merge creates a merge commit preserving branch history; rebase replays commits creating linear history. Use rebase for local feature branches before pushing, never on public/shared branches"
-      - "They are exactly the same"
-      - "Rebase is only for deleting commits"
-    correct_answer: "Merge creates a merge commit preserving branch history; rebase replays commits creating linear history. Use rebase for local feature branches before pushing, never on public/shared branches"
-    explanation: "Understanding merge vs rebase is crucial for Git mastery and affects repository history. Git Merge: (1) What it does: Creates new merge commit combining two branches. Preserves complete history of both branches. Shows when branches diverged and merged. Merge commit has two parent commits. (2) Visual: Before: main: A---B---E---F, feature: C---D. After merge: main: A---B---E---F---M (M is merge commit), feature: C---D (merged into M). (3) Commands: git checkout main, git merge feature. (4) History: Shows branching structure. Chronological order might be mixed. Clear integration points. (5) Pros: Non-destructive (doesn't change existing commits). Shows collaboration and parallel work. Easy to understand when features were integrated. Safe for shared branches. (6) Cons: History can be complex with many branches. 'Spaghetti' history with many merges. Git Rebase: (1) What it does: Replays commits from one branch onto another. Rewrites commit history. Creates new commits (different SHAs). Linear, clean history. (2) Visual: Before: main: A---B---E---F, feature: C---D. After rebase: main: A---B---E---F, feature: C'---D' (C and D replayed on top of F). (3) Commands: git checkout feature, git rebase main. (4) History: Linear (straight line). Appears as if developed serially. No merge commits. (5) Pros: Clean, linear history. Easier to follow. Simpler git log visualization. Easier git bisect. (6) Cons: Rewrites history (changes commit SHAs). Dangerous on public/shared branches. Can cause conflicts if used improperly. When to Use Rebase: ✅ Local feature branches (not pushed): git checkout feature/my-feature, git rebase main (clean up before push). ✅ Before creating PR: Clean up commits, make history linear. ✅ Squashing commits: git rebase -i HEAD~5 (combine messy commits). ✅ Updating feature with latest main: git rebase origin/main (instead of merge). When NOT to Use Rebase: ❌ Public/shared branches: Rewrites history others depend on. Breaks teammates' work. They'll have merge conflicts. ❌ Main/master branch: Never rebase main. Team standard is to merge into main. ❌ After pushing to shared branch: Others may have pulled your commits. Rewriting creates chaos. ❌ Commits others have based work on: Breaks dependent branches. Golden Rule of Rebase: Never rebase commits that have been pushed to public/shared branches and that others may have based work on. Rebase Workflow Example: # You're working on feature branch: git checkout feature/dashboard. # Main has moved ahead while you worked: git fetch origin. # Update your feature (LOCAL, not pushed yet): git rebase origin/main (linear history). # Resolve conflicts if any. # Now push: git push origin feature/dashboard. # If already pushed and need to rebase: git rebase origin/main, git push --force-with-lease origin feature/dashboard (ONLY if you're the only one on this branch!). Merge Workflow Example: # You're on feature branch: git checkout feature/dashboard. # Main has moved ahead: git merge origin/main (preserves history). # Resolve conflicts. # Push: git push origin feature/dashboard. Team Policies: Some teams: 'Always merge' (preserve history). Other teams: 'Rebase feature branches, merge to main' (clean history). Document your team's policy. Best Practice for Most Teams: Feature branches: rebase locally, merge to main via PR. Main branch: never rebase, always merge. Hotfixes: merge or cherry-pick. Release branches: merge or cherry-pick."
+      - "On shared branches like main"
+      - "On local feature branches before pushing"
+      - "Never"
+      - "Always"
+    correct_answer: "On local feature branches before pushing"
+    explanation: "Rebase rewrites history. If you rewrite history that others have pulled, it causes massive sync headaches. Only rebase branches that only you are working on."
     require_pass: true
 
-  - type: mcq
+  - type: terminal
     sequence_order: 2
-    question: "What is the purpose of 'git stash' and when should you use it?"
-    options:
-      - "To permanently delete uncommitted changes"
-      - "To create a new branch"
-      - "To temporarily save uncommitted changes without committing, so you can switch context (like changing branches) and restore changes later"
-      - "To merge branches"
-    correct_answer: "To temporarily save uncommitted changes without committing, so you can switch context (like changing branches) and restore changes later"
-    explanation: "Git stash is a powerful tool for managing work-in-progress changes. Understanding when and how to use it improves workflow efficiency. What Git Stash Does: (1) Saves: Uncommitted changes (both staged and unstaged). Reverts working directory to clean state (matches HEAD). Stores changes in stash list. (2) Allows you to: Switch branches with uncommitted changes. Pull latest changes without committing. Test code in clean state. (3) Later restore: Pop stash to restore changes. Apply stash (keep in stash list). When to Use Stash: Scenario 1 - Switch Branches: You're coding on feature branch. Changes not ready to commit. Need to switch to main for urgent hotfix. Solution: git stash save 'Dashboard WIP', git checkout main (fix bug), git checkout feature/dashboard, git stash pop. Scenario 2 - Pull Latest Changes: You have uncommitted changes. Need to git pull. Pull fails: 'Your local changes would be overwritten'. Solution: git stash, git pull origin main, git stash pop. Scenario 3 - Test Clean State: Made changes. Want to test without changes. Don't want to commit yet. Solution: git stash (test), npm test (run tests), git stash pop (restore). Scenario 4 - Accidental Wrong Branch: Made changes on main instead of feature. Solution: git stash, git checkout feature/my-feature, git stash pop. Scenario 5 - Experiment Safely: Want to try risky refactor. Don't want to lose current work. Solution: git stash, (experiment), if bad: git reset --hard, if good: git stash drop. Basic Stash Commands: # Save changes: git stash (default message), git stash save 'Descriptive message' (old syntax), git stash push -m 'Message' (new syntax). # List stashes: git stash list. Output: stash@{0}: WIP on feature: abc123 Add login, stash@{1}: On main: def456 Quick fix. # View stash contents: git stash show stash@{0} (summary), git stash show -p stash@{0} (full diff). # Restore changes: git stash pop (apply most recent, remove from list), git stash pop stash@{1} (apply specific stash), git stash apply (apply but keep in list), git stash apply stash@{0} (apply specific, keep). # Delete stashes: git stash drop stash@{0} (delete specific), git stash clear (delete all stashes). Advanced Stash Options: # Include untracked files: git stash -u (git stash --include-untracked). # Include ignored files: git stash -a (git stash --all). # Stash specific files: git stash push -m 'Message' file1.js file2.js. # Create branch from stash: git stash branch new-branch stash@{0} (creates branch, applies stash, drops stash). Stash vs Commit: Use Stash when: Changes incomplete/not ready. Quick context switch needed. Don't want commit in history. Temporary save for experiments. Use Commit when: Logical unit of work complete. Ready to share with team. Want permanent record. Changes tested and working. Best Practices: ✅ Use descriptive messages: git stash save 'Refactoring user service'. ✅ Apply stash soon: Don't accumulate many stashes. ✅ Clear old stashes: Review and clean up: git stash list. ✅ Check before switching: git status before git checkout. ❌ Don't: Use stash as long-term storage. Accumulate dozens of stashes. Forget what's stashed. Stash committed changes (stash only saves uncommitted). Common Workflow: # Working on feature: (make changes). git status (see uncommitted changes). # Need to switch branches: git stash save 'Feature work in progress'. git checkout main. git pull origin main. (do urgent work). git commit -m 'Fix bug'. # Return to feature work: git checkout feature/dashboard. git stash list (verify stash exists). git stash pop (restore changes). (continue working). Handling Stash Conflicts: # Apply stash: git stash pop. # Conflict: CONFLICT (content): Merge conflict in file.js. # Resolve conflicts: Edit file.js, remove markers. git add file.js. # Stash is automatically dropped after successful conflict resolution. What Stash is NOT: ❌ Not for permanent storage (use commits/branches). ❌ Not for sharing with team (use branches). ❌ Not a backup system (use commits). ❌ Not for long-term WIP (use branches/draft PRs)."
-    require_pass: true
+    command: git stash
+    description: "Stash current changes"
+    hints:
+      - "git stash"
+    validation:
+      must_not_include:
+        - "No local changes to save"
+    timeout_sec: 30
+    require_pass: false
 
-  - type: mcq
+  - type: code
     sequence_order: 3
-    question: "What is 'git cherry-pick' used for, and in what scenario would you use it?"
-    options:
-      - "To delete commits from history"
-      - "To create a new branch"
-      - "To apply specific commits from one branch to another, useful for applying hotfixes to multiple branches or moving commits to correct branch"
-      - "To merge two branches together"
-    correct_answer: "To apply specific commits from one branch to another, useful for applying hotfixes to multiple branches or moving commits to correct branch"
-    explanation: "Cherry-pick is a selective commit application tool. Understanding its use cases prevents messy history and enables efficient hotfix workflows. What Git Cherry-Pick Does: (1) Takes specific commit from one branch. (2) Applies it to current branch. (3) Creates new commit (different SHA). (4) Doesn't move/delete original commit. Visual Example: Before: main: A---B---C, feature: A---B---D---E---F. Cherry-pick E from feature to main: git checkout main, git cherry-pick E. After: main: A---B---C---E' (E' is copy of E), feature: A---B---D---E---F (unchanged). Basic Syntax: # Apply single commit: git cherry-pick abc123. # Apply multiple commits: git cherry-pick abc123 def456 ghi789. # Apply commit range: git cherry-pick abc123..def456. # Cherry-pick without committing: git cherry-pick -n abc123 (git cherry-pick --no-commit abc123). Use Case 1 - Hotfix to Multiple Branches: Problem: Critical security bug found. Need to fix in main, release/v2.0, and release/v1.9. Solution: # Fix on main: git checkout main, git commit -m 'Fix security vulnerability' (creates commit abc123). # Apply to release branches: git checkout release/v2.0, git cherry-pick abc123 (fix applied). git checkout release/v1.9, git cherry-pick abc123 (fix applied). Result: Same fix in all branches, maintains stable releases. Use Case 2 - Commit to Wrong Branch: Problem: Accidentally committed to main instead of feature branch. Solution: # Note the commit: git log (find commit abc123). # Create branch with commit: git branch feature/my-work. # Remove from main: git reset --hard HEAD~1. # Switch to feature branch: git checkout feature/my-work (commit abc123 now here). Alternative: git checkout main, git reset --soft HEAD~1 (uncommit but keep changes), git stash, git checkout feature/my-work, git stash pop. Use Case 3 - Selective Feature Porting: Problem: Large feature branch has 10 commits. You need only commits 3 and 7 in your branch. Solution: git log feature/large-feature (find commits def456 and mno345). git checkout feature/my-feature. git cherry-pick def456 (apply commit 3). git cherry-pick mno345 (apply commit 7). Use Case 4 - Backporting Fixes: Problem: Feature added to main. Customer needs just one function from that feature in older version. Solution: git log main (find specific commit with that function). git checkout release/v1.5. git cherry-pick ghi789 (backport specific commit). Cherry-Pick Options: # Edit commit message: git cherry-pick -e abc123 (git cherry-pick --edit abc123). # Add sign-off: git cherry-pick -s abc123. # Cherry-pick without committing (review first): git cherry-pick -n abc123. # Abort cherry-pick: git cherry-pick --abort. # Continue after conflict: (resolve conflicts), git add ., git cherry-pick --continue. Handling Conflicts: # Cherry-pick: git cherry-pick abc123. # Conflict: CONFLICT (content): Merge conflict in file.js. # Resolve: Edit file.js, remove conflict markers. git add file.js. # Continue: git cherry-pick --continue. # Or abort: git cherry-pick --abort. When to Use Cherry-Pick: ✅ Apply hotfix to multiple release branches. ✅ Move commit from wrong branch to correct branch. ✅ Bring specific fix from feature branch. ✅ Backport fixes to older versions. ✅ Apply bug fix before entire feature ready. When NOT to Use Cherry-Pick: ❌ To merge entire branches (use git merge). ❌ As primary workflow (indicates branching issues). ❌ To duplicate work across branches (creates maintenance burden). ❌ When merge is more appropriate. Cherry-Pick vs Merge: Cherry-pick: Applies specific commits. Creates new commit (different SHA). Selective. For one or few commits. Merge: Applies entire branch history. Preserves commits (same SHAs). All-or-nothing. For complete branches. Best Practices: ✅ Use sparingly: Cherry-pick is for special cases. ✅ Document cherry-picks: Note in commit message. ✅ Consider alternatives: Could merge be better? ✅ Test after cherry-pick: Ensure changes work in new context. ❌ Don't: Cherry-pick excessively (fix branching strategy instead). Use instead of proper merging. Cherry-pick large series of commits (merge instead). Common Mistakes: ❌ Cherry-picking when should merge: Feature branches should be merged, not cherry-picked. ❌ Creating duplicate fixes: Same fix in multiple places via cherry-pick. Hard to maintain. Should fix once, merge to branches. ❌ Breaking dependencies: Cherry-pick commit C without commit B it depends on. Real-World Example: Startup with versions: main (development), release/v2.0 (current), release/v1.9 (supported). Security bug found: Fix on main: git checkout main, git commit -m 'CVE-2024-1234: Fix auth bypass'. Note SHA: abc123. Apply to production: git checkout release/v2.0, git cherry-pick abc123, git push origin release/v2.0, (deploy v2.0.1). Apply to legacy: git checkout release/v1.9, git cherry-pick abc123, git push origin release/v1.9, (deploy v1.9.5). Result: All versions patched, customers protected."
+    language: bash
+    question: "Command to hard reset to the previous commit (DANGEROUS)"
+    starter_code: "git reset"
+    solution_code: "git reset --hard HEAD~1"
+    hints:
+      - "Use --hard flag"
+      - "Target HEAD~1"
     require_pass: true
