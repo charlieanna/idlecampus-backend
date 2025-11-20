@@ -1,481 +1,162 @@
 slug: git-merging-conflict-resolution
 title: Git Merging and Conflict Resolution
-difficulty: easy
+difficulty: medium
 sequence_order: 3
 estimated_minutes: 20
 key_concepts:
   - Merging
+  - Fast-forward vs Non-fast-forward
   - Merge conflicts
-  - Conflict resolution
-  - Fast-forward merges
-  - Three-way merges
+  - Conflict markers
 prerequisites:
   - lesson-1
   - git-branching-strategies
 content_md: |
-  # Git Merging and Conflict Resolution
+  # Git Merging and Conflict Resolution 🤝
 
-  Merging combines changes from different branches. Master this to integrate work smoothly.
+  # Git Merging
 
-  ## Understanding Merges
+  Merging is the process of joining two or more development histories together.
 
-  ### Fast-Forward Merge (Simple)
+  ## Merge Types
 
-  When target branch hasn't diverged:
+  ### 1. Fast-Forward Merge
 
-  ```
-  Before:
-  main:    A---B
-           feature: C---D
-
-  After fast-forward:
-  main:    A---B---C---D
-  ```
+  Occurs when the current branch has no extra commits compared to the target branch.
 
   ```bash
+  # Situation:
+  # main:    A --- B
+  # feature:        \--- C --- D
+
   git checkout main
   git merge feature
-  # Output: Fast-forward (no merge commit needed)
+
+  # Result:
+  # main:    A --- B --- C --- D
   ```
 
-  ### Three-Way Merge (Diverged Branches)
+  **Pros:** Linear history, clean.
+  **Cons:** Loses context that a feature branch existed.
 
-  When both branches have new commits:
+  ### 2. Three-Way Merge (Non-Fast-Forward)
 
-  ```
-  Before:
-  main:    A---B---E---F
-                \
-           feature: C---D
-
-  After merge:
-  main:    A---B---E---F---M
-                \         /
-           feature: C---D
-  ```
+  Occurs when both branches have progressed.
 
   ```bash
+  # Situation:
+  # main:    A --- B --- E
+  # feature:        \--- C --- D
+
   git checkout main
   git merge feature
-  # Creates merge commit M
+
+  # Result:
+  # main:    A --- B --- E ------- M (Merge Commit)
+  #                       /       /
+  # feature:        \--- C --- D
   ```
 
-  ## Basic Merging Workflow
+  **Command:** `git merge --no-ff feature`
+  **Pros:** Preserves history of the feature branch.
+  **Cons:** Can clutter history if overused.
 
-  ### Standard Merge
+  ## Handling Merge Conflicts
+
+  Conflicts happen when Git can't automatically determine how to merge changes (e.g., same line changed in both branches).
+
+  ### 1. Identify Conflict
 
   ```bash
-  # Update main branch first
-  git checkout main
-  git pull origin main
-
-  # Merge feature branch
-  git merge feature/user-auth
-
-  # Push merged changes
-  git push origin main
-
-  # Delete feature branch (optional)
-  git branch -d feature/user-auth
-  ```
-
-  ### Merge with Message
-
-  ```bash
-  # Create custom merge commit message
-  git merge feature/payment --no-ff -m "Merge payment integration feature"
-
-  # --no-ff: Always create merge commit (even if fast-forward possible)
-  ```
-
-  ### Abort a Merge
-
-  ```bash
-  # If merge goes wrong, abort and start over
-  git merge --abort
-  ```
-
-  ## Understanding Merge Conflicts
-
-  **When do conflicts occur?**
-
-  Conflicts happen when Git can't automatically merge changes because:
-  - Same line(s) modified differently in both branches
-  - One branch modified, another deleted the same file
-  - Same file renamed differently in both branches
-
-  ### Conflict Example
-
-  **main branch** (users.txt):
-  ```
-  Alice
-  Bob
-  Charlie
-  ```
-
-  **feature branch** (users.txt):
-  ```
-  Alice
-  Robert
-  Charlie
-  ```
-
-  **After `git merge feature`:**
-  ```bash
-  Auto-merging users.txt
-  CONFLICT (content): Merge conflict in users.txt
+  $ git merge feature/login
+  Auto-merging app.py
+  CONFLICT (content): Merge conflict in app.py
   Automatic merge failed; fix conflicts and then commit the result.
   ```
 
-  ## Resolving Conflicts Step-by-Step
-
-  ### 1. Check Conflict Status
+  ### 2. View Conflict Status
 
   ```bash
-  # See which files have conflicts
-  git status
-
-  # Output:
-  # You have unmerged paths.
-  # Unmerged paths:
-  #   (use "git add <file>..." to mark resolution)
-  #     both modified:   users.txt
+  $ git status
+  Unmerged paths:
+    (use "git add <file>..." to mark resolution)
+    both modified:   app.py
   ```
 
-  ### 2. Open Conflicted File
+  ### 3. Resolve Conflict
 
-  Git marks conflicts with special markers:
+  Open the file. You'll see markers:
 
-  ```
-  Alice
-  <<<<<<< HEAD (main branch)
-  Bob
+  ```python
+  def login():
+  <<<<<<< HEAD
+      print("Login v1")
   =======
-  Robert
-  >>>>>>> feature (feature branch)
-  Charlie
+      print("Login v2 - Secure")
+  >>>>>>> feature/login
   ```
 
-  **Markers explained:**
-  - `<<<<<<< HEAD`: Start of your current branch changes
-  - `=======`: Separator between changes
-  - `>>>>>>> feature`: End of incoming branch changes
+  **HEAD**: Changes in current branch (main).
+  **feature/login**: Changes in incoming branch.
 
-  ### 3. Edit to Resolve
+  **Action:** Edit the file to keep what you want, remove markers.
 
-  **Option 1: Keep main branch version**
-  ```
-  Alice
-  Bob
-  Charlie
+  ```python
+  def login():
+      print("Login v2 - Secure")
   ```
 
-  **Option 2: Keep feature branch version**
-  ```
-  Alice
-  Robert
-  Charlie
-  ```
-
-  **Option 3: Keep both (manual merge)**
-  ```
-  Alice
-  Bob
-  Robert
-  Charlie
-  ```
-
-  **Option 4: Custom resolution**
-  ```
-  Alice
-  Bob Smith
-  Charlie
-  ```
-
-  ### 4. Mark as Resolved
+  ### 4. Finalize Merge
 
   ```bash
-  # After editing, stage the resolved file
-  git add users.txt
-
-  # Check status
-  git status
-  # Output: All conflicts fixed but you are still merging
-
-  # Complete the merge
-  git commit
-  # Or with custom message:
-  git commit -m "Merge feature: resolved user naming conflict"
+  git add app.py
+  git commit -m "Merge feature/login and fix conflicts"
   ```
 
-  ## Conflict Resolution Tools
+  ## Aborting a Merge
 
-  ### Using Git's Merge Tool
-
-  ```bash
-  # Launch visual merge tool
-  git mergetool
-
-  # Popular tools: vimdiff, meld, kdiff3, Beyond Compare
-  # Configure your preferred tool:
-  git config --global merge.tool meld
-  ```
-
-  ### Using VS Code
-
-  VS Code shows buttons above conflicts:
-  - **Accept Current Change** (keep HEAD)
-  - **Accept Incoming Change** (keep feature)
-  - **Accept Both Changes**
-  - **Compare Changes**
-
-  ### Manual Inspection
+  If things get messy, you can always abort:
 
   ```bash
-  # See differences causing conflict
-  git diff
-
-  # See differences between branches
-  git diff main feature -- users.txt
-  ```
-
-  ## Advanced Merge Strategies
-
-  ### Merge vs. No Fast-Forward
-
-  ```bash
-  # Default: fast-forward if possible
-  git merge feature
-
-  # Always create merge commit (preserves branch history)
-  git merge --no-ff feature
-
-  # Only fast-forward (abort if not possible)
-  git merge --ff-only feature
-  ```
-
-  **When to use `--no-ff`?**
-  - Feature branches: Preserve feature history
-  - Team policies: Always show what was merged
-  - Release branches: Clear audit trail
-
-  ### Merge Strategies
-
-  ```bash
-  # Recursive (default): Smart three-way merge
-  git merge -s recursive feature
-
-  # Ours: Ignore all changes from other branch
-  git merge -s ours outdated-feature
-
-  # Theirs (via -X option): Prefer other branch on conflicts
-  git merge -X theirs feature
-
-  # Ours (via -X option): Prefer current branch on conflicts
-  git merge -X ours feature
-  ```
-
-  ## Real-World Scenarios
-
-  ### Scenario 1: Feature Branch Behind Main
-
-  ```bash
-  # Feature branch is old, main has moved ahead
-  git checkout feature/dashboard
-
-  # Option A: Merge main into feature (before merging feature to main)
-  git merge main
-  # Resolve conflicts
-  git add .
-  git commit -m "Merge main into feature/dashboard"
-
-  # Now merge feature into main
-  git checkout main
-  git merge feature/dashboard  # Should be smooth now
-
-  # Option B: Rebase (covered in advanced lessons)
-  git rebase main
-  ```
-
-  ### Scenario 2: Multiple Conflicting Branches
-
-  ```bash
-  # Merge first feature
-  git checkout main
-  git merge feature/auth
-  # Resolve conflicts, commit
-
-  # Merge second feature
-  git merge feature/ui
-  # May have conflicts with first merge
-  # Resolve conflicts, commit
-  ```
-
-  ### Scenario 3: Conflict in Binary File
-
-  ```bash
-  # Binary files can't be merged automatically
-  # Choose one version:
-
-  # Keep version from main
-  git checkout --ours binary-file.png
-  git add binary-file.png
-
-  # Keep version from feature
-  git checkout --theirs binary-file.png
-  git add binary-file.png
-
-  git commit
-  ```
-
-  ### Scenario 4: Merge with Complex Conflicts
-
-  ```bash
-  # Start merge
-  git merge feature/refactor
-
-  # Too many conflicts, need to split work
-  git merge --abort
-
-  # Alternative: Merge specific files one at a time
-  git checkout feature/refactor -- src/utils.js
-  git add src/utils.js
-  git commit -m "Merge utils.js from feature/refactor"
-
-  git checkout feature/refactor -- src/auth.js
-  # ... repeat for manageable chunks
-  ```
-
-  ## Best Practices
-
-  ### Before Merging
-
-  1. **Update both branches**
-     ```bash
-     git checkout main
-     git pull origin main
-
-     git checkout feature/new-feature
-     git pull origin feature/new-feature
-     ```
-
-  2. **Test your feature branch**
-     ```bash
-     # Run tests before merging
-     npm test
-     # or
-     pytest
-     ```
-
-  3. **Review changes**
-     ```bash
-     git diff main feature/new-feature
-     ```
-
-  ### During Conflict Resolution
-
-  1. **Understand both changes**: Don't blindly choose one side
-  2. **Test after resolving**: Run tests before committing
-  3. **Ask for help**: If unsure about code, consult the original author
-  4. **Make small commits**: Easier to resolve conflicts incrementally
-
-  ### After Merging
-
-  1. **Verify the merge**
-     ```bash
-     # Check history
-     git log --oneline --graph
-
-     # Verify merged content
-     git show HEAD
-     ```
-
-  2. **Run full test suite**
-     ```bash
-     npm test
-     # or your test command
-     ```
-
-  3. **Delete merged branch**
-     ```bash
-     git branch -d feature/completed
-     ```
-
-  ## Common Mistakes to Avoid
-
-  ❌ **Merging without pulling latest changes**
-  ✅ Always `git pull` on both branches first
-
-  ❌ **Resolving conflicts without understanding code**
-  ✅ Read the code, understand what each change does
-
-  ❌ **Forgetting to test after resolving conflicts**
-  ✅ Always run tests after conflict resolution
-
-  ❌ **Leaving conflict markers in code**
-  ✅ Search for `<<<<<<<`, `=======`, `>>>>>>>` before committing
-
-  ❌ **Committing broken code after conflict resolution**
-  ✅ Ensure code compiles and runs before committing
-
-  ❌ **Merging directly to main without review**
-  ✅ Use pull requests for code review
-
-  ## Tips for Minimizing Conflicts
-
-  1. **Merge frequently**: Don't let branches diverge too much
-  2. **Small, focused commits**: Easier to understand and merge
-  3. **Communicate**: Coordinate when working on same files
-  4. **Use .gitattributes**: Specify merge strategies for file types
-  5. **Refactor carefully**: Large refactors cause many conflicts
-
-  ## Checking for Conflicts Before Merging
-
-  ```bash
-  # Simulate merge without actually merging
-  git merge --no-commit --no-ff feature
-
-  # Check if there would be conflicts
-  # If conflicts, resolve them
-  # Then either commit or abort
   git merge --abort
   ```
 
-  **Next**: Learn about remote repositories and collaboration workflows!
+  ## Exercises
 
+  Practice is key! Try the scenarios below.
 exercises:
   - type: mcq
     sequence_order: 1
-    question: "What is the difference between a fast-forward merge and a three-way merge?"
+    question: "What causes a merge conflict?"
     options:
-      - "Fast-forward is faster, three-way is slower"
-      - "Fast-forward merges when target branch hasn't moved ahead (just moves pointer); three-way merges when both branches have diverged (creates merge commit)"
-      - "Fast-forward is for small branches, three-way is for large branches"
-      - "There is no difference, they are the same"
-    correct_answer: "Fast-forward merges when target branch hasn't moved ahead (just moves pointer); three-way merges when both branches have diverged (creates merge commit)"
-    explanation: "Understanding merge types is critical for Git workflows. Fast-Forward Merge: (1) Occurs when: target branch (e.g., main) has NOT moved ahead since feature branch was created. (2) What happens: Git simply moves the branch pointer forward to latest commit. No merge commit created. (3) History: Linear, clean history. Visual: Before: main: A---B, feature: C---D. After: main: A---B---C---D (just moved pointer). Command: git merge feature (Git automatically does fast-forward if possible). Result: 'Fast-forward' message, no merge commit. Example: You create feature branch Monday, main hasn't changed, you merge Friday - fast-forward. Three-Way Merge: (1) Occurs when: both branches have new commits (branches diverged). (2) What happens: Git creates a new merge commit combining both branches. Uses three-way merge algorithm (common ancestor + both branch tips). (3) History: Shows branching structure, merge commit has two parents. Visual: Before: main: A---B---E---F, feature: C---D. After: main: A---B---E---F---M (M is merge commit with two parents). Command: git merge feature (Git automatically does three-way if needed). Result: Creates merge commit M. Example: You branch Monday, teammate commits to main Tuesday-Thursday, you merge Friday - three-way. When to force which: (1) git merge --ff-only: Only merge if fast-forward possible, abort otherwise. Use: Ensure linear history, prevent accidental divergence. (2) git merge --no-ff: Always create merge commit, even if fast-forward possible. Use: Preserve feature branch history, show what was merged. Best practice: Pull Requests typically use --no-ff to show feature integration clearly. Local small fixes can fast-forward for clean history."
+      - "Merging two branches with different names"
+      - "Git running out of memory"
+      - "Changes to the same line of a file in both branches"
+      - "Merging a branch into itself"
+    correct_answer: "Changes to the same line of a file in both branches"
+    explanation: "Git is smart enough to merge changes in different files or different parts of the same file. Conflicts only occur when the same specific lines are modified in both branches, or a file is deleted in one and modified in another."
     require_pass: true
 
   - type: mcq
     sequence_order: 2
-    question: "What do Git conflict markers (<<<<<<<, =======, >>>>>>>) indicate in a conflicted file?"
+    question: "What does the '--no-ff' flag do in a merge?"
     options:
-      - "They mark deleted lines"
-      - "They show where bugs are located"
-      - "They separate changes from HEAD (current branch) and incoming branch, with ======= as divider"
-      - "They indicate syntax errors"
-    correct_answer: "They separate changes from HEAD (current branch) and incoming branch, with ======= as divider"
-    explanation: "Git conflict markers are critical for resolving merge conflicts. Understanding these markers is essential for proper conflict resolution. The three markers: (1) <<<<<<< HEAD (or branch name): Start marker. Everything after this (until =======) is your current branch's version (HEAD). Shows what's currently in the branch you're merging into. (2) =======: Separator marker. Divides the two conflicting versions. Everything above = is yours (HEAD). Everything below = is theirs (incoming branch). (3) >>>>>>> branch-name: End marker. Everything before this (after =======) is the incoming branch's version. Shows what's coming from the branch you're merging in. Example conflict: File users.txt on main: Alice, Bob, Charlie. File users.txt on feature: Alice, Robert, Charlie. After git merge feature: <<<<<<< HEAD (main) Bob ======= Robert >>>>>>> feature (feature branch). Interpretation: Main branch has 'Bob', Feature branch has 'Robert', Git can't decide which to keep. Resolution process: (1) Open file in editor. (2) Find conflict markers. (3) Decide which version to keep (or combine manually). (4) Delete all three markers (<<<, ===, >>>). (5) Keep only the final content you want. Resolution options: Keep HEAD: Delete markers and Robert, keep Bob. Keep incoming: Delete markers and Bob, keep Robert. Keep both: Delete markers, keep both Bob and Robert. Custom: Delete markers, write new content (e.g., 'Bob Smith'). After editing: git add users.txt (mark as resolved), git commit (complete merge). Common mistake: Forgetting to remove conflict markers! This leaves <<<<<<< in your code. Best practice: Search entire project for '<<<<<<<' before committing to ensure no markers remain. Modern editors (VS Code, IntelliJ) show buttons: 'Accept Current Change', 'Accept Incoming Change', 'Accept Both Changes'. These automatically remove markers."
+      - "Forces a fast-forward merge"
+      - "Prevents a fast-forward merge, creating a merge commit"
+      - "Aborts the merge if there is a conflict"
+      - "Merges without file system checks"
+    correct_answer: "Prevents a fast-forward merge, creating a merge commit"
+    explanation: "--no-ff stands for 'no fast-forward'. Even if a fast-forward is possible, it forces Git to create a merge commit. This is useful to preserve the history that a feature branch existed and was merged at a specific point."
     require_pass: true
 
-  - type: mcq
+  - type: terminal
     sequence_order: 3
-    question: "After resolving conflicts in a file, what commands do you need to complete the merge?"
-    options:
-      - "git resolve && git merge --continue"
-      - "git add <file> && git commit (or just git commit for merge completion)"
-      - "git conflict --resolved && git push"
-      - "git merge --complete"
-    correct_answer: "git add <file> && git commit (or just git commit for merge completion)"
-    explanation: "Completing a merge after conflict resolution requires specific Git commands. The standard workflow: (1) git status: See which files have conflicts. Output: 'You have unmerged paths. Unmerged paths: both modified: users.txt'. (2) Edit conflicted file: Open users.txt. Find conflict markers (<<<, ===, >>>). Resolve conflicts (keep one version, combine, or write custom solution). Remove all conflict markers. (3) git add users.txt: Marks file as resolved. Stages the resolved version. Does NOT commit yet. (4) git status again: Output: 'All conflicts fixed but you are still merging.' Shows you're in merging state. (5) git commit: Completes the merge. Git provides default merge commit message: 'Merge branch feature into main'. You can edit message or use custom: git commit -m 'Merge feature: resolved naming conflicts'. Why git add is required: Git needs explicit confirmation that conflicts are resolved. Staging the file tells Git: 'I've reviewed this, conflicts are fixed'. Prevents accidental commits of broken code. Multiple conflicted files: Resolve each file. git add file1.txt. git add file2.txt. git add file3.txt. git commit (once, after all resolved). Aborting merge: If resolution is too complex or you made mistakes: git merge --abort. Resets to pre-merge state. Alternative commands (rarely used): git merge --continue: Same as git commit in merge context. Only in newer Git versions. git commit --no-edit: Use default merge message without editing. Real-world example: git merge feature/payment (conflict occurs). git status (see conflicts in payment.js, checkout.js). Edit payment.js (resolve conflicts). git add payment.js. Edit checkout.js (resolve conflicts). git add checkout.js. npm test (verify code works). git commit -m 'Merge payment feature: resolved conflicts in payment and checkout modules'. git push origin main. Common mistakes: Forgetting git add (Git won't let you commit). Committing without testing (resolves conflicts but breaks functionality). Leaving conflict markers in code (code won't compile/run)."
-    require_pass: true
+    command: git merge --abort
+    description: "Abort an in-progress merge"
+    hints:
+      - "If you are in a conflicted state and want to give up: git merge --abort"
+    validation:
+      must_not_include:
+        - "fatal: There is no merge to abort"
+    timeout_sec: 30
+    require_pass: false

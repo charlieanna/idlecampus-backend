@@ -1,31 +1,25 @@
-slug: lesson-11
-title: Lesson 11
+slug: k8s-01-fundamentals
+title: Lesson 10
 difficulty: easy
-sequence_order: 11
+sequence_order: 10
 estimated_minutes: 2
 key_concepts: []
 prerequisites: []
-content_md: "# Microlesson \U0001F680\n\n# Deployments & ReplicaSets\n\n    Learn\
-  \ how to manage application replicas and perform zero-downtime updates using Deployments\
-  \ and ReplicaSets.\n\n    ## Deployments\n\n    Deployments provide declarative\
-  \ updates for Pods and ReplicaSets. They handle:\n    - Scaling applications up\
-  \ or down\n    - Rolling updates with zero downtime\n    - Rollback to previous\
-  \ versions\n    - Pausing and resuming updates\n\n    ## ReplicaSets\n\n    ReplicaSets\
-  \ ensure a specified number of pod replicas are running at all times. Features:\n\
-  \    - Self-healing: Automatically replaces failed pods\n    - Scaling: Adjusts\
-  \ replica count based on demand\n    - Label selectors: Identifies which pods to\
-  \ manage\n\n    ## Deployment Strategies\n\n    **Rolling Update (Default)**\n \
-  \   - Gradually replaces old pods with new ones\n    - Zero downtime\n    - Rollback\
-  \ capability\n\n    **Recreate**\n    - Terminates all old pods before creating\
-  \ new ones\n    - Brief downtime\n    - Useful for incompatible updates\n\n    ##\
-  \ Essential Commands\n\n    ```bash\n    # Create deployment\n    kubectl create\
-  \ deployment nginx --image=nginx:1.25 --replicas=3\n\n    # Scale deployment\n \
-  \   kubectl scale deployment nginx --replicas=5\n\n    # Update image\n    kubectl\
-  \ set image deployment/nginx nginx=nginx:1.26\n\n    # Check rollout status\n  \
-  \  kubectl rollout status deployment/nginx\n\n    # View rollout history\n    kubectl\
-  \ rollout history deployment/nginx\n\n    # Rollback deployment\n    kubectl rollout\
-  \ undo deployment/nginx\n    ```\n\n    Master these concepts through practical\
-  \ exercises!"
+content_md: "# Microlesson \U0001F680\n\n# Kubernetes Fundamentals\n\n    Welcome\
+  \ to the Kubernetes Complete Guide! This module introduces you to Kubernetes, the\
+  \ industry-standard container orchestration platform.\n\n    ## What You'll Learn\n\
+  \n    - Kubernetes architecture and core components\n    - Control plane and worker\
+  \ node structure\n    - Essential kubectl commands\n    - How to interact with a\
+  \ Kubernetes cluster\n    - Understanding namespaces and contexts\n\n    ## Key\
+  \ Concepts\n\n    **Control Plane Components:**\n    - API Server: Central management\
+  \ entity\n    - etcd: Distributed key-value store for cluster data\n    - Scheduler:\
+  \ Assigns pods to nodes\n    - Controller Manager: Manages cluster state\n\n   \
+  \ **Worker Node Components:**\n    - kubelet: Node agent that runs containers\n\
+  \    - kube-proxy: Network proxy for services\n    - Container runtime: Docker,\
+  \ containerd, or CRI-O\n\n    ## Why Kubernetes?\n\n    Kubernetes provides:\n \
+  \   - Automated deployment and scaling\n    - Self-healing capabilities\n    - Service\
+  \ discovery and load balancing\n    - Rolling updates and rollbacks\n    - Resource\
+  \ optimization\n\n    Let's dive into the hands-on labs to start working with Kubernetes!"
 exercises:
 - type: multiple_choice_question
   sequence_order: 2
@@ -54,25 +48,15 @@ exercises:
   require_pass: true
 - type: terminal
   sequence_order: 1
-  command: kubectl create deployment nginx --image=nginx:1.25 --replicas=3
-  description: 'Practice the command: kubectl create deployment nginx --image=nginx:1.25
-    --replicas=3'
+  command: kubectl commands
+  description: 'Practice the command: kubectl commands'
   hints:
-  - 'Try: kubectl create deployment nginx --image=nginx:1.25 --replicas=3'
-  - Use kubectl --help if you need help
-  timeout_sec: 60
-  require_pass: true
-- type: terminal
-  sequence_order: 2
-  command: kubectl scale deployment nginx --replicas=5
-  description: 'Practice the command: kubectl scale deployment nginx --replicas=5'
-  hints:
-  - 'Try: kubectl scale deployment nginx --replicas=5'
+  - 'Try: kubectl commands'
   - Use kubectl --help if you need help
   timeout_sec: 60
   require_pass: true
 - type: mcq
-  sequence_order: 3
+  sequence_order: 2
   question: Which command creates a deployment with 3 replicas?
   options:
   - kubectl create deployment nginx --image=nginx --replicas=3
@@ -84,7 +68,7 @@ exercises:
     specifies the number of pod replicas.
   require_pass: true
 - type: code
-  sequence_order: 4
+  sequence_order: 3
   language: yaml
   question: Create a deployment with 3 replicas of nginx
   starter_code: '# Write your deployment YAML here

@@ -1,7 +1,7 @@
-slug: lesson-12
-title: Lesson 12
+slug: k8s-03-services
+title: Lesson 3
 difficulty: easy
-sequence_order: 12
+sequence_order: 3
 estimated_minutes: 2
 key_concepts: []
 prerequisites: []
@@ -27,29 +27,54 @@ content_md: "# Microlesson \U0001F680\n\n# Services & Networking\n\n    Learn ho
   \  ```\n\n    Practice service configuration in the labs!"
 exercises:
 - type: multiple_choice_question
-  sequence_order: 2
-  question: In Kubernetes RBAC, what is the primary purpose of a ServiceAccount?
+  sequence_order: 1
+  question: Which Kubernetes service type automatically creates an external load balancer
+    in cloud environments?
   options:
-  - To store application configuration
-  - To provide an identity for processes running in pods to interact with the Kubernetes
-    API
-  - To manage network policies
-  - To create persistent volumes
-  correct_answer: To provide an identity for processes running in pods to interact
-    with the Kubernetes API
-  explanation: ServiceAccounts provide identities for processes running in pods, enabling
-    them to authenticate with the Kubernetes API server and perform authorized operations.
-    Every namespace has a 'default' ServiceAccount automatically assigned to pods
-    that don't specify one. Applications running in pods can use the ServiceAccount's
-    token (automatically mounted at /var/run/secrets/kubernetes.io/serviceaccount/token)
-    to make API calls. Combined with RBAC (Roles and RoleBindings), ServiceAccounts
-    control what API operations pods can perform. For example, a CI/CD tool running
-    in a pod might need a ServiceAccount with permissions to create and update Deployments.
-    ServiceAccounts are different from user accounts (for humans) - they're namespace-scoped
-    and managed declaratively as Kubernetes resources. They don't store configuration
-    (that's ConfigMaps/Secrets), manage network policies (that's NetworkPolicy resources),
-    or create volumes (that's PersistentVolumeClaims). Understanding ServiceAccounts
-    is crucial for implementing the principle of least privilege in Kubernetes applications.
+  - ClusterIP
+  - NodePort
+  - LoadBalancer
+  - ExternalName
+  correct_answer: LoadBalancer
+  explanation: The LoadBalancer service type integrates with cloud providers (AWS,
+    GCP, Azure) to automatically provision an external load balancer that distributes
+    traffic to your service. When you create a LoadBalancer service in a cloud environment,
+    Kubernetes requests the cloud provider's API to create a load balancer (like AWS
+    ELB, GCP Load Balancer, or Azure Load Balancer) and configures it to route traffic
+    to your application pods across multiple nodes. The external load balancer gets
+    a public IP address that external clients can use to access your service. This
+    is the recommended way to expose services to the internet in production cloud
+    environments. ClusterIP only provides internal cluster access, NodePort exposes
+    the service on each node's IP at a static port (requiring manual load balancing),
+    and ExternalName simply creates a DNS CNAME record without any proxying. LoadBalancer
+    builds upon NodePort (which builds upon ClusterIP), so it includes all their functionality
+    plus cloud load balancer integration. For on-premises clusters without cloud integration,
+    you would typically use Ingress controllers or external load balancing solutions
+    like MetalLB.
+  require_pass: true
+- type: multiple_choice_question
+  sequence_order: 2
+  question: What is the DNS name format for accessing a Kubernetes service from a
+    different namespace?
+  options:
+  - <service-name>.cluster.local
+  - <service-name>.<namespace>
+  - <service-name>.<namespace>.svc.cluster.local
+  - <namespace>.<service-name>.local
+  correct_answer: <service-name>.<namespace>.svc.cluster.local
+  explanation: Kubernetes provides automatic DNS-based service discovery with the
+    fully qualified domain name format '<service-name>.<namespace>.svc.cluster.local'.
+    For example, a service named 'database' in the 'production' namespace would be
+    accessible at 'database.production.svc.cluster.local'. Pods in the same namespace
+    can use the short form '<service-name>' (e.g., just 'database'), while pods in
+    different namespaces must include the namespace (at minimum '<service-name>.<namespace>').
+    The DNS system is provided by CoreDNS (or kube-dns in older clusters), which creates
+    A records mapping service names to their ClusterIP addresses. This DNS-based discovery
+    allows applications to communicate using stable names rather than IP addresses,
+    which can change. The consistent naming scheme makes it easy to configure applications
+    for different environments (development, staging, production) by simply changing
+    the namespace in the DNS name while keeping application code unchanged. Understanding
+    Kubernetes DNS is crucial for microservices communication and service mesh implementations.
   require_pass: true
 - type: terminal
   sequence_order: 1
