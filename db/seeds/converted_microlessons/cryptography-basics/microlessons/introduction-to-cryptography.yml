@@ -1,0 +1,80 @@
+slug: introduction-to-cryptography
+title: Introduction to Cryptography
+difficulty: easy
+sequence_order: 14
+estimated_minutes: 2
+key_concepts:
+- Symmetric vs Asymmetric encryption
+- Hashing and integrity
+- AES, RSA, SHA-256
+- CIA Triad
+prerequisites: []
+content_md: "# Introduction to Cryptography \U0001F680\n\n# Introduction to Cryptography\n\
+  \n    Cryptography is the foundation of modern security, protecting data in transit\
+  \ and at rest.\n\n    ## Core Concepts\n\n    ### Confidentiality, Integrity, Availability\
+  \ (CIA Triad)\n    - **Confidentiality**: Only authorized parties can access data\n\
+  \    - **Integrity**: Data hasn't been tampered with\n    - **Availability**: Systems\
+  \ and data are accessible when needed\n\n    ### Types of Cryptography\n\n    ##\
+  \ 1. Symmetric Encryption\n    Same key for encryption and decryption.\n\n    **Pros:**\n\
+  \    - Fast and efficient\n    - Good for large amounts of data\n\n    **Cons:**\n\
+  \    - Key distribution problem\n    - Need secure channel to share key\n\n    **Common\
+  \ Algorithms:**\n    - **AES (Advanced Encryption Standard)**: Industry standard,\
+  \ very secure\n    - **ChaCha20**: Fast, used in TLS\n    - **3DES**: Legacy, being\
+  \ phased out\n\n    ```bash\n    # Encrypt file with AES-256\n    openssl enc -aes-256-cbc\
+  \ -salt -in file.txt -out file.txt.enc\n\n    # Decrypt file\n    openssl enc -d\
+  \ -aes-256-cbc -in file.txt.enc -out file.txt\n    ```\n\n    ## 2. Asymmetric Encryption\
+  \ (Public Key Cryptography)\n    Uses key pairs: public key (encrypt) and private\
+  \ key (decrypt).\n\n    **Pros:**\n    - Solves key distribution problem\n    -\
+  \ Enables digital signatures\n\n    **Cons:**\n    - Slower than symmetric encryption\n\
+  \    - More computationally expensive\n\n    **Common Algorithms:**\n    - **RSA**:\
+  \ Widely used, 2048-bit or 4096-bit\n    - **ECDSA**: Elliptic Curve, smaller keys,\
+  \ faster\n    - **Ed25519**: Modern, fast, secure\n\n    ## 3. Hashing (One-Way\
+  \ Functions)\n    Creates fixed-size fingerprint of data. Cannot be reversed.\n\n\
+  \    **Use Cases:**\n    - Password storage\n    - Data integrity verification\n\
+  \    - Digital signatures\n\n    **Common Algorithms:**\n    - **SHA-256**: 256-bit\
+  \ hash, very secure\n    - **SHA-512**: 512-bit hash, even more secure\n    - **bcrypt**:\
+  \ Designed for passwords, includes salt\n    - **MD5**: **BROKEN - DO NOT USE**\n\
+  \n    ```bash\n    # Generate SHA-256 hash\n    echo \"Hello World\" | sha256sum\n\
+  \n    # Verify file integrity\n    sha256sum file.txt > file.txt.sha256\n    sha256sum\
+  \ -c file.txt.sha256\n    ```\n\n    ## Practical Applications\n\n    ### Passwords\n\
+  \    **Never store passwords in plain text!**\n\n    ```bash\n    # Bad: Storing\
+  \ password directly\n    PASSWORD=\"secret123\"\n\n    # Good: Store hashed password\
+  \ with salt\n    # System does this automatically with bcrypt/scrypt\n    ```\n\n\
+  \    ### Data at Rest\n    Encrypt sensitive files, databases, disk volumes.\n\n\
+  \    ### Data in Transit\n    Use TLS/SSL to encrypt network communication.\n\n\
+  ## Key Points\n\n- Symmetric vs Asymmetric encryption\n\n- Hashing and integrity\n\
+  \n- AES, RSA, SHA-256"
+exercises:
+  - type: multiple_choice_question
+    sequence_order: 1
+    question: "What is the main advantage of asymmetric encryption over symmetric encryption?"
+    options:
+      - "It is faster for large amounts of data"
+      - "It solves the key distribution problem"
+      - "It requires less computational power"
+      - "It produces smaller ciphertext"
+    correct_answer: "It solves the key distribution problem"
+    explanation: "Asymmetric encryption's primary advantage is solving the key distribution problem that plagues symmetric encryption. In symmetric encryption, both parties need to share the same secret key, which requires a secure channel for key exchange. With asymmetric encryption, you have a public-private key pair where the public key can be freely distributed while the private key remains secret. Anyone can encrypt messages with your public key, but only you can decrypt them with your private key. This eliminates the need for a pre-established secure channel to exchange keys. While asymmetric encryption is slower and more computationally expensive than symmetric encryption, it enables secure communication between parties who have never met and enables digital signatures for authentication. In practice, systems often use hybrid approaches, employing asymmetric encryption to securely exchange a symmetric key, then using the faster symmetric encryption for the actual data transfer. This combines the key distribution benefits of asymmetric encryption with the performance advantages of symmetric encryption."
+    require_pass: true
+  - type: multiple_choice_question
+    sequence_order: 2
+    question: "Which hash algorithm should you avoid using for security purposes?"
+    options:
+      - "SHA-256"
+      - "SHA-512"
+      - "MD5"
+      - "bcrypt"
+    correct_answer: "MD5"
+    explanation: "MD5 (Message Digest 5) is completely broken for security purposes and should never be used for cryptographic applications. Researchers have demonstrated practical collision attacks against MD5, meaning it's possible to create two different inputs that produce the same hash output. This breaks the fundamental security property that hash functions must be collision-resistant. MD5 vulnerabilities allow attackers to forge digital signatures, create malicious files that appear legitimate, and compromise systems that rely on MD5 for integrity checking. Modern applications should use SHA-256 or SHA-512 from the SHA-2 family, which remain secure. For password hashing specifically, use purpose-built algorithms like bcrypt, scrypt, or Argon2, which include salting and are deliberately slow to resist brute-force attacks. Even SHA-1, MD5's successor, is now deprecated due to demonstrated weaknesses. The continued use of MD5 in production systems represents a serious security vulnerability. Always stay current with cryptographic best practices, as algorithms that were once considered secure can become compromised as computing power increases and new attack techniques are discovered."
+    require_pass: true
+  - type: multiple_choice_question
+    sequence_order: 3
+    question: "What is the purpose of hashing in the context of password storage?"
+    options:
+      - "To encrypt passwords so they can be decrypted later"
+      - "To create a one-way transformation that can verify passwords without storing them"
+      - "To compress passwords to save database space"
+      - "To encrypt the communication channel"
+    correct_answer: "To create a one-way transformation that can verify passwords without storing them"
+    explanation: "Hashing passwords creates a one-way transformation that allows password verification without storing the actual passwords. When a user creates a password, the system hashes it and stores only the hash. During login, the system hashes the entered password and compares it to the stored hash. If they match, the password is correct. The critical property is that hash functions are one-way: you cannot reverse a hash to get the original password. This means even if an attacker steals the database, they don't immediately have the passwords. Modern password hashing goes beyond simple hashing by using algorithms like bcrypt, scrypt, or Argon2, which include automatic salting (adding random data to prevent rainbow table attacks) and are computationally expensive to slow down brute-force attacks. The cost factor can be tuned to remain secure as computers get faster. Never store passwords in plain text or use reversible encryption for passwords, as these approaches mean a database compromise directly exposes user credentials. Proper password hashing is a fundamental security practice for any system handling user authentication."
+    require_pass: true

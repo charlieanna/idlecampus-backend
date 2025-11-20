@@ -1,0 +1,59 @@
+slug: packingefficiency-practice
+title: packing_efficiency — Practice
+difficulty: easy
+sequence_order: 15
+estimated_minutes: 2
+key_concepts:
+- packing_efficiency
+prerequisites: []
+content_md: '# packing_efficiency — Practice 🚀
+
+
+  FCC has the highest packing efficiency of 74%. This is also the packing efficiency
+  of HCP (Hexagonal Close Packing)
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: 'Which crystal structure has the highest packing efficiency?'
+  options:
+  - Simple cubic (SC)
+  - Body-centered cubic (BCC)
+  - Face-centered cubic (FCC)
+  - Hexagonal close packing (HCP)
+  require_pass: true
+  correct_answer: Face-centered cubic (FCC)
+  explanation: 'Both FCC and HCP have the highest packing efficiency of 74%. FCC (face-centered cubic) has atoms at corners (8 × 1/8 = 1) and face centers (6 × 1/2 = 3), totaling 4 atoms per unit cell. In FCC and HCP structures, each atom touches 12 nearest neighbors (coordination number = 12), creating the most efficient packing possible for identical spheres. Comparison of packing efficiencies: (1) Simple Cubic (SC) = 52% (CN = 6), loosest packing, (2) Body-Centered Cubic (BCC) = 68% (CN = 8), intermediate packing, (3) FCC = 74% (CN = 12), most efficient cubic packing, (4) HCP = 74% (CN = 12), most efficient non-cubic packing. FCC and HCP differ in stacking sequence (ABC vs AB) but have identical packing efficiency. Examples: Cu, Ag, Au have FCC; Mg, Zn have HCP.'
+- type: mcq
+  sequence_order: 2
+  question: 'What is the packing efficiency of a body-centered cubic (BCC) structure?'
+  options:
+  - 52%
+  - 68%
+  - 74%
+  - 100%
+  require_pass: true
+  correct_answer: 68%
+  explanation: 'BCC has a packing efficiency of 68%. Derivation: In BCC, atoms touch along the body diagonal. For a cube with edge length "a": Body diagonal = √3a = 4r (where r = atomic radius), so r = √3a/4. Volume occupied by atoms: 2 atoms/unit cell × (4/3)πr³. Unit cell volume: a³. Packing efficiency = (occupied volume/total volume) × 100 = [2 × (4/3)π(√3a/4)³]/a³ × 100 = 68%. BCC structure: (1) Atoms at 8 corners (8 × 1/8 = 1) and 1 at body center, totaling 2 atoms/unit cell, (2) Coordination number = 8 (each atom touches 8 nearest neighbors), (3) More efficiently packed than SC (52%) but less than FCC (74%). Examples of BCC metals: Fe, Cr, W, Mo. The intermediate packing allows for greater compressibility and different mechanical properties compared to FCC metals.'
+- type: mcq
+  sequence_order: 3
+  question: 'In hexagonal close packing (HCP), what is the stacking sequence of atomic layers?'
+  options:
+  - AAAA...
+  - ABAB...
+  - ABCABC...
+  - ABCDABCD...
+  require_pass: true
+  correct_answer: ABAB...
+  explanation: 'HCP has an ABAB... stacking sequence, where the third layer repeats the position of the first layer. In close packing: Layer A - first layer of spheres; Layer B - spheres fit in half the depressions of layer A; Layer C (in FCC) - spheres fit in the other half of depressions. In HCP, the third layer returns to position A, creating ABAB... In FCC, the third layer occupies position C, creating ABCABC... Both give 74% packing efficiency and CN = 12, but differ in symmetry: FCC is cubic, HCP is hexagonal. Key differences: (1) HCP: 2-layer repeat, hexagonal symmetry, examples: Mg, Zn, Ti, Cd, (2) FCC: 3-layer repeat, cubic symmetry, examples: Cu, Ag, Au, Al, Ni. Simple cubic (AAAA...) has much lower efficiency (52%). The packing sequence affects crystal properties like slip planes, determining mechanical behavior and ductility.'

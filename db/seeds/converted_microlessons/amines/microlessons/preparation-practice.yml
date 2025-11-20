@@ -1,0 +1,59 @@
+slug: preparation-practice
+title: preparation — Practice
+difficulty: easy
+sequence_order: 10
+estimated_minutes: 2
+key_concepts:
+- preparation
+prerequisites: []
+content_md: '# preparation — Practice 🚀
+
+
+  Diazotization: C₆H₅NH₂ + NaNO₂/HCl → [0-5°C] → C₆H₅N₂⁺Cl⁻. Must be kept ice-cold
+  (0-5°C), otherwise decomposes.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: 'Benzenediazonium chloride is prepared from aniline at:'
+  options:
+  - 0-5°C (ice-cold temperature)
+  - Room temperature (25°C)
+  - 60-70°C
+  - 100°C (boiling)
+  require_pass: true
+  correct_answer: 0-5°C (ice-cold temperature)
+  explanation: 'Benzenediazonium chloride must be prepared at 0-5°C (ice-cold conditions) because diazonium salts are extremely unstable at higher temperatures. The reaction is: C₆H₅NH₂ + NaNO₂ + 2HCl → [0-5°C] → C₆H₅N₂⁺Cl⁻ + NaCl + 2H₂O. This process is called diazotization. At temperatures above 5-10°C, the diazonium salt rapidly decomposes, losing N₂ gas and forming unwanted products like phenol. The ice-cold temperature ensures the diazonium salt remains stable long enough to be used in subsequent reactions (Sandmeyer, coupling, etc.). The reaction mixture is typically kept in an ice bath throughout the preparation and immediate use.'
+- type: mcq
+  sequence_order: 2
+  question: 'Which reagents are used in the diazotization of aniline?'
+  options:
+  - NaNO₂ (sodium nitrite) and HCl (acid)
+  - NaOH and H₂SO₄
+  - KMnO₄ and H₂SO₄
+  - NH₃ and HNO₃
+  require_pass: true
+  correct_answer: NaNO₂ (sodium nitrite) and HCl (acid)
+  explanation: 'Diazotization of aniline requires sodium nitrite (NaNO₂) and a mineral acid like HCl or H₂SO₄. The reaction generates nitrous acid (HNO₂) in situ: NaNO₂ + HCl → HNO₂ + NaCl. The nitrous acid then reacts with aniline to form the diazonium salt: C₆H₅NH₂ + HNO₂ + HCl → [0-5°C] → C₆H₅N₂⁺Cl⁻ + 2H₂O. Fresh nitrous acid must be generated in situ because it is unstable and cannot be stored. The mineral acid serves dual purposes: (1) generating HNO₂ from NaNO₂, and (2) providing the counterion (Cl⁻ or HSO₄⁻) for the diazonium salt. The entire process must be carried out at 0-5°C.'
+- type: mcq
+  sequence_order: 3
+  question: 'Why is nitrous acid (HNO₂) generated in situ during diazotization?'
+  options:
+  - Nitrous acid is unstable and cannot be stored
+  - Nitrous acid is too expensive
+  - Nitrous acid does not react with aniline
+  - Nitrous acid is highly toxic
+  require_pass: true
+  correct_answer: Nitrous acid is unstable and cannot be stored
+  explanation: 'Nitrous acid (HNO₂) is generated in situ (on the spot) during diazotization because it is highly unstable and decomposes rapidly at room temperature into NO₂, NO, and H₂O. It cannot be stored or purchased as a reagent. Therefore, it is freshly prepared in the reaction mixture by mixing sodium nitrite (NaNO₂) with mineral acid (HCl or H₂SO₄): NaNO₂ + HCl → HNO₂ + NaCl. This ensures fresh, active HNO₂ is available to react immediately with aniline to form the diazonium salt. The in situ generation is a common strategy in organic chemistry when dealing with unstable reactive intermediates.'

@@ -1,0 +1,84 @@
+{
+  "total_courses": 11,
+  "total_lessons": 64,
+  "categories": {
+    "Linux Fundamentals": [
+      {
+        "slug": "intro-linux-shell",
+        "title": "Intro Linux Shell",
+        "lessons": 8,
+        "has_issues": true
+      },
+      {
+        "slug": "linux-basics-navigation",
+        "title": "Linux Basics Navigation",
+        "lessons": 8,
+        "has_issues": false
+      }
+    ],
+    "Shell & Scripting": [
+      {
+        "slug": "bash-basics",
+        "title": "Bash Basics",
+        "lessons": 3,
+        "has_issues": false
+      },
+      {
+        "slug": "shell-scripting-automation",
+        "title": "Shell Scripting Automation",
+        "lessons": 5,
+        "has_issues": false
+      }
+    ],
+    "Networking": [
+      {
+        "slug": "network-models",
+        "title": "Network Models",
+        "lessons": 2,
+        "has_issues": false
+      },
+      {
+        "slug": "networking",
+        "title": "Networking",
+        "lessons": 8,
+        "has_issues": false
+      },
+      {
+        "slug": "tcp-ip-fundamentals",
+        "title": "Tcp Ip Fundamentals",
+        "lessons": 7,
+        "has_issues": false
+      }
+    ],
+    "Version Control": [
+      {
+        "slug": "git-fundamentals",
+        "title": "Git Fundamentals",
+        "lessons": 1,
+        "has_issues": true
+      }
+    ],
+    "CI/CD & Automation": [
+      {
+        "slug": "cicd-fundamentals",
+        "title": "Cicd Fundamentals",
+        "lessons": 6,
+        "has_issues": false
+      },
+      {
+        "slug": "iac-fundamentals",
+        "title": "Iac Fundamentals",
+        "lessons": 3,
+        "has_issues": false
+      }
+    ],
+    "Cloud (AWS)": [
+      {
+        "slug": "aws-fundamentals",
+        "title": "Aws Fundamentals",
+        "lessons": 13,
+        "has_issues": false
+      }
+    ]
+  }
+}

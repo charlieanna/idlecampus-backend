@@ -1,0 +1,66 @@
+slug: reactionquotient-practice
+title: reaction_quotient — Practice
+difficulty: easy
+sequence_order: 7
+estimated_minutes: 2
+key_concepts:
+- reaction_quotient
+prerequisites: []
+content_md: '# reaction_quotient — Practice 🚀
+
+
+  When Q < K, the reaction proceeds forward to increase the concentration of products
+  and reach equilibrium.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 2
+  question: 'If Q < K, the reaction will proceed:'
+  options:
+  - Forward to form more products
+  - Backward to form more reactants
+  - No net change (already at equilibrium)
+  - Cannot determine without temperature data
+  require_pass: true
+  correct_answer: Forward to form more products
+  explanation: 'When Q < K (reaction quotient less than equilibrium constant), it
+    means the ratio of products to reactants is currently less than it will be at
+    equilibrium. The system has too few products and too many reactants compared to
+    equilibrium. Therefore, the reaction proceeds in the forward direction (→) to
+    form more products and consume reactants until Q = K (equilibrium is reached).
+    Conversely: if Q > K, reaction goes backward; if Q = K, system is already at equilibrium
+    with no net change. The reaction quotient Q is calculated the same way as K but
+    using current concentrations, not equilibrium concentrations: Q = [products]/[reactants].'
+- type: mcq
+  sequence_order: 3
+  question: For the reaction 2SO₂(g) + O₂(g) ⇌ 2SO₃(g) with Kc = 100, if current concentrations are [SO₂] = 0.2 M, [O₂] = 0.1 M, and [SO₃] = 2 M, what is Q and which direction will the reaction proceed?
+  options:
+  - Q = 100, no net change
+  - Q = 1000, shifts left (backward)
+  - Q = 10, shifts right (forward)
+  - Q = 0.01, shifts right (forward)
+  require_pass: true
+  correct_answer: Q = 1000, shifts left (backward)
+  explanation: 'Q = 1000, and the reaction will shift left (backward toward reactants). Calculate Q using current concentrations: Q = [SO₃]²/([SO₂]²[O₂]) = (2)²/((0.2)²(0.1)) = 4/(0.04 × 0.1) = 4/0.004 = 1000. Compare Q with K: Q = 1000 > K = 100. Since Q > K, the reaction has too many products and too few reactants compared to equilibrium. The system must shift backward (left, ←) to consume SO₃ and produce more SO₂ and O₂ until Q decreases to equal K = 100. Decision rule: Q > K → shift left (make more reactants), Q < K → shift right (make more products), Q = K → at equilibrium (no net change). Calculating Q helps predict reaction direction before reaching equilibrium.'
+- type: mcq
+  sequence_order: 4
+  question: What is the relationship between Q and K when a system is at equilibrium?
+  options:
+  - Q < K
+  - Q > K
+  - Q = K
+  - Q = 1/K
+  require_pass: true
+  correct_answer: Q = K
+  explanation: 'At equilibrium, Q = K. The reaction quotient Q equals the equilibrium constant K only when the system is at equilibrium. At this point, the forward and reverse reaction rates are equal, and concentrations remain constant (though reactions continue at the molecular level - dynamic equilibrium). Before equilibrium: Q ≠ K, and the system shifts to make Q approach K. If Q < K, reaction goes forward until Q increases to equal K. If Q > K, reaction goes backward until Q decreases to equal K. Once Q = K, no further net change occurs. Example: for H₂ + I₂ ⇌ 2HI with K = 50, if initially Q = 10 (< K), HI forms until Q = 50 = K. Q is a snapshot of the current state, while K is the target destination. Q can have any value initially, but at equilibrium, Q must equal K. Temperature changes K, which means Q ≠ K temporarily until the system re-equilibrates.'

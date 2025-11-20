@@ -1,0 +1,136 @@
+slug: chemical-equilibrium-fundamentals-equilibrium-constants
+title: Chemical Equilibrium Fundamentals & Equilibrium Constants
+difficulty: easy
+sequence_order: 14
+estimated_minutes: 2
+key_concepts:
+- Chemical equilibrium
+- Equilibrium constant
+- Kc
+- Kp
+- Reaction quotient
+- Kp-Kc relationship
+prerequisites: []
+content_md: "# Chemical Equilibrium Fundamentals & Equilibrium Constants \U0001F680\
+  \n\n# Chemical Equilibrium Fundamentals\n\n    ## What is Chemical Equilibrium?\n\
+  \n    **Chemical Equilibrium:** State where rate of forward reaction equals rate\
+  \ of backward reaction\n\n    ### Characteristics:\n\n    1. **Dynamic equilibrium:**\
+  \ Both reactions continue, but no net change\n    2. **Concentrations remain constant**\
+  \ (not equal)\n    3. **Macroscopic properties constant:** color, pressure, concentration\n\
+  \    4. **Can be approached from either direction**\n    5. **Catalyst doesn't change\
+  \ equilibrium** (only speeds up attainment)\n\n    ### Reversible Reactions:\n\n\
+  \    **aA + bB ⇌ cC + dD**\n\n    - Forward reaction: A + B → C + D\n    - Backward\
+  \ reaction: C + D → A + B\n    - At equilibrium: r_forward = r_backward\n\n    ##\
+  \ Law of Mass Action\n\n    **Statement:** Rate of reaction is proportional to product\
+  \ of active masses (concentrations) of reactants raised to their stoichiometric\
+  \ coefficients\n\n    For: **aA + bB ⇌ cC + dD**\n\n    **r_forward = kf[A]ᵃ[B]ᵇ**\n\
+  \    **r_backward = kb[C]ᶜ[D]ᵈ**\n\n    At equilibrium:\n    **kf[A]ᵃ[B]ᵇ = kb[C]ᶜ[D]ᵈ**\n\
+  \n    ## Equilibrium Constant (Kc)\n\n    **Definition:** Ratio of product of concentrations\
+  \ of products to reactants at equilibrium\n\n    For: **aA + bB ⇌ cC + dD**\n\n\
+  \    **Kc = [C]ᶜ[D]ᵈ / [A]ᵃ[B]ᵇ**\n\n    Where [  ] denotes molar concentration\
+  \ at equilibrium\n\n    ### Properties of Kc:\n\n    1. **Temperature dependent**\
+  \ (changes with T)\n    2. **Independent of:** initial concentrations, pressure,\
+  \ catalyst\n    3. **Dimensionless** or has units depending on Δn\n    4. **Kc =\
+  \ kf/kb** (ratio of rate constants)\n\n    ### Important Points:\n\n    - **Large\
+  \ Kc (>>1):** Products favored, reaction goes nearly to completion\n    - **Small\
+  \ Kc (<<1):** Reactants favored, little product formed\n    - **Kc ≈ 1:** Significant\
+  \ amounts of both reactants and products\n\n    ### Examples:\n\n    **Example 1:**\
+  \ N₂ + 3H₂ ⇌ 2NH₃\n\n    **Kc = [NH₃]² / [N₂][H₂]³**\n\n    **Example 2:** 2SO₂\
+  \ + O₂ ⇌ 2SO₃\n\n    **Kc = [SO₃]² / [SO₂]²[O₂]**\n\n    ## Equilibrium Constant\
+  \ in Terms of Pressure (Kp)\n\n    For **gaseous reactions**, we can express equilibrium\
+  \ in terms of partial pressures\n\n    **Kp = (PC)ᶜ(PD)ᵈ / (PA)ᵃ(PB)ᵇ**\n\n    Where\
+  \ P denotes partial pressure (in atm or bar)\n\n    ### Example:\n\n    **N₂(g)\
+  \ + 3H₂(g) ⇌ 2NH₃(g)**\n\n    **Kp = (P_NH₃)² / (P_N₂)(P_H₂)³**\n\n    ## Relationship\
+  \ Between Kp and Kc\n\n    **Kp = Kc(RT)^Δn**\n\n    Where:\n    - R = gas constant\
+  \ = 0.0821 L·atm·mol⁻¹·K⁻¹\n    - T = temperature in Kelvin\n    - **Δn = (c + d)\
+  \ - (a + b)** = moles of gaseous products - moles of gaseous reactants\n\n    ###\
+  \ Special Cases:\n\n    1. **If Δn = 0:** Kp = Kc\n    2. **If Δn > 0:** Kp > Kc\
+  \ (products have more moles)\n    3. **If Δn < 0:** Kp < Kc (reactants have more\
+  \ moles)\n\n    ### Examples:\n\n    **Example 1:** H₂ + I₂ ⇌ 2HI\n\n    - Δn =\
+  \ 2 - (1+1) = 0\n    - **Kp = Kc**\n\n    **Example 2:** N₂ + 3H₂ ⇌ 2NH₃\n\n   \
+  \ - Δn = 2 - (1+3) = -2\n    - **Kp = Kc(RT)⁻²**\n\n    **Example 3:** PCl₅ ⇌ PCl₃\
+  \ + Cl₂\n\n    - Δn = 2 - 1 = 1\n    - **Kp = Kc(RT)**\n\n    ## Reaction Quotient\
+  \ (Q)\n\n    **Definition:** Expression same as Kc but for **non-equilibrium** concentrations\n\
+  \n    **Q = [C]ᶜ[D]ᵈ / [A]ᵃ[B]ᵇ** (at any time)\n\n    ### Predicting Direction\
+  \ of Reaction:\n\n    1. **Q < K:** Reaction proceeds **forward** (→) to form more\
+  \ products\n    2. **Q = K:** System is at **equilibrium**\n    3. **Q > K:** Reaction\
+  \ proceeds **backward** (←) to form more reactants\n\n    ### Example:\n\n    For\
+  \ N₂ + 3H₂ ⇌ 2NH₃, if Kc = 0.5\n\n    - If Q = 0.2: Q < K → reaction goes forward\n\
+  \    - If Q = 0.5: Q = K → at equilibrium\n    - If Q = 2.0: Q > K → reaction goes\
+  \ backward\n\n    ## Relationship Between K and K'\n\n    ### 1. Reverse Reaction:\n\
+  \n    If: **A + B ⇌ C + D** has K\n\n    Then: **C + D ⇌ A + B** has **K' = 1/K**\n\
+  \n    ### 2. Multiplying Equation:\n\n    If: **A + B ⇌ C + D** has K\n\n    Then:\
+  \ **nA + nB ⇌ nC + nD** has **K' = Kⁿ**\n\n    ### 3. Adding Reactions:\n\n    If:\
+  \ **Reaction 1** has K₁ and **Reaction 2** has K₂\n\n    Then: **Overall reaction**\
+  \ has **K = K₁ × K₂**\n\n    ## Heterogeneous Equilibria\n\n    **Heterogeneous:**\
+  \ Reactants and products in different phases\n\n    **Rule:** Concentration of **pure\
+  \ solids** and **pure liquids** = 1 (not included in K expression)\n\n    ### Examples:\n\
+  \n    **Example 1:** CaCO₃(s) ⇌ CaO(s) + CO₂(g)\n\n    **Kc = [CO₂]** or **Kp =\
+  \ P_CO₂**\n\n    **Example 2:** C(s) + CO₂(g) ⇌ 2CO(g)\n\n    **Kc = [CO]² / [CO₂]**\n\
+  \n    **Example 3:** NH₄Cl(s) ⇌ NH₃(g) + HCl(g)\n\n    **Kp = P_NH₃ × P_HCl**\n\n\
+  \    ## Solved Problems\n\n    ### Problem 1: Calculate Kc\n\n    **Q: At equilibrium,\
+  \ [N₂] = 0.5 M, [H₂] = 1.5 M, [NH₃] = 0.3 M. Calculate Kc for:**\n    **N₂ + 3H₂\
+  \ ⇌ 2NH₃**\n\n    Solution:\n    - Kc = [NH₃]² / [N₂][H₂]³\n    - Kc = (0.3)² /\
+  \ (0.5)(1.5)³\n    - Kc = 0.09 / (0.5 × 3.375)\n    - Kc = 0.09 / 1.6875\n    -\
+  \ **Kc = 0.053**\n\n    ### Problem 2: Calculate Kp from Kc\n\n    **Q: For PCl₅\
+  \ ⇌ PCl₃ + Cl₂, Kc = 0.04 at 250°C. Calculate Kp. (R = 0.0821)**\n\n    Solution:\n\
+  \    - Δn = 2 - 1 = 1\n    - T = 523 K\n    - Kp = Kc(RT)^Δn = 0.04 × (0.0821 ×\
+  \ 523)¹\n    - Kp = 0.04 × 42.94\n    - **Kp = 1.72**\n\n    ### Problem 3: Predicting\
+  \ direction\n\n    **Q: For H₂ + I₂ ⇌ 2HI, Kc = 50. If [H₂] = 0.1, [I₂] = 0.2, [HI]\
+  \ = 1.0, predict direction.**\n\n    Solution:\n    - Q = [HI]² / [H₂][I₂] = (1.0)²\
+  \ / (0.1 × 0.2)\n    - Q = 1 / 0.02 = 50\n    - **Q = K**, so system is **at equilibrium**\n\
+  \n    ### Problem 4: Reverse reaction\n\n    **Q: If Kc = 100 for A + B ⇌ C + D,\
+  \ find Kc for reverse reaction.**\n\n    Solution:\n    - For C + D ⇌ A + B\n  \
+  \  - K' = 1/K = 1/100\n    - **K' = 0.01**\n\n    ### Problem 5: Heterogeneous equilibrium\n\
+  \n    **Q: For CaCO₃(s) ⇌ CaO(s) + CO₂(g), Kp = 1.16 at 800°C. If P_CO₂ = 0.5 atm,\
+  \ is system at equilibrium?**\n\n    Solution:\n    - Kp = P_CO₂ = 1.16\n    - Actual\
+  \ P_CO₂ = 0.5 atm\n    - Q = 0.5 < K = 1.16\n    - **Not at equilibrium, forward\
+  \ reaction will occur**\n\n    ## Units of K\n\n    For: **aA + bB ⇌ cC + dD**\n\
+  \n    **Δn = (c + d) - (a + b)**\n\n    - If Δn = 0: K is **dimensionless**\n  \
+  \  - If Δn ≠ 0: K has **units of (concentration)^Δn**\n\n    ### Example:\n\n  \
+  \  For N₂ + 3H₂ ⇌ 2NH₃\n\n    - Δn = -2\n    - Units of Kc = (mol/L)⁻² = L²/mol²\n\
+  \n    ## IIT JEE Key Points\n\n    1. **Equilibrium:** r_forward = r_backward\n\
+  \    2. **Kc = [products]/[reactants]** with proper powers\n    3. **Kp = Kc(RT)^Δn**\n\
+  \    4. **Δn = Σn_products - Σn_reactants** (gaseous only)\n    5. **Q < K:** forward\
+  \ reaction\n    6. **Q > K:** backward reaction\n    7. **Q = K:** at equilibrium\n\
+  \    8. **Reverse K' = 1/K**\n    9. **Multiple by n: K' = Kⁿ**\n    10. **Solids/liquids\
+  \ not in K expression**\n\n    ## Quick Formulas\n\n    | Concept | Formula |\n\
+  \    |---------|---------|\n    | Kc | [C]ᶜ[D]ᵈ / [A]ᵃ[B]ᵇ |\n    | Kp | (PC)ᶜ(PD)ᵈ\
+  \ / (PA)ᵃ(PB)ᵇ |\n    | Kp-Kc | Kp = Kc(RT)^Δn |\n    | Reaction quotient | Q =\
+  \ same as K but any time |\n    | Reverse reaction | K' = 1/K |\n    | Multiply\
+  \ by n | K' = Kⁿ |\n    | Add reactions | K = K₁ × K₂ |\n\n## Key Points\n\n- Chemical\
+  \ equilibrium\n\n- Equilibrium constant\n\n- Kc"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: "For the reaction PCl₅(g) ⇌ PCl₃(g) + Cl₂(g), Kc = 0.04 at 250°C. What is the value of Kp at the same temperature? (R = 0.0821 L·atm·mol⁻¹·K⁻¹)"
+  options:
+  - "0.04"
+  - "1.72"
+  - "2.10"
+  - "0.001"
+  correct_answer: "1.72"
+  explanation: "The relationship between Kp and Kc is given by Kp = Kc(RT)^Δn, where Δn represents the change in number of moles of gaseous species. For PCl₅(g) ⇌ PCl₃(g) + Cl₂(g): Δn = (moles of gaseous products) - (moles of gaseous reactants) = (1 + 1) - 1 = +1. Given: Kc = 0.04, T = 250°C = 523 K, R = 0.0821 L·atm·mol⁻¹·K⁻¹. Substituting into the formula: Kp = Kc(RT)^Δn = 0.04 × (0.0821 × 523)^1 = 0.04 × 42.94 = 1.72. Since Δn is positive, Kp > Kc, which makes sense because products have more moles of gas than reactants. This relationship is crucial in IIT JEE: when Δn = 0 (like H₂ + I₂ ⇌ 2HI), Kp = Kc; when Δn > 0, Kp > Kc; when Δn < 0 (like N₂ + 3H₂ ⇌ 2NH₃), Kp < Kc. Remember that Δn only counts gaseous species, not solids or liquids."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: "For the reaction H₂(g) + I₂(g) ⇌ 2HI(g), Kc = 50 at 400°C. If at a particular instant [H₂] = 0.1 M, [I₂] = 0.2 M, and [HI] = 1.0 M, what will be the direction of the reaction?"
+  options:
+  - "Forward direction"
+  - "Backward direction"
+  - "At equilibrium"
+  - "Cannot be determined"
+  correct_answer: "At equilibrium"
+  explanation: "To determine the direction of reaction, we need to calculate the reaction quotient Q and compare it with the equilibrium constant K. The reaction quotient Q has the same expression as K but uses concentrations at any instant, not necessarily at equilibrium. For H₂(g) + I₂(g) ⇌ 2HI(g): Q = [HI]²/([H₂][I₂]) = (1.0)²/((0.1)(0.2)) = 1.0/0.02 = 50. Comparing Q with Kc: Q = 50 and Kc = 50, so Q = K. The decision rule is: (1) If Q < K, the reaction proceeds forward to form more products until Q = K; (2) If Q > K, the reaction proceeds backward to form more reactants until Q = K; (3) If Q = K, the system is already at equilibrium and no net change occurs. Since Q = K in this case, the system is at equilibrium with no net forward or backward reaction. This concept is fundamental in predicting whether a reaction mixture will shift and in what direction to reach equilibrium."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: "For the heterogeneous equilibrium CaCO₃(s) ⇌ CaO(s) + CO₂(g), which expression correctly represents the equilibrium constant?"
+  options:
+  - "Kc = [CaO][CO₂]/[CaCO₃]"
+  - "Kc = [CO₂]"
+  - "Kc = [CaO]/[CaCO₃]"
+  - "Kc = [CaCO₃]/([CaO][CO₂])"
+  correct_answer: "Kc = [CO₂]"
+  explanation: "For heterogeneous equilibria involving multiple phases, the equilibrium constant expression has a special rule: the concentrations of pure solids and pure liquids are not included in the K expression because their concentrations remain essentially constant and are incorporated into the equilibrium constant value itself. For CaCO₃(s) ⇌ CaO(s) + CO₂(g), both CaCO₃ and CaO are pure solids, so their concentrations are taken as unity (1) and excluded from the expression. Only CO₂ is a gas with variable concentration, so Kc = [CO₂]. Similarly, Kp = P(CO₂). Other examples: (1) For C(s) + CO₂(g) ⇌ 2CO(g), Kc = [CO]²/[CO₂] (carbon solid excluded); (2) For NH₄Cl(s) ⇌ NH₃(g) + HCl(g), Kp = P(NH₃) × P(HCl) (solid excluded); (3) For CH₃COOH(l) + C₂H₅OH(l) ⇌ CH₃COOC₂H₅(l) + H₂O(l), if all are liquids in pure form, the equilibrium is governed by activities, but for dilute aqueous solutions, only solute concentrations appear in K."
+  require_pass: true

@@ -1,0 +1,71 @@
+slug: monetary-and-fiscal-policy-in-india
+title: Monetary and Fiscal Policy in India
+difficulty: easy
+sequence_order: 18
+estimated_minutes: 2
+key_concepts:
+- RBI Functions
+- Monetary Policy Tools
+- Government Budget
+- Types of Deficits
+- GST
+prerequisites: []
+content_md: "# Monetary and Fiscal Policy in India \U0001F680\n\n# Monetary and Fiscal\
+  \ Policy in India\n\n    ## Reserve Bank of India (RBI)\n\n    ### Functions\n \
+  \   1. Issuer of currency notes\n    2. Monetary policy formulation\n    3. Banker\
+  \ to the Government\n    4. Banker to banks\n    5. Foreign exchange management\n\
+  \    6. Banking regulation\n\n    ## Monetary Policy Tools\n\n    ### 1. Repo Rate\n\
+  \    - Rate at which RBI lends to commercial banks\n    - Current rate varies with\
+  \ economic conditions\n\n    ### 2. Reverse Repo Rate\n    - Rate at which RBI borrows\
+  \ from banks\n\n    ### 3. Cash Reserve Ratio (CRR)\n    - Percentage of deposits\
+  \ banks must keep with RBI\n\n    ### 4. Statutory Liquidity Ratio (SLR)\n    -\
+  \ Percentage of deposits banks must invest in government securities\n\n    ### 5.\
+  \ Bank Rate\n    - Long-term lending rate by RBI\n\n    ### 6. Open Market Operations\
+  \ (OMO)\n    - Buying/selling of government securities\n\n    ## Fiscal Policy\n\
+  \n    ### Government Budget\n    - Revenue Budget: Revenue receipts and expenditure\n\
+  \    - Capital Budget: Capital receipts and expenditure\n\n    ### Types of Deficits\n\
+  \n    #### 1. Revenue Deficit\n    - Revenue Expenditure exceeds Revenue Receipts\n\
+  \    - Indicates government living beyond means\n\n    #### 2. Fiscal Deficit\n\
+  \    - Total Expenditure exceeds Total Revenue (excluding borrowings)\n    - Shows\
+  \ total borrowing requirement\n\n    #### 3. Primary Deficit\n    - Fiscal Deficit\
+  \ minus Interest Payments\n    - Shows fiscal deficit without past borrowing burden\n\
+  \n    ## Taxation in India\n\n    ### Direct Taxes\n    - Income Tax\n    - Corporate\
+  \ Tax\n    - Capital Gains Tax\n\n    ### Indirect Taxes\n    - GST (Goods and Services\
+  \ Tax)\n    - Customs Duty\n    - Excise Duty\n\n    ### GST (2017)\n    - One Nation,\
+  \ One Tax\n    - Replaced multiple indirect taxes\n    - Four tax slabs: 5%, 12%,\
+  \ 18%, 28%\n    - GST Council: Constitutional body (Article 279A)\n\n## Key Points\n\
+  \n- RBI Functions\n\n- Monetary Policy Tools\n\n- Government Budget"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: "What is the difference between fiscal deficit and primary deficit in government finances?"
+  options:
+  - "Fiscal deficit includes interest payments; primary deficit excludes them"
+  - "Fiscal deficit excludes interest; primary deficit includes them"
+  - "Fiscal deficit is revenue minus expenditure; primary deficit is total borrowing"
+  - "They are the same, just different names"
+  correct_answer: "Fiscal deficit includes interest payments; primary deficit excludes them"
+  explanation: "Fiscal deficit and primary deficit are two important indicators used to assess the government's financial health, with a crucial difference in their calculation. Fiscal deficit is the total expenditure of the government minus its total revenue (excluding borrowings). It represents the total amount the government needs to borrow to meet its expenses. The fiscal deficit includes all expenditures, including interest payments on past borrowings. Primary deficit, on the other hand, is calculated by subtracting interest payments from the fiscal deficit. In formula terms: Primary Deficit = Fiscal Deficit - Interest Payments. The significance of this distinction is important for understanding government finances. Fiscal deficit shows the current year's total borrowing requirement, but part of this borrowing goes toward paying interest on previous debts rather than new development or welfare activities. Primary deficit reveals the actual current year's deficit without the burden of past borrowings, showing whether the government is living beyond its current means. A positive primary deficit means the government is borrowing not just to pay interest on old debts but also for new expenditure, while a primary surplus (negative primary deficit) indicates the government is generating enough revenue to cover all expenses except interest payments. This helps economists assess fiscal sustainability - a large primary deficit suggests fundamental spending problems, while a large fiscal deficit with small primary deficit might just reflect accumulated past debts."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: "What is the Cash Reserve Ratio (CRR), and how does it affect money supply in the economy?"
+  options:
+  - "Ratio of loans to deposits; increasing CRR increases money supply"
+  - "Percentage of deposits banks must keep with RBI; increasing CRR decreases money supply"
+  - "Interest rate for interbank lending; increasing CRR increases lending"
+  - "Reserve for government securities; decreasing CRR decreases money supply"
+  correct_answer: "Percentage of deposits banks must keep with RBI; increasing CRR decreases money supply"
+  explanation: "Cash Reserve Ratio (CRR) is a critical monetary policy tool used by the Reserve Bank of India (RBI) to control liquidity and money supply in the economy. CRR is the percentage of a bank's total deposits that must be kept with the RBI in cash form, and this reserve does not earn any interest. For example, if CRR is 4% and a bank has deposits of Rs 100 crore, it must maintain Rs 4 crore with the RBI. The relationship between CRR and money supply is inverse and works through the money multiplier effect. When RBI increases CRR, banks must park more money with the central bank, reducing the funds available for lending to businesses and individuals. This decreases money supply in the economy, helps control inflation, and tightens liquidity. Conversely, when RBI decreases CRR, banks have more funds available for lending, which increases money supply, stimulates economic activity, and eases liquidity. For instance, during economic slowdowns or crises like COVID-19, RBI reduced CRR to pump more money into the economy and encourage lending. CRR is particularly effective because changes have an immediate impact on bank liquidity. However, it's a blunt tool - it affects all banks equally regardless of their individual situations. RBI typically uses CRR in combination with other tools like repo rate and open market operations for comprehensive monetary management."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: "What is GST (Goods and Services Tax), and how many standard tax slabs does it have?"
+  options:
+  - "Single indirect tax replacing multiple taxes; 3 slabs (5%, 12%, 18%)"
+  - "One Nation One Tax replacing multiple indirect taxes; 4 slabs (5%, 12%, 18%, 28%)"
+  - "Direct tax on goods and services; 5 slabs"
+  - "State-level tax; 2 slabs (10%, 20%)"
+  correct_answer: "One Nation One Tax replacing multiple indirect taxes; 4 slabs (5%, 12%, 18%, 28%)"
+  explanation: "The Goods and Services Tax (GST), implemented on July 1, 2017, through the 101st Constitutional Amendment (2016), is a comprehensive indirect tax that replaced a complex web of multiple central and state taxes in India. Dubbed 'One Nation, One Tax,' GST subsumed various taxes including central excise duty, service tax, state VAT, purchase tax, entry tax, luxury tax, and entertainment tax, creating a unified national market. The GST structure has four standard tax slabs: 5% (for essential items like food grains, tea, coffee), 12% (for processed foods, computers), 18% (for most goods and services including toothpaste, soaps, industrial intermediaries), and 28% (for luxury and sin goods like automobiles, aerated drinks, tobacco). Additionally, some essential items like fresh food, healthcare, and education are exempt (0%), while precious metals like gold have a special 3% rate. The GST system has three components: CGST (Central GST) collected by the central government, SGST (State GST) collected by state governments for intra-state transactions, and IGST (Integrated GST) for inter-state transactions. The GST Council, a constitutional body under Article 279A comprising the Union Finance Minister and state finance ministers, makes decisions on rates and policy. GST has significantly simplified tax compliance, eliminated cascading tax effects (tax on tax), improved tax collection, and facilitated ease of doing business, though some sectors initially faced challenges during transition."
+  require_pass: true

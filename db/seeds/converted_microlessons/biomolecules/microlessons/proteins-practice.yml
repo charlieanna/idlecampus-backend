@@ -1,0 +1,59 @@
+slug: proteins-practice
+title: proteins — Practice
+difficulty: easy
+sequence_order: 10
+estimated_minutes: 2
+key_concepts:
+- proteins
+prerequisites: []
+content_md: '# proteins — Practice 🚀
+
+
+  Peptide bond (-CO-NH-) forms by condensation: -COOH + H₂N- → -CO-NH- + H₂O. This
+  is an amide linkage.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: 'Peptide bond is formed between:'
+  options:
+  - -COOH of one amino acid and -NH₂ of another
+  - Two -COOH groups
+  - Two -NH₂ groups
+  - -OH groups
+  correct_answer: -COOH of one amino acid and -NH₂ of another
+  explanation: "A peptide bond (also called an amide linkage) is formed by a condensation reaction between the carboxyl group (-COOH) of one amino acid and the amino group (-NH₂) of another amino acid, with the elimination of a water molecule: -COOH + H₂N- → -CO-NH- + H₂O. This creates the characteristic amide bond (-CO-NH-) that links amino acids in proteins. Two carboxyl groups would form an anhydride, two amino groups cannot directly condense, and hydroxyl groups form ether or ester bonds, not peptide bonds."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: 'The secondary structure of proteins is maintained by:'
+  options:
+  - Hydrogen bonds
+  - Peptide bonds
+  - Disulfide bonds
+  - Ionic bonds
+  correct_answer: Hydrogen bonds
+  explanation: "The secondary structure of proteins (α-helix and β-pleated sheet) is stabilized primarily by hydrogen bonds between the carbonyl oxygen of one amino acid and the amino hydrogen of another in the polypeptide backbone. These hydrogen bonds form regular, repeating patterns. Peptide bonds form the primary structure (amino acid sequence), disulfide bonds (-S-S-) between cysteine residues help stabilize tertiary and quaternary structures, and ionic bonds (salt bridges) also contribute to tertiary structure. The regular patterns of hydrogen bonding in secondary structures give proteins their characteristic helical or sheet conformations."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: 'Denaturation of proteins involves:'
+  options:
+  - Loss of secondary and tertiary structure
+  - Breaking of peptide bonds
+  - Formation of new amino acids
+  - Increase in biological activity
+  correct_answer: Loss of secondary and tertiary structure
+  explanation: "Denaturation is the process where proteins lose their secondary, tertiary, and quaternary structures due to disruption of non-covalent interactions (hydrogen bonds, ionic bonds, hydrophobic interactions) while the primary structure (peptide bonds) remains intact. Denaturation can be caused by heat, pH changes, or chemical agents. The protein unfolds and loses its biological activity. However, peptide bonds are not broken during denaturation - the amino acid sequence remains the same. No new amino acids are formed, and biological activity is lost, not increased. In some cases, denaturation can be reversible (renaturation)."
+  require_pass: true

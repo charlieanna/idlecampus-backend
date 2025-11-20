@@ -1,0 +1,89 @@
+slug: lesson-19
+title: Lesson 19
+difficulty: easy
+sequence_order: 19
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# StorageClasses and Provisioners\n\n   \
+  \ - parameters and reclaimPolicy\n    - default class and topology"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What is the purpose of a StorageClass in Kubernetes?
+  options:
+  - To classify pods by storage usage
+  - To enable dynamic provisioning of PersistentVolumes with specific parameters and
+    policies
+  - To measure storage performance
+  - To encrypt storage volumes
+  correct_answer: To enable dynamic provisioning of PersistentVolumes with specific
+    parameters and policies
+  explanation: 'StorageClass enables dynamic provisioning of PersistentVolumes, allowing
+    administrators to define different storage tiers (performance levels, backup policies,
+    etc.) without manually creating PVs. When a PVC references a StorageClass, the
+    StorageClass''s provisioner automatically creates a PV that matches the PVC''s
+    requirements. A StorageClass specifies: provisioner (which volume plugin creates
+    the PV, like ''kubernetes.io/aws-ebs'', ''kubernetes.io/gce-pd'', or CSI drivers),
+    parameters (provider-specific settings like disk type, IOPS, replication), reclaimPolicy
+    (what happens to PV when PVC is deleted - Retain or Delete), volumeBindingMode
+    (Immediate or WaitForFirstConsumer), and allowVolumeExpansion (whether PVCs can
+    be resized). For example, you might create StorageClasses for different tiers:
+    ''fast-ssd'' using gp3 SSD with high IOPS for databases, ''standard'' using gp2
+    for general use, and ''slow-hdd'' using sc1 for archival. Users then request storage
+    by specifying ''storageClassName: fast-ssd'' in their PVC. One StorageClass can
+    be marked as default (annotation ''storageclass.kubernetes.io/is-default-class:
+    "true"''), which is used for PVCs that don''t specify a StorageClass. This simplifies
+    user experience - developers request storage without knowing infrastructure details.
+    Dynamic provisioning workflow: User creates PVC specifying StorageClass -> Provisioner
+    creates PV meeting requirements -> PVC binds to PV -> Pod mounts PVC. Parameters
+    vary by provisioner: AWS EBS uses ''type'' (gp2/gp3/io1), ''iopsPerGB'', ''encrypted'';
+    GCP PD uses ''type'' (pd-standard/pd-ssd), ''replication-type''. Understanding
+    StorageClasses is essential for providing appropriate storage options and managing
+    costs.'
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: 'What does ''volumeBindingMode: WaitForFirstConsumer'' do in a StorageClass?'
+  options:
+  - Delays PV creation until a pod using the PVC is scheduled, ensuring the volume
+    is created in the correct zone
+  - Makes the PV wait until the first consumer deletes it
+  - Prevents binding until administrator approves
+  - Requires manual approval for each volume request
+  correct_answer: Delays PV creation until a pod using the PVC is scheduled, ensuring
+    the volume is created in the correct zone
+  explanation: 'The volumeBindingMode field in StorageClass controls when PV provisioning
+    and PVC binding occur, with two options: Immediate (default) provisions the PV
+    and binds it as soon as the PVC is created, without considering where pods will
+    be scheduled. This can cause problems in multi-zone clusters - the PV might be
+    created in zone A, but the pod gets scheduled in zone B where it can''t access
+    the volume. WaitForFirstConsumer delays PV provisioning and PVC binding until
+    a pod using the PVC is scheduled. The scheduler considers the pod''s constraints
+    (node selectors, affinity rules) and provisions the PV in the appropriate zone/region
+    where the pod will run. This is critical for zone-aware storage in multi-zone
+    clusters. For example, in a 3-zone AWS cluster, with WaitForFirstConsumer, if
+    a pod is scheduled to zone us-east-1a, the EBS volume is created in us-east-1a
+    ensuring the pod can attach to it. With Immediate mode, the volume might be created
+    in us-east-1c, preventing the pod from starting due to zone mismatch. WaitForFirstConsumer
+    is recommended for: topology-constrained storage (zone/region-specific like AWS
+    EBS, GCP PD), StatefulSets where pod affinity determines placement, and multi-zone
+    clusters. The drawback is that PVCs remain Pending until a pod is scheduled, which
+    can be confusing if you create PVCs ahead of time. To use: set ''volumeBindingMode:
+    WaitForFirstConsumer'' in the StorageClass. This setting solves the common issue
+    of pods stuck in Pending state due to ''failed to attach volume'' errors caused
+    by topology mismatches. Cloud provider StorageClasses often default to WaitForFirstConsumer
+    for this reason.'
+  require_pass: true
+- type: mcq
+  sequence_order: 1
+  question: What kubectl command checks if you can perform an action?
+  options:
+  - kubectl auth can-i create pods
+  - kubectl check permissions create pods
+  - kubectl verify action create pods
+  - kubectl test auth create pods
+  correct_answer_index: 0
+  explanation: kubectl auth can-i <action> <resource> checks if the current user has
+    permission to perform the specified action.
+  require_pass: true

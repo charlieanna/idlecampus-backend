@@ -1,0 +1,65 @@
+slug: openssl-and-practical-cryptography
+title: OpenSSL and Practical Cryptography
+sequence_order: 2
+estimated_minutes: 2
+difficulty: easy
+content_md: "# OpenSSL and Practical Cryptography \U0001F680\n\n# OpenSSL and Practical\
+  \ Cryptography\n\n    OpenSSL is a powerful toolkit for cryptographic operations.\n\
+  \n    ## Generating Keys\n\n    ### RSA Key Pair\n    ```bash\n    # Generate private\
+  \ key (2048-bit)\n    openssl genrsa -out private.key 2048\n\n    # Extract public\
+  \ key\n    openssl rsa -in private.key -pubout -out public.key\n\n    # Generate\
+  \ 4096-bit key (more secure)\n    openssl genrsa -out private-4096.key 4096\n  \
+  \  ```\n\n    ### Ed25519 Key Pair (Modern, Faster)\n    ```bash\n    # Generate\
+  \ Ed25519 private key\n    openssl genpkey -algorithm Ed25519 -out ed25519-private.key\n\
+  \n    # Extract public key\n    openssl pkey -in ed25519-private.key -pubout -out\
+  \ ed25519-public.key\n    ```\n\n    ## File Encryption\n\n    ### Symmetric Encryption\
+  \ (AES)\n    ```bash\n    # Encrypt file with password\n    openssl enc -aes-256-cbc\
+  \ -salt -pbkdf2 -in secret.txt -out secret.enc\n\n    # Decrypt file\n    openssl\
+  \ enc -d -aes-256-cbc -pbkdf2 -in secret.enc -out secret.txt\n    ```\n\n    ###\
+  \ Asymmetric Encryption (RSA)\n    ```bash\n    # Encrypt with public key\n    openssl\
+  \ rsautl -encrypt -pubin -inkey public.key -in message.txt -out message.enc\n\n\
+  \    # Decrypt with private key\n    openssl rsautl -decrypt -inkey private.key\
+  \ -in message.enc -out message.txt\n    ```\n\n    ## Digital Signatures\n\n   \
+  \ Prove authenticity and integrity of data.\n\n    ```bash\n    # Sign file with\
+  \ private key\n    openssl dgst -sha256 -sign private.key -out file.sig file.txt\n\
+  \n    # Verify signature with public key\n    openssl dgst -sha256 -verify public.key\
+  \ -signature file.sig file.txt\n    ```\n\n    ## Hashing\n\n    ```bash\n    #\
+  \ SHA-256 hash\n    sha256sum file.txt\n\n    # Multiple algorithms\n    openssl\
+  \ dgst -sha256 file.txt\n    openssl dgst -sha512 file.txt\n\n    # Hash password\
+  \ (for demonstration only)\n    echo -n \"mypassword\" | sha256sum\n    ```\n\n\
+  \    ## Base64 Encoding\n\n    Not encryption, but useful for encoding binary data.\n\
+  \n    ```bash\n    # Encode to base64\n    base64 file.bin > file.b64\n\n    # Decode\
+  \ from base64\n    base64 -d file.b64 > file.bin\n\n    # Inline encoding\n    echo\
+  \ \"Hello World\" | base64\n    echo \"SGVsbG8gV29ybGQK\" | base64 -d\n    ```\n\
+  \n    ## Random Data Generation\n\n    ```bash\n    # Generate random bytes\n  \
+  \  openssl rand -hex 32\n\n    # Generate random password\n    openssl rand -base64\
+  \ 24\n\n    # Generate random file\n    openssl rand 1024 > random.dat\n    ```\n\
+  \n    ## Best Practices\n\n    1. **Use Strong Algorithms**: AES-256, RSA-2048+,\
+  \ SHA-256+\n    2. **Protect Private Keys**: Never share, use proper permissions\
+  \ (600)\n    3. **Use Salt**: Always salt passwords\n    4. **Key Rotation**: Rotate\
+  \ keys periodically\n    5. **Secure Random**: Use cryptographically secure random\
+  \ generators"
+exercises:
+- type: mcq
+  slug: openssl-and-practical-cryptography-mcq
+  sequence_order: 1
+  question: What is the purpose of digital signatures and how are they different from
+    encryption?
+  options:
+  - Digital signatures prove authenticity and integrity using a private key to sign
+    and public key to verify, while encryption provides confidentiality
+  - Digital signatures and encryption are the same operation
+  - Digital signatures encrypt data so only the recipient can read it
+  - Digital signatures use symmetric keys while encryption uses asymmetric keys
+  correct_answer_index: 0
+  explanation: Digital signatures serve a different purpose than encryption. Signatures
+    prove authenticity (who created it) and integrity (not tampered with) by signing
+    data with a private key and verifying with the corresponding public key. Encryption
+    provides confidentiality by making data unreadable to unauthorized parties. You
+    can have signed but unencrypted data (public but verified authentic) or encrypted
+    but unsigned data (private but unverified source). Often both are used together.
+objectives:
+- Define the control
+- Choose tooling
+- Integrate checks in CI/CD
+next_recommended: []

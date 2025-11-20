@@ -1,0 +1,66 @@
+slug: lesson-52
+title: Lesson 52
+difficulty: easy
+sequence_order: 52
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# DNS and Service Discovery\n\n    - CoreDNS,\
+  \ stub domains, and search paths\n    - Service DNS names and SRV records"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What is the DNS name format for accessing a Kubernetes Service from within
+    the same namespace?
+  options:
+  - service-name.namespace.svc.cluster.local
+  - service-name only
+  - service-name.cluster.local
+  - namespace.service-name
+  correct_answer: service-name only
+  explanation: When accessing a Service from pods in the same namespace, you can use
+    just the service name (e.g., 'mysql' or 'api-server'). Kubernetes DNS automatically
+    resolves this within the same namespace. The fully qualified domain name (FQDN)
+    is 'service-name.namespace.svc.cluster.local', but the short form works within
+    the same namespace due to DNS search paths configured in /etc/resolv.conf in each
+    pod. From a different namespace, you need at least 'service-name.namespace'. The
+    DNS search list typically includes variations like '<namespace>.svc.cluster.local'
+    and 'svc.cluster.local'. CoreDNS is the default DNS server in modern Kubernetes
+    clusters, replacing kube-dns. Using short names simplifies configuration and makes
+    applications more portable between namespaces, though FQDNs are more explicit
+    and can prevent ambiguity in complex setups.
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What does CoreDNS do in a Kubernetes cluster?
+  options:
+  - Manages pod networking
+  - Provides DNS-based service discovery by resolving service names to cluster IPs
+  - Allocates IP addresses to pods
+  - Manages ingress traffic
+  correct_answer: Provides DNS-based service discovery by resolving service names
+    to cluster IPs
+  explanation: CoreDNS is the DNS server for Kubernetes clusters, enabling service
+    discovery through DNS. When you create a Service, CoreDNS automatically creates
+    DNS records so pods can discover and connect to services by name rather than hardcoded
+    IPs. It resolves queries like 'mysql.default.svc.cluster.local' to the Service's
+    cluster IP. CoreDNS runs as pods (typically as a Deployment) in the kube-system
+    namespace and is configured via a ConfigMap. It supports plugins for features
+    like caching, forwarding to upstream DNS servers, custom stub domains for specific
+    namespaces, and rewriting DNS queries. CoreDNS replaced kube-dns as the default
+    DNS solution because it's more flexible, has better performance, and uses fewer
+    resources. All pods are automatically configured to use CoreDNS via /etc/resolv.conf
+    entries set by the kubelet.
+  require_pass: true
+- type: mcq
+  sequence_order: 1
+  question: What is the default service type in Kubernetes?
+  options:
+  - ClusterIP
+  - NodePort
+  - LoadBalancer
+  - ExternalName
+  correct_answer_index: 0
+  explanation: ClusterIP is the default service type. It exposes the service on an
+    internal cluster IP, making it only reachable within the cluster.
+  require_pass: true

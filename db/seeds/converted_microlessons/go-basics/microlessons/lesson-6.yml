@@ -1,0 +1,234 @@
+slug: lesson-6
+title: Lesson 6
+difficulty: easy
+sequence_order: 6
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Advanced Functions: Closures, Defer, and\
+  \ More\n\n    ### Functions are First-Class Citizens\n\n    In Go, **functions are\
+  \ values**. You can:\n    - Assign them to variables\n    - Pass them as arguments\n\
+  \    - Return them from other functions\n    - Store them in data structures\n\n\
+  \    ### Function Types\n\n    **Functions have types:**\n    ```go\n    // Function\
+  \ type: takes two ints, returns int\n    type BinaryOperation func(int, int) int\n\
+  \n    func add(a, b int) int {\n        return a + b\n    }\n\n    func multiply(a,\
+  \ b int) int {\n        return a * b\n    }\n\n    // Use function type\n    var\
+  \ operation BinaryOperation\n    operation = add\n    fmt.Println(operation(5, 3))\
+  \  // 8\n\n    operation = multiply\n    fmt.Println(operation(5, 3))  // 15\n \
+  \   ```\n\n    ### Anonymous Functions\n\n    **Functions without names:**\n   \
+  \ ```go\n    // Assign to variable\n    square := func(x int) int {\n        return\
+  \ x * x\n    }\n    fmt.Println(square(5))  // 25\n\n    // Call immediately\n \
+  \   result := func(a, b int) int {\n        return a + b\n    }(3, 4)\n    fmt.Println(result)\
+  \  // 7\n    ```\n\n    ### Closures: Functions that Capture Variables\n\n    **What\
+  \ is a closure?**\n\n    A **closure** is a function that references variables from\
+  \ outside its body. The function \"closes over\" these variables, keeping them alive.\n\
+  \n    **Basic closure example:**\n    ```go\n    func makeCounter() func() int {\n\
+  \        count := 0  // This variable is captured\n\n        return func() int {\n\
+  \            count++         // Closure modifies captured variable\n           \
+  \ return count\n        }\n    }\n\n    counter := makeCounter()\n    fmt.Println(counter())\
+  \  // 1\n    fmt.Println(counter())  // 2\n    fmt.Println(counter())  // 3\n\n\
+  \    // Each counter has its own captured variable\n    counter2 := makeCounter()\n\
+  \    fmt.Println(counter2())  // 1\n    fmt.Println(counter())   // 4\n    ```\n\
+  \n    **How it works:**\n    - `count` is declared in `makeCounter()`\n    - The\
+  \ returned function \"closes over\" `count`\n    - Even after `makeCounter()` returns,\
+  \ `count` stays alive\n    - Each call to `makeCounter()` creates a new `count`\n\
+  \n    ### Practical Closure Examples\n\n    **1. Configuration wrapper:**\n    ```go\n\
+  \    func makeGreeter(greeting string) func(string) string {\n        return func(name\
+  \ string) string {\n            return greeting + \", \" + name + \"!\"\n      \
+  \  }\n    }\n\n    englishGreeter := makeGreeter(\"Hello\")\n    spanishGreeter\
+  \ := makeGreeter(\"Hola\")\n\n    fmt.Println(englishGreeter(\"Alice\"))  // \"\
+  Hello, Alice!\"\n    fmt.Println(spanishGreeter(\"Bob\"))    // \"Hola, Bob!\"\n\
+  \    ```\n\n    **2. Filtering with closures:**\n    ```go\n    func filter(numbers\
+  \ []int, predicate func(int) bool) []int {\n        result := []int{}\n        for\
+  \ _, num := range numbers {\n            if predicate(num) {\n                result\
+  \ = append(result, num)\n            }\n        }\n        return result\n    }\n\
+  \n    numbers := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}\n\n    // Filter even numbers\n\
+  \    evens := filter(numbers, func(n int) bool {\n        return n%2 == 0\n    })\n\
+  \    fmt.Println(evens)  // [2, 4, 6, 8, 10]\n\n    // Filter numbers > 5 (closure\
+  \ captures threshold)\n    threshold := 5\n    large := filter(numbers, func(n int)\
+  \ bool {\n        return n > threshold  // Closes over 'threshold'\n    })\n   \
+  \ fmt.Println(large)  // [6, 7, 8, 9, 10]\n    ```\n\n    **3. Memoization (caching):**\n\
+  \    ```go\n    func memoize(fn func(int) int) func(int) int {\n        cache :=\
+  \ make(map[int]int)\n\n        return func(n int) int {\n            // Check cache\n\
+  \            if result, found := cache[n]; found {\n                fmt.Println(\"\
+  (from cache)\")\n                return result\n            }\n\n            //\
+  \ Compute and cache\n            result := fn(n)\n            cache[n] = result\n\
+  \            return result\n        }\n    }\n\n    // Expensive fibonacci calculation\n\
+  \    var fibonacci func(int) int\n    fibonacci = func(n int) int {\n        if\
+  \ n <= 1 {\n            return n\n        }\n        return fibonacci(n-1) + fibonacci(n-2)\n\
+  \    }\n\n    // Wrap with memoization\n    fastFib := memoize(fibonacci)\n\n  \
+  \  fmt.Println(fastFib(10))  // Computes\n    fmt.Println(fastFib(10))  // (from\
+  \ cache)\n    ```\n\n    ### Variadic Functions\n\n    **Functions that accept variable\
+  \ number of arguments:**\n    ```go\n    func sum(numbers ...int) int {\n      \
+  \  total := 0\n        for _, num := range numbers {\n            total += num\n\
+  \        }\n        return total\n    }\n\n    // Call with any number of arguments\n\
+  \    fmt.Println(sum())           // 0\n    fmt.Println(sum(1))          // 1\n\
+  \    fmt.Println(sum(1, 2, 3))    // 6\n    fmt.Println(sum(1, 2, 3, 4, 5))  //\
+  \ 15\n\n    // Pass slice with ...\n    numbers := []int{10, 20, 30}\n    fmt.Println(sum(numbers...))\
+  \  // 60\n    ```\n\n    **Variadic with other parameters:**\n    ```go\n    func\
+  \ printf(format string, args ...interface{}) {\n        // format is required, args\
+  \ is variadic\n        fmt.Printf(format, args...)\n    }\n\n    printf(\"Hello,\
+  \ %s! You are %d years old\\\\n\", \"Alice\", 25)\n    ```\n\n    **Important: Variadic\
+  \ parameter must be last:**\n    ```go\n    // ✅ OK\n    func foo(a int, b string,\
+  \ rest ...int)\n\n    // ❌ ERROR: variadic must be last\n    func bar(rest ...int,\
+  \ a int)\n    ```\n\n    ### Defer: Delaying Execution\n\n    **defer schedules\
+  \ a function call to run after the surrounding function returns:**\n\n    **Basic\
+  \ defer:**\n    ```go\n    func example() {\n        fmt.Println(\"Start\")\n  \
+  \      defer fmt.Println(\"Deferred\")\n        fmt.Println(\"End\")\n    }\n\n\
+  \    // Output:\n    // Start\n    // End\n    // Deferred\n    ```\n\n    **Why\
+  \ defer is useful:**\n\n    **1. Resource cleanup:**\n    ```go\n    func readFile(path\
+  \ string) ([]byte, error) {\n        file, err := os.Open(path)\n        if err\
+  \ != nil {\n            return nil, err\n        }\n        defer file.Close() \
+  \ // Always closes, even on error!\n\n        return io.ReadAll(file)\n    }\n \
+  \   ```\n\n    **2. Unlock mutexes:**\n    ```go\n    var mu sync.Mutex\n\n    func\
+  \ criticalSection() {\n        mu.Lock()\n        defer mu.Unlock()  // Guaranteed\
+  \ to unlock\n\n        // Complex logic with multiple return paths\n        if condition1\
+  \ {\n            return\n        }\n        if condition2 {\n            return\n\
+  \        }\n        // mu.Unlock() called automatically\n    }\n    ```\n\n    **3.\
+  \ Timing functions:**\n    ```go\n    func measureTime(name string) func() {\n \
+  \       start := time.Now()\n        return func() {\n            fmt.Printf(\"\
+  %s took %v\\\\n\", name, time.Since(start))\n        }\n    }\n\n    func slowOperation()\
+  \ {\n        defer measureTime(\"slowOperation\")()\n\n        // Do work...\n \
+  \       time.Sleep(2 * time.Second)\n    }\n\n    // Output: \"slowOperation took\
+  \ 2.001s\"\n    ```\n\n    ### Defer: Order of Execution (LIFO)\n\n    **Defers\
+  \ run in LIFO order (Last In, First Out):**\n    ```go\n    func example() {\n \
+  \       defer fmt.Println(\"First defer\")\n        defer fmt.Println(\"Second defer\"\
+  )\n        defer fmt.Println(\"Third defer\")\n        fmt.Println(\"Function body\"\
+  )\n    }\n\n    // Output:\n    // Function body\n    // Third defer\n    // Second\
+  \ defer\n    // First defer\n    ```\n\n    **Think of it as a stack:**\n    ```\n\
+  \    Push: defer A\n    Push: defer B\n    Push: defer C\n    Function returns\n\
+  \    Pop: C executes\n    Pop: B executes\n    Pop: A executes\n    ```\n\n    ###\
+  \ Defer: Argument Evaluation\n\n    **⚠️ Important: Defer arguments are evaluated\
+  \ immediately!**\n    ```go\n    func example() {\n        x := 10\n        defer\
+  \ fmt.Println(\"x is\", x)  // x evaluated NOW (10)\n\n        x = 20\n        fmt.Println(\"\
+  x changed to\", x)\n    }\n\n    // Output:\n    // x changed to 20\n    // x is\
+  \ 10  ← Still 10!\n    ```\n\n    **Use closure to capture latest value:**\n   \
+  \ ```go\n    func example() {\n        x := 10\n        defer func() {\n       \
+  \     fmt.Println(\"x is\", x)  // Closure captures x\n        }()\n\n        x\
+  \ = 20\n        fmt.Println(\"x changed to\", x)\n    }\n\n    // Output:\n    //\
+  \ x changed to 20\n    // x is 20  ← Updated value!\n    ```\n\n    ### Panic and\
+  \ Recover\n\n    **panic: Stop normal execution**\n\n    **When something goes terribly\
+  \ wrong:**\n    ```go\n    func mustConnect(url string) *Connection {\n        conn,\
+  \ err := connect(url)\n        if err != nil {\n            panic(\"failed to connect:\
+  \ \" + err.Error())\n        }\n        return conn\n    }\n    ```\n\n    **What\
+  \ panic does:**\n    1. Stops current function execution\n    2. Runs all deferred\
+  \ functions (LIFO order)\n    3. Returns to caller, which also panics\n    4. Continues\
+  \ up the call stack\n    5. Program crashes if not recovered\n\n    **recover: Catch\
+  \ a panic**\n\n    **Must be called inside a deferred function:**\n    ```go\n \
+  \   func safeDivide(a, b int) (result int, err error) {\n        defer func() {\n\
+  \            if r := recover(); r != nil {\n                err = fmt.Errorf(\"\
+  panic occurred: %v\", r)\n            }\n        }()\n\n        return a / b, nil\
+  \  // May panic if b == 0\n    }\n\n    result, err := safeDivide(10, 0)\n    if\
+  \ err != nil {\n        fmt.Println(\"Error:\", err)\n        // Error: panic occurred:\
+  \ runtime error: integer divide by zero\n    }\n    ```\n\n    **Practical panic/recover\
+  \ pattern:**\n    ```go\n    func parseJSON(data []byte) (result map[string]interface{},\
+  \ err error) {\n        defer func() {\n            if r := recover(); r != nil\
+  \ {\n                err = fmt.Errorf(\"JSON parse panic: %v\", r)\n           \
+  \ }\n        }()\n\n        // This might panic on malformed JSON\n        json.Unmarshal(data,\
+  \ &result)\n        return result, nil\n    }\n    ```\n\n    ### When to Use Panic\
+  \ vs Error\n\n    **Use errors (return error):**\n    - ✅ Expected failures (file\
+  \ not found, network timeout)\n    - ✅ Recoverable situations\n    - ✅ Public API\
+  \ functions\n    - ✅ Most of the time\n\n    **Use panic:**\n    - ✅ Programming\
+  \ errors (nil pointer, index out of bounds)\n    - ✅ Unrecoverable situations (can't\
+  \ allocate memory)\n    - ✅ Initialization failures (config must be valid)\n   \
+  \ - ✅ Rare edge cases\n\n    **Example:**\n    ```go\n    // ✅ GOOD: Return error\
+  \ for expected cases\n    func readFile(path string) ([]byte, error) {\n       \
+  \ data, err := os.ReadFile(path)\n        if err != nil {\n            return nil,\
+  \ err\n        }\n        return data, nil\n    }\n\n    // ✅ GOOD: Panic for programming\
+  \ errors\n    func divide(a, b int) int {\n        if b == 0 {\n            panic(\"\
+  divide by zero\")  // This should never happen\n        }\n        return a / b\n\
+  \    }\n\n    // ❌ BAD: Don't panic for normal errors\n    func getUser(id int)\
+  \ User {\n        user, err := db.Query(id)\n        if err != nil {\n         \
+  \   panic(err)  // DON'T DO THIS!\n        }\n        return user\n    }\n    ```\n\
+  \n    ### Higher-Order Functions\n\n    **Functions that take or return functions:**\n\
+  \    ```go\n    // Function that returns a function\n    func multiplier(factor\
+  \ int) func(int) int {\n        return func(x int) int {\n            return x *\
+  \ factor\n        }\n    }\n\n    double := multiplier(2)\n    triple := multiplier(3)\n\
+  \n    fmt.Println(double(5))  // 10\n    fmt.Println(triple(5))  // 15\n    ```\n\
+  \n    **Function that takes a function:**\n    ```go\n    func apply(nums []int,\
+  \ fn func(int) int) []int {\n        result := make([]int, len(nums))\n        for\
+  \ i, num := range nums {\n            result[i] = fn(num)\n        }\n        return\
+  \ result\n    }\n\n    numbers := []int{1, 2, 3, 4, 5}\n\n    // Square all numbers\n\
+  \    squared := apply(numbers, func(x int) int {\n        return x * x\n    })\n\
+  \    fmt.Println(squared)  // [1, 4, 9, 16, 25]\n    ```\n\n    ### Practical Example:\
+  \ Middleware Pattern\n\n    ```go\n    type Handler func(string) string\n\n    //\
+  \ Middleware adds logging\n    func withLogging(h Handler) Handler {\n        return\
+  \ func(input string) string {\n            fmt.Printf(\"Input: %s\\\\n\", input)\n\
+  \            result := h(input)\n            fmt.Printf(\"Output: %s\\\\n\", result)\n\
+  \            return result\n        }\n    }\n\n    // Middleware adds timing\n\
+  \    func withTiming(h Handler) Handler {\n        return func(input string) string\
+  \ {\n            start := time.Now()\n            defer func() {\n             \
+  \   fmt.Printf(\"Took: %v\\\\n\", time.Since(start))\n            }()\n        \
+  \    return h(input)\n        }\n    }\n\n    // Core handler\n    func uppercase(s\
+  \ string) string {\n        return strings.ToUpper(s)\n    }\n\n    // Compose middleware\n\
+  \    handler := withLogging(withTiming(uppercase))\n\n    result := handler(\"hello\"\
+  )\n    // Output:\n    // Input: hello\n    // Output: HELLO\n    // Took: 123µs\n\
+  \    ```\n\n    ### Best Practices\n\n    **1. Use defer for cleanup:**\n    ```go\n\
+  \    func process() error {\n        f, err := os.Open(\"file.txt\")\n        if\
+  \ err != nil {\n            return err\n        }\n        defer f.Close()  // Always\
+  \ cleaned up\n\n        // Work with f...\n        return nil\n    }\n    ```\n\n\
+  \    **2. Keep closures simple:**\n    ```go\n    // ✅ GOOD: Clear closure\n   \
+  \ func makeAdder(x int) func(int) int {\n        return func(y int) int {\n    \
+  \        return x + y\n        }\n    }\n\n    // ❌ BAD: Too complex\n    func makeComplexClosure()\
+  \ func() {\n        var a, b, c, d, e int\n        // Closes over many variables\n\
+  \        // Complex logic\n    }\n    ```\n\n    **3. Don't defer in loops (usually):**\n\
+  \    ```go\n    // ❌ BAD: Defers accumulate\n    for _, file := range files {\n\
+  \        f, _ := os.Open(file)\n        defer f.Close()  // Won't run until function\
+  \ ends!\n    }\n\n    // ✅ GOOD: Use helper function\n    for _, file := range files\
+  \ {\n        processFile(file)\n    }\n\n    func processFile(path string) error\
+  \ {\n        f, err := os.Open(path)\n        if err != nil {\n            return\
+  \ err\n        }\n        defer f.Close()  // Runs after each file\n        // process\
+  \ file...\n        return nil\n    }\n    ```\n\n    **4. Use recover sparingly:**\n\
+  \    ```go\n    // ✅ GOOD: Protect from external panics\n    func safeHandler(w\
+  \ http.ResponseWriter, r *http.Request) {\n        defer func() {\n            if\
+  \ r := recover(); r != nil {\n                log.Printf(\"panic: %v\", r)\n   \
+  \             http.Error(w, \"Internal Server Error\", 500)\n            }\n   \
+  \     }()\n        handle(w, r)  // Might panic\n    }\n\n    // ❌ BAD: Using panic/recover\
+  \ for control flow\n    func find(items []string, target string) string {\n    \
+  \    defer func() {\n            recover()  // Catch panic\n        }()\n      \
+  \  for _, item := range items {\n            if item == target {\n             \
+  \   panic(item)  // DON'T DO THIS!\n            }\n        }\n        return \"\"\
+  \n    }\n    ```\n\n    ### Key Takeaways\n\n    1. **Functions are values** - can\
+  \ be assigned, passed, returned\n    2. **Closures capture variables** - keep outer\
+  \ variables alive\n    3. **Variadic functions** - accept variable arguments with\
+  \ `...`\n    4. **defer runs after return** - perfect for cleanup\n    5. **defer\
+  \ is LIFO** - last defer runs first\n    6. **defer evaluates args immediately**\
+  \ - use closures for late binding\n    7. **panic for unrecoverable errors** - not\
+  \ for control flow\n    8. **recover in defer** - catch panics gracefully\n    9.\
+  \ **Prefer errors over panic** - panic is exceptional\n    10. **Higher-order functions**\
+  \ - powerful composition patterns\n\n    **Congratulations!** You now understand\
+  \ Go's powerful function features!"
+exercises:
+  - type: multiple_choice
+    sequence_order: 1
+    question: "What is a closure in Go, and why is it useful?"
+    options:
+      - "A closure is a function that automatically closes file handles"
+      - "A closure is a function that references variables from outside its body, allowing it to maintain state across calls"
+      - "A closure is a function that closes network connections"
+      - "A closure is a function that must be called with the defer keyword"
+    correct_answer: "A closure is a function that references variables from outside its body, allowing it to maintain state across calls"
+    explanation: "A closure is a powerful feature where a function 'closes over' variables from its surrounding scope, capturing and maintaining access to them even after the outer function has returned. This allows the inner function to remember and modify these variables across multiple calls. For example, a makeCounter function can create a closure that captures a count variable, and each call to the returned function increments that same count variable. Each closure gets its own copy of the captured variables, enabling patterns like private state, factory functions, and configuration wrappers. Closures are fundamental to many Go patterns, including middleware, memoization, and callback functions. They're useful for encapsulation, allowing you to hide implementation details while exposing only a clean interface. Closures are particularly valuable when you need to create functions that remember context or configuration. For instance, you might create multiple greeting functions from a single factory, each configured with a different language, or create filtered predicates that close over specific threshold values. Understanding closures is essential for writing idiomatic Go, especially when working with higher-order functions or building APIs that accept callback functions."
+    require_pass: true
+  - type: multiple_choice
+    sequence_order: 2
+    question: "What is the execution order of deferred functions in Go?"
+    options:
+      - "Deferred functions execute in the order they were declared (FIFO - First In, First Out)"
+      - "Deferred functions execute in reverse order of their declaration (LIFO - Last In, First Out)"
+      - "Deferred functions execute in random order"
+      - "Deferred functions execute in alphabetical order by function name"
+    correct_answer: "Deferred functions execute in reverse order of their declaration (LIFO - Last In, First Out)"
+    explanation: "Deferred functions in Go execute in LIFO (Last In, First Out) order, like a stack. When you defer multiple function calls, Go pushes each one onto a stack, and when the surrounding function returns, it pops and executes them in reverse order. This stack-based execution order is intuitive when you think about cleanup operations - you typically want to clean up resources in the reverse order you acquired them. For example, if you open a database connection, then a file, then a network socket, you want to close them in reverse order: socket, file, database. This ensures that dependent resources are cleaned up before their dependencies. The LIFO order is particularly useful for nested resources or when you need to ensure proper cleanup sequencing. It's important to remember that defer evaluates its arguments immediately when the defer statement is reached, but the function call itself is delayed until the surrounding function returns. If you need to capture the current value of variables, you should use a closure with defer. Understanding defer's LIFO execution order is crucial for writing correct cleanup code, especially in functions with multiple deferred operations or complex resource management."
+    require_pass: true
+  - type: multiple_choice
+    sequence_order: 3
+    question: "When are defer arguments evaluated in Go?"
+    options:
+      - "Defer arguments are evaluated when the deferred function actually executes"
+      - "Defer arguments are evaluated immediately when the defer statement is reached"
+      - "Defer arguments are evaluated at program startup"
+      - "Defer arguments are never evaluated; they use the latest value automatically"
+    correct_answer: "Defer arguments are evaluated immediately when the defer statement is reached"
+    explanation: "This is a subtle but important aspect of defer that often catches Go developers by surprise. When you write a defer statement, Go evaluates the function's arguments right at that moment, not when the deferred function actually executes. For example, if you write 'defer fmt.Println(x)' when x is 10, then change x to 20, the deferred println will still print 10, because that was the value when the defer was evaluated. This can be counterintuitive because the function call itself is delayed, but the arguments are captured immediately. If you need to capture the latest value of a variable when the deferred function runs, you must use a closure. Write 'defer func() { fmt.Println(x) }()' instead - now the closure captures the variable x itself, not its current value, so it will print whatever x's value is when the function returns. This distinction is particularly important when deferring operations in loops or when you want cleanup operations to use final values rather than intermediate ones. Understanding when arguments are evaluated helps you write correct defer statements and avoid bugs where deferred operations use stale values instead of the current state."
+    require_pass: true

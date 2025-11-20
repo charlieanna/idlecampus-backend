@@ -1,0 +1,231 @@
+slug: bernoullis-theorem-applications
+title: "Bernoulli's Theorem and Applications"
+difficulty: advanced
+sequence_order: 7
+estimated_minutes: 18
+key_concepts:
+- bernoullis-theorem
+- fluid-dynamics
+- pressure-velocity
+- energy-conservation
+- venturi-effect
+prerequisites:
+- equation-of-continuity
+- pressure-pascals-law
+content_md: |
+  # Bernoulli's Theorem and Applications
+
+  ## Statement
+
+  **For steady, irrotational flow of incompressible, non-viscous fluid:**
+  ```
+  P + ½ρv² + ρgh = constant
+
+  Along a streamline
+  ```
+
+  ## Physical Meaning
+
+  **Energy conservation per unit volume:**
+  - P = Pressure energy density
+  - ½ρv² = Kinetic energy density
+  - ρgh = Potential energy density
+
+  Total = Constant along streamline
+
+  ## Alternative Forms
+
+  ### Per Unit Mass:
+  ```
+  P/ρ + v²/2 + gh = constant
+  ```
+
+  ### Per Unit Weight (Head Form):
+  ```
+  P/(ρg) + v²/(2g) + h = constant
+
+  Pressure head + Velocity head + Elevation head
+  ```
+
+  ## Derivation (Energy Method)
+
+  For fluid element moving from point 1 to 2:
+  ```
+  Work done = Change in KE + Change in PE
+
+  (P₁ - P₂)V = ½m(v₂² - v₁²) + mg(h₂ - h₁)
+
+  Dividing by V:
+  P₁ - P₂ = ½ρ(v₂² - v₁²) + ρg(h₂ - h₁)
+
+  Rearranging:
+  P₁ + ½ρv₁² + ρgh₁ = P₂ + ½ρv₂² + ρgh₂
+  ```
+
+  ## Important Applications
+
+  ### 1. Torricelli's Theorem (Efflux Velocity)
+
+  Velocity of liquid emerging from hole at depth h:
+  ```
+  v = √(2gh)
+
+  Same as free fall from height h!
+  ```
+
+  **Horizontal Range:**
+  ```
+  R = 2√(h(H-h))
+
+  Maximum when h = H/2
+  R_max = H
+  ```
+
+  ### 2. Venturimeter
+
+  Measures flow rate using pressure difference:
+  ```
+  A₁v₁ = A₂v₂ (continuity)
+  P₁ + ½ρv₁² = P₂ + ½ρv₂² (Bernoulli)
+
+  v₁ = A₂√(2(P₁-P₂)/(ρ(A₁²-A₂²)))
+
+  Flow rate Q = A₁v₁
+  ```
+
+  ### 3. Pitot Tube
+
+  Measures fluid velocity:
+  ```
+  v = √(2(P_stagnation - P_static)/ρ)
+  ```
+
+  At stagnation point, velocity = 0, pressure is maximum.
+
+  ### 4. Lift on Airplane Wing
+
+  ```
+  ΔP = P_bottom - P_top = ½ρ(v_top² - v_bottom²)
+
+  Lift force F = ΔP × A
+  ```
+
+  Upper surface: Higher velocity, lower pressure
+  Lower surface: Lower velocity, higher pressure
+
+  ### 5. Magnus Effect
+
+  Spinning ball curves due to pressure difference:
+  - Rotation adds to velocity on one side
+  - Subtracts on other side
+  - Creates lateral force
+
+  ### 6. Atomizer/Spray Gun
+
+  High-speed air reduces pressure
+  Liquid rises up tube
+  Gets atomized
+
+  ## Special Cases
+
+  ### Horizontal Pipe (h = constant):
+  ```
+  P₁ + ½ρv₁² = P₂ + ½ρv₂²
+
+  Higher velocity → Lower pressure
+  ```
+
+  ### Vertical Motion (v = constant):
+  ```
+  P₁ + ρgh₁ = P₂ + ρgh₂
+
+  Just hydrostatic pressure variation
+  ```
+
+  ## Limitations
+
+  Bernoulli's theorem NOT valid for:
+  1. Viscous fluids
+  2. Compressible fluids
+  3. Unsteady flow
+  4. Rotational flow
+  5. Turbulent flow
+
+  ## Numerical Examples
+
+  **Example 1:** Water tank with hole 5m below surface. Find efflux velocity.
+
+  **Solution:**
+  ```
+  v = √(2gh) = √(2 × 10 × 5) = √100 = 10 m/s
+  ```
+
+  **Example 2:** Venturimeter has cross-sections 10 cm² and 5 cm². Pressure difference is 20 cm of water. Find flow rate.
+
+  **Solution:**
+  ```
+  v₁A₁ = v₂A₂
+  v₂ = 2v₁
+
+  P₁ - P₂ = ½ρ(v₂² - v₁²) = ½ρ(4v₁² - v₁²) = (3/2)ρv₁²
+
+  ρg(0.2) = (3/2)ρv₁²
+  v₁² = 2g(0.2)/3 = 4/3
+  v₁ = 1.15 m/s
+
+  Q = A₁v₁ = 10×10⁻⁴ × 1.15 = 1.15×10⁻³ m³/s
+  ```
+
+  **Example 3:** Airplane wing: top surface v = 70 m/s, bottom = 60 m/s. Air density = 1.2 kg/m³. Find lift per m².
+
+  **Solution:**
+  ```
+  ΔP = ½ρ(v_top² - v_bottom²) = ½(1.2)(70² - 60²)
+  ΔP = 0.6(4900 - 3600) = 0.6 × 1300 = 780 Pa
+
+  Lift = 780 N/m²
+  ```
+
+  ## JEE Key Points
+
+  1. **Bernoulli = Energy conservation** for fluids
+  2. **Higher speed = Lower pressure** (venturi effect)
+  3. **Torricelli's law**: v = √(2gh) for efflux
+  4. **Works only for ideal fluids** (non-viscous, incompressible)
+  5. **Lift force** proportional to velocity difference
+  6. **Continuity + Bernoulli** solves most problems
+
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: "A tank filled with water has a hole at height h from bottom. For maximum horizontal range, h should be:"
+  options:
+  - "At the bottom"
+  - "At height H/2"
+  - "At height H/3"
+  - "At the top"
+  correct_answer: "At height H/2"
+  explanation: "Efflux velocity v = √(2g(H-h)). Time to reach ground t = √(2h/g). Range R = vt = √(2g(H-h)) × √(2h/g) = 2√(h(H-h)). For maximum R: dR/dh = 0. d[h(H-h)]/dh = H - 2h = 0, so h = H/2. At h = H/2: R_max = 2√((H/2)(H/2)) = H. This means water from middle of tank travels farthest horizontally. Lower holes have higher speed but less flight time; upper holes have more time but lower speed."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: "Water flows through a horizontal pipe. At one point diameter is 4 cm (pressure 10 kPa), at another it's 2 cm. Pressure at second point is:"
+  options:
+  - "2.5 kPa"
+  - "40 kPa"
+  - "8.5 kPa"
+  - "-5 kPa"
+  correct_answer: "8.5 kPa"
+  explanation: "By continuity: A₁v₁ = A₂v₂, so v₂/v₁ = A₁/A₂ = (4²)/(2²) = 4. Let v₁ = v, then v₂ = 4v. Using Bernoulli (horizontal, h same): P₁ + ½ρv₁² = P₂ + ½ρv₂². 10000 + ½ρv² = P₂ + ½ρ(16v²). P₂ = 10000 - (15/2)ρv². For this to give 8.5 kPa: 10000 - P₂ = 1500 Pa = 7.5ρv². v = √(200/ρ) ≈ 0.45 m/s. The key point: narrower section has higher velocity but lower pressure (venturi effect)."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: "An airplane wing has velocity 250 m/s over top and 200 m/s under bottom. If wing area is 100 m² and air density 0.9 kg/m³, lift force is:"
+  options:
+  - "101.25 kN"
+  - "202.5 kN"
+  - "1012.5 kN"
+  - "506.25 kN"
+  correct_answer: "1012.5 kN"
+  explanation: "Pressure difference ΔP = ½ρ(v_top² - v_bottom²) = ½(0.9)(250² - 200²) = 0.45(62500 - 40000) = 0.45 × 22500 = 10125 Pa. Lift F = ΔP × A = 10125 × 100 = 1012500 N = 1012.5 kN. This is the basic principle of flight: shaped wing creates velocity difference, which creates pressure difference, generating upward lift. For a 100 metric ton plane, this lift must exceed 10⁶ N - which it does! Modern airplanes use this principle combined with angle of attack."
+  require_pass: true

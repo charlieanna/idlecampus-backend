@@ -1,0 +1,124 @@
+slug: lesson-8
+title: Lesson 8
+sequence_order: 8
+estimated_minutes: 2
+difficulty: easy
+key_concepts: []
+content_md: "# Microlesson \U0001F680\n\n# Classes and Objects\n\n    **Classes**\
+  \ are blueprints for creating objects. **Objects** are instances of classes.\n\n\
+  \    ## Creating a Class\n\n    ```python\n    class Dog:\n        # Constructor\n\
+  \        def __init__(self, name, age):\n            self.name = name\n        \
+  \    self.age = age\n\n        # Method\n        def bark(self):\n            print(f\"\
+  {self.name} says woof!\")\n\n    # Create objects\n    dog1 = Dog(\"Buddy\", 3)\n\
+  \    dog2 = Dog(\"Max\", 5)\n\n    # Use methods\n    dog1.bark()  # Buddy says\
+  \ woof!\n    print(dog2.age)  # 5\n    ```\n\n    ## The `__init__` Method\n\n \
+  \   Special method called when object is created:\n\n    ```python\n    class Person:\n\
+  \        def __init__(self, name, age):\n            self.name = name  # Instance\
+  \ variable\n            self.age = age\n            self.friends = []  # Default\
+  \ value\n\n        def add_friend(self, friend):\n            self.friends.append(friend)\n\
+  \n    person = Person(\"Alice\", 25)\n    ```\n\n    ## Class vs Instance Variables\n\
+  \n    ```python\n    class Dog:\n        # Class variable (shared by all instances)\n\
+  \        species = \"Canis familiaris\"\n\n        def __init__(self, name):\n \
+  \           # Instance variable (unique to each instance)\n            self.name\
+  \ = name\n\n    dog1 = Dog(\"Buddy\")\n    dog2 = Dog(\"Max\")\n\n    print(Dog.species)\
+  \  # \"Canis familiaris\"\n    print(dog1.name)    # \"Buddy\"\n    print(dog2.name)\
+  \    # \"Max\"\n    ```\n\n    ## Instance Methods\n\n    ```python\n    class BankAccount:\n\
+  \        def __init__(self, owner, balance=0):\n            self.owner = owner\n\
+  \            self.balance = balance\n\n        def deposit(self, amount):\n    \
+  \        self.balance += amount\n            return self.balance\n\n        def\
+  \ withdraw(self, amount):\n            if amount > self.balance:\n             \
+  \   return \"Insufficient funds\"\n            self.balance -= amount\n        \
+  \    return self.balance\n\n    account = BankAccount(\"Alice\", 1000)\n    account.deposit(500)\
+  \   # 1500\n    account.withdraw(200)  # 1300\n    ```\n\n    ## Property Decorators\n\
+  \n    Control attribute access:\n\n    ```python\n    class Temperature:\n     \
+  \   def __init__(self, celsius):\n            self._celsius = celsius\n\n      \
+  \  @property\n        def celsius(self):\n            return self._celsius\n\n \
+  \       @celsius.setter\n        def celsius(self, value):\n            if value\
+  \ < -273.15:\n                raise ValueError(\"Below absolute zero!\")\n     \
+  \       self._celsius = value\n\n        @property\n        def fahrenheit(self):\n\
+  \            return self._celsius * 9/5 + 32\n\n    temp = Temperature(25)\n   \
+  \ print(temp.celsius)     # 25\n    print(temp.fahrenheit)  # 77.0\n    temp.celsius\
+  \ = 30       # OK\n    # temp.celsius = -300   # Error!\n    ```\n\n    ## Magic\
+  \ Methods (Dunder Methods)\n\n    Special methods for operator overloading:\n\n\
+  \    ```python\n    class Point:\n        def __init__(self, x, y):\n          \
+  \  self.x = x\n            self.y = y\n\n        def __str__(self):\n          \
+  \  # Called by print()\n            return f\"Point({self.x}, {self.y})\"\n\n  \
+  \      def __add__(self, other):\n            # Called by +\n            return\
+  \ Point(self.x + other.x, self.y + other.y)\n\n        def __eq__(self, other):\n\
+  \            # Called by ==\n            return self.x == other.x and self.y ==\
+  \ other.y\n\n    p1 = Point(1, 2)\n    p2 = Point(3, 4)\n\n    print(p1)       \
+  \ # Point(1, 2)\n    p3 = p1 + p2     # Point(4, 6)\n    print(p1 == p2)  # False\n\
+  \    ```\n\n    ## Inheritance\n\n    ```python\n    # Parent class\n    class Animal:\n\
+  \        def __init__(self, name):\n            self.name = name\n\n        def\
+  \ speak(self):\n            pass\n\n    # Child classes\n    class Dog(Animal):\n\
+  \        def speak(self):\n            return f\"{self.name} says woof!\"\n\n  \
+  \  class Cat(Animal):\n        def speak(self):\n            return f\"{self.name}\
+  \ says meow!\"\n\n    dog = Dog(\"Buddy\")\n    cat = Cat(\"Whiskers\")\n\n    print(dog.speak())\
+  \  # Buddy says woof!\n    print(cat.speak())  # Whiskers says meow!\n    ```\n\n\
+  \    ## Super()\n\n    Call parent class methods:\n\n    ```python\n    class Person:\n\
+  \        def __init__(self, name, age):\n            self.name = name\n        \
+  \    self.age = age\n\n    class Student(Person):\n        def __init__(self, name,\
+  \ age, student_id):\n            super().__init__(name, age)  # Call parent constructor\n\
+  \            self.student_id = student_id\n\n    student = Student(\"Alice\", 20,\
+  \ \"S12345\")\n    ```\n\n    ## Encapsulation\n\n    ```python\n    class BankAccount:\n\
+  \        def __init__(self, balance):\n            self.__balance = balance  # Private\
+  \ attribute\n\n        def get_balance(self):\n            return self.__balance\n\
+  \n        def deposit(self, amount):\n            if amount > 0:\n             \
+  \   self.__balance += amount\n\n    account = BankAccount(1000)\n    # account.__balance\
+  \ = 0  # Won't work (name mangled)\n    account.deposit(500)     # Use public method\n\
+  \    ```\n\n    ## Class Methods and Static Methods\n\n    ```python\n    class\
+  \ Date:\n        def __init__(self, year, month, day):\n            self.year =\
+  \ year\n            self.month = month\n            self.day = day\n\n        @classmethod\n\
+  \        def from_string(cls, date_string):\n            # Alternative constructor\n\
+  \            year, month, day = map(int, date_string.split('-'))\n            return\
+  \ cls(year, month, day)\n\n        @staticmethod\n        def is_leap_year(year):\n\
+  \            # Utility function\n            return year % 4 == 0 and (year % 100\
+  \ != 0 or year % 400 == 0)\n\n    # Use class method\n    date = Date.from_string(\"\
+  2024-01-15\")\n\n    # Use static method\n    print(Date.is_leap_year(2024))  #\
+  \ True\n    ```\n\n    ## When to Use OOP\n\n    ✅ **Good for:**\n    - Modeling\
+  \ real-world entities\n    - Code reusability through inheritance\n    - Grouping\
+  \ related data and behavior\n    - Building large, maintainable systems\n\n    ❌\
+  \ **Overkill for:**\n    - Simple scripts\n    - Single-use utilities\n    - Functional\
+  \ programming problems\n\n    **Practice:** Try the OOP lab!"
+exercises:
+- type: mcq
+  slug: lesson-8-mcq-1
+  sequence_order: 1
+  question: What is the difference between a list and a tuple in Python?
+  options:
+  - Lists are mutable (can be modified), tuples are immutable (cannot be changed)
+  - Lists are faster than tuples
+  - Tuples can only store strings
+  - Lists use less memory
+  correct_answer_index: 0
+  explanation: Lists are mutable - you can add, remove, or modify elements after creation using methods like append(), remove(), etc. Tuples are immutable - once created, they cannot be modified. Tuples are slightly faster and use less memory, making them ideal for fixed collections of data.
+- type: mcq
+  slug: lesson-8-mcq-2
+  sequence_order: 2
+  question: What is a list comprehension in Python?
+  options:
+  - A concise way to create lists using a single line of code with optional filtering
+  - A method to compress lists
+  - A way to compare two lists
+  - A list sorting algorithm
+  correct_answer_index: 0
+  explanation: List comprehensions provide a concise syntax to create lists: [expression for item in iterable if condition]. For example, [x**2 for x in range(10) if x % 2 == 0] creates a list of squares of even numbers. This is more readable and often faster than traditional loops.
+- type: mcq
+  slug: lesson-8-mcq-3
+  sequence_order: 3
+  question: What does the try-except block do in Python?
+  options:
+  - Handles exceptions (errors) gracefully without crashing the program
+  - Tries to optimize code performance
+  - Tests if code syntax is correct
+  - Executes code multiple times until it succeeds
+  correct_answer_index: 0
+  explanation: try-except blocks catch and handle exceptions, preventing program crashes. Code in the try block is executed, and if an exception occurs, the except block handles it. For example, catching ValueError when converting user input to int prevents crashes from invalid input.
+objectives:
+- Understand core concepts of Classes and Objects
+- Apply learned concepts in practical scenarios
+- Identify best practices and common patterns
+- Recognize trade-offs in different approaches
+next_recommended:
+- control
+- data-structures

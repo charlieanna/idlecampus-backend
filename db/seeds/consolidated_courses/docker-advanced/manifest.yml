@@ -1,0 +1,63 @@
+course:
+  slug: docker-advanced
+  title: Docker Advanced & Production
+  description: Production-ready Docker skills - networking, multi-container apps with Compose, and security hardening.
+  estimated_hours: 7
+  level: intermediate
+  prerequisites:
+    - Docker Fundamentals
+    - Understanding of networking basics
+  learning_outcomes:
+    - Configure Docker networking and custom networks
+    - Orchestrate multi-container applications with Docker Compose
+    - Implement Docker security best practices
+    - Deploy production-grade containerized applications
+  tags:
+    - docker
+    - docker-compose
+    - networking
+    - security
+    - production
+  related_courses:
+    - docker-fundamentals
+    - kubernetes-complete
+  recommended_next: kubernetes-complete
+
+modules:
+  - slug: docker-networking
+    title: Docker Networking
+    description: Master container networking - create custom networks, connect containers, and understand network drivers and communication patterns.
+    order: 1
+    estimated_hours: 2
+    lessons:
+      # From docker-networks (7 lessons)
+      - docker-network-create
+      - docker-network-list
+      - docker-network-inspect
+      - docker-network-connect
+      - docker-network-disconnect
+      - docker-network-remove
+      - docker-network-prune
+
+  - slug: multi-container-apps
+    title: Multi-Container Applications with Docker Compose
+    description: Define and run multi-service applications using Docker Compose. Learn to manage complex application stacks with a single configuration file.
+    order: 2
+    estimated_hours: 3
+    lessons:
+      # From docker-compose (4 lessons)
+      - docker-compose-up-start-multi-container-applications
+      - docker-compose-down-stop-and-remove-stack
+      - docker-compose-build-build-or-rebuild-service-images
+      - docker-compose-logs-view-service-output
+
+  - slug: docker-security
+    title: Docker Security Best Practices
+    description: Secure your containers and images following industry best practices. Learn about image scanning, user management, and security hardening.
+    order: 3
+    estimated_hours: 2
+    lessons:
+      # From docker-security (3 lessons)
+      - lesson-1  # TODO: Rename to specific security topic
+      - lesson-2  # TODO: Rename to specific security topic
+      - lesson-3  # TODO: Rename to specific security topic

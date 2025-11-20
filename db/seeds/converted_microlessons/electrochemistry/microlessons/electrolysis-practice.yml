@@ -1,0 +1,59 @@
+slug: electrolysis-practice
+title: electrolysis — Practice
+difficulty: easy
+sequence_order: 12
+estimated_minutes: 2
+key_concepts:
+- electrolysis
+prerequisites: []
+content_md: '# electrolysis — Practice 🚀
+
+
+  TRUE. In BOTH types of cells, oxidation always occurs at anode and reduction at
+  cathode. The difference is in polarity and spontaneity.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: 'In both galvanic and electrolytic cells, oxidation occurs at the anode. Is this statement true or false?'
+  options:
+  - 'True'
+  - 'False'
+  - 'True only for galvanic cells'
+  - 'True only for electrolytic cells'
+  correct_answer: 'True'
+  explanation: "TRUE. In BOTH galvanic (voltaic) and electrolytic cells, oxidation always occurs at the anode and reduction at the cathode. This is a fundamental principle of electrochemistry. The key difference is: In galvanic cells, the anode is negative (electrons flow away from it) and the process is spontaneous. In electrolytic cells, the anode is positive (connected to positive terminal of external battery) and the process is non-spontaneous (requires external energy). The mnemonic 'AN OX' (Anode = Oxidation) and 'RED CAT' (Reduction = Cathode) applies to both types of cells."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What is the main difference between a galvanic cell and an electrolytic cell?
+  options:
+  - Galvanic cells are spontaneous; electrolytic cells are non-spontaneous
+  - Galvanic cells use DC; electrolytic cells use AC
+  - Galvanic cells have anode and cathode reversed
+  - There is no difference
+  correct_answer: Galvanic cells are spontaneous; electrolytic cells are non-spontaneous
+  explanation: "The main difference is that galvanic (voltaic) cells involve spontaneous redox reactions that generate electrical energy (ΔG < 0, E°cell > 0), while electrolytic cells use electrical energy to drive non-spontaneous reactions (ΔG > 0, E°cell < 0). Examples: Galvanic - batteries, Daniell cell; Electrolytic - electroplating, electrolysis of water. Both use DC current. In galvanic cells, anode is negative and cathode is positive; in electrolytic cells, anode is positive (connected to +ve terminal) and cathode is negative."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: During the electrolysis of molten NaCl, what is produced at the cathode?
+  options:
+  - Sodium metal (Na)
+  - Chlorine gas (Cl₂)
+  - Hydrogen gas (H₂)
+  - Oxygen gas (O₂)
+  correct_answer: Sodium metal (Na)
+  explanation: "During electrolysis of molten NaCl, sodium metal (Na) is produced at the cathode (reduction) and chlorine gas (Cl₂) at the anode (oxidation). Cathode reaction: Na⁺ + e⁻ → Na (reduction). Anode reaction: 2Cl⁻ → Cl₂ + 2e⁻ (oxidation). This is the industrial Down's process for producing sodium metal. If aqueous NaCl were electrolyzed instead, H₂ would form at the cathode (since water is more easily reduced than Na⁺) and Cl₂ at the anode."
+  require_pass: true

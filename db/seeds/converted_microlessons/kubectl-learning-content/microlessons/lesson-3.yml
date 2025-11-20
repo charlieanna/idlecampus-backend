@@ -1,0 +1,95 @@
+slug: lesson-3
+title: Lesson 3
+difficulty: easy
+sequence_order: 3
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Kubernetes Services & Networking\n\n  \
+  \    Services expose Pods to network traffic and enable load balancing across multiple\
+  \ Pod replicas.\n\n      ## Creating Services\n\n      ### ClusterIP (Default -\
+  \ Internal Only)\n\n      ```bash\n      # Create ClusterIP service\n      kubectl\
+  \ create service clusterip my-service --tcp=80:8080\n\n      # Expose existing deployment\n\
+  \      kubectl expose deployment nginx --port=80 --target-port=8080\n\n      # Create\
+  \ from YAML\n      kubectl apply -f service.yaml\n      ```\n\n      ### NodePort\
+  \ (External Access via Node IP)\n\n      ```bash\n      # Create NodePort service\n\
+  \      kubectl create service nodeport my-service --tcp=80:8080 --node-port=30080\n\
+  \n      # Expose deployment as NodePort\n      kubectl expose deployment nginx --type=NodePort\
+  \ --port=80\n      ```\n\n      ### LoadBalancer (Cloud Load Balancer)\n\n     \
+  \ ```bash\n      # Create LoadBalancer service\n      kubectl expose deployment\
+  \ nginx --type=LoadBalancer --port=80\n\n      # Check external IP\n      kubectl\
+  \ get service nginx\n      ```\n\n      ## Viewing Services\n\n      ```bash\n \
+  \     # List all services\n      kubectl get services\n      kubectl get svc\n\n\
+  \      # List services with more details\n      kubectl get svc -o wide\n\n    \
+  \  # Describe service (shows endpoints)\n      kubectl describe service my-service\n\
+  \n      # Get service YAML\n      kubectl get svc my-service -o yaml\n\n      #\
+  \ View service endpoints\n      kubectl get endpoints my-service\n      ```\n\n\
+  \      ## Service Discovery & DNS\n\n      Every service gets a DNS name automatically:\n\
+  \n      ```bash\n      # Format: <service-name>.<namespace>.svc.cluster.local\n\
+  \      # Short form within same namespace: <service-name>\n\n      # Test DNS resolution\n\
+  \      kubectl run debug --image=nicolaka/netshoot -it --rm -- bash\n      nslookup\
+  \ my-service\n      nslookup my-service.default.svc.cluster.local\n\n      # Test\
+  \ service connectivity\n      curl http://my-service\n      wget -O- http://my-service:80\n\
+  \      ```\n\n      ## Port Forwarding\n\n      Access services locally for debugging:\n\
+  \n      ```bash\n      # Forward local port to service\n      kubectl port-forward\
+  \ service/my-service 8080:80\n\n      # Forward to pod directly\n      kubectl port-forward\
+  \ pod/nginx 8080:80\n\n      # Listen on all interfaces\n      kubectl port-forward\
+  \ --address 0.0.0.0 service/my-service 8080:80\n      ```\n\n      ## Headless Services\n\
+  \n      For direct pod access (stateful apps):\n\n      ```bash\n      # Create\
+  \ headless service (ClusterIP: None)\n      kubectl create service clusterip my-service\
+  \ --clusterip=None --tcp=80:8080\n      ```\n\n      ## Service Management\n\n \
+  \     ```bash\n      # Update service\n      kubectl edit service my-service\n \
+  \     kubectl apply -f service.yaml\n\n      # Delete service\n      kubectl delete\
+  \ service my-service\n\n      # Delete multiple services\n      kubectl delete service\
+  \ my-service1 my-service2\n\n      # Delete services by label\n      kubectl delete\
+  \ service -l app=nginx\n      ```\n\n      ## Debugging Network Issues\n\n     \
+  \ ```bash\n      # Check if service has endpoints\n      kubectl get endpoints my-service\n\
+  \n      # Test connectivity from debug pod\n      kubectl run debug --image=busybox\
+  \ -it --rm -- wget -O- http://my-service\n\n      # Check service selector matches\
+  \ pods\n      kubectl get pods -l app=nginx\n      kubectl get service my-service\
+  \ -o yaml | grep selector\n\n      # View service events\n      kubectl get events\
+  \ --field-selector involvedObject.name=my-service\n      ```\n\n      ## Network\
+  \ Policies (Traffic Control)\n\n      ```bash\n      # List network policies\n \
+  \     kubectl get networkpolicies\n      kubectl get netpol\n\n      # Describe\
+  \ network policy\n      kubectl describe networkpolicy my-policy\n\n      # Delete\
+  \ network policy\n      kubectl delete networkpolicy my-policy\n      ```\n\n  \
+  \    ## Ingress (HTTP/HTTPS Routing)\n\n      ```bash\n      # List ingress resources\n\
+  \      kubectl get ingress\n      kubectl get ing\n\n      # Describe ingress\n\
+  \      kubectl describe ingress my-ingress\n\n      # Get ingress with addresses\n\
+  \      kubectl get ingress -o wide\n\n      # Delete ingress\n      kubectl delete\
+  \ ingress my-ingress\n      ```\n\n      Practice service creation and troubleshooting\
+  \ in the labs!"
+exercises:
+  - type: multiple_choice_question
+    sequence_order: 1
+    question: "What type of Kubernetes service would you use to expose an application to external traffic in a cloud environment with automatic provisioning of a cloud load balancer?"
+    options:
+      - "ClusterIP"
+      - "NodePort"
+      - "LoadBalancer"
+      - "ExternalName"
+    correct_answer: "LoadBalancer"
+    explanation: "A LoadBalancer service type is designed to expose applications to external traffic in cloud environments by automatically provisioning a cloud provider's load balancer (such as AWS ELB/ALB, GCP Load Balancer, or Azure Load Balancer). When you create a LoadBalancer service, Kubernetes requests the cloud provider to create an external load balancer that routes traffic to your service. The cloud load balancer gets a public IP address, and traffic sent to this IP is distributed across the pods backing your service. LoadBalancer builds upon NodePort (which builds upon ClusterIP), so a LoadBalancer service also has a NodePort and ClusterIP. ClusterIP only provides internal cluster access, making it unsuitable for external traffic. NodePort exposes services on a static port on each node's IP, requiring you to know node IPs and manually manage external load balancing - it works but is not ideal for production. ExternalName is for mapping services to DNS names, not for load balancing. LoadBalancer is the recommended approach for production external access in cloud environments because it provides: automatic provisioning, health checking, SSL termination (in some clouds), and integration with cloud-native features. For on-premises clusters without cloud load balancer integration, you'd typically use Ingress controllers with NodePort or use external load balancing solutions like MetalLB."
+    require_pass: true
+  - type: multiple_choice_question
+    sequence_order: 2
+    question: "When troubleshooting a service that has no endpoints, what is the most likely cause?"
+    options:
+      - "The service type is incorrectly configured"
+      - "The service selector does not match any pod labels"
+      - "The service port is already in use by another service"
+      - "The namespace does not have sufficient resources"
+    correct_answer: "The service selector does not match any pod labels"
+    explanation: "When a service has no endpoints, it means the service is not finding any pods that match its selector, making the selector mismatch the most common cause. Services use label selectors to identify which pods should receive traffic. If the service selector specifies 'app: nginx' but no pods have that exact label, the service will have zero endpoints. To debug this, compare the service selector ('kubectl get service my-service -o yaml | grep selector') with existing pod labels ('kubectl get pods --show-labels' or 'kubectl get pods -l app=nginx'). Even a small typo or case difference in labels will prevent matching. Common mistakes include: using different label keys (e.g., service looks for 'app' but pods use 'name'), typos in label values, pods in different namespaces (services only select pods in the same namespace by default), or pods not yet created/running. The service type (ClusterIP, NodePort, LoadBalancer) doesn't affect endpoint population - all types use the same label matching mechanism. Port conflicts would cause different errors, and resource quotas affect pod creation, not endpoint matching. To verify endpoint population, use 'kubectl get endpoints my-service' which should list the IPs of matching pods. Once you correct the label mismatch (either update the service selector or add proper labels to pods), endpoints will automatically populate and traffic will flow."
+    require_pass: true
+  - type: multiple_choice_question
+    sequence_order: 3
+    question: "What is the purpose of port forwarding with kubectl, and when would you use it?"
+    options:
+      - "To permanently expose a service to the internet"
+      - "To temporarily access a pod or service from your local machine for debugging"
+      - "To increase network throughput for high-traffic services"
+      - "To route traffic between different namespaces"
+    correct_answer: "To temporarily access a pod or service from your local machine for debugging"
+    explanation: "Port forwarding with kubectl (e.g., 'kubectl port-forward service/my-service 8080:80') creates a temporary tunnel from your local machine to a specific pod or service in the Kubernetes cluster, primarily for debugging and development purposes. When you run this command, kubectl connects to the Kubernetes API server, which then proxies connections to the specified pod or service. This allows you to access cluster resources from your local machine without exposing them through NodePort, LoadBalancer, or Ingress. Common use cases include: accessing internal databases for debugging, testing services before exposing them externally, accessing admin interfaces that shouldn't be publicly exposed, and local development workflows. Port forwarding is NOT intended for: production traffic (it goes through the API server which is a bottleneck), permanent access (it requires an active kubectl session), or high-performance scenarios (it's slower than direct service access). For permanent external exposure, use LoadBalancer or Ingress. Port forwarding doesn't improve performance or route between namespaces. The connection lasts only while the kubectl command runs - if you terminate it, the port forwarding stops. It's a valuable tool for developers and operators to quickly access cluster resources without modifying network policies or creating services."
+    require_pass: true

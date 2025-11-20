@@ -1,0 +1,126 @@
+slug: introduction-to-channels
+title: Introduction to Channels
+sequence_order: 4
+estimated_minutes: 2
+difficulty: easy
+content_md: "# Introduction to Channels \U0001F680\n\n# Introduction to Channels\n\
+  \n    **Channels** are Go's way of letting goroutines communicate safely. Think\
+  \ of them as pipes that connect concurrent functions.\n\n    ## Creating Channels\n\
+  \n    ```go\n    // Create a channel of integers\n    ch := make(chan int)\n\n \
+  \   // Buffered channel (can hold 5 values)\n    buffered := make(chan string, 5)\n\
+  \n    // Receive-only channel (can only receive)\n    var receive <-chan int\n\n\
+  \    // Send-only channel (can only send)\n    var send chan<- int\n    ```\n\n\
+  \    ## Channel Operations\n\n    ### Send\n    ```go\n    ch <- 42  // Send value\
+  \ 42 to channel ch\n    ```\n\n    ### Receive\n    ```go\n    value := <-ch  //\
+  \ Receive value from channel and assign to value\n\n    // Receive and discard\n\
+  \    <-ch\n\n    // Check if channel is closed\n    value, ok := <-ch\n    if !ok\
+  \ {\n        fmt.Println(\"Channel closed!\")\n    }\n    ```\n\n    ### Close\n\
+  \    ```go\n    close(ch)  // Close the channel (no more sends allowed)\n    ```\n\
+  \n    ## Basic Example\n\n    ```go\n    package main\n\n    import \"fmt\"\n\n\
+  \    func sendData(ch chan string) {\n        ch <- \"Hello from goroutine!\"\n\
+  \    }\n\n    func main() {\n        // Create channel\n        messageChan := make(chan\
+  \ string)\n\n        // Start goroutine\n        go sendData(messageChan)\n\n  \
+  \      // Receive from channel (blocks until data arrives)\n        message := <-messageChan\n\
+  \        fmt.Println(message)\n    }\n    ```\n\n    ## Unbuffered vs Buffered Channels\n\
+  \n    ### Unbuffered Channels (Default)\n\n    ```go\n    ch := make(chan int) \
+  \ // Unbuffered\n\n    // Send blocks until someone receives\n    // Receive blocks\
+  \ until someone sends\n    ```\n\n    **Characteristics:**\n    - Send blocks until\
+  \ receive happens\n    - Receive blocks until send happens\n    - Provides **synchronization**\n\
+  \    - Guarantees delivery\n\n    **Visual:**\n    ```\n    Sender ─────[Handshake]─────>\
+  \ Receiver\n            (both must be ready)\n    ```\n\n    Example:\n    ```go\n\
+  \    func main() {\n        ch := make(chan int)\n\n        go func() {\n      \
+  \      fmt.Println(\"Goroutine: Sending...\")\n            ch <- 42  // Blocks until\
+  \ main receives\n            fmt.Println(\"Goroutine: Sent!\")\n        }()\n\n\
+  \        time.Sleep(2 * time.Second)\n        fmt.Println(\"Main: Receiving...\"\
+  )\n        value := <-ch  // Blocks until goroutine sends\n        fmt.Println(\"\
+  Main: Received\", value)\n    }\n    ```\n\n    Output:\n    ```\n    Goroutine:\
+  \ Sending...\n    (2 second pause)\n    Main: Receiving...\n    Goroutine: Sent!\n\
+  \    Main: Received 42\n    ```\n\n    ### Buffered Channels\n\n    ```go\n    ch\
+  \ := make(chan int, 3)  // Buffer size of 3\n\n    // Can send 3 values without\
+  \ blocking\n    ch <- 1  // Doesn't block\n    ch <- 2  // Doesn't block\n    ch\
+  \ <- 3  // Doesn't block\n    ch <- 4  // BLOCKS (buffer full)\n    ```\n\n    **Visual:**\n\
+  \    ```\n    Sender → [Buffer: |||] → Receiver\n             (can hold 3 items)\n\
+  \    ```\n\n    Example:\n    ```go\n    func main() {\n        ch := make(chan\
+  \ string, 2)\n\n        // Send 2 values (won't block, buffer holds them)\n    \
+  \    ch <- \"first\"\n        ch <- \"second\"\n        // ch <- \"third\"  // Would\
+  \ block! Buffer full\n\n        // Receive them\n        fmt.Println(<-ch)  // \"\
+  first\"\n        fmt.Println(<-ch)  // \"second\"\n    }\n    ```\n\n    ## Channel\
+  \ Directions\n\n    Restrict channel operations for safety:\n\n    ```go\n    //\
+  \ Send-only channel\n    func sendOnly(ch chan<- int) {\n        ch <- 42\n    \
+  \    // value := <-ch  // ERROR: can't receive\n    }\n\n    // Receive-only channel\n\
+  \    func receiveOnly(ch <-chan int) {\n        value := <-ch\n        // ch <-\
+  \ 42  // ERROR: can't send\n    }\n\n    func main() {\n        ch := make(chan\
+  \ int)\n\n        go sendOnly(ch)\n        receiveOnly(ch)\n    }\n    ```\n\n \
+  \   ## Range Over Channels\n\n    Loop until channel is closed:\n\n    ```go\n \
+  \   func producer(ch chan int) {\n        for i := 0; i < 5; i++ {\n           \
+  \ ch <- i\n        }\n        close(ch)  // Signal: no more data\n    }\n\n    func\
+  \ main() {\n        ch := make(chan int)\n\n        go producer(ch)\n\n        //\
+  \ Range reads until channel is closed\n        for value := range ch {\n       \
+  \     fmt.Println(value)\n        }\n    }\n    ```\n\n    Output:\n    ```\n  \
+  \  0\n    1\n    2\n    3\n    4\n    ```\n\n    ## Common Patterns\n\n    ### 1.\
+  \ Worker Pool\n\n    ```go\n    func worker(id int, jobs <-chan int, results chan<-\
+  \ int) {\n        for job := range jobs {\n            fmt.Printf(\"Worker %d processing\
+  \ job %d\\\\n\", id, job)\n            time.Sleep(time.Second)\n            results\
+  \ <- job * 2\n        }\n    }\n\n    func main() {\n        jobs := make(chan int,\
+  \ 100)\n        results := make(chan int, 100)\n\n        // Start 3 workers\n \
+  \       for w := 1; w <= 3; w++ {\n            go worker(w, jobs, results)\n   \
+  \     }\n\n        // Send 9 jobs\n        for j := 1; j <= 9; j++ {\n         \
+  \   jobs <- j\n        }\n        close(jobs)\n\n        // Collect results\n  \
+  \      for a := 1; a <= 9; a++ {\n            <-results\n        }\n    }\n    ```\n\
+  \n    ### 2. Pipeline\n\n    ```go\n    // Stage 1: Generate numbers\n    func generate(nums\
+  \ ...int) <-chan int {\n        out := make(chan int)\n        go func() {\n   \
+  \         for _, n := range nums {\n                out <- n\n            }\n  \
+  \          close(out)\n        }()\n        return out\n    }\n\n    // Stage 2:\
+  \ Square numbers\n    func square(in <-chan int) <-chan int {\n        out := make(chan\
+  \ int)\n        go func() {\n            for n := range in {\n                out\
+  \ <- n * n\n            }\n            close(out)\n        }()\n        return out\n\
+  \    }\n\n    func main() {\n        // Pipeline: generate → square\n        numbers\
+  \ := generate(1, 2, 3, 4)\n        squares := square(numbers)\n\n        // Print\
+  \ results\n        for result := range squares {\n            fmt.Println(result)\n\
+  \        }\n    }\n    ```\n\n    Output:\n    ```\n    1\n    4\n    9\n    16\n\
+  \    ```\n\n    ### 3. Fan-out, Fan-in\n\n    ```go\n    func fanOut(input <-chan\
+  \ int, workers int) []<-chan int {\n        channels := make([]<-chan int, workers)\n\
+  \        for i := 0; i < workers; i++ {\n            channels[i] = doWork(input)\n\
+  \        }\n        return channels\n    }\n\n    func fanIn(channels ...<-chan\
+  \ int) <-chan int {\n        out := make(chan int)\n        var wg sync.WaitGroup\n\
+  \n        for _, ch := range channels {\n            wg.Add(1)\n            go func(c\
+  \ <-chan int) {\n                defer wg.Done()\n                for n := range\
+  \ c {\n                    out <- n\n                }\n            }(ch)\n    \
+  \    }\n\n        go func() {\n            wg.Wait()\n            close(out)\n \
+  \       }()\n\n        return out\n    }\n    ```\n\n    ## Deadlock\n\n    **Deadlock**\
+  \ occurs when goroutines are waiting for each other indefinitely.\n\n    ❌ **Causes\
+  \ deadlock:**\n    ```go\n    func main() {\n        ch := make(chan int)\n    \
+  \    ch <- 42  // Blocks forever (no receiver)\n        fmt.Println(<-ch)\n    }\n\
+  \    // fatal error: all goroutines are asleep - deadlock!\n    ```\n\n    ✅ **Fixed:**\n\
+  \    ```go\n    func main() {\n        ch := make(chan int)\n\n        go func()\
+  \ {\n            ch <- 42  // Send in goroutine\n        }()\n\n        fmt.Println(<-ch)\
+  \  // Receive in main\n    }\n    ```\n\n    ## Best Practices\n\n    1. **Close\
+  \ channels from sender side**: Never close from receiver\n    2. **Don't close twice**:\
+  \ Panic! Check if closed before closing\n    3. **Closing is optional**: For signaling\
+  \ \"done\" or when using `range`\n    4. **Buffered for known capacity**: Use buffered\
+  \ when you know max pending items\n    5. **Unbuffered for synchronization**: When\
+  \ you need handshake guarantee\n\n    ## Channel Axioms\n\n    1. Send to `nil`\
+  \ channel blocks forever\n    2. Receive from `nil` channel blocks forever\n   \
+  \ 3. Send to closed channel panics\n    4. Receive from closed channel returns zero\
+  \ value immediately\n    5. Closing `nil` channel panics\n    6. Closing closed\
+  \ channel panics\n\n    Next: Learn the **select** statement for multiplexing channels!"
+exercises:
+- type: mcq
+  slug: introduction-to-channels-mcq
+  sequence_order: 1
+  question: What is the primary purpose of channels in Go?
+  options:
+  - To enable safe communication and data sharing between goroutines
+  - To store large amounts of data
+  - To replace function parameters
+  - To speed up program execution
+  correct_answer_index: 0
+  explanation: 'Channels provide a safe way for goroutines to communicate and share
+    data, following the Go proverb: ''Don''t communicate by sharing memory; share
+    memory by communicating.'' Channels prevent race conditions and make concurrent
+    programming safer.'
+objectives:
+- Understand the fundamental concepts and mechanisms of introduction to channels
+- Apply chemical principles to solve related problems
+- Identify key reactions, equations, and chemical behaviors
+next_recommended: []

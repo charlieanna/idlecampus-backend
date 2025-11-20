@@ -1,0 +1,51 @@
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card shadow">
+        <div class="card-body p-5">
+          <div class="text-center mb-4">
+            <i class="fab fa-docker fa-4x text-primary mb-3"></i>
+            <h2>Docker & K8s Learning</h2>
+            <p class="text-muted">Sign in to start your learning journey</p>
+          </div>
+
+          <!-- Google Login -->
+          <div class="d-grid mb-4">
+            <%= link_to "/auth/google_oauth2", class: 'btn btn-primary btn-lg' do %>
+              <i class="fab fa-google me-2"></i> Sign In with Google
+            <% end %>
+          </div>
+
+          <p class="text-center text-muted small mb-3">
+            Use your Google account to sign in securely
+          </p>
+
+          <div class="text-center mt-4">
+            <%= link_to root_path, class: 'text-decoration-none' do %>
+              <i class="fas fa-arrow-left"></i> Back to Home
+            <% end %>
+          </div>
+        </div>
+      </div>
+
+      <div class="text-center mt-4">
+        <p class="text-muted small">
+          <i class="fas fa-shield-alt"></i> 
+          Your data is secure with Google OAuth 2.0
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .card {
+    border: none;
+    border-radius: 15px;
+  }
+  
+  .btn-lg {
+    padding: 12px;
+    font-size: 1.1rem;
+  }
+</style>

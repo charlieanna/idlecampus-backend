@@ -1,0 +1,45 @@
+slug: lesson-97
+title: Lesson 97
+difficulty: easy
+sequence_order: 97
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Deployments: Rolling Updates and Rollbacks\n\
+  \n    Use Deployments to declaratively manage application updates.\n    - Strategies:\
+  \ RollingUpdate (maxSurge, maxUnavailable), Recreate\n    - Rollout operations:\
+  \ status, pause, resume, undo\n    - History and revisions"
+exercises:
+  - type: mcq
+    sequence_order: 1
+    question: "What is the primary advantage of the RollingUpdate strategy compared to the Recreate strategy in Kubernetes Deployments?"
+    options:
+      - "RollingUpdate is faster than Recreate"
+      - "RollingUpdate enables zero-downtime deployments by gradually replacing old pods with new ones"
+      - "RollingUpdate uses fewer resources than Recreate"
+      - "RollingUpdate automatically rolls back failed updates"
+    correct_answer: "RollingUpdate enables zero-downtime deployments by gradually replacing old pods with new ones"
+    explanation: "The RollingUpdate strategy is the default and most commonly used deployment strategy in Kubernetes because it enables zero-downtime updates. Instead of terminating all old pods at once (as Recreate does), RollingUpdate gradually replaces old pods with new ones, ensuring that some pods are always available to serve traffic. The process is controlled by maxSurge (how many pods above the desired count can exist during the update) and maxUnavailable (how many pods below the desired count can be unavailable during the update). For example, with 10 replicas, maxSurge: 1, and maxUnavailable: 1, Kubernetes might create 1 new pod, wait for it to be ready, then terminate 1 old pod, repeating until all pods are updated. This maintains service availability throughout the update. Recreate strategy, by contrast, terminates all old pods before creating new ones, causing downtime. RollingUpdate isn't necessarily faster or more resource-efficient (it temporarily uses more resources due to overlap), and it doesn't automatically roll back (you must manually trigger rollback). The key benefit is continuous availability during updates, critical for production services."
+    require_pass: true
+  - type: mcq
+    sequence_order: 2
+    question: "What do the maxSurge and maxUnavailable parameters control during a RollingUpdate deployment?"
+    options:
+      - "The maximum CPU and memory usage during updates"
+      - "The number of additional pods that can be created and the number of pods that can be unavailable during the update process"
+      - "The maximum number of deployments and services in the namespace"
+      - "The timeout values for pod startup and shutdown"
+    correct_answer: "The number of additional pods that can be created and the number of pods that can be unavailable during the update process"
+    explanation: "maxSurge and maxUnavailable are critical parameters that control the rolling update process in Kubernetes Deployments. maxSurge defines how many pods can exist above the desired replica count during an update - it can be an absolute number (e.g., 2) or a percentage (e.g., 25%). If you have 10 replicas and maxSurge: 2, Kubernetes can create up to 12 pods during the update. maxUnavailable defines how many pods can be unavailable (not ready) during the update - also as an absolute number or percentage. With maxUnavailable: 1, at most 1 pod can be down at any time during the update. These parameters balance update speed against resource usage and availability. High maxSurge speeds up updates but uses more resources temporarily. High maxUnavailable speeds up updates but reduces availability. Conservative settings like maxSurge: 1, maxUnavailable: 0 ensure maximum availability but slower updates. Aggressive settings like maxSurge: 50%, maxUnavailable: 50% enable faster updates with more risk. Understanding these parameters is essential for tuning deployment behavior to match your availability and resource requirements."
+    require_pass: true
+  - type: mcq
+    sequence_order: 3
+    question: "How do you rollback a Deployment to a previous revision in Kubernetes?"
+    options:
+      - "Delete the Deployment and recreate it with the old specification"
+      - "Use 'kubectl rollout undo deployment/<name>' to revert to the previous revision"
+      - "Manually edit each pod to use the old image"
+      - "Restart the cluster"
+    correct_answer: "Use 'kubectl rollout undo deployment/<name>' to revert to the previous revision"
+    explanation: "Kubernetes Deployments maintain a revision history that enables easy rollbacks to previous versions. When you update a Deployment, Kubernetes creates a new ReplicaSet for the new version while keeping old ReplicaSets (scaled to 0) for revision history. The 'kubectl rollout undo deployment/<name>' command rolls back to the previous revision by scaling up the previous ReplicaSet and scaling down the current one, using the same controlled rolling update process. You can also rollback to a specific revision using '--to-revision=<number>'. To view revision history, use 'kubectl rollout history deployment/<name>'. The number of revisions kept is controlled by the revisionHistoryLimit field (default 10). You can check rollout status with 'kubectl rollout status deployment/<name>' and pause/resume rollouts with 'kubectl rollout pause/resume'. This built-in rollback capability is crucial for production environments where you need to quickly revert problematic updates. The process is much safer and more controlled than deleting and recreating deployments (which would cause downtime) or manually editing pods (which would be overwritten by the Deployment controller anyway)."
+    require_pass: true

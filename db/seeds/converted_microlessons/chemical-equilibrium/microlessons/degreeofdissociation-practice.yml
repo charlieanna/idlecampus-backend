@@ -1,0 +1,58 @@
+slug: degreeofdissociation-practice
+title: degree_of_dissociation — Practice
+difficulty: medium
+sequence_order: 12
+estimated_minutes: 2
+key_concepts:
+- degree_of_dissociation
+prerequisites: []
+content_md: '# degree_of_dissociation — Practice 🚀
+
+
+  α = (moles dissociated)/(initial moles) = (2-0.5)/2 = 1.5/2 = 0.75 or 75%
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: If 2 moles of a substance dissociate and 0.5 moles remain undissociated at equilibrium, what is the degree of dissociation (α)?
+  options:
+  - '0.25'
+  - '0.50'
+  - '0.75'
+  - '1.00'
+  require_pass: true
+  correct_answer: '0.75'
+  explanation: 'The degree of dissociation α = 0.75 or 75%. The question can be interpreted as: starting with some initial amount where 2 moles worth dissociate and 0.5 remain. Initial moles = dissociated + remaining = 2 + 0.5 = 2.5 moles total. α = (moles dissociated)/(initial moles) = 2/2.5 = 0.8 = 80%. However, a more common interpretation is: we start with 2 moles initially, and at equilibrium 0.5 moles remain undissociated. Then: Moles dissociated = 2 - 0.5 = 1.5 moles. α = 1.5/2 = 0.75 or 75%. This matches the answer. The degree of dissociation (α) represents the fraction of initial substance that breaks down at equilibrium. It ranges from 0 (no dissociation) to 1 (complete dissociation). For weak electrolytes like acetic acid, α is typically 0.01-0.10, while strong acids/bases have α ≈ 1.'
+- type: mcq
+  sequence_order: 2
+  question: What does a degree of dissociation (α) of 1 indicate?
+  options:
+  - No dissociation occurred
+  - 50% dissociation
+  - Complete dissociation (100%)
+  - The reaction is at equilibrium
+  require_pass: true
+  correct_answer: Complete dissociation (100%)
+  explanation: 'A degree of dissociation (α) of 1 indicates complete or 100% dissociation. The degree of dissociation α is defined as the fraction of initial molecules that dissociate: α = (amount dissociated)/(initial amount). α ranges from 0 to 1: (1) α = 0 means no dissociation (strong electrolytes or very stable compounds), (2) α = 0.5 means 50% dissociation (moderate equilibrium), (3) α = 1 means 100% complete dissociation (strong acids/bases like HCl, NaOH in water). For weak acids/bases, α is typically small (0.01-0.10). Example: If 1 mole of acetic acid has α = 0.05, then 0.05 moles dissociate into H⁺ and CH₃COO⁻, leaving 0.95 moles undissociated. α is related to equilibrium constant: for weak acid HA ⇌ H⁺ + A⁻, Ka = Cα²/(1-α) when dissociation is small.'
+- type: mcq
+  sequence_order: 3
+  question: For the dissociation reaction N₂O₄ ⇌ 2NO₂, if α = 0.4 (40% dissociation) and initial concentration of N₂O₄ is 1 M, what is the equilibrium concentration of NO₂?
+  options:
+  - 0.4 M
+  - 0.6 M
+  - 0.8 M
+  - 1.6 M
+  require_pass: true
+  correct_answer: 0.8 M
+  explanation: 'The equilibrium concentration of NO₂ is 0.8 M. For N₂O₄ ⇌ 2NO₂ with initial [N₂O₄] = 1 M and α = 0.4: Amount of N₂O₄ dissociated = α × initial = 0.4 × 1 = 0.4 M. Since stoichiometry is 1:2, each mole of N₂O₄ produces 2 moles of NO₂. [NO₂] formed = 2 × 0.4 = 0.8 M. At equilibrium: [N₂O₄] = 1 - 0.4 = 0.6 M, [NO₂] = 0 + 0.8 = 0.8 M. We can verify using ICE table: Initial: [N₂O₄] = 1, [NO₂] = 0; Change: -0.4, +0.8; Equilibrium: 0.6, 0.8. The equilibrium constant Kc = [NO₂]²/[N₂O₄] = (0.8)²/0.6 = 0.64/0.6 = 1.07. Understanding the stoichiometric relationship is crucial: for aA ⇌ bB, if α amount of A dissociates, then b/a × α amount of B forms.'

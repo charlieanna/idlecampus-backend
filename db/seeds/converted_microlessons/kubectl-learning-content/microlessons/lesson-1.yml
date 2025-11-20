@@ -1,0 +1,155 @@
+slug: lesson-1
+title: Lesson 1
+difficulty: easy
+sequence_order: 1
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# RBAC & Cluster Operations\n\n      Implement\
+  \ role-based access control and perform essential cluster operations.\n\n      ##\
+  \ RBAC (Role-Based Access Control)\n\n      ### Viewing RBAC Resources\n\n     \
+  \ ```bash\n      # List roles (namespace-scoped)\n      kubectl get roles\n    \
+  \  kubectl get roles -A\n\n      # List cluster roles (cluster-wide)\n      kubectl\
+  \ get clusterroles\n\n      # List role bindings\n      kubectl get rolebindings\n\
+  \      kubectl get rolebindings -A\n\n      # List cluster role bindings\n     \
+  \ kubectl get clusterrolebindings\n\n      # Describe role\n      kubectl describe\
+  \ role pod-reader\n\n      # Describe cluster role\n      kubectl describe clusterrole\
+  \ admin\n      ```\n\n      ### Creating RBAC Resources\n\n      ```bash\n     \
+  \ # Create role\n      kubectl create role pod-reader --verb=get,list,watch --resource=pods\n\
+  \n      # Create cluster role\n      kubectl create clusterrole deployment-manager\
+  \ --verb=get,list,create,delete --resource=deployments\n\n      # Create role binding\n\
+  \      kubectl create rolebinding read-pods --role=pod-reader --user=john\n\n  \
+  \    # Create cluster role binding\n      kubectl create clusterrolebinding cluster-admin-binding\
+  \ --clusterrole=cluster-admin --user=admin\n      ```\n\n      ### Testing Permissions\n\
+  \n      ```bash\n      # Check if you can perform action\n      kubectl auth can-i\
+  \ create pods\n      kubectl auth can-i delete deployments\n\n      # Check for\
+  \ specific user\n      kubectl auth can-i create pods --as=john\n      kubectl auth\
+  \ can-i delete deployments --as=john --namespace=production\n\n      # List all\
+  \ permissions\n      kubectl auth can-i --list\n      kubectl auth can-i --list\
+  \ --as=john\n      ```\n\n      ### Service Accounts\n\n      ```bash\n      # List\
+  \ service accounts\n      kubectl get serviceaccounts\n      kubectl get sa\n\n\
+  \      # Create service account\n      kubectl create serviceaccount my-app\n\n\
+  \      # Describe service account\n      kubectl describe sa my-app\n\n      # Get\
+  \ service account token\n      kubectl create token my-app\n\n      # Create pod\
+  \ using service account\n      # spec:\n      #   serviceAccountName: my-app\n \
+  \     ```\n\n      ## Node Management\n\n      ### Viewing Nodes\n\n      ```bash\n\
+  \      # List nodes\n      kubectl get nodes\n\n      # List nodes with details\n\
+  \      kubectl get nodes -o wide\n\n      # Describe node\n      kubectl describe\
+  \ node my-node\n\n      # Get node YAML\n      kubectl get node my-node -o yaml\n\
+  \n      # Check node conditions\n      kubectl get nodes -o jsonpath='{range .items[*]}{.metadata.name}{\"\
+  \\t\"}{.status.conditions[?(@.type==\"Ready\")].status}{\"\\n\"}{end}'\n      ```\n\
+  \n      ### Node Maintenance\n\n      ```bash\n      # Mark node unschedulable (cordon)\n\
+  \      kubectl cordon my-node\n\n      # Mark node schedulable (uncordon)\n    \
+  \  kubectl uncordon my-node\n\n      # Drain node (evict pods before maintenance)\n\
+  \      kubectl drain my-node --ignore-daemonsets --delete-emptydir-data\n\n    \
+  \  # Drain with grace period\n      kubectl drain my-node --ignore-daemonsets --force\
+  \ --grace-period=30\n\n      # Taint node\n      kubectl taint nodes my-node key=value:NoSchedule\n\
+  \n      # Remove taint\n      kubectl taint nodes my-node key=value:NoSchedule-\n\
+  \n      # Label node\n      kubectl label nodes my-node disktype=ssd\n\n      #\
+  \ Remove label\n      kubectl label nodes my-node disktype-\n      ```\n\n     \
+  \ ## Cluster Operations\n\n      ### Namespaces\n\n      ```bash\n      # List namespaces\n\
+  \      kubectl get namespaces\n      kubectl get ns\n\n      # Create namespace\n\
+  \      kubectl create namespace production\n\n      # Delete namespace (deletes\
+  \ all resources)\n      kubectl delete namespace production\n\n      # Set default\
+  \ namespace\n      kubectl config set-context --current --namespace=production\n\
+  \n      # Get current namespace\n      kubectl config view --minify --output 'jsonpath={..namespace}'\n\
+  \      ```\n\n      ### Context Management\n\n      ```bash\n      # List contexts\n\
+  \      kubectl config get-contexts\n\n      # Get current context\n      kubectl\
+  \ config current-context\n\n      # Switch context\n      kubectl config use-context\
+  \ my-cluster\n\n      # Create context\n      kubectl config set-context dev --cluster=my-cluster\
+  \ --user=developer --namespace=development\n\n      # Delete context\n      kubectl\
+  \ config delete-context dev\n      ```\n\n      ### Resource Management\n\n    \
+  \  ```bash\n      # Apply multiple files\n      kubectl apply -f ./configs/\n\n\
+  \      # Apply with recursive directory scan\n      kubectl apply -f ./configs/\
+  \ --recursive\n\n      # Delete resources by file\n      kubectl delete -f deployment.yaml\n\
+  \n      # Delete all resources of type\n      kubectl delete pods --all\n      kubectl\
+  \ delete deployments --all -n production\n\n      # Delete by label\n      kubectl\
+  \ delete pods -l app=nginx\n\n      # Dry run (test without applying)\n      kubectl\
+  \ apply -f deployment.yaml --dry-run=client\n\n      # Server-side dry run\n   \
+  \   kubectl apply -f deployment.yaml --dry-run=server\n      ```\n\n      ### Backup\
+  \ & Recovery\n\n      ```bash\n      # Export all resources\n      kubectl get all\
+  \ --all-namespaces -o yaml > cluster-backup.yaml\n\n      # Backup specific namespace\n\
+  \      kubectl get all -n production -o yaml > production-backup.yaml\n\n      #\
+  \ Backup etcd (requires etcd access)\n      ETCDCTL_API=3 etcdctl snapshot save\
+  \ backup.db \\\\\n        --endpoints=https://127.0.0.1:2379 \\\\\n        --cacert=/etc/kubernetes/pki/etcd/ca.crt\
+  \ \\\\\n        --cert=/etc/kubernetes/pki/etcd/server.crt \\\\\n        --key=/etc/kubernetes/pki/etcd/server.key\n\
+  \n      # Verify etcd backup\n      ETCDCTL_API=3 etcdctl snapshot status backup.db\
+  \ --write-out=table\n\n      # Restore etcd\n      ETCDCTL_API=3 etcdctl snapshot\
+  \ restore backup.db --data-dir=/var/lib/etcd-restore\n      ```\n\n      ### Cluster\
+  \ Info\n\n      ```bash\n      # Cluster information\n      kubectl cluster-info\n\
+  \n      # Version information\n      kubectl version\n\n      # API server address\n\
+  \      kubectl cluster-info | grep 'Kubernetes control plane'\n\n      # Get cluster-wide\
+  \ resources\n      kubectl get all --all-namespaces\n\n      # Check cluster health\n\
+  \      kubectl get componentstatuses\n      kubectl get cs\n      ```\n\n      ###\
+  \ Security Contexts\n\n      ```bash\n      # View pod security context\n      kubectl\
+  \ get pod my-pod -o jsonpath='{.spec.securityContext}'\n\n      # View container\
+  \ security context\n      kubectl get pod my-pod -o jsonpath='{.spec.containers[*].securityContext}'\n\
+  \n      # Check if pod runs as root\n      kubectl get pod my-pod -o jsonpath='{.spec.containers[*].securityContext.runAsUser}'\n\
+  \      ```\n\n      ### Admission Controllers\n\n      ```bash\n      # Check enabled\
+  \ admission controllers (requires API server access)\n      kubectl exec -n kube-system\
+  \ kube-apiserver-master -- kube-apiserver --help | grep enable-admission-plugins\n\
+  \n      # View pod security admission labels\n      kubectl get ns my-namespace\
+  \ -o jsonpath='{.metadata.labels}'\n\n      # Add pod security standard to namespace\n\
+  \      kubectl label namespace production pod-security.kubernetes.io/enforce=restricted\n\
+  \      ```\n\n      Practice security and operations in the labs!"
+exercises:
+- type: terminal
+  sequence_order: 1
+  command: kubectl auth can-i list pods
+  description: Check current user permissions for listing pods.
+  hints:
+  - Use kubectl auth can-i ...
+  - 'Try specifying a namespace if needed: -n default'
+  validation:
+    must_not_include:
+    - 'error:'
+  timeout_sec: 20
+  require_pass: true
+- type: sandbox
+  sequence_order: 99
+  hints:
+  - Run under CPU pressure to surface leaks or races
+  - Keep commands idempotent in CI
+  validation:
+    must_not_include:
+    - Error
+    - 'panic:'
+  timeout_sec: 60
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: Which command lists cluster-wide roles?
+  options:
+  - kubectl get clusterroles
+  - kubectl get roles -A
+  - kubectl describe clusterrolebinding
+  - kubectl auth can-i --list
+  require_pass: true
+  correct_answer: kubectl get clusterroles
+  explanation: 'The command `kubectl get clusterroles` lists cluster-wide roles in
+    Kubernetes RBAC (Role-Based Access Control). Understanding the distinction: **ClusterRoles**
+    are cluster-scoped resources that define permissions across the entire cluster
+    or multiple namespaces. They can grant access to: cluster-scoped resources (nodes,
+    persistent volumes), non-resource URLs (/healthz), namespaced resources across
+    all namespaces. Examples: cluster-admin, view, edit. **Roles** (regular roles)
+    are namespace-scoped and only grant permissions within a single namespace. The
+    command `kubectl get roles -A` lists all namespace-scoped roles across all namespaces
+    (the -A flag), NOT cluster roles. The difference is important: ClusterRoles are
+    defined once for the whole cluster; Roles are defined per namespace. To actually
+    grant these permissions, you use RoleBindings (namespace-scoped) or ClusterRoleBindings
+    (cluster-scoped). Common ClusterRoles: cluster-admin (superuser), admin, edit,
+    view. Use `kubectl describe clusterrole <name>` to see permissions.'
+- type: code
+  sequence_order: 3
+  hints:
+  - Ensure apiVersion/kind/metadata/spec are set
+  - Container must expose port 80
+  - Use a stable nginx image tag
+  require_pass: true
+- type: code
+  sequence_order: 4
+  hints:
+  - apps/v1 Deployment with selector matching template.labels
+  - Set replicas >= 2
+  - Expose port 80
+  require_pass: true

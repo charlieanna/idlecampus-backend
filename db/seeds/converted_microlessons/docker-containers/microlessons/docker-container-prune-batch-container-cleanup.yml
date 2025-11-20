@@ -1,0 +1,68 @@
+slug: docker-container-prune-batch-container-cleanup
+title: 'Docker Container Prune: Batch Container Cleanup'
+difficulty: easy
+sequence_order: 3
+estimated_minutes: 2
+key_concepts:
+- containers
+- cleanup
+- docker-prune
+- maintenance
+- disk-space
+prerequisites: []
+content_md: "# Docker Container Prune: Batch Container Cleanup \U0001F680\n\n# Mastering\
+  \ docker container prune: Efficient Container Cleanup\n\n    ## What is docker container\
+  \ prune?\n    `docker container prune` removes all stopped containers in a single\
+  \ command. It's the modern, efficient way to clean up your Docker environment without\
+  \ manually removing containers one by one.\n\n    ## Why Batch Cleanup Matters\n\
+  \    - **Efficiency**: Clean dozens of containers with one command\n    - **Disk\
+  \ Space**: Reclaim significant storage quickly\n    - **Automation**: Perfect for\
+  \ CI/CD cleanup scripts\n    - **Safety**: Only removes stopped containers (running\
+  \ ones are protected)\n\n    ## Common Use Cases\n\n    ### Remove All Stopped Containers\n\
+  \    ```bash\n    docker container prune -f\n    ```\n\n    ### Filter by Time\n\
+  \    ```bash\n    docker container prune --filter \"until=24h\"\n    ```\n\n   \
+  \ ### Safety Features\n    The command prompts for confirmation unless you use `-f`\
+  \ flag.\n\n    ## Best Practices\n    1. Schedule regular cleanup via cron\n   \
+  \ 2. Use filters wisely\n    3. Label containers for selective cleanup\n    4. Test\
+  \ in dev first\n\n## Syntax/Command\n\n```bash\ndocker container prune\n```\n\n\
+  ## Example\n\n```bash\ndocker container prune -f\n```\n\n## Key Points\n\n- Basic\
+  \ prune: docker container prune (with confirmation)\n\n- Force prune: docker container\
+  \ prune -f\n\n- Age filter: docker container prune --filter \"until=24h\""
+exercises:
+- type: terminal
+  problem_statement: Remove all stopped containers using docker container prune command
+  expected_output: Confirmation message showing deleted containers and reclaimed space
+  language: bash
+  starter_code: "# Clean up stopped containers\n"
+  sequence_order: 1
+  command: docker container prune
+  description: Remove all stopped containers older than 48 hours without confirmation
+    prompts
+  validation:
+    must_not_include:
+    - Error
+    - permission denied
+  timeout_sec: 30
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What does docker container prune remove by default?
+  options:
+  - All stopped containers only, running containers are protected
+  - All containers including running ones
+  - All containers and all images
+  - Only containers older than 24 hours
+  correct_answer: All stopped containers only, running containers are protected
+  explanation: "docker container prune removes only stopped containers by default, protecting running containers from accidental deletion. Use -f to skip the confirmation prompt."
+- type: sandbox
+  sequence_order: 3
+  hints:
+  - Ensure no running containers are affected
+  - Use -f to skip confirmation
+  - Run as a safe cleanup in CI
+  validation:
+    must_not_include:
+    - Error
+    - 'panic:'
+  timeout_sec: 60
+  require_pass: true

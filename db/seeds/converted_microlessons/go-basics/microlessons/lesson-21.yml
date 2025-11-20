@@ -1,0 +1,79 @@
+slug: lesson-21
+title: Lesson 21
+difficulty: easy
+sequence_order: 21
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Concurrency vs Parallelism\n\n    ## The\
+  \ Difference\n\n    **Concurrency** is about *dealing with* many things at once.\n\
+  \    **Parallelism** is about *doing* many things at once.\n\n    ### Concurrency\n\
+  \    - **Structure**: How you organize your program\n    - **Composition**: Breaking\
+  \ down problems into independently executing tasks\n    - **Can run on**: Single\
+  \ or multiple cores\n    - **Example**: A juggler juggling multiple balls (one person,\
+  \ multiple tasks)\n\n    ### Parallelism\n    - **Execution**: Actually running\
+  \ multiple tasks simultaneously\n    - **Performance**: Doing multiple computations\
+  \ at the same time\n    - **Requires**: Multiple cores/processors\n    - **Example**:\
+  \ Multiple jugglers each juggling their own balls\n\n    ## Why Go Excels at Concurrency\n\
+  \n    Go was designed from the ground up with concurrency in mind:\n\n    1. **Goroutines**:\
+  \ Lightweight threads managed by Go runtime\n    2. **Channels**: Safe communication\
+  \ between goroutines\n    3. **Select Statement**: Multiplexing channel operations\n\
+  \    4. **Race Detector**: Built-in tool to find race conditions\n    5. **Sync\
+  \ Package**: Primitives for synchronization\n\n    ## Real-World Analogy\n\n   \
+  \ Think of a restaurant:\n\n    ### Concurrent (Single Chef, Multiple Orders)\n\
+  \    ```\n    Chef starts cooking Order 1 → While waiting for pasta to boil\n  \
+  \  → Starts chopping vegetables for Order 2\n    → Pasta done, back to Order 1\n\
+  \    → Continues Order 2\n    ```\n    One chef handling multiple orders by switching\
+  \ between them.\n\n    ### Parallel (Multiple Chefs, Multiple Orders)\n    ```\n\
+  \    Chef 1: Cooking Order 1\n    Chef 2: Cooking Order 2\n    Chef 3: Cooking Order\
+  \ 3\n    (All at the same time)\n    ```\n    Multiple chefs working simultaneously.\n\
+  \n    ## Go's Concurrency Model: CSP\n\n    Go uses **Communicating Sequential Processes\
+  \ (CSP)**:\n\n    > \"Don't communicate by sharing memory; share memory by communicating.\"\
+  \n\n    Instead of:\n    ```go\n    // BAD: Sharing memory (requires locks)\n  \
+  \  var counter int\n    var mutex sync.Mutex\n\n    mutex.Lock()\n    counter++\n\
+  \    mutex.Unlock()\n    ```\n\n    Do this:\n    ```go\n    // GOOD: Communicating\
+  \ via channels\n    counterChan := make(chan int)\n\n    go func() {\n        counter\
+  \ := 0\n        for {\n            counter++\n            counterChan <- counter\n\
+  \        }\n    }()\n\n    value := <-counterChan  // Receive from channel\n   \
+  \ ```\n\n    ## Performance Characteristics\n\n    ### Goroutines vs OS Threads\n\
+  \n    | Feature | Goroutines | OS Threads |\n    |---------|------------|------------|\n\
+  \    | Memory | 2 KB initial stack | 1-2 MB stack |\n    | Creation | Fast (~microseconds)\
+  \ | Slow (~milliseconds) |\n    | Context Switch | Cheap | Expensive |\n    | Max\
+  \ Number | Millions | Thousands |\n    | Managed By | Go runtime | OS kernel |\n\
+  \n    ### Example: 1 Million Goroutines\n\n    ```go\n    package main\n\n    import\
+  \ (\n        \"fmt\"\n        \"runtime\"\n        \"time\"\n    )\n\n    func main()\
+  \ {\n        fmt.Printf(\"Starting goroutines: %d\\\\n\", runtime.NumGoroutine())\n\
+  \n        for i := 0; i < 1000000; i++ {\n            go func() {\n            \
+  \    time.Sleep(10 * time.Second)\n            }()\n        }\n\n        time.Sleep(1\
+  \ * time.Second)\n        fmt.Printf(\"Active goroutines: %d\\\\n\", runtime.NumGoroutine())\n\
+  \        // Output: Active goroutines: 1000001\n        // Memory used: ~2 GB (very\
+  \ efficient!)\n    }\n    ```\n\n    ## Key Takeaways\n\n    1. **Concurrency**\
+  \ = Structure (composition of independently executing tasks)\n    2. **Parallelism**\
+  \ = Execution (simultaneous execution on multiple cores)\n    3. Go makes concurrent\
+  \ programming **simple and safe**\n    4. Goroutines are **extremely lightweight**\
+  \ compared to threads\n    5. Use **channels** to communicate between goroutines\n\
+  \    6. Go's philosophy: **\"Share memory by communicating\"**\n\n    Next, we'll\
+  \ dive deep into goroutines!"
+exercises:
+  - type: mcq
+    sequence_order: 1
+    question: "What is the key difference between concurrency and parallelism?"
+    options:
+      - "They are the same thing"
+      - "Concurrency is about dealing with many things at once; parallelism is doing many things at once"
+      - "Parallelism is software, concurrency is hardware"
+      - "Concurrency is faster than parallelism"
+    correct_answer: "Concurrency is about dealing with many things at once; parallelism is doing many things at once"
+    explanation: "Concurrency and parallelism are different concepts. Concurrency is about structure - how you compose your program to handle multiple tasks. Parallelism is about execution - actually running multiple tasks simultaneously. Think of it this way:\n\n**Concurrency (one person, multiple tasks):**\nA chef starts cooking pasta, while it boils they chop vegetables, then back to pasta. One person handling multiple tasks by switching between them.\n\n**Parallelism (multiple people, multiple tasks):**\nChef 1 cooks pasta, Chef 2 chops vegetables, Chef 3 prepares sauce - all at the same time.\n\n```go\n// Concurrent program structure\ngo taskA()  // Can run on single core\ngo taskB()  // Scheduler switches between them\n\n// Parallel execution\n// Same program runs on 4 cores simultaneously\nruntime.GOMAXPROCS(4)\n```\n\nConcurrent programs can run on single or multiple cores. Parallel execution requires multiple cores. Go's concurrency primitives (goroutines, channels) make it easy to write concurrent code that the runtime can execute in parallel when multiple cores are available."
+    require_pass: true
+  - type: mcq
+    sequence_order: 2
+    question: "What makes goroutines more efficient than OS threads?"
+    options:
+      - "Goroutines use less memory and are faster to create"
+      - "Goroutines are written in assembly language"
+      - "Goroutines can only run on one core"
+      - "OS threads are deprecated"
+    correct_answer: "Goroutines use less memory and are faster to create"
+    explanation: "Goroutines are significantly more efficient than OS threads in several ways: (1) **Memory**: Goroutines start with 2KB stack vs 1-2MB for OS threads, (2) **Creation**: Creating goroutines takes microseconds vs milliseconds for threads, (3) **Context switching**: Goroutine switches happen in user space (cheaper) vs kernel space for threads, (4) **Scalability**: You can run millions of goroutines vs thousands of threads.\n\n```go\n// Goroutines: Lightweight\nfor i := 0; i < 1000000; i++ {\n    go func() {\n        time.Sleep(10 * time.Second)\n    }()\n}\n// Memory used: ~2GB for 1M goroutines\n// All created in milliseconds\n```\n\nThis efficiency comes from Go's runtime scheduler, which multiplexes many goroutines onto a small number of OS threads. The scheduler is optimized for Go's workloads and can make intelligent decisions about when to context switch. This makes concurrent programming practical and performant in Go, enabling patterns that would be prohibitively expensive with OS threads."
+    require_pass: true

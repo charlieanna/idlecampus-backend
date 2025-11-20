@@ -1,0 +1,59 @@
+slug: cationgroups-practice
+title: cation_groups — Practice
+difficulty: medium
+sequence_order: 6
+estimated_minutes: 2
+key_concepts:
+- cation_groups
+prerequisites: []
+content_md: '# cation_groups — Practice 🚀
+
+
+  Group II includes cations precipitated by H₂S in acidic medium: Hg²⁺, Cu²⁺, Cd²⁺,
+  Bi³⁺, As³⁺, Sb³⁺, Sn²⁺. Zn²⁺ is Group IV, Pb²⁺ is Group I.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: Which of the following cations belong to Group II?
+  options:
+  - Hg²⁺, Cu²⁺, Cd²⁺
+  - Zn²⁺, Ni²⁺, Co²⁺
+  - Pb²⁺, Ag⁺, Hg₂²⁺
+  - Fe³⁺, Al³⁺, Cr³⁺
+  correct_answer: Hg²⁺, Cu²⁺, Cd²⁺
+  explanation: "Group II includes cations precipitated by H₂S in acidic medium: Hg²⁺, Cu²⁺, Cd²⁺, Bi³⁺, As³⁺, Sb³⁺, Sn²⁺. Group I has Pb²⁺, Ag⁺, Hg₂²⁺ (precipitated by dil HCl). Group IV has Zn²⁺, Ni²⁺, Co²⁺, Mn²⁺ (precipitated by H₂S in basic medium). Group III has Fe³⁺, Al³⁺, Cr³⁺ (precipitated by NH₄OH)."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: Which group reagent is used to precipitate Group I cations?
+  options:
+  - Dilute HCl
+  - H₂S in acidic medium
+  - H₂S in basic medium
+  - NH₄OH + NH₄Cl
+  correct_answer: Dilute HCl
+  explanation: "Group I cations (Pb²⁺, Ag⁺, Hg₂²⁺) are precipitated by dilute HCl as insoluble chlorides: PbCl₂ (white), AgCl (white), Hg₂Cl₂ (white). This is the first step in systematic qualitative analysis of cations."
+  require_pass: false
+- type: mcq
+  sequence_order: 3
+  question: Group III cations are precipitated by
+  options:
+  - H₂S in acidic medium
+  - NH₄OH in presence of NH₄Cl
+  - H₂S in basic medium
+  - (NH₄)₂CO₃
+  correct_answer: NH₄OH in presence of NH₄Cl
+  explanation: "Group III cations (Fe³⁺, Al³⁺, Cr³⁺) are precipitated as hydroxides by NH₄OH in the presence of NH₄Cl. NH₄Cl prevents precipitation of Group IV by suppressing [OH⁻] through common ion effect. The hydroxides formed are: Fe(OH)₃ (reddish brown), Al(OH)₃ (white), Cr(OH)₃ (green)."
+  require_pass: false

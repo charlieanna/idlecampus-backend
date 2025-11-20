@@ -1,0 +1,83 @@
+slug: lesson-112
+title: Lesson 112
+difficulty: easy
+sequence_order: 112
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Distributed Tracing Basics\n\n    - Trace\
+  \ context propagation\n    - OpenTelemetry instrumentation\n    - Visualizing traces\
+  \ in Jaeger/Grafana Tempo"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What is the purpose of trace context propagation in distributed tracing?
+  options:
+  - To improve application performance
+  - To pass trace identifiers between services so requests can be tracked across service
+    boundaries
+  - To encrypt data transmitted between services
+  - To load balance requests across multiple instances
+  correct_answer: To pass trace identifiers between services so requests can be tracked
+    across service boundaries
+  explanation: 'Trace context propagation is the mechanism of passing trace identifiers
+    (trace ID, span ID, parent span ID) between services as a request flows through
+    a distributed system. This enables you to reconstruct the complete path and timing
+    of a request across multiple microservices. When a request enters your system,
+    a unique trace ID is generated. As the request calls different services, each
+    service creates a span (a unit of work) with its own span ID but maintains the
+    same trace ID. These identifiers are propagated via HTTP headers (like ''traceparent''
+    in W3C Trace Context standard), gRPC metadata, or message queue headers. For example,
+    when Service A calls Service B, it includes headers like ''traceparent: 00-trace-id-span-id-01''.
+    Service B extracts these, creates a child span, and continues propagation to Service
+    C. Without propagation, each service would have isolated traces with no way to
+    correlate them. OpenTelemetry standardizes this process, providing automatic instrumentation
+    libraries that inject and extract trace context transparently. The propagated
+    context enables powerful capabilities: end-to-end latency analysis, identifying
+    which service is slow, understanding failure cascades, and visualizing request
+    flow in tools like Jaeger or Grafana Tempo. Best practices include using standardized
+    formats (W3C Trace Context), instrumenting all services consistently, and including
+    business context like user IDs alongside trace data.'
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What is OpenTelemetry's role in distributed tracing?
+  options:
+  - It is a specific tracing backend like Jaeger or Zipkin
+  - It provides vendor-neutral APIs and instrumentation for collecting traces, metrics,
+    and logs
+  - It is a Kubernetes-specific monitoring tool
+  - It only works with Prometheus metrics
+  correct_answer: It provides vendor-neutral APIs and instrumentation for collecting
+    traces, metrics, and logs
+  explanation: 'OpenTelemetry (OTel) is a vendor-neutral, open-source observability
+    framework that provides standardized APIs, SDKs, and instrumentation libraries
+    for collecting telemetry data (traces, metrics, and logs) from applications. It
+    solves the problem of vendor lock-in by providing a single instrumentation layer
+    that can export to multiple backends like Jaeger, Zipkin, Grafana Tempo, Datadog,
+    or New Relic. Instead of instrumenting your code differently for each vendor,
+    you use OpenTelemetry once and configure the exporter to send data wherever you
+    want. OTel consists of several components: APIs for creating traces/metrics/logs,
+    SDKs implementing the APIs for various languages (Java, Python, Go, JavaScript,
+    etc.), automatic instrumentation libraries that add tracing without code changes
+    (via agents or middleware), and the OpenTelemetry Collector for receiving, processing,
+    and exporting telemetry. For example, in a Python application, you''d install
+    the opentelemetry-api and opentelemetry-sdk packages, configure auto-instrumentation
+    for frameworks like Flask or Django, and set an exporter to send traces to Jaeger.
+    The beauty is that switching from Jaeger to Tempo only requires changing the exporter
+    configuration, not the application code. OpenTelemetry has become the industry
+    standard, merging the best of OpenTracing and OpenCensus projects, and is a CNCF
+    graduated project with broad adoption.'
+  require_pass: true
+- type: mcq
+  sequence_order: 1
+  question: What kubectl command checks if you can perform an action?
+  options:
+  - kubectl auth can-i create pods
+  - kubectl check permissions create pods
+  - kubectl verify action create pods
+  - kubectl test auth create pods
+  correct_answer_index: 0
+  explanation: kubectl auth can-i <action> <resource> checks if the current user has
+    permission to perform the specified action.
+  require_pass: true

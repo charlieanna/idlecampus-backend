@@ -1,0 +1,634 @@
+<div class="lab-overlay" id="labOverlay">
+  <div class="lab-modal">
+    <!-- Header -->
+    <div class="lab-header">
+      <div class="lab-badge">
+        <span class="badge-icon">🔧</span>
+        <span class="badge-text">
+          <%= content[:type] == 'comprehensive_lab' ? 'Comprehensive Lab' : 'Hands-On Lab' %>
+        </span>
+      </div>
+      <button class="skip-button" id="skipLabBtn" title="Skip for now">
+        Skip
+      </button>
+    </div>
+
+    <!-- Lab Title -->
+    <h2 class="lab-title-modal">
+      <%= content[:content][:title] %>
+    </h2>
+
+    <!-- Scenario Box -->
+    <% if content[:content][:scenario].present? %>
+      <div class="lab-scenario-box">
+        <div class="scenario-icon">📖</div>
+        <div class="scenario-content">
+          <h4>Scenario</h4>
+          <p><%= content[:content][:scenario] %></p>
+        </div>
+      </div>
+    <% elsif content[:content][:description].present? %>
+      <div class="lab-scenario-box">
+        <div class="scenario-icon">📖</div>
+        <div class="scenario-content">
+          <h4>About This Lab</h4>
+          <p><%= content[:content][:description] %></p>
+        </div>
+      </div>
+    <% end %>
+
+    <!-- Objectives -->
+    <% if content[:content][:objectives].present? %>
+      <div class="lab-objectives-section">
+        <div class="objectives-header">
+          <span class="objectives-icon">🎯</span>
+          <h4>What You'll Learn</h4>
+        </div>
+        <div class="objectives-content">
+          <% if content[:content][:objectives].is_a?(Array) && content[:content][:objectives].length > 1 %>
+            <ul class="objectives-list-simple">
+              <% content[:content][:objectives].each do |objective| %>
+                <li><%= objective %></li>
+              <% end %>
+            </ul>
+          <% else %>
+            <p class="objectives-text">
+              <%= content[:content][:objectives].is_a?(Array) ? content[:content][:objectives].join('. ') : content[:content][:objectives] %>
+            </p>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+
+    <!-- Current Step (for multi-step labs) -->
+    <% if content[:content][:current_instruction].present? %>
+      <div class="current-step-box">
+        <div class="current-step-header">
+          <span class="step-icon">🧭</span>
+          <h4>Current Step <span class="step-count">(1 of <%= content[:metadata][:step_count] %>)</span></h4>
+        </div>
+        <div class="current-instruction"><%= content[:content][:current_instruction] %></div>
+      </div>
+    <% end %>
+
+    <!-- Terminal -->
+    <div class="terminal-section">
+      <div class="terminal-header">
+        <div class="terminal-controls">
+          <span class="terminal-dot red"></span>
+          <span class="terminal-dot yellow"></span>
+          <span class="terminal-dot green"></span>
+        </div>
+        <div class="terminal-title">Docker Terminal</div>
+        <div class="terminal-actions">
+          <span class="terminal-status"><span class="status-dot"></span> Lab environment ready</span>
+        </div>
+      </div>
+
+      <div class="terminal-body interactive-terminal" id="labTerminal" tabindex="0">
+        <div class="terminal-input-line" id="terminalInputLine">
+          <span class="terminal-prompt">root@docker:~$</span>
+          <input type="text"
+                 class="terminal-inline-input"
+                 id="terminalDirectInput"
+                 autocomplete="off"
+                 spellcheck="false"
+                 placeholder="Type a command and press Enter">
+          <span class="terminal-cursor">_</span>
+        </div>
+        <div class="terminal-output" id="terminalOutput"></div>
+      </div>
+    </div>
+
+    <!-- Feedback Area -->
+    <div id="labFeedback" class="lab-feedback"></div>
+
+    <!-- Input Hint -->
+    <div class="input-hint-text">
+      Press <kbd>Enter</kbd> to run command or <kbd>Esc</kbd> to skip
+    </div>
+  </div>
+</div>
+
+<style>
+/* Lab Modal Overlay */
+.lab-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(8px);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Lab Modal Container (wider than review modal) */
+.lab-modal {
+  background: white;
+  border-radius: 20px;
+  max-width: 900px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Header */
+.lab-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 25px 30px;
+  border-bottom: 2px solid #e8e8e8;
+  background: linear-gradient(135deg, #f5f7fa 0%, #e8f0f8 100%);
+  border-radius: 20px 20px 0 0;
+}
+
+.lab-badge {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 20px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 50px;
+  color: white;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.badge-icon {
+  font-size: 1.3rem;
+}
+
+.skip-button {
+  padding: 10px 20px;
+  background: white;
+  border: 2px solid #e8e8e8;
+  border-radius: 8px;
+  color: #7f8c8d;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.skip-button:hover {
+  border-color: #ff6b6b;
+  color: #ff6b6b;
+  transform: translateY(-2px);
+}
+
+/* Lab Content */
+.lab-title-modal {
+  padding: 25px 30px;
+  margin: 0;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #2c3e50;
+}
+
+.lab-scenario-box {
+  margin: 0 30px 20px;
+  padding: 20px;
+  background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+  border-radius: 12px;
+  display: flex;
+  gap: 15px;
+}
+
+.scenario-icon {
+  font-size: 2rem;
+  flex-shrink: 0;
+}
+
+.scenario-content h4 {
+  margin: 0 0 8px 0;
+  color: #2c3e50;
+  font-size: 1.1rem;
+}
+
+.scenario-content p {
+  margin: 0;
+  color: #34495e;
+  line-height: 1.6;
+}
+
+.lab-objectives-section {
+  margin: 0 30px 20px;
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 12px;
+}
+
+.objectives-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.objectives-icon {
+  font-size: 1.3rem;
+}
+
+.objectives-header h4 {
+  margin: 0;
+  color: #2c3e50;
+}
+
+.objectives-list-simple {
+  margin: 0;
+  padding-left: 20px;
+  color: #34495e;
+  line-height: 1.8;
+}
+
+.objectives-text {
+  margin: 0;
+  color: #34495e;
+  line-height: 1.8;
+}
+
+.current-step-box {
+  margin: 0 30px 20px;
+  padding: 20px;
+  background: #fff;
+  border: 2px solid #667eea;
+  border-radius: 12px;
+}
+
+.current-step-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.step-icon {
+  font-size: 1.4rem;
+}
+
+.current-step-header h4 {
+  margin: 0;
+  color: #2c3e50;
+}
+
+.step-count {
+  font-weight: 600;
+  color: #667eea;
+}
+
+.current-instruction {
+  font-size: 1.05rem;
+  color: #2c3e50;
+  line-height: 1.6;
+}
+
+/* Terminal */
+.terminal-section {
+  margin: 0 30px 20px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.06);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+  background: #0b1220;
+}
+
+.terminal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  background: #0f172a;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.terminal-controls {
+  display: flex;
+  gap: 8px;
+}
+
+.terminal-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.terminal-dot.red { background: #ff5f56; }
+.terminal-dot.yellow { background: #ffbd2e; }
+.terminal-dot.green { background: #27c93f; }
+
+.terminal-title {
+  font-size: 0.8rem;
+  color: #9ca3af;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+.terminal-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #9ca3af;
+  font-size: 0.8rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+.status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 0 2px rgba(34,197,94,0.15);
+}
+
+.terminal-body {
+  display: flex;
+  flex-direction: column;
+  height: 250px;
+  background: #0b1220;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.95rem;
+  color: #e5e7eb;
+  cursor: text;
+}
+
+.terminal-input-line {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  background: transparent;
+}
+
+.terminal-prompt {
+  color: #22c55e;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.terminal-inline-input {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #e5e7eb;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.95rem;
+  flex: 1;
+  width: 100%;
+  caret-color: #e5e7eb;
+}
+
+.terminal-inline-input::placeholder {
+  color: #6b7280;
+  font-style: italic;
+}
+
+.terminal-cursor {
+  border-left: 2px solid #e5e7eb;
+  animation: blink 1s infinite;
+  height: 1.1em;
+}
+
+@keyframes blink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+.terminal-output {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px 18px;
+}
+
+.terminal-output::-webkit-scrollbar {
+  width: 8px;
+}
+
+.terminal-output::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.12);
+  border-radius: 4px;
+}
+
+.command-history {
+  margin-bottom: 5px;
+  color: #888;
+}
+
+.command-history .prompt {
+  color: #22c55e;
+  font-weight: 600;
+}
+
+.command-history .cmd {
+  color: #e5e7eb;
+}
+
+.command-output {
+  color: #e0e0e0;
+  margin-left: 20px;
+  margin-bottom: 10px;
+  white-space: pre-wrap;
+}
+
+.command-error {
+  color: #ff6b6b;
+  margin-left: 20px;
+  margin-bottom: 10px;
+}
+
+.command-success {
+  color: #51cf66;
+  margin-left: 20px;
+  margin-bottom: 10px;
+}
+
+/* Feedback */
+.lab-feedback {
+  margin: 0 30px 20px;
+  padding: 15px;
+  border-radius: 8px;
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.feedback-message {
+  padding: 12px;
+  border-radius: 8px;
+  font-weight: 600;
+}
+
+/* Input Hint */
+.input-hint-text {
+  text-align: center;
+  font-size: 0.9rem;
+  color: #7f8c8d;
+  padding: 0 30px 25px;
+}
+
+.input-hint-text kbd {
+  padding: 3px 8px;
+  background: #f0f0f0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-family: monospace;
+  font-size: 0.85rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .lab-modal {
+    max-width: 100%;
+    margin: 10px;
+  }
+
+  .lab-title-modal {
+    font-size: 1.4rem;
+  }
+
+  .terminal-body {
+    height: 200px;
+  }
+}
+</style>
+
+<script>
+(function() {
+  const input = document.getElementById('terminalDirectInput');
+  const terminal = document.getElementById('labTerminal');
+  const skipBtn = document.getElementById('skipLabBtn');
+
+  // Skip button handler
+  if (skipBtn) {
+    skipBtn.addEventListener('click', function() {
+      if (confirm('Skip this lab? Your progress will be saved.')) {
+        window.location.href = '/docker/learn';
+      }
+    });
+  }
+
+  // ESC key to skip
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      if (confirm('Skip this lab?')) {
+        window.location.href = '/docker/learn';
+      }
+    }
+  });
+
+  if (input && terminal) {
+    // Handle Enter key - execute command
+    input.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        const command = this.value.trim();
+        if (command) {
+          addToTerminal(command);
+          executeCommand(command);
+          this.value = '';
+        }
+      }
+    });
+
+    // Click terminal to focus input
+    terminal.addEventListener('click', function() {
+      input.focus();
+    });
+
+    // Focus input when modal loads
+    setTimeout(() => input.focus(), 300);
+  }
+
+  function addToTerminal(command) {
+    const output = terminal.querySelector('.terminal-output');
+    const historyLine = document.createElement('div');
+    historyLine.className = 'command-history';
+    historyLine.innerHTML = `<span class="prompt">root@docker:~$</span> <span class="cmd">${command}</span>`;
+    output.appendChild(historyLine);
+
+    // Scroll to bottom
+    terminal.scrollTop = terminal.scrollHeight;
+  }
+
+  function executeCommand(command) {
+    // Execute via backend
+    fetch('/docker/learn/execute', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+      },
+      body: JSON.stringify({ command: command })
+    })
+    .then(r => r.json())
+    .then(result => {
+      if (result.output) {
+        window.addTerminalOutput(result.output, 'output');
+      }
+      const fb = document.getElementById('labFeedback');
+      if (fb && result.feedback) {
+        fb.innerHTML = `<div class="feedback-message ${result.correct ? 'command-success' : 'command-error'}">${result.feedback}</div>`;
+      }
+      // Advance through lab steps
+      if (result.advance_to_next_step) {
+        const box = document.querySelector('.current-step-box .current-instruction');
+        const count = document.querySelector('.current-step-box .step-count');
+        if (box && result.next_instruction) box.textContent = result.next_instruction;
+        if (count && result.step_position) count.textContent = `(${result.step_position})`;
+      }
+      if (result.lab_complete) {
+        setTimeout(() => { window.location.href = '/docker/learn'; }, 1500);
+      }
+    })
+    .catch(() => {
+      const fb = document.getElementById('labFeedback');
+      if (fb) fb.innerHTML = `<div class='command-error'>Network error. Try again.</div>`;
+    });
+  }
+
+  // Add terminal output helper
+  window.addTerminalOutput = function(text, type = 'output') {
+    const output = terminal.querySelector('.terminal-output');
+    const outputLine = document.createElement('div');
+    outputLine.className = `command-${type}`;
+    outputLine.textContent = text;
+    output.appendChild(outputLine);
+    terminal.scrollTop = terminal.scrollHeight;
+  };
+})();
+</script>

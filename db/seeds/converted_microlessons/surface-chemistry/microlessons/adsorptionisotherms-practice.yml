@@ -1,0 +1,60 @@
+slug: adsorptionisotherms-practice
+title: adsorption_isotherms — Practice
+difficulty: hard
+sequence_order: 13
+estimated_minutes: 2
+key_concepts:
+- adsorption_isotherms
+prerequisites: []
+content_md: '# adsorption_isotherms — Practice 🚀
+
+
+  log(x/m) = log k + (1/n)log P. Slope = 1/n = 0.5, Intercept = log k = 0.301, so
+  k = 2. At P = 4: log(x/m) = 0.301 + 0.5×log(4) = 0.301 + 0.5×0.602 = 0.602. Therefore
+  x/m = 10^0.602 = 4.0 g/g.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: 'A Freundlich adsorption isotherm plot has slope 0.5 and intercept 0.301 (log k). Calculate x/m at pressure P = 4 atm:'
+  options:
+  - '2.0 g/g'
+  - '4.0 g/g'
+  - '8.0 g/g'
+  - '1.0 g/g'
+  correct_answer: '4.0 g/g'
+  explanation: "The Freundlich adsorption isotherm equation is: log(x/m) = log k + (1/n)log P. Given: slope = 1/n = 0.5, intercept = log k = 0.301, so k = 10^0.301 = 2. At P = 4 atm: log(x/m) = 0.301 + 0.5×log(4) = 0.301 + 0.5×0.602 = 0.301 + 0.301 = 0.602. Therefore x/m = 10^0.602 ≈ 4.0 g/g. This shows how adsorption increases with pressure following Freundlich's empirical relationship."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: 'For Freundlich adsorption isotherm, if n > 1, what does it indicate?'
+  options:
+  - Favorable adsorption at low pressures
+  - Favorable adsorption at high pressures
+  - Linear adsorption isotherm
+  - Complete multilayer adsorption
+  correct_answer: Favorable adsorption at low pressures
+  explanation: "In the Freundlich equation x/m = kP^(1/n), when n > 1 (which means 1/n < 1), adsorption increases less rapidly with pressure. This indicates favorable adsorption at low pressures, where small pressure increases lead to significant adsorption. At high pressures, the surface approaches saturation and additional pressure has diminishing returns. Values of n between 2-10 represent good adsorption, while n = 1 gives a linear relationship."
+  require_pass: false
+- type: mcq
+  sequence_order: 3
+  question: 'The Langmuir adsorption isotherm assumes:'
+  options:
+  - Monolayer adsorption with uniform surface
+  - Multilayer adsorption
+  - Adsorbate molecules interact with each other
+  - Adsorption continues indefinitely with pressure
+  correct_answer: Monolayer adsorption with uniform surface
+  explanation: "The Langmuir isotherm is based on the assumptions that: (1) adsorption forms a monolayer (single layer of adsorbate), (2) the surface is energetically uniform with identical adsorption sites, (3) adsorbed molecules do not interact with each other, and (4) adsorption reaches a saturation limit when all sites are occupied. The equation is x/m = (abP)/(1+bP), which predicts saturation at high pressure, unlike Freundlich which continues increasing."
+  require_pass: false

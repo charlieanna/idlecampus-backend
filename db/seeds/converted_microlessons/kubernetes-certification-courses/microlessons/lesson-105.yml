@@ -1,0 +1,78 @@
+slug: lesson-105
+title: Lesson 105
+difficulty: easy
+sequence_order: 105
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Init Containers and Pod Lifecycle\n\n \
+  \   Init containers run to completion before app containers start.\n    Use cases:\n\
+  \    - Fetch configuration or warm caches\n    - Wait for dependencies\n    - Perform\
+  \ pre-flight checks\n\n    ## Lifecycle Hooks\n    - postStart and preStop hooks\
+  \ allow custom lifecycle actions"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What is the key characteristic that distinguishes init containers from
+    regular application containers?
+  options:
+  - Init containers run in parallel with application containers
+  - Init containers must complete successfully before application containers start
+  - Init containers cannot access Pod volumes
+  - Init containers use more resources than application containers
+  correct_answer: Init containers must complete successfully before application containers
+    start
+  explanation: 'Init containers are specialized containers that run and complete before
+    any application containers in a Pod start. They execute sequentially in the order
+    defined, and each must succeed before the next begins. If an init container fails,
+    Kubernetes restarts the Pod (respecting restartPolicy) until the init container
+    succeeds. This makes them perfect for setup tasks that must complete before the
+    main application runs. Common use cases include: waiting for services to be available
+    (e.g., ''until nslookup db-service; do sleep 2; done''), fetching configuration
+    from external sources, performing database schema migrations, populating shared
+    volumes with data, or running pre-flight security checks. Init containers share
+    the same volumes, secrets, and security contexts as app containers but run in
+    their own sequential phase. For example, you might have init container 1 clone
+    a git repository into a shared volume, init container 2 process the files, and
+    then the app container serves the content. They can use different images than
+    app containers, enabling specialized tools for initialization without bloating
+    the main application image.'
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: Which lifecycle hook would you use to perform cleanup tasks before a container
+    terminates?
+  options:
+  - postStart
+  - preStop
+  - onTerminate
+  - beforeExit
+  correct_answer: preStop
+  explanation: 'The preStop lifecycle hook executes immediately before a container
+    is terminated, providing an opportunity to perform graceful shutdown tasks. Kubernetes
+    sends this hook before sending the TERM signal, and the hook must complete within
+    the terminationGracePeriodSeconds (default 30 seconds) before the container receives
+    SIGTERM and eventually SIGKILL. Common use cases include: flushing in-memory buffers
+    to disk, deregistering from service discovery, completing in-flight requests,
+    saving state, or notifying other services of shutdown. For example, a cache server
+    might use preStop to persist its in-memory data: ''preStop: exec: command: ["/usr/local/bin/save-cache"]''.
+    The hook can be an HTTP request to an endpoint or a command executed in the container.
+    If the preStop hook hangs or takes too long, it''s terminated when the grace period
+    expires. In contrast, postStart runs after container creation but has no guarantee
+    to execute before the container''s ENTRYPOINT - it''s used for initialization
+    tasks like registering with monitoring or warm-up operations. Best practices for
+    preStop: keep operations quick (under grace period), handle failures gracefully,
+    and test shutdown behavior to ensure clean termination.'
+  require_pass: true
+- type: mcq
+  sequence_order: 1
+  question: What command lists all pods in all namespaces?
+  options:
+  - kubectl get pods -A
+  - kubectl list pods --all
+  - kubectl get pods --everywhere
+  - kubectl pods list -A
+  correct_answer_index: 0
+  explanation: kubectl get pods -A (or --all-namespaces) lists pods across all namespaces.
+    The -A flag is shorthand for --all-namespaces.
+  require_pass: true

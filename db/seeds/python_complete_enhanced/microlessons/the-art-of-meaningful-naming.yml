@@ -1,0 +1,143 @@
+slug: the-art-of-meaningful-naming
+title: The Art of Meaningful Naming
+sequence_order: 2
+estimated_minutes: 2
+difficulty: easy
+key_concepts: []
+content_md: "# The Art of Meaningful Naming \U0001F680\n\n# The Art of Meaningful\
+  \ Naming\n\n    Naming is one of the most important and difficult tasks in programming.\
+  \ Good names make code self-documenting and easy to understand.\n\n    ## Use Intention-Revealing\
+  \ Names\n\n    ### ❌ Bad Examples\n    ```python\n    d = 10  # elapsed time in\
+  \ days\n    list1 = []\n    def getThem():\n        result = []\n        for x in\
+  \ list1:\n            if x[0] == 4:\n                result.append(x)\n        return\
+  \ result\n    ```\n\n    ### ✅ Good Examples\n    ```python\n    elapsed_time_in_days\
+  \ = 10\n    game_board = []\n\n    def get_flagged_cells():\n        flagged_cells\
+  \ = []\n        for cell in game_board:\n            if cell[STATUS_INDEX] == FLAGGED:\n\
+  \                flagged_cells.append(cell)\n        return flagged_cells\n    ```\n\
+  \n    ## Avoid Disinformation\n\n    ### ❌ Don't Use Reserved Words\n    ```python\n\
+  \    hp_unix = []  # Not actually HP Unix\n    accounts_list = {}  # It's a dict,\
+  \ not a list!\n    ```\n\n    ### ✅ Be Accurate\n    ```python\n    unix_servers\
+  \ = []\n    accounts_map = {}\n    account_group = {}\n    ```\n\n    ## Make Meaningful\
+  \ Distinctions\n\n    ### ❌ Number Series Naming\n    ```javascript\n    function\
+  \ copyChars(a1, a2) {\n        for (let i = 0; i < a1.length; i++) {\n         \
+  \   a2[i] = a1[i];\n        }\n    }\n    ```\n\n    ### ✅ Meaningful Names\n  \
+  \  ```javascript\n    function copyChars(source, destination) {\n        for (let\
+  \ i = 0; i < source.length; i++) {\n            destination[i] = source[i];\n  \
+  \      }\n    }\n    ```\n\n    ### ❌ Noise Words\n    ```java\n    class Product\
+  \ {}\n    class ProductInfo {}  // What's the difference?\n    class ProductData\
+  \ {}  // Still unclear!\n\n    String nameString;  // Redundant - name is obviously\
+  \ a string\n    ```\n\n    ## Use Pronounceable Names\n\n    ### ❌ Unpronounceable\n\
+  \    ```python\n    genymdhms = datetime.now()  # \"gen why em dee aitch em ess\"\
+  ?\n    modymdhms = datetime.now()\n    ```\n\n    ### ✅ Pronounceable\n    ```python\n\
+  \    generation_timestamp = datetime.now()\n    modification_timestamp = datetime.now()\n\
+  \    ```\n\n    ## Use Searchable Names\n\n    ### ❌ Magic Numbers and Single Letters\n\
+  \    ```python\n    for i in range(34):  # What is 34?\n        s += (t[i] * 4)\
+  \ / 5\n    ```\n\n    ### ✅ Named Constants\n    ```python\n    WORK_DAYS_PER_WEEK\
+  \ = 5\n    HOURS_PER_DAY = 8\n    NUMBER_OF_TASKS = 34\n\n    for task_index in\
+  \ range(NUMBER_OF_TASKS):\n        real_days_per_task = (task_estimate[task_index]\
+  \ * HOURS_PER_DAY) / WORK_DAYS_PER_WEEK\n        sum_of_tasks += real_days_per_task\n\
+  \    ```\n\n    ## Class Names\n\n    ### Guidelines\n    - Should be **nouns or\
+  \ noun phrases**\n    - Use PascalCase\n    - Avoid generic words like Manager,\
+  \ Processor, Data, Info\n\n    ### ✅ Good Class Names\n    ```python\n    class\
+  \ Customer:\n        pass\n\n    class WikiPage:\n        pass\n\n    class Account:\n\
+  \        pass\n\n    class AddressParser:\n        pass\n    ```\n\n    ### ❌ Poor\
+  \ Class Names\n    ```python\n    class Manager:  # Too generic\n        pass\n\n\
+  \    class Data:  # Meaningless\n        pass\n\n    class Info:  # Vague\n    \
+  \    pass\n    ```\n\n    ## Method Names\n\n    ### Guidelines\n    - Should be\
+  \ **verbs or verb phrases**\n    - Use camelCase (Java, JS) or snake_case (Python,\
+  \ Ruby)\n    - Accessors: get prefix\n    - Mutators: set prefix\n    - Predicates:\
+  \ is, has, can prefix\n\n    ### ✅ Good Method Names\n    ```python\n    def save_customer():\n\
+  \        pass\n\n    def delete_page():\n        pass\n\n    def is_valid():\n \
+  \       pass\n\n    def has_permission():\n        pass\n\n    def can_edit():\n\
+  \        pass\n    ```\n\n    ## Pick One Word per Concept\n\n    ### ❌ Inconsistent\
+  \ Vocabulary\n    ```python\n    fetch_data()\n    retrieve_users()\n    get_products()\n\
+  \    obtain_orders()  # Which one should I use?\n    ```\n\n    ### ✅ Consistent\
+  \ Vocabulary\n    ```python\n    get_data()\n    get_users()\n    get_products()\n\
+  \    get_orders()  # Clear pattern!\n    ```\n\n    ## Use Domain Names\n\n    ###\
+  \ Problem Domain Terms\n    ```python\n    class AccountVisitor:  # Visitor pattern\n\
+  \        pass\n\n    class JobQueue:  # Queue data structure\n        pass\n   \
+  \ ```\n\n    ### Solution Domain Terms\n    ```python\n    class CustomerFactory:\
+  \  # Factory pattern\n        pass\n\n    class OrderBuilder:  # Builder pattern\n\
+  \        pass\n    ```\n\n    ## Context Matters\n\n    ### ❌ Context-less Variables\n\
+  \    ```python\n    first_name = \"John\"\n    last_name = \"Doe\"\n    street =\
+  \ \"123 Main St\"\n    city = \"Springfield\"\n    state = \"IL\"\n    ```\n\n \
+  \   ### ✅ Variables with Context\n    ```python\n    class Address:\n        def\
+  \ __init__(self):\n            self.street = \"123 Main St\"\n            self.city\
+  \ = \"Springfield\"\n            self.state = \"IL\"\n\n    # Or with prefixes\n\
+  \    address_street = \"123 Main St\"\n    address_city = \"Springfield\"\n    address_state\
+  \ = \"IL\"\n    ```\n\n    ## Naming Convention Summary\n\n    | Type | Convention\
+  \ | Example |\n    |------|-----------|---------|\n    | Class | PascalCase (noun)\
+  \ | `CustomerAccount` |\n    | Method | camelCase/snake_case (verb) | `calculateTotal()`\
+  \ / `calculate_total()` |\n    | Variable | camelCase/snake_case | `userName` /\
+  \ `user_name` |\n    | Constant | UPPER_SNAKE_CASE | `MAX_RETRY_COUNT` |\n    |\
+  \ Private | _prefix | `_internal_value` |\n    | Boolean | is/has/can prefix | `isValid`,\
+  \ `hasPermission` |\n\n    ## Anti-Patterns to Avoid\n\n    ### Hungarian Notation\n\
+  \    ```cpp\n    // ❌ Old style - type in name\n    String sName;\n    int iCount;\n\
+  \    bool bIsValid;\n\n    // ✅ Modern - let type system handle it\n    String name;\n\
+  \    int count;\n    bool isValid;\n    ```\n\n    ### Member Prefixes\n    ```java\n\
+  \    // ❌ Unnecessary prefix\n    class Customer {\n        private String m_name;\n\
+  \        private int m_age;\n    }\n\n    // ✅ Clean\n    class Customer {\n   \
+  \     private String name;\n        private int age;\n    }\n    ```\n\n    ## The\
+  \ Ultimate Naming Rule\n\n    **If you need a comment to explain a name, the name\
+  \ is wrong.**\n\n    ```python\n    # ❌ Needs comment\n    d = 5  # delay in milliseconds\n\
+  \n    # ✅ Self-explanatory\n    delay_in_milliseconds = 5\n    ```\n\n    ## Key\
+  \ Takeaways\n\n    1. **Names should reveal intent** - No comments needed\n    2.\
+  \ **Be consistent** - One word per concept\n    3. **Be specific** - Avoid generic\
+  \ terms\n    4. **Use domain language** - Speak the user's language\n    5. **Refactor\
+  \ names** - Don't be afraid to rename\n    6. **Length correlates with scope** -\
+  \ Longer scope = longer name"
+exercises:
+- type: mcq
+  slug: the-art-of-meaningful-naming-mcq-1
+  sequence_order: 1
+  question: What makes a variable name "intention-revealing"?
+  options:
+  - The name clearly indicates what the variable represents without needing a comment
+  - The name is short and concise
+  - The name uses abbreviations to save space
+  - The name includes the variable type
+  correct_answer_index: 0
+  explanation: An intention-revealing name clearly communicates what the variable represents without requiring comments. For example, "elapsed_time_in_days" is better than "d" (which needs a comment). If you need a comment to explain a name, the name is wrong.
+- type: mcq
+  slug: the-art-of-meaningful-naming-mcq-2
+  sequence_order: 2
+  question: Which naming convention should be used for class names?
+  options:
+  - PascalCase with nouns (e.g., CustomerAccount, WikiPage)
+  - camelCase with verbs (e.g., getCustomer, savePage)
+  - UPPER_SNAKE_CASE (e.g., CUSTOMER_ACCOUNT)
+  - snake_case (e.g., customer_account)
+  correct_answer_index: 0
+  explanation: Class names should be nouns or noun phrases in PascalCase, like "Customer", "WikiPage", or "AddressParser". Avoid generic words like "Manager", "Processor", or "Data". Method names should use verbs, while class names use nouns to represent entities.
+- type: mcq
+  slug: the-art-of-meaningful-naming-mcq-3
+  sequence_order: 3
+  question: Why should you avoid "magic numbers" and use named constants instead?
+  options:
+  - Named constants are searchable and self-documenting, making code easier to understand and maintain
+  - Named constants run faster than literal numbers
+  - Named constants use less memory
+  - The compiler requires named constants
+  correct_answer_index: 0
+  explanation: 'Named constants like "WORK_DAYS_PER_WEEK = 5" are searchable and self-documenting, unlike magic numbers like "5" scattered throughout code. If you need to find all places using this value or change it, a named constant makes this trivial. Compare: "for i in range(34)" vs "for task_index in range(NUMBER_OF_TASKS)".'
+- type: mcq
+  slug: the-art-of-meaningful-naming-mcq-4
+  sequence_order: 4
+  question: What is the "Pick One Word per Concept" principle?
+  options:
+  - Use consistent vocabulary across your codebase (e.g., always use "get" not mixing "fetch", "retrieve", "obtain")
+  - Each function can only have one word in its name
+  - Each variable should only be used once
+  - Use only one programming language per project
+  correct_answer_index: 0
+  explanation: Pick one word per concept and use it consistently throughout your codebase. If you use "get" for retrieval, don't mix it with "fetch", "retrieve", or "obtain". Consistency helps developers know what to expect. For example, always use "get_data()", "get_users()", "get_products()" rather than mixing "fetch_data()", "retrieve_users()", "obtain_products()".
+objectives:
+- Write intention-revealing names that eliminate need for comments
+- Apply proper naming conventions for classes, methods, and variables
+- Use searchable named constants instead of magic numbers
+- Maintain consistent vocabulary across the codebase
+- Avoid misleading or ambiguous names
+- Provide meaningful context through naming
+next_recommended:
+- control
+- data-structures

@@ -1,0 +1,50 @@
+slug: lesson-103
+title: Lesson 103
+difficulty: easy
+sequence_order: 103
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Pod Design Fundamentals\n\n    Pods are\
+  \ the smallest deployable unit in Kubernetes. This lesson covers:\n\n    - Pod anatomy:\
+  \ containers, initContainers, volumes\n    - Restart policies and probes\n    -\
+  \ Resource requests/limits and QoS classes\n    - Labels, selectors, and annotations\n\
+  \n    ## QoS Classes\n    - Guaranteed: requests == limits for all containers\n\
+  \    - Burstable: some requests set, limits may differ\n    - BestEffort: no requests\
+  \ or limits specified\n\n    ## Best Practices\n    - Keep Pods small and focused\n\
+  \    - Use requests to ensure scheduling and stability\n    - Prefer readinessProbe\
+  \ to gate traffic"
+exercises:
+  - type: mcq
+    sequence_order: 1
+    question: "What is the difference between a Pod's resource 'requests' and 'limits' in Kubernetes?"
+    options:
+      - "Requests are optional while limits are mandatory"
+      - "Requests are the minimum guaranteed resources; limits are the maximum resources allowed"
+      - "Requests apply to CPU only; limits apply to memory only"
+      - "Requests and limits are interchangeable terms"
+    correct_answer: "Requests are the minimum guaranteed resources; limits are the maximum resources allowed"
+    explanation: "Resource requests and limits serve distinct purposes in Kubernetes resource management. Requests specify the minimum amount of CPU and memory guaranteed to a container - the scheduler uses these values to find a node with sufficient resources. Limits define the maximum resources a container can consume - if exceeded, the container may be throttled (CPU) or terminated (memory). For example, a container with 'requests: cpu: 100m, memory: 128Mi' and 'limits: cpu: 500m, memory: 512Mi' is guaranteed 100 millicores and 128 MiB, but can burst up to 500 millicores and 512 MiB. This affects QoS classes: Guaranteed (requests = limits for all resources), Burstable (some requests set, requests < limits), and BestEffort (no requests or limits). During resource pressure, Kubernetes evicts pods in order: BestEffort first, then Burstable, and lastly Guaranteed pods. Best practices include always setting requests for predictable scheduling, setting limits to prevent resource hogging, and monitoring actual usage to tune values appropriately."
+    require_pass: true
+  - type: mcq
+    sequence_order: 2
+    question: "Which QoS (Quality of Service) class is assigned to a Pod when requests equal limits for all containers?"
+    options:
+      - "BestEffort"
+      - "Burstable"
+      - "Guaranteed"
+      - "Premium"
+    correct_answer: "Guaranteed"
+    explanation: "Kubernetes assigns the Guaranteed QoS class to Pods where every container has CPU and memory requests explicitly set, and the requests equal the limits for both resources. For example, if a container specifies 'requests: cpu: 200m, memory: 256Mi' and 'limits: cpu: 200m, memory: 256Mi', the Pod gets Guaranteed QoS. This is the highest priority class during resource contention - Guaranteed pods are only evicted if they exceed their limits or during node failure. The QoS system has three tiers: Guaranteed (highest priority), Burstable (medium priority - some requests set but requests < limits or not all resources specified), and BestEffort (lowest priority - no requests or limits). During memory pressure, the kubelet evicts pods in reverse order: BestEffort first, then Burstable exceeding requests, and finally Guaranteed pods. For critical workloads like databases or stateful applications, use Guaranteed QoS by setting requests equal to limits. This ensures predictable resource allocation and maximum protection against eviction, though it reduces cluster utilization flexibility."
+    require_pass: true
+  - type: mcq
+    sequence_order: 3
+    question: "What is the purpose of a readiness probe in a Kubernetes Pod?"
+    options:
+      - "To restart the container if it becomes unhealthy"
+      - "To determine if the container is ready to accept traffic"
+      - "To check if the container has started successfully"
+      - "To monitor resource usage of the container"
+    correct_answer: "To determine if the container is ready to accept traffic"
+    explanation: "A readiness probe determines whether a container is ready to serve traffic. Unlike liveness probes which restart containers, readiness probes control whether the Pod's IP is added to Service endpoints. When a readiness probe fails, the Pod is removed from Service load balancing but the container keeps running. This is crucial during startup, when processing long-running tasks, or during temporary unavailability. For example, an application might need 30 seconds to load cache data - the readiness probe prevents traffic from reaching it during this initialization. Probe types include HTTP GET (checks endpoint like /health), TCP Socket (verifies port is open), and exec (runs command in container). Configuration includes 'initialDelaySeconds' (wait before first probe), 'periodSeconds' (probe frequency), 'timeoutSeconds', 'successThreshold', and 'failureThreshold'. A typical readiness probe might be 'httpGet: path: /ready, port: 8080, initialDelaySeconds: 5, periodSeconds: 10'. Best practices: use readiness probes for all user-facing services, make the endpoint lightweight, and ensure it checks actual readiness (database connections, cache warmth) not just process existence."
+    require_pass: true

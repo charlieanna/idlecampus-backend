@@ -1,0 +1,263 @@
+slug: variables-and-data-types
+title: Variables and Data Types
+difficulty: easy
+sequence_order: 2
+estimated_minutes: 10
+key_concepts:
+  - Variable declaration
+  - String variables
+  - Numeric operations
+  - Variable scope
+  - Environment variables
+prerequisites:
+  - introduction-to-bash-and-shell-scripting
+content_md: |
+  # Variables and Data Types in Bash
+
+  ## Introduction
+
+  Variables are fundamental to any programming language, including Bash. In shell scripting, variables allow you to store data that can be referenced and manipulated throughout your script.
+
+  ## Variable Declaration
+
+  In Bash, you don't need to declare variable types explicitly. Simply assign a value to a variable name:
+
+  ```bash
+  name="John"
+  age=25
+  ```
+
+  **Important rules:**
+  - No spaces around the `=` sign
+  - Variable names are case-sensitive
+  - Use letters, numbers, and underscores (cannot start with a number)
+
+  ## String Variables
+
+  Strings can be defined with single quotes, double quotes, or no quotes:
+
+  ```bash
+  greeting='Hello World'
+  message="Welcome to Bash"
+  simple=test
+  ```
+
+  **Difference between quotes:**
+  - Single quotes (`'`): Treat everything literally
+  - Double quotes (`"`): Allow variable substitution
+
+  ```bash
+  name="Alice"
+  echo 'Hello $name'  # Outputs: Hello $name
+  echo "Hello $name"  # Outputs: Hello Alice
+  ```
+
+  ## Accessing Variables
+
+  Use the `$` symbol to access variable values:
+
+  ```bash
+  username="developer"
+  echo $username
+  echo "User is: $username"
+  echo "User is: ${username}"  # Preferred for clarity
+  ```
+
+  ## Numeric Operations
+
+  Bash treats all variables as strings by default. For arithmetic operations, use `$(( ))`:
+
+  ```bash
+  x=10
+  y=5
+  sum=$((x + y))
+  echo "Sum: $sum"  # Outputs: Sum: 15
+
+  # Other operations
+  diff=$((x - y))
+  product=$((x * y))
+  quotient=$((x / y))
+  remainder=$((x % y))
+  ```
+
+  ## Command Substitution
+
+  You can store command output in variables:
+
+  ```bash
+  current_date=$(date)
+  files=$(ls -l)
+  user_count=$(who | wc -l)
+  ```
+
+  ## Environment Variables
+
+  Environment variables are available to child processes. Common ones include:
+  - `$HOME`: User's home directory
+  - `$PATH`: Command search path
+  - `$USER`: Current username
+  - `$PWD`: Present working directory
+
+  Set environment variables with `export`:
+
+  ```bash
+  export DATABASE_URL="localhost:5432"
+  ```
+
+  ## Best Practices
+
+  1. Use meaningful variable names: `user_count` instead of `uc`
+  2. Use uppercase for environment variables: `DATABASE_URL`
+  3. Use lowercase for local variables: `temp_file`
+  4. Always quote variables to prevent word splitting: `"$var"`
+
+exercises:
+  - type: terminal
+    slug: bash-vars-declaration
+    sequence_order: 1
+    description: Declare variables and print their values
+    command: name="Alice" && age=30 && city="New York" && echo "Name: $name, Age: $age, City: $city"
+    validation:
+      must_include:
+        - "Name: Alice"
+        - "Age: 30"
+        - "City: New York"
+      must_not_include:
+        - Error
+    hints:
+      - No spaces around the = sign when assigning variables
+      - Use $ to access variable values
+      - Double quotes allow variable substitution
+    timeout_sec: 60
+    require_pass: true
+
+  - type: terminal
+    slug: bash-vars-quotes
+    sequence_order: 2
+    description: Understand the difference between single and double quotes
+    command: greeting="Hello" && echo '$greeting World' && echo "$greeting World"
+    validation:
+      must_include:
+        - "$greeting World"
+        - "Hello World"
+      must_not_include:
+        - Error
+    hints:
+      - Single quotes treat everything literally (no variable substitution)
+      - Double quotes allow variable substitution
+      - Notice the different output for the same variable
+    timeout_sec: 60
+    require_pass: true
+
+  - type: terminal
+    slug: bash-vars-arithmetic
+    sequence_order: 3
+    description: Perform arithmetic operations with variables
+    command: x=10 && y=5 && sum=$((x + y)) && product=$((x * y)) && echo "Sum: $sum, Product: $product"
+    validation:
+      must_include:
+        - "Sum: 15"
+        - "Product: 50"
+      must_not_include:
+        - Error
+    hints:
+      - Use $(( )) for arithmetic operations
+      - Bash supports +, -, *, /, % operators
+      - Variables inside $(( )) don't need $ prefix
+    timeout_sec: 60
+    require_pass: true
+
+  - type: terminal
+    slug: bash-vars-command-sub
+    sequence_order: 4
+    description: Store command output in variables using command substitution
+    command: current_user=$(whoami) && current_date=$(date +%Y-%m-%d) && echo "User: $current_user logged in on $current_date"
+    validation:
+      must_include:
+        - "User:"
+        - "logged in on"
+      must_not_include:
+        - Error
+    hints:
+      - Use $() to capture command output
+      - whoami returns your username
+      - date +%Y-%m-%d formats the date as YYYY-MM-DD
+    timeout_sec: 60
+    require_pass: true
+
+  - type: terminal
+    slug: bash-vars-env
+    sequence_order: 5
+    description: Use and create environment variables
+    command: echo "Home: $HOME" && echo "User: $USER" && export MY_VAR="CustomValue" && echo "My variable: $MY_VAR"
+    validation:
+      must_include:
+        - "Home:"
+        - "User:"
+        - "My variable: CustomValue"
+      must_not_include:
+        - Error
+    hints:
+      - $HOME and $USER are predefined environment variables
+      - Use export to create environment variables
+      - Environment variables are available to child processes
+    timeout_sec: 60
+    require_pass: true
+
+  - type: mcq
+    slug: bash-vars-mcq-1
+    question: "Which of the following is the correct way to assign a value to a variable in Bash?"
+    options:
+      - "name = 'John'"
+      - "name='John'"
+      - "set name='John'"
+      - "var name='John'"
+    correct_answer: "name='John'"
+    explanation: "In Bash, variables are assigned without spaces around the = sign. No special keywords like 'set' or 'var' are needed."
+    sequence_order: 6
+    require_pass: true
+
+  - type: mcq
+    slug: bash-vars-mcq-2
+    question: "What is the output of: name='Bob'; echo 'Hello $name'"
+    options:
+      - "Hello Bob"
+      - "Hello $name"
+      - "Bob"
+      - "Error"
+    correct_answer: "Hello $name"
+    explanation: "Single quotes treat everything literally, so variable substitution does not occur. Use double quotes for variable expansion."
+    sequence_order: 7
+    require_pass: true
+
+  - type: mcq
+    slug: bash-vars-mcq-3
+    question: "What is the correct syntax to perform arithmetic addition of variables a and b?"
+    options:
+      - result=$a + $b
+      - result=$(a + b)
+      - result=$((a + b))
+      - result=${a + b}
+    correct_answer: result=$((a + b))
+    explanation: "Use $(( )) for arithmetic operations in Bash. Inside the double parentheses, you can reference variables without the $ prefix."
+    sequence_order: 8
+    require_pass: true
+
+  - type: reflection
+    slug: bash-vars-reflect
+    sequence_order: 9
+    prompt: |
+      When would you use environment variables (export) versus regular variables in a script?
+      Give examples of when each would be appropriate. What are the implications for variable scope?
+
+  - type: checkpoint
+    slug: bash-vars-checkpoint
+    sequence_order: 10
+    prompt: |
+      Write a bash script that:
+      1. Declares variables for firstname, lastname, and birth_year
+      2. Calculates the person's age (use current year 2024)
+      3. Creates a full_name variable combining first and last name
+      4. Prints: "Hello [full_name], you are approximately [age] years old"
+
+      Demonstrate proper use of quotes, arithmetic operations, and variable expansion.

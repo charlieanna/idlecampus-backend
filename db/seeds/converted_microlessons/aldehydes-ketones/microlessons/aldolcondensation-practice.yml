@@ -1,0 +1,59 @@
+slug: aldolcondensation-practice
+title: aldol_condensation — Practice
+difficulty: medium
+sequence_order: 15
+estimated_minutes: 2
+key_concepts:
+- aldol_condensation
+prerequisites: []
+content_md: '# aldol_condensation — Practice 🚀
+
+
+  2CH₃CHO → [Base] → CH₃CH(OH)CH₂CHO (aldol) → [heat, -H₂O] → CH₃CH=CHCHO (crotonaldehyde,
+  α,β-unsaturated aldehyde). Without heat, product is β-hydroxy aldehyde.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: 'What is the product when aldol condensation of acetaldehyde is carried out with heat?'
+  options:
+  - Aldol (β-hydroxy aldehyde)
+  - Crotonaldehyde (α,β-unsaturated aldehyde)
+  - Acetone
+  - Acetic acid
+  require_pass: true
+  correct_answer: Crotonaldehyde (α,β-unsaturated aldehyde)
+  explanation: 'When aldol condensation of acetaldehyde (CH₃CHO) is carried out with base and heat, the final product is crotonaldehyde (CH₃CH=CHCHO), an α,β-unsaturated aldehyde. The reaction occurs in two steps: (1) First, aldol condensation forms the β-hydroxy aldehyde (CH₃CH(OH)CH₂CHO) called aldol. (2) Upon heating, dehydration (-H₂O) occurs to form the α,β-unsaturated aldehyde crotonaldehyde. Without heat, the reaction stops at the aldol stage (β-hydroxy aldehyde). The heat drives the elimination of water, creating a conjugated C=C-C=O system.'
+- type: mcq
+  sequence_order: 2
+  question: 'Which structural feature is required for a carbonyl compound to undergo aldol condensation?'
+  options:
+  - Must be aromatic
+  - Must have α-hydrogen
+  - Must be a ketone only
+  - Must have β-hydrogen
+  require_pass: true
+  correct_answer: Must have α-hydrogen
+  explanation: 'For a carbonyl compound to undergo aldol condensation, it must have at least one α-hydrogen (hydrogen on the carbon adjacent to carbonyl group). This is essential because the base abstracts the α-hydrogen to form an enolate ion, which acts as a nucleophile and attacks another carbonyl molecule. Compounds without α-hydrogen (like benzaldehyde, formaldehyde, or trimethylacetaldehyde) cannot form enolates and therefore undergo other reactions like Cannizzaro instead. Both aldehydes and ketones with α-hydrogen can undergo aldol condensation, though aldehydes are more reactive.'
+- type: mcq
+  sequence_order: 3
+  question: 'What is the intermediate species formed when base abstracts α-hydrogen from acetaldehyde in aldol reaction?'
+  options:
+  - Carbanion
+  - Enolate ion
+  - Carbocation
+  - Free radical
+  require_pass: true
+  correct_answer: Enolate ion
+  explanation: 'When base (OH⁻ or other strong base) abstracts an α-hydrogen from acetaldehyde, it forms an enolate ion. The enolate ion is a resonance-stabilized species where the negative charge is delocalized between the α-carbon and the oxygen of the carbonyl group. This can be represented as CH₂=CH-O⁻ ↔ ⁻CH₂-CH=O. The enolate ion is a nucleophile and attacks the carbonyl carbon of another acetaldehyde molecule, leading to carbon-carbon bond formation. The resonance stabilization makes the enolate relatively stable despite being a reactive intermediate, which is crucial for the aldol condensation mechanism.'

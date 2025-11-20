@@ -1,0 +1,275 @@
+<div class="container-fluid">
+  <div class="row">
+    <!-- Sidebar with module navigation -->
+    <div class="col-md-3 bg-light border-end" style="min-height: 100vh;">
+      <div class="p-3">
+        <h5 class="mb-3">
+          <%= link_to @course.title, course_path(@course), class: "text-decoration-none text-dark" %>
+        </h5>
+        
+        <div class="progress mb-3" style="height: 8px;">
+          <div class="progress-bar bg-success" role="progressbar" 
+               style="width: <%= @enrollment&.progress_percentage || 0 %>%"
+               aria-valuenow="<%= @enrollment&.progress_percentage || 0 %>" 
+               aria-valuemin="0" aria-valuemax="100">
+          </div>
+        </div>
+        <p class="small text-muted mb-3">
+          <%= (@enrollment&.progress_percentage || 0).round %>% Complete
+        </p>
+
+        <hr>
+
+        <!-- Module List -->
+        <div class="module-list">
+          <% @course.course_modules.order(:sequence_order).each do |mod| %>
+            <div class="module-item mb-3 <%= 'active' if mod.id == @module.id %>">
+              <%= link_to course_module_path(@course, mod), 
+                  class: "d-block p-2 rounded text-decoration-none #{mod.id == @module.id ? 'bg-primary text-white' : 'text-dark'}" do %>
+                <div class="d-flex align-items-center">
+                  <% if @module_progresses[mod.id]&.completed? %>
+                    <i class="fas fa-check-circle text-success me-2"></i>
+                  <% elsif @module_progresses[mod.id] %>
+                    <i class="fas fa-circle-half-stroke text-warning me-2"></i>
+                  <% else %>
+                    <i class="far fa-circle me-2"></i>
+                  <% end %>
+                  <div class="flex-grow-1">
+                    <div class="fw-bold"><%= mod.title %></div>
+                    <small class="text-muted">
+                      <%= mod.estimated_minutes %> min
+                    </small>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main content area -->
+    <div class="col-md-9">
+      <div class="p-4">
+        <!-- Module header -->
+        <div class="mb-4">
+          <h2><%= @module.title %></h2>
+          <p class="text-muted"><%= @module.description %></p>
+          
+          <div class="d-flex gap-2 mb-3">
+            <span class="badge bg-info">
+              <i class="fas fa-clock"></i> <%= @module.estimated_minutes %> minutes
+            </span>
+          </div>
+        </div>
+
+        <!-- Module content -->
+        <div class="module-content">
+
+          <!-- Interactive Learning Units -->
+          <% if @interactive_units.any? %>
+            <h4 class="mb-3">
+              <i class="fas fa-graduation-cap text-primary"></i> 
+              Interactive Learning
+            </h4>
+            <p class="text-muted">Learn by doing! Each unit combines explanation, practice, and hands-on exercises.</p>
+            
+            <div class="list-group mb-4">
+              <% @interactive_units.each do |module_unit| %>
+                <% unit = module_unit.interactive_learning_unit %>
+                <% progress = @unit_progresses[unit.id] %>
+                <% completion = progress&.completion_percentage || 0 %>
+                <% is_completed = progress&.completed? || false %>
+                
+                <div class="list-group-item">
+                  <div class="d-flex align-items-center">
+                    <div class="me-3">
+                      <i class="fas fa-graduation-cap <%= is_completed ? 'text-success' : 'text-primary' %> fa-2x"></i>
+                    </div>
+                    <div class="flex-grow-1">
+                      <div class="d-flex justify-content-between align-items-start mb-1">
+                        <h6 class="mb-0">
+                          <%= unit.title %>
+                          <% if is_completed %>
+                            <i class="fas fa-check-circle text-success ms-2"></i>
+                          <% end %>
+                        </h6>
+                        <div class="text-end">
+                          <% case unit.difficulty_level
+                             when 'easy' %>
+                            <span class="badge bg-success">Easy</span>
+                          <% when 'medium' %>
+                            <span class="badge bg-warning">Medium</span>
+                          <% when 'hard' %>
+                            <span class="badge bg-danger">Hard</span>
+                          <% end %>
+                          <span class="badge bg-secondary ms-1">
+                            <i class="far fa-clock"></i> <%= unit.estimated_minutes %> min
+                          </span>
+                        </div>
+                      </div>
+                      
+                      <% if unit.concept_explanation.present? %>
+                        <p class="mb-2 small text-muted">
+                          <%= truncate(strip_tags(unit.concept_explanation), length: 120) %>
+                        </p>
+                      <% end %>
+                      
+                      <!-- Progress bar -->
+                      <% if completion > 0 %>
+                        <div class="progress" style="height: 6px;">
+                          <div class="progress-bar <%= is_completed ? 'bg-success' : 'bg-primary' %>" 
+                               role="progressbar" 
+                               style="width: <%= completion %>%"
+                               aria-valuenow="<%= completion %>" 
+                               aria-valuemin="0" 
+                               aria-valuemax="100">
+                          </div>
+                        </div>
+                        <small class="text-muted"><%= completion %>% complete</small>
+                      <% end %>
+                    </div>
+                    <div class="ms-3">
+                      <% is_current = (@enrollment && @enrollment.current_item == unit) %>
+                      <% if is_completed %>
+                        <%= link_to interactive_learning_path(unit.slug), class: "btn btn-sm btn-outline-success" do %>
+                          <i class="fas fa-redo"></i> Review
+                        <% end %>
+                      <% elsif is_current %>
+                        <%= link_to interactive_learning_path(unit.slug), class: "btn btn-sm btn-primary" do %>
+                          <i class="fas fa-play"></i> Continue
+                        <% end %>
+                      <% else %>
+                        <button class="btn btn-sm btn-secondary" disabled>
+                          <i class="fas fa-lock"></i> Locked
+                        </button>
+                      <% end %>
+                    </div>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          <% end %>
+
+          <!-- Traditional Module items (lessons, quizzes, labs) -->
+          <% if @module.module_items.any? %>
+            <h4 class="mb-3">Additional Resources</h4>
+            <div class="list-group mb-4">
+              <% @module.module_items.order(:sequence_order).each do |item| %>
+                <div class="list-group-item">
+                  <div class="d-flex align-items-center">
+                    <div class="me-3">
+                      <% if item.item_type == 'CourseLesson' %>
+                        <i class="fas fa-book text-primary fa-2x"></i>
+                      <% elsif item.item_type == 'Quiz' %>
+                        <i class="fas fa-question-circle text-warning fa-2x"></i>
+                      <% elsif item.item_type == 'HandsOnLab' %>
+                        <i class="fas fa-flask text-success fa-2x"></i>
+                      <% end %>
+                    </div>
+                    <div class="flex-grow-1">
+                      <h6 class="mb-1"><%= item.title %></h6>
+                      <% if item.respond_to?(:description) && item.description.present? %>
+                        <p class="mb-0 small text-muted"><%= item.description %></p>
+                      <% elsif item.respond_to?(:content) && item.content.present? %>
+                        <p class="mb-0 small text-muted"><%= truncate(strip_tags(item.content), length: 100) %></p>
+                      <% end %>
+                    </div>
+                    <div>
+                      <% if item.item.present? %>
+                        <% is_current = (@enrollment && @enrollment.current_item == item.item) %>
+                        <% is_completed = (@enrollment && item.completed_by?(current_user)) %>
+                        
+                        <% if is_completed %>
+                          <% if item.item_type == 'CourseLesson' %>
+                            <%= link_to "Review", lesson_path(item.item), class: "btn btn-sm btn-outline-primary" %>
+                          <% elsif item.item_type == 'Quiz' %>
+                            <%= link_to "Retake", quiz_path(item.item), class: "btn btn-sm btn-outline-warning" %>
+                          <% elsif item.item_type == 'HandsOnLab' %>
+                            <%= link_to "Redo", hands_on_lab_path(item.item), class: "btn btn-sm btn-outline-success" %>
+                          <% end %>
+                        <% elsif is_current %>
+                        <% if item.item_type == 'CourseLesson' %>
+                            <%= link_to "Continue", lesson_path(item.item), class: "btn btn-sm btn-primary" %>
+                        <% elsif item.item_type == 'Quiz' %>
+                          <%= link_to "Start", quiz_path(item.item), class: "btn btn-sm btn-warning" %>
+                        <% elsif item.item_type == 'HandsOnLab' %>
+                          <%= link_to "Start", hands_on_lab_path(item.item), class: "btn btn-sm btn-success" %>
+                          <% end %>
+                        <% else %>
+                          <button class="btn btn-sm btn-secondary" disabled>
+                            <i class="fas fa-lock"></i> Locked
+                          </button>
+                        <% end %>
+                      <% end %>
+                    </div>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          <% end %>
+
+          <!-- Learning objectives -->
+          <% if @module.learning_objectives.present? %>
+            <div class="card mb-4">
+              <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-bullseye"></i> Learning Objectives</h5>
+              </div>
+              <div class="card-body">
+                <%= raw @module.learning_objectives %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+
+        <!-- Navigation buttons -->
+        <div class="d-flex justify-content-between mt-4">
+          <% if @previous_module %>
+            <%= link_to course_module_path(@course, @previous_module), class: "btn btn-outline-secondary" do %>
+              <i class="fas fa-arrow-left"></i> Previous: <%= @previous_module.title %>
+            <% end %>
+          <% else %>
+            <div></div>
+          <% end %>
+
+          <% if @module_progress&.completed? %>
+            <span class="badge bg-success p-2">
+              <i class="fas fa-check"></i> Completed
+            </span>
+          <% else %>
+            <span class="badge bg-warning p-2">
+              <i class="fas fa-clock"></i> In Progress
+            </span>
+          <% end %>
+
+          <% if @next_module %>
+            <%= link_to course_module_path(@course, @next_module), class: "btn btn-primary" do %>
+              Next: <%= @next_module.title %> <i class="fas fa-arrow-right"></i>
+            <% end %>
+          <% else %>
+            <%= link_to "Back to Course", course_path(@course), class: "btn btn-outline-primary" %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .module-item.active {
+    border-left: 3px solid #0d6efd;
+  }
+  
+  .module-content img {
+    max-width: 100%;
+    height: auto;
+  }
+  
+  .module-content pre {
+    background-color: #f8f9fa;
+    padding: 1rem;
+    border-radius: 0.25rem;
+    overflow-x: auto;
+  }
+</style>
+

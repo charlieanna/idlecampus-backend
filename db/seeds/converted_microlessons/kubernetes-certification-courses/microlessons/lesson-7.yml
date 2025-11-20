@@ -1,0 +1,43 @@
+slug: lesson-7
+title: Lesson 7
+difficulty: easy
+sequence_order: 7
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Cluster Component Failures\n\n    - API\
+  \ server, controller-manager, scheduler symptoms\n    - Logs and health endpoints"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What is a common symptom of kube-apiserver failure in a Kubernetes cluster?
+  options:
+  - Existing pods continue running but no new changes can be made to the cluster
+  - All pods immediately stop running
+  - The cluster automatically recovers without intervention
+  - Only networking between pods is affected
+  correct_answer: Existing pods continue running but no new changes can be made to the cluster
+  explanation: "When the kube-apiserver fails or becomes unavailable, existing pods and workloads continue running on the nodes because the kubelet manages their lifecycle independently. However, you cannot make any changes to the cluster - you can't create, update, or delete resources, and kubectl commands will fail with connection errors. The API server is the gateway to the cluster, but it's not required for already-running workloads to continue functioning. This is an important architectural principle: the control plane manages desired state, but the data plane (running workloads) can continue operating even if the control plane is temporarily unavailable. To diagnose API server issues, check its logs, verify its process is running, ensure etcd is accessible, and confirm network connectivity and certificates are valid."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: Which command would you use to check the logs of the kube-controller-manager in a cluster where control plane components run as static pods?
+  options:
+  - kubectl logs kube-controller-manager -n default
+  - kubectl logs kube-controller-manager -n kube-system
+  - journalctl -u kube-controller-manager
+  - systemctl status kube-controller-manager
+  correct_answer: kubectl logs kube-controller-manager -n kube-system
+  explanation: "In clusters where control plane components run as static pods (common in kubeadm-deployed clusters), you access their logs using 'kubectl logs' with the pod name in the kube-system namespace. Static pods are created directly by the kubelet based on manifest files in /etc/kubernetes/manifests/ and appear in the kube-system namespace. The command would be 'kubectl logs kube-controller-manager-<node-name> -n kube-system'. In contrast, for clusters where components run as systemd services (older setups or some managed services), you'd use journalctl or systemctl commands. Knowing where to find logs is crucial for troubleshooting. Controller manager logs help diagnose issues like failing reconciliation loops, problems with cloud provider integration, or certificate rotation failures."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: What health endpoint can be used to verify if the kube-apiserver is responding to requests?
+  options:
+  - /health
+  - /healthz
+  - /status
+  - /ready
+  correct_answer: /healthz
+  explanation: "The /healthz endpoint is the standard health check endpoint for the kube-apiserver and other Kubernetes control plane components. You can access it using 'curl https://<apiserver-ip>:6443/healthz' (with appropriate certificates) or 'kubectl get --raw /healthz'. A successful response returns 'ok' with HTTP status 200, indicating the API server is running and responding. There are also more specific endpoints like /readyz (checks if the server is ready to serve requests) and /livez (checks if the server is alive). These endpoints are used by load balancers and monitoring systems to determine component health. Understanding these health endpoints is essential for implementing proper health checks in production environments and for troubleshooting when the API server appears unresponsive."
+  require_pass: true

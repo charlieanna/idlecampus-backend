@@ -1,0 +1,66 @@
+slug: lewistheory-practice
+title: lewis_theory — Practice
+difficulty: easy
+sequence_order: 12
+estimated_minutes: 2
+key_concepts:
+- lewis_theory
+prerequisites: []
+content_md: '# lewis_theory — Practice 🚀
+
+
+  Lewis acid is electron pair acceptor. BF₃ has incomplete octet and accepts electron
+  pairs.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: Which of the following is a Lewis acid?
+  options:
+  - NH₃
+  - OH⁻
+  - BF₃
+  - H₂O
+  require_pass: true
+  correct_answer: BF₃
+  explanation: 'According to Lewis theory, a Lewis acid is an electron pair acceptor.
+    BF₃ (boron trifluoride) is a classic Lewis acid because boron has only 6 electrons
+    in its valence shell (incomplete octet) and can accept an electron pair to complete
+    its octet. For example: BF₃ + NH₃ → F₃B-NH₃ (BF₃ accepts lone pair from NH₃).
+    In contrast: NH₃, OH⁻, and H₂O are all Lewis bases (electron pair donors) because
+    they have lone pairs available for donation. Lewis theory is broader than Brønsted-Lowry
+    theory - it includes reactions without proton transfer. All Brønsted bases are
+    Lewis bases, but not all Lewis acids are Brønsted acids (like BF₃).'
+- type: mcq
+  sequence_order: 2
+  question: 'Which species acts as a Lewis base in the reaction: AlCl₃ + Cl⁻ → AlCl₄⁻?'
+  options:
+  - AlCl₃
+  - Cl⁻
+  - AlCl₄⁻
+  - None
+  require_pass: true
+  correct_answer: Cl⁻
+  explanation: 'Cl⁻ acts as the Lewis base (electron pair donor) in this reaction. Analysis: Cl⁻ has 4 lone pairs and donates one electron pair to AlCl₃. AlCl₃ acts as the Lewis acid (electron pair acceptor). Al in AlCl₃ has only 6 valence electrons and accepts an electron pair to achieve octet (8 electrons). The product AlCl₄⁻ is a Lewis acid-base adduct with coordinate covalent bond. General characteristics of Lewis acids: (1) Electron-deficient species (incomplete octet): BF₃, AlCl₃, BCl₃, (2) Species with vacant d-orbitals: SnCl₄, FeCl₃, (3) Molecules with multiple bonds that can accept electrons: CO₂, SO₂. Lewis bases have: (1) Lone pairs of electrons: NH₃, H₂O, OH⁻, Cl⁻, (2) π electrons: alkenes, benzene. Lewis theory is the most general acid-base theory, encompassing all Bronsted-Lowry and Arrhenius acid-base reactions plus many additional reactions involving electron pair transfer.'
+- type: mcq
+  sequence_order: 3
+  question: 'Which statement correctly compares Lewis theory with Bronsted-Lowry theory?'
+  options:
+  - Lewis theory is limited to aqueous solutions only
+  - All Bronsted-Lowry bases are Lewis bases
+  - All Lewis acids are also Bronsted-Lowry acids
+  - Lewis theory cannot explain complex ion formation
+  require_pass: true
+  correct_answer: All Bronsted-Lowry bases are Lewis bases
+  explanation: '"All Bronsted-Lowry bases are Lewis bases" is correct. Bronsted-Lowry bases accept protons (H⁺), which requires donating an electron pair to form a coordinate bond with H⁺, making them Lewis bases by definition. However, the reverse is NOT true: not all Lewis bases are Bronsted bases (e.g., Cl⁻ can donate electrons to AlCl₃ without accepting H⁺). Analysis of other statements: (1) "Lewis theory limited to aqueous solutions" - FALSE. Lewis theory applies to any medium, even gas phase or non-polar solvents, (2) "All Lewis acids are Bronsted acids" - FALSE. BF₃ is a Lewis acid but not Bronsted acid (doesn''t donate H⁺), (3) "Cannot explain complex ion formation" - FALSE. Lewis theory EXCELS at explaining complex formation like [Cu(NH₃)₄]²⁺ where NH₃ (Lewis base) donates electrons to Cu²⁺ (Lewis acid). Scope comparison: Arrhenius ⊂ Bronsted-Lowry ⊂ Lewis (Lewis is most general). Lewis theory explains: coordination compounds, catalysis (AlCl₃ in Friedel-Crafts), and many organic reactions.'

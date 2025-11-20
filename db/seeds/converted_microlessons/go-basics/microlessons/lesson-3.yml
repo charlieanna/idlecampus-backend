@@ -1,0 +1,204 @@
+slug: lesson-3
+title: Lesson 3
+difficulty: easy
+sequence_order: 3
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Methods: Adding Behavior to Types\n\n \
+  \   ### What is a Method?\n\n    A **method** is a function with a special **receiver**\
+  \ argument that attaches the function to a type. Think of methods as actions that\
+  \ a type can perform.\n\n    **Key difference:**\n    - **Function**: Standalone,\
+  \ not tied to any type\n    - **Method**: Belongs to a type, called on instances\
+  \ of that type\n\n    ### Method Syntax\n\n    **Basic structure:**\n    ```go\n\
+  \    func (receiver ReceiverType) MethodName(parameters) returnType {\n        //\
+  \ Method body\n    }\n    ```\n\n    **Example:**\n    ```go\n    type Person struct\
+  \ {\n        Name string\n        Age  int\n    }\n\n    // Method with receiver\n\
+  \    func (p Person) Greet() string {\n        return \"Hello, I'm \" + p.Name\n\
+  \    }\n\n    // Usage\n    person := Person{Name: \"Alice\", Age: 25}\n    message\
+  \ := person.Greet()  // Call method on instance\n    fmt.Println(message)  // \"\
+  Hello, I'm Alice\"\n    ```\n\n    **Anatomy:**\n    - `(p Person)` - The receiver\
+  \ (like \"this\" or \"self\" in other languages)\n    - `p` - Receiver variable\
+  \ name (by convention, use first letter of type)\n    - `Person` - The type this\
+  \ method belongs to\n    - `Greet()` - Method name\n    - Called with: `person.Greet()`\n\
+  \n    ### Value Receivers vs Pointer Receivers\n\n    This is **CRITICAL** to understand!\
+  \ The type of receiver determines whether you modify the original or a copy.\n\n\
+  \    **Value Receiver (receives a copy):**\n    ```go\n    func (p Person) HaveBirthday()\
+  \ {\n        p.Age++  // Modifies COPY, not original!\n    }\n\n    person := Person{Name:\
+  \ \"Alice\", Age: 25}\n    person.HaveBirthday()\n    fmt.Println(person.Age)  //\
+  \ Still 25! (unchanged)\n    ```\n\n    **Pointer Receiver (receives a reference):**\n\
+  \    ```go\n    func (p *Person) HaveBirthday() {\n        p.Age++  // Modifies\
+  \ ORIGINAL!\n    }\n\n    person := Person{Name: \"Alice\", Age: 25}\n    person.HaveBirthday()\
+  \  // Go automatically takes address\n    fmt.Println(person.Age)  // 26! (changed)\n\
+  \    ```\n\n    ### When to Use Pointer Receivers\n\n    **Use pointer receivers\
+  \ when:**\n\n    **1. You need to modify the receiver**\n    ```go\n    type Counter\
+  \ struct {\n        Count int\n    }\n\n    // ✅ Pointer receiver - modifies original\n\
+  \    func (c *Counter) Increment() {\n        c.Count++\n    }\n\n    counter :=\
+  \ Counter{Count: 0}\n    counter.Increment()\n    fmt.Println(counter.Count)  //\
+  \ 1\n    ```\n\n    **2. The struct is large (avoid copying)**\n    ```go\n    type\
+  \ LargeData struct {\n        Data [1000000]int\n    }\n\n    // ✅ Pointer receiver\
+  \ - avoids copying 4MB of data!\n    func (ld *LargeData) Process() {\n        //\
+  \ Work with the data\n    }\n    ```\n\n    **3. Consistency - if any method needs\
+  \ pointer, use pointer for all**\n    ```go\n    type User struct {\n        Name\
+  \  string\n        Email string\n    }\n\n    // ✅ All methods use pointer receivers\
+  \ for consistency\n    func (u *User) UpdateName(name string) {\n        u.Name\
+  \ = name\n    }\n\n    func (u *User) UpdateEmail(email string) {\n        u.Email\
+  \ = email\n    }\n\n    func (u *User) GetFullInfo() string {\n        return u.Name\
+  \ + \" <\" + u.Email + \">\"\n    }\n    ```\n\n    ### When to Use Value Receivers\n\
+  \n    **Use value receivers when:**\n\n    **1. Method doesn't modify the receiver**\n\
+  \    ```go\n    type Point struct {\n        X, Y int\n    }\n\n    // ✅ Value receiver\
+  \ - just reading data\n    func (p Point) Distance() float64 {\n        return math.Sqrt(float64(p.X*p.X\
+  \ + p.Y*p.Y))\n    }\n    ```\n\n    **2. Receiver is a small struct (few bytes)**\n\
+  \    ```go\n    type Color struct {\n        R, G, B uint8  // Only 3 bytes total\n\
+  \    }\n\n    // ✅ Value receiver - cheap to copy\n    func (c Color) String() string\
+  \ {\n        return fmt.Sprintf(\"#%02x%02x%02x\", c.R, c.G, c.B)\n    }\n    ```\n\
+  \n    **3. Working with basic types or immutable data**\n    ```go\n    type Temperature\
+  \ float64\n\n    // ✅ Value receiver - basic type\n    func (t Temperature) Celsius()\
+  \ float64 {\n        return float64(t)\n    }\n\n    func (t Temperature) Fahrenheit()\
+  \ float64 {\n        return float64(t)*9/5 + 32\n    }\n    ```\n\n    ### Automatic\
+  \ Pointer/Value Conversion\n\n    **Go is smart - it converts automatically:**\n\
+  \    ```go\n    type Person struct {\n        Name string\n    }\n\n    func (p\
+  \ *Person) UpdateName(name string) {\n        p.Name = name\n    }\n\n    // All\
+  \ these work:\n    person := Person{Name: \"Alice\"}\n    person.UpdateName(\"Bob\"\
+  )  // Go converts to (&person).UpdateName(\"Bob\")\n\n    ptrPerson := &Person{Name:\
+  \ \"Charlie\"}\n    ptrPerson.UpdateName(\"Dave\")  // Already a pointer\n    ```\n\
+  \n    **Behind the scenes:**\n    - `person.UpdateName()` → Go automatically converts\
+  \ to `(&person).UpdateName()`\n    - `ptrPerson.UpdateName()` → Already a pointer,\
+  \ no conversion needed\n\n    ### Methods on Non-Struct Types\n\n    **You can define\
+  \ methods on ANY type you create:**\n    ```go\n    type Celsius float64\n\n   \
+  \ func (c Celsius) Fahrenheit() float64 {\n        return float64(c)*9/5 + 32\n\
+  \    }\n\n    func (c Celsius) String() string {\n        return fmt.Sprintf(\"\
+  %.2f°C\", c)\n    }\n\n    temp := Celsius(25.0)\n    fmt.Println(temp.String())\
+  \       // \"25.00°C\"\n    fmt.Println(temp.Fahrenheit())   // 77.0\n    ```\n\n\
+  \    **⚠️ Cannot define methods on types from other packages:**\n    ```go\n   \
+  \ // ❌ ERROR: Cannot define methods on built-in types\n    func (s string) Reverse()\
+  \ string {\n        // Won't compile!\n    }\n\n    // ✅ CORRECT: Create your own\
+  \ type\n    type MyString string\n\n    func (s MyString) Reverse() string {\n \
+  \       runes := []rune(s)\n        for i, j := 0, len(runes)-1; i < j; i, j = i+1,\
+  \ j-1 {\n            runes[i], runes[j] = runes[j], runes[i]\n        }\n      \
+  \  return string(runes)\n    }\n    ```\n\n    ### Practical Example: Bank Account\n\
+  \n    ```go\n    type BankAccount struct {\n        Owner   string\n        Balance\
+  \ float64\n    }\n\n    // Pointer receiver - modifies balance\n    func (ba *BankAccount)\
+  \ Deposit(amount float64) error {\n        if amount <= 0 {\n            return\
+  \ fmt.Errorf(\"deposit amount must be positive\")\n        }\n        ba.Balance\
+  \ += amount\n        return nil\n    }\n\n    // Pointer receiver - modifies balance\n\
+  \    func (ba *BankAccount) Withdraw(amount float64) error {\n        if amount\
+  \ <= 0 {\n            return fmt.Errorf(\"withdrawal amount must be positive\")\n\
+  \        }\n        if amount > ba.Balance {\n            return fmt.Errorf(\"insufficient\
+  \ funds\")\n        }\n        ba.Balance -= amount\n        return nil\n    }\n\
+  \n    // Value receiver - just reading data\n    func (ba BankAccount) GetBalance()\
+  \ float64 {\n        return ba.Balance\n    }\n\n    // Value receiver - just formatting\n\
+  \    func (ba BankAccount) String() string {\n        return fmt.Sprintf(\"%s's\
+  \ account: $%.2f\", ba.Owner, ba.Balance)\n    }\n\n    // Usage\n    account :=\
+  \ BankAccount{Owner: \"Alice\", Balance: 1000.0}\n    account.Deposit(500.0)\n \
+  \   account.Withdraw(200.0)\n    fmt.Println(account)  // \"Alice's account: $1300.00\"\
+  \n    ```\n\n    ### Method Chaining\n\n    **Return the receiver to enable chaining:**\n\
+  \    ```go\n    type StringBuilder struct {\n        text string\n    }\n\n    func\
+  \ (sb *StringBuilder) Append(s string) *StringBuilder {\n        sb.text += s\n\
+  \        return sb  // Return pointer for chaining\n    }\n\n    func (sb *StringBuilder)\
+  \ String() string {\n        return sb.text\n    }\n\n    // Chain methods\n   \
+  \ result := new(StringBuilder).\n        Append(\"Hello\").\n        Append(\" \"\
+  ).\n        Append(\"World\").\n        String()\n\n    fmt.Println(result)  //\
+  \ \"Hello World\"\n    ```\n\n    ### Methods vs Functions: When to Use Which?\n\
+  \n    **Use methods when:**\n    - ✅ Behavior belongs to a type (like Person.Greet())\n\
+  \    - ✅ Need to modify state of the receiver\n    - ✅ Working with interfaces (methods\
+  \ satisfy interfaces)\n    - ✅ Grouping related operations (account.Deposit, account.Withdraw)\n\
+  \n    **Use functions when:**\n    - ✅ Utility operations (not tied to specific\
+  \ type)\n    - ✅ Working with multiple types\n    - ✅ Pure functions (no state)\n\
+  \n    **Example comparison:**\n    ```go\n    // ✅ Method - belongs to Rectangle\n\
+  \    func (r Rectangle) Area() float64 {\n        return r.Width * r.Height\n  \
+  \  }\n\n    // ✅ Function - works with any two numbers\n    func Add(a, b int) int\
+  \ {\n        return a + b\n    }\n    ```\n\n    ### Method Sets and Interfaces\n\
+  \n    **This is important for interfaces (covered later):**\n\n    **Value receiver\
+  \ methods:**\n    - Can be called on values and pointers\n    - Part of both value's\
+  \ and pointer's method set\n\n    **Pointer receiver methods:**\n    - Can be called\
+  \ on pointers and values (Go converts)\n    - Only part of pointer's method set\
+  \ (important for interfaces!)\n\n    ```go\n    type Counter struct {\n        Count\
+  \ int\n    }\n\n    func (c Counter) GetCount() int {      // Value receiver\n \
+  \       return c.Count\n    }\n\n    func (c *Counter) Increment() {        // Pointer\
+  \ receiver\n        c.Count++\n    }\n\n    // Both work:\n    counter := Counter{Count:\
+  \ 0}\n    counter.GetCount()    // Value receiver - works\n    counter.Increment()\
+  \   // Pointer receiver - Go converts to &counter\n\n    ptr := &Counter{Count:\
+  \ 0}\n    ptr.GetCount()        // Value receiver - Go dereferences\n    ptr.Increment()\
+  \       // Pointer receiver - works directly\n    ```\n\n    ### Common Patterns\n\
+  \n    **1. Constructor Pattern:**\n    ```go\n    type User struct {\n        name\
+  \  string  // unexported\n        email string  // unexported\n    }\n\n    // Constructor\
+  \ function\n    func NewUser(name, email string) *User {\n        return &User{\n\
+  \            name:  name,\n            email: email,\n        }\n    }\n\n    //\
+  \ Getter methods\n    func (u *User) Name() string {\n        return u.name\n  \
+  \  }\n\n    func (u *User) Email() string {\n        return u.email\n    }\n\n \
+  \   // Setter with validation\n    func (u *User) SetEmail(email string) error {\n\
+  \        if !strings.Contains(email, \"@\") {\n            return fmt.Errorf(\"\
+  invalid email\")\n        }\n        u.email = email\n        return nil\n    }\n\
+  \    ```\n\n    **2. Builder Pattern:**\n    ```go\n    type QueryBuilder struct\
+  \ {\n        table  string\n        fields []string\n        where  string\n   \
+  \ }\n\n    func NewQuery() *QueryBuilder {\n        return &QueryBuilder{}\n   \
+  \ }\n\n    func (qb *QueryBuilder) Table(table string) *QueryBuilder {\n       \
+  \ qb.table = table\n        return qb\n    }\n\n    func (qb *QueryBuilder) Select(fields\
+  \ ...string) *QueryBuilder {\n        qb.fields = fields\n        return qb\n  \
+  \  }\n\n    func (qb *QueryBuilder) Where(condition string) *QueryBuilder {\n  \
+  \      qb.where = condition\n        return qb\n    }\n\n    func (qb *QueryBuilder)\
+  \ Build() string {\n        return fmt.Sprintf(\"SELECT %s FROM %s WHERE %s\",\n\
+  \            strings.Join(qb.fields, \", \"),\n            qb.table,\n         \
+  \   qb.where)\n    }\n\n    // Usage - fluent interface\n    query := NewQuery().\n\
+  \        Table(\"users\").\n        Select(\"name\", \"email\").\n        Where(\"\
+  age > 18\").\n        Build()\n    ```\n\n    ### Best Practices\n\n    **1. Use\
+  \ consistent receiver names:**\n    ```go\n    // ✅ Good - use first letter(s) of\
+  \ type\n    func (p *Person) SetName(name string)\n    func (p *Person) GetName()\
+  \ string\n\n    // ❌ Bad - inconsistent receiver names\n    func (p *Person) SetName(name\
+  \ string)\n    func (person *Person) GetName() string\n    ```\n\n    **2. Don't\
+  \ mix receiver types (except for good reason):**\n    ```go\n    // ❌ Bad - mixed\
+  \ receiver types\n    func (p Person) GetName() string    // Value\n    func (p\
+  \ *Person) SetName(name string) // Pointer\n\n    // ✅ Good - consistent pointer\
+  \ receivers\n    func (p *Person) GetName() string\n    func (p *Person) SetName(name\
+  \ string)\n    ```\n\n    **3. Use pointer receivers by default (unless you have\
+  \ a reason not to):**\n    ```go\n    // ✅ Safe default - use pointer receivers\n\
+  \    func (u *User) UpdateEmail(email string) {\n        u.email = email\n    }\n\
+  \n    func (u *User) GetEmail() string {\n        return u.email\n    }\n    ```\n\
+  \n    **4. Keep methods focused and simple:**\n    ```go\n    // ✅ Good - each method\
+  \ does one thing\n    func (u *User) Validate() error\n    func (u *User) Save()\
+  \ error\n    func (u *User) Delete() error\n\n    // ❌ Bad - method does too much\n\
+  \    func (u *User) ValidateSaveAndNotify() error\n    ```\n\n    ### Key Takeaways\n\
+  \n    1. Methods attach behavior to types using receivers\n    2. **Pointer receivers\
+  \ (`*T`)** modify the original - use for mutations or large structs\n    3. **Value\
+  \ receivers (`T`)** work on copies - use for immutable operations or small types\n\
+  \    4. Go automatically converts between values and pointers for method calls\n\
+  \    5. Use consistent receiver types across all methods of a type\n    6. Methods\
+  \ enable interfaces and polymorphism in Go\n    7. Return the receiver from methods\
+  \ to enable chaining\n    8. Use methods when behavior belongs to a type, functions\
+  \ for utilities\n\n    **Next:** Learn about **Pointers and Values** to understand\
+  \ memory and performance!"
+exercises:
+  - type: multiple_choice
+    sequence_order: 1
+    question: "What is the key difference between a value receiver and a pointer receiver in Go methods?"
+    options:
+      - "Value receivers are faster than pointer receivers"
+      - "Value receivers work on a copy of the data, while pointer receivers work on the original data"
+      - "Pointer receivers can only be used with structs"
+      - "Value receivers can modify the original data, but pointer receivers cannot"
+    correct_answer: "Value receivers work on a copy of the data, while pointer receivers work on the original data"
+    explanation: "The fundamental difference between value and pointer receivers is how they access the data. A value receiver like `func (p Person) Method()` receives a copy of the struct, so any modifications inside the method only affect the copy, not the original. In contrast, a pointer receiver like `func (p *Person) Method()` receives a reference to the original struct, allowing the method to modify the actual data. This is critical when you need methods that change the state of an object. For example, a `Deposit` method on a bank account needs a pointer receiver to actually update the balance. Value receivers are appropriate for read-only operations or when working with small, immutable data. The choice between them affects both functionality and performance - pointer receivers avoid copying large structs, while value receivers ensure data immutability when needed."
+    require_pass: true
+  - type: multiple_choice
+    sequence_order: 2
+    question: "When should you use a pointer receiver instead of a value receiver?"
+    options:
+      - "Only when the struct has more than 10 fields"
+      - "When you need to modify the receiver, work with large structs, or maintain consistency across methods"
+      - "Always use pointer receivers regardless of the situation"
+      - "When the method name starts with 'Get' or 'Set'"
+    correct_answer: "When you need to modify the receiver, work with large structs, or maintain consistency across methods"
+    explanation: "There are three main scenarios where pointer receivers are preferred. First, when you need to modify the receiver's state - for example, a `Withdraw` method on a bank account must use a pointer receiver to actually decrease the balance. Second, when dealing with large structs to avoid copying overhead - copying a struct with megabytes of data on every method call would be inefficient. Third, for consistency - if any method on a type needs a pointer receiver, it's a best practice to use pointer receivers for all methods on that type. This creates a consistent interface and prevents confusion about which methods can modify state. However, value receivers are appropriate for read-only operations on small types, immutable data, or when you explicitly want to work with a copy. The choice impacts both functionality and performance, so it should be made deliberately based on your needs."
+    require_pass: true
+  - type: multiple_choice
+    sequence_order: 3
+    question: "What happens when you call a method with a pointer receiver on a non-pointer value in Go?"
+    options:
+      - "The code will not compile and produce an error"
+      - "Go automatically converts the value to a pointer (&value) before calling the method"
+      - "The method will panic at runtime"
+      - "The method will execute but won't be able to modify the original value"
+    correct_answer: "Go automatically converts the value to a pointer (&value) before calling the method"
+    explanation: "Go provides convenient automatic conversion between values and pointers when calling methods. If you have a method with a pointer receiver like `func (p *Person) UpdateName(name string)` and you call it on a non-pointer value like `person.UpdateName(\"Alice\")`, Go automatically converts this to `(&person).UpdateName(\"Alice\")`. This syntactic sugar makes method calls cleaner and more intuitive. The conversion works both ways - if you have a value receiver method and call it on a pointer, Go automatically dereferences the pointer. This is purely a convenience feature for method calls; it doesn't change the underlying behavior. The method still receives a pointer and can modify the original data. This automatic conversion is one reason why Go code can look clean while still being explicit about memory semantics. However, this only works for method calls - you still need to be explicit about pointers vs values when working with interfaces."
+    require_pass: true

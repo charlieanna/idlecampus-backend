@@ -1,0 +1,46 @@
+slug: fan-outfan-in-pipeline
+title: Fan-out/Fan-in Pipeline
+sequence_order: 1
+estimated_minutes: 2
+difficulty: easy
+content_md: "# Fan-out/Fan-in Pipeline \U0001F680\n\nBuild a simple fetch→parse→store\
+  \ pipeline using a bounded worker pool. Practice channel handoff and fan-in aggregation.\n\
+  \n## Why it matters\n- Bounded concurrency prevents resource exhaustion and keeps\
+  \ latency predictable.\n- Clear ownership of closing channels avoids deadlocks and\
+  \ panics.\n\n## Mental model\nProducer → [N workers] → Aggregator (fan-in). The\
+  \ aggregator owns the output channel and closes it once all workers finish.\n\n\
+  ## Invariants\n- Output channel closes once (after all workers return)\n- No sends\
+  \ after close, no goroutine leaks on early exit\n- Backpressure exists at the input\
+  \ queue\n\n## Common failure modes\n- Double closing the output channel (panic)\n\
+  - Workers blocked forever on send (aggregator not reading)\n- Goroutine leaks (no\
+  \ ctx cancellation)\n\n## Quick snippet\n```go\nvar wg sync.WaitGroup\nout := make(chan\
+  \ T)\nfor i := 0; i < n; i++ {\n  wg.Add(1)\n  go func() {\n    defer wg.Done()\n\
+  \    for v := range in {\n      select {\n      case <-ctx.Done():\n        return\n\
+  \      case out <- process(v):\n      }\n    }\n  }()\n}\ngo func() { wg.Wait();\
+  \ close(out) }()\n```\n\n## Validate\nRun the pipeline tests in examples/go-concurrency-capstone.\n\
+  \n```bash\ngo test ./examples/go-concurrency-capstone/internal/pipeline -run TestPipeline_ProcessesURLs\
+  \ -race\n```\n\n## Key Points\n- Use a single input channel to feed workers\n- Aggregate\
+  \ completion via WaitGroup and close the fan-in channel when done\n- Keep stages\
+  \ small and testable (Fetcher, Parser, Store interfaces)"
+exercises:
+- type: terminal
+  sequence_order: 1
+  description: Run pipeline test with race detector to validate fan-in correctness.
+- type: mcq
+  sequence_order: 2
+  question: Who is responsible for closing the fan-in output channel?
+  options:
+  - The aggregator goroutine after all workers finish
+  - Each worker after it sends its last result
+  - The producer when it closes the input
+  - Nobody; channels close themselves
+  correct_answer_index: 0
+- type: code
+  sequence_order: 3
+- type: sandbox
+  sequence_order: 4
+objectives:
+- Understand the fundamental concepts and mechanisms of fan outfan in pipeline
+- Apply chemical principles to solve related problems
+- Identify key reactions, equations, and chemical behaviors
+next_recommended: []

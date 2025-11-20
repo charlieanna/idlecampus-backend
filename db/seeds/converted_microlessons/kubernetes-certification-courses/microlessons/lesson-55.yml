@@ -1,0 +1,68 @@
+slug: lesson-55
+title: Lesson 55
+difficulty: easy
+sequence_order: 55
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Service Mesh Basics\n\n    - sidecar proxies\
+  \ and data plane\n    - traffic splitting and retries\n    - mTLS overview"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What is the primary role of sidecar proxies in a service mesh?
+  options:
+  - To replace the application container
+  - To intercept and manage all network traffic to and from the application container
+  - To store application logs
+  - To provide persistent storage
+  correct_answer: To intercept and manage all network traffic to and from the application
+    container
+  explanation: In a service mesh architecture, a sidecar proxy (like Envoy in Istio
+    or Linkerd-proxy in Linkerd) is automatically injected alongside each application
+    container. This proxy intercepts all inbound and outbound network traffic for
+    the application, enabling the service mesh to provide features like traffic management,
+    observability, and security without modifying application code. The proxy handles
+    service discovery, load balancing, circuit breaking, retries, timeouts, and metrics
+    collection. The collection of all these sidecar proxies forms the data plane,
+    while the control plane (like Istio's istiod) configures the proxies. This pattern
+    allows centralized management of cross-cutting concerns - developers focus on
+    business logic while the service mesh handles networking complexity. The transparent
+    interception is typically achieved using iptables rules that redirect traffic
+    to the proxy.
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What is mutual TLS (mTLS) in the context of service mesh?
+  options:
+  - Encryption of traffic only from client to server
+  - Two-way authentication where both client and server verify each other's certificates
+  - A method to compress network traffic
+  - A load balancing algorithm
+  correct_answer: Two-way authentication where both client and server verify each
+    other's certificates
+  explanation: 'Mutual TLS (mTLS) is a security feature where both the client and
+    server authenticate each other using TLS certificates, unlike standard TLS where
+    only the server is authenticated. In a service mesh, mTLS is automatically enabled
+    between services, providing encryption in transit and strong identity verification.
+    When Service A calls Service B, the service mesh ensures: (1) both services have
+    valid certificates issued by the mesh''s certificate authority, (2) traffic is
+    encrypted, and (3) both parties verify each other''s identity. This provides zero-trust
+    security within the cluster - services can''t communicate unless they have valid
+    mesh identities. Service meshes like Istio automate certificate management, rotation,
+    and enforcement. mTLS prevents man-in-the-middle attacks, eavesdropping, and unauthorized
+    access between services, which is crucial for compliance and security in multi-tenant
+    or sensitive environments.'
+  require_pass: true
+- type: mcq
+  sequence_order: 1
+  question: What kubectl command checks if you can perform an action?
+  options:
+  - kubectl auth can-i create pods
+  - kubectl check permissions create pods
+  - kubectl verify action create pods
+  - kubectl test auth create pods
+  correct_answer_index: 0
+  explanation: kubectl auth can-i <action> <resource> checks if the current user has
+    permission to perform the specified action.
+  require_pass: true

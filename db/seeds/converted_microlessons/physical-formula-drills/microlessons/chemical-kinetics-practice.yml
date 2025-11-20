@@ -1,0 +1,59 @@
+slug: chemical-kinetics-practice
+title: chemical kinetics — Practice
+difficulty: medium
+sequence_order: 3
+estimated_minutes: 2
+key_concepts:
+- chemical kinetics
+prerequisites: []
+content_md: '# chemical kinetics — Practice 🚀
+
+
+  Practice key chemical kinetics formulas including rate laws, Arrhenius equation,
+  and integrated rate laws.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What is the Arrhenius equation relating rate constant to temperature?
+  options:
+  - k = Ae^(-Ea/RT)
+  - k = Ae^(Ea/RT)
+  - k = RT/Ea
+  - k = ln(A/Ea)
+  correct_answer: k = Ae^(-Ea/RT)
+  explanation: "The Arrhenius equation is k = Ae^(-Ea/RT), where k is rate constant, A is pre-exponential factor (frequency factor), Ea is activation energy, R is gas constant (8.314 J/mol·K), and T is temperature (K). Taking ln: ln k = ln A - Ea/RT. A plot of ln k vs 1/T gives slope = -Ea/R."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What is the integrated rate law for a first-order reaction?
+  options:
+  - ln[A] = ln[A]₀ - kt
+  - 1/[A] = 1/[A]₀ + kt
+  - '[A] = [A]₀ - kt'
+  - '[A] = [A]₀e^(-kt)'
+  correct_answer: ln[A] = ln[A]₀ - kt
+  explanation: "For first-order reactions, the integrated rate law is ln[A] = ln[A]₀ - kt, where [A] is concentration at time t, [A]₀ is initial concentration, and k is rate constant. This can also be written as [A] = [A]₀e^(-kt). A plot of ln[A] vs t gives a straight line with slope = -k. Half-life: t₁/₂ = 0.693/k."
+  require_pass: false
+- type: mcq
+  sequence_order: 3
+  question: What is the integrated rate law for a zero-order reaction?
+  options:
+  - '[A] = [A]₀ - kt'
+  - ln[A] = ln[A]₀ - kt
+  - 1/[A] = 1/[A]₀ + kt
+  - '[A] = [A]₀/kt'
+  correct_answer: '[A] = [A]₀ - kt'
+  explanation: "For zero-order reactions, the integrated rate law is [A] = [A]₀ - kt, where [A] is concentration at time t, [A]₀ is initial concentration, and k is rate constant. A plot of [A] vs t gives a straight line with slope = -k. Half-life: t₁/₂ = [A]₀/2k (depends on initial concentration)."
+  require_pass: false

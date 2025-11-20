@@ -1,0 +1,129 @@
+slug: lesson-3
+title: Lesson 3
+difficulty: easy
+sequence_order: 3
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Services & Networking\n\n    Learn how\
+  \ to expose your applications and enable communication between pods and external\
+  \ clients.\n\n    ## Services\n\n    Services provide stable networking endpoints\
+  \ for accessing pods. Types:\n\n    **ClusterIP (Default)**\n    - Internal-only\
+  \ access\n    - Pods within cluster can communicate\n    - Use for internal microservices\n\
+  \n    **NodePort**\n    - Exposes service on each node's IP\n    - External access\
+  \ via <NodeIP>:<NodePort>\n    - Useful for development/testing\n\n    **LoadBalancer**\n\
+  \    - Creates external load balancer\n    - Cloud provider integration required\n\
+  \    - Production external access\n\n    **ExternalName**\n    - Maps service to\
+  \ external DNS name\n    - No proxy or forwarding\n\n    ## DNS in Kubernetes\n\n\
+  \    Every service gets a DNS name:\n    - Format: `<service-name>.<namespace>.svc.cluster.local`\n\
+  \    - Pods can access services by name\n    - Automatic service discovery\n\n \
+  \   ## Network Policies\n\n    Control traffic flow between pods:\n    - Ingress\
+  \ rules: Incoming traffic\n    - Egress rules: Outgoing traffic\n    - Label-based\
+  \ selection\n    - Namespace isolation\n\n    ## Essential Commands\n\n    ```bash\n\
+  \    # Create service\n    kubectl expose deployment nginx --port=80 --type=LoadBalancer\n\
+  \n    # List services\n    kubectl get services\n    kubectl get svc\n\n    # Describe\
+  \ service\n    kubectl describe service nginx\n\n    # Test service connectivity\n\
+  \    kubectl run curl --image=curlimages/curl -it --rm -- curl http://nginx\n  \
+  \  ```\n\n    Practice service configuration in the labs!"
+exercises:
+- type: multiple_choice_question
+  sequence_order: 1
+  question: Which Kubernetes service type automatically creates an external load balancer
+    in cloud environments?
+  options:
+  - ClusterIP
+  - NodePort
+  - LoadBalancer
+  - ExternalName
+  correct_answer: LoadBalancer
+  explanation: The LoadBalancer service type integrates with cloud providers (AWS,
+    GCP, Azure) to automatically provision an external load balancer that distributes
+    traffic to your service. When you create a LoadBalancer service in a cloud environment,
+    Kubernetes requests the cloud provider's API to create a load balancer (like AWS
+    ELB, GCP Load Balancer, or Azure Load Balancer) and configures it to route traffic
+    to your application pods across multiple nodes. The external load balancer gets
+    a public IP address that external clients can use to access your service. This
+    is the recommended way to expose services to the internet in production cloud
+    environments. ClusterIP only provides internal cluster access, NodePort exposes
+    the service on each node's IP at a static port (requiring manual load balancing),
+    and ExternalName simply creates a DNS CNAME record without any proxying. LoadBalancer
+    builds upon NodePort (which builds upon ClusterIP), so it includes all their functionality
+    plus cloud load balancer integration. For on-premises clusters without cloud integration,
+    you would typically use Ingress controllers or external load balancing solutions
+    like MetalLB.
+  require_pass: true
+- type: multiple_choice_question
+  sequence_order: 2
+  question: What is the DNS name format for accessing a Kubernetes service from a
+    different namespace?
+  options:
+  - <service-name>.cluster.local
+  - <service-name>.<namespace>
+  - <service-name>.<namespace>.svc.cluster.local
+  - <namespace>.<service-name>.local
+  correct_answer: <service-name>.<namespace>.svc.cluster.local
+  explanation: Kubernetes provides automatic DNS-based service discovery with the
+    fully qualified domain name format '<service-name>.<namespace>.svc.cluster.local'.
+    For example, a service named 'database' in the 'production' namespace would be
+    accessible at 'database.production.svc.cluster.local'. Pods in the same namespace
+    can use the short form '<service-name>' (e.g., just 'database'), while pods in
+    different namespaces must include the namespace (at minimum '<service-name>.<namespace>').
+    The DNS system is provided by CoreDNS (or kube-dns in older clusters), which creates
+    A records mapping service names to their ClusterIP addresses. This DNS-based discovery
+    allows applications to communicate using stable names rather than IP addresses,
+    which can change. The consistent naming scheme makes it easy to configure applications
+    for different environments (development, staging, production) by simply changing
+    the namespace in the DNS name while keeping application code unchanged. Understanding
+    Kubernetes DNS is crucial for microservices communication and service mesh implementations.
+  require_pass: true
+- type: terminal
+  sequence_order: 1
+  command: kubectl expose deployment nginx --port=80 --type=LoadBalancer
+  description: 'Practice the command: kubectl expose deployment nginx --port=80 --type=LoadBalancer'
+  hints:
+  - 'Try: kubectl expose deployment nginx --port=80 --type=LoadBalancer'
+  - Use kubectl --help if you need help
+  timeout_sec: 60
+  require_pass: true
+- type: terminal
+  sequence_order: 2
+  command: kubectl get services
+  description: 'Practice the command: kubectl get services'
+  hints:
+  - 'Try: kubectl get services'
+  - Use kubectl --help if you need help
+  timeout_sec: 60
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: Which command creates a deployment with 3 replicas?
+  options:
+  - kubectl create deployment nginx --image=nginx --replicas=3
+  - kubectl make deployment nginx replicas=3
+  - kubectl deploy nginx --count=3
+  - kubectl new deployment nginx x3
+  correct_answer_index: 0
+  explanation: kubectl create deployment creates a deployment. The --replicas flag
+    specifies the number of pod replicas.
+  require_pass: true
+- type: code
+  sequence_order: 4
+  language: yaml
+  question: Create a deployment with 3 replicas of nginx
+  starter_code: '# Write your deployment YAML here
+
+    apiVersion: apps/v1
+
+    kind: Deployment
+
+    '
+  solution_code: "apiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: nginx-deployment\n\
+    spec:\n  replicas: 3\n  selector:\n    matchLabels:\n      app: nginx\n  template:\n\
+    \    metadata:\n      labels:\n        app: nginx\n    spec:\n      containers:\n\
+    \      - name: nginx\n        image: nginx:1.25\n        ports:\n        - containerPort:\
+    \ 80"
+  hints:
+  - 'Use apiVersion: apps/v1 for Deployments'
+  - Set spec.replicas to 3
+  - Define selector.matchLabels to match template.metadata.labels
+  require_pass: true

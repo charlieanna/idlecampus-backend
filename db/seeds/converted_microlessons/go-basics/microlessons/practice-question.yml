@@ -1,0 +1,48 @@
+slug: practice-question
+title: Practice Question
+difficulty: medium
+sequence_order: 33
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: '# Practice Question 🚀
+
+
+  ## What is this?
+
+  A concise explanation of the concept.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+  - type: mcq
+    sequence_order: 1
+    question: "What is the most important concept to remember when working with Go?"
+    options:
+      - "Always use pointers for everything"
+      - "Understand when to use values vs pointers, and how interfaces work"
+      - "Memorize all standard library functions"
+      - "Only use goroutines for all operations"
+    correct_answer: "Understand when to use values vs pointers, and how interfaces work"
+    explanation: "The most critical concepts in Go are understanding value vs pointer semantics and how interfaces enable polymorphism. These fundamentals affect every aspect of Go programming. Example:\n\n```go\n// Values vs Pointers\ntype Counter struct {\n    count int\n}\n\n// Value receiver - doesn't modify original\nfunc (c Counter) IncrementValue() {\n    c.count++  // Modifies copy\n}\n\n// Pointer receiver - modifies original\nfunc (c *Counter) IncrementPointer() {\n    c.count++  // Modifies original\n}\n\n// Interfaces enable polymorphism\ntype Writer interface {\n    Write([]byte) (int, error)\n}\n\n// Any type with Write method satisfies Writer\nfunc Save(w Writer, data []byte) error {\n    _, err := w.Write(data)\n    return err\n}\n\n// Works with files, buffers, network connections, etc.\nSave(os.Stdout, []byte(\"hello\"))  // os.Stdout implements Writer\n```\n\nMastering these concepts allows you to: write efficient code, avoid common bugs, design clean APIs, and understand Go's philosophy. Everything else builds on these foundations."
+    require_pass: true
+  - type: mcq
+    sequence_order: 2
+    question: "What should you always do before starting to answer a Go programming question?"
+    options:
+      - "Write code immediately"
+      - "Read the question carefully and identify the key concepts involved"
+      - "Copy code from Stack Overflow"
+      - "Use the newest Go features"
+    correct_answer: "Read the question carefully and identify the key concepts involved"
+    explanation: "Before coding, always read the question carefully and identify what concepts are being tested. This helps you avoid common mistakes and write correct solutions. Key things to identify:\n\n1. **What's being asked?** - Create, modify, read, or delete?\n2. **What data structures?** - Slices, maps, structs, channels?\n3. **Concurrency needed?** - Goroutines, channels, sync primitives?\n4. **Error handling?** - Should you return errors or handle them?\n5. **Performance concerns?** - Large data? Many operations?\n\nExample question breakdown:\n\"Write a function that takes a slice of integers and returns only the even numbers.\"\n\nIdentify:\n- Input: slice of integers\n- Output: new slice with filtered values\n- Concept: slice operations, filtering\n- Approach: iterate, check modulo, append\n\n```go\nfunc filterEven(nums []int) []int {\n    result := make([]int, 0)\n    for _, num := range nums {\n        if num%2 == 0 {\n            result = append(result, num)\n        }\n    }\n    return result\n}\n```\n\nTaking time to understand prevents mistakes and leads to better solutions."
+    require_pass: true

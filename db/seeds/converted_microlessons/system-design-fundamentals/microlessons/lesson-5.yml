@@ -1,0 +1,169 @@
+slug: lesson-5
+title: Lesson 5
+difficulty: easy
+sequence_order: 5
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Design a URL Shortener (like bit.ly)\n\n\
+  \    Design a service that creates short URLs from long URLs.\n\n    ## Requirements\n\
+  \n    ### Functional Requirements\n    1. Generate short URL from long URL\n   \
+  \ 2. Redirect short URL to original long URL\n    3. Custom short URLs (optional)\n\
+  \    4. Analytics (click tracking)\n    5. Expiration (optional)\n\n    ### Non-Functional\
+  \ Requirements\n    - High availability (99.99%)\n    - Low latency (<100ms redirects)\n\
+  \    - Scalable (1 billion URLs, 100K writes/sec, 10M reads/sec)\n    - Durable\
+  \ (URLs never lost)\n\n    ## Capacity Estimation\n\n    ```python\n    # Write\
+  \ (create short URL)\n    new_urls_per_day = 100_000_000  # 100M\n    writes_per_second\
+  \ = 100_000_000 / 86400 = ~1160 writes/sec\n\n    # Read (redirect)\n    read_write_ratio\
+  \ = 100  # 100 reads per write\n    reads_per_second = 1160 * 100 = 116,000 reads/sec\n\
+  \n    # Storage (5 years)\n    urls_total = 100_000_000 * 365 * 5 = 182.5 billion\
+  \ URLs\n    avg_url_size = 500 bytes\n    total_storage = 182.5B * 500 = 91 TB\n\
+  \    ```\n\n    ## API Design\n\n    ```python\n    # Create short URL\n    POST\
+  \ /api/v1/shorten\n    {\n      \"long_url\": \"https://example.com/very/long/url\"\
+  ,\n      \"custom_alias\": \"my-link\",  # Optional\n      \"expires_at\": \"2024-12-31\"\
+  \  # Optional\n    }\n\n    Response:\n    {\n      \"short_url\": \"https://short.ly/abc123\"\
+  ,\n      \"long_url\": \"https://example.com/very/long/url\"\n    }\n\n    # Redirect\n\
+  \    GET /abc123\n    → 302 Redirect to long_url\n\n    # Analytics\n    GET /api/v1/analytics/abc123\n\
+  \    {\n      \"clicks\": 1234,\n      \"countries\": {\"US\": 800, \"UK\": 200},\n\
+  \      \"referrers\": {\"twitter.com\": 500}\n    }\n    ```\n\n    ## URL Encoding\n\
+  \n    ### Base62 Encoding\n\n    **Why Base62?** [a-z, A-Z, 0-9] = 62 characters\
+  \ (URL-safe)\n\n    ```python\n    import string\n\n    BASE62 = string.ascii_letters\
+  \ + string.digits  # 62 chars\n\n    def encode(num):\n        if num == 0:\n  \
+  \          return BASE62[0]\n\n        result = []\n        while num > 0:\n   \
+  \         result.append(BASE62[num % 62])\n            num //= 62\n\n        return\
+  \ ''.join(reversed(result))\n\n    def decode(s):\n        num = 0\n        for\
+  \ char in s:\n            num = num * 62 + BASE62.index(char)\n        return num\n\
+  \n    # Example:\n    encode(125) = \"cb\"\n    encode(12345) = \"dnh\"\n    encode(1000000000)\
+  \ = \"15FTGg\"\n    ```\n\n    **Length calculation:**\n    ```python\n    # 6 characters\
+  \ Base62\n    62^6 = 56 billion unique URLs\n\n    # 7 characters Base62\n    62^7\
+  \ = 3.5 trillion unique URLs ✓ (enough!)\n    ```\n\n    ## System Design\n\n  \
+  \  ### High-Level Architecture\n\n    ```\n    ┌──────────┐\n    │  Client  │\n\
+  \    └────┬─────┘\n         │\n         ▼\n    ┌────────────────┐\n    │  Load Balancer\
+  \ │\n    └────┬───────────┘\n         │\n         ├──────────────┬──────────────┐\n\
+  \         ▼              ▼              ▼\n    ┌─────────┐   ┌─────────┐   ┌─────────┐\n\
+  \    │  API    │   │  API    │   │  API    │\n    │ Server  │   │ Server  │   │\
+  \ Server  │\n    └────┬────┘   └────┬────┘   └────┬────┘\n         │           \
+  \  │             │\n         └──────┬──────┴──────┬──────┘\n                │  \
+  \           │\n         ┌──────▼──────┐ ┌───▼──────┐\n         │   Cache     │ │\
+  \ Database │\n         │  (Redis)    │ │(Postgres)│\n         └─────────────┘ └──────────┘\n\
+  \    ```\n\n    ### Database Schema\n\n    ```sql\n    CREATE TABLE urls (\n   \
+  \     id BIGSERIAL PRIMARY KEY,\n        short_code VARCHAR(10) UNIQUE NOT NULL,\n\
+  \        long_url TEXT NOT NULL,\n        user_id BIGINT,\n        created_at TIMESTAMP\
+  \ NOT NULL,\n        expires_at TIMESTAMP,\n        clicks BIGINT DEFAULT 0,\n\n\
+  \        INDEX idx_short_code (short_code),\n        INDEX idx_user_id (user_id)\n\
+  \    );\n\n    CREATE TABLE analytics (\n        id BIGSERIAL PRIMARY KEY,\n   \
+  \     short_code VARCHAR(10) NOT NULL,\n        clicked_at TIMESTAMP NOT NULL,\n\
+  \        country VARCHAR(2),\n        referrer TEXT,\n        user_agent TEXT,\n\
+  \n        INDEX idx_short_code (short_code),\n        INDEX idx_clicked_at (clicked_at)\n\
+  \    );\n    ```\n\n    ## ID Generation Strategies\n\n    ### Option 1: Auto-Increment\
+  \ ID + Base62\n\n    ```python\n    def create_short_url(long_url):\n        # Insert\
+  \ into database\n        url_id = db.insert(long_url)  # Returns auto-increment\
+  \ ID\n\n        # Encode ID to base62\n        short_code = base62_encode(url_id)\n\
+  \n        # Update record with short_code\n        db.update(url_id, short_code)\n\
+  \n        return f\"https://short.ly/{short_code}\"\n    ```\n\n    ✅ Simple\n \
+  \   ✅ Guaranteed unique\n    ❌ Sequential IDs (security concern - predictable)\n\
+  \    ❌ Database bottleneck\n\n    ### Option 2: Random String + Collision Check\n\
+  \n    ```python\n    import random\n    import string\n\n    def generate_random_code(length=7):\n\
+  \        chars = string.ascii_letters + string.digits\n        return ''.join(random.choice(chars)\
+  \ for _ in range(length))\n\n    def create_short_url(long_url):\n        for attempt\
+  \ in range(5):  # Max 5 retries\n            short_code = generate_random_code()\n\
+  \n            # Try to insert (unique constraint on short_code)\n            try:\n\
+  \                db.insert(short_code, long_url)\n                return f\"https://short.ly/{short_code}\"\
+  \n            except UniqueViolation:\n                continue  # Collision, try\
+  \ again\n\n        raise Exception(\"Failed to generate unique code\")\n    ```\n\
+  \n    ✅ Non-sequential (secure)\n    ✅ Distributed-friendly\n    ❌ Possible collisions\n\
+  \    ❌ Rare failure case\n\n    ### Option 3: Snowflake-Style Distributed ID\n\n\
+  \    ```python\n    # Twitter Snowflake ID structure\n    # 64 bits:\n    # - 1\
+  \ bit: unused (sign bit)\n    # - 41 bits: timestamp (milliseconds)\n    # - 10\
+  \ bits: machine ID\n    # - 12 bits: sequence number\n\n    class SnowflakeIDGenerator:\n\
+  \        def __init__(self, machine_id):\n            self.machine_id = machine_id\
+  \  # 0-1023\n            self.sequence = 0\n            self.last_timestamp = 0\n\
+  \n        def generate(self):\n            timestamp = int(time.time() * 1000)\n\
+  \n            if timestamp == self.last_timestamp:\n                self.sequence\
+  \ = (self.sequence + 1) & 0xFFF\n                if self.sequence == 0:\n      \
+  \              # Sequence overflow, wait for next millisecond\n                \
+  \    while timestamp <= self.last_timestamp:\n                        timestamp\
+  \ = int(time.time() * 1000)\n            else:\n                self.sequence =\
+  \ 0\n\n            self.last_timestamp = timestamp\n\n            # Combine into\
+  \ 64-bit ID\n            id = ((timestamp << 22) |\n                  (self.machine_id\
+  \ << 12) |\n                  self.sequence)\n\n            return id\n\n    # Generate\
+  \ short code\n    id_gen = SnowflakeIDGenerator(machine_id=1)\n    url_id = id_gen.generate()\n\
+  \    short_code = base62_encode(url_id)\n    ```\n\n    ✅ Distributed (no coordination)\n\
+  \    ✅ Sortable by time\n    ✅ Guaranteed unique\n    ❌ Complex implementation\n\
+  \    ❌ Requires machine ID assignment\n\n    ## Caching Strategy\n\n    ```python\n\
+  \    # Redis cache for hot URLs (80/20 rule)\n    def redirect(short_code):\n  \
+  \      # Check cache first\n        long_url = cache.get(f\"url:{short_code}\")\n\
+  \n        if long_url is None:\n            # Cache miss - query database\n    \
+  \        url = db.query(\"SELECT long_url FROM urls WHERE short_code = ?\", short_code)\n\
+  \n            if url is None:\n                return 404\n\n            long_url\
+  \ = url.long_url\n\n            # Cache for 1 hour\n            cache.set(f\"url:{short_code}\"\
+  , long_url, ttl=3600)\n\n        # Async: Track analytics\n        queue.enqueue('track_click',\
+  \ short_code, request.headers)\n\n        return redirect(long_url, 302)\n    ```\n\
+  \n    **Cache hit rate target: 90%+**\n\n    ## Analytics at Scale\n\n    **Problem:**\
+  \ 10M clicks/sec = too many DB writes!\n\n    ### Solution: Batch Processing\n\n\
+  \    ```python\n    # Write to message queue\n    def track_click(short_code, metadata):\n\
+  \        kafka.send('clicks', {\n            'short_code': short_code,\n       \
+  \     'timestamp': time.time(),\n            'country': metadata.get('country'),\n\
+  \            'referrer': metadata.get('referrer')\n        })\n\n    # Background\
+  \ worker: Batch insert every 10 seconds\n    def analytics_worker():\n        while\
+  \ True:\n            messages = kafka.consume('clicks', max_messages=10000)\n\n\
+  \            if messages:\n                # Batch insert to database\n        \
+  \        db.bulk_insert('analytics', messages)\n\n                # Update click\
+  \ counts\n                click_counts = Counter(m['short_code'] for m in messages)\n\
+  \                for short_code, count in click_counts.items():\n              \
+  \      db.execute(\n                        \"UPDATE urls SET clicks = clicks +\
+  \ ? WHERE short_code = ?\",\n                        count, short_code\n       \
+  \             )\n\n            time.sleep(10)\n    ```\n\n    ## Scaling Considerations\n\
+  \n    ### Database Sharding\n\n    ```python\n    # Shard by short_code (consistent\
+  \ hashing)\n    def get_shard(short_code):\n        shard_num = hash(short_code)\
+  \ % NUM_SHARDS\n        return db_connections[shard_num]\n\n    def redirect(short_code):\n\
+  \        db = get_shard(short_code)\n        url = db.query(\"SELECT long_url FROM\
+  \ urls WHERE short_code = ?\", short_code)\n        return redirect(url.long_url)\n\
+  \    ```\n\n    ### Read Replicas\n\n    ```python\n    # Write to primary\n   \
+  \ primary_db.insert(short_code, long_url)\n\n    # Read from replicas (5 replicas)\n\
+  \    replica = random.choice(read_replicas)\n    url = replica.query(\"SELECT long_url\
+  \ FROM urls WHERE short_code = ?\", short_code)\n    ```\n\n    ## Security & Abuse\
+  \ Prevention\n\n    ### Rate Limiting\n\n    ```python\n    # Limit to 100 URLs\
+  \ per hour per IP\n    @rate_limit(limit=100, per=3600, by='ip')\n    def create_short_url(long_url,\
+  \ request):\n        # Implementation\n        pass\n    ```\n\n    ### URL Validation\n\
+  \n    ```python\n    import re\n    from urllib.parse import urlparse\n\n    def\
+  \ validate_url(url):\n        # Check format\n        if not re.match(r'https?://.+',\
+  \ url):\n            raise ValueError(\"Invalid URL format\")\n\n        # Check\
+  \ length\n        if len(url) > 2048:\n            raise ValueError(\"URL too long\"\
+  )\n\n        # Check domain (blocklist)\n        domain = urlparse(url).netloc\n\
+  \        if domain in BLOCKED_DOMAINS:\n            raise ValueError(\"Domain blocked\"\
+  )\n\n        return True\n    ```\n\n    ## Complete Flow\n\n    ### Create Short\
+  \ URL\n\n    ```\n    1. Client POSTs long URL\n    2. API validates URL\n    3.\
+  \ Generate unique short code (Snowflake ID → Base62)\n    4. Store in database\n\
+  \    5. Return short URL\n    ```\n\n    ### Redirect\n\n    ```\n    1. Client\
+  \ GETs /abc123\n    2. Check Redis cache\n       - Hit: Return long URL\n      \
+  \ - Miss: Query database, cache, return\n    3. Async: Track click to Kafka\n  \
+  \  4. 302 Redirect to long URL\n    ```\n\n    ## Monitoring\n\n    ```python\n\
+  \    # Key metrics\n    - Requests per second\n    - Cache hit rate (target: 90%+)\n\
+  \    - P99 latency (target: <100ms)\n    - Database query time\n    - Error rate\n\
+  \    - Queue lag (analytics)\n    ```\n\n    **Next**: We'll design a social media\
+  \ feed system like Twitter."
+exercises: []
+exercises:
+  - type: mcq
+    sequence_order: 1
+    question: "What is the main advantage of a microservices architecture over a monolithic architecture?"
+    options:
+      - "It's always faster"
+      - "Independent deployment and scaling of services, better fault isolation"
+      - "Fewer servers needed"
+      - "No need for databases"
+    correct_answer: "Independent deployment and scaling of services, better fault isolation"
+    explanation: "Microservices break an application into small, independent services that can be developed, deployed, and scaled independently. Benefits: independent deployment (update one service without redeploying everything), technology diversity (different services can use different tech stacks), fault isolation (one service failure doesn't crash entire system), and team autonomy. Challenges: distributed system complexity, network latency, data consistency, and more operational overhead. Monoliths are simpler but become hard to maintain as they grow. Use microservices when you have: multiple teams, need independent scaling, or diverse technology needs. Start with a monolith and extract services as needed."
+    require_pass: true
+  - type: mcq
+    sequence_order: 2
+    question: "What is an API Gateway and what problem does it solve?"
+    options:
+      - "A type of database"
+      - "A single entry point that routes requests to appropriate microservices and handles cross-cutting concerns"
+      - "A caching layer"
+      - "A testing framework"
+    correct_answer: "A single entry point that routes requests to appropriate microservices and handles cross-cutting concerns"
+    explanation: "An API Gateway is a server that acts as a single entry point for all client requests, routing them to appropriate backend services. It handles cross-cutting concerns: authentication/authorization, rate limiting, request/response transformation, logging, and load balancing. Benefits: simplifies client code (clients call one endpoint, not dozens of services), centralizes security and monitoring, and can aggregate multiple service calls. Example: Mobile app calls API Gateway at api.company.com, which routes /users to User Service, /products to Product Service, etc. Popular gateways: Kong, AWS API Gateway, NGINX. Critical component in microservices architecture for managing service complexity."
+    require_pass: true

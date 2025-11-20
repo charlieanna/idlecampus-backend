@@ -1,0 +1,43 @@
+slug: lesson-9
+title: Lesson 9
+difficulty: easy
+sequence_order: 9
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Pod and Container Debugging\n\n    - CrashLoopBackOff\
+  \ and ImagePullBackOff\n    - kubectl describe/logs/exec, ephemeral containers"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What does the CrashLoopBackOff status indicate about a pod?
+  options:
+  - The pod is waiting for an image to be pulled from a registry
+  - The container is repeatedly starting and crashing, with Kubernetes backing off on restart attempts
+  - The pod has been scheduled but the node is unavailable
+  - The pod's resource requests cannot be satisfied
+  correct_answer: The container is repeatedly starting and crashing, with Kubernetes backing off on restart attempts
+  explanation: "CrashLoopBackOff indicates that a container in the pod is starting, crashing, being restarted by Kubernetes, and then crashing again in a continuous loop. To prevent overwhelming the system with restart attempts, Kubernetes implements an exponential backoff strategy, increasing the wait time between restart attempts (starting at 10 seconds and capping at 5 minutes). Common causes include application errors, missing dependencies, incorrect command/arguments, failed health checks, or configuration issues. To troubleshoot, use 'kubectl describe pod' to see events and 'kubectl logs <pod>' to view application logs. Adding the '--previous' flag to kubectl logs shows logs from the crashed container. Understanding the root cause requires examining both the pod events and the container logs to identify why the application is failing to start or stay running."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: Which kubectl command allows you to execute a command inside a running container for debugging?
+  options:
+  - kubectl run
+  - kubectl attach
+  - kubectl exec
+  - kubectl debug
+  correct_answer: kubectl exec
+  explanation: "The 'kubectl exec' command allows you to execute commands inside a running container, similar to 'docker exec'. The syntax is 'kubectl exec <pod-name> -- <command>', or 'kubectl exec -it <pod-name> -- /bin/sh' to get an interactive shell. The '-it' flags provide an interactive terminal. If a pod has multiple containers, use '-c <container-name>' to specify which one. This is invaluable for debugging as you can inspect the container's filesystem, check running processes, test network connectivity, or verify configuration files. While 'kubectl attach' attaches to a running process, and 'kubectl debug' creates ephemeral debugging containers, 'kubectl exec' is the most direct way to run commands in existing containers. For distroless or minimal containers without shells, ephemeral containers (kubectl debug) provide an alternative."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: What does the ImagePullBackOff status typically indicate?
+  options:
+  - The container image is corrupted
+  - Kubernetes cannot pull the container image from the registry and is backing off retry attempts
+  - The image is too large for the node
+  - The container runtime is not compatible with the image
+  correct_answer: Kubernetes cannot pull the container image from the registry and is backing off retry attempts
+  explanation: "ImagePullBackOff occurs when Kubernetes repeatedly fails to pull a container image from the registry and enters an exponential backoff period between retry attempts. Common causes include: incorrect image name or tag, private registry requiring authentication (missing or invalid imagePullSecrets), network connectivity issues to the registry, registry being down or rate-limited, or the image not existing. The error typically starts as 'ImagePullBackOff' or 'ErrImagePull'. To troubleshoot, use 'kubectl describe pod' to see detailed error messages, verify the image name and tag are correct, check if imagePullSecrets are configured for private registries, and test if the node can reach the registry. You can also manually try to pull the image on the node using crictl or docker to isolate whether it's a Kubernetes configuration issue or a registry/network problem."
+  require_pass: true

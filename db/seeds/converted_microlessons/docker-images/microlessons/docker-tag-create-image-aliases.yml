@@ -1,0 +1,103 @@
+slug: docker-tag-create-image-aliases
+title: 'Docker Tag: Create Image Aliases'
+difficulty: easy
+sequence_order: 5
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Docker Tag: Create Image Aliases \U0001F680\n\n# Mastering docker tag:\
+  \ Version Control for Images\n\n    ## What is docker tag?\n    `docker tag` creates\
+  \ a new tag (alias) for an existing image. It doesn't copy the image - both tags\
+  \ point to the same image ID, consuming no extra disk space. Essential for version\
+  \ management and registry operations.\n\n    ## Why Tagging Matters\n    - **Version\
+  \ Control**: Track different versions of same application\n    - **Registry Preparation**:\
+  \ Add registry prefix before pushing\n    - **Environment Management**: Tag same\
+  \ image for dev/staging/prod\n    - **Release Management**: Mark stable versions\
+  \ as :latest\n    - **No Duplication**: Multiple tags, single image storage\n\n\
+  \    ## Basic Syntax\n    ```bash\n    docker tag SOURCE_IMAGE[:TAG] TARGET_IMAGE[:TAG]\n\
+  \    ```\n\n    ## Common Use Cases\n\n    ### 1. Add Version Tag\n    ```bash\n\
+  \    docker tag myapp:latest myapp:1.0.0\n    ```\n\n    ### 2. Prepare for Registry\
+  \ Push\n    ```bash\n    docker tag myapp:1.0 username/myapp:1.0\n    ```\n\n  \
+  \  ### 3. Mark as Latest\n    ```bash\n    docker tag myapp:1.5.0 myapp:latest\n\
+  \    ```\n\n    ### 4. Create Environment Tag\n    ```bash\n    docker tag myapp:build\
+  \ myapp:production\n    ```\n\n    ## How Tagging Works\n\n    ```\n    Before:\n\
+  \    myapp:1.0  → Image ID: abc123\n\n    After: docker tag myapp:1.0 myapp:latest\n\
+  \    myapp:1.0     → Image ID: abc123\n    myapp:latest  → Image ID: abc123 (same\
+  \ image!)\n\n    Disk usage: No increase!\n    ```\n\n    ## Semantic Versioning\
+  \ Strategy\n\n    ```bash\n    # Build version 1.5.3\n    docker build -t myapp:1.5.3\
+  \ .\n\n    # Tag additional versions\n    docker tag myapp:1.5.3 myapp:1.5    #\
+  \ Minor version\n    docker tag myapp:1.5.3 myapp:1      # Major version\n    docker\
+  \ tag myapp:1.5.3 myapp:latest # Latest stable\n    ```\n\n    ## Registry Tagging\
+  \ Pattern\n\n    ```bash\n    # Local image\n    docker build -t myapp:1.0 .\n\n\
+  \    # Tag for Docker Hub\n    docker tag myapp:1.0 username/myapp:1.0\n    docker\
+  \ tag myapp:1.0 username/myapp:latest\n\n    # Tag for private registry\n    docker\
+  \ tag myapp:1.0 registry.company.com/myapp:1.0\n\n    # Now push\n    docker push\
+  \ username/myapp:1.0\n    docker push username/myapp:latest\n    ```\n\n    ## Multi-Registry\
+  \ Strategy\n\n    Tag same image for multiple registries:\n    ```bash\n    # Original\
+  \ local image\n    docker build -t myapp:1.0 .\n\n    # Docker Hub\n    docker tag\
+  \ myapp:1.0 dockerhub-user/myapp:1.0\n\n    # AWS ECR\n    docker tag myapp:1.0\
+  \ 123456.dkr.ecr.us-east-1.amazonaws.com/myapp:1.0\n\n    # Google GCR\n    docker\
+  \ tag myapp:1.0 gcr.io/my-project/myapp:1.0\n    ```\n\n    ## Environment-Based\
+  \ Tagging\n\n    ```bash\n    # Build once\n    docker build -t myapp:${GIT_COMMIT}\
+  \ .\n\n    # Tag for environments\n    docker tag myapp:${GIT_COMMIT} myapp:dev\n\
+  \    docker tag myapp:${GIT_COMMIT} myapp:staging\n    docker tag myapp:${GIT_COMMIT}\
+  \ myapp:production\n    ```\n\n    ## Common Mistakes\n\n    1. **Thinking tag creates\
+  \ a copy**: It's an alias, not duplication\n    2. **Overwriting important tags**:\
+  \ :latest changes frequently\n    3. **Not using semantic versions**: Hard to track\
+  \ releases\n    4. **Missing registry prefix**: Required for pushing\n    5. **Forgetting\
+  \ to tag :latest**: Some tools expect it\n\n    ## Best Practices\n\n    ### Development\n\
+  \    ```bash\n    docker tag myapp:dev myapp:$(git rev-parse --short HEAD)\n   \
+  \ ```\n\n    ### Release\n    ```bash\n    docker tag myapp:rc myapp:1.0.0\n   \
+  \ docker tag myapp:rc myapp:latest\n    ```\n\n    ### Hotfix\n    ```bash\n   \
+  \ docker tag myapp:1.0.0 myapp:1.0.1\n    docker tag myapp:1.0.1 myapp:latest\n\
+  \    ```\n\n    ## Pro Tips\n\n    1. **Use semantic versioning**: major.minor.patch\n\
+  \    2. **Tag before pushing**: Add registry prefix\n    3. **Automate in CI/CD**:\
+  \ Tag based on git tags/branches\n    4. **Keep :latest updated**: Point to most\
+  \ stable version\n    5. **Document tagging strategy**: Team consistency\n    6.\
+  \ **Use build metadata**: Include commit hash in tags\n\n## Syntax/Command\n\n```bash\n\
+  docker tag myapp:1.0 username/myapp:1.0\n```\n\n## Example\n\n```bash\ndocker tag\
+  \ myapp:latest myapp:1.0.0\n```\n\n## Key Points\n\n- Basic tag: docker tag source:tag\
+  \ target:tag\n\n- Add version: docker tag myapp:latest myapp:1.0\n\n- For registry:\
+  \ docker tag myapp username/myapp:1.0"
+exercises:
+- type: terminal
+  problem_statement: Tag the local image myapp:1.0 with the registry prefix username/myapp:1.0 to prepare it for pushing to Docker Hub
+  expected_output: Silent success (tag created with no output)
+  language: bash
+  starter_code: "# Tag image for registry\n"
+  sequence_order: 1
+  command: docker tag myapp:1.0 username/myapp:1.0
+  description: Create version and latest tags for staging image before production
+    deployment
+  hints:
+  - 'Basic tag: docker tag source:tag target:tag'
+  - 'Add version: docker tag myapp:latest myapp:1.0'
+  - 'For registry: docker tag myapp username/myapp:1.0'
+  validation:
+    must_not_include:
+    - Error
+    - 'panic:'
+  timeout_sec: 60
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: Does tagging an image create a copy that uses additional disk space?
+  options:
+  - No, tags are aliases that point to the same image ID without using extra space
+  - Yes, each tag creates a complete copy of the image
+  - Yes, but only the changed layers are duplicated
+  - No, but it compresses the original image to save space
+  correct_answer: No, tags are aliases that point to the same image ID without using extra space
+  explanation: "docker tag creates an alias (another name) for an existing image - it doesn't copy or duplicate the image. Multiple tags can point to the same image ID, and Docker stores the actual image layers only once. This is why you can have myapp:1.0, myapp:latest, and username/myapp:1.0 all pointing to the same image without using 3x the disk space."
+  require_pass: true
+- type: sandbox
+  sequence_order: 99
+  hints:
+  - Run under CPU pressure to surface leaks or races
+  - Keep commands idempotent in CI
+  validation:
+    must_not_include:
+    - Error
+    - 'panic:'
+  timeout_sec: 60
+  require_pass: true

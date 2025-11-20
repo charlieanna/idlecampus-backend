@@ -1,0 +1,59 @@
+slug: colloidtypes-practice
+title: colloid_types — Practice
+difficulty: medium
+sequence_order: 21
+estimated_minutes: 2
+key_concepts:
+- colloid_types
+prerequisites: []
+content_md: '# colloid_types — Practice 🚀
+
+
+  Lyophilic colloids have strong interaction with medium, are reversible (can be reconstituted),
+  stable (not easily coagulated), and can be prepared directly.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 2
+  question: Which are characteristics of lyophilic colloids?
+  options:
+  - Strong interaction with dispersion medium
+  - Reversible nature
+  - Easily coagulated by electrolytes
+  - Require special methods for preparation
+  correct_answer: Reversible nature
+  explanation: "Lyophilic ('solvent-loving') colloids have several key characteristics: strong interaction with the dispersion medium (option 1 is also correct), reversible nature (can be reconstituted after evaporation), high stability (NOT easily coagulated), and can be prepared directly without special methods. While option 1 is technically correct, the reversible nature is the most distinctive feature that differentiates lyophilic from lyophobic colloids, which are irreversible once coagulated."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: 'Lyophobic colloids are characterized by:'
+  options:
+  - Weak interaction with medium, easily coagulated, irreversible
+  - Strong interaction with medium, stable
+  - Can be prepared directly
+  - High viscosity
+  correct_answer: Weak interaction with medium, easily coagulated, irreversible
+  explanation: "Lyophobic ('solvent-hating') colloids have weak or no affinity for the dispersion medium. Key characteristics: (1) Weak interaction with medium, (2) Easily coagulated by adding small amounts of electrolytes, (3) Irreversible - once coagulated, cannot be reconstituted by simple mixing, (4) Require special methods for preparation (like electrodispersion, peptization), (5) Low viscosity. Examples include metal sols (gold sol, silver sol) and sulfide sols (As₂S₃). They're stabilized primarily by electric charge."
+  require_pass: false
+- type: mcq
+  sequence_order: 4
+  question: 'Which is an example of a lyophilic colloid?'
+  options:
+  - Starch solution
+  - Gold sol
+  - As₂S₃ sol
+  - Fe(OH)₃ sol
+  correct_answer: Starch solution
+  explanation: "Starch, gelatin, gum, and protein solutions are examples of lyophilic colloids because they have strong affinity for water (the dispersion medium). These are organic macromolecules that are highly stable, reversible, and form viscous solutions. In contrast, gold sol, As₂S₃ sol, and Fe(OH)₃ sol are lyophobic colloids - they're metal or inorganic sols with weak affinity for water, unstable, and easily coagulated by electrolytes."
+  require_pass: false

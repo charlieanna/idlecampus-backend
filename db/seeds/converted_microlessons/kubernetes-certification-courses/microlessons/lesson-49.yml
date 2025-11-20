@@ -1,0 +1,44 @@
+slug: lesson-49
+title: Lesson 49
+difficulty: easy
+sequence_order: 49
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Debugging and Troubleshooting\n\n    -\
+  \ kubectl describe, events, and logs\n    - exec/attach and ephemeral containers\n\
+  \    - node/pod/network/storage triage"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What information does 'kubectl describe pod' provide that 'kubectl get pod' does not?
+  options:
+  - The pod's IP address
+  - Detailed events, conditions, and configuration including recent events and state transitions
+  - The pod's namespace
+  - The pod's name
+  correct_answer: Detailed events, conditions, and configuration including recent events and state transitions
+  explanation: "'kubectl describe pod' provides comprehensive information about a pod including its complete configuration, current status, conditions, events history, volume mounts, environment variables, and recent state changes. The events section at the bottom is particularly valuable for troubleshooting - it shows when the pod was scheduled, images were pulled, containers were created/started/stopped, and any errors that occurred. 'kubectl get pod' provides a summary table view with basic information like status, age, and restart count, but lacks the detailed diagnostic information needed for troubleshooting. When debugging pod issues, 'kubectl describe pod' is typically the first command to run after 'kubectl get pod' shows a problem. The events shown are time-ordered and help you understand the sequence of operations and where failures occurred."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: When would you use ephemeral containers for debugging?
+  options:
+  - When you need to increase pod CPU limits
+  - When you need to debug a distroless or minimal container that lacks debugging tools
+  - When you need to scale the number of replicas
+  - When you need to change the container image
+  correct_answer: When you need to debug a distroless or minimal container that lacks debugging tools
+  explanation: "Ephemeral containers, created via 'kubectl debug', are temporary containers added to running pods for debugging purposes. They're particularly useful for distroless or minimal container images that deliberately exclude shells and debugging tools for security and size reasons. For example, if you have a production container running a Go binary without a shell, you can't use 'kubectl exec' to get interactive access. Instead, you use 'kubectl debug pod/mypod --image=busybox --target=mycontainer' to add a debugging container that shares the process namespace with the target, allowing you to inspect processes, network connections, and filesystems. Ephemeral containers are also useful when the main container has crashed - you can still add a debug container to the pod to investigate. They don't restart with the pod and have limitations (can't use ports, resource limits), but they're invaluable for troubleshooting production issues."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: What is the first command you should run when investigating why a pod is not starting?
+  options:
+  - kubectl delete pod
+  - kubectl logs pod
+  - kubectl describe pod
+  - kubectl exec pod
+  correct_answer: kubectl describe pod
+  explanation: "When a pod isn't starting, 'kubectl describe pod <pod-name>' should be your first debugging command. It shows the complete pod lifecycle including scheduling status, image pull status, container creation attempts, and most importantly, the Events section which details what went wrong. Common issues revealed by describe include: ImagePullBackOff (can't pull image - check image name, registry auth), CrashLoopBackOff (container starts then crashes - check logs), Pending (can't be scheduled - check resource requests vs available capacity), CreateContainerConfigError (configuration issue - check volume mounts, secrets, configmaps). The Events section shows errors in chronological order with timestamps and messages. After describe identifies the issue type, you might use 'kubectl logs' to see application output, but describe is the starting point as it provides context about pod lifecycle before containers even start running."
+  require_pass: true

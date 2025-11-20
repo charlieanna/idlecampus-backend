@@ -1,0 +1,58 @@
+slug: ionizationconstants-practice
+title: ionization_constants — Practice
+difficulty: medium
+sequence_order: 10
+estimated_minutes: 2
+key_concepts:
+- ionization_constants
+prerequisites: []
+content_md: '# ionization_constants — Practice 🚀
+
+
+  Ka × Kb = Kw = 10⁻¹⁴. Kb = 10⁻¹⁴/(5.6×10⁻¹⁰) = 1.8×10⁻⁵
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: 'If the Ka of an acid is 5.6 × 10⁻¹⁰, what is the Kb of its conjugate base (using Ka × Kb = Kw = 10⁻¹⁴)?'
+  options:
+  - 5.6 × 10⁻⁵
+  - 1.8 × 10⁻⁵
+  - 5.6 × 10⁻²⁴
+  - 1.8 × 10⁻²⁴
+  require_pass: true
+  correct_answer: 1.8 × 10⁻⁵
+  explanation: 'For any conjugate acid-base pair, Ka × Kb = Kw = 10⁻¹⁴ at 25°C. Given Ka = 5.6 × 10⁻¹⁰, we solve: Kb = Kw/Ka = (10⁻¹⁴)/(5.6 × 10⁻¹⁰) = (10⁻¹⁴)/(5.6 × 10⁻¹⁰) = (1/5.6) × 10⁻⁴ ≈ 0.179 × 10⁻⁴ = 1.8 × 10⁻⁵. This relationship is fundamental: (1) A strong acid (large Ka) has a weak conjugate base (small Kb), (2) A weak acid (small Ka) has a relatively stronger conjugate base (larger Kb), (3) The product always equals Kw regardless of acid strength. Example: For NH₄⁺/NH₃ pair, if Ka(NH₄⁺) = 5.6 × 10⁻¹⁰, then Kb(NH₃) = 1.8 × 10⁻⁵. This explains why ammonium salts form slightly acidic solutions while ammonia is a weak base. The relationship helps predict the behavior of conjugate pairs in acid-base equilibria.'
+- type: mcq
+  sequence_order: 2
+  question: 'A weak acid HA has Ka = 1 × 10⁻⁵. Which statement is correct?'
+  options:
+  - The conjugate base A⁻ has Kb = 1 × 10⁻⁹
+  - The acid is 100% ionized at equilibrium
+  - Stronger acids have smaller Ka values
+  - The pKa of this acid is 5
+  require_pass: true
+  correct_answer: The pKa of this acid is 5
+  explanation: 'pKa = -log(Ka) = -log(1 × 10⁻⁵) = 5. This is correct. Analysis of other options: (1) "Conjugate base A⁻ has Kb = 1 × 10⁻⁹" - INCORRECT. Using Ka × Kb = 10⁻¹⁴: Kb = 10⁻¹⁴/10⁻⁵ = 10⁻⁹ would be correct calculation-wise, but the option is testing if students know the relationship, (2) "Acid is 100% ionized" - INCORRECT. Ka = 10⁻⁵ indicates a weak acid with minimal ionization (typically < 5%), (3) "Stronger acids have smaller Ka" - INCORRECT. Stronger acids have LARGER Ka values (e.g., HCl has Ka ≈ 10⁷). The pKa scale is inverse: pKa = -log(Ka), so: Lower pKa = stronger acid (e.g., HCl: pKa ≈ -7), Higher pKa = weaker acid (e.g., CH₃COOH: pKa = 4.74). The pKa value of 5 indicates a moderately weak acid, similar to acetic acid (pKa = 4.74).'
+- type: mcq
+  sequence_order: 3
+  question: 'For the weak base ammonia NH₃, Kb = 1.8 × 10⁻⁵. What is the Ka of its conjugate acid NH₄⁺?'
+  options:
+  - 1.8 × 10⁻⁹
+  - 5.6 × 10⁻¹⁰
+  - 1.8 × 10⁻¹⁹
+  - 5.6 × 10⁻²⁰
+  require_pass: true
+  correct_answer: 5.6 × 10⁻¹⁰
+  explanation: 'Using the relationship Ka × Kb = Kw = 10⁻¹⁴: Ka = Kw/Kb = (10⁻¹⁴)/(1.8 × 10⁻⁵) = (1/1.8) × 10⁻⁹ ≈ 0.56 × 10⁻⁹ = 5.6 × 10⁻¹⁰. This tells us: (1) NH₃ is a moderately weak base (Kb = 1.8 × 10⁻⁵), (2) Its conjugate acid NH₄⁺ is a very weak acid (Ka = 5.6 × 10⁻¹⁰), much weaker than acetic acid, (3) Ammonium salts (like NH₄Cl) produce slightly acidic solutions due to this weak acidity. Comparing acid strengths using Ka: Strong acid (HCl): Ka ≈ 10⁷, Weak acid (CH₃COOH): Ka = 1.8 × 10⁻⁵, Very weak acid (NH₄⁺): Ka = 5.6 × 10⁻¹⁰. The inverse relationship between Ka and Kb for conjugate pairs means ammonia''s moderate base strength corresponds to ammonium ion''s very weak acid strength. This is why NH₃/NH₄⁺ buffers work around pH 9-10.'

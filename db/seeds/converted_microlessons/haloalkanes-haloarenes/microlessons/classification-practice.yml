@@ -1,0 +1,59 @@
+slug: classification-practice
+title: classification — Practice
+difficulty: easy
+sequence_order: 10
+estimated_minutes: 2
+key_concepts:
+- classification
+prerequisites: []
+content_md: '# classification — Practice 🚀
+
+
+  Vicinal dihalides have two halogens on adjacent carbons. CH₂Cl-CH₂Cl is 1,2-dichloroethane
+  (vicinal). CH₃CHCl₂ is geminal (same carbon). CH₂Cl₂ has only one carbon.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: Which compound is a vicinal dihalide?
+  options:
+  - CH₂Cl₂
+  - CH₃CHCl₂
+  - CH₂Cl-CH₂Cl
+  - CHCl₃
+  correct_answer: CH₂Cl-CH₂Cl
+  explanation: "Vicinal dihalides have two halogen atoms on adjacent (neighboring) carbon atoms. CH₂Cl-CH₂Cl (1,2-dichloroethane) is a vicinal dihalide because the two chlorine atoms are on carbons 1 and 2. CH₃CHCl₂ is a geminal dihalide (both halogens on the same carbon). CH₂Cl₂ has only one carbon so it cannot be vicinal. CHCl₃ has three halogens on one carbon."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What is a geminal dihalide?
+  options:
+  - Two halogens on adjacent carbons
+  - Two halogens on the same carbon
+  - Two different halogens in the molecule
+  - Two halogens separated by two carbons
+  correct_answer: Two halogens on the same carbon
+  explanation: "A geminal dihalide has two halogen atoms attached to the same carbon atom. The term 'geminal' comes from the Latin word 'geminus' meaning twin. An example is CH₃CHCl₂ (1,1-dichloroethane) where both chlorine atoms are on carbon 1. This is different from vicinal dihalides where the two halogens are on adjacent carbons (like 1,2-dichloroethane)."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: How are haloalkanes classified based on the carbon bearing the halogen?
+  options:
+  - Primary, secondary, tertiary based on number of halogens
+  - Primary, secondary, tertiary based on carbon hybridization
+  - Primary, secondary, tertiary based on number of carbons attached to halogen-bearing carbon
+  - Primary, secondary, tertiary based on total number of carbons
+  correct_answer: Primary, secondary, tertiary based on number of carbons attached to halogen-bearing carbon
+  explanation: "Haloalkanes are classified as primary (1°), secondary (2°), or tertiary (3°) based on the number of carbon atoms directly attached to the carbon bearing the halogen. Primary has one carbon attached (e.g., CH₃CH₂-Cl), secondary has two carbons attached (e.g., (CH₃)₂CH-Cl), and tertiary has three carbons attached (e.g., (CH₃)₃C-Cl). This classification is important because it affects reactivity in substitution and elimination reactions."
+  require_pass: true

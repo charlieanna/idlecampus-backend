@@ -1,0 +1,58 @@
+slug: bohrmodel-practice
+title: bohr_model — Practice
+difficulty: easy
+sequence_order: 7
+estimated_minutes: 2
+key_concepts:
+- bohr_model
+prerequisites: []
+content_md: '# bohr_model — Practice 🚀
+
+
+  For n=1: E₁ = -13.6 × 1²/1² = -13.6 eV (ground state energy of hydrogen)
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: 'According to the Bohr model, the energy of an electron in the nth orbit of hydrogen is given by E_n = -13.6/n² eV. What is the energy of an electron in the ground state (n=1)?'
+  options:
+  - -3.4 eV
+  - -6.8 eV
+  - -13.6 eV
+  - -27.2 eV
+  correct_answer: -13.6 eV
+  explanation: 'Using the Bohr formula E_n = -13.6/n² eV for hydrogen, the ground state energy (n=1) is: E₁ = -13.6/1² = -13.6/1 = -13.6 eV. This is the most negative (lowest) energy level, representing the most stable state of the hydrogen atom. Key points about energy levels: (1) The negative sign indicates that the electron is bound to the nucleus (energy must be supplied to remove it). (2) As n increases, energy becomes less negative (higher), approaching zero at n → ∞ (ionization). (3) E₁ = -13.6 eV is the ionization energy of hydrogen (energy needed to remove the electron from ground state to infinity). (4) Energy differences: E₂ = -13.6/4 = -3.4 eV, E₃ = -13.6/9 = -1.51 eV, E₄ = -13.6/16 = -0.85 eV, E_∞ = 0 eV (free electron). (5) The constant 13.6 eV comes from fundamental constants: 13.6 eV = (m_e e⁴)/(8ε₀²h²), where m_e is electron mass, e is electron charge, ε₀ is permittivity, and h is Planck constant. For hydrogen-like ions (He⁺, Li²⁺), the formula becomes E_n = -13.6Z²/n², where Z is atomic number.'
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: 'The radius of the nth Bohr orbit in hydrogen is given by r_n = 0.529n²/Z Å. What is the radius of the first Bohr orbit (n=1) for hydrogen (Z=1)?'
+  options:
+  - 0.265 Å
+  - 0.529 Å
+  - 1.058 Å
+  - 2.116 Å
+  correct_answer: 0.529 Å
+  explanation: 'Using the Bohr radius formula r_n = 0.529n²/Z Å for hydrogen (Z=1), the first orbit radius (n=1) is: r₁ = 0.529 × 1²/1 = 0.529 Å. This is called the Bohr radius (a₀), a fundamental atomic constant. Key relationships: (1) Radius increases with n²: r₁ = 0.529 Å, r₂ = 0.529×4 = 2.116 Å, r₃ = 0.529×9 = 4.761 Å, r₄ = 0.529×16 = 8.464 Å. (2) For hydrogen-like ions: r_n = 0.529n²/Z Å. For He⁺ (Z=2): r₁ = 0.529/2 = 0.265 Å (smaller due to higher nuclear charge). (3) The Bohr radius represents the most probable distance of the electron from the nucleus in the ground state. (4) Angular momentum quantization: L = mvr = nh/(2π), where n is the principal quantum number. (5) Velocity of electron decreases with n: v_n ∝ Z/n. For n=1 in hydrogen, v₁ = 2.18 × 10⁶ m/s (about 1/137 the speed of light). The Bohr model, while simplified, correctly predicted the hydrogen spectrum and established the concept of quantized energy levels, laying the foundation for modern quantum mechanics.'
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: 'Which of the following postulates is NOT part of the Bohr model of the atom?'
+  options:
+  - Electrons revolve around the nucleus in fixed circular orbits without radiating energy
+  - Only those orbits are allowed for which the angular momentum is an integral multiple of h/(2π)
+  - Energy is emitted or absorbed only when an electron jumps from one orbit to another
+  - Electrons exist as wave-particle duality and their position cannot be precisely determined
+  correct_answer: Electrons exist as wave-particle duality and their position cannot be precisely determined
+  explanation: 'The statement about wave-particle duality and uncertainty is part of modern quantum mechanics (de Broglie and Heisenberg), not Bohr''s original model. Bohr''s postulates (1913): (1) STATIONARY ORBITS: Electrons revolve around the nucleus in certain fixed circular orbits without radiating energy, despite being accelerated (classical physics would predict continuous radiation). These are called stationary states. (2) ANGULAR MOMENTUM QUANTIZATION: Only those orbits are allowed for which the angular momentum (L = mvr) is quantized: L = nh/(2π), where n = 1, 2, 3... is the principal quantum number and h is Planck''s constant. This gives discrete energy levels. (3) QUANTUM JUMPS: Energy is emitted or absorbed only when an electron transitions between orbits. The energy difference ΔE = E_f - E_i equals the photon energy hν: ΔE = hν = hc/λ. Limitations of Bohr model: (1) Only works for hydrogen and hydrogen-like ions (one electron). (2) Cannot explain spectra of multi-electron atoms. (3) Cannot explain fine structure or intensity of spectral lines. (4) Treats electron as a particle in a definite orbit (violates Heisenberg uncertainty principle). (5) Does not incorporate wave nature of electrons. Modern quantum mechanics (Schrödinger equation) replaces definite orbits with probability distributions (orbitals) and incorporates wave-particle duality.'
+  require_pass: true

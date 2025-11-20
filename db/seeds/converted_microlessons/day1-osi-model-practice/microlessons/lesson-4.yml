@@ -1,0 +1,138 @@
+slug: lesson-4
+title: Lesson 4
+difficulty: easy
+sequence_order: 4
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Day 1: Networking Foundations – The OSI\
+  \ Model in Practice\n\n    ## Learning Goals\n\n    - Understand the purpose of\
+  \ the OSI 7-layer model and how real-world protocols map to each layer\n    - Recognize\
+  \ examples like how HTTP (web) fits at the Application layer and TCP/IP fit in Transport/Network\
+  \ layers\n    - Grasp why the OSI layered approach helps in troubleshooting and\
+  \ designing networks\n\n    ## Why Networking Matters for DevOps\n\n    Networking\
+  \ knowledge is critical for DevOps roles – even if many focus on code or cloud,\
+  \ no part of IT infrastructure should remain a \"black box\". Many common DevOps\
+  \ tasks rely on understanding networking fundamentals:\n    - Troubleshooting connectivity\
+  \ issues\n    - Setting up container networks\n    - Configuring Kubernetes networking\n\
+  \    - Designing cloud VPCs and security groups\n\n    ## The OSI Model: A Conceptual\
+  \ Framework\n\n    ### What is the OSI Model?\n\n    The Open Systems Interconnection\
+  \ (OSI) model is a conceptual framework that breaks network communication into seven\
+  \ layers, from physical hardware up to applications. Each layer has specific roles,\
+  \ making it easier to pinpoint where issues occur.\n\n    **The Problem It Solves:**\n\
+  \    Without layering, every application would need to understand everything from\
+  \ WiFi signals to data display – impossibly complex!\n\n    **The Solution:**\n\
+  \    Break networking into independent layers, each solving ONE problem. Each layer:\n\
+  \    - Has a specific job\n    - Provides services to the layer above\n    - Uses\
+  \ services from the layer below\n    - Can change independently (upgrade WiFi without\
+  \ changing HTTP)\n\n    ### The 7 Layers of the OSI Model\n\n    | Layer | Name\
+  \ | What It Does | Real-World Example |\n    |-------|------|--------------|-------------------|\n\
+  \    | **7** | Application | User-facing applications and protocols | HTTP, FTP,\
+  \ SMTP, DNS |\n    | **6** | Presentation | Data representation and encryption |\
+  \ TLS, data formatting |\n    | **5** | Session | Manages sessions or connections\
+  \ | API session tokens, TCP sessions |\n    | **4** | Transport | End-to-end data\
+  \ transport | TCP (reliable), UDP (fast) |\n    | **3** | Network | Routing and\
+  \ addressing | IP addresses, routers |\n    | **2** | Data Link | Local network\
+  \ communication | Ethernet, switches, MAC addresses |\n    | **1** | Physical |\
+  \ Physical medium | Ethernet cables, Wi-Fi, fiber optics |\n\n    **Mnemonic:**\
+  \ \"**P**lease **D**o **N**ot **T**hrow **S**ausage **P**izza **A**way\"\n\n   \
+  \ ### Layer-by-Layer Deep Dive\n\n    #### Layer 1: Physical\n    - **What**: Actual\
+  \ electrical signals, light pulses, or radio waves transmitting raw bits\n    -\
+  \ **Examples**: Ethernet cables, Wi-Fi radio, fiber optics\n    - **Data Units**:\
+  \ Bits (1s and 0s)\n    - **Analogy**: The roads mail trucks drive on\n\n    ####\
+  \ Layer 2: Data Link\n    - **What**: Local network communication within the same\
+  \ network\n    - **Addressing**: MAC addresses (e.g., `AA:BB:CC:DD:EE:FF`)\n   \
+  \ - **Devices**: Switches, network cards\n    - **Data Units**: Frames\n    - **Key\
+  \ Feature**: Error detection with CRC\n    - **Example**: Your laptop talking to\
+  \ your WiFi router\n\n    #### Layer 3: Network\n    - **What**: Routing and addressing\
+  \ across multiple networks\n    - **Addressing**: IP addresses (e.g., `192.168.1.1`)\n\
+  \    - **Devices**: Routers\n    - **Data Units**: Packets\n    - **Protocols**:\
+  \ IP, ICMP (ping), routing protocols\n    - **Example**: Sending data from your\
+  \ home to Google's servers\n\n    #### Layer 4: Transport\n    - **What**: End-to-end\
+  \ reliable delivery or fast delivery\n    - **Protocols**:\n      - **TCP**: Reliable,\
+  \ connection-oriented, ensures data arrives in order\n      - **UDP**: Unreliable,\
+  \ connectionless, just sends packets without guarantees\n    - **Addressing**: Port\
+  \ numbers (e.g., 80 for HTTP, 443 for HTTPS)\n    - **Data Units**: Segments (TCP)\
+  \ or Datagrams (UDP)\n\n    #### Layer 5: Session\n    - **What**: Manages connections\
+  \ between applications\n    - **Examples**: Ongoing TCP session, API session token\n\
+  \    - **Purpose**: Establishes, maintains, and terminates connections\n\n    ####\
+  \ Layer 6: Presentation\n    - **What**: Data representation and encryption\n  \
+  \  - **Examples**: TLS/SSL encryption, data compression, format conversion\n   \
+  \ - **Purpose**: Ensures data is in a usable format\n\n    #### Layer 7: Application\n\
+  \    - **What**: User-facing protocols that enable software to communicate\n   \
+  \ - **Examples**: HTTP (web), DNS (name resolution), SMTP (email), FTP (file transfer)\n\
+  \    - **Purpose**: Provides network services to applications\n\n    ## The TCP/IP\
+  \ Model (4 Layers)\n\n    While the OSI model is great for teaching, the internet\
+  \ ACTUALLY uses the TCP/IP model:\n\n    | TCP/IP Layer | OSI Equivalent | Key Protocols\
+  \ | Purpose |\n    |--------------|----------------|---------------|---------|\n\
+  \    | Application | Layers 5-7 | HTTP, DNS, SSH, FTP | App-level protocols |\n\
+  \    | Transport | Layer 4 | TCP, UDP | Reliable/fast delivery |\n    | Internet\
+  \ | Layer 3 | IP, ICMP, ARP | Routing across networks |\n    | Link | Layers 1-2\
+  \ | Ethernet, WiFi | Physical network |\n\n    ## Example: Loading a Webpage\n\n\
+  \    When you visit `https://example.com`, here's what happens at each layer:\n\n\
+  \    ### Going Down the Stack (Sending Request)\n\n    ```\n    Application Layer\
+  \ (L7):\n    - Browser creates HTTP GET request\n    - HTTPS adds TLS encryption\n\
+  \n    Transport Layer (L4):\n    - TCP wraps request with source port (random) and\
+  \ dest port (443)\n    - Adds sequence numbers for reassembly\n\n    Network Layer\
+  \ (L3):\n    - IP adds your IP address and destination IP\n    - Determines next\
+  \ hop router\n\n    Data Link Layer (L2):\n    - Ethernet adds MAC addresses for\
+  \ local network\n    - Sends frame to router's MAC address\n\n    Physical Layer\
+  \ (L1):\n    - Electrical/radio signals transmitted over wire/air\n    ```\n\n \
+  \   ### Coming Up the Stack (Receiving Response)\n\n    ```\n    Physical Layer:\
+  \ Receives electrical signals\n    Data Link Layer: Checks MAC, removes Ethernet\
+  \ header\n    Network Layer: Checks destination IP, removes IP header\n    Transport\
+  \ Layer: Checks port 443, sends to HTTPS process, removes TCP header\n    Application\
+  \ Layer: Web server processes HTTP request, sends back HTML\n    ```\n\n    ## Encapsulation:\
+  \ How Data Travels\n\n    Data gets wrapped at each layer like Russian nesting dolls:\n\
+  \n    ```\n    Application:  [HTTP Data]\n    Transport:    [TCP Header][HTTP Data]\n\
+  \    Network:      [IP Header][TCP Header][HTTP Data]\n    Data Link:    [Ethernet\
+  \ Header][IP][TCP][HTTP Data][Ethernet Trailer]\n    Physical:     Bits on the wire\n\
+  \    ```\n\n    Each layer adds its own header (and sometimes trailer).\n\n    ##\
+  \ Why the OSI Model Matters for Troubleshooting\n\n    Understanding layers helps\
+  \ pinpoint where problems occur:\n\n    - **Can't ping a server?** → Layer 3 (Network)\
+  \ issue\n    - **Ping works but HTTP doesn't?** → Check Layer 4 (ports/firewall)\
+  \ or Layer 7 (HTTP service)\n    - **Ethernet cable unplugged?** → Layer 1 (Physical)\
+  \ issue\n    - **DNS not resolving?** → Layer 7 (Application) issue\n    - **TCP\
+  \ connection refused?** → Layer 4 (Transport) issue\n\n    The OSI model provides\
+  \ a common language: \"This looks like a Layer 4 issue\" means a transport (TCP/UDP)\
+  \ problem.\n\n    ## Key Takeaways\n\n    1. **OSI model has 7 layers** from Physical\
+  \ to Application\n    2. **TCP/IP model has 4 layers** and is what the internet\
+  \ actually uses\n    3. **Each layer serves a specific purpose** and communicates\
+  \ with adjacent layers\n    4. **Encapsulation** wraps data at each layer with headers\n\
+  \    5. **Troubleshooting** becomes easier when you understand which layer a problem\
+  \ occurs at\n    6. **Real protocols map to layers**: HTTP (L7), TCP (L4), IP (L3),\
+  \ Ethernet (L2)"
+exercises:
+  - type: multiple_choice_question
+    sequence_order: 1
+    question: "Which OSI layer is responsible for routing packets across multiple networks using IP addresses?"
+    options:
+      - "Layer 2 (Data Link)"
+      - "Layer 3 (Network)"
+      - "Layer 4 (Transport)"
+      - "Layer 7 (Application)"
+    correct_answer: "Layer 3 (Network)"
+    explanation: "Layer 3, the Network layer, is responsible for routing and logical addressing across multiple networks using IP addresses. This layer handles the path determination and logical addressing needed to move packets from the source network to the destination network, potentially crossing many intermediate networks. Key protocols at this layer include IP (Internet Protocol), ICMP (used by ping), and various routing protocols. Routers operate primarily at Layer 3, making forwarding decisions based on IP addresses in packet headers. The Network layer adds source and destination IP addresses to data, determines the best path through the network, and handles fragmentation when packets are too large for a particular network segment. In contrast, Layer 2 (Data Link) handles local network communication using MAC addresses within a single network segment, Layer 4 (Transport) provides end-to-end delivery with protocols like TCP and UDP using port numbers, and Layer 7 (Application) provides user-facing services like HTTP and DNS. Understanding which layer handles what functionality is critical for network troubleshooting - if you can ping a server but can't access a web page, the problem likely isn't at Layer 3."
+    require_pass: true
+  - type: multiple_choice_question
+    sequence_order: 2
+    question: "What is the difference between TCP (Layer 4) and UDP (Layer 4)?"
+    options:
+      - "TCP is faster while UDP is more reliable"
+      - "TCP provides reliable, connection-oriented delivery while UDP is connectionless and unreliable but faster"
+      - "TCP uses IP addresses while UDP uses MAC addresses"
+      - "TCP is for applications while UDP is for networks"
+    correct_answer: "TCP provides reliable, connection-oriented delivery while UDP is connectionless and unreliable but faster"
+    explanation: "TCP (Transmission Control Protocol) and UDP (User Datagram Protocol) are both Layer 4 transport protocols, but they serve different purposes with distinct trade-offs. TCP is connection-oriented, meaning it establishes a connection before transmitting data, guarantees delivery through acknowledgments and retransmission of lost packets, ensures packets arrive in order, and provides flow control to prevent overwhelming the receiver. This reliability comes with overhead - additional handshaking, acknowledgments, and potential retransmissions make TCP slower but dependable. TCP is used for applications where accuracy matters more than speed, like web browsing (HTTP/HTTPS), email (SMTP), and file transfer (FTP). UDP, in contrast, is connectionless - it simply sends packets (called datagrams) without establishing a connection, provides no delivery guarantees, doesn't ensure ordering, and has minimal overhead. UDP is faster because it eliminates the reliability mechanisms, making it ideal for real-time applications where speed matters more than perfect accuracy, such as video streaming, online gaming, VoIP, and DNS queries. Both protocols use port numbers to identify applications, but their delivery guarantees differ fundamentally."
+    require_pass: true
+  - type: multiple_choice_question
+    sequence_order: 3
+    question: "What is encapsulation in the OSI model?"
+    options:
+      - "The process of encrypting data for security"
+      - "The process of each layer adding its own header to data as it moves down the stack"
+      - "The process of compressing data to save bandwidth"
+      - "The process of converting analog signals to digital"
+    correct_answer: "The process of each layer adding its own header to data as it moves down the stack"
+    explanation: "Encapsulation is the fundamental process by which data travels through the OSI model layers, with each layer wrapping the data from the layer above it with its own header (and sometimes trailer) information. When you send data, it starts at the Application layer as pure application data (like an HTTP request). As it moves down the stack, each layer adds its own control information: Transport layer adds TCP or UDP header with port numbers, Network layer adds IP header with source and destination IP addresses, Data Link layer adds Ethernet header with MAC addresses and a trailer for error detection. This creates a nested structure like Russian nesting dolls. At the Physical layer, this fully encapsulated data is transmitted as bits over the medium. The receiving system performs de-encapsulation, removing each layer's header as data moves up the stack until the original application data reaches the receiving application. This layered approach allows each layer to focus on its specific job without needing to understand the entire communication process. It's why you can change from Ethernet to WiFi (Layer 2) without affecting HTTP (Layer 7) - each layer operates independently while providing services to the layers above and below it."
+    require_pass: true

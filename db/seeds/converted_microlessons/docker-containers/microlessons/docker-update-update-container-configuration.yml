@@ -1,0 +1,90 @@
+slug: docker-update-update-container-configuration
+title: 'Docker Update: Update Container Configuration'
+difficulty: medium
+sequence_order: 9
+estimated_minutes: 2
+key_concepts:
+- containers
+- docker-update
+- resources
+- configuration
+- runtime
+prerequisites: []
+content_md: '# Docker Update: Update Container Configuration 🚀
+
+
+  Update resource limits and restart policies of running containers without stopping
+  them.
+
+
+  ## Syntax/Command
+
+
+  ```bash
+
+  docker update --memory="1g" my-container
+
+  ```
+
+
+  ## Example
+
+
+  ```bash
+
+  docker update --cpus="2" container
+
+  ```
+
+
+  ## Key Points
+
+
+  - Update memory: docker update --memory="1g" <container>
+
+
+  - Update CPUs: docker update --cpus="2" <container>
+
+
+  - Update restart policy: docker update --restart=always <container>'
+exercises:
+- type: terminal
+  problem_statement: Update the memory limit of a container named 'my-container' to 1 gigabyte without stopping it
+  expected_output: Container ID or name confirming the update
+  language: bash
+  starter_code: "# Update container memory limit\n"
+  sequence_order: 1
+  command: docker update --memory="1g" my-container
+  description: Update container resource limits without stopping it
+  hints:
+  - 'Update memory: docker update --memory="1g" <container>'
+  - 'Update CPUs: docker update --cpus="2" <container>'
+  - 'Update restart policy: docker update --restart=always <container>'
+  validation:
+    must_not_include:
+    - Error
+    - 'panic:'
+  timeout_sec: 60
+  require_pass: true
+- type: sandbox
+  sequence_order: 99
+  hints:
+  - Run under CPU pressure to surface leaks or races
+  - Keep commands idempotent in CI
+  validation:
+    must_not_include:
+    - Error
+    - 'panic:'
+  timeout_sec: 60
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What can you update with docker update command?
+  options:
+  - Resource limits (CPU, memory) and restart policies on running containers
+  - The base image that the container is using
+  - The container's name
+  - Environment variables inside the container
+  correct_answer: Resource limits (CPU, memory) and restart policies on running containers
+  explanation: "docker update allows you to modify runtime configuration of containers without stopping them, including memory limits, CPU shares, CPU quotas, and restart policies. You cannot change the image, name, or environment variables with this command."
+  require_pass: true

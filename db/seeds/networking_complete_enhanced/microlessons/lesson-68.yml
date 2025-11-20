@@ -1,0 +1,48 @@
+slug: lesson-68
+title: Lesson 68
+sequence_order: 68
+estimated_minutes: 2
+difficulty: easy
+content_md: "# Microlesson \U0001F680\n\n# Kubernetes Architecture Overview\n\n  \
+  \  ## Control Plane Components\n\n    ### API Server (kube-apiserver)\n    - Central\
+  \ management entity\n    - Exposes Kubernetes API\n    - Frontend for the control\
+  \ plane\n    - All operations go through the API server\n\n    ### etcd\n    - Consistent\
+  \ and highly-available key-value store\n    - Stores all cluster data\n    - Source\
+  \ of truth for cluster state\n\n    ### Scheduler (kube-scheduler)\n    - Watches\
+  \ for newly created Pods\n    - Selects nodes for pods to run on\n    - Considers\
+  \ resource requirements, constraints, and affinity\n\n    ### Controller Manager\
+  \ (kube-controller-manager)\n    - Runs controller processes\n    - Node Controller:\
+  \ Monitors node status\n    - Replication Controller: Maintains correct number of\
+  \ pods\n    - Endpoints Controller: Populates endpoints objects\n    - Service Account\
+  \ Controller: Creates default accounts\n\n    ## Node Components\n\n    ### kubelet\n\
+  \    - Runs on each node\n    - Ensures containers are running in a Pod\n    - Communicates\
+  \ with API server\n    - Manages pod lifecycle\n\n    ### kube-proxy\n    - Network\
+  \ proxy on each node\n    - Implements Kubernetes Service concept\n    - Maintains\
+  \ network rules\n    - Enables pod-to-pod communication\n\n    ### Container Runtime\n\
+  \    - Software responsible for running containers\n    - Examples: Docker, containerd,\
+  \ CRI-O\n\n    ## Add-ons\n\n    - **DNS**: Cluster DNS server (CoreDNS)\n    -\
+  \ **Dashboard**: Web-based UI\n    - **Ingress Controller**: HTTP/HTTPS routing\n\
+  \    - **Metrics Server**: Resource usage monitoring\n\n    ## Communication Flow\n\
+  \n    1. kubectl sends request to API server\n    2. API server validates and stores\
+  \ in etcd\n    3. Controllers watch for changes\n    4. Scheduler assigns pods to\
+  \ nodes\n    5. kubelet pulls images and starts containers\n    6. kube-proxy configures\
+  \ networking"
+exercises:
+- type: mcq
+  slug: lesson-68-mcq
+  sequence_order: 1
+  question: What is the primary purpose of an Ingress controller in Kubernetes?
+  options:
+  - To manage external HTTP/HTTPS access to services with path and host-based routing
+  - To create pods automatically
+  - To manage cluster storage
+  - To handle pod scheduling
+  correct_answer_index: 0
+  explanation: An Ingress controller manages external access to services in a cluster,
+    typically HTTP/HTTPS. It provides load balancing, SSL/TLS termination, and name-based
+    virtual hosting with advanced routing rules based on paths and hostnames.
+objectives:
+- Understand the fundamental concepts and mechanisms of lesson 68
+- Apply chemical principles to solve related problems
+- Identify key reactions, equations, and chemical behaviors
+next_recommended: []

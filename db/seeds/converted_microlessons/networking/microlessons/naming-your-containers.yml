@@ -1,0 +1,279 @@
+slug: naming-your-containers
+title: Naming Your Containers
+difficulty: easy
+sequence_order: 1
+estimated_minutes: 7
+key_concepts:
+  - Container naming
+  - Name flag
+  - Container identification
+  - Naming best practices
+  - Name conflicts
+prerequisites:
+  - running-containers
+content_md: |
+  # Naming Your Containers
+
+  ## Introduction
+
+  By default, Docker assigns random names to containers (like "peaceful_tesla" or "angry_babbage"). Giving containers meaningful names makes them easier to identify, manage, and reference in commands.
+
+  ## The --name Flag
+
+  **Assign a custom name when creating a container:**
+  ```bash
+  docker run --name my-container nginx
+  ```
+
+  **Now you can reference it by name:**
+  ```bash
+  docker stop my-container
+  docker start my-container
+  docker logs my-container
+  docker rm my-container
+  ```
+
+  ## Benefits of Named Containers
+
+  1. **Clarity** - Instantly know what the container does
+  2. **Easier commands** - No need to look up container IDs
+  3. **Scripts** - Reference containers consistently in automation
+  4. **Debugging** - Quickly identify containers in logs
+  5. **Team collaboration** - Everyone uses the same names
+
+  ## Naming Rules
+
+  Container names must follow these rules:
+
+  - Can contain: letters (a-z, A-Z), numbers (0-9), underscores (_), dots (.), hyphens (-)
+  - Must start with a letter or number
+  - Cannot contain spaces
+  - Must be unique (no duplicate names)
+
+  **Valid names:**
+  ```bash
+  docker run --name web-server nginx
+  docker run --name db_production postgres
+  docker run --name app.v1.2 myapp
+  docker run --name worker-01 myworker
+  ```
+
+  **Invalid names:**
+  ```bash
+  docker run --name my container nginx  # Error: spaces not allowed
+  docker run --name -myapp nginx        # Error: cannot start with hyphen
+  ```
+
+  ## Common Naming Patterns
+
+  ### 1. Descriptive Names
+  ```bash
+  docker run --name wordpress-db mysql
+  docker run --name wordpress-web wordpress
+  docker run --name redis-cache redis
+  ```
+
+  ### 2. Environment-Based Names
+  ```bash
+  docker run --name app-dev myapp
+  docker run --name app-staging myapp
+  docker run --name app-production myapp
+  ```
+
+  ### 3. Service + Instance Pattern
+  ```bash
+  docker run --name nginx-01 nginx
+  docker run --name nginx-02 nginx
+  docker run --name worker-01 myworker
+  docker run --name worker-02 myworker
+  ```
+
+  ### 4. Project-Based Names
+  ```bash
+  docker run --name ecommerce-api api-image
+  docker run --name ecommerce-db postgres
+  docker run --name ecommerce-cache redis
+  ```
+
+  ## Name Conflicts
+
+  **Each name must be unique across all containers (running or stopped):**
+
+  ```bash
+  # Start container
+  $ docker run --name myapp nginx
+
+  # Try to start another with same name
+  $ docker run --name myapp nginx
+  Error: Conflict. The container name "/myapp" is already in use
+  ```
+
+  **Solution 1: Remove the old container**
+  ```bash
+  docker rm myapp
+  docker run --name myapp nginx
+  ```
+
+  **Solution 2: Use a different name**
+  ```bash
+  docker run --name myapp-v2 nginx
+  ```
+
+  **Solution 3: Remove and recreate in one command**
+  ```bash
+  docker rm -f myapp && docker run --name myapp nginx
+  ```
+
+  ## Renaming Containers
+
+  **Rename an existing container:**
+  ```bash
+  docker rename old-name new-name
+  ```
+
+  **Example:**
+  ```bash
+  # Original name
+  docker run --name test-app nginx
+
+  # Rename it
+  docker rename test-app production-app
+
+  # Now use new name
+  docker stop production-app
+  ```
+
+  ## Finding Container Names
+
+  **List all containers with names:**
+  ```bash
+  docker ps -a
+  ```
+
+  **Get just the names:**
+  ```bash
+  docker ps -a --format "{{.Names}}"
+  ```
+
+  **Find containers by name pattern:**
+  ```bash
+  docker ps -a --filter "name=web"  # Matches "web", "web-01", "my-web-app", etc.
+  ```
+
+  ## Best Practices
+
+  1. **Use meaningful names** that describe the container's purpose:
+     ```bash
+     # Good
+     docker run --name postgres-primary postgres
+
+     # Bad
+     docker run --name c1 postgres
+     ```
+
+  2. **Be consistent** with naming conventions across your team:
+     ```bash
+     # Consistent pattern
+     docker run --name app-web-prod myapp
+     docker run --name app-api-prod myapi
+     docker run --name app-db-prod postgres
+     ```
+
+  3. **Include environment** in the name:
+     ```bash
+     docker run --name myapp-dev myapp
+     docker run --name myapp-prod myapp
+     ```
+
+  4. **Use names in scripts** for reliability:
+     ```bash
+     #!/bin/bash
+     docker stop my-app || true
+     docker rm my-app || true
+     docker run --name my-app -d my-image
+     ```
+
+  5. **Avoid generic names** like "test" or "temp" in production:
+     ```bash
+     # Avoid
+     docker run --name test nginx
+
+     # Better
+     docker run --name nginx-load-balancer nginx
+     ```
+
+  ## Practical Example: WordPress Setup
+
+  ```bash
+  # Create MySQL database
+  docker run --name wordpress-mysql \
+    -e MYSQL_ROOT_PASSWORD=secret \
+    -e MYSQL_DATABASE=wordpress \
+    -d mysql:5.7
+
+  # Create WordPress container linked to database
+  docker run --name wordpress-app \
+    -e WORDPRESS_DB_HOST=wordpress-mysql \
+    -e WORDPRESS_DB_NAME=wordpress \
+    -p 8080:80 \
+    -d wordpress
+
+  # Easy to manage with names
+  docker logs wordpress-app
+  docker restart wordpress-mysql
+  docker stop wordpress-app wordpress-mysql
+  ```
+
+  ## Names vs IDs
+
+  **Both work for commands:**
+  ```bash
+  # Using name
+  docker stop my-container
+
+  # Using ID
+  docker stop a1b2c3d4e5f6
+
+  # Names are easier to remember!
+  ```
+
+  ## Docker Compose and Names
+
+  Docker Compose automatically names containers:
+  ```yaml
+  # docker-compose.yml
+  services:
+    web:
+      image: nginx
+      container_name: my-web-server  # Custom name
+    db:
+      image: postgres
+      # Auto-generated: projectname_db_1
+  ```
+
+exercises:
+  - type: terminal
+    problem_statement: "Create and run an nginx container named 'my-web-server' in detached mode."
+    expected_output: "my-web-server"
+    validation_command: "docker ps --filter 'name=my-web-server' --format '{{.Names}}'"
+    hints:
+      - "Use docker run with the --name flag"
+      - "Don't forget the -d flag for detached mode"
+    sequence_order: 1
+
+  - type: mcq
+    question: "What happens if you try to create a container with a name that's already in use?"
+    options:
+      - "Docker automatically adds a number to make it unique"
+      - "Docker returns a name conflict error"
+      - "The old container is automatically removed"
+      - "Both containers share the same name"
+    correct_answer: "Docker returns a name conflict error"
+    explanation: "Container names must be unique. Docker will return an error if you try to use a name that's already taken by an existing container (running or stopped)."
+    sequence_order: 2
+
+  - type: short_answer
+    question: "What command would you use to rename a container from 'old-app' to 'new-app'?"
+    expected_answer: "docker rename old-app new-app"
+    explanation: "The docker rename command allows you to change a container's name: docker rename <old-name> <new-name>."
+    sequence_order: 3

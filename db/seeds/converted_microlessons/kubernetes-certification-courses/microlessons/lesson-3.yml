@@ -1,0 +1,84 @@
+slug: lesson-3
+title: Lesson 3
+difficulty: easy
+sequence_order: 3
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Cluster Upgrades Strategy\n\n    - Control\
+  \ plane then workers\n    - Version skew policy"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What is the recommended order for upgrading Kubernetes cluster components?
+  options:
+  - Worker nodes first, then control plane
+  - Control plane components first, then worker nodes
+  - All components simultaneously
+  - Upgrade order doesn't matter
+  correct_answer: Control plane components first, then worker nodes
+  explanation: 'The correct upgrade order is control plane first, then worker nodes,
+    following Kubernetes'' version skew policy. The control plane includes the API
+    server, controller manager, scheduler, and etcd. Upgrade sequence: 1) Backup etcd
+    before starting, 2) Upgrade control plane components (API server, controller-manager,
+    scheduler, cloud-controller-manager if used), 3) Upgrade worker node components
+    (kubelet, kube-proxy) one node at a time with proper draining. This order ensures
+    compatibility because control plane components can work with older worker nodes,
+    but newer worker nodes may not work with older control plane. The version skew
+    policy allows: kube-apiserver to be at version N, controller-manager and scheduler
+    at N or N-1, kubelet at N, N-1, or N-2, and kube-proxy at N, N-1, or N-2. For
+    example, if upgrading from v1.24 to v1.25, the API server must be upgraded to
+    v1.25 before any kubelet is upgraded beyond v1.24. For managed Kubernetes (GKE,
+    EKS, AKS), control plane upgrades are handled by the cloud provider, and you focus
+    on node pool upgrades. For kubeadm clusters, use ''kubeadm upgrade plan'' to check
+    versions, ''kubeadm upgrade apply v1.25.0'' on the first control plane node, then
+    drain and upgrade worker nodes individually. Best practices: upgrade one minor
+    version at a time (1.24→1.25→1.26, not 1.24→1.26), test upgrades in non-production
+    first, monitor for deprecation warnings, check compatibility of cluster addons
+    and operators, and maintain etcd backups. Understand that skip-level upgrades
+    are unsupported and can break the cluster.'
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What is the Kubernetes version skew policy?
+  options:
+  - All components must be on exactly the same version
+  - Control plane components can be at version N, while kubelets can be at N, N-1,
+    or N-2
+  - Worker nodes must always be newer than control plane
+  - Version differences are unlimited
+  correct_answer: Control plane components can be at version N, while kubelets can
+    be at N, N-1, or N-2
+  explanation: 'The version skew policy defines supported version differences between
+    Kubernetes components, enabling safe rolling upgrades without downtime. The policy
+    states: kube-apiserver must be the highest version component and establishes the
+    baseline (version N). controller-manager, cloud-controller-manager, and scheduler
+    can be at N or N-1 (one minor version behind). kubelet can be at N, N-1, or N-2
+    (up to two minor versions behind). kube-proxy can be at N, N-1, or N-2. kubectl
+    can be at N+1, N, or N-1 (one version ahead or behind API server). For example,
+    in a cluster with API server at 1.26, valid versions are: controller-manager/scheduler
+    at 1.26 or 1.25, kubelet at 1.26, 1.25, or 1.24, and kubectl at 1.27, 1.26, or
+    1.25. This policy enables rolling updates where you can upgrade control plane
+    to 1.26 while worker nodes run 1.24 kubelets, then gradually upgrade workers.
+    It prevents upgrade issues by ensuring backward compatibility within supported
+    ranges. Violating skew policy can cause: API incompatibilities, features not working
+    correctly, unexpected behavior, or outright failures. During upgrades, temporarily
+    higher skew is acceptable while rolling through nodes, but shouldn''t persist.
+    Cloud providers automatically maintain skew policy compliance during managed upgrades.
+    For self-managed clusters, plan upgrades carefully to stay within skew limits,
+    and avoid skip-level upgrades which violate the policy and aren''t supported.
+    Always check release notes for deprecated APIs or features before upgrading to
+    ensure applications remain compatible.'
+  require_pass: true
+- type: mcq
+  sequence_order: 1
+  question: What kubectl command checks if you can perform an action?
+  options:
+  - kubectl auth can-i create pods
+  - kubectl check permissions create pods
+  - kubectl verify action create pods
+  - kubectl test auth create pods
+  correct_answer_index: 0
+  explanation: kubectl auth can-i <action> <resource> checks if the current user has
+    permission to perform the specified action.
+  require_pass: true

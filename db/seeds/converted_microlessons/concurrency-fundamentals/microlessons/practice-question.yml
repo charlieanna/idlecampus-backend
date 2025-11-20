@@ -1,0 +1,61 @@
+slug: practice-question
+title: Practice Question
+difficulty: medium
+sequence_order: 19
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: '# Practice Question 🚀
+
+
+  ## What is this?
+
+  A concise explanation of the concept.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+  - type: mcq
+    sequence_order: 1
+    question: "Which synchronization primitive would be most appropriate for implementing a connection pool that limits concurrent database connections to exactly 10?"
+    options:
+      - "A mutex, because it provides exclusive access"
+      - "A counting semaphore initialized to 10, allowing exactly 10 threads to acquire connections concurrently"
+      - "Atomic operations for performance"
+      - "Multiple mutexes, one for each connection"
+    correct_answer: "A counting semaphore initialized to 10, allowing exactly 10 threads to acquire connections concurrently"
+    explanation: "A connection pool with a fixed limit is the classic use case for counting semaphores. By initializing a semaphore to 10 (Semaphore(10)), you allow exactly 10 threads to acquire permits (connections) simultaneously. When an 11th thread tries to acquire, it blocks until one of the first 10 releases. The implementation is straightforward: connection_pool = Semaphore(10); def query(): connection_pool.acquire(); try: conn = get_connection(); execute_query(conn); finally: return_connection(conn); connection_pool.release(). A mutex wouldn't work because it's binary (only allows 1 thread), defeating the purpose of a pool. Atomic operations can't block threads to wait for available connections. Multiple mutexes would be complex and wouldn't automatically manage the count. The semaphore elegantly tracks available resources and provides automatic blocking/waking of threads. This pattern extends to any resource pool: thread pools, memory buffers, file handles, or rate limiting concurrent API requests."
+    require_pass: true
+
+  - type: mcq
+    sequence_order: 2
+    question: "A program has two threads that both need locks A and B. Thread 1 acquires A then B. Thread 2 acquires B then A. What problem will this cause and how do you fix it?"
+    options:
+      - "Race condition; fix by using atomic operations"
+      - "Deadlock due to circular wait; fix by ensuring both threads acquire locks in the same order (both A then B)"
+      - "Livelock; fix by adding random delays"
+      - "No problem, this is safe"
+    correct_answer: "Deadlock due to circular wait; fix by ensuring both threads acquire locks in the same order (both A then B)"
+    explanation: "This is a textbook deadlock scenario caused by inconsistent lock ordering, creating a circular wait. The sequence: Thread 1 acquires A, Thread 2 acquires B simultaneously. Thread 1 tries to acquire B (blocked, waiting for Thread 2). Thread 2 tries to acquire A (blocked, waiting for Thread 1). Both wait forever - deadlock! The four Coffman conditions are met: mutual exclusion (locks can't be shared), hold-and-wait (holding one lock while waiting for another), no preemption (can't force lock release), circular wait (T1 waits for T2, T2 waits for T1). The solution: establish a global lock order and always acquire in that order. Both threads should acquire A then B: Thread 1 with A: with B: work(); Thread 2 with A: with B: work(). This breaks the circular wait condition. Alternative solutions include: timeout-and-retry (acquire with timeout, release all if timeout, retry), try-lock (non-blocking acquire, release and retry if failed), or using a single lock for both resources."
+    require_pass: true
+
+  - type: mcq
+    sequence_order: 3
+    question: "Why might using atomic operations be preferable to using a mutex for a simple counter, and when would you still choose a mutex?"
+    options:
+      - "Atomics are always better than mutexes"
+      - "Atomics avoid lock overhead for simple operations like increment; use mutex when you need multiple operations to be atomic together or complex logic in critical section"
+      - "Mutexes are always faster"
+      - "There's no difference between them"
+    correct_answer: "Atomics avoid lock overhead for simple operations like increment; use mutex when you need multiple operations to be atomic together or complex logic in critical section"
+    explanation: "For a simple counter increment, atomic operations outperform mutexes because they avoid expensive lock overhead (thread blocking, context switching, cache coherency traffic). Compare: With lock: counter += 1 (lock acquisition, increment, lock release, potential thread blocking) versus atomic_counter.fetch_add(1) (single CPU instruction, no blocking). Atomics achieve this through CPU-level compare-and-swap instructions that are inherently lock-free. However, atomics have limitations: (1) They only work on simple types (integers, pointers, booleans), (2) Each operation is independent - you can't make multiple operations atomic together. Use mutexes when: (1) Critical section contains complex logic beyond simple arithmetic, (2) Multiple variables must be updated atomically as a unit, (3) The operation involves conditionals or function calls. Example needing mutex: if balance >= amount: balance -= amount; log_transaction() - this check-and-act with side effect can't be done atomically. The guideline: atomics for simple counters/flags where performance matters, mutexes for everything else where correctness is easier to reason about."
+    require_pass: true

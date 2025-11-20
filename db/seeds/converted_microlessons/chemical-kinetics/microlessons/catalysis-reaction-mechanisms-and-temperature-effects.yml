@@ -1,0 +1,160 @@
+slug: catalysis-reaction-mechanisms-and-temperature-effects
+title: Catalysis, Reaction Mechanisms and Temperature Effects
+difficulty: medium
+sequence_order: 5
+estimated_minutes: 15
+key_concepts:
+  - Catalysis
+  - Homogeneous catalysis
+  - Heterogeneous catalysis
+  - Enzyme catalysis
+  - Reaction mechanisms
+  - Arrhenius equation
+  - Activation energy
+  - Temperature effects
+prerequisites:
+  - rate-laws-and-order-of-reactions
+  - integrated-rate-equations
+content_md: |
+  # Catalysis, Reaction Mechanisms and Temperature Effects
+
+  ## Catalysis
+
+  A **catalyst** is a substance that increases the rate of a chemical reaction without being consumed in the process. Catalysts work by providing an alternative reaction pathway with lower activation energy.
+
+  ### Key Properties of Catalysts
+
+  - Not consumed in the reaction
+  - Effective in small amounts
+  - Specific to particular reactions
+  - Do not change equilibrium position, only rate
+  - Lower activation energy (Ea)
+
+  ## Types of Catalysis
+
+  ### 1. Homogeneous Catalysis
+
+  The catalyst and reactants are in the same phase (usually liquid or gas).
+
+  **Example:** Acid catalysis of ester hydrolysis
+  ```
+  CH₃COOCH₃ + H₂O → CH₃COOH + CH₃OH
+  (Catalyst: H⁺)
+  ```
+
+  ### 2. Heterogeneous Catalysis
+
+  The catalyst and reactants are in different phases (typically solid catalyst with gas/liquid reactants).
+
+  **Examples:**
+  - Haber process: Fe catalyst for N₂ + 3H₂ → 2NH₃
+  - Contact process: V₂O₅ catalyst for SO₂ oxidation
+  - Catalytic converters: Pt/Pd/Rh for exhaust gases
+
+  ### 3. Enzyme Catalysis
+
+  Biological catalysts (proteins) that are highly specific and efficient.
+
+  **Characteristics:**
+  - Extremely specific (lock and key model)
+  - Work under mild conditions
+  - Can be inhibited or activated
+  - Follow Michaelis-Menten kinetics
+
+  ## Reaction Mechanisms
+
+  A **reaction mechanism** is the step-by-step sequence of elementary reactions that lead to the overall reaction.
+
+  ### Elementary Steps
+
+  - **Unimolecular:** A → Products (rate = k[A])
+  - **Bimolecular:** A + B → Products (rate = k[A][B])
+  - **Termolecular:** Rare, involves three molecules simultaneously
+
+  ### Rate-Determining Step
+
+  The slowest step in a mechanism determines the overall reaction rate. The rate law must match experimental observations.
+
+  **Example Mechanism:**
+  ```
+  Step 1 (slow): NO₂ + NO₂ → NO₃ + NO
+  Step 2 (fast): NO₃ + CO → NO₂ + CO₂
+  Overall: NO₂ + CO → NO + CO₂
+  ```
+
+  Rate = k[NO₂]² (from the slow step)
+
+  ## Temperature Effects: Arrhenius Equation
+
+  The Arrhenius equation relates rate constant to temperature:
+
+  **k = A·e^(-Ea/RT)**
+
+  Where:
+  - k = rate constant
+  - A = pre-exponential factor (frequency factor)
+  - Ea = activation energy (J/mol)
+  - R = gas constant (8.314 J/mol·K)
+  - T = absolute temperature (K)
+
+  ### Logarithmic Form
+
+  ```
+  ln k = ln A - (Ea/R)(1/T)
+  ```
+
+  This gives a linear plot of ln k vs. 1/T with slope = -Ea/R
+
+  ### Temperature Coefficient
+
+  Most reactions roughly double in rate for every 10°C temperature increase.
+
+  ## How Catalysts Work
+
+  1. **Adsorption** (for heterogeneous): Reactants bind to catalyst surface
+  2. **Reaction** occurs at catalyst active sites with lower Ea
+  3. **Desorption**: Products leave the catalyst surface
+  4. **Regeneration**: Catalyst is ready for next cycle
+
+  ## Energy Profile
+
+  - Uncatalyzed reaction: Higher activation energy
+  - Catalyzed reaction: Lower activation energy pathway
+  - Both paths have same ΔH (thermodynamics unchanged)
+
+  ## Industrial Applications
+
+  - Ammonia synthesis (Haber process)
+  - Sulfuric acid production (Contact process)
+  - Petroleum cracking
+  - Catalytic converters in automobiles
+  - Pharmaceutical synthesis
+
+exercises:
+  - type: mcq
+    question: "What is the primary function of a catalyst in a chemical reaction?"
+    options:
+      - "To shift the equilibrium position to favor products"
+      - "To increase the activation energy"
+      - "To provide an alternative pathway with lower activation energy"
+      - "To increase the concentration of reactants"
+    correct_answer: "To provide an alternative pathway with lower activation energy"
+    explanation: "Catalysts work by providing an alternative reaction pathway with lower activation energy, thus increasing the reaction rate without being consumed."
+    sequence_order: 1
+
+  - type: mcq
+    question: "In the Arrhenius equation k = A·e^(-Ea/RT), what happens to the rate constant k when temperature increases?"
+    options:
+      - "k decreases exponentially"
+      - "k increases exponentially"
+      - "k remains constant"
+      - "k increases linearly"
+    correct_answer: "k increases exponentially"
+    explanation: "As temperature T increases, the exponent -Ea/RT becomes less negative, causing e^(-Ea/RT) to increase, and thus k increases exponentially."
+    sequence_order: 2
+
+  - type: short_answer
+    question: "Give one example of a heterogeneous catalyst and the reaction it catalyzes."
+    expected_answer: "Iron (Fe) catalyst in the Haber process for ammonia synthesis (N₂ + 3H₂ → 2NH₃)"
+    explanation: "Other acceptable answers include V₂O₅ in the Contact process, Pt in catalytic converters, or Ni in hydrogenation reactions."
+    sequence_order: 3

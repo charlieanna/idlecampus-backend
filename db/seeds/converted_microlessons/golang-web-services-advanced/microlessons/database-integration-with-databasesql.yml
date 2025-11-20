@@ -1,0 +1,162 @@
+slug: database-integration-with-databasesql
+title: Database Integration with database/sql
+difficulty: easy
+sequence_order: 1
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Database Integration with database/sql \U0001F680\n\n# Database Integration\
+  \ with database/sql\n\n    Go's `database/sql` package provides a generic interface\
+  \ for working with SQL databases. It works with PostgreSQL, MySQL, SQLite, and others.\n\
+  \n    ## Installing Database Driver\n\n    For PostgreSQL, use the `pq` driver:\n\
+  \n    ```bash\n    go get github.com/lib/pq\n    ```\n\n    For SQLite (lightweight,\
+  \ great for learning):\n    ```bash\n    go get github.com/mattn/go-sqlite3\n  \
+  \  ```\n\n    ## Connecting to a Database\n\n    ```go\n    package main\n\n   \
+  \ import (\n        \"database/sql\"\n        \"fmt\"\n        \"log\"\n\n     \
+  \   _ \"github.com/lib/pq\" // PostgreSQL driver\n    )\n\n    func main() {\n \
+  \       // Connection string format:\n        // \"postgres://user:password@localhost/dbname?sslmode=disable\"\
+  \n        connStr := \"postgres://user:pass@localhost/mydb?sslmode=disable\"\n\n\
+  \        db, err := sql.Open(\"postgres\", connStr)\n        if err != nil {\n \
+  \           log.Fatal(err)\n        }\n        defer db.Close()\n\n        // Test\
+  \ connection\n        err = db.Ping()\n        if err != nil {\n            log.Fatal(\"\
+  Cannot connect to database:\", err)\n        }\n\n        fmt.Println(\"Successfully\
+  \ connected to database!\")\n    }\n    ```\n\n    ## SQLite (for local development)\n\
+  \n    ```go\n    import (\n        \"database/sql\"\n        _ \"github.com/mattn/go-sqlite3\"\
+  \n    )\n\n    func main() {\n        db, err := sql.Open(\"sqlite3\", \"./myapp.db\"\
+  )\n        if err != nil {\n            log.Fatal(err)\n        }\n        defer\
+  \ db.Close()\n    }\n    ```\n\n    ## Creating Tables\n\n    ```go\n    func createTables(db\
+  \ *sql.DB) error {\n        query := `\n        CREATE TABLE IF NOT EXISTS users\
+  \ (\n            id SERIAL PRIMARY KEY,\n            name VARCHAR(100) NOT NULL,\n\
+  \            email VARCHAR(100) UNIQUE NOT NULL,\n            created_at TIMESTAMP\
+  \ DEFAULT CURRENT_TIMESTAMP\n        );\n\n        CREATE TABLE IF NOT EXISTS tasks\
+  \ (\n            id SERIAL PRIMARY KEY,\n            user_id INTEGER REFERENCES\
+  \ users(id),\n            title VARCHAR(200) NOT NULL,\n            description\
+  \ TEXT,\n            completed BOOLEAN DEFAULT FALSE,\n            created_at TIMESTAMP\
+  \ DEFAULT CURRENT_TIMESTAMP\n        );\n        `\n\n        _, err := db.Exec(query)\n\
+  \        return err\n    }\n    ```\n\n    ## INSERT - Creating Records\n\n    ```go\n\
+  \    type User struct {\n        ID        int\n        Name      string\n     \
+  \   Email     string\n        CreatedAt time.Time\n    }\n\n    func createUser(db\
+  \ *sql.DB, name, email string) (int, error) {\n        query := `\n            INSERT\
+  \ INTO users (name, email)\n            VALUES ($1, $2)\n            RETURNING id\n\
+  \        `\n\n        var userID int\n        err := db.QueryRow(query, name, email).Scan(&userID)\n\
+  \        if err != nil {\n            return 0, err\n        }\n\n        return\
+  \ userID, nil\n    }\n\n    // Usage\n    userID, err := createUser(db, \"Alice\"\
+  , \"alice@example.com\")\n    if err != nil {\n        log.Fatal(err)\n    }\n \
+  \   fmt.Printf(\"Created user with ID: %d\\\\n\", userID)\n    ```\n\n    ## SELECT\
+  \ - Reading Records\n\n    ### Query Single Row\n\n    ```go\n    func getUserByID(db\
+  \ *sql.DB, id int) (*User, error) {\n        query := `\n            SELECT id,\
+  \ name, email, created_at\n            FROM users\n            WHERE id = $1\n \
+  \       `\n\n        user := &User{}\n        err := db.QueryRow(query, id).Scan(\n\
+  \            &user.ID,\n            &user.Name,\n            &user.Email,\n    \
+  \        &user.CreatedAt,\n        )\n\n        if err == sql.ErrNoRows {\n    \
+  \        return nil, fmt.Errorf(\"user not found\")\n        }\n        if err !=\
+  \ nil {\n            return nil, err\n        }\n\n        return user, nil\n  \
+  \  }\n    ```\n\n    ### Query Multiple Rows\n\n    ```go\n    func getAllUsers(db\
+  \ *sql.DB) ([]User, error) {\n        query := `\n            SELECT id, name, email,\
+  \ created_at\n            FROM users\n            ORDER BY created_at DESC\n   \
+  \     `\n\n        rows, err := db.Query(query)\n        if err != nil {\n     \
+  \       return nil, err\n        }\n        defer rows.Close()\n\n        var users\
+  \ []User\n\n        for rows.Next() {\n            var user User\n            err\
+  \ := rows.Scan(\n                &user.ID,\n                &user.Name,\n      \
+  \          &user.Email,\n                &user.CreatedAt,\n            )\n     \
+  \       if err != nil {\n                return nil, err\n            }\n      \
+  \      users = append(users, user)\n        }\n\n        // Check for errors during\
+  \ iteration\n        if err = rows.Err(); err != nil {\n            return nil,\
+  \ err\n        }\n\n        return users, nil\n    }\n    ```\n\n    ## UPDATE -\
+  \ Modifying Records\n\n    ```go\n    func updateUser(db *sql.DB, id int, name,\
+  \ email string) error {\n        query := `\n            UPDATE users\n        \
+  \    SET name = $1, email = $2\n            WHERE id = $3\n        `\n\n       \
+  \ result, err := db.Exec(query, name, email, id)\n        if err != nil {\n    \
+  \        return err\n        }\n\n        rowsAffected, err := result.RowsAffected()\n\
+  \        if err != nil {\n            return err\n        }\n\n        if rowsAffected\
+  \ == 0 {\n            return fmt.Errorf(\"user not found\")\n        }\n\n     \
+  \   return nil\n    }\n    ```\n\n    ## DELETE - Removing Records\n\n    ```go\n\
+  \    func deleteUser(db *sql.DB, id int) error {\n        query := `DELETE FROM\
+  \ users WHERE id = $1`\n\n        result, err := db.Exec(query, id)\n        if\
+  \ err != nil {\n            return err\n        }\n\n        rowsAffected, err :=\
+  \ result.RowsAffected()\n        if err != nil {\n            return err\n     \
+  \   }\n\n        if rowsAffected == 0 {\n            return fmt.Errorf(\"user not\
+  \ found\")\n        }\n\n        return nil\n    }\n    ```\n\n    ## Transactions\n\
+  \n    Use transactions for operations that must succeed or fail together:\n\n  \
+  \  ```go\n    func transferTask(db *sql.DB, taskID, fromUserID, toUserID int) error\
+  \ {\n        // Begin transaction\n        tx, err := db.Begin()\n        if err\
+  \ != nil {\n            return err\n        }\n\n        // Defer rollback in case\
+  \ of error\n        defer tx.Rollback()\n\n        // Verify task belongs to fromUser\n\
+  \        var ownerID int\n        err = tx.QueryRow(\n            \"SELECT user_id\
+  \ FROM tasks WHERE id = $1\",\n            taskID,\n        ).Scan(&ownerID)\n\n\
+  \        if err != nil {\n            return err\n        }\n\n        if ownerID\
+  \ != fromUserID {\n            return fmt.Errorf(\"task does not belong to user\"\
+  )\n        }\n\n        // Transfer task\n        _, err = tx.Exec(\n          \
+  \  \"UPDATE tasks SET user_id = $1 WHERE id = $2\",\n            toUserID, taskID,\n\
+  \        )\n        if err != nil {\n            return err\n        }\n\n     \
+  \   // Commit transaction\n        return tx.Commit()\n    }\n    ```\n\n    ##\
+  \ Connection Pooling\n\n    The `sql.DB` object is a connection pool, not a single\
+  \ connection:\n\n    ```go\n    func initDB(connStr string) (*sql.DB, error) {\n\
+  \        db, err := sql.Open(\"postgres\", connStr)\n        if err != nil {\n \
+  \           return nil, err\n        }\n\n        // Set connection pool settings\n\
+  \        db.SetMaxOpenConns(25)                 // Max open connections\n      \
+  \  db.SetMaxIdleConns(5)                  // Max idle connections\n        db.SetConnMaxLifetime(5\
+  \ * time.Minute) // Max connection lifetime\n\n        // Test connection\n    \
+  \    if err = db.Ping(); err != nil {\n            return nil, err\n        }\n\n\
+  \        return db, nil\n    }\n    ```\n\n    ## Integrating with HTTP Handlers\n\
+  \n    ```go\n    type Server struct {\n        db *sql.DB\n    }\n\n    func (s\
+  \ *Server) createUserHandler(w http.ResponseWriter, r *http.Request) {\n       \
+  \ if r.Method != http.MethodPost {\n            http.Error(w, \"Method not allowed\"\
+  , http.StatusMethodNotAllowed)\n            return\n        }\n\n        var req\
+  \ struct {\n            Name  string `json:\"name\"`\n            Email string `json:\"\
+  email\"`\n        }\n\n        if err := json.NewDecoder(r.Body).Decode(&req); err\
+  \ != nil {\n            http.Error(w, \"Invalid JSON\", http.StatusBadRequest)\n\
+  \            return\n        }\n\n        // Create user in database\n        userID,\
+  \ err := createUser(s.db, req.Name, req.Email)\n        if err != nil {\n      \
+  \      http.Error(w, \"Failed to create user\", http.StatusInternalServerError)\n\
+  \            log.Println(\"Database error:\", err)\n            return\n       \
+  \ }\n\n        // Return created user\n        user := User{\n            ID:  \
+  \  userID,\n            Name:  req.Name,\n            Email: req.Email,\n      \
+  \  }\n\n        w.Header().Set(\"Content-Type\", \"application/json\")\n       \
+  \ w.WriteHeader(http.StatusCreated)\n        json.NewEncoder(w).Encode(user)\n \
+  \   }\n\n    func main() {\n        db, err := initDB(\"postgres://user:pass@localhost/mydb?sslmode=disable\"\
+  )\n        if err != nil {\n            log.Fatal(err)\n        }\n        defer\
+  \ db.Close()\n\n        server := &Server{db: db}\n\n        http.HandleFunc(\"\
+  /api/users\", server.createUserHandler)\n        http.ListenAndServe(\":8080\",\
+  \ nil)\n    }\n    ```\n\n    ## Best Practices\n\n    1. **Always use prepared\
+  \ statements** - Prevents SQL injection\n    2. **Use placeholders ($1, $2)** -\
+  \ Never concatenate SQL strings\n    3. **Close resources** - `defer rows.Close()`\
+  \ and `defer tx.Rollback()`\n    4. **Handle sql.ErrNoRows** - Distinguish \"not\
+  \ found\" from errors\n    5. **Use transactions** - For multi-step operations\n\
+  \    6. **Configure connection pool** - Set appropriate limits\n    7. **Log database\
+  \ errors** - But don't expose them to clients\n    8. **Use context** - For timeouts\
+  \ and cancellation"
+exercises:
+  - type: multiple_choice
+    sequence_order: 1
+    question: "What is the purpose of using placeholders like $1, $2 in SQL queries instead of string concatenation?"
+    options:
+      - "Placeholders make queries run faster"
+      - "Placeholders prevent SQL injection attacks by properly escaping values and separating code from data"
+      - "Placeholders are required by the database/sql package"
+      - "Placeholders reduce memory usage"
+    correct_answer: "Placeholders prevent SQL injection attacks by properly escaping values and separating code from data"
+    explanation: "Using placeholders in SQL queries is critical for security. When you concatenate strings to build SQL queries like 'SELECT * FROM users WHERE email = ' + userInput, you're vulnerable to SQL injection attacks. A malicious user could input something like \"admin@example.com' OR '1'='1\" which would execute as valid SQL and bypass authentication or expose data. Placeholders prevent this by treating user input as pure data, not executable SQL code. The database driver properly escapes special characters and ensures the value is treated as a string literal, not SQL syntax. With placeholders, you write db.QueryRow('SELECT * FROM users WHERE email = $1', userEmail) where $1 is a placeholder that the database driver fills safely. This separation of SQL code from data is fundamental to prepared statements. Additionally, prepared statements with placeholders can be cached and reused by the database engine for better performance, though security is the primary benefit. Different database drivers use different placeholder syntax: PostgreSQL uses $1, $2; MySQL uses ?; but the principle is the same. Never, ever concatenate user input into SQL strings - always use placeholders. This is one of the most important security practices in database programming."
+    require_pass: true
+  - type: multiple_choice
+    sequence_order: 2
+    question: "Why must you call defer rows.Close() after executing a query that returns multiple rows?"
+    options:
+      - "It's not necessary; Go automatically closes rows"
+      - "To release database connections back to the pool and prevent connection leaks"
+      - "To commit the transaction"
+      - "To sort the results"
+    correct_answer: "To release database connections back to the pool and prevent connection leaks"
+    explanation: "When you execute a query with db.Query() that returns rows, the database maintains an open connection to stream results to your application. If you don't close the rows object, that connection stays occupied even after you're done reading the data. In Go's database/sql package, the sql.DB is a connection pool with a limited number of connections. If you leak connections by not closing rows, you'll eventually exhaust the pool and new queries will block or timeout waiting for available connections. Calling defer rows.Close() immediately after checking for errors ensures the connection is released when the function exits, regardless of which return path is taken (normal completion, early return, or panic). The rows object holds a connection from the pool until all rows are read AND Close() is called. Even if you read all rows with rows.Next(), you still must call Close() to release the connection. This pattern is crucial for production applications that handle many concurrent requests. Missing Close() calls is a common cause of mysterious performance degradation as the application runs out of database connections. The defer keyword makes this foolproof by guaranteeing cleanup. This same pattern applies to prepared statements, transactions, and other database resources."
+    require_pass: true
+  - type: multiple_choice
+    sequence_order: 3
+    question: "What is the difference between db.QueryRow() and db.Query() in Go's database/sql package?"
+    options:
+      - "QueryRow is faster than Query"
+      - "QueryRow returns at most one row and is convenient for queries expected to return a single result, while Query returns multiple rows"
+      - "Query is deprecated and should not be used"
+      - "QueryRow requires a transaction, Query does not"
+    correct_answer: "QueryRow returns at most one row and is convenient for queries expected to return a single result, while Query returns multiple rows"
+    explanation: "The database/sql package provides two methods for executing SELECT queries with different semantics. db.QueryRow() is optimized for queries that return a single row, like SELECT by ID. It returns a *sql.Row that you immediately call Scan() on to extract values. The API is simpler because you don't need to handle iteration or call Close() - QueryRow handles that internally. If the query returns no rows, Scan() returns sql.ErrNoRows which you can check specifically. If the query returns multiple rows, QueryRow only reads the first one. In contrast, db.Query() returns *sql.Rows for handling zero or more rows. You must iterate with rows.Next(), scan each row, check rows.Err() after iteration, and critically, call rows.Close() to release the connection. Use QueryRow() for 'get by ID' queries where you expect exactly one result - it's cleaner and less error-prone. Use Query() when you need to iterate over multiple results, like 'list all users'. Choosing the right method makes your code more readable and intentions clear. QueryRow() is essentially Query() with built-in iteration handling for the single-row case, eliminating boilerplate and potential resource leaks from forgetting to close rows."
+    require_pass: true

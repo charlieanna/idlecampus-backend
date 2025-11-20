@@ -1,0 +1,81 @@
+slug: diazonium-salts-preparation-and-reactions
+title: Diazonium Salts - Preparation and Reactions
+difficulty: easy
+sequence_order: 4
+estimated_minutes: 2
+key_concepts:
+- Diazonium salts
+- Diazotization
+- Sandmeyer reaction
+- Gattermann reaction
+- Coupling reactions
+- Azo dyes
+prerequisites: []
+content_md: "# Diazonium Salts - Preparation and Reactions \U0001F680\n\n# Diazonium\
+  \ Salts\n\n    ## Structure\n    **General formula:** Ar-N₂⁺X⁻ (Arenediazonium salt)\n\
+  \n    **Example:** C₆H₅-N₂⁺Cl⁻ (Benzenediazonium chloride)\n\n    **Important:**\
+  \ Aliphatic diazonium salts are unstable. Only aromatic ones are stable.\n\n   \
+  \ ## Preparation (Diazotization)\n    ```\n    C₆H₅-NH₂ + NaNO₂ + 2HCl → [0-5°C]\
+  \ → C₆H₅-N₂⁺Cl⁻ + NaCl + 2H₂O\n    (Aniline)                           (Benzenediazonium\
+  \ chloride)\n    ```\n\n    **Conditions:** 0-5°C (ice-cold), otherwise decomposes\n\
+  \n    ## Reactions\n\n    ### Replacement of Diazo Group\n\n    #### 1. Sandmeyer\
+  \ Reaction (CuX catalyst)\n    ```\n    C₆H₅-N₂⁺Cl⁻ + CuCl → C₆H₅-Cl + N₂ (Chlorobenzene)\n\
+  \    C₆H₅-N₂⁺Cl⁻ + CuBr → C₆H₅-Br + N₂ (Bromobenzene)\n    C₆H₅-N₂⁺Cl⁻ + CuCN →\
+  \ C₆H₅-CN + N₂ (Benzonitrile)\n    ```\n\n    #### 2. Gattermann Reaction (Cu +\
+  \ HX)\n    ```\n    C₆H₅-N₂⁺Cl⁻ + Cu + HCl → C₆H₅-Cl + N₂\n    ```\n\n    #### 3.\
+  \ Replacement by -OH\n    ```\n    C₆H₅-N₂⁺Cl⁻ + H₂O → [warm] → C₆H₅-OH + N₂ + HCl\
+  \ (Phenol)\n    ```\n\n    #### 4. Replacement by -I\n    ```\n    C₆H₅-N₂⁺Cl⁻ +\
+  \ KI → C₆H₅-I + N₂ + KCl (Iodobenzene)\n    ```\n\n    #### 5. Replacement by -F\
+  \ (Balz-Schiemann)\n    ```\n    C₆H₅-N₂⁺BF₄⁻ → [heat] → C₆H₅-F + N₂ + BF₃ (Fluorobenzene)\n\
+  \    ```\n\n    #### 6. Replacement by -H (Reduction)\n    ```\n    C₆H₅-N₂⁺Cl⁻\
+  \ + H₃PO₂ + H₂O → C₆H₆ + N₂ + H₃PO₃ + HCl\n    ```\n\n    ### Coupling Reactions\
+  \ (Azo Dyes)\n\n    **With Phenol:**\n    ```\n    C₆H₅-N₂⁺Cl⁻ + C₆H₅-OH → [NaOH,\
+  \ 273-278 K] → p-HO-C₆H₄-N=N-C₆H₅\n                                            \
+  \      (p-Hydroxyazobenzene - orange)\n    ```\n\n    **With Aniline:**\n    ```\n\
+  \    C₆H₅-N₂⁺Cl⁻ + C₆H₅-NH₂ → [pH 4-5] → p-H₂N-C₆H₄-N=N-C₆H₅\n                 \
+  \                        (p-Aminoazobenzene - yellow)\n    ```\n\n    **Products:**\
+  \ Azo compounds (colored dyes)\n\n    ## Importance of Diazonium Salts\n    1. **Convert\
+  \ aniline to other compounds:** Phenol, halobenzenes, benzonitrile\n    2. **Introduce\
+  \ groups that cannot be introduced directly:** -F, -I, -CN, -OH\n    3. **Synthesis\
+  \ of azo dyes:** Textile industry\n    4. **Versatile intermediate:** Many transformations\
+  \ possible\n\n    ## Summary of Key Reactions\n\n    | Reagent | Product | Reaction\
+  \ Name |\n    |---------|---------|---------------|\n    | CuCl/CuBr | C₆H₅-Cl/Br\
+  \ | Sandmeyer |\n    | CuCN | C₆H₅-CN | Sandmeyer |\n    | Cu/HCl | C₆H₅-Cl | Gattermann\
+  \ |\n    | H₂O (warm) | C₆H₅-OH | Hydrolysis |\n    | KI | C₆H₅-I | Direct |\n \
+  \   | BF₄⁻ (heat) | C₆H₅-F | Balz-Schiemann |\n    | H₃PO₂ | C₆H₆ | Reduction |\n\
+  \    | Phenol/Aniline | Azo dye | Coupling |\n\n## Key Points\n\n- Diazonium salts\n\
+  \n- Diazotization\n\n- Sandmeyer reaction"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: 'In the Sandmeyer reaction, benzenediazonium chloride (C₆H₅N₂⁺Cl⁻) is treated with CuCN. What is the major product?'
+  options:
+  - Benzonitrile (C₆H₅CN)
+  - Chlorobenzene (C₆H₅Cl)
+  - Cyanogen (CN)₂
+  - Aniline (C₆H₅NH₂)
+  correct_answer: Benzonitrile (C₆H₅CN)
+  explanation: "The Sandmeyer reaction is one of the most important reactions of diazonium salts, allowing the replacement of the diazo group (-N₂⁺) with various substituents using copper(I) halides or copper(I) cyanide as catalysts. When benzenediazonium chloride is treated with copper(I) cyanide (CuCN), the diazo group is replaced by a cyano group (-CN), forming benzonitrile (C₆H₅CN) along with the release of nitrogen gas (N₂). The reaction proceeds through a radical mechanism where Cu⁺ facilitates the homolytic cleavage of the C-N bond. This reaction is extremely valuable in organic synthesis because it provides a route to introduce functional groups that cannot be easily introduced directly onto the benzene ring through electrophilic aromatic substitution. The nitrile group can then be further transformed into other functional groups: it can be hydrolyzed to a carboxylic acid (C₆H₅COOH) or reduced to a primary amine (C₆H₅CH₂NH₂). Similarly, the Sandmeyer reaction works with CuCl to give chlorobenzene and CuBr to give bromobenzene. The versatility of diazonium salts as intermediates, combined with the reliability of the Sandmeyer reaction, makes this transformation a cornerstone of aromatic synthesis, particularly useful for preparing halobenzenes and benzonitrile from readily available aniline."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: 'Why must the diazotization reaction (conversion of aniline to benzenediazonium chloride) be carried out at 0-5°C?'
+  options:
+  - Benzenediazonium salts are unstable and decompose at higher temperatures
+  - Aniline evaporates at room temperature
+  - The reaction is exothermic and needs cooling
+  - NaNO₂ decomposes at room temperature
+  correct_answer: Benzenediazonium salts are unstable and decompose at higher temperatures
+  explanation: "Diazotization must be performed at 0-5°C (ice-cold conditions) because arenediazonium salts, while more stable than their aliphatic counterparts, are still thermally unstable and readily decompose at temperatures above 5°C. If the temperature rises during the reaction, the benzenediazonium chloride will decompose to form phenol (C₆H₅OH) and nitrogen gas, along with other unwanted byproducts. The diazonium ion contains a highly reactive N≡N⁺ group that can undergo various decomposition pathways when heated, including loss of N₂ to form highly reactive phenyl cations that react with available nucleophiles (like water) to give phenol. The low temperature ensures that once the diazonium salt is formed from aniline (C₆H₅NH₂), sodium nitrite (NaNO₂), and hydrochloric acid (HCl), it remains stable enough to be used in subsequent reactions. The mechanism involves the formation of nitrous acid (HNO₂) in situ, which then reacts with aniline to form the diazonium salt. Even though the diazotization reaction itself is reasonably fast at low temperatures, maintaining ice-cold conditions throughout is critical for obtaining good yields. Once formed, the diazonium salt solution should be used immediately in coupling reactions or substitution reactions (like Sandmeyer), as even cold solutions slowly decompose over time. This temperature sensitivity is a key practical consideration in diazonium chemistry."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: 'What is the significance of diazonium salts in organic synthesis?'
+  options:
+  - They serve as versatile intermediates to introduce functional groups that cannot be introduced directly by electrophilic substitution
+  - They are more stable than other aromatic compounds
+  - They are the strongest bases in organic chemistry
+  - They are used primarily as reducing agents
+  correct_answer: They serve as versatile intermediates to introduce functional groups that cannot be introduced directly by electrophilic substitution
+  explanation: "Diazonium salts are among the most versatile intermediates in aromatic chemistry because they allow the introduction of functional groups that cannot be introduced directly onto benzene rings through standard electrophilic aromatic substitution reactions. For example, it is impossible to introduce fluorine, iodine, hydroxyl (-OH), or cyano (-CN) groups directly onto benzene using electrophilic substitution. However, these groups can be easily introduced via diazonium salts: fluorine through the Balz-Schiemann reaction (using diazonium tetrafluoroborate), iodine by treatment with KI, hydroxyl by warming with water, cyano through Sandmeyer reaction with CuCN, and halogens (Cl, Br) also via Sandmeyer with CuCl or CuBr. Additionally, diazonium salts can be reduced to remove the amino group entirely (replacement by -H using H₃PO₂), which is useful when the amino group was needed only to direct other substitutions. Diazonium salts are also crucial for synthesizing azo compounds through coupling reactions with phenols or aromatic amines, producing brightly colored azo dyes that are important in the textile industry. The general synthetic route involves starting with benzene, introducing a nitro group (-NO₂) by nitration, reducing it to aniline (-NH₂), converting to diazonium salt, and then transforming to the desired functional group. This makes diazonium chemistry indispensable for constructing complex substitution patterns on aromatic rings."
+  require_pass: true

@@ -1,0 +1,50 @@
+slug: lesson-41
+title: Lesson 41
+difficulty: easy
+sequence_order: 41
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Pod Design Fundamentals\n\n    Pods are\
+  \ the smallest deployable unit in Kubernetes. This lesson covers:\n\n    - Pod anatomy:\
+  \ containers, initContainers, volumes\n    - Restart policies and probes\n    -\
+  \ Resource requests/limits and QoS classes\n    - Labels, selectors, and annotations\n\
+  \n    ## QoS Classes\n    - Guaranteed: requests == limits for all containers\n\
+  \    - Burstable: some requests set, limits may differ\n    - BestEffort: no requests\
+  \ or limits specified\n\n    ## Best Practices\n    - Keep Pods small and focused\n\
+  \    - Use requests to ensure scheduling and stability\n    - Prefer readinessProbe\
+  \ to gate traffic"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: Which QoS class is assigned to a pod where all containers have both requests and limits set, and requests equal limits for both CPU and memory?
+  options:
+  - BestEffort
+  - Burstable
+  - Guaranteed
+  - Standard
+  correct_answer: Guaranteed
+  explanation: "A pod is assigned the Guaranteed QoS class when every container in the pod has memory and CPU limits set, and the requests equal the limits for both resources. This is the highest priority QoS class. Guaranteed pods are the last to be evicted when the node runs out of resources. For example, if a container specifies requests: {memory: 1Gi, cpu: 500m} and limits: {memory: 1Gi, cpu: 500m}, it contributes to a Guaranteed QoS. If you only set limits without requests, Kubernetes automatically sets requests equal to limits, also resulting in Guaranteed. This QoS class ensures predictable resource allocation and is suitable for critical production workloads. In contrast, Burstable pods have some requests/limits set but not all, and BestEffort pods have no requests or limits set at all."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What is the purpose of an initContainer in a pod?
+  options:
+  - To run alongside the main container for the pod's lifetime
+  - To run and complete before the main application containers start
+  - To handle incoming network traffic
+  - To monitor the health of the main container
+  correct_answer: To run and complete before the main application containers start
+  explanation: "InitContainers are specialized containers that run before the main application containers in a pod. They must run to completion successfully before the main containers start. Each initContainer runs sequentially in the order they're defined, and all must succeed. Common use cases include: waiting for dependencies (services, databases) to be ready, performing setup tasks (fetching configuration, initializing volumes, running database migrations), or cloning git repositories. For example, an initContainer might wait for a database to be available before starting the main application container. Unlike regular sidecar containers that run alongside the main container throughout the pod's lifetime, initContainers only run during pod initialization. If an initContainer fails, Kubernetes restarts the entire pod according to the restart policy until the initContainer succeeds."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: What is the purpose of a readinessProbe in a pod?
+  options:
+  - To determine if a container should be restarted
+  - To indicate when a container is ready to start accepting traffic
+  - To monitor resource usage
+  - To validate pod security
+  correct_answer: To indicate when a container is ready to start accepting traffic
+  explanation: "A readinessProbe determines whether a container is ready to serve requests. When a readinessProbe fails, the pod is removed from Service endpoints, meaning no traffic is routed to it. Unlike livenessProbe (which restarts the container on failure), readinessProbe doesn't restart containers - it just temporarily removes them from load balancing. This is crucial during startup when an application needs time to load data, warm up caches, or establish connections before handling requests. It's also useful for gracefully handling temporary unavailability, like when an application is overloaded or performing maintenance. A pod can have both livenessProbe and readinessProbe: liveness checks if the app is alive (restart if not), readiness checks if it's ready for traffic (remove from service if not). Probes can use HTTP GET, TCP socket, or exec commands."
+  require_pass: true

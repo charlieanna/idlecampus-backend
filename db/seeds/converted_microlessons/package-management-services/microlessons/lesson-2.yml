@@ -1,0 +1,144 @@
+slug: lesson-2
+title: Lesson 2
+difficulty: easy
+sequence_order: 2
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Networking and Security Basics\n\n    ##\
+  \ Network Configuration\n\n    ### Viewing Network Interfaces\n\n    **Modern command\
+  \ (ip):**\n    ```bash\n    # Show all network interfaces and IP addresses\n   \
+  \ ip addr show\n    ip a\n\n    # Show specific interface\n    ip addr show eth0\n\
+  \n    # Show only IPv4 addresses\n    ip -4 addr\n\n    # Show only IPv6 addresses\n\
+  \    ip -6 addr\n    ```\n\n    **Legacy command (ifconfig):**\n    ```bash\n  \
+  \  # Show all interfaces (deprecated, but still common)\n    ifconfig\n\n    # Show\
+  \ specific interface\n    ifconfig eth0\n    ```\n\n    ### Network Interface Names\n\
+  \n    | Name Pattern | Type |\n    |-------------|------|\n    | `lo` | Loopback\
+  \ (127.0.0.1) |\n    | `eth0`, `eth1` | Ethernet (older naming) |\n    | `ens33`,\
+  \ `enp0s3` | Ethernet (predictable naming) |\n    | `wlan0`, `wlp2s0` | Wireless\
+  \ |\n    | `docker0` | Docker bridge network |\n\n    ### Viewing Routes\n\n   \
+  \ ```bash\n    # Show routing table (modern)\n    ip route show\n    ip r\n\n  \
+  \  # Show routing table (legacy)\n    route -n\n    netstat -rn\n    ```\n\n   \
+  \ **Sample output:**\n    ```\n    default via 192.168.1.1 dev eth0    # Default\
+  \ gateway\n    192.168.1.0/24 dev eth0 proto kernel scope link src 192.168.1.100\n\
+  \    ```\n\n    ### DNS Configuration\n\n    **View DNS servers:**\n    ```bash\n\
+  \    # Modern (systemd-resolved)\n    systemd-resolve --status\n\n    # Traditional\n\
+  \    cat /etc/resolv.conf\n    ```\n\n    **Sample /etc/resolv.conf:**\n    ```\n\
+  \    nameserver 8.8.8.8\n    nameserver 8.8.4.4\n    ```\n\n    ### Hostname\n\n\
+  \    ```bash\n    # Display hostname\n    hostname\n\n    # Display FQDN (Fully\
+  \ Qualified Domain Name)\n    hostname -f\n\n    # Change hostname temporarily\n\
+  \    sudo hostname newhostname\n\n    # Change hostname permanently\n    sudo hostnamectl\
+  \ set-hostname newhostname\n\n    # View hostname details\n    hostnamectl\n   \
+  \ ```\n\n    ### /etc/hosts File\n\n    Static hostname-to-IP mappings:\n\n    ```bash\n\
+  \    # View hosts file\n    cat /etc/hosts\n\n    # Example entries\n    127.0.0.1\
+  \    localhost\n    127.0.1.1    mycomputer\n    192.168.1.10 server1.local server1\n\
+  \    ```\n\n    ## Network Connectivity Tools\n\n    ### ping - Test Reachability\n\
+  \n    ```bash\n    # Ping host (Ctrl+C to stop)\n    ping google.com\n\n    # Send\
+  \ specific number of packets\n    ping -c 4 8.8.8.8\n\n    # Ping with specific\
+  \ interval (seconds)\n    ping -i 2 google.com\n\n    # Ping localhost\n    ping\
+  \ 127.0.0.1\n    ping localhost\n    ```\n\n    **Interpreting results:**\n    -\
+  \ **0% packet loss**: Good connectivity\n    - **Time (ms)**: Lower is better (latency)\n\
+  \    - **TTL**: Time to live (hops remaining)\n\n    ### traceroute - Trace Network\
+  \ Path\n\n    ```bash\n    # Trace route to host\n    traceroute google.com\n\n\
+  \    # Use ICMP instead of UDP\n    traceroute -I google.com\n\n    # Maximum hops\n\
+  \    traceroute -m 20 google.com\n    ```\n\n    Useful for identifying where network\
+  \ issues occur along the path.\n\n    ### dig - DNS Lookup\n\n    ```bash\n    #\
+  \ DNS lookup\n    dig google.com\n\n    # Short answer only\n    dig +short google.com\n\
+  \n    # Query specific record type\n    dig google.com A        # IPv4 address\n\
+  \    dig google.com AAAA     # IPv6 address\n    dig google.com MX       # Mail\
+  \ servers\n    dig google.com NS       # Name servers\n\n    # Query specific DNS\
+  \ server\n    dig @8.8.8.8 google.com\n\n    # Reverse DNS lookup\n    dig -x 8.8.8.8\n\
+  \    ```\n\n    ### nslookup - DNS Lookup (Alternative)\n\n    ```bash\n    # DNS\
+  \ lookup\n    nslookup google.com\n\n    # Query specific DNS server\n    nslookup\
+  \ google.com 8.8.8.8\n    ```\n\n    ### netstat - Network Statistics\n\n    ```bash\n\
+  \    # Show all listening ports\n    sudo netstat -tulpn\n\n    # Show all connections\n\
+  \    netstat -an\n\n    # Show routing table\n    netstat -rn\n\n    # Show interface\
+  \ statistics\n    netstat -i\n    ```\n\n    **Options:**\n    - `-t`: TCP connections\n\
+  \    - `-u`: UDP connections\n    - `-l`: Listening ports\n    - `-p`: Show program/PID\n\
+  \    - `-n`: Numeric (don't resolve names)\n\n    ### ss - Socket Statistics (Modern\
+  \ Alternative)\n\n    ```bash\n    # Show all listening TCP ports\n    sudo ss -tulpn\n\
+  \n    # Show all connections\n    ss -an\n\n    # Show process using port 80\n \
+  \   sudo ss -lptn 'sport = :80'\n    ```\n\n    ### curl/wget - HTTP Tools\n\n \
+  \   ```bash\n    # Fetch webpage\n    curl http://example.com\n    wget http://example.com\n\
+  \n    # Follow redirects\n    curl -L http://example.com\n\n    # Save to file\n\
+  \    curl -o output.html http://example.com\n    wget -O output.html http://example.com\n\
+  \n    # Test API endpoint\n    curl https://api.github.com\n\n    # HTTP headers\
+  \ only\n    curl -I http://example.com\n    ```\n\n    ## SSH - Secure Shell\n\n\
+  \    ### What is SSH?\n\n    **SSH** provides secure remote access to Linux systems\
+  \ over encrypted connections.\n\n    **Default port**: 22 (TCP)\n\n    ### Connecting\
+  \ via SSH\n\n    ```bash\n    # Basic connection\n    ssh username@hostname\n\n\
+  \    # Specify port\n    ssh -p 2222 username@hostname\n\n    # Examples\n    ssh\
+  \ alice@192.168.1.100\n    ssh root@server.example.com\n    ssh user@localhost\n\
+  \    ```\n\n    ### SSH Key-Based Authentication\n\n    **Why use SSH keys?**\n\
+  \    - More secure than passwords\n    - No password to type (convenient)\n    -\
+  \ Can be automated (scripts, CI/CD)\n\n    **Generate SSH key pair:**\n    ```bash\n\
+  \    # Generate RSA key (default)\n    ssh-keygen\n\n    # Generate ED25519 key\
+  \ (modern, recommended)\n    ssh-keygen -t ed25519 -C \"your_email@example.com\"\
+  \n\n    # Keys saved to:\n    # ~/.ssh/id_rsa (private key) - Keep secret!\n   \
+  \ # ~/.ssh/id_rsa.pub (public key) - Share this\n    ```\n\n    **Copy public key\
+  \ to server:**\n    ```bash\n    # Automatic (recommended)\n    ssh-copy-id username@hostname\n\
+  \n    # Manual\n    cat ~/.ssh/id_rsa.pub | ssh username@hostname \"cat >> ~/.ssh/authorized_keys\"\
+  \n    ```\n\n    **SSH config (~/.ssh/config):**\n    ```\n    Host myserver\n \
+  \       HostName 192.168.1.100\n        User alice\n        Port 22\n        IdentityFile\
+  \ ~/.ssh/id_rsa\n\n    # Now just: ssh myserver\n    ```\n\n    ### SSH Service\
+  \ (sshd)\n\n    ```bash\n    # Check SSH service status\n    systemctl status sshd\n\
+  \    systemctl status ssh    # Debian/Ubuntu\n\n    # Start/stop SSH service\n \
+  \   sudo systemctl start sshd\n    sudo systemctl stop sshd\n\n    # SSH configuration\n\
+  \    sudo nano /etc/ssh/sshd_config\n\n    # Restart after config changes\n    sudo\
+  \ systemctl restart sshd\n    ```\n\n    **Security hardening:**\n    - `PermitRootLogin\
+  \ no` - Disable root SSH login\n    - `PasswordAuthentication no` - Require keys\
+  \ only\n    - `Port 2222` - Change from default port 22\n\n    ## Firewall Configuration\n\
+  \n    ### UFW - Uncomplicated Firewall (Ubuntu/Debian)\n\n    **Enable/Disable:**\n\
+  \    ```bash\n    # Check status\n    sudo ufw status\n\n    # Enable firewall\n\
+  \    sudo ufw enable\n\n    # Disable firewall\n    sudo ufw disable\n\n    # Verbose\
+  \ status\n    sudo ufw status verbose\n    ```\n\n    **Allow Traffic:**\n    ```bash\n\
+  \    # Allow port\n    sudo ufw allow 22/tcp      # SSH\n    sudo ufw allow 80/tcp\
+  \      # HTTP\n    sudo ufw allow 443/tcp     # HTTPS\n\n    # Allow service by\
+  \ name\n    sudo ufw allow ssh\n    sudo ufw allow http\n    sudo ufw allow https\n\
+  \n    # Allow from specific IP\n    sudo ufw allow from 192.168.1.100\n\n    # Allow\
+  \ port range\n    sudo ufw allow 3000:4000/tcp\n    ```\n\n    **Deny Traffic:**\n\
+  \    ```bash\n    # Deny port\n    sudo ufw deny 23/tcp       # Telnet\n\n    #\
+  \ Deny from IP\n    sudo ufw deny from 203.0.113.100\n    ```\n\n    **Remove Rules:**\n\
+  \    ```bash\n    # Delete by rule specification\n    sudo ufw delete allow 80/tcp\n\
+  \n    # Delete by rule number\n    sudo ufw status numbered\n    sudo ufw delete\
+  \ 3\n    ```\n\n    **Default Policies:**\n    ```bash\n    # Set default policies\n\
+  \    sudo ufw default deny incoming\n    sudo ufw default allow outgoing\n    ```\n\
+  \n    ### firewalld (RHEL/CentOS)\n\n    ```bash\n    # Check status\n    sudo firewall-cmd\
+  \ --state\n\n    # List rules\n    sudo firewall-cmd --list-all\n\n    # Allow service\n\
+  \    sudo firewall-cmd --permanent --add-service=http\n    sudo firewall-cmd --permanent\
+  \ --add-service=https\n\n    # Allow port\n    sudo firewall-cmd --permanent --add-port=8080/tcp\n\
+  \n    # Reload firewall\n    sudo firewall-cmd --reload\n    ```\n\n    ### iptables\
+  \ (Advanced)\n\n    Low-level firewall (UFW/firewalld are frontends for iptables):\n\
+  \n    ```bash\n    # List rules\n    sudo iptables -L -n -v\n\n    # Allow port\n\
+  \    sudo iptables -A INPUT -p tcp --dport 80 -j ACCEPT\n\n    # Save rules (Ubuntu)\n\
+  \    sudo iptables-save > /etc/iptables/rules.v4\n    ```\n\n    ## Security Best\
+  \ Practices\n\n    ### 1. Keep Software Updated\n\n    ```bash\n    # Update package\
+  \ lists and upgrade\n    sudo apt update && sudo apt upgrade -y\n\n    # Enable\
+  \ automatic security updates (Ubuntu)\n    sudo apt install unattended-upgrades\n\
+  \    sudo dpkg-reconfigure -plow unattended-upgrades\n    ```\n\n    ### 2. Strong\
+  \ Authentication\n\n    **Passwords:**\n    - Minimum 12 characters\n    - Mix of\
+  \ uppercase, lowercase, numbers, symbols\n    - Unique per system\n    - Consider\
+  \ password managers\n\n    **SSH Keys:**\n    - Use ED25519 or RSA 4096-bit keys\n\
+  \    - Protect private keys with passphrases\n    - Disable password authentication\n\
+  \n    ### 3. Principle of Least Privilege\n\n    - Don't use root directly\n   \
+  \ - Use sudo for admin tasks\n    - Give users minimum necessary permissions\n \
+  \   - Remove unused user accounts\n\n    ### 4. Firewall Configuration\n\n    -\
+  \ Enable firewall\n    - Default deny incoming\n    - Only allow necessary ports\n\
+  \    - Limit SSH to specific IPs if possible\n\n    ### 5. Disable Unnecessary Services\n\
+  \n    ```bash\n    # List enabled services\n    systemctl list-unit-files --type=service\
+  \ --state=enabled\n\n    # Disable unnecessary service\n    sudo systemctl disable\
+  \ telnet\n    sudo systemctl stop telnet\n    ```\n\n    ### 6. Monitor Logs\n\n\
+  \    ```bash\n    # Watch authentication attempts\n    sudo tail -f /var/log/auth.log\n\
+  \n    # Check for failed SSH logins\n    sudo grep \"Failed password\" /var/log/auth.log\n\
+  \n    # Monitor system logs\n    sudo journalctl -f\n    ```\n\n    ### 7. Use SELinux/AppArmor\n\
+  \n    **SELinux** (RHEL/CentOS) and **AppArmor** (Ubuntu) provide mandatory access\
+  \ control:\n\n    ```bash\n    # Check AppArmor status (Ubuntu)\n    sudo aa-status\n\
+  \n    # Check SELinux status (RHEL/CentOS)\n    getenforce\n    ```\n\n    ### 8.\
+  \ Regular Backups\n\n    - Backup critical data regularly\n    - Test restores periodically\n\
+  \    - Store backups securely offsite\n\n    ## Summary\n\n    In this module, you\
+  \ learned:\n    - Display network configuration with ip, ifconfig, hostname\n  \
+  \  - Test connectivity with ping, traceroute, dig, nslookup\n    - Use SSH for secure\
+  \ remote access and key-based auth\n    - Configure firewall with UFW to allow/deny\
+  \ traffic\n    - Security best practices: updates, strong auth, least privilege,\
+  \ monitoring"
+exercises: []

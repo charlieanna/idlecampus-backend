@@ -1,0 +1,91 @@
+<%# Assuming @problem contains the problem details %>
+<h2><%= @problem.title %></h2>
+<p><%= @problem.description %></p>
+
+<%# Code Editor for Solution with a predefined method template %>
+<div id="editor" style="height: 200px; width: 100%;">def duplicate_even_numbers(arr):
+    # Write your solution here
+</div>
+
+<%# Text Area for Test Cases %>
+<h3>Test Cases</h3>
+<p>Enter each test case input on a new line, e.g., "1 2 5 6 8"</p>
+<textarea id="testCasesInput" rows="5" style="width: 100%;"></textarea>
+<button id="runTestCases">Run Test Cases</button>
+
+<h3>Expected Output</h3>
+<pre id="expectedOutput" style="white-space: pre-wrap;"></pre>
+
+<%# Submission Button %>
+<button id="submitSolution">Submit Solution</button>
+
+<%# Include Ace Editor %>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js" type="text/javascript" charset="utf-8"></script>
+<script>
+    // Initialize Ace Editor for solution
+    var editor = ace.edit("editor");
+    editor.setTheme("ace/theme/monokai");
+    editor.session.setMode("ace/mode/python");
+
+    // Handle running test cases
+    document.getElementById("runTestCases").addEventListener("click", function() {
+        var solutionCode = editor.getValue();
+        var testCasesInput = document.getElementById("testCasesInput").value;
+
+        // Perform AJAX request to run the test cases
+        // Adjust the URL and data handling as per your application's needs
+        fetch('/run_test_cases', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-Token': document.querySelector('[name="csrf-token"]').content
+            },
+            body: JSON.stringify({ 
+                code: solutionCode, 
+                test_cases_input: testCasesInput 
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Display the expected output
+            document.getElementById("expectedOutput").innerText = data.expected_output;
+        });
+    });
+
+    // Handle submission
+    document.getElementById("submitSolution").addEventListener("click", function() {
+        var solutionCode = editor.getValue();
+        var testCases = document.getElementById("testCasesInput").value;
+
+        // Perform AJAX request to submit the solution and test cases
+        // Adjust the URL and data handling as per your application's needs
+        fetch('/submit_solution', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-Token': document.querySelector('[name="csrf-token"]').content
+            },
+            body: JSON.stringify({ 
+                code: solutionCode, 
+                test_cases: testCases 
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);  // Handle the response data
+        });
+    });
+</script>
+
+<%# Styling for the editor and text area %>
+<style>
+    #editor { 
+      height: 400px;  <!-- Increased height -->
+      width: 100%;
+      margin-bottom: 20px;
+    }
+    #testCasesInput, #expectedOutput { 
+        width: 100%; 
+        margin-top: 10px;
+    }
+</style>

@@ -1,0 +1,188 @@
+slug: lesson-2
+title: Lesson 2
+difficulty: easy
+sequence_order: 2
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Structs: Building Custom Types\n\n    ###\
+  \ What is a Struct?\n\n    A **struct** (short for \"structure\") is a **composite\
+  \ data type** that groups together variables (called fields) under a single name.\
+  \ Think of it as a blueprint for creating custom types that model real-world entities.\n\
+  \n    **Real-world analogy:**\n    - A Person has: name, age, email\n    - A Car\
+  \ has: make, model, year, color\n    - A Book has: title, author, pages, ISBN\n\n\
+  \    Structs let you model these entities in code!\n\n    ### Defining Structs\n\
+  \n    **Basic syntax:**\n    ```go\n    type StructName struct {\n        FieldName\
+  \ FieldType\n        AnotherField AnotherType\n    }\n    ```\n\n    **Example:\
+  \ Person struct**\n    ```go\n    type Person struct {\n        Name    string\n\
+  \        Age     int\n        Email   string\n        IsActive bool\n    }\n   \
+  \ ```\n\n    **Key points:**\n    - `type` keyword declares a new type\n    - `Person`\
+  \ is the name of your custom type\n    - `struct` indicates it's a structure\n \
+  \   - Each field has a name and type\n    - Field names starting with capital letters\
+  \ are **exported** (public)\n    - Field names starting with lowercase are **unexported**\
+  \ (private to package)\n\n    ### Creating Struct Instances\n\n    **Method 1: Literal\
+  \ with field names (recommended)**\n    ```go\n    person := Person{\n        Name:\
+  \     \"Alice\",\n        Age:      25,\n        Email:    \"alice@example.com\"\
+  ,\n        IsActive: true,\n    }\n    ```\n\n    **Why this is best:**\n    - Clear\
+  \ and self-documenting\n    - Order doesn't matter\n    - Can omit fields (they\
+  \ get zero values)\n    - Resistant to changes in struct definition\n\n    **Method\
+  \ 2: Positional arguments**\n    ```go\n    person := Person{\"Alice\", 25, \"alice@example.com\"\
+  , true}\n    ```\n\n    ⚠️ **Not recommended because:**\n    - Must provide ALL\
+  \ fields in exact order\n    - Breaks if struct changes\n    - Hard to read (what\
+  \ does each value mean?)\n\n    **Method 3: Empty struct (all zero values)**\n \
+  \   ```go\n    var person Person  // All fields have zero values\n    // person.Name\
+  \ = \"\"\n    // person.Age = 0\n    // person.Email = \"\"\n    // person.IsActive\
+  \ = false\n    ```\n\n    **Method 4: new() function**\n    ```go\n    person :=\
+  \ new(Person)  // Returns *Person (pointer)\n    // All fields are zero values\n\
+  \    ```\n\n    ### Accessing and Modifying Fields\n\n    **Dot notation:**\n  \
+  \  ```go\n    person := Person{\n        Name: \"Alice\",\n        Age:  25,\n \
+  \   }\n\n    // Access fields\n    fmt.Println(person.Name)  // \"Alice\"\n    fmt.Println(person.Age)\
+  \   // 25\n\n    // Modify fields\n    person.Age = 26\n    person.Email = \"alice@newdomain.com\"\
+  \n\n    fmt.Println(person.Age)  // 26\n    ```\n\n    ### Anonymous Structs\n\n\
+  \    **Define and use without creating a named type:**\n    ```go\n    // Useful\
+  \ for one-off data structures\n    config := struct {\n        Host string\n   \
+  \     Port int\n    }{\n        Host: \"localhost\",\n        Port: 8080,\n    }\n\
+  \n    fmt.Println(config.Host)  // \"localhost\"\n    ```\n\n    **Common use cases:**\n\
+  \    - Configuration objects\n    - Test data\n    - JSON unmarshaling\n    - Quick\
+  \ data grouping\n\n    ### Nested Structs\n\n    **Structs can contain other structs:**\n\
+  \    ```go\n    type Address struct {\n        Street  string\n        City    string\n\
+  \        ZipCode string\n    }\n\n    type Person struct {\n        Name    string\n\
+  \        Age     int\n        Address Address  // Nested struct\n    }\n\n    person\
+  \ := Person{\n        Name: \"Alice\",\n        Age:  25,\n        Address: Address{\n\
+  \            Street:  \"123 Main St\",\n            City:    \"Springfield\",\n\
+  \            ZipCode: \"12345\",\n        },\n    }\n\n    // Access nested fields\n\
+  \    fmt.Println(person.Address.City)  // \"Springfield\"\n    ```\n\n    ### Struct\
+  \ Embedding (Composition)\n\n    **Go doesn't have inheritance, but has composition:**\n\
+  \    ```go\n    type Employee struct {\n        Person        // Embedded struct\
+  \ (no field name)\n        EmployeeID string\n        Department string\n    }\n\
+  \n    employee := Employee{\n        Person: Person{\n            Name: \"Bob\"\
+  ,\n            Age:  30,\n        },\n        EmployeeID: \"E12345\",\n        Department:\
+  \ \"Engineering\",\n    }\n\n    // Can access embedded fields directly!\n    fmt.Println(employee.Name)\
+  \  // \"Bob\" (promoted from Person)\n    fmt.Println(employee.Age)   // 30\n\n\
+  \    // Or through the embedded struct\n    fmt.Println(employee.Person.Name)  //\
+  \ \"Bob\"\n    ```\n\n    **How field promotion works:**\n    - Embedded struct\
+  \ fields are \"promoted\" to parent\n    - Can access them as if they're in the\
+  \ parent struct\n    - If there's a name conflict, use explicit path\n\n    ###\
+  \ Comparing Structs\n\n    **Structs are comparable if all their fields are comparable:**\n\
+  \    ```go\n    type Point struct {\n        X, Y int\n    }\n\n    p1 := Point{X:\
+  \ 1, Y: 2}\n    p2 := Point{X: 1, Y: 2}\n    p3 := Point{X: 3, Y: 4}\n\n    fmt.Println(p1\
+  \ == p2)  // true (same values)\n    fmt.Println(p1 == p3)  // false (different\
+  \ values)\n    ```\n\n    **Not comparable if contains slices, maps, or functions:**\n\
+  \    ```go\n    type Container struct {\n        Items []int  // Slice makes it\
+  \ non-comparable\n    }\n\n    c1 := Container{Items: []int{1, 2, 3}}\n    c2 :=\
+  \ Container{Items: []int{1, 2, 3}}\n    // c1 == c2  // ERROR: invalid operation!\n\
+  \    ```\n\n    ### Struct Tags\n\n    **Metadata attached to struct fields:**\n\
+  \    ```go\n    type User struct {\n        Name  string \\`json:\"name\"\\`\n \
+  \       Email string \\`json:\"email\" validate:\"required,email\"\\`\n        Age\
+  \   int    \\`json:\"age,omitempty\"\\`\n    }\n    ```\n\n    **Common uses:**\n\
+  \    - JSON marshaling/unmarshaling\n    - Database column mapping\n    - Validation\
+  \ rules\n    - Documentation\n\n    **Example with JSON:**\n    ```go\n    import\
+  \ \"encoding/json\"\n\n    type Person struct {\n        Name string \\`json:\"\
+  name\"\\`\n        Age  int    \\`json:\"age\"\\`\n    }\n\n    person := Person{Name:\
+  \ \"Alice\", Age: 25}\n\n    // Marshal to JSON\n    jsonData, _ := json.Marshal(person)\n\
+  \    fmt.Println(string(jsonData))\n    // Output: {\"name\":\"Alice\",\"age\":25}\n\
+  \n    // Unmarshal from JSON\n    var p2 Person\n    json.Unmarshal(jsonData, &p2)\n\
+  \    fmt.Println(p2.Name)  // \"Alice\"\n    ```\n\n    ### Zero Values for Structs\n\
+  \n    **Uninitialized fields get zero values:**\n    ```go\n    type Stats struct\
+  \ {\n        Count   int     // 0\n        Average float64 // 0.0\n        Name\
+  \    string  // \"\"\n        Active  bool    // false\n    }\n\n    var stats Stats\n\
+  \    fmt.Println(stats.Count)    // 0\n    fmt.Println(stats.Average)  // 0.0\n\
+  \    fmt.Println(stats.Name)     // \"\"\n    fmt.Println(stats.Active)   // false\n\
+  \    ```\n\n    ### Structs as Function Parameters\n\n    **Structs are passed by\
+  \ value (copied):**\n    ```go\n    func updateAge(p Person, newAge int) {\n   \
+  \     p.Age = newAge  // Modifies COPY, not original!\n    }\n\n    person := Person{Name:\
+  \ \"Alice\", Age: 25}\n    updateAge(person, 26)\n    fmt.Println(person.Age)  //\
+  \ Still 25! (original unchanged)\n    ```\n\n    **To modify original, use pointer\
+  \ (covered in Pointers lesson):**\n    ```go\n    func updateAge(p *Person, newAge\
+  \ int) {\n        p.Age = newAge  // Modifies original!\n    }\n\n    person :=\
+  \ Person{Name: \"Alice\", Age: 25}\n    updateAge(&person, 26)\n    fmt.Println(person.Age)\
+  \  // 26 (original modified)\n    ```\n\n    ### Practical Example: Modeling a Book\
+  \ Store\n\n    ```go\n    type Book struct {\n        Title       string\n     \
+  \   Author      string\n        ISBN        string\n        Price       float64\n\
+  \        InStock     bool\n        PublishedYear int\n    }\n\n    type Order struct\
+  \ {\n        OrderID   string\n        Customer  string\n        Books     []Book\
+  \  // Slice of Books\n        Total     float64\n        CreatedAt time.Time\n \
+  \   }\n\n    // Create books\n    book1 := Book{\n        Title:     \"The Go Programming\
+  \ Language\",\n        Author:    \"Alan Donovan\",\n        ISBN:      \"978-0134190440\"\
+  ,\n        Price:     44.99,\n        InStock:   true,\n        PublishedYear: 2015,\n\
+  \    }\n\n    book2 := Book{\n        Title:     \"Learning Go\",\n        Author:\
+  \    \"Jon Bodner\",\n        ISBN:      \"978-1492077213\",\n        Price:   \
+  \  49.99,\n        InStock:   true,\n        PublishedYear: 2021,\n    }\n\n   \
+  \ // Create order\n    order := Order{\n        OrderID:   \"ORD-001\",\n      \
+  \  Customer:  \"Alice\",\n        Books:     []Book{book1, book2},\n        Total:\
+  \     book1.Price + book2.Price,\n        CreatedAt: time.Now(),\n    }\n\n    fmt.Printf(\"\
+  Order %s for %s: $%.2f\\\\n\",\n        order.OrderID, order.Customer, order.Total)\n\
+  \    ```\n\n    ### Empty Struct\n\n    **The struct with no fields:**\n    ```go\n\
+  \    type Empty struct{}\n    ```\n\n    **Why use it?**\n    - Takes **0 bytes**\
+  \ of memory!\n    - Useful for signaling (like in channels)\n    - Used in sets\
+  \ (map[string]struct{})\n\n    **Example: Set implementation**\n    ```go\n    //\
+  \ Set of strings using empty struct\n    seen := make(map[string]struct{})\n\n \
+  \   // Add to set\n    seen[\"apple\"] = struct{}{}\n    seen[\"banana\"] = struct{}{}\n\
+  \n    // Check if in set\n    if _, exists := seen[\"apple\"]; exists {\n      \
+  \  fmt.Println(\"apple is in the set\")\n    }\n    ```\n\n    ### Best Practices\n\
+  \n    **1. Use meaningful field names:**\n    ```go\n    // ❌ Bad\n    type P struct\
+  \ {\n        n string\n        a int\n    }\n\n    // ✅ Good\n    type Person struct\
+  \ {\n        Name string\n        Age  int\n    }\n    ```\n\n    **2. Export only\
+  \ what's necessary:**\n    ```go\n    type User struct {\n        Name     string\
+  \  // Exported (public)\n        email    string  // Unexported (private)\n    \
+  \    password string  // Unexported (private)\n    }\n    ```\n\n    **3. Use named\
+  \ fields in literals:**\n    ```go\n    // ✅ Good - clear and maintainable\n   \
+  \ person := Person{\n        Name: \"Alice\",\n        Age:  25,\n    }\n\n    //\
+  \ ❌ Bad - hard to read, brittle\n    person := Person{\"Alice\", 25}\n    ```\n\n\
+  \    **4. Consider using pointers for large structs:**\n    ```go\n    // Copying\
+  \ a large struct is expensive\n    type LargeStruct struct {\n        Data [1000000]int\n\
+  \    }\n\n    // ✅ Pass pointer instead\n    func process(s *LargeStruct) {\n  \
+  \      // Work with pointer, no copying\n    }\n    ```\n\n    **5. Use composition\
+  \ over complex nesting:**\n    ```go\n    // ✅ Good - flat and composable\n    type\
+  \ Address struct {\n        Street, City, ZipCode string\n    }\n\n    type Person\
+  \ struct {\n        Name string\n        Address Address\n    }\n\n    // ❌ Bad\
+  \ - deeply nested\n    type Person struct {\n        Name string\n        Address\
+  \ struct {\n            Street struct {\n                Number int\n          \
+  \      Name string\n            }\n            City string\n        }\n    }\n \
+  \   ```\n\n    ### When to Use Structs\n\n    **Use structs when:**\n    - ✅ Modeling\
+  \ entities (User, Product, Order)\n    - ✅ Grouping related data\n    - ✅ Creating\
+  \ custom types with methods\n    - ✅ Working with JSON/databases\n    - ✅ Need value\
+  \ semantics (copy behavior)\n\n    **Don't use structs when:**\n    - ❌ Simple key-value\
+  \ pairs (use map)\n    - ❌ Ordered collection (use slice)\n    - ❌ Only need one\
+  \ field (use basic type)\n\n    ### Key Takeaways\n\n    1. Structs group related\
+  \ fields into custom types\n    2. Use named field initialization for clarity\n\
+  \    3. Struct embedding provides composition (not inheritance)\n    4. Structs\
+  \ are passed by value (copied) by default\n    5. Zero values make structs safe\
+  \ to use without initialization\n    6. Struct tags provide metadata for encoding/validation\n\
+  \    7. Empty struct (struct{}) uses zero memory\n    8. Export fields (capital\
+  \ letter) only when needed\n\n    **Next:** Learn about **Methods** to add behavior\
+  \ to your structs!"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: Which field is exported in Go structs?
+  options:
+  - Name
+  - age
+  - _hidden
+  - email
+  correct_answer: Name
+  explanation: "In Go, struct fields that start with a capital letter are exported (public/visible outside the package), while fields starting with lowercase letters are unexported (private to the package). 'Name' starts with a capital letter so it's exported. The fields 'age', '_hidden', and 'email' all start with lowercase or underscore and would be unexported."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What happens when you compare two structs with == in Go?
+  options:
+  - They are compared field by field if all fields are comparable; otherwise it's a compile error
+  - Structs are never comparable in Go
+  - Only the first field is compared
+  - They are compared by memory address
+  correct_answer: They are compared field by field if all fields are comparable; otherwise it's a compile error
+  explanation: "Structs in Go are comparable if all their fields are comparable types. When you use ==, Go compares each field in order. For example, two Point structs with {X: 1, Y: 2} are equal if both X and Y match. However, if a struct contains non-comparable types like slices, maps, or functions, you cannot use == and will get a compile-time error. This is a safety feature - Go won't allow comparisons that might be ambiguous or expensive. For structs with slices, you need to write custom comparison logic or use reflect.DeepEqual."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: What is the zero value of an uninitialized struct field?
+  options:
+  - The zero value for that field's type (0 for int, "" for string, false for bool, nil for pointers)
+  - nil
+  - undefined
+  - It causes a compile error
+  correct_answer: The zero value for that field's type (0 for int, "" for string, false for bool, nil for pointers)
+  explanation: "In Go, every type has a zero value, and uninitialized struct fields automatically get the zero value for their type. For example, in a Person struct with fields Name (string), Age (int), and Active (bool), if you declare 'var p Person' without initialization, p.Name will be empty string '', p.Age will be 0, and p.Active will be false. This is different from languages like JavaScript where uninitialized values are undefined or null. Go's zero values make structs safe to use without explicit initialization - they're always in a valid state. For numeric types the zero value is 0, for strings it's '', for booleans it's false, and for pointers, slices, maps, channels, and functions it's nil. This guarantee simplifies code and prevents many bugs."
+  require_pass: true

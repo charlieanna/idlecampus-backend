@@ -1,0 +1,48 @@
+slug: practice-question
+title: Practice Question
+difficulty: medium
+sequence_order: 11
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: '# Practice Question 🚀
+
+
+  ## What is this?
+
+  A concise explanation of the concept.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+  - type: mcq
+    sequence_order: 1
+    question: "What are the key concepts to remember when building a GraphQL API?"
+    options:
+      - "Only use queries, avoid mutations"
+      - "Schema design, resolvers, DataLoaders for performance, and proper error handling"
+      - "Always use REST alongside GraphQL"
+      - "Disable all security features for better performance"
+    correct_answer: "Schema design, resolvers, DataLoaders for performance, and proper error handling"
+    explanation: "Building production GraphQL requires mastering several key concepts: (1) Schema Design - Strongly-typed schema is your API contract. Use descriptive types, proper nullability (!), input types for mutations. Design for clients, not database structure. (2) Resolvers - Functions that fetch data for each field. Keep them thin, delegate to service layer. Use context for shared resources (db, auth, loaders). (3) DataLoaders - Essential for N+1 query prevention. Batch and cache database queries per request. Always use for relationships: `author: (post, args, { loaders }) => loaders.user.load(post.authorId)`. (4) Error Handling - Use custom error classes with codes. Never expose internal errors in production. Return partial data when possible. (5) Security - Authentication (JWT), authorization (@auth directives), disable introspection in production, query complexity limits, rate limiting. (6) Performance - Response caching, persisted queries, connection pooling, monitoring slow resolvers. (7) Real-time - Subscriptions for live updates via WebSockets. Common mistakes: Forgetting DataLoaders (N+1 queries), no query complexity limits (DoS risk), exposing errors in production, poor schema design (mirroring database). Best practices: Type-safe with TypeScript/codegen, comprehensive logging/monitoring, documentation in schema, versioning via deprecation not URLs."
+    require_pass: true
+  - type: mcq
+    sequence_order: 2
+    question: "What should you do before implementing a GraphQL feature?"
+    options:
+      - "Start coding immediately"
+      - "Understand the schema design, data flow, and potential performance implications"
+      - "Copy code from documentation without reading"
+      - "Skip planning and rely on trial and error"
+    correct_answer: "Understand the schema design, data flow, and potential performance implications"
+    explanation: "Before implementing GraphQL features, thorough planning prevents costly mistakes. Steps: (1) Schema Design - What types, fields, relationships? What's nullable vs required? Input types for mutations? Write schema first. (2) Data Sources - Where does data come from? Database? REST APIs? Multiple sources? Plan resolvers accordingly. (3) Relationships - How are entities connected? User → Posts → Comments? Plan DataLoaders to avoid N+1 queries. (4) Authorization - Who can access what? Field-level permissions? Use @auth directives or resolver checks. (5) Performance - Expected query patterns? Nested queries? Add pagination (cursor-based), query complexity limits, caching. (6) Error Cases - What can fail? Validation errors? Not found? Authentication? Define custom error classes. Example planning: Feature = 'Get user feed with posts and comments'. Schema: `type Query { feed: [Post!]! }`, `type Post { author: User!, comments: [Comment!]! }`. Data: Posts from DB, need authors (N+1 risk → DataLoader), comments (N+1 risk → DataLoader). Auth: Only authenticated users. Performance: Paginate feed, limit comments per post. Errors: AuthenticationError if not logged in. Good planning leads to: better schema design, performance from start, fewer refactors, security by default."
+    require_pass: true

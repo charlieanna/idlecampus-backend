@@ -1,0 +1,231 @@
+slug: standing-waves-resonance
+title: "Standing Waves and Resonance"
+difficulty: advanced
+sequence_order: 3
+estimated_minutes: 17
+key_concepts:
+- standing-waves
+- nodes-antinodes
+- resonance
+- harmonics
+- organ-pipes
+prerequisites:
+- wave-equation-properties
+- shm-fundamentals-equations
+content_md: |
+  # Standing Waves and Resonance
+
+  ## Formation of Standing Waves
+
+  **Superposition of two identical waves traveling in opposite directions.**
+
+  ```
+  y₁ = A sin(kx - ωt) (forward)
+  y₂ = A sin(kx + ωt) (backward)
+
+  y = y₁ + y₂ = 2A sin(kx) cos(ωt)
+  ```
+
+  ### Characteristics:
+  - Amplitude varies with position: 2A sin(kx)
+  - All particles oscillate in phase or opposite phase
+  - No net energy transfer
+  - Pattern stationary (hence "standing")
+
+  ## Nodes and Antinodes
+
+  ### Nodes (N):
+  - Points of zero amplitude
+  - sin(kx) = 0 → kx = nπ
+  - x = nλ/2 (n = 0, 1, 2, ...)
+  - No vibration at nodes
+
+  ### Antinodes (A):
+  - Points of maximum amplitude (2A)
+  - sin(kx) = ±1 → kx = (n + ½)π
+  - x = (2n+1)λ/4
+  - Maximum vibration
+
+  ### Spacing:
+  - Distance between consecutive nodes = λ/2
+  - Distance between consecutive antinodes = λ/2
+  - Distance between node and adjacent antinode = λ/4
+
+  ## Standing Waves on String
+
+  ### Both Ends Fixed:
+  ```
+  Boundary condition: y = 0 at x = 0 and x = L
+  L = nλ/2 (n = 1, 2, 3, ...)
+
+  Frequencies: f_n = n(v/2L) = nf₁
+
+  f₁ = fundamental (1st harmonic)
+  f₂ = 2f₁ (2nd harmonic/1st overtone)
+  f₃ = 3f₁ (3rd harmonic/2nd overtone)
+  ```
+
+  All harmonics present.
+
+  ### One End Fixed, One Free:
+  ```
+  Node at fixed end, antinode at free end
+  L = (2n-1)λ/4 (n = 1, 2, 3, ...)
+
+  f_n = (2n-1)(v/4L) = (2n-1)f₁
+
+  Only odd harmonics present!
+  ```
+
+  ## Resonance in Strings
+
+  ```
+  f_n = n/(2L)√(T/μ)
+
+  T = tension
+  μ = linear mass density
+  ```
+
+  ### Sonometer (string fixed at both ends):
+  - Change L: f ∝ 1/L
+  - Change T: f ∝ √T
+  - Change μ: f ∝ 1/√μ
+
+  ### Laws of String:
+  1. f ∝ 1/L (law of length)
+  2. f ∝ √T (law of tension)
+  3. f ∝ 1/√μ (law of density)
+
+  ## Organ Pipes
+
+  ### Open Pipe (both ends open):
+  ```
+  Antinodes at both ends
+  L = nλ/2 (n = 1, 2, 3, ...)
+  f_n = nv/(2L) = nf₁
+
+  All harmonics present.
+  ```
+
+  ### Closed Pipe (one end closed):
+  ```
+  Node at closed end, antinode at open end
+  L = (2n-1)λ/4 (n = 1, 2, 3, ...)
+  f_n = (2n-1)v/(4L) = (2n-1)f₁
+
+  Only odd harmonics present!
+  ```
+
+  ### End Correction:
+  Antinode forms slightly outside open end.
+  ```
+  Effective length = L + 0.6r (one open end)
+  Effective length = L + 0.6r × 2 (both open)
+
+  r = radius of pipe
+  ```
+
+  ## Comparison
+
+  | Property | Open Pipe | Closed Pipe |
+  |----------|-----------|-------------|
+  | Fundamental | v/(2L) | v/(4L) |
+  | Harmonics | All (1,2,3...) | Odd only (1,3,5...) |
+  | Quality | Richer | Less rich |
+
+  Closed pipe fundamental is half of open pipe (same L).
+
+  ## Resonance Tube Experiment
+
+  Water level adjusted until resonance:
+  ```
+  First resonance: L₁ = λ/4 - e
+  Second resonance: L₂ = 3λ/4 - e
+
+  λ = 2(L₂ - L₁)
+  e = end correction = (L₂ - 3L₁)/2
+  ```
+
+  Speed of sound: v = fλ = 2f(L₂ - L₁)
+
+  ## Beats
+
+  Two waves of slightly different frequencies:
+  ```
+  Beat frequency = |f₁ - f₂|
+
+  Amplitude varies periodically.
+  ```
+
+  ## Numerical Examples
+
+  **Example 1:** String (L = 1 m, T = 100 N, μ = 10 g/m) vibrates in fundamental mode. Find frequency.
+
+  **Solution:**
+  ```
+  v = √(T/μ) = √(100/0.01) = 100 m/s
+  f₁ = v/(2L) = 100/(2×1) = 50 Hz
+  ```
+
+  **Example 2:** Open organ pipe (L = 50 cm). Find first three harmonics (v = 340 m/s).
+
+  **Solution:**
+  ```
+  f₁ = v/(2L) = 340/(2×0.5) = 340 Hz
+  f₂ = 2f₁ = 680 Hz
+  f₃ = 3f₁ = 1020 Hz
+  ```
+
+  **Example 3:** Closed pipe has fundamental 200 Hz. What is fundamental if pipe is now open?
+
+  **Solution:**
+  ```
+  Closed: f₁ = v/(4L) = 200 Hz
+  Open: f₁' = v/(2L) = 2 × 200 = 400 Hz
+
+  Fundamental doubles when pipe opens!
+  ```
+
+  ## JEE Key Points
+
+  1. **Standing wave:** y = 2A sin(kx) cos(ωt)
+  2. **Node-node distance = λ/2**
+  3. **String (both fixed):** f_n = nv/(2L)
+  4. **Open pipe:** All harmonics, f₁ = v/(2L)
+  5. **Closed pipe:** Odd harmonics, f₁ = v/(4L)
+  6. **v_string = √(T/μ)**
+
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: "A string vibrates with 4 antinodes when frequency is 400 Hz. Frequency for 6 antinodes is:"
+  options:
+  - "600 Hz"
+  - "800 Hz"
+  - "200 Hz"
+  - "1200 Hz"
+  correct_answer: "600 Hz"
+  explanation: "Number of antinodes = n (harmonic number) for string fixed at both ends. With 4 antinodes: 4th harmonic, f₄ = 4f₁ = 400 Hz. So f₁ = 100 Hz. With 6 antinodes: 6th harmonic, f₆ = 6f₁ = 600 Hz. The relationship is linear: frequency ∝ number of antinodes (or nodes-1). This is because each additional loop adds λ/2 to string length, but string length is fixed, so wavelength decreases and frequency increases proportionally. Visualize: 4 antinodes means 3 complete half-wavelengths; 6 antinodes means 5 complete half-wavelengths."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: "Fundamental frequency of closed organ pipe is 50 Hz. Its third overtone frequency is:"
+  options:
+  - "150 Hz"
+  - "200 Hz"
+  - "350 Hz"
+  - "250 Hz"
+  correct_answer: "350 Hz"
+  explanation: "Closed pipe has only odd harmonics: f₁, 3f₁, 5f₁, 7f₁... First overtone = 3f₁ = 150 Hz. Second overtone = 5f₁ = 250 Hz. Third overtone = 7f₁ = 350 Hz. Common mistake: thinking third overtone is 3f₁. Remember: overtone counting starts from the first frequency ABOVE fundamental. For closed pipe: 1st overtone is 3rd harmonic, 2nd overtone is 5th harmonic, etc. If this were open pipe, third overtone would be 4th harmonic = 200 Hz. The odd-only pattern is signature of closed pipe (asymmetric boundary conditions)."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: "In resonance tube experiment, first and second resonance occur at 17 cm and 51 cm. Wavelength of sound is:"
+  options:
+  - "34 cm"
+  - "68 cm"
+  - "17 cm"
+  - "85 cm"
+  correct_answer: "68 cm"
+  explanation: "For closed pipe: L₁ = λ/4 - e (first resonance), L₂ = 3λ/4 - e (second resonance). Subtracting: L₂ - L₁ = λ/2. Given: L₂ - L₁ = 51 - 17 = 34 cm = λ/2. Therefore λ = 68 cm. The end correction (e) cancels out in subtraction, making this method accurate. If f = 500 Hz, v = fλ = 500 × 0.68 = 340 m/s (speed of sound). End correction: e = (L₂ - 3L₁)/2 = (51 - 51)/2 = 0 (idealized). Real experiments show e ≈ 0.6r. This simple yet powerful technique determines both wavelength and speed of sound."
+  require_pass: true

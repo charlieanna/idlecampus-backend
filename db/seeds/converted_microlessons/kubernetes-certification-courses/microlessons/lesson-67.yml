@@ -1,0 +1,64 @@
+slug: lesson-67
+title: Lesson 67
+difficulty: easy
+sequence_order: 67
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Performance Tuning\n\n    - Resource limits/requests\
+  \ and binpacking\n    - kubelet/runtime flags"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What scheduling strategy does Kubernetes use to pack pods efficiently
+    onto nodes?
+  options:
+  - Random placement
+  - Binpacking based on resource requests
+  - Round-robin distribution
+  - Alphabetical ordering by pod name
+  correct_answer: Binpacking based on resource requests
+  explanation: Kubernetes scheduler uses binpacking to efficiently place pods on nodes
+    based on their resource requests. The scheduler calculates which nodes have sufficient
+    resources (CPU, memory) to accommodate a pod's requests, then scores nodes using
+    various plugins. The default scoring tries to balance resource utilization while
+    avoiding hotspots. Binpacking aims to use fewer nodes more fully rather than spreading
+    pods thinly across many nodes, which can reduce costs and improve resource efficiency.
+    The scheduler considers requests (not limits) when making placement decisions.
+    Proper resource requests are crucial - if requests are too low, nodes become overcommitted;
+    if too high, resources are wasted. You can influence scheduling with node affinity,
+    pod affinity/anti-affinity, taints/tolerations, and topology spread constraints
+    to control pod distribution based on your requirements.
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What happens when a pod exceeds its CPU limit?
+  options:
+  - The pod is terminated
+  - The pod is throttled (CPU usage is restricted)
+  - The pod is moved to another node
+  - Nothing, limits are not enforced
+  correct_answer: The pod is throttled (CPU usage is restricted)
+  explanation: When a pod exceeds its CPU limit, Kubernetes throttles (restricts)
+    the CPU usage to the specified limit using Linux cgroups. The pod continues running
+    but cannot use more CPU than allocated. This is different from memory limits -
+    CPU is a compressible resource that can be throttled, while memory is incompressible.
+    Exceeding memory limits causes the pod to be OOMKilled (Out Of Memory Killed)
+    and restarted. CPU throttling can cause performance degradation, with applications
+    running slower than expected. Monitor CPU throttling metrics to detect when limits
+    are too restrictive. If a pod consistently hits CPU limits, either increase the
+    limit or optimize the application. Proper CPU tuning requires balancing performance
+    needs against cluster capacity and costs.
+  require_pass: true
+- type: mcq
+  sequence_order: 1
+  question: What kubectl command checks if you can perform an action?
+  options:
+  - kubectl auth can-i create pods
+  - kubectl check permissions create pods
+  - kubectl verify action create pods
+  - kubectl test auth create pods
+  correct_answer_index: 0
+  explanation: kubectl auth can-i <action> <resource> checks if the current user has
+    permission to perform the specified action.
+  require_pass: true

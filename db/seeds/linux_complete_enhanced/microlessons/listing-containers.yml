@@ -1,0 +1,101 @@
+slug: listing-containers
+title: Listing Containers
+sequence_order: 6
+estimated_minutes: 2
+difficulty: easy
+key_concepts:
+- docker-ps
+- container-management
+- monitoring
+content_md: "# Listing Containers \U0001F680\n\n**Container Visibility Challenge**\
+  \ \U0001F50D\n\n    Your team lead asks:\n\n    > \"We've been running containers\
+  \ all week. Can you show me which ones are still running?\n    > And also, where\
+  \ did that MySQL container we started yesterday go?\"\n\n    ### The Problem\n \
+  \   Unlike traditional processes where you can use `ps aux` to see everything, Docker\
+  \ containers\n    need their own command to list what's running. And by default,\
+  \ you only see **active** containers.\n\n    ### docker ps Explained\n    The `docker\
+  \ ps` command shows you information about containers:\n\n    ```bash\n    docker\
+  \ ps         # Show only running containers\n    docker ps -a      # Show ALL containers\
+  \ (running + stopped)\n    ```\n\n    **What you see:**\n    - Container ID (short\
+  \ hash)\n    - Image name\n    - Command being run\n    - Creation time\n    - Current\
+  \ status (Up/Exited)\n    - Port mappings\n    - Container name\n\n    ### Why This\
+  \ Matters\n\n    **1. Quick status check:**\n    ```bash\n    $ docker ps\n    CONTAINER\
+  \ ID   IMAGE          COMMAND                  STATUS         PORTS            \
+  \      NAMES\n    abc123def456   nginx:alpine   \"nginx -g 'daemon of...\"   Up\
+  \ 2 hours   0.0.0.0:8080->80/tcp   codesprout-web\n    ```\n\n    **2. Find stopped\
+  \ containers:**\n    ```bash\n    $ docker ps -a\n    CONTAINER ID   IMAGE     \
+  \     STATUS                    NAMES\n    abc123def456   nginx:alpine   Up 2 hours\
+  \                codesprout-web\n    def456abc789   mysql:8.0      Exited (0) 10\
+  \ hours ago   my-database\n    ```\n\n    **3. Get container IDs for automation:**\n\
+  \    ```bash\n    docker ps -q        # Show only container IDs (running)\n    docker\
+  \ ps -aq       # Show all container IDs (running + stopped)\n    ```\n\n    ###\
+  \ Common Use Cases\n\n    **Check if a container is running:**\n    ```bash\n  \
+  \  docker ps | grep codesprout-web\n    ```\n\n    **Count running containers:**\n\
+  \    ```bash\n    docker ps -q | wc -l\n    ```\n\n    **Find containers to clean\
+  \ up:**\n    ```bash\n    docker ps -a --filter \"status=exited\"\n    ```\n\n \
+  \   **See the last created container:**\n    ```bash\n    docker ps -l       # Last\
+  \ created (running or not)\n    ```\n\n    ### Visual Breakdown\n\n    ```\n   \
+  \ docker ps        → Shows ONLY running containers\n                       ├─ codesprout-web\
+  \ (nginx) - Up 2 hours\n                       └─ redis-cache (redis) - Up 1 hour\n\
+  \n    docker ps -a     → Shows ALL containers\n                       ├─ codesprout-web\
+  \ (nginx) - Up 2 hours\n                       ├─ redis-cache (redis) - Up 1 hour\n\
+  \                       ├─ old-mysql (mysql) - Exited (0) 3 days ago\n         \
+  \              └─ test-app (node) - Exited (1) 1 week ago\n    ```\n\n    ### Common\
+  \ Mistakes\n    - **Forgetting -a**: If you don't see a container, it might be stopped.\
+  \ Use `docker ps -a`.\n    - **Confusing IMAGE with CONTAINER**: Images are templates,\
+  \ containers are running instances.\n    - **Not using filters**: In production\
+  \ with hundreds of containers, use `--filter` to narrow results.\n\n    ### Pro\
+  \ Tips\n\n    **Custom formatting:**\n    ```bash\n    docker ps --format \"table\
+  \ {{.Names}}\\t{{.Status}}\\t{{.Ports}}\"\n    ```\n\n    **Filter by name:**\n\
+  \    ```bash\n    docker ps -a --filter \"name=codesprout\"\n    ```\n\n    **Show\
+  \ container sizes:**\n    ```bash\n    docker ps -s        # Add SIZE column\n \
+  \   ```\n\n## Syntax/Command\n\n```bash\ndocker ps\n```\n\n## Example\n\n```bash\n\
+  # Show running containers\ndocker ps\n\n# Show all containers (including stopped)\n\
+  docker ps -a\n\n# Show only container IDs\ndocker ps -q\n```\n\n## Key Points\n\n\
+  - Use docker ps to see running containers\n\n- Add -a flag to include stopped containers\n\
+  \n- Use -q to get only container IDs for scripting"
+exercises:
+- type: terminal
+  sequence_order: 1
+  command: docker ps
+  description: List all currently running containers to see what's active
+  hints:
+  - Try docker ps -a to include stopped containers too
+  - Use docker ps -q to see just the container IDs
+  timeout_sec: 60
+  require_pass: true
+  validation:
+    must_not_include:
+    - Error
+    - 'panic:'
+- type: mcq
+  sequence_order: 2
+  question: Which command lists all containers including stopped ones?
+  options:
+  - docker ps -a
+  - docker list --all
+  - docker containers
+  - docker ps --running
+  correct_answer_index: 0
+  explanation: The -a (or --all) flag shows all containers, not just running ones.
+    docker ps alone only shows running containers
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: What does 'docker ps -q' do?
+  options:
+  - Shows only container IDs in quiet mode
+  - Shows containers sorted by query
+  - Shows containers in queue
+  - Shows quick container stats
+  correct_answer_index: 0
+  explanation: The -q flag (quiet mode) outputs only container IDs, useful for scripting
+    and piping to other commands
+  require_pass: true
+objectives:
+- List running containers with docker ps
+- View all containers including stopped ones with -a flag
+- Use docker ps for monitoring and troubleshooting
+next_recommended:
+- executing-commands-in-containers
+- viewing-container-logs

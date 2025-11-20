@@ -1,0 +1,146 @@
+slug: lesson-9
+title: Lesson 9
+difficulty: easy
+sequence_order: 9
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Working with Pods\n\n      Pods are the\
+  \ smallest deployable units in Kubernetes. They encapsulate one or more containers\
+  \ that share storage and network resources.\n\n      ## Key Commands\n\n      ###\
+  \ Creating Pods\n\n      ```bash\n      # Create a pod from a YAML file\n      kubectl\
+  \ apply -f pod.yaml\n\n      # Create a pod imperatively\n      kubectl run nginx\
+  \ --image=nginx:1.25\n\n      # Create pod with custom command\n      kubectl run\
+  \ busybox --image=busybox -- sleep 3600\n\n      # Create pod with environment variable\n\
+  \      kubectl run nginx --image=nginx --env=\"ENV=production\"\n      ```\n\n \
+  \     ### Viewing Pods\n\n      ```bash\n      # List all pods in current namespace\n\
+  \      kubectl get pods\n\n      # List pods with more details\n      kubectl get\
+  \ pods -o wide\n\n      # List pods in all namespaces\n      kubectl get pods --all-namespaces\n\
+  \      kubectl get pods -A\n\n      # Get detailed information about a pod\n   \
+  \   kubectl describe pod nginx\n\n      # Get pod YAML definition\n      kubectl\
+  \ get pod nginx -o yaml\n\n      # Watch pods in real-time\n      kubectl get pods\
+  \ --watch\n      ```\n\n      ### Managing Pods\n\n      ```bash\n      # Delete\
+  \ a pod\n      kubectl delete pod nginx\n\n      # Delete pod immediately (force)\n\
+  \      kubectl delete pod nginx --force --grace-period=0\n\n      # View pod logs\n\
+  \      kubectl logs nginx\n\n      # Follow logs (like tail -f)\n      kubectl logs\
+  \ -f nginx\n\n      # View logs from previous container instance\n      kubectl\
+  \ logs nginx --previous\n\n      # Execute commands in a pod\n      kubectl exec\
+  \ nginx -- ls /usr/share/nginx/html\n\n      # Open interactive shell\n      kubectl\
+  \ exec -it nginx -- bash\n\n      # Copy files to/from pod\n      kubectl cp ./index.html\
+  \ nginx:/usr/share/nginx/html/\n      kubectl cp nginx:/etc/nginx/nginx.conf ./nginx.conf\n\
+  \      ```\n\n      ## Pod Lifecycle\n\n      Pods go through these phases:\n  \
+  \    - **Pending**: Pod is created but containers aren't running yet\n      - **Running**:\
+  \ All containers are running\n      - **Succeeded**: All containers terminated successfully\n\
+  \      - **Failed**: At least one container terminated with failure\n      - **Unknown**:\
+  \ Pod state cannot be determined\n\n      ## Multi-Container Pods\n\n      Pods\
+  \ can run multiple containers that work together:\n\n      ```yaml\n      apiVersion:\
+  \ v1\n      kind: Pod\n      metadata:\n        name: multi-container-pod\n    \
+  \  spec:\n        containers:\n        - name: app\n          image: nginx\n   \
+  \       volumeMounts:\n          - name: shared-data\n            mountPath: /usr/share/nginx/html\n\
+  \        - name: sidecar\n          image: busybox\n          command: ['sh', '-c',\
+  \ 'while true; do date >> /data/index.html; sleep 10; done']\n          volumeMounts:\n\
+  \          - name: shared-data\n            mountPath: /data\n        volumes:\n\
+  \        - name: shared-data\n          emptyDir: {}\n      ```\n\n      ### Common\
+  \ Patterns\n\n      1. **Sidecar**: Helper container that enhances main container\
+  \ (logging, monitoring)\n      2. **Ambassador**: Proxy container that simplifies\
+  \ network access\n      3. **Adapter**: Transforms output of main container to standard\
+  \ format\n\n      ### Working with Multi-Container Pods\n\n      ```bash\n     \
+  \ # View logs from specific container\n      kubectl logs multi-container-pod -c\
+  \ app\n      kubectl logs multi-container-pod -c sidecar\n\n      # Execute in specific\
+  \ container\n      kubectl exec -it multi-container-pod -c app -- bash\n      ```\n\
+  \n      Try these commands in the hands-on lab!"
+exercises:
+- type: multiple_choice_question
+  sequence_order: 1
+  question: What happens when you force delete a pod with 'kubectl delete pod --force
+    --grace-period=0'?
+  options:
+  - The pod is deleted from etcd immediately without waiting for the kubelet to confirm
+    termination
+  - The pod is guaranteed to shut down within 0 seconds
+  - The pod data is backed up before deletion
+  - The pod is moved to a quarantine namespace instead of being deleted
+  correct_answer: The pod is deleted from etcd immediately without waiting for the
+    kubelet to confirm termination
+  explanation: 'Force deleting a pod with ''--force --grace-period=0'' removes the
+    pod object from etcd (Kubernetes'' database) immediately without waiting for the
+    kubelet to confirm that the container processes have actually terminated. This
+    is a dangerous operation because it can leave orphaned processes running on nodes,
+    cause data corruption if the application wasn''t properly shut down, and create
+    resource leaks. The pod appears deleted to Kubernetes, but the actual containers
+    might still be running on the node. Normal pod deletion (without --force) works
+    in two phases: first, Kubernetes marks the pod for deletion and sends SIGTERM
+    to containers (with a grace period, default 30 seconds), then after the grace
+    period or when processes exit, sends SIGKILL and removes the pod from etcd. Force
+    deletion skips waiting for kubelet confirmation, which can be necessary when:
+    a node is completely dead and unreachable (so the kubelet can''t respond), a pod
+    is stuck in Terminating state due to finalizers or other issues, or during emergency
+    situations requiring immediate cleanup. However, it should be used as a last resort.
+    It doesn''t backup data (you should use PersistentVolumes for important data),
+    doesn''t move pods (it deletes them), and doesn''t guarantee instant process termination
+    (it only removes the pod object). Best practice: try normal deletion first, investigate
+    why deletion is stuck, and only force delete when absolutely necessary, understanding
+    the risks.'
+  require_pass: true
+- type: multiple_choice_question
+  sequence_order: 2
+  question: In the Sidecar pattern for multi-container pods, what is the primary role
+    of the sidecar container?
+  options:
+  - To replace the main container if it fails
+  - To enhance or extend the functionality of the main container (logging, monitoring,
+    proxying)
+  - To load balance traffic between multiple instances of the main container
+  - To store backups of the main container's data
+  correct_answer: To enhance or extend the functionality of the main container (logging,
+    monitoring, proxying)
+  explanation: 'The Sidecar pattern uses a helper container that enhances or extends
+    the functionality of the main application container, running alongside it in the
+    same pod. Common sidecar use cases include: log forwarding (a sidecar reads logs
+    from a shared volume and ships them to a centralized logging system), service
+    mesh proxies (like Envoy in Istio, handling traffic management and security),
+    monitoring agents (collecting and exporting metrics), configuration syncers (updating
+    configuration files), and security scanners. The sidecar shares the pod''s network
+    namespace (can access main container via localhost) and can share storage volumes
+    for file-based communication. For example, an nginx container might have a sidecar
+    that collects access logs and sends them to Elasticsearch, or an application container
+    might have a Fluentd sidecar that parses and forwards logs. Sidecars don''t replace
+    failed containers (Kubernetes controllers handle that), don''t load balance between
+    instances (Services do that), and while they could help with backups, that''s
+    not their primary purpose. The key characteristic is augmentation without modifying
+    the main container. This allows you to use standard, unmodified application containers
+    while adding peripheral functionality. Other multi-container patterns include
+    Ambassador (proxy for external services) and Adapter (standardize output format).
+    Understanding these patterns is essential for building flexible, modular Kubernetes
+    applications.'
+  require_pass: true
+- type: terminal
+  sequence_order: 1
+  command: kubectl apply -f pod.yaml
+  description: 'Practice the command: kubectl apply -f pod.yaml'
+  hints:
+  - 'Try: kubectl apply -f pod.yaml'
+  - Use kubectl --help if you need help
+  timeout_sec: 60
+  require_pass: true
+- type: terminal
+  sequence_order: 2
+  command: kubectl run nginx --image=nginx:1.25
+  description: 'Practice the command: kubectl run nginx --image=nginx:1.25'
+  hints:
+  - 'Try: kubectl run nginx --image=nginx:1.25'
+  - Use kubectl --help if you need help
+  timeout_sec: 60
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: What kubectl command checks if you can perform an action?
+  options:
+  - kubectl auth can-i create pods
+  - kubectl check permissions create pods
+  - kubectl verify action create pods
+  - kubectl test auth create pods
+  correct_answer_index: 0
+  explanation: kubectl auth can-i <action> <resource> checks if the current user has
+    permission to perform the specified action.
+  require_pass: true

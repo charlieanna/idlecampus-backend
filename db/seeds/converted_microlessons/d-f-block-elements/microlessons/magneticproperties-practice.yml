@@ -1,0 +1,86 @@
+slug: magneticproperties-practice
+title: magnetic_properties — Practice
+difficulty: hard
+sequence_order: 7
+estimated_minutes: 2
+key_concepts:
+- magnetic_properties
+prerequisites: []
+content_md: '# magnetic_properties — Practice 🚀
+
+
+  Fe²⁺ has configuration 3d⁶ with 4 unpaired electrons (↑ ↑ ↑ ↑ ↑↓). Using μ = √[n(n+2)]
+  = √[4(4+2)] = √24 = 4.9 BM.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 2
+  question: Calculate the magnetic moment of Fe²⁺ ion (in BM).
+  options:
+  - '3.87'
+  - '4.90'
+  - '5.92'
+  - '2.83'
+  require_pass: true
+  correct_answer: '4.90'
+  explanation: 'To calculate the magnetic moment of Fe²⁺: (1) **Electronic configuration**:
+    Fe (Z=26) has configuration [Ar] 3d⁶ 4s². Fe²⁺ loses two electrons from 4s orbital,
+    giving 3d⁶ configuration. (2) **Number of unpaired electrons**: In 3d⁶ configuration,
+    electrons fill according to Hund''s rule: ↑ ↑ ↑ ↑ ↑↓ (one pair, four unpaired).
+    So n = 4 unpaired electrons. (3) **Magnetic moment formula**: μ = √[n(n+2)] BM,
+    where n is number of unpaired electrons. (4) **Calculation**: μ = √[4(4+2)] =
+    √[4×6] = √24 = 4.899 ≈ 4.90 BM. This is the spin-only magnetic moment. The experimental
+    value is slightly higher (~5.1-5.5 BM) due to orbital contribution. Note: BM
+    stands for Bohr Magneton, the unit of magnetic moment. Fe²⁺ is paramagnetic due
+    to unpaired electrons.'
+- type: mcq
+  sequence_order: 3
+  question: Which of the following ions is diamagnetic?
+  options:
+  - Fe²⁺ (3d⁶)
+  - Cu²⁺ (3d⁹)
+  - Zn²⁺ (3d¹⁰)
+  - Ni²⁺ (3d⁸)
+  require_pass: true
+  correct_answer: Zn²⁺ (3d¹⁰)
+  explanation: 'Zn²⁺ with 3d¹⁰ configuration is diamagnetic because all d-electrons
+    are paired: ↑↓ ↑↓ ↑↓ ↑↓ ↑↓ (no unpaired electrons). Diamagnetic substances are
+    weakly repelled by magnetic fields and have magnetic moment μ = 0 BM. In contrast,
+    the other ions are paramagnetic (attracted to magnetic fields): **Fe²⁺ (3d⁶)**:
+    4 unpaired electrons, μ ≈ 4.90 BM. **Cu²⁺ (3d⁹)**: 1 unpaired electron (↑↓ ↑↓
+    ↑↓ ↑↓ ↑), μ ≈ 1.73 BM. **Ni²⁺ (3d⁸)**: 2 unpaired electrons (↑↓ ↑↓ ↑↓ ↑ ↑),
+    μ ≈ 2.83 BM. General rule: **Diamagnetic**: All electrons paired (n=0). Examples:
+    Zn²⁺ (d¹⁰), Cu⁺ (d¹⁰), Sc³⁺ (d⁰). **Paramagnetic**: One or more unpaired electrons
+    (n≥1). Most transition metal ions. **Ferromagnetic**: Strong permanent magnetism
+    due to aligned magnetic domains. Examples: Fe, Co, Ni metals.'
+- type: mcq
+  sequence_order: 4
+  question: What is the spin-only magnetic moment of an ion with 3 unpaired electrons?
+  options:
+  - '2.83 BM'
+  - '3.87 BM'
+  - '4.90 BM'
+  - '5.92 BM'
+  require_pass: true
+  correct_answer: '3.87 BM'
+  explanation: 'For an ion with 3 unpaired electrons (n=3), the spin-only magnetic
+    moment is calculated using μ = √[n(n+2)] BM: μ = √[3(3+2)] = √[3×5] = √15 = 3.873
+    ≈ 3.87 BM. Examples of ions with 3 unpaired electrons: **Cr³⁺**: Configuration
+    3d³ (↑ ↑ ↑ _ _), from Cr²⁺ losing 3 electrons. Observed μ ≈ 3.8 BM. **V²⁺**:
+    Configuration 3d³ (↑ ↑ ↑ _ _), from V losing 2 electrons. **Fe⁵⁺**: Hypothetical
+    high oxidation state with d³. The spin-only formula assumes only electron spin
+    contributes to magnetic moment, ignoring orbital angular momentum. For most first-row
+    transition metal ions, orbital contribution is quenched by crystal field, making
+    spin-only formula accurate. Other common values: n=1: μ=1.73 BM (Cu²⁺), n=2:
+    μ=2.83 BM (Ni²⁺), n=4: μ=4.90 BM (Fe²⁺, Cr²⁺), n=5: μ=5.92 BM (Mn²⁺, Fe³⁺).'

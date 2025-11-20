@@ -1,0 +1,116 @@
+slug: worker-pool-basics-goroutines-channels
+title: 'Worker Pool Basics: Goroutines + Channels'
+difficulty: easy
+sequence_order: 3
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: '# Worker Pool Basics: Goroutines + Channels 🚀
+
+
+  Build a bounded worker pool that reads from a channel, processes jobs, and signals
+  completion.
+
+
+  ## Mental model
+
+  Fixed number of workers compete for work; producer closes jobs when done; a coordinator
+  waits for workers and then closes results.
+
+
+  ## Invariants
+
+  - No worker closes a shared channel
+
+  - WaitGroup count matches spawned workers
+
+  - No goroutine leaks on early shutdown
+
+
+  ## Validate
+
+  ```bash
+
+  go test ./examples/go-concurrency-capstone/... -run TestFrontier_Deduplicates -race
+
+  ```
+
+
+  ## Key Points
+
+  - Prefer a fixed number of workers pulling from a jobs channel
+
+  - Use sync.WaitGroup to wait for worker completion
+
+  - Close the jobs channel to signal completion to workers'
+exercises:
+- type: terminal
+  problem_statement: Run the frontier deduplication test with race detector to verify that a worker pool correctly processes jobs without data races or panics
+  expected_output: Test passes with no data races or panics
+  language: bash
+  starter_code: "# Run test with race detector\n"
+  sequence_order: 1
+  command: go test ./examples/go-concurrency-capstone/... -run TestFrontier_Deduplicates
+    -race
+  description: Run frontier deduplication test with race detector.
+  hints:
+  - Prefer a fixed number of workers pulling from a jobs channel
+  - Use sync.WaitGroup to wait for worker completion
+  - Close the jobs channel to signal completion to workers
+  validation:
+    must_not_include:
+    - 'panic:'
+    - DATA RACE
+  timeout_sec: 60
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: Which pattern bounds concurrency without spawning unbounded goroutines?
+  options:
+  - Fixed-size worker pool reading from a channel
+  - Launching a goroutine per job with no limit
+  - Busy-waiting with for { } loops
+  - Using time.Sleep between spawns
+  correct_answer: Fixed-size worker pool reading from a channel
+  explanation: "A fixed-size worker pool creates a bounded number of goroutines that pull jobs from a channel. This prevents resource exhaustion from unbounded goroutine creation and provides predictable concurrency. Launching a goroutine per job can lead to resource exhaustion, busy-waiting wastes CPU, and time.Sleep doesn't actually bound concurrency."
+  require_pass: true
+- type: code
+  problem_statement: Implement a worker pool with N workers that process jobs from a channel. Use WaitGroup to wait for all workers to complete and properly close the results channel.
+  language: go
+  starter_code: |
+    package main
+
+    import "sync"
+
+    type Job struct {
+        ID int
+    }
+
+    type Result struct {
+        JobID int
+        Value int
+    }
+
+    func workerPool(jobs <-chan Job, n int) <-chan Result {
+        results := make(chan Result)
+        var wg sync.WaitGroup
+
+        // TODO: Create N worker goroutines
+        // Each worker should:
+        // 1. Range over jobs channel
+        // 2. Process each job
+        // 3. Send result to results channel
+
+        // TODO: Start goroutine to close results after all workers finish
+
+        return results
+    }
+  expected_output: Working worker pool with bounded concurrency that properly manages channel lifecycle
+  sequence_order: 3
+  require_pass: true
+- type: sandbox
+  sequence_order: 4
+  hints:
+  - Use backpressure via channel and fixed worker count
+  timeout_sec: 60
+  require_pass: true

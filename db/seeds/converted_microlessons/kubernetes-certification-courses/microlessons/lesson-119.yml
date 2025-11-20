@@ -1,0 +1,44 @@
+slug: lesson-119
+title: Lesson 119
+difficulty: easy
+sequence_order: 119
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Secrets Management and Security\n\n   \
+  \ - Opaque secrets and stringData\n    - Mounting secrets and envFrom\n    - Secret\
+  \ encryption at rest (KMS)"
+exercises:
+  - type: mcq
+    sequence_order: 1
+    question: "What is an Opaque Secret in Kubernetes?"
+    options:
+      - "A Secret that is automatically encrypted"
+      - "The default Secret type for storing arbitrary key-value pairs"
+      - "A Secret that cannot be read by users"
+      - "A Secret stored in external key management systems"
+    correct_answer: "The default Secret type for storing arbitrary key-value pairs"
+    explanation: "Opaque is the default Secret type in Kubernetes (type: Opaque), used for storing arbitrary user-defined key-value data like passwords, API tokens, or certificates. When you create a Secret without specifying a type, it defaults to Opaque. Unlike specialized Secret types like kubernetes.io/tls (for TLS certs with specific 'tls.crt' and 'tls.key' keys) or kubernetes.io/dockerconfigjson (for image pull credentials), Opaque Secrets have no structure requirements - you define any keys and values you need. The term 'Opaque' doesn't mean the data is automatically encrypted or hidden; it simply means the data is user-defined without schema validation. Data in Opaque Secrets is base64-encoded (not encrypted) in the etcd store by default, making it slightly less readable than plaintext but not secure. For actual encryption, enable 'encryption at rest' in the Kubernetes API server configuration, which encrypts Secret data in etcd using a KMS provider or local keys. Create Opaque Secrets using 'kubectl create secret generic my-secret --from-literal=password=mypass' or YAML with base64-encoded values. Use 'stringData' field in YAML to provide plain text values that Kubernetes will encode automatically: 'stringData: password: mypass'. Best practices: never commit Secrets to version control (use sealed-secrets or external secret managers), use RBAC to restrict Secret access, enable encryption at rest for sensitive environments, consider external secret management solutions (Vault, AWS Secrets Manager) for enterprise scenarios, and rotate secrets regularly. Remember that anyone with kubectl access to the namespace can read Secrets, so cluster access control is critical."
+    require_pass: true
+  - type: mcq
+    sequence_order: 2
+    question: "What is encryption at rest for Kubernetes Secrets, and why is it important?"
+    options:
+      - "Encrypting network traffic between pods"
+      - "Encrypting Secret data stored in etcd so it's not readable even with direct database access"
+      - "Encrypting Secrets only when they're transferred to pods"
+      - "Base64 encoding of Secret values"
+    correct_answer: "Encrypting Secret data stored in etcd so it's not readable even with direct database access"
+    explanation: "Encryption at rest refers to encrypting Secret data when stored in etcd (Kubernetes' backend database), protecting Secrets even if an attacker gains direct access to the etcd datastore or its backups. By default, Secrets are only base64-encoded in etcd, which provides no real security - anyone with etcd access can decode and read them. Enabling encryption at rest ensures Secrets are encrypted using a proper encryption algorithm before being written to etcd. Kubernetes supports multiple encryption providers: 1) aescbc/aesgsm - encryption using locally stored keys (managed in EncryptionConfiguration), 2) KMS (Key Management Service) - encryption using external key management systems like AWS KMS, Google Cloud KMS, Azure Key Vault, or HashiCorp Vault, which is more secure as keys never exist on Kubernetes nodes. To enable, you create an EncryptionConfiguration file specifying the encryption provider and configure the API server with '--encryption-provider-config' flag pointing to this file. For example, with KMS: the API server sends data to KMS provider for encryption, KMS returns encrypted data, API server stores encrypted data in etcd. When reading, the process reverses. This protects against: etcd backup theft, compromised etcd instances, and insider threats with database access. Note that encryption at rest doesn't protect against: API server compromise (since API server has decryption keys), or authorized kubectl users (they get decrypted data). For comprehensive security, combine encryption at rest with RBAC, audit logging, network policies, and regular secret rotation. This is especially important for compliance requirements like PCI-DSS, HIPAA, or SOC 2."
+    require_pass: true
+  - type: mcq
+    sequence_order: 3
+    question: "How should you provide plain-text secret data in a YAML file without manually base64-encoding it?"
+    options:
+      - "Use the 'data' field with plain text"
+      - "Use the 'stringData' field with plain text"
+      - "Secrets always require base64 encoding"
+      - "Use the 'plainText' field"
+    correct_answer: "Use the 'stringData' field with plain text"
+    explanation: "The 'stringData' field in Secret manifests allows you to provide secret values as plain text, which Kubernetes automatically base64-encodes when creating the Secret. This is more convenient and less error-prone than manually encoding values for the 'data' field. For example, instead of writing 'data: password: bXlwYXNz' (manually base64-encoded), you can write 'stringData: password: mypass' and Kubernetes handles the encoding. When you apply this manifest, Kubernetes converts stringData to data with base64-encoded values automatically. The stringData field is write-only - when you retrieve the Secret with 'kubectl get secret -o yaml', you only see the 'data' field with encoded values, never stringData. This makes it safer for version control (though you should still never commit Secrets to repos). You can mix both fields in the same Secret - stringData takes precedence over data for duplicate keys. Common workflow: create Secrets from YAML using stringData for readability, then use external secret management (like sealed-secrets, External Secrets Operator, or Vault) for production. For even better security, avoid YAML altogether and use imperative commands: 'kubectl create secret generic my-secret --from-literal=password=mypass --from-file=cert.pem=./tls.pem', which creates Secrets without the values touching files on disk. Best practices: use stringData for developer convenience in non-production, generate Secrets from secure sources in CI/CD pipelines, leverage tools like kustomize secretGenerator for dynamic Secret creation, and consider using external secret stores (Vault, AWS Secrets Manager) with controllers that sync secrets into Kubernetes automatically, eliminating the need to store secrets in Git."
+    require_pass: true

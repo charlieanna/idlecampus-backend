@@ -1,0 +1,226 @@
+slug: magnetic-force-on-current
+title: "Magnetic Force on Current-Carrying Conductor"
+difficulty: intermediate
+sequence_order: 2
+estimated_minutes: 16
+key_concepts:
+- lorentz-force
+- force-on-wire
+- force-on-charge
+- magnetic-field-strength
+- hall-effect
+prerequisites:
+- biot-savart-law-applications
+content_md: |
+  # Magnetic Force on Current-Carrying Conductor
+
+  ## Lorentz Force on Moving Charge
+
+  ```
+  F = q(v × B)
+
+  Magnitude: F = qvB sin θ
+  Direction: Right-hand rule (perpendicular to both v and B)
+  ```
+
+  ### Properties:
+  - Force ⊥ velocity (always)
+  - **Does no work** (W = F·d = 0)
+  - Only changes direction, not speed
+  - Causes **circular or helical motion**
+
+  ## Force on Current-Carrying Wire
+
+  ### Derivation:
+  ```
+  Each charge: F = qvB sin θ
+  Number of charges in length L: n = nAL
+  Total charge: Q = nALe
+
+  Current I = nAve (current density)
+  F = BIL sin θ
+  ```
+
+  ### Vector Form:
+  ```
+  F = IL × B  or  F = I(L × B)
+
+  F = BIL sin θ (magnitude)
+  ```
+
+  ### Direction: Right-hand rule
+  - Fingers: Current direction
+  - Curl towards: B field direction
+  - Thumb: Force direction
+
+  ## Force Between Parallel Wires
+
+  Two long parallel wires carrying currents I₁ and I₂:
+
+  ### Magnetic field due to wire 1 at wire 2:
+  ```
+  B₁ = μ₀I₁/(2πd)
+  ```
+
+  ### Force on wire 2:
+  ```
+  F/L = μ₀I₁I₂/(2πd)
+
+  Unit: N/m (force per unit length)
+  ```
+
+  ### Nature:
+  - **Same direction currents: Attract**
+  - **Opposite direction currents: Repel**
+
+  ### Definition of Ampere:
+  ```
+  1 Ampere: Current in two infinite parallel wires 1 m apart
+  producing force of 2×10⁻⁷ N/m
+  ```
+
+  ## Motion of Charged Particle in B Field
+
+  ### Circular Motion:
+  ```
+  Magnetic force = Centripetal force
+  qvB = mv²/r
+
+  Radius: r = mv/(qB) = p/(qB)
+  Angular frequency: ω = qB/m = v/r
+  Time period: T = 2πm/(qB)
+  Cyclotron frequency: f = qB/(2πm)
+  ```
+
+  ### Important:
+  - T and f **independent of velocity**
+  - r **proportional to v**
+  - Faster particle → larger circle, same time period
+
+  ## Helical Motion
+
+  When velocity has components parallel and perpendicular to B:
+
+  ```
+  v_∥ = v cos θ (parallel, unchanged)
+  v_⊥ = v sin θ (perpendicular, causes circular motion)
+
+  Pitch = v_∥ × T = (v cos θ)(2πm/qB)
+  Radius = mv_⊥/(qB) = mv sin θ/(qB)
+  ```
+
+  Path is helix (spiral along B direction).
+
+  ## Hall Effect
+
+  When current flows through conductor in magnetic field:
+  - Charges deflected to one side
+  - Produces **Hall voltage** perpendicular to both I and B
+
+  ```
+  V_H = Bvd = BI/(nAe) × w/t = BI/(net)
+
+  n = charge carrier density
+  t = thickness in B direction
+  w = width for Hall voltage
+  ```
+
+  ### Applications:
+  - Determine sign of charge carriers
+  - Measure magnetic field strength
+  - Hall sensors in various devices
+
+  ## Torque on Current Loop
+
+  Rectangular loop (area A) in uniform B:
+
+  ```
+  τ = NIAB sin θ = M × B
+
+  N = number of turns
+  θ = angle between normal to loop and B
+  M = NIA = magnetic moment
+  ```
+
+  ### Special Cases:
+  - θ = 0° (loop perpendicular to B): τ = 0, stable
+  - θ = 90° (loop parallel to B): τ = maximum = NIAB
+
+  ## Numerical Examples
+
+  **Example 1:** Electron (v = 10⁷ m/s) enters magnetic field B = 0.1 T perpendicular to field. Find radius of circular path.
+
+  **Solution:**
+  ```
+  r = mv/(eB) = (9.1×10⁻³¹)(10⁷)/((1.6×10⁻¹⁹)(0.1))
+  r = 9.1×10⁻²⁴/(1.6×10⁻²⁰)
+  r ≈ 5.7×10⁻⁴ m = 0.57 mm
+
+  Very small radius due to tiny electron mass!
+  ```
+
+  **Example 2:** Wire of length 0.5 m carries 2 A current in B = 0.4 T at 30° to field. Find force.
+
+  **Solution:**
+  ```
+  F = BIL sin θ = 0.4 × 2 × 0.5 × sin 30°
+  F = 0.4 × 2 × 0.5 × 0.5 = 0.2 N
+
+  Maximum force would be 0.4 N at θ = 90°.
+  ```
+
+  **Example 3:** Two parallel wires 0.1 m apart carry 5 A each in same direction. Force per meter?
+
+  **Solution:**
+  ```
+  F/L = μ₀I₁I₂/(2πd)
+  F/L = (4π×10⁻⁷)(5)(5)/(2π×0.1)
+  F/L = (2×10⁻⁷)(25)/(0.1)
+  F/L = 5×10⁻⁵ N/m = 50 μN/m
+
+  Attractive force (same direction currents).
+  ```
+
+  ## JEE Key Points
+
+  1. **F = qvB sin θ** (Lorentz force)
+  2. **F = BIL sin θ** (force on wire)
+  3. **r = mv/(qB)** (radius of circular path)
+  4. **T = 2πm/(qB)** (independent of v)
+  5. **Parallel wires: Same I attract, opposite repel**
+  6. **Magnetic force does no work**
+
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: "A proton and an alpha particle (mass 4m_p, charge 2e) enter same magnetic field with same velocity. Ratio of radii of their circular paths is:"
+  options:
+  - "1:1"
+  - "1:2"
+  - "2:1"
+  - "4:1"
+  correct_answer: "1:2"
+  explanation: "Radius r = mv/(qB). For proton: r_p = m_p v/(eB). For alpha: r_α = 4m_p v/(2eB) = 2m_p v/(eB) = 2r_p. Ratio r_p : r_α = 1:2. Alpha particle has larger radius because even though it has 2× charge (which would decrease r), it has 4× mass (which increases r). Net effect: r ∝ m/q = 4m/2e = 2m/e for alpha vs m/e for proton. This is used in mass spectrometry to separate isotopes. Cyclotron frequency f = qB/(2πm) → f_p/f_α = (e/m_p)/(2e/4m_p) = 2:1. Proton completes circle twice as fast."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: "A wire carrying current I is bent into circular loop of radius R. Magnetic field at center is B. If same wire is bent into loop of radius 2R, field at center is:"
+  options:
+  - "B/2"
+  - "B/4"
+  - "2B"
+  - "4B"
+  correct_answer: "B/4"
+  explanation: "For circular loop: B = μ₀I/(2R). If wire is same length, doubling radius means fewer turns: original circumference = n₁(2πR), new = n₂(2π×2R). Since total length constant: n₂ = n₁/2. New field: B' = μ₀(n₂I)/(2×2R) = μ₀(n₁/2)I/(4R) = (1/4)×μ₀n₁I/(2R) = B/4. Two effects combine: (1) larger radius decreases B by factor 2, (2) fewer turns decreases by another factor 2. Total: B/4. This shows that tightly wound coils with small radius produce stronger fields. Solenoids exploit this by having many turns close together."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: "Charged particle enters magnetic field perpendicular to it. The kinetic energy of particle:"
+  options:
+  - "Increases"
+  - "Decreases"
+  - "Remains constant"
+  - "First increases then decreases"
+  correct_answer: "Remains constant"
+  explanation: "Magnetic force F = qv × B is always perpendicular to velocity. Work done W = F·ds = F·v dt = 0 (since F ⊥ v). No work done means no change in kinetic energy! The magnetic force only changes direction of velocity, not magnitude. KE = ½mv² = constant since |v| = constant. This is fundamental difference from electric force which CAN do work (parallel to motion). In circular motion: speed is constant, velocity changes direction continuously. Particle radiates EM waves due to acceleration (centripetal), losing tiny energy - this is synchrotron radiation, important in particle physics. For JEE level, assume KE constant."
+  require_pass: true

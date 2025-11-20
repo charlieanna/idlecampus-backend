@@ -1,0 +1,44 @@
+slug: lesson-39
+title: Lesson 39
+difficulty: easy
+sequence_order: 39
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Blue-Green and Canary Deployments\n\n \
+  \   Progressive delivery strategies to minimize risk.\n    - Blue/Green: switch\
+  \ traffic between environments\n    - Canary: gradually shift traffic to new version"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What is the main advantage of a Blue-Green deployment strategy?
+  options:
+  - It reduces infrastructure costs by sharing resources
+  - It allows instant rollback by switching traffic between two identical environments
+  - It gradually shifts traffic to minimize risk
+  - It requires no additional infrastructure
+  correct_answer: It allows instant rollback by switching traffic between two identical environments
+  explanation: "Blue-Green deployment maintains two identical production environments - Blue (current version) and Green (new version). After deploying and testing the new version in the Green environment, you switch all traffic from Blue to Green instantly, typically by updating a load balancer or Service selector. The key advantage is the ability to instantly rollback if issues arise - just switch traffic back to Blue. This provides near-zero downtime and quick recovery. However, the main drawback is cost - you need to maintain two full production environments simultaneously. In Kubernetes, you can implement this using two Deployments with different labels, and a Service that switches its selector to route traffic to the desired version. This is different from rolling updates, which gradually replace pods."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: In a Canary deployment, what is the typical first step?
+  options:
+  - Replace all pods with the new version immediately
+  - Deploy the new version to a small percentage of users or pods
+  - Delete the old version before deploying the new one
+  - Deploy the new version to a separate cluster
+  correct_answer: Deploy the new version to a small percentage of users or pods
+  explanation: "Canary deployment is a progressive rollout strategy where you first deploy the new version to a small subset of users or pods (often 5-10%), while the majority continues using the stable version. This canary release is monitored closely for errors, performance issues, or other problems. If metrics look good, you gradually increase the percentage of traffic to the new version (e.g., 10% → 25% → 50% → 100%). If problems are detected, you can quickly rollback by routing all traffic to the old version. In Kubernetes, you can implement canary deployments by running two Deployments (old and new versions) with different replica counts, both selected by the same Service. Advanced implementations use service meshes like Istio or tools like Flagger to control traffic splitting more precisely based on headers, weights, or other criteria."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: How can you implement basic traffic splitting for a Canary deployment in Kubernetes without a service mesh?
+  options:
+  - Use multiple Services with different selectors
+  - Run two Deployments with different replica counts, both matching the same Service selector
+  - Use multiple namespaces for different versions
+  - Modify the kubelet configuration
+  correct_answer: Run two Deployments with different replica counts, both matching the same Service selector
+  explanation: "A basic Canary deployment in Kubernetes can be implemented by running two Deployments (old and new versions) where both have pods that match the same Service selector, but with different version labels. By controlling the replica counts, you control the traffic distribution. For example, 9 replicas of v1 and 1 replica of v2 gives approximately 90/10 traffic split (though this is approximate due to round-robin load balancing). The Service distributes traffic across all matching pods regardless of version. While this approach is simple, it's not precise - you can't guarantee exact percentages, and you can't split based on user attributes. For more sophisticated traffic management, you'd use a service mesh (Istio, Linkerd) or ingress controllers (NGINX, Traefik) that support weighted routing, header-based routing, or other advanced strategies."
+  require_pass: true

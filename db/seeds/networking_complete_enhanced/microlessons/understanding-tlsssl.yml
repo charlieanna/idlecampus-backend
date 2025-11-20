@@ -1,0 +1,159 @@
+slug: understanding-tlsssl
+title: Understanding TLS/SSL
+sequence_order: 3
+estimated_minutes: 2
+difficulty: easy
+content_md: "# Understanding TLS/SSL \U0001F680\n\n# Understanding TLS/SSL\n\n   \
+  \ TLS (Transport Layer Security) encrypts data in transit between clients and servers.\n\
+  \n    ## What is TLS?\n\n    **TLS** (formerly SSL) provides:\n    - **Encryption**:\
+  \ Data is encrypted in transit\n    - **Authentication**: Verify server identity\n\
+  \    - **Integrity**: Detect tampering\n\n    ## TLS Handshake Process\n\n    ```\n\
+  \    Client                                    Server\n      |                 \
+  \                        |\n      |--- ClientHello (supported ciphers) ---->|\n\
+  \      |                                         |\n      |<--- ServerHello (chosen\
+  \ cipher) --------|\n      |<--- Certificate (server's cert) --------|\n      |<---\
+  \ ServerHelloDone -------------------|\n      |                                \
+  \         |\n      |--- ClientKeyExchange ----------------->|\n      |--- ChangeCipherSpec\
+  \ ------------------>|\n      |--- Finished -------------------------->|\n     \
+  \ |                                         |\n      |<--- ChangeCipherSpec ------------------|\n\
+  \      |<--- Finished --------------------------|\n      |                     \
+  \                    |\n      |<========== Encrypted Data ===========>|\n    ```\n\
+  \n    ### Steps Explained:\n\n    1. **ClientHello**: Client sends supported TLS\
+  \ versions and cipher suites\n    2. **ServerHello**: Server chooses TLS version\
+  \ and cipher\n    3. **Certificate**: Server sends its certificate (public key)\n\
+  \    4. **Certificate Verification**: Client validates certificate\n    5. **Key\
+  \ Exchange**: Generate shared session key\n    6. **Finished**: Both confirm encryption\
+  \ is working\n    7. **Encrypted Communication**: All data now encrypted\n\n   \
+  \ ## Certificates\n\n    ### Certificate Components\n\n    - **Subject**: Who the\
+  \ certificate is issued to (domain name)\n    - **Issuer**: Who signed the certificate\
+  \ (CA)\n    - **Public Key**: Server's public key\n    - **Validity Period**: Start\
+  \ and end dates\n    - **Signature**: CA's digital signature\n\n    ### Certificate\
+  \ Types\n\n    1. **Self-Signed**: You sign your own certificate\n       - ⚠️ Browsers\
+  \ will show warnings\n       - ✅ Good for testing/development\n       - ✅ Good for\
+  \ internal services\n\n    2. **Certificate Authority (CA) Signed**: Trusted third\
+  \ party\n       - ✅ Browsers trust automatically\n       - ✅ Required for public\
+  \ websites\n       - Examples: Let's Encrypt, DigiCert, Comodo\n\n    3. **Wildcard**:\
+  \ Covers all subdomains\n       - `*.example.com` covers `api.example.com`, `www.example.com`\n\
+  \n    ## TLS Versions\n\n    - **TLS 1.3**: Current, fastest, most secure ✅\n  \
+  \  - **TLS 1.2**: Still widely used, secure ✅\n    - **TLS 1.1**: Deprecated ⚠️\n\
+  \    - **TLS 1.0**: Deprecated ⚠️\n    - **SSL 3.0**: Broken, do not use ❌\n   \
+  \ - **SSL 2.0**: Broken, do not use ❌\n\n    ## Common Ports\n\n    | Protocol |\
+  \ Port | Description |\n    |----------|------|-------------|\n    | HTTP | 80 |\
+  \ Unencrypted web traffic |\n    | HTTPS | 443 | Encrypted web traffic (TLS) |\n\
+  \    | SMTP (TLS) | 587 | Encrypted email submission |\n    | IMAP (TLS) | 993 |\
+  \ Encrypted email retrieval |\n\n    ## Certificate Authorities (CAs)\n\n    ###\
+  \ Root CA\n    Browsers and operating systems trust a set of root CAs.\n\n    ###\
+  \ Chain of Trust\n    ```\n    Root CA (trusted by browser)\n      └── Intermediate\
+  \ CA\n            └── Your Certificate\n    ```\n\n    ### Let's Encrypt\n    Free,\
+  \ automated certificate authority.\n\n    ```bash\n    # Install certbot\n    sudo\
+  \ apt install certbot\n\n    # Get certificate for domain\n    sudo certbot certonly\
+  \ --standalone -d example.com\n    ```\n\n    ## Certificate Pinning\n\n    **Hard-code**\
+  \ expected certificate or public key in application.\n    - Extra security against\
+  \ compromised CAs\n    - Used in mobile apps, critical services\n    - ⚠️ Requires\
+  \ careful key rotation"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What is the primary purpose of TLS/SSL?
+  options:
+  - To encrypt data in transit and verify server identity
+  - To compress network traffic
+  - To speed up HTTP requests
+  - To cache web pages
+  correct_answer_index: 0
+  explanation: TLS (Transport Layer Security) encrypts data during transmission to prevent eavesdropping and tampering, and uses certificates to verify that you're communicating with the intended server (not an imposter). This provides confidentiality, integrity, and authentication.
+- type: mcq
+  sequence_order: 2
+  question: Which TLS version is currently the most secure and recommended?
+  options:
+  - TLS 1.0
+  - TLS 1.1
+  - TLS 1.2
+  - TLS 1.3
+  correct_answer_index: 3
+  explanation: TLS 1.3 is the current standard, offering the fastest performance and strongest security. TLS 1.0 and 1.1 are deprecated and should not be used. TLS 1.2 is still widely used and secure.
+- type: mcq
+  sequence_order: 3
+  question: What are the three main security properties provided by TLS?
+  options:
+  - Speed, caching, and compression
+  - Encryption, authentication, and integrity
+  - Routing, forwarding, and switching
+  - Parsing, validation, and sanitization
+  correct_answer_index: 1
+  explanation: TLS provides encryption (data confidentiality), authentication (verify server identity), and integrity (detect tampering). These three properties ensure secure communication.
+- type: mcq
+  sequence_order: 4
+  question: During the TLS handshake, what does the ClientHello message contain?
+  options:
+  - The encrypted session data
+  - The server's certificate
+  - Supported TLS versions and cipher suites
+  - The client's private key
+  correct_answer_index: 2
+  explanation: ClientHello is the first message in the TLS handshake, where the client sends supported TLS versions and cipher suites to the server. The server then chooses a compatible version and cipher.
+- type: mcq
+  sequence_order: 5
+  question: What is a Certificate Authority (CA)?
+  options:
+  - A trusted third party that signs and issues digital certificates
+  - A server that hosts websites
+  - A type of encryption algorithm
+  - A web browser plugin
+  correct_answer_index: 0
+  explanation: A CA is a trusted entity that verifies certificate requests and signs certificates. Browsers trust a set of root CAs, which vouches for the identity of certificate owners.
+- type: mcq
+  sequence_order: 6
+  question: What is the difference between a self-signed certificate and a CA-signed certificate?
+  options:
+  - Self-signed certificates are faster
+  - CA-signed certificates are trusted by browsers automatically, self-signed are not
+  - Self-signed certificates are more secure
+  - There is no difference
+  correct_answer_index: 1
+  explanation: CA-signed certificates are automatically trusted by browsers because the CA is in the browser's trust store. Self-signed certificates trigger browser warnings and are good for testing/development but not production.
+- type: mcq
+  sequence_order: 7
+  question: Which port does HTTPS use by default?
+  options:
+  - 80
+  - 443
+  - 8080
+  - 22
+  correct_answer_index: 1
+  explanation: HTTPS uses port 443 by default. HTTP uses port 80, and SSH uses port 22. Port 8080 is commonly used for alternative HTTP services.
+- type: mcq
+  sequence_order: 8
+  question: What is a wildcard certificate?
+  options:
+  - A certificate that works for all domains
+  - A certificate that covers all subdomains of a domain (e.g., *.example.com)
+  - A certificate with unlimited validity period
+  - A free certificate from any CA
+  correct_answer_index: 1
+  explanation: A wildcard certificate uses *.example.com to cover all subdomains like api.example.com, www.example.com, etc. It doesn't cover the root domain or other domains.
+- type: mcq
+  sequence_order: 9
+  question: What happens during the 'Certificate Verification' step of the TLS handshake?
+  options:
+  - The server verifies the client's password
+  - The client validates the server's certificate against trusted CAs
+  - The data is encrypted
+  - The connection is terminated
+  correct_answer_index: 1
+  explanation: The client checks the server's certificate to ensure it's signed by a trusted CA, hasn't expired, and matches the domain being accessed. If verification fails, the connection is rejected.
+- type: mcq
+  sequence_order: 10
+  question: What is Let's Encrypt?
+  options:
+  - A paid certificate authority
+  - A free, automated certificate authority
+  - An encryption algorithm
+  - A web server
+  correct_answer_index: 1
+  explanation: Let's Encrypt is a free, automated, and open Certificate Authority that provides free SSL/TLS certificates. It uses the ACME protocol for automated certificate issuance and renewal.
+objectives:
+- Understand the fundamental concepts and mechanisms of TLS/SSL
+- Apply security principles to implement TLS correctly
+- Identify key protocols, certificates, and encryption behaviors
+next_recommended: []

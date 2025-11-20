@@ -1,0 +1,273 @@
+slug: lesson-26
+title: Lesson 26
+difficulty: easy
+sequence_order: 26
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Context Package: Managing Goroutine Lifecycles\n\
+  \n    ### What is Context?\n\n    The **context package** is Go's standard way to\
+  \ manage cancellation, deadlines, and request-scoped values across goroutines. It's\
+  \ essential for production Go applications.\n\n    **Why Context matters:**\n  \
+  \  - ✅ Cancel long-running operations\n    - ✅ Set timeouts for operations\n   \
+  \ - ✅ Pass request-scoped data (like user IDs, trace IDs)\n    - ✅ Prevent goroutine\
+  \ leaks\n    - ✅ Clean shutdown of services\n\n    **Import:**\n    ```go\n    import\
+  \ \"context\"\n    ```\n\n    ### The Context Interface\n\n    ```go\n    type Context\
+  \ interface {\n        Deadline() (deadline time.Time, ok bool)\n        Done()\
+  \ <-chan struct{}\n        Err() error\n        Value(key interface{}) interface{}\n\
+  \    }\n    ```\n\n    **Four key methods:**\n    - `Deadline()` - Returns when\
+  \ context will be cancelled\n    - `Done()` - Channel that closes when context is\
+  \ cancelled\n    - `Err()` - Returns why context was cancelled\n    - `Value(key)`\
+  \ - Retrieves request-scoped values\n\n    ### Creating Contexts\n\n    **1. Background\
+  \ Context (root context):**\n    ```go\n    ctx := context.Background()\n    //\
+  \ Use for main function, initialization, tests\n    ```\n\n    **2. TODO Context\
+  \ (placeholder):**\n    ```go\n    ctx := context.TODO()\n    // Use when you're\
+  \ not sure which context to use yet\n    ```\n\n    **3. WithCancel - Manual cancellation:**\n\
+  \    ```go\n    ctx, cancel := context.WithCancel(context.Background())\n    defer\
+  \ cancel()  // Always call cancel to free resources\n\n    // Later, to cancel:\n\
+  \    cancel()\n    ```\n\n    **4. WithTimeout - Automatic cancellation after duration:**\n\
+  \    ```go\n    ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)\n\
+  \    defer cancel()\n\n    // Automatically cancelled after 5 seconds\n    ```\n\
+  \n    **5. WithDeadline - Cancel at specific time:**\n    ```go\n    deadline :=\
+  \ time.Now().Add(1 * time.Hour)\n    ctx, cancel := context.WithDeadline(context.Background(),\
+  \ deadline)\n    defer cancel()\n\n    // Automatically cancelled at deadline\n\
+  \    ```\n\n    **6. WithValue - Attach request-scoped data:**\n    ```go\n    ctx\
+  \ := context.WithValue(context.Background(), \"userID\", 12345)\n\n    // Later,\
+  \ retrieve value:\n    userID := ctx.Value(\"userID\").(int)\n    ```\n\n    ###\
+  \ Basic Cancellation Pattern\n\n    **Problem: Goroutine that never stops:**\n \
+  \   ```go\n    // ❌ BAD: No way to stop this goroutine!\n    go func() {\n     \
+  \   for {\n            // Do work forever\n            doWork()\n        }\n   \
+  \ }()\n    ```\n\n    **Solution: Use context:**\n    ```go\n    // ✅ GOOD: Respects\
+  \ cancellation\n    func worker(ctx context.Context) {\n        for {\n        \
+  \    select {\n            case <-ctx.Done():\n                fmt.Println(\"Worker\
+  \ cancelled:\", ctx.Err())\n                return\n            default:\n     \
+  \           doWork()\n            }\n        }\n    }\n\n    ctx, cancel := context.WithCancel(context.Background())\n\
+  \    go worker(ctx)\n\n    // Later, when you want to stop:\n    cancel()\n    ```\n\
+  \n    ### Timeout Pattern\n\n    **Prevent operations from running forever:**\n\
+  \    ```go\n    func fetchData(ctx context.Context, url string) ([]byte, error)\
+  \ {\n        req, err := http.NewRequestWithContext(ctx, \"GET\", url, nil)\n  \
+  \      if err != nil {\n            return nil, err\n        }\n\n        resp,\
+  \ err := http.DefaultClient.Do(req)\n        if err != nil {\n            return\
+  \ nil, err\n        }\n        defer resp.Body.Close()\n\n        return io.ReadAll(resp.Body)\n\
+  \    }\n\n    // Usage with timeout\n    ctx, cancel := context.WithTimeout(context.Background(),\
+  \ 3*time.Second)\n    defer cancel()\n\n    data, err := fetchData(ctx, \"https://api.example.com/data\"\
+  )\n    if err != nil {\n        if err == context.DeadlineExceeded {\n         \
+  \   fmt.Println(\"Request timed out!\")\n        }\n        return err\n    }\n\
+  \    ```\n\n    ### Propagating Context Through Call Stack\n\n    **Context should\
+  \ be the first parameter:**\n    ```go\n    func processRequest(ctx context.Context,\
+  \ userID int) error {\n        // Check if already cancelled\n        if err :=\
+  \ ctx.Err(); err != nil {\n            return err\n        }\n\n        // Pass\
+  \ context down to other functions\n        data, err := fetchUserData(ctx, userID)\n\
+  \        if err != nil {\n            return err\n        }\n\n        return saveData(ctx,\
+  \ data)\n    }\n\n    func fetchUserData(ctx context.Context, userID int) (*UserData,\
+  \ error) {\n        // This function also respects cancellation\n        select\
+  \ {\n        case <-ctx.Done():\n            return nil, ctx.Err()\n        default:\n\
+  \            // Fetch data\n        }\n    }\n    ```\n\n    ### Real-World Example:\
+  \ HTTP Server with Timeout\n\n    ```go\n    package main\n\n    import (\n    \
+  \    \"context\"\n        \"fmt\"\n        \"net/http\"\n        \"time\"\n    )\n\
+  \n    func slowHandler(w http.ResponseWriter, r *http.Request) {\n        // Create\
+  \ context with 5-second timeout\n        ctx, cancel := context.WithTimeout(r.Context(),\
+  \ 5*time.Second)\n        defer cancel()\n\n        // Simulate slow operation\n\
+  \        result := make(chan string, 1)\n        go func() {\n            time.Sleep(10\
+  \ * time.Second)  // Simulates slow work\n            result <- \"Success\"\n  \
+  \      }()\n\n        // Wait for result or timeout\n        select {\n        case\
+  \ <-ctx.Done():\n            http.Error(w, \"Request timeout\", http.StatusRequestTimeout)\n\
+  \            fmt.Println(\"Request cancelled:\", ctx.Err())\n        case res :=\
+  \ <-result:\n            fmt.Fprintf(w, \"Result: %s\", res)\n        }\n    }\n\
+  \n    func main() {\n        http.HandleFunc(\"/slow\", slowHandler)\n        http.ListenAndServe(\"\
+  :8080\", nil)\n    }\n    ```\n\n    ### Context Values: Request-Scoped Data\n\n\
+  \    **Passing data through call chain:**\n    ```go\n    type contextKey string\n\
+  \n    const (\n        userIDKey    contextKey = \"userID\"\n        requestIDKey\
+  \ contextKey = \"requestID\"\n    )\n\n    func handler(w http.ResponseWriter, r\
+  \ *http.Request) {\n        // Extract user from authentication\n        userID\
+  \ := getUserFromAuth(r)\n\n        // Add to context\n        ctx := context.WithValue(r.Context(),\
+  \ userIDKey, userID)\n        ctx = context.WithValue(ctx, requestIDKey, generateRequestID())\n\
+  \n        // Process with context\n        processRequest(ctx)\n    }\n\n    func\
+  \ processRequest(ctx context.Context) {\n        // Retrieve values\n        userID,\
+  \ ok := ctx.Value(userIDKey).(int)\n        if !ok {\n            log.Println(\"\
+  No user ID in context\")\n            return\n        }\n\n        requestID :=\
+  \ ctx.Value(requestIDKey).(string)\n        log.Printf(\"Processing request %s for\
+  \ user %d\", requestID, userID)\n    }\n    ```\n\n    **⚠️ Best Practice: Use typed\
+  \ keys, not strings:**\n    ```go\n    // ❌ BAD: String keys can collide\n    ctx\
+  \ := context.WithValue(ctx, \"userID\", 123)\n\n    // ✅ GOOD: Use custom type\n\
+  \    type contextKey string\n    const userIDKey contextKey = \"userID\"\n    ctx\
+  \ := context.WithValue(ctx, userIDKey, 123)\n    ```\n\n    ### Practical Pattern:\
+  \ Database Query with Timeout\n\n    ```go\n    func getUserByID(ctx context.Context,\
+  \ db *sql.DB, id int) (*User, error) {\n        // Database query respects context\n\
+  \        query := \"SELECT id, name, email FROM users WHERE id = ?\"\n\n       \
+  \ var user User\n        err := db.QueryRowContext(ctx, query, id).Scan(\n     \
+  \       &user.ID,\n            &user.Name,\n            &user.Email,\n        )\n\
+  \n        if err != nil {\n            return nil, err\n        }\n        return\
+  \ &user, nil\n    }\n\n    // Usage with timeout\n    func main() {\n        ctx,\
+  \ cancel := context.WithTimeout(context.Background(), 2*time.Second)\n        defer\
+  \ cancel()\n\n        user, err := getUserByID(ctx, db, 123)\n        if err !=\
+  \ nil {\n            if err == context.DeadlineExceeded {\n                log.Println(\"\
+  Database query timed out\")\n            }\n            return\n        }\n    \
+  \    fmt.Printf(\"Found user: %+v\\\\n\", user)\n    }\n    ```\n\n    ### Context\
+  \ with Multiple Goroutines\n\n    **Cancelling multiple workers:**\n    ```go\n\
+  \    func fanOut(ctx context.Context, jobs <-chan int, numWorkers int) {\n     \
+  \   var wg sync.WaitGroup\n\n        for i := 0; i < numWorkers; i++ {\n       \
+  \     wg.Add(1)\n            go func(workerID int) {\n                defer wg.Done()\n\
+  \n                for {\n                    select {\n                    case\
+  \ <-ctx.Done():\n                        fmt.Printf(\"Worker %d stopped\\\\n\",\
+  \ workerID)\n                        return\n                    case job, ok :=\
+  \ <-jobs:\n                        if !ok {\n                            return\n\
+  \                        }\n                        processJob(ctx, job)\n     \
+  \               }\n                }\n            }(i)\n        }\n\n        wg.Wait()\n\
+  \    }\n\n    func processJob(ctx context.Context, job int) {\n        // Check\
+  \ context before expensive work\n        if err := ctx.Err(); err != nil {\n   \
+  \         return\n        }\n\n        // Do work...\n        time.Sleep(100 * time.Millisecond)\n\
+  \        fmt.Printf(\"Processed job %d\\\\n\", job)\n    }\n\n    // Usage\n   \
+  \ ctx, cancel := context.WithCancel(context.Background())\n    jobs := make(chan\
+  \ int, 10)\n\n    // Start workers\n    go fanOut(ctx, jobs, 5)\n\n    // Send jobs\n\
+  \    for i := 0; i < 20; i++ {\n        jobs <- i\n    }\n    close(jobs)\n\n  \
+  \  // Cancel all workers after 1 second\n    time.Sleep(1 * time.Second)\n    cancel()\n\
+  \    ```\n\n    ### Graceful Shutdown Pattern\n\n    ```go\n    package main\n\n\
+  \    import (\n        \"context\"\n        \"fmt\"\n        \"os\"\n        \"\
+  os/signal\"\n        \"syscall\"\n        \"time\"\n    )\n\n    func main() {\n\
+  \        // Create context that cancels on SIGINT/SIGTERM\n        ctx, cancel :=\
+  \ context.WithCancel(context.Background())\n        defer cancel()\n\n        //\
+  \ Handle shutdown signals\n        sigChan := make(chan os.Signal, 1)\n        signal.Notify(sigChan,\
+  \ syscall.SIGINT, syscall.SIGTERM)\n\n        go func() {\n            <-sigChan\n\
+  \            fmt.Println(\"\\\\nShutdown signal received\")\n            cancel()\n\
+  \        }()\n\n        // Start workers\n        var wg sync.WaitGroup\n      \
+  \  for i := 0; i < 3; i++ {\n            wg.Add(1)\n            go worker(ctx, &wg,\
+  \ i)\n        }\n\n        // Wait for graceful shutdown\n        wg.Wait()\n  \
+  \      fmt.Println(\"All workers stopped. Clean shutdown complete.\")\n    }\n\n\
+  \    func worker(ctx context.Context, wg *sync.WaitGroup, id int) {\n        defer\
+  \ wg.Done()\n\n        ticker := time.NewTicker(500 * time.Millisecond)\n      \
+  \  defer ticker.Stop()\n\n        for {\n            select {\n            case\
+  \ <-ctx.Done():\n                fmt.Printf(\"Worker %d shutting down\\\\n\", id)\n\
+  \                return\n            case <-ticker.C:\n                fmt.Printf(\"\
+  Worker %d working\\\\n\", id)\n            }\n        }\n    }\n    ```\n\n    ###\
+  \ Context Best Practices\n\n    **1. Always pass context as first parameter:**\n\
+  \    ```go\n    // ✅ GOOD\n    func processData(ctx context.Context, data []byte)\
+  \ error\n\n    // ❌ BAD\n    func processData(data []byte, ctx context.Context)\
+  \ error\n    ```\n\n    **2. Never store context in structs:**\n    ```go\n    //\
+  \ ❌ BAD\n    type Handler struct {\n        ctx context.Context\n    }\n\n    //\
+  \ ✅ GOOD\n    type Handler struct {\n        // other fields\n    }\n\n    func\
+  \ (h *Handler) Handle(ctx context.Context) error {\n        // Use context as parameter\n\
+  \    }\n    ```\n\n    **3. Always call cancel() from WithCancel/WithTimeout:**\n\
+  \    ```go\n    // ✅ GOOD: Always call cancel\n    ctx, cancel := context.WithTimeout(ctx,\
+  \ 5*time.Second)\n    defer cancel()  // Frees resources\n    ```\n\n    **4. Check\
+  \ context before expensive operations:**\n    ```go\n    func expensiveOperation(ctx\
+  \ context.Context) error {\n        // Check early\n        if err := ctx.Err();\
+  \ err != nil {\n            return err\n        }\n\n        // Do expensive work...\n\
+  \n        // Check again during long operation\n        select {\n        case <-ctx.Done():\n\
+  \            return ctx.Err()\n        default:\n            // Continue work\n\
+  \        }\n    }\n    ```\n\n    **5. Use context.Value() sparingly:**\n    ```go\n\
+  \    // ✅ GOOD: Request-scoped values (user ID, trace ID)\n    ctx = context.WithValue(ctx,\
+  \ requestIDKey, uuid.New())\n\n    // ❌ BAD: Passing optional parameters\n    ctx\
+  \ = context.WithValue(ctx, \"option1\", true)\n    ctx = context.WithValue(ctx,\
+  \ \"option2\", \"value\")\n    ```\n\n    **6. Never pass nil context:**\n    ```go\n\
+  \    // ❌ BAD\n    processData(nil, data)\n\n    // ✅ GOOD\n    processData(context.Background(),\
+  \ data)\n    // or\n    processData(context.TODO(), data)\n    ```\n\n    ### Context\
+  \ Errors\n\n    **Two standard errors:**\n    ```go\n    if err := ctx.Err(); err\
+  \ != nil {\n        switch err {\n        case context.Canceled:\n            //\
+  \ Context was cancelled via cancel()\n            fmt.Println(\"Operation cancelled\"\
+  )\n        case context.DeadlineExceeded:\n            // Context timed out\n  \
+  \          fmt.Println(\"Operation timed out\")\n        }\n    }\n    ```\n\n \
+  \   ### Common Mistakes\n\n    **1. Not checking context during loops:**\n    ```go\n\
+  \    // ❌ BAD: Loop never checks cancellation\n    for i := 0; i < 1000000; i++\
+  \ {\n        processItem(item)\n    }\n\n    // ✅ GOOD: Check context periodically\n\
+  \    for i := 0; i < 1000000; i++ {\n        select {\n        case <-ctx.Done():\n\
+  \            return ctx.Err()\n        default:\n            processItem(item)\n\
+  \        }\n    }\n    ```\n\n    **2. Ignoring context in blocking calls:**\n \
+  \   ```go\n    // ❌ BAD: Doesn't respect context\n    data, err := http.Get(url)\n\
+  \n    // ✅ GOOD: Use context\n    req, _ := http.NewRequestWithContext(ctx, \"GET\"\
+  , url, nil)\n    data, err := http.DefaultClient.Do(req)\n    ```\n\n    **3. Creating\
+  \ context per goroutine:**\n    ```go\n    // ❌ BAD: Each worker has separate context\n\
+  \    for i := 0; i < 10; i++ {\n        ctx := context.Background()\n        go\
+  \ worker(ctx)  // Can't cancel all at once!\n    }\n\n    // ✅ GOOD: Share parent\
+  \ context\n    ctx, cancel := context.WithCancel(context.Background())\n    for\
+  \ i := 0; i < 10; i++ {\n        go worker(ctx)  // All can be cancelled together\n\
+  \    }\n    ```\n\n    ### Real-World Example: API Client with Retries\n\n    ```go\n\
+  \    func fetchWithRetry(ctx context.Context, url string, maxRetries int) ([]byte,\
+  \ error) {\n        var lastErr error\n\n        for i := 0; i < maxRetries; i++\
+  \ {\n            // Check if context cancelled\n            if err := ctx.Err();\
+  \ err != nil {\n                return nil, err\n            }\n\n            //\
+  \ Create request with context\n            req, err := http.NewRequestWithContext(ctx,\
+  \ \"GET\", url, nil)\n            if err != nil {\n                return nil, err\n\
+  \            }\n\n            resp, err := http.DefaultClient.Do(req)\n        \
+  \    if err == nil && resp.StatusCode == 200 {\n                defer resp.Body.Close()\n\
+  \                return io.ReadAll(resp.Body)\n            }\n\n            lastErr\
+  \ = err\n            if i < maxRetries-1 {\n                // Exponential backoff\
+  \ with context\n                select {\n                case <-time.After(time.Second\
+  \ * time.Duration(1<<i)):\n                case <-ctx.Done():\n                \
+  \    return nil, ctx.Err()\n                }\n            }\n        }\n\n    \
+  \    return nil, fmt.Errorf(\"failed after %d retries: %w\", maxRetries, lastErr)\n\
+  \    }\n\n    // Usage\n    ctx, cancel := context.WithTimeout(context.Background(),\
+  \ 10*time.Second)\n    defer cancel()\n\n    data, err := fetchWithRetry(ctx, \"\
+  https://api.example.com/data\", 3)\n    ```\n\n    ### Key Takeaways\n\n    1. **Context\
+  \ manages lifecycles** - cancellation, timeouts, deadlines\n    2. **Always pass\
+  \ as first parameter** - `func foo(ctx context.Context, ...)`\n    3. **Always defer\
+  \ cancel()** - frees resources\n    4. **Check ctx.Done()** - respect cancellation\n\
+  \    5. **Use WithTimeout** for operations that shouldn't run forever\n    6. **Propagate\
+  \ context** through call stack\n    7. **Don't store context** in structs\n    8.\
+  \ **Use context.Value() sparingly** - only for request-scoped data\n    9. **context.Background()**\
+  \ - for main, init, tests\n    10. **Graceful shutdown** - cancel on signals\n\n\
+  \    **Context is essential for production Go - it prevents goroutine leaks and\
+  \ enables clean shutdowns!**"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What is the primary purpose of the context package in Go?
+  options:
+  - To store global variables accessible across goroutines
+  - To manage cancellation signals, timeouts, and request-scoped values across goroutines
+  - To automatically scale goroutines based on CPU usage
+  - To synchronize goroutines using mutex locks
+  correct_answer: To manage cancellation signals, timeouts, and request-scoped values
+    across goroutines
+  explanation: 'The context package is Go''s standard way to manage goroutine lifecycles
+    through three key mechanisms: (1) Cancellation - send stop signals to running
+    goroutines via context.WithCancel(), (2) Timeouts/Deadlines - automatically cancel
+    operations after duration (WithTimeout) or at specific time (WithDeadline), (3)
+    Request-scoped values - pass data like user IDs, trace IDs through call stack
+    using WithValue(). This prevents goroutine leaks (goroutines running forever),
+    enables graceful shutdowns (cancel all workers on SIGTERM), and prevents operations
+    from running indefinitely. Context is essential for production Go - HTTP servers,
+    database queries, API clients all use context to respect cancellation and timeouts.'
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: Why should you always call defer cancel() immediately after creating a
+    context with WithCancel() or WithTimeout()?
+  options:
+  - To ensure the context starts working properly
+  - To free resources and prevent goroutine leaks even if the context isn't cancelled
+  - To make the code compile correctly
+  - To automatically propagate cancellation to child contexts
+  correct_answer: To free resources and prevent goroutine leaks even if the context
+    isn't cancelled
+  explanation: 'When you create a context with WithCancel(), WithTimeout(), or WithDeadline(),
+    Go internally creates goroutines and timers to manage cancellation. The cancel()
+    function releases these resources. Always using defer cancel() immediately after
+    creation ensures: (1) Resources are freed when function returns (even if error
+    occurs early), (2) Prevents goroutine leaks from forgotten cancel calls, (3) Stops
+    timeout timers that would otherwise run until timeout. Pattern: ctx, cancel :=
+    context.WithTimeout(parent, 5*time.Second); defer cancel(). Even if the operation
+    completes before timeout, calling cancel() is harmless and frees the timer immediately.
+    Not calling cancel() is a memory leak - the timer goroutine continues running.'
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: When checking for context cancellation in a long-running loop, what is
+    the recommended pattern?
+  options:
+  - Check ctx.Err() once before the loop starts
+  - Use select with case <-ctx.Done() inside the loop
+  - Only check cancellation if an error occurs
+  - Rely on the Go runtime to automatically stop the loop
+  correct_answer: Use select with case <-ctx.Done() inside the loop
+  explanation: 'The recommended pattern for checking cancellation in loops is: for
+    { select { case <-ctx.Done(): return ctx.Err(); default: doWork() } }. This works
+    because ctx.Done() returns a channel that closes when the context is cancelled
+    (via cancel() or timeout). The select statement checks if the channel is ready
+    to receive (i.e., cancelled) on each iteration. If cancelled, return immediately;
+    otherwise, continue work. This is non-blocking (default case prevents waiting)
+    and efficient (channel operations are fast). Checking ctx.Err() directly (if err
+    := ctx.Err(); err != nil) also works but is slightly less idiomatic. Never skip
+    checking cancellation in loops - a cancelled context should stop work immediately
+    to free resources.'
+  require_pass: true

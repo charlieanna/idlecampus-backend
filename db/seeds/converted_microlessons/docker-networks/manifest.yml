@@ -1,0 +1,17 @@
+course:
+  slug: docker-networks
+  title: Docker Networks
+  description: ''
+  estimated_hours: null
+  level: null
+modules:
+- slug: default
+  title: Default Module
+  lessons:
+  - docker-network-create
+  - docker-network-list
+  - docker-network-inspect
+  - docker-network-connect
+  - docker-network-disconnect
+  - docker-network-remove
+  - docker-network-prune

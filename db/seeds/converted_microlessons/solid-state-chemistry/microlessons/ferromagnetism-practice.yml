@@ -1,0 +1,59 @@
+slug: ferromagnetism-practice
+title: ferromagnetism — Practice
+difficulty: medium
+sequence_order: 1
+estimated_minutes: 2
+key_concepts:
+- ferromagnetism
+prerequisites: []
+content_md: '# ferromagnetism — Practice 🚀
+
+
+  Fe, Co, and Ni are ferromagnetic (strongly attracted to magnetic field, can be permanently
+  magnetized). Al is paramagnetic.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: Which are ferromagnetic substances?
+  options:
+  - Fe
+  - Co
+  - Ni
+  - Al
+  correct_answer: Ni
+  explanation: "Iron (Fe), cobalt (Co), and nickel (Ni) are all ferromagnetic substances - they are strongly attracted to magnetic fields and can be permanently magnetized due to aligned magnetic domains. Aluminum is paramagnetic (weakly attracted, not permanently magnetized). Ferromagnetism arises from unpaired d-electrons and parallel alignment of magnetic moments."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What is the Curie temperature?
+  options:
+  - Temperature at which ferromagnetic substance becomes paramagnetic
+  - Temperature at which paramagnetic substance becomes diamagnetic
+  - Melting point of ferromagnetic substance
+  - Boiling point of magnetic substance
+  correct_answer: Temperature at which ferromagnetic substance becomes paramagnetic
+  explanation: "Curie temperature is the temperature above which a ferromagnetic substance loses its ferromagnetic properties and becomes paramagnetic. At this temperature, thermal energy overcomes the magnetic ordering, and the aligned magnetic domains become randomly oriented."
+  require_pass: false
+- type: mcq
+  sequence_order: 3
+  question: Which property is characteristic of ferromagnetic materials?
+  options:
+  - Weakly repelled by magnetic field
+  - Weakly attracted to magnetic field
+  - Strongly attracted and can be permanently magnetized
+  - Not affected by magnetic field
+  correct_answer: Strongly attracted and can be permanently magnetized
+  explanation: "Ferromagnetic materials are strongly attracted to magnetic fields and can be permanently magnetized due to the presence of magnetic domains with parallel alignment of spins. This is distinct from paramagnetic (weakly attracted, no permanent magnetization) and diamagnetic (weakly repelled) materials."
+  require_pass: false

@@ -1,0 +1,59 @@
+slug: unitcells-practice
+title: unit_cells — Practice
+difficulty: easy
+sequence_order: 7
+estimated_minutes: 2
+key_concepts:
+- unit_cells
+prerequisites: []
+content_md: '# unit_cells — Practice 🚀
+
+
+  FCC has atoms at 8 corners (8×1/8 = 1) and 6 face centers (6×1/2 = 3). Total = 4
+  atoms.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: How many atoms are present in one FCC unit cell?
+  options:
+  - '1'
+  - '2'
+  - '4'
+  - '6'
+  correct_answer: '4'
+  explanation: "FCC (face-centered cubic) has atoms at 8 corners (8 × 1/8 = 1 atom) and 6 face centers (6 × 1/2 = 3 atoms). Total = 1 + 3 = 4 atoms per unit cell. Each corner atom is shared by 8 unit cells and each face-centered atom is shared by 2 unit cells."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: How many atoms are present in one BCC unit cell?
+  options:
+  - '1'
+  - '2'
+  - '4'
+  - '8'
+  correct_answer: '2'
+  explanation: "BCC (body-centered cubic) has atoms at 8 corners (8 × 1/8 = 1 atom) and 1 atom at the body center (1 × 1 = 1 atom). Total = 1 + 1 = 2 atoms per unit cell. The body-centered atom is not shared with any other unit cell."
+  require_pass: false
+- type: mcq
+  sequence_order: 3
+  question: A simple cubic unit cell contains how many atoms?
+  options:
+  - '1'
+  - '2'
+  - '4'
+  - '8'
+  correct_answer: '1'
+  explanation: "A simple cubic unit cell has atoms only at the 8 corners. Each corner atom is shared by 8 unit cells, so contribution per unit cell = 8 × 1/8 = 1 atom. This is the simplest cubic structure with the lowest packing efficiency."
+  require_pass: false

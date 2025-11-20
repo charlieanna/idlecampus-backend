@@ -1,0 +1,102 @@
+slug: lesson-2
+title: Lesson 2
+difficulty: easy
+sequence_order: 2
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Capacity Estimation Techniques\n\n    Learn\
+  \ to estimate system capacity needs systematically.\n\n    ## The 5-Step Framework\n\
+  \n    ### 1. Understand Requirements\n    - What features does the system need?\n\
+  \    - Who are the users?\n    - What's the scale?\n\n    ### 2. Make Assumptions\n\
+  \    - Daily/Monthly active users (DAU/MAU)\n    - User behavior patterns\n    -\
+  \ Data sizes\n    - Growth rate\n\n    ### 3. Calculate Traffic\n    - QPS (Queries\
+  \ Per Second)\n    - Peak QPS (usually 2-3x average)\n    - Read vs Write ratio\n\
+  \n    ### 4. Estimate Storage\n    - Data size per record\n    - Total records over\
+  \ time\n    - Replication factor\n    - Retention policy\n\n    ### 5. Calculate\
+  \ Bandwidth\n    - Data transferred per request\n    - Total requests per second\n\
+  \    - Network capacity needed\n\n    ## Example: URL Shortener (like bit.ly)\n\n\
+  \    ### Requirements\n    - Shorten URLs\n    - Redirect to original URLs\n   \
+  \ - Analytics (optional)\n\n    ### Assumptions\n    ```\n    - 100M URLs shortened\
+  \ per month\n    - Read:Write ratio = 100:1\n    - URL storage: 500 bytes average\n\
+  \    - Cache 20% of hot URLs\n    - Keep data for 5 years\n    ```\n\n    ### Traffic\
+  \ Estimation\n\n    **Write QPS**:\n    ```\n    100M URLs/month\n    = 100M / (30\
+  \ days × 24 hours × 3600 seconds)\n    = 100M / 2.592M seconds\n    ≈ 40 writes/second\n\
+  \n    Peak: 40 × 3 = 120 writes/second\n    ```\n\n    **Read QPS**:\n    ```\n\
+  \    Read:Write = 100:1\n    = 40 × 100\n    = 4,000 reads/second\n\n    Peak: 4,000\
+  \ × 3 = 12,000 reads/second\n    ```\n\n    ### Storage Estimation\n\n    **5-year\
+  \ storage**:\n    ```\n    URLs per 5 years:\n    100M URLs/month × 12 months ×\
+  \ 5 years = 6B URLs\n\n    Storage needed:\n    6B URLs × 500 bytes = 3 TB\n\n \
+  \   With metadata + replication (3x):\n    3 TB × 3 = 9 TB\n    ```\n\n    ### Bandwidth\
+  \ Estimation\n\n    **Write bandwidth**:\n    ```\n    40 writes/sec × 500 bytes\
+  \ = 20 KB/s\n    ```\n\n    **Read bandwidth**:\n    ```\n    4,000 reads/sec ×\
+  \ 500 bytes = 2 MB/s\n    ```\n\n    ### Memory (Cache) Estimation\n\n    **Cache\
+  \ 20% of hot URLs for a day**:\n    ```\n    Read requests per day:\n    4,000 req/s\
+  \ × 86,400 seconds = 345.6M requests\n\n    Cache 20%:\n    345.6M × 0.2 = 69M requests\n\
+  \n    Assuming 1 unique URL per 10 requests:\n    69M / 10 = 6.9M unique URLs\n\n\
+  \    Memory needed:\n    6.9M × 500 bytes ≈ 3.5 GB\n    ```\n\n    ## Example: Twitter-like\
+  \ Service\n\n    ### Assumptions\n    ```\n    - 200M DAU (Daily Active Users)\n\
+  \    - Each user views 100 tweets/day\n    - Each user posts 2 tweets/day\n    -\
+  \ 10% of tweets have images\n    - Average tweet: 300 bytes\n    - Average image:\
+  \ 200 KB\n    - Retention: 5 years\n    ```\n\n    ### Traffic Estimation\n\n  \
+  \  **Read QPS**:\n    ```\n    Daily reads: 200M users × 100 tweets = 20B tweets/day\n\
+  \    Read QPS: 20B / 86,400 seconds ≈ 230,000 req/s\n    Peak: 230K × 3 ≈ 700,000\
+  \ req/s\n    ```\n\n    **Write QPS**:\n    ```\n    Daily writes: 200M users ×\
+  \ 2 tweets = 400M tweets/day\n    Write QPS: 400M / 86,400 ≈ 4,600 tweets/s\n  \
+  \  Peak: 4.6K × 3 ≈ 14,000 tweets/s\n    ```\n\n    ### Storage Estimation\n\n \
+  \   **Text storage (5 years)**:\n    ```\n    Tweets per 5 years:\n    400M tweets/day\
+  \ × 365 days × 5 years = 730B tweets\n\n    Storage:\n    730B × 300 bytes = 219\
+  \ TB\n\n    With replication (3x): 657 TB\n    ```\n\n    **Image storage**:\n \
+  \   ```\n    Images per 5 years:\n    730B tweets × 10% with images = 73B images\n\
+  \n    Storage:\n    73B × 200 KB = 14.6 PB\n\n    With replication (3x): 43.8 PB\n\
+  \    ```\n\n    **Total**: ~44 PB (mostly images!)\n\n    ### Bandwidth Estimation\n\
+  \n    **Read bandwidth**:\n    ```\n    Text: 230K req/s × 300 bytes = 69 MB/s\n\
+  \    Images (10%): 23K req/s × 200 KB = 4.6 GB/s\n    Total: ~4.7 GB/s\n    ```\n\
+  \n    ## Common Patterns\n\n    ### Pattern 1: Social Media\n    - High read:write\
+  \ ratio (100:1 or more)\n    - Heavy caching needed\n    - Media storage dominates\n\
+  \n    ### Pattern 2: Messaging\n    - Balanced read:write\n    - Low latency critical\n\
+  \    - Retention policies important\n\n    ### Pattern 3: Video Streaming\n    -\
+  \ Very high bandwidth\n    - CDN essential\n    - Storage grows rapidly\n\n    ###\
+  \ Pattern 4: Analytics\n    - Write-heavy initially\n    - Batch processing\n  \
+  \  - Aggregated queries\n\n    ## Tips & Tricks\n\n    1. **Use daily/monthly instead\
+  \ of yearly**: Easier to reason about\n    2. **Peak vs Average**: Plan for 2-3x\
+  \ average load\n    3. **Growth**: Add 20-30% yearly growth buffer\n    4. **80/20\
+  \ rule**: 20% of data gets 80% of traffic\n    5. **Round aggressively**: 2.7M →\
+  \ 3M is fine\n\n    ## Red Flags\n\n    - Storage growing faster than budget\n \
+  \   - Bandwidth exceeding network capacity\n    - QPS requiring thousands of servers\n\
+  \    - Memory cache larger than available RAM\n\n    **Practice**: Try the System\
+  \ Design estimation labs!"
+exercises:
+  - type: mcq
+    sequence_order: 1
+    question: "What is the recommended approach for estimating QPS (Queries Per Second) from monthly active users?"
+    options:
+      - "Multiply monthly users by 30"
+      - "Convert monthly requests to seconds by dividing by the total seconds in a month (30 days × 24 hours × 3600 seconds)"
+      - "Divide monthly users by 1000"
+      - "Use monthly users as-is"
+    correct_answer: "Convert monthly requests to seconds by dividing by the total seconds in a month (30 days × 24 hours × 3600 seconds)"
+    explanation: "To calculate QPS from monthly data, you need to convert the time period to seconds. For example, if you have 100M requests per month: 100M requests ÷ (30 days × 24 hours × 3600 seconds) = 100M ÷ 2.592M seconds ≈ 40 requests/second. This gives you the average QPS. For peak load planning, multiply by 2-3x (so 40 QPS average might need capacity for 120 QPS peak). This conversion is fundamental to capacity planning because servers process requests per second, not per month. Always remember: 1 month ≈ 2.6M seconds. Common mistake: forgetting to account for peak traffic, which can be 3-10x higher than average during events like Black Friday or product launches. Real-world example: Twitter handles ~6,000 tweets/second on average but saw peaks of 143,000+ tweets/second during major events."
+    require_pass: true
+  - type: mcq
+    sequence_order: 2
+    question: "In the URL shortener example, why do we multiply storage by 3 for the final estimate?"
+    options:
+      - "To account for future growth"
+      - "To account for replication factor (typically 3 copies of data for reliability)"
+      - "To include backup storage"
+      - "To add caching overhead"
+    correct_answer: "To account for replication factor (typically 3 copies of data for reliability)"
+    explanation: "Data replication creates multiple copies of data across different servers/datacenters for redundancy and availability. A replication factor of 3 means each piece of data is stored in 3 different locations. Why replicate? (1) High availability: if one server fails, data is still accessible from replicas; (2) Disaster recovery: protects against datacenter failures; (3) Read scaling: distribute read load across replicas; (4) Data durability: 99.999999999% (11 nines) durability with 3 replicas. Trade-offs: 3x storage cost but provides fault tolerance. In the URL shortener example: 3TB base storage × 3 replicas = 9TB total. Different systems use different factors: critical financial data might use 5x, while logs might use 2x. Cloud providers like AWS S3 automatically maintain multiple replicas across availability zones. Without replication, a single disk failure could lose all data permanently."
+    require_pass: true
+  - type: mcq
+    sequence_order: 3
+    question: "What is the typical read-to-write ratio for a URL shortener service and why?"
+    options:
+      - "1:1 (equal reads and writes)"
+      - "100:1 (100 reads for every write) because shortened URLs are created once but clicked many times"
+      - "1:100 (more writes than reads)"
+      - "10:1 (slightly more reads)"
+    correct_answer: "100:1 (100 reads for every write) because shortened URLs are created once but clicked many times"
+    explanation: "URL shorteners have very high read-to-write ratios because each shortened URL is created once but potentially clicked hundreds or thousands of times. Example: A marketing campaign creates 1 short URL that gets shared on social media and clicked 10,000 times = 10,000:1 ratio. This pattern heavily influences system design: (1) Read optimization is critical: implement aggressive caching (80/20 rule: 20% of URLs get 80% of traffic), use CDN for redirects, scale read replicas horizontally; (2) Write optimization less important: can tolerate higher latency, simpler infrastructure. For 40 writes/sec with 100:1 ratio = 4,000 reads/sec. Architecture implications: might use 1 primary database for writes but 10+ read replicas, cache hot URLs in Redis/Memcached, serve from edge locations globally. Similar patterns: YouTube (1 upload, millions of views), Instagram (1 post, thousands of likes), Twitter (1 tweet, many reads). Contrast with chat apps (1:1 ratio) or logging systems (write-heavy)."
+    require_pass: true

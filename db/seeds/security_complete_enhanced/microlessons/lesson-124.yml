@@ -1,0 +1,76 @@
+slug: lesson-124
+title: Lesson 124
+sequence_order: 124
+estimated_minutes: 2
+difficulty: easy
+content_md: "# Microlesson \U0001F680\n\n# RBAC and Authentication in Kubernetes\n\
+  \n    ## Role-Based Access Control (RBAC)\n\n    ### Key Concepts\n\n    - **Subjects**:\
+  \ Users, Groups, ServiceAccounts\n    - **Resources**: Pods, Services, Deployments,\
+  \ etc.\n    - **Verbs**: get, list, create, update, delete, watch\n\n    ### Roles\
+  \ and ClusterRoles\n\n    **Role** (namespace-scoped):\n    ```yaml\n    apiVersion:\
+  \ rbac.authorization.k8s.io/v1\n    kind: Role\n    metadata:\n      namespace:\
+  \ development\n      name: pod-reader\n    rules:\n    - apiGroups: [\"\"]\n   \
+  \   resources: [\"pods\"]\n      verbs: [\"get\", \"list\"]\n    ```\n\n    **ClusterRole**\
+  \ (cluster-wide):\n    ```yaml\n    apiVersion: rbac.authorization.k8s.io/v1\n \
+  \   kind: ClusterRole\n    metadata:\n      name: secret-reader\n    rules:\n  \
+  \  - apiGroups: [\"\"]\n      resources: [\"secrets\"]\n      verbs: [\"get\", \"\
+  list\"]\n    ```\n\n    ### RoleBindings and ClusterRoleBindings\n\n    **RoleBinding**:\n\
+  \    ```yaml\n    apiVersion: rbac.authorization.k8s.io/v1\n    kind: RoleBinding\n\
+  \    metadata:\n      name: read-pods\n      namespace: development\n    subjects:\n\
+  \    - kind: User\n      name: jane\n      apiGroup: rbac.authorization.k8s.io\n\
+  \    roleRef:\n      kind: Role\n      name: pod-reader\n      apiGroup: rbac.authorization.k8s.io\n\
+  \    ```\n\n    **ClusterRoleBinding**:\n    ```yaml\n    apiVersion: rbac.authorization.k8s.io/v1\n\
+  \    kind: ClusterRoleBinding\n    metadata:\n      name: read-secrets-global\n\
+  \    subjects:\n    - kind: Group\n      name: admins\n      apiGroup: rbac.authorization.k8s.io\n\
+  \    roleRef:\n      kind: ClusterRole\n      name: secret-reader\n      apiGroup:\
+  \ rbac.authorization.k8s.io\n    ```\n\n    ## Authentication Methods\n\n    ###\
+  \ 1. X.509 Client Certificates\n    ```bash\n    # Create private key\n    openssl\
+  \ genrsa -out jane.key 2048\n\n    # Create certificate signing request\n    openssl\
+  \ req -new -key jane.key -out jane.csr -subj \"/CN=jane/O=developers\"\n\n    #\
+  \ Sign with cluster CA\n    openssl x509 -req -in jane.csr -CA /etc/kubernetes/pki/ca.crt\
+  \ \\\n      -CAkey /etc/kubernetes/pki/ca.key -CAcreateserial \\\n      -out jane.crt\
+  \ -days 365\n    ```\n\n    ### 2. Service Account Tokens\n    ```yaml\n    apiVersion:\
+  \ v1\n    kind: ServiceAccount\n    metadata:\n      name: build-bot\n      namespace:\
+  \ ci-cd\n    ```\n\n    ```bash\n    # Get token\n    kubectl create token build-bot\
+  \ -n ci-cd\n    ```\n\n    ### 3. OpenID Connect (OIDC)\n    Configure in kube-apiserver:\n\
+  \    ```\n    --oidc-issuer-url=https://accounts.google.com\n    --oidc-client-id=kubernetes\n\
+  \    --oidc-username-claim=email\n    --oidc-groups-claim=groups\n    ```\n\n  \
+  \  ## Checking Permissions\n\n    ```bash\n    # Check if you can create deployments\n\
+  \    kubectl auth can-i create deployments --namespace=production\n\n    # Check\
+  \ permissions for another user\n    kubectl auth can-i list pods --as=jane --namespace=development\n\
+  \n    # List all permissions for a user\n    kubectl auth can-i --list --as=jane\
+  \ --namespace=development\n    ```\n\n    ## Best Practices\n\n    1. **Principle\
+  \ of Least Privilege**: Grant minimum necessary permissions\n    2. **Use ServiceAccounts**:\
+  \ For pod authentication\n    3. **Avoid Wildcards**: Be specific with resources\
+  \ and verbs\n    4. **Regular Audits**: Review and update RBAC policies\n    5.\
+  \ **Separate Namespaces**: Isolate workloads\n    6. **Use Groups**: Manage permissions\
+  \ via groups, not individual users\n\n    ## Common RBAC Patterns\n\n    ### Read-Only\
+  \ Access\n    ```yaml\n    rules:\n    - apiGroups: [\"\", \"apps\", \"batch\"]\n\
+  \      resources: [\"*\"]\n      verbs: [\"get\", \"list\", \"watch\"]\n    ```\n\
+  \n    ### Developer Access\n    ```yaml\n    rules:\n    - apiGroups: [\"\", \"\
+  apps\"]\n      resources: [\"pods\", \"deployments\", \"services\"]\n      verbs:\
+  \ [\"get\", \"list\", \"create\", \"update\", \"delete\"]\n    - apiGroups: [\"\"\
+  ]\n      resources: [\"pods/log\"]\n      verbs: [\"get\"]\n    ```\n\n    ### Cluster\
+  \ Admin\n    ```yaml\n    rules:\n    - apiGroups: [\"*\"]\n      resources: [\"\
+  *\"]\n      verbs: [\"*\"]\n    ```"
+exercises:
+- type: mcq
+  slug: lesson-124-mcq
+  sequence_order: 1
+  question: What is the main focus of this lesson on Lesson 124?
+  options:
+  - Understanding core concepts and practical applications related to Lesson 124
+  - Only theoretical knowledge without application
+  - Memorizing definitions without context
+  - Learning unrelated peripheral topics
+  correct_answer_index: 0
+  explanation: This lesson on Lesson 124 aims to build both conceptual understanding
+    and practical knowledge. Effective learning combines theory with application,
+    allowing you to not only understand concepts but also apply them in real-world
+    contexts. This integrated approach is more valuable than rote memorization or
+    purely theoretical study.
+objectives:
+- Apply least privilege
+- Design policies
+- Harden auth & keys
+next_recommended: []

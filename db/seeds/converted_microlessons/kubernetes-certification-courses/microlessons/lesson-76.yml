@@ -1,0 +1,66 @@
+slug: lesson-76
+title: Lesson 76
+difficulty: easy
+sequence_order: 76
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# RBAC Deep Dive\n\n    - Roles vs ClusterRoles\n\
+  \    - RoleBinding and ClusterRoleBinding\n    - Aggregated roles"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What is an aggregated ClusterRole in Kubernetes?
+  options:
+  - A role that combines multiple users
+  - A ClusterRole that automatically includes rules from other ClusterRoles based
+    on label selectors
+  - A deprecated role type
+  - A role limited to specific namespaces
+  correct_answer: A ClusterRole that automatically includes rules from other ClusterRoles
+    based on label selectors
+  explanation: 'Aggregated ClusterRoles combine rules from multiple ClusterRoles using
+    label selectors. They use the aggregationRule field to select other ClusterRoles,
+    automatically inheriting their permissions. This is useful for extensibility -
+    built-in roles like ''view'', ''edit'', and ''admin'' are aggregated roles that
+    can include permissions from custom resources. When you create a CRD and want
+    it included in standard roles, create a ClusterRole with appropriate permissions
+    and labels like ''rbac.authorization.k8s.io/aggregate-to-view: "true"''. The aggregated
+    role automatically includes these permissions. This pattern allows adding permissions
+    to built-in roles without modifying them directly. Aggregation happens at the
+    API server level, keeping individual ClusterRoles simple while building comprehensive
+    permission sets. It''s a powerful mechanism for maintaining consistent RBAC across
+    custom resources.'
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What happens if you bind a ClusterRole using a RoleBinding (not ClusterRoleBinding)?
+  options:
+  - It's an error and won't work
+  - The ClusterRole's permissions apply only to the RoleBinding's namespace
+  - The permissions apply cluster-wide
+  - Only cluster-scoped resources are accessible
+  correct_answer: The ClusterRole's permissions apply only to the RoleBinding's namespace
+  explanation: When you bind a ClusterRole using a RoleBinding (instead of ClusterRoleBinding),
+    the ClusterRole's permissions are scoped to the RoleBinding's namespace only.
+    This is useful for reusing common permission sets across namespaces without redefining
+    them. For example, you might have a ClusterRole 'pod-reader' that grants pod read
+    permissions, then create RoleBindings in different namespaces to grant those permissions
+    to different users in each namespace. The users only get permissions in their
+    respective namespaces, not cluster-wide. This pattern reduces duplication - define
+    permissions once in a ClusterRole, reuse via RoleBindings. In contrast, ClusterRoleBinding
+    grants the ClusterRole's permissions cluster-wide. This flexibility makes RBAC
+    powerful while maintaining security through namespace isolation.
+  require_pass: true
+- type: mcq
+  sequence_order: 1
+  question: What kubectl command checks if you can perform an action?
+  options:
+  - kubectl auth can-i create pods
+  - kubectl check permissions create pods
+  - kubectl verify action create pods
+  - kubectl test auth create pods
+  correct_answer_index: 0
+  explanation: kubectl auth can-i <action> <resource> checks if the current user has
+    permission to perform the specified action.
+  require_pass: true

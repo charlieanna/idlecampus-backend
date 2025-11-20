@@ -1,0 +1,236 @@
+slug: lesson-27
+title: Lesson 27
+difficulty: easy
+sequence_order: 27
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Working with JSON in Go\n\n    ### Why\
+  \ JSON in Go?\n\n    JSON (JavaScript Object Notation) is the most common data format\
+  \ for:\n    - ✅ REST APIs\n    - ✅ Configuration files\n    - ✅ Data storage\n \
+  \   - ✅ Communication between services\n\n    Go's `encoding/json` package makes\
+  \ JSON handling straightforward and type-safe.\n\n    **Import:**\n    ```go\n \
+  \   import \"encoding/json\"\n    ```\n\n    ### Basic Concepts\n\n    **Two main\
+  \ operations:**\n    1. **Marshal** (Encoding): Go struct → JSON string\n    2.\
+  \ **Unmarshal** (Decoding): JSON string → Go struct\n\n    ### Marshaling (Go to\
+  \ JSON)\n\n    **Basic struct to JSON:**\n    ```go\n    type Person struct {\n\
+  \        Name string\n        Age  int\n        City string\n    }\n\n    person\
+  \ := Person{\n        Name: \"Alice\",\n        Age:  25,\n        City: \"New York\"\
+  ,\n    }\n\n    // Convert to JSON\n    jsonData, err := json.Marshal(person)\n\
+  \    if err != nil {\n        log.Fatal(err)\n    }\n\n    fmt.Println(string(jsonData))\n\
+  \    // Output: {\"Name\":\"Alice\",\"Age\":25,\"City\":\"New York\"}\n    ```\n\
+  \n    **Pretty-printed JSON:**\n    ```go\n    jsonData, err := json.MarshalIndent(person,\
+  \ \"\", \"  \")\n    if err != nil {\n        log.Fatal(err)\n    }\n\n    fmt.Println(string(jsonData))\n\
+  \    // Output:\n    // {\n    //   \"Name\": \"Alice\",\n    //   \"Age\": 25,\n\
+  \    //   \"City\": \"New York\"\n    // }\n    ```\n\n    ### Struct Tags: Controlling\
+  \ JSON Output\n\n    **Field tags customize JSON encoding:**\n    ```go\n    type\
+  \ User struct {\n        ID        int       \\`json:\"id\"\\`                 \
+  \   // Lowercase in JSON\n        Username  string    \\`json:\"username\"\\`\n\
+  \        Email     string    \\`json:\"email\"\\`\n        Password  string    \\\
+  `json:\"-\"\\`                    // Never include\n        CreatedAt time.Time\
+  \ \\`json:\"created_at\"\\`\n        UpdatedAt time.Time \\`json:\"updated_at,omitempty\"\
+  \\` // Omit if zero value\n        Active    bool      \\`json:\"is_active\"\\`\n\
+  \    }\n\n    user := User{\n        ID:       123,\n        Username: \"alice\"\
+  ,\n        Email:    \"alice@example.com\",\n        Password: \"secret123\",  //\
+  \ Won't appear in JSON!\n    }\n\n    jsonData, _ := json.MarshalIndent(user, \"\
+  \", \"  \")\n    fmt.Println(string(jsonData))\n    // {\n    //   \"id\": 123,\n\
+  \    //   \"username\": \"alice\",\n    //   \"email\": \"alice@example.com\",\n\
+  \    //   \"created_at\": \"0001-01-01T00:00:00Z\",\n    //   \"is_active\": false\n\
+  \    // }\n    // Note: password is excluded, updated_at omitted (zero value)\n\
+  \    ```\n\n    ### Common Struct Tag Options\n\n    ```go\n    type Product struct\
+  \ {\n        Name     string  \\`json:\"name\"\\`              // Custom field name\n\
+  \        Price    float64 \\`json:\"price\"\\`\n        Internal string  \\`json:\"\
+  -\"\\`                 // Never marshal/unmarshal\n        Optional string  \\`json:\"\
+  description,omitempty\"\\` // Omit if empty\n        Quantity int     \\`json:\"\
+  qty,string\"\\`        // Convert to string\n    }\n    ```\n\n    **Tag options:**\n\
+  \    - `json:\"fieldname\"` - Custom JSON field name\n    - `json:\"-\"` - Ignore\
+  \ field completely\n    - `json:\",omitempty\"` - Omit if zero value (0, \"\", false,\
+  \ nil)\n    - `json:\",string\"` - Marshal as string instead of number\n\n    ###\
+  \ Unmarshaling (JSON to Go)\n\n    **JSON to struct:**\n    ```go\n    jsonString\
+  \ := \\`{\n        \"name\": \"Bob\",\n        \"age\": 30,\n        \"city\": \"\
+  Boston\"\n    }\\`\n\n    var person Person\n    err := json.Unmarshal([]byte(jsonString),\
+  \ &person)\n    if err != nil {\n        log.Fatal(err)\n    }\n\n    fmt.Printf(\"\
+  %+v\\\\n\", person)\n    // {Name:Bob Age:30 City:Boston}\n    ```\n\n    **⚠️ Important:\
+  \ Pass pointer to Unmarshal!**\n    ```go\n    // ❌ WRONG: Doesn't work\n    var\
+  \ person Person\n    json.Unmarshal(jsonData, person)\n\n    // ✅ CORRECT: Pass\
+  \ pointer\n    var person Person\n    json.Unmarshal(jsonData, &person)\n    ```\n\
+  \n    ### Handling Unknown JSON Structure\n\n    **Use map[string]interface{} for\
+  \ flexible JSON:**\n    ```go\n    jsonString := \\`{\n        \"name\": \"Alice\"\
+  ,\n        \"age\": 25,\n        \"scores\": [95, 87, 92],\n        \"active\":\
+  \ true\n    }\\`\n\n    var data map[string]interface{}\n    json.Unmarshal([]byte(jsonString),\
+  \ &data)\n\n    // Access fields with type assertions\n    name := data[\"name\"\
+  ].(string)\n    age := data[\"age\"].(float64)  // JSON numbers are float64!\n \
+  \   scores := data[\"scores\"].([]interface{})\n    active := data[\"active\"].(bool)\n\
+  \n    fmt.Printf(\"Name: %s, Age: %.0f\\\\n\", name, age)\n    ```\n\n    ### JSON\
+  \ Arrays\n\n    **Marshaling slices:**\n    ```go\n    users := []User{\n      \
+  \  {ID: 1, Username: \"alice\"},\n        {ID: 2, Username: \"bob\"},\n        {ID:\
+  \ 3, Username: \"charlie\"},\n    }\n\n    jsonData, _ := json.MarshalIndent(users,\
+  \ \"\", \"  \")\n    fmt.Println(string(jsonData))\n    // [\n    //   {\"id\":\
+  \ 1, \"username\": \"alice\", ...},\n    //   {\"id\": 2, \"username\": \"bob\"\
+  , ...},\n    //   {\"id\": 3, \"username\": \"charlie\", ...}\n    // ]\n    ```\n\
+  \n    **Unmarshaling arrays:**\n    ```go\n    jsonString := \\`[\n        {\"id\"\
+  : 1, \"username\": \"alice\"},\n        {\"id\": 2, \"username\": \"bob\"}\n   \
+  \ ]\\`\n\n    var users []User\n    json.Unmarshal([]byte(jsonString), &users)\n\
+  \n    for _, user := range users {\n        fmt.Printf(\"%d: %s\\\\n\", user.ID,\
+  \ user.Username)\n    }\n    ```\n\n    ### Nested Structures\n\n    ```go\n   \
+  \ type Address struct {\n        Street  string \\`json:\"street\"\\`\n        City\
+  \    string \\`json:\"city\"\\`\n        ZipCode string \\`json:\"zip_code\"\\`\n\
+  \    }\n\n    type Person struct {\n        Name    string  \\`json:\"name\"\\`\n\
+  \        Age     int     \\`json:\"age\"\\`\n        Address Address \\`json:\"\
+  address\"\\`\n    }\n\n    person := Person{\n        Name: \"Alice\",\n       \
+  \ Age:  25,\n        Address: Address{\n            Street:  \"123 Main St\",\n\
+  \            City:    \"New York\",\n            ZipCode: \"10001\",\n        },\n\
+  \    }\n\n    jsonData, _ := json.MarshalIndent(person, \"\", \"  \")\n    // {\n\
+  \    //   \"name\": \"Alice\",\n    //   \"age\": 25,\n    //   \"address\": {\n\
+  \    //     \"street\": \"123 Main St\",\n    //     \"city\": \"New York\",\n \
+  \   //     \"zip_code\": \"10001\"\n    //   }\n    // }\n    ```\n\n    ### Working\
+  \ with JSON Files\n\n    **Write JSON to file:**\n    ```go\n    func saveToFile(filename\
+  \ string, data interface{}) error {\n        file, err := os.Create(filename)\n\
+  \        if err != nil {\n            return err\n        }\n        defer file.Close()\n\
+  \n        encoder := json.NewEncoder(file)\n        encoder.SetIndent(\"\", \" \
+  \ \")  // Pretty print\n        return encoder.Encode(data)\n    }\n\n    // Usage\n\
+  \    user := User{ID: 123, Username: \"alice\"}\n    saveToFile(\"user.json\", user)\n\
+  \    ```\n\n    **Read JSON from file:**\n    ```go\n    func loadFromFile(filename\
+  \ string, v interface{}) error {\n        file, err := os.Open(filename)\n     \
+  \   if err != nil {\n            return err\n        }\n        defer file.Close()\n\
+  \n        decoder := json.NewDecoder(file)\n        return decoder.Decode(v)\n \
+  \   }\n\n    // Usage\n    var user User\n    err := loadFromFile(\"user.json\"\
+  , &user)\n    ```\n\n    ### JSON Encoder/Decoder (Streaming)\n\n    **For large\
+  \ data or network streams:**\n    ```go\n    // Write JSON stream\n    func writeUsers(w\
+  \ io.Writer, users []User) error {\n        encoder := json.NewEncoder(w)\n    \
+  \    for _, user := range users {\n            if err := encoder.Encode(user); err\
+  \ != nil {\n                return err\n            }\n        }\n        return\
+  \ nil\n    }\n\n    // Read JSON stream\n    func readUsers(r io.Reader) ([]User,\
+  \ error) {\n        var users []User\n        decoder := json.NewDecoder(r)\n\n\
+  \        for {\n            var user User\n            err := decoder.Decode(&user)\n\
+  \            if err == io.EOF {\n                break\n            }\n        \
+  \    if err != nil {\n                return nil, err\n            }\n         \
+  \   users = append(users, user)\n        }\n        return users, nil\n    }\n \
+  \   ```\n\n    ### Custom JSON Marshaling\n\n    **Implement MarshalJSON for custom\
+  \ encoding:**\n    ```go\n    type Color struct {\n        R, G, B uint8\n    }\n\
+  \n    func (c Color) MarshalJSON() ([]byte, error) {\n        // Custom format:\
+  \ \"#RRGGBB\"\n        hex := fmt.Sprintf(\"#%02x%02x%02x\", c.R, c.G, c.B)\n  \
+  \      return json.Marshal(hex)\n    }\n\n    color := Color{R: 255, G: 100, B:\
+  \ 50}\n    jsonData, _ := json.Marshal(color)\n    fmt.Println(string(jsonData))\
+  \  // \"#ff6432\"\n    ```\n\n    **Implement UnmarshalJSON for custom decoding:**\n\
+  \    ```go\n    func (c *Color) UnmarshalJSON(data []byte) error {\n        var\
+  \ hex string\n        if err := json.Unmarshal(data, &hex); err != nil {\n     \
+  \       return err\n        }\n\n        // Parse \"#RRGGBB\"\n        _, err :=\
+  \ fmt.Sscanf(hex, \"#%02x%02x%02x\", &c.R, &c.G, &c.B)\n        return err\n   \
+  \ }\n\n    jsonString := \\`\"#ff6432\"\\`\n    var color Color\n    json.Unmarshal([]byte(jsonString),\
+  \ &color)\n    fmt.Printf(\"RGB: %d, %d, %d\\\\n\", color.R, color.G, color.B)\n\
+  \    ```\n\n    ### Handling Dates and Time\n\n    **time.Time marshals to RFC3339\
+  \ by default:**\n    ```go\n    type Event struct {\n        Name string    \\`json:\"\
+  name\"\\`\n        Time time.Time \\`json:\"timestamp\"\\`\n    }\n\n    event :=\
+  \ Event{\n        Name: \"Conference\",\n        Time: time.Now(),\n    }\n\n  \
+  \  jsonData, _ := json.Marshal(event)\n    // {\"name\":\"Conference\",\"timestamp\"\
+  :\"2025-11-05T10:30:00Z\"}\n    ```\n\n    **Custom date format:**\n    ```go\n\
+  \    type CustomDate time.Time\n\n    func (cd CustomDate) MarshalJSON() ([]byte,\
+  \ error) {\n        t := time.Time(cd)\n        formatted := t.Format(\"2006-01-02\"\
+  )\n        return json.Marshal(formatted)\n    }\n\n    func (cd *CustomDate) UnmarshalJSON(data\
+  \ []byte) error {\n        var dateStr string\n        if err := json.Unmarshal(data,\
+  \ &dateStr); err != nil {\n            return err\n        }\n\n        t, err :=\
+  \ time.Parse(\"2006-01-02\", dateStr)\n        if err != nil {\n            return\
+  \ err\n        }\n\n        *cd = CustomDate(t)\n        return nil\n    }\n   \
+  \ ```\n\n    ### Error Handling\n\n    **Check for unmarshal errors:**\n    ```go\n\
+  \    jsonString := \\`{\"name\": \"Alice\", \"age\": \"not a number\"}\\`\n\n  \
+  \  var person Person\n    err := json.Unmarshal([]byte(jsonString), &person)\n \
+  \   if err != nil {\n        if syntaxErr, ok := err.(*json.SyntaxError); ok {\n\
+  \            fmt.Printf(\"Syntax error at byte %d\\\\n\", syntaxErr.Offset)\n  \
+  \      }\n        if typeErr, ok := err.(*json.UnmarshalTypeError); ok {\n     \
+  \       fmt.Printf(\"Type error: field %s expected %s but got %s\\\\n\",\n     \
+  \           typeErr.Field, typeErr.Type, typeErr.Value)\n        }\n        log.Fatal(err)\n\
+  \    }\n    ```\n\n    ### Real-World Example: REST API Response\n\n    ```go\n\
+  \    type APIResponse struct {\n        Success bool        \\`json:\"success\"\\\
+  `\n        Message string      \\`json:\"message,omitempty\"\\`\n        Data  \
+  \  interface{} \\`json:\"data,omitempty\"\\`\n        Error   string      \\`json:\"\
+  error,omitempty\"\\`\n    }\n\n    type User struct {\n        ID       int    \\\
+  `json:\"id\"\\`\n        Username string \\`json:\"username\"\\`\n        Email\
+  \    string \\`json:\"email\"\\`\n    }\n\n    func getUserHandler(w http.ResponseWriter,\
+  \ r *http.Request) {\n        user := User{\n            ID:       123,\n      \
+  \      Username: \"alice\",\n            Email:    \"alice@example.com\",\n    \
+  \    }\n\n        response := APIResponse{\n            Success: true,\n       \
+  \     Data:    user,\n        }\n\n        w.Header().Set(\"Content-Type\", \"application/json\"\
+  )\n        json.NewEncoder(w).Encode(response)\n    }\n\n    func errorHandler(w\
+  \ http.ResponseWriter, message string, code int) {\n        response := APIResponse{\n\
+  \            Success: false,\n            Error:   message,\n        }\n\n     \
+  \   w.Header().Set(\"Content-Type\", \"application/json\")\n        w.WriteStatus(code)\n\
+  \        json.NewEncoder(w).Encode(response)\n    }\n    ```\n\n    ### Best Practices\n\
+  \n    **1. Use struct tags for clarity:**\n    ```go\n    // ✅ GOOD: Clear JSON\
+  \ mapping\n    type User struct {\n        ID       int    \\`json:\"id\"\\`\n \
+  \       Username string \\`json:\"username\"\\`\n    }\n\n    // ❌ BAD: Relies on\
+  \ field names\n    type User struct {\n        ID       int\n        Username string\n\
+  \    }\n    ```\n\n    **2. Omit sensitive data:**\n    ```go\n    type User struct\
+  \ {\n        ID       int    \\`json:\"id\"\\`\n        Username string \\`json:\"\
+  username\"\\`\n        Password string \\`json:\"-\"\\`           // Never marshal\n\
+  \        Token    string \\`json:\"-\"\\`\n    }\n    ```\n\n    **3. Use omitempty\
+  \ for optional fields:**\n    ```go\n    type Profile struct {\n        Name   \
+  \  string \\`json:\"name\"\\`\n        Bio      string \\`json:\"bio,omitempty\"\
+  \\`      // Optional\n        Website  string \\`json:\"website,omitempty\"\\`\n\
+  \        Location string \\`json:\"location,omitempty\"\\`\n    }\n    ```\n\n \
+  \   **4. Validate after unmarshaling:**\n    ```go\n    var user User\n    if err\
+  \ := json.Unmarshal(data, &user); err != nil {\n        return err\n    }\n\n  \
+  \  // Validate\n    if user.Email == \"\" {\n        return errors.New(\"email is\
+  \ required\")\n    }\n    if user.Age < 0 {\n        return errors.New(\"invalid\
+  \ age\")\n    }\n    ```\n\n    **5. Use json.RawMessage for delayed parsing:**\n\
+  \    ```go\n    type Event struct {\n        Type string          \\`json:\"type\"\
+  \\`\n        Data json.RawMessage \\`json:\"data\"\\` // Parse later based on type\n\
+  \    }\n\n    // Parse differently based on event type\n    if event.Type == \"\
+  user_created\" {\n        var user User\n        json.Unmarshal(event.Data, &user)\n\
+  \    } else if event.Type == \"order_placed\" {\n        var order Order\n     \
+  \   json.Unmarshal(event.Data, &order)\n    }\n    ```\n\n    ### Common Mistakes\n\
+  \n    **1. Forgetting to export fields:**\n    ```go\n    // ❌ WRONG: Lowercase\
+  \ fields won't be marshaled\n    type User struct {\n        id       int    //\
+  \ Not exported\n        username string // Not exported\n    }\n\n    // ✅ CORRECT:\
+  \ Capital letters\n    type User struct {\n        ID       int    \\`json:\"id\"\
+  \\`\n        Username string \\`json:\"username\"\\`\n    }\n    ```\n\n    **2.\
+  \ Not handling errors:**\n    ```go\n    // ❌ WRONG: Ignoring errors\n    json.Unmarshal(data,\
+  \ &user)\n\n    // ✅ CORRECT: Check errors\n    if err := json.Unmarshal(data, &user);\
+  \ err != nil {\n        return fmt.Errorf(\"failed to parse JSON: %w\", err)\n \
+  \   }\n    ```\n\n    **3. Using wrong types for numbers:**\n    ```go\n    // JSON\
+  \ numbers unmarshal to float64 by default!\n    var data map[string]interface{}\n\
+  \    json.Unmarshal([]byte(\\`{\"count\": 10}\\`), &data)\n\n    // ❌ WRONG: Will\
+  \ panic\n    count := data[\"count\"].(int)\n\n    // ✅ CORRECT: JSON numbers are\
+  \ float64\n    count := int(data[\"count\"].(float64))\n    ```\n\n    ### Key Takeaways\n\
+  \n    1. **json.Marshal()** - Go to JSON\n    2. **json.Unmarshal()** - JSON to\
+  \ Go (use pointer!)\n    3. **Struct tags** control JSON field names and behavior\n\
+  \    4. **\\`json:\"-\"\\`** - ignore field\n    5. **\\`json:\",omitempty\"\\`**\
+  \ - omit zero values\n    6. **Export fields** (capitalize) to marshal/unmarshal\n\
+  \    7. **Encoder/Decoder** for streams\n    8. **Custom Marshal/Unmarshal** for\
+  \ special formatting\n    9. **Always handle errors** from JSON operations\n   \
+  \ 10. **Validate data** after unmarshaling\n\n    **JSON handling in Go is type-safe,\
+  \ efficient, and straightforward with proper struct tags!**"
+exercises:
+  - type: mcq
+    sequence_order: 1
+    question: "What are the two main JSON operations in Go?"
+    options:
+      - "Serialize and Deserialize"
+      - "Marshal (Go to JSON) and Unmarshal (JSON to Go)"
+      - "Encode and Parse"
+      - "Stringify and Parse"
+    correct_answer: "Marshal (Go to JSON) and Unmarshal (JSON to Go)"
+    explanation: "Go uses specific terminology for JSON operations: Marshal converts Go data structures to JSON, and Unmarshal converts JSON to Go structures. Example:\n\n```go\nimport \"encoding/json\"\n\ntype Person struct {\n    Name string `json:\"name\"`\n    Age  int    `json:\"age\"`\n}\n\n// Marshal: Go → JSON\nperson := Person{Name: \"Alice\", Age: 25}\njsonData, err := json.Marshal(person)\nif err != nil {\n    log.Fatal(err)\n}\nfmt.Println(string(jsonData))\n// Output: {\"name\":\"Alice\",\"age\":25}\n\n// Unmarshal: JSON → Go\njsonString := `{\"name\":\"Bob\",\"age\":30}`\nvar p2 Person\nerr = json.Unmarshal([]byte(jsonString), &p2)\nif err != nil {\n    log.Fatal(err)\n}\nfmt.Printf(\"%+v\\n\", p2)\n// Output: {Name:Bob Age:30}\n```\n\nKey points: Marshal returns []byte, Unmarshal requires a pointer to modify the target. For pretty-printed JSON, use json.MarshalIndent(). For streaming, use json.NewEncoder() and json.NewDecoder()."
+    require_pass: true
+  - type: mcq
+    sequence_order: 2
+    question: "What struct tag would you use to omit a field from JSON if it has a zero value?"
+    options:
+      - "json:\"-\""
+      - "json:\",omitempty\""
+      - "json:\"optional\""
+      - "json:\",skip\""
+    correct_answer: "json:\",omitempty\""
+    explanation: "The `json:\",omitempty\"` tag omits a field from JSON output when it has a zero value (0, \"\", false, nil, empty slice/map). This is useful for optional fields. Example:\n\n```go\ntype User struct {\n    Name     string `json:\"name\"`\n    Email    string `json:\"email,omitempty\"`    // Skip if empty\n    Age      int    `json:\"age,omitempty\"`      // Skip if 0\n    Active   bool   `json:\"active,omitempty\"`   // Skip if false\n    Bio      string `json:\"bio,omitempty\"`      // Skip if \"\"\n    Password string `json:\"-\"`                  // Never include\n}\n\n// All fields provided\nuser1 := User{Name: \"Alice\", Email: \"alice@example.com\", Age: 25}\njsonData, _ := json.Marshal(user1)\nfmt.Println(string(jsonData))\n// {\"name\":\"Alice\",\"email\":\"alice@example.com\",\"age\":25}\n\n// Some fields omitted (zero values)\nuser2 := User{Name: \"Bob\"}  // Email, Age, Active, Bio are zero values\njsonData, _ = json.Marshal(user2)\nfmt.Println(string(jsonData))\n// {\"name\":\"Bob\"}  // Only non-zero values\n```\n\nNote: `json:\"-\"` (with dash) completely excludes the field always, while `omitempty` only excludes when the value is zero."
+    require_pass: true
+  - type: mcq
+    sequence_order: 3
+    question: "Why must struct fields be exported (capitalized) to be marshaled to JSON?"
+    options:
+      - "It's a JSON requirement"
+      - "Unexported fields are private and not accessible to the json package"
+      - "It makes JSON faster"
+      - "It's optional, lowercase works too"
+    correct_answer: "Unexported fields are private and not accessible to the json package"
+    explanation: "In Go, only exported (capitalized) fields are accessible outside their package. The `encoding/json` package is external to your code, so it can only access exported fields. Unexported (lowercase) fields are completely ignored during marshaling. Example:\n\n```go\ntype User struct {\n    Name     string `json:\"name\"`     // Exported - marshals\n    Email    string `json:\"email\"`    // Exported - marshals\n    password string `json:\"password\"` // Unexported - IGNORED!\n}\n\nuser := User{\n    Name:     \"Alice\",\n    Email:    \"alice@example.com\",\n    password: \"secret123\",  // Won't appear in JSON\n}\n\njsonData, _ := json.Marshal(user)\nfmt.Println(string(jsonData))\n// Output: {\"name\":\"Alice\",\"email\":\"alice@example.com\"}\n// Note: password is missing!\n```\n\nThis is actually a useful feature for keeping internal fields private. If you want different JSON field names but still export the field, use struct tags:\n\n```go\ntype User struct {\n    Name string `json:\"name\"`  // Exported as \"name\" in JSON\n}\n```\n\nCapitalize to export, use tags to control JSON naming."
+    require_pass: true

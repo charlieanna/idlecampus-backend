@@ -1,0 +1,72 @@
+slug: lesson-6
+title: Lesson 6
+difficulty: easy
+sequence_order: 6
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Concurrency vs Parallelism\n\n    Understanding\
+  \ the difference between concurrency and parallelism is fundamental to writing efficient\
+  \ multi-threaded programs.\n\n    ## Definitions\n\n    **Concurrency**: Multiple\
+  \ tasks making progress by interleaving their execution. Tasks don't necessarily\
+  \ run simultaneously.\n\n    **Parallelism**: Multiple tasks executing simultaneously\
+  \ on multiple CPU cores.\n\n    ### Key Analogy\n    - **Concurrency**: One chef\
+  \ multitasking between multiple dishes (switching context)\n    - **Parallelism**:\
+  \ Multiple chefs each cooking a different dish simultaneously\n\n    ## Why Concurrency?\n\
+  \n    1. **Responsiveness**: Keep UI responsive while background work happens\n\
+  \    2. **Resource Utilization**: Don't waste time waiting for I/O\n    3. **Modularity**:\
+  \ Separate concerns into independent tasks\n    4. **Scalability**: Handle more\
+  \ requests with same resources\n\n    ## Processes vs Threads\n\n    ### Process\n\
+  \    - Independent execution unit\n    - Own memory space\n    - Heavy context switching\n\
+  \    - Isolated (safer but slower communication)\n\n    ### Thread\n    - Lightweight\
+  \ execution unit within a process\n    - Shared memory space\n    - Fast context\
+  \ switching\n    - Shared state (faster but needs synchronization)\n\n    ```python\n\
+  \    # Python example: Process vs Thread\n    import multiprocessing\n    import\
+  \ threading\n\n    # Process - separate memory\n    def worker_process(n):\n   \
+  \     print(f\"Process {n} running\")\n\n    # Thread - shared memory\n    def worker_thread(n):\n\
+  \        print(f\"Thread {n} running\")\n\n    # Creating processes\n    p = multiprocessing.Process(target=worker_process,\
+  \ args=(1,))\n\n    # Creating threads\n    t = threading.Thread(target=worker_thread,\
+  \ args=(1,))\n    ```\n\n    ## Thread States\n\n    1. **New**: Thread created\
+  \ but not started\n    2. **Runnable**: Ready to run, waiting for CPU\n    3. **Running**:\
+  \ Executing on CPU\n    4. **Blocked**: Waiting for lock/resource\n    5. **Terminated**:\
+  \ Finished execution\n\n    ## Common Concurrency Challenges\n\n    1. **Race Conditions**:\
+  \ Multiple threads accessing shared data\n    2. **Deadlocks**: Threads waiting\
+  \ for each other indefinitely\n    3. **Starvation**: Thread never gets CPU time\n\
+  \    4. **Livelocks**: Threads actively responding but not progressing\n\n    **Next**:\
+  \ We'll explore how to handle these challenges with synchronization primitives."
+exercises:
+  - type: mcq
+    sequence_order: 1
+    question: "What is the fundamental difference between concurrency and parallelism?"
+    options:
+      - "Concurrency is faster than parallelism"
+      - "Concurrency is about managing multiple tasks through interleaving; parallelism is about executing multiple tasks simultaneously on multiple cores"
+      - "Parallelism only works with threads, concurrency only with processes"
+      - "There is no difference between them"
+    correct_answer: "Concurrency is about managing multiple tasks through interleaving; parallelism is about executing multiple tasks simultaneously on multiple cores"
+    explanation: "Concurrency and parallelism are related but distinct concepts. Concurrency is about structure and dealing with multiple things at once - it's the composition of independently executing tasks that may or may not run simultaneously. One CPU core can achieve concurrency by rapidly switching between tasks (context switching). Parallelism is about execution - literally doing multiple things at the same moment, which requires multiple CPU cores. The chef analogy: Concurrency is one chef switching between chopping vegetables, stirring sauce, and checking the oven - appearing to handle multiple tasks by interleaving. Parallelism is three chefs, each dedicated to one task, truly working simultaneously. You can have concurrency without parallelism (single-core multitasking) or parallelism without concurrency (parallel for-loop processing independent data). Most modern systems use both: concurrent task structure (threads/async) running in parallel across cores. Understanding this distinction helps design systems appropriately: use concurrency for I/O-bound tasks (waiting), parallelism for CPU-bound tasks (computing)."
+    require_pass: true
+
+  - type: mcq
+    sequence_order: 2
+    question: "When should you use processes vs threads for concurrent programming?"
+    options:
+      - "Always use processes because they're safer"
+      - "Use threads for lightweight concurrency with shared memory; use processes for isolation, CPU-bound work, or when you need true parallelism in Python (due to GIL)"
+      - "Threads and processes are interchangeable"
+      - "Always use threads because they're faster"
+    correct_answer: "Use threads for lightweight concurrency with shared memory; use processes for isolation, CPU-bound work, or when you need true parallelism in Python (due to GIL)"
+    explanation: "Processes and threads have different trade-offs. Threads are lightweight, share the same memory space (making communication fast via shared variables), and have quick context switches, but require careful synchronization to avoid race conditions and all crash together if one fails. Processes are heavyweight, have isolated memory spaces (safer, can't corrupt each other's data), communicate via slower IPC (pipes, queues, shared memory), and can survive individual crashes, but have expensive creation and context switching. Choose threads when: (1) Tasks need to share data frequently, (2) Lightweight concurrency needed for I/O-bound work, (3) Fast startup required. Choose processes when: (1) Need fault isolation, (2) CPU-bound work requiring true parallelism, (3) In Python specifically, need to bypass the Global Interpreter Lock (GIL) which prevents threads from running Python bytecode in parallel. Example: Web server might use processes for request isolation, threads within each process for handling concurrent connections. Understanding these trade-offs is essential for architecture decisions."
+    require_pass: true
+
+  - type: mcq
+    sequence_order: 3
+    question: "What happens when a thread moves from the Running state to the Blocked state?"
+    options:
+      - "The thread terminates and must be recreated"
+      - "The thread voluntarily yields CPU while waiting for a resource (like a lock), moving to a wait queue until the resource becomes available"
+      - "The thread continues executing but at lower priority"
+      - "The thread's memory is deallocated"
+    correct_answer: "The thread voluntarily yields CPU while waiting for a resource (like a lock), moving to a wait queue until the resource becomes available"
+    explanation: "Thread state transitions are fundamental to understanding concurrent execution. When a thread enters the Blocked state, it temporarily stops consuming CPU time because it cannot proceed until some condition is met. Common causes: (1) Waiting to acquire a lock held by another thread (lock.acquire() blocks), (2) Waiting for I/O operation to complete, (3) Waiting on a condition variable or semaphore. When blocked, the thread is placed in a wait queue associated with the resource it needs. The OS scheduler removes it from consideration for CPU time, allowing other threads to run. When the blocking condition resolves (lock released, I/O completes, semaphore signaled), the thread moves to Runnable state and waits for the scheduler to assign it CPU time. This is efficient because blocked threads don't waste CPU cycles spinning. The full lifecycle: New → Runnable → Running ↔ Blocked → Runnable → Terminated. Understanding these states helps diagnose performance issues (too many blocked threads might indicate lock contention) and design responsive systems."
+    require_pass: true

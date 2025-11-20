@@ -1,0 +1,59 @@
+slug: carbocationstability-practice
+title: carbocation_stability — Practice
+difficulty: medium
+sequence_order: 16
+estimated_minutes: 2
+key_concepts:
+- carbocation_stability
+prerequisites: []
+content_md: '# carbocation_stability — Practice 🚀
+
+
+  Benzyl carbocation is most stable due to resonance with benzene ring. Stability
+  order: Resonance-stabilized (allyl, benzyl) > 3° > 2° > 1° > CH₃⁺.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: Which carbocation is the MOST stable?
+  options:
+  - Methyl carbocation (CH₃⁺)
+  - Primary carbocation (CH₃CH₂⁺)
+  - Tertiary carbocation ((CH₃)₃C⁺)
+  - Benzyl carbocation (C₆H₅CH₂⁺)
+  correct_answer: Benzyl carbocation (C₆H₅CH₂⁺)
+  explanation: "Benzyl carbocation is the most stable among the options because the positive charge is delocalized through resonance with the benzene ring. This resonance stabilization makes it even more stable than a tertiary carbocation. The stability order is: Resonance-stabilized (benzyl, allyl) > 3° > 2° > 1° > CH₃⁺. The benzene ring provides multiple resonance structures that distribute the positive charge across the aromatic system."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What is the correct order of carbocation stability?
+  options:
+  - 1° > 2° > 3° > allyl
+  - CH₃⁺ > 1° > 2° > 3°
+  - 3° > 2° > 1° > CH₃⁺
+  - Allyl > 1° > 2° > 3°
+  correct_answer: 3° > 2° > 1° > CH₃⁺
+  explanation: "Carbocation stability increases with the number of alkyl groups attached to the positively charged carbon. This is due to hyperconjugation and the electron-donating inductive effect of alkyl groups. Tertiary carbocations (3°) have three alkyl groups stabilizing the positive charge, making them most stable among simple alkyl carbocations. Secondary (2°) have two, primary (1°) have one, and methyl carbocation (CH₃⁺) has none, making it least stable. Note that resonance-stabilized carbocations (allyl, benzyl) are even more stable than tertiary."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: Which factor MOST contributes to carbocation stability?
+  options:
+  - Electronegativity of substituents
+  - Resonance delocalization
+  - Hydrogen bonding
+  - Molecular weight
+  correct_answer: Resonance delocalization
+  explanation: "Resonance delocalization is the most powerful stabilizing factor for carbocations. When a carbocation can delocalize its positive charge through resonance (as in allyl and benzyl carbocations), this provides significantly greater stability than hyperconjugation alone. Resonance-stabilized carbocations are more stable than even tertiary carbocations. Other factors like hyperconjugation and inductive effects also contribute, but resonance is the dominant stabilizing force when available. Electronegativity of substituents and molecular weight are not primary factors, and hydrogen bonding doesn't apply to carbocations."
+  require_pass: true

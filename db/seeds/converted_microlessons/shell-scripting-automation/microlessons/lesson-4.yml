@@ -1,0 +1,67 @@
+slug: lesson-4
+title: Lesson 4
+difficulty: easy
+sequence_order: 4
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Capstone Project: Deploy and Secure a Web\
+  \ Service\n\n    ## Project Overview\n\n    You are now the Linux administrator\
+  \ for a small web project. Your task is to:\n    1. Set up a basic web server\n\
+  \    2. Secure it with proper user permissions and firewall\n    3. Automate backups\n\
+  \    4. Verify the deployment works end-to-end\n\n    This project integrates skills\
+  \ from all 7 modules:\n    - **Module 1-2**: File management, navigation\n    -\
+  \ **Module 3**: User accounts, permissions\n    - **Module 4**: Process management,\
+  \ cron scheduling\n    - **Module 5**: Package installation, service management\n\
+  \    - **Module 6**: Firewall configuration, networking\n    - **Module 7**: Shell\
+  \ scripting for automation\n\n    ## Scenario\n\n    Your organization needs a web\
+  \ server to host a simple website. Security is important:\n    - Web files should\
+  \ be owned by a dedicated user (not root)\n    - Firewall should only allow necessary\
+  \ ports (SSH, HTTP)\n    - Automated daily backups of website content\n    - The\
+  \ web service must start automatically on boot\n\n    ## Project Tasks\n\n    ###\
+  \ 1. Create Dedicated User\n\n    Create a `webadmin` user who will own website\
+  \ files (principle of least privilege):\n\n    ```bash\n    sudo adduser webadmin\n\
+  \    # Set password when prompted\n    ```\n\n    ### 2. Install Apache HTTP Server\n\
+  \n    ```bash\n    sudo apt update\n    sudo apt install -y apache2\n    sudo systemctl\
+  \ status apache2\n    sudo systemctl enable apache2\n    ```\n\n    ### 3. Customize\
+  \ Web Content\n\n    ```bash\n    # Create custom homepage\n    echo \"Hello from\
+  \ $(hostname) at $(date)\" | sudo tee /var/www/html/index.html\n\n    # Add webadmin\
+  \ to www-data group\n    sudo usermod -aG www-data webadmin\n\n    # Change ownership\n\
+  \    sudo chown -R www-data:www-data /var/www\n\n    # Test\n    curl http://localhost\n\
+  \    ```\n\n    ### 4. Configure Firewall\n\n    ```bash\n    # Allow SSH and HTTP\n\
+  \    sudo ufw allow 22/tcp\n    sudo ufw allow 80/tcp\n    sudo ufw enable\n   \
+  \ sudo ufw status verbose\n    ```\n\n    ### 5. Create Backup Script\n\n    ```bash\n\
+  \    #!/bin/bash\n    # /home/webadmin/backup_web.sh\n\n    BACKUP_DIR=\"/home/webadmin\"\
+  \n    DATE=$(date +%Y%m%d_%H%M%S)\n    BACKUP_FILE=\"web_backup_$DATE.tar.gz\"\n\
+  \n    echo \"Creating backup: $BACKUP_FILE\"\n    tar -czf \"$BACKUP_DIR/$BACKUP_FILE\"\
+  \ /var/www/html\n    echo \"Backup complete: $BACKUP_DIR/$BACKUP_FILE\"\n    ```\n\
+  \n    Make executable:\n    ```bash\n    chmod +x /home/webadmin/backup_web.sh\n\
+  \    ```\n\n    ### 6. Schedule Automated Backups\n\n    ```bash\n    sudo crontab\
+  \ -u webadmin -e\n    # Add: 0 0 * * * /home/webadmin/backup_web.sh\n    ```\n\n\
+  \    This runs the backup daily at midnight.\n\n    ### 7. Testing and Verification\n\
+  \n    **Test web service:**\n    ```bash\n    curl http://localhost\n    systemctl\
+  \ status apache2\n    ```\n\n    **Test backup:**\n    ```bash\n    sudo -u webadmin\
+  \ /home/webadmin/backup_web.sh\n    ls -lh /home/webadmin/web_backup_*.tar.gz\n\
+  \    ```\n\n    **Verify firewall:**\n    ```bash\n    sudo ufw status numbered\n\
+  \    ```\n\n    **Check logs:**\n    ```bash\n    sudo journalctl -u apache2 -n\
+  \ 20\n    ```\n\n    ## Success Criteria\n\n    - ✅ Apache installed and running\n\
+  \    - ✅ Apache enabled to start on boot\n    - ✅ Custom webpage accessible via\
+  \ curl/browser\n    - ✅ Dedicated webadmin user created\n    - ✅ Proper file ownership\
+  \ (www-data:www-data)\n    - ✅ Firewall enabled with SSH and HTTP allowed\n    -\
+  \ ✅ Backup script creates compressed archive\n    - ✅ Cron job scheduled for daily\
+  \ backups\n    - ✅ All services and logs verified\n\n    ## What You've Accomplished\n\
+  \n    By completing this capstone, you've demonstrated:\n    - **Systems Administration**:\
+  \ Installing and configuring services\n    - **Security**: User separation, permissions,\
+  \ firewall\n    - **Automation**: Scripting and scheduling\n    - **Troubleshooting**:\
+  \ Testing and log verification\n    - **Best Practices**: Following principle of\
+  \ least privilege\n\n    ## Next Steps\n\n    With this solid Linux foundation,\
+  \ you're ready for:\n    - **Docker**: Containerizing this web service\n    - **Kubernetes**:\
+  \ Orchestrating multiple containers\n    - **CI/CD**: Automating deployments\n \
+  \   - **Cloud**: Deploying to AWS, Azure, or GCP\n\n    The skills you've learned\
+  \ apply directly to container environments:\n    - Containers are Linux processes\
+  \ (you know process management)\n    - Container images are like Linux filesystems\
+  \ (you know the hierarchy)\n    - Container networking uses Linux networking (you\
+  \ know the basics)\n    - Container security uses Linux permissions (you know users/groups)\n\
+  \    - Automation skills transfer to container orchestration\n\n    Congratulations\
+  \ on completing the Browser-Based Linux Fundamentals Course! \U0001F389"
+exercises: []

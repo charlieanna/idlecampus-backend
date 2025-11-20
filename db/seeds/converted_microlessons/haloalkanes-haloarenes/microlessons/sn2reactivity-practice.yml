@@ -1,0 +1,59 @@
+slug: sn2reactivity-practice
+title: sn2_reactivity — Practice
+difficulty: medium
+sequence_order: 13
+estimated_minutes: 2
+key_concepts:
+- sn2_reactivity
+prerequisites: []
+content_md: '# sn2_reactivity — Practice 🚀
+
+
+  SN2 reactivity: Methyl > 1° > 2° >> 3°. Steric hindrance decreases rate. Order:
+  (CH₃)₃CBr < (CH₃)₂CHBr < CH₃CH₂Br < CH₃Br. Tertiary halides cannot undergo SN2.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: Which alkyl halide reacts FASTEST in an SN2 reaction?
+  options:
+  - (CH₃)₃C-Br (tert-butyl bromide)
+  - (CH₃)₂CH-Br (isopropyl bromide)
+  - CH₃CH₂-Br (ethyl bromide)
+  - CH₃-Br (methyl bromide)
+  correct_answer: CH₃-Br (methyl bromide)
+  explanation: "In SN2 reactions, reactivity order is: Methyl > 1° > 2° >> 3°. Methyl bromide (CH₃Br) reacts fastest because it has the least steric hindrance around the carbon undergoing substitution. SN2 requires backside attack by the nucleophile, and bulky groups block this approach. The order of reactivity is: CH₃Br > CH₃CH₂Br > (CH₃)₂CHBr >> (CH₃)₃CBr. Tertiary halides like (CH₃)₃CBr effectively cannot undergo SN2 due to severe steric hindrance."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: Why do tertiary alkyl halides NOT undergo SN2 reactions?
+  options:
+  - They form unstable carbocations
+  - Steric hindrance prevents backside attack
+  - They have weak C-X bonds
+  - They are too polar
+  correct_answer: Steric hindrance prevents backside attack
+  explanation: "Tertiary alkyl halides cannot undergo SN2 reactions because of severe steric hindrance. The SN2 mechanism requires the nucleophile to approach from the backside (opposite to the leaving group) in a single concerted step. In tertiary halides, three bulky alkyl groups surround the carbon bearing the halogen, physically blocking the nucleophile's approach. Instead, tertiary halides undergo SN1 reactions where the leaving group departs first to form a carbocation, which is then attacked by the nucleophile."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: What factor MOST affects SN2 reactivity of alkyl halides?
+  options:
+  - Polarity of the solvent
+  - Steric hindrance at the reaction center
+  - Acidity of the medium
+  - Temperature of the reaction
+  correct_answer: Steric hindrance at the reaction center
+  explanation: "Steric hindrance at the carbon undergoing substitution is the most critical factor affecting SN2 reactivity. The SN2 mechanism proceeds through a transition state where the nucleophile must approach the backside of the C-X bond. Any increase in bulkiness around this carbon significantly slows or prevents the reaction. This is why methyl and primary halides react fastest, secondary react slower, and tertiary essentially don't undergo SN2. While solvent polarity and temperature also affect the rate, steric effects dominate the reactivity trend."
+  require_pass: true

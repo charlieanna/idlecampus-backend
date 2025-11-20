@@ -1,0 +1,46 @@
+<div class="container">
+  <div class="row">
+    <div class="col-sm-1"></div>
+    <div class="col-sm-6">
+      <% @paginatable_array.each do |element| %>
+        <% element.each do  |service, questions| %>
+          <div><%= link_to service, "/service/#{service}" %></div>
+          <% questions.each do |question| %>
+            <div class="well well-large">
+              <dl>
+                <%= link_to question['title'], "/post?post_id=#{question['id']}&service=#{service}", target: "_blank" %>
+                <% if service.to_s == "stackoverflow" %>
+                  <div><%= link_to "Learn More", "https://#{service}.com/questions/#{question['id']}", target: "_blank" %></div>
+                <% else %>
+                  <div><%= link_to "Learn More", "https://#{service}.stackexchange.com/questions/#{question['id']}", target: "_blank" %></div>
+                <% end %>
+                <div>
+                  <% question['tag_names'].split(">").each do |el| %>
+                    <% el.sub!("<", '') %>
+                    <%= link_to el, "/search/#{el}" %>,
+                  <% end %>
+                </div>
+                <dt>score: <%= question['score'] %></dt>
+                <dt>answers: <%= question['answercount'] %></dt>
+                <dt>views: <%= question['viewcount'] %></dt>
+                <dt>inlinks: <%= question['inlinks'] %></dt>
+              </dl>
+            </div>
+          <% end %>
+        <% end %>
+      <% end %>
+      <div id="infinite-scrolling">
+        <%= paginate @paginatable_array, params: { port: 'items' } %>
+      </div>
+    </div>
+    <div class="col-sm-5">
+      <ul class="list-group">
+        <% @links_arr.each do |link| %>
+            <% if link["score"] > 0 %>
+              <li class="list-group-item"><%= link_to link["link"], link["link"] %></li>
+            <% end %>
+          <% end %>
+      </ul>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,58 @@
+slug: formalcharge-practice
+title: formal_charge — Practice
+difficulty: easy
+sequence_order: 7
+estimated_minutes: 2
+key_concepts:
+- formal_charge
+prerequisites: []
+content_md: '# formal_charge — Practice 🚀
+
+
+  Formal charge = V - L - B = 4 - 0 - 4 = 0. The central carbon has zero formal charge.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What is the formal charge on the central carbon atom in CO₂?
+  options:
+  - '+2'
+  - '+1'
+  - '0'
+  - '-1'
+  require_pass: true
+  correct_answer: '0'
+  explanation: 'The formal charge on the central carbon in CO₂ is 0. Using the formal charge formula: FC = V - L - B/2, where V = valence electrons (4 for C), L = lone pair electrons (0 for central C), and B = bonding electrons (8 total from two C=O double bonds). FC = 4 - 0 - 8/2 = 4 - 0 - 4 = 0. In the Lewis structure O=C=O, carbon forms two double bonds with oxygen atoms, using all 4 of its valence electrons in bonding, with no lone pairs. Each oxygen has formal charge 0 as well (6 - 4 - 4/2 = 0). The most stable structures have formal charges closest to zero, and formal charges should sum to the overall molecular charge (0 for CO₂).'
+- type: mcq
+  sequence_order: 2
+  question: For the cyanide ion CN⁻, which Lewis structure is most stable based on formal charges?
+  options:
+  - ':C≡N:⁻ (C has -1, N has 0)'
+  - ':C=N:⁻ (C has -1, N has 0) with one lone pair on N'
+  - 'C≡N:⁻ (C has 0, N has -1)'
+  - ':C-N:⁻ (C has -1, N has 0) with two lone pairs on N'
+  require_pass: true
+  correct_answer: ':C≡N:⁻ (C has -1, N has 0)'
+  explanation: 'The most stable Lewis structure for CN⁻ is :C≡N:⁻ where carbon has formal charge -1 and nitrogen has 0. For C: FC = 4 - 2 - 6/2 = 4 - 2 - 3 = -1. For N: FC = 5 - 2 - 6/2 = 5 - 2 - 3 = 0. While we might expect the negative charge to be on the more electronegative nitrogen, this structure with C bearing the -1 charge is actually most stable because: (1) it maximizes bonding (triple bond is stronger than double), (2) nitrogen achieves a stable octet with formal charge zero, (3) carbon can accommodate the negative charge reasonably well. The sum of formal charges equals the ion charge: -1 + 0 = -1 ✓. This illustrates that formal charge analysis must consider both charge distribution and bond strength.'
+- type: mcq
+  sequence_order: 3
+  question: Which of the following rules applies when determining the most stable resonance structure using formal charges?
+  options:
+  - Negative formal charges should be on the least electronegative atoms
+  - The structure with the largest formal charges is most stable
+  - Formal charges should be minimized and negative charges on more electronegative atoms
+  - All atoms must have zero formal charge
+  require_pass: true
+  correct_answer: Formal charges should be minimized and negative charges on more electronegative atoms
+  explanation: 'The most stable resonance structures follow these formal charge rules: (1) Minimize formal charges - structures with formal charges closest to zero are more stable, (2) Negative formal charges should be on more electronegative atoms (O, N, F), while positive charges on less electronegative atoms, (3) Minimize charge separation - avoid placing opposite charges far apart, (4) The sum of formal charges must equal the overall charge of the molecule or ion. For example, in CO₂, the structure O=C=O with all atoms having FC = 0 is more stable than alternatives with charge separation. In resonance structures of carbonate CO₃²⁻, the structures with -1 charge on oxygen atoms (electronegativity 3.5) rather than carbon (2.5) are preferred. These principles help predict molecular stability and reactivity.'

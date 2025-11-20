@@ -1,0 +1,64 @@
+slug: lesson-74
+title: Lesson 74
+difficulty: easy
+sequence_order: 74
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Performance Bottlenecks\n\n    - CPU/memory\
+  \ pressure, throttling\n    - Scheduling delays and resource quotas"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What happens when a node experiences memory pressure?
+  options:
+  - All pods are immediately terminated
+  - Kubernetes may evict BestEffort and Burstable pods to reclaim memory
+  - The node is removed from the cluster
+  - Pods automatically scale down
+  correct_answer: Kubernetes may evict BestEffort and Burstable pods to reclaim memory
+  explanation: 'When a node experiences memory pressure (available memory drops below
+    threshold), the kubelet begins evicting pods to reclaim resources. Eviction follows
+    QoS class priority: BestEffort pods (no requests/limits) are evicted first, then
+    Burstable pods (some requests/limits) starting with those exceeding requests most,
+    and finally Guaranteed pods (requests=limits) are evicted only if necessary. The
+    kubelet sets conditions like MemoryPressure on the node and may add NoSchedule
+    taints to prevent new pods from being scheduled. Node pressure is defined by eviction
+    thresholds in kubelet configuration (e.g., memory.available<100Mi). To prevent
+    eviction, ensure pods have appropriate resource requests and limits, monitor node
+    resource usage, and use PodDisruptionBudgets to limit simultaneous evictions.
+    Understanding eviction policies helps design resilient applications.'
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What causes CPU throttling in Kubernetes?
+  options:
+  - Setting resource requests too high
+  - A pod exceeding its CPU limit
+  - Network congestion
+  - Insufficient memory
+  correct_answer: A pod exceeding its CPU limit
+  explanation: 'CPU throttling occurs when a pod tries to use more CPU than its configured
+    limit. Linux cgroups restrict CPU usage to the limit, causing the pod to run slower
+    than it otherwise would. This is visible in throttling metrics (container_cpu_cfs_throttled_seconds_total).
+    Unlike memory limits which cause OOMKills, CPU limits cause performance degradation.
+    High throttling indicates limits are too restrictive for the workload''s needs.
+    To address throttling: increase CPU limits if resources are available, optimize
+    application code to use less CPU, or adjust workload patterns. Monitor throttling
+    metrics to understand if limits are appropriate. CPU requests affect scheduling
+    but don''t throttle - a pod can exceed requests (using idle CPU) but never exceed
+    limits. Proper CPU limit tuning balances performance against resource availability
+    and costs.'
+  require_pass: true
+- type: mcq
+  sequence_order: 1
+  question: What kubectl command checks if you can perform an action?
+  options:
+  - kubectl auth can-i create pods
+  - kubectl check permissions create pods
+  - kubectl verify action create pods
+  - kubectl test auth create pods
+  correct_answer_index: 0
+  explanation: kubectl auth can-i <action> <resource> checks if the current user has
+    permission to perform the specified action.
+  require_pass: true

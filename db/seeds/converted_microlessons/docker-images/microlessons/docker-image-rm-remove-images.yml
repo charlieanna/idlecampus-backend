@@ -1,0 +1,89 @@
+slug: docker-image-rm-remove-images
+title: 'Docker Image RM: Remove Images'
+difficulty: easy
+sequence_order: 9
+estimated_minutes: 2
+key_concepts:
+- images
+- docker-rm
+- cleanup
+- removal
+prerequisites: []
+content_md: '# Docker Image RM: Remove Images 🚀
+
+
+  Modern syntax for removing images - equivalent to docker rmi but follows new CLI
+  structure.
+
+
+  ## Syntax/Command
+
+
+  ```bash
+
+  docker image rm myapp:1.0
+
+  ```
+
+
+  ## Example
+
+
+  ```bash
+
+  docker image rm -f myapp:old
+
+  ```
+
+
+  ## Key Points
+
+
+  - Remove: docker image rm <image>
+
+
+  - Force: docker image rm -f <image>
+
+
+  - Multiple: docker image rm img1 img2'
+exercises:
+- type: terminal
+  problem_statement: Remove the Docker image tagged myapp:1.0 from local storage
+  expected_output: Image removed successfully with confirmation message
+  language: bash
+  starter_code: "# Remove Docker image\n"
+  sequence_order: 1
+  command: docker image rm myapp:1.0
+  description: Remove specific image versions no longer needed
+  hints:
+  - 'Remove: docker image rm <image>'
+  - 'Force: docker image rm -f <image>'
+  - 'Multiple: docker image rm img1 img2'
+  validation:
+    must_not_include:
+    - Error
+    - 'panic:'
+  timeout_sec: 60
+  require_pass: true
+- type: sandbox
+  sequence_order: 99
+  hints:
+  - Run under CPU pressure to surface leaks or races
+  - Keep commands idempotent in CI
+  validation:
+    must_not_include:
+    - Error
+    - 'panic:'
+  timeout_sec: 60
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What happens to containers when you force remove their image?
+  options:
+  - Running containers continue to work but may fail when restarted
+  - All containers using the image are automatically stopped
+  - Nothing - containers are completely unaffected
+  - Containers are automatically recreated from backup
+  correct_answer: Running containers continue to work but may fail when restarted
+  explanation: "When you force remove an image with -f, existing running containers continue to function because they have their own filesystem layers. However, if you stop and try to restart those containers, they will fail because the base image is gone. It's safer to stop containers before removing their images."
+  require_pass: true

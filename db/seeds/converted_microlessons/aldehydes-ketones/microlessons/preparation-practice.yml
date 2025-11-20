@@ -1,0 +1,67 @@
+slug: preparation-practice
+title: preparation — Practice
+difficulty: easy
+sequence_order: 9
+estimated_minutes: 2
+key_concepts:
+- preparation
+prerequisites: []
+content_md: '# preparation — Practice 🚀
+
+
+  Friedel-Crafts acylation: C₆H₆ + CH₃COCl → [AlCl₃] → C₆H₅COCH₃ (Acetophenone/Phenylethanone)
+  + HCl. Best method for aromatic ketones.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 2
+  question: 'Friedel-Crafts acylation of benzene with CH₃COCl gives:'
+  options:
+  - Benzaldehyde
+  - Acetophenone
+  - Benzophenone
+  - Benzoic acid
+  require_pass: true
+  correct_answer: Acetophenone
+  explanation: 'Friedel-Crafts acylation of benzene with acetyl chloride (CH₃COCl)
+    in presence of anhydrous AlCl₃ catalyst gives acetophenone (C₆H₅-CO-CH₃), also
+    called phenyl methyl ketone or phenylethanone. The reaction is: C₆H₆ + CH₃COCl
+    → [AlCl₃] → C₆H₅-CO-CH₃ + HCl. This is the best and most important method for
+    preparing aromatic ketones. The mechanism involves formation of acylium ion (CH₃-CO⁺)
+    from acyl chloride and AlCl₃, which then attacks the benzene ring in an electrophilic
+    aromatic substitution. Unlike Friedel-Crafts alkylation, acylation does not undergo
+    rearrangement and stops after one substitution because the ketone product deactivates
+    the ring.'
+- type: mcq
+  sequence_order: 3
+  question: 'Why does Friedel-Crafts acylation stop after one substitution?'
+  options:
+  - The ketone product deactivates the benzene ring
+  - AlCl₃ catalyst gets consumed
+  - Acyl chloride is used up
+  - Temperature becomes too high
+  require_pass: true
+  correct_answer: The ketone product deactivates the benzene ring
+  explanation: 'Friedel-Crafts acylation stops after one substitution because the ketone product (ArCOCH₃) deactivates the benzene ring toward further electrophilic substitution. The carbonyl group (-CO-) is electron-withdrawing due to its -I (negative inductive) and -R (negative resonance) effects, which decrease electron density in the ring. This makes the ring less nucleophilic and resistant to further acylation. This is a major advantage over Friedel-Crafts alkylation, where the alkyl product activates the ring (+I effect), leading to polyalkylation. Additionally, the ketone oxygen coordinates with AlCl₃ catalyst, reducing its availability. This self-limiting nature makes acylation more controllable and selective than alkylation.'
+- type: mcq
+  sequence_order: 4
+  question: 'What is the key intermediate in Friedel-Crafts acylation mechanism?'
+  options:
+  - Acylium ion (R-CO⁺)
+  - Carbocation (R⁺)
+  - Free radical (R•)
+  - Carbanion (R⁻)
+  require_pass: true
+  correct_answer: Acylium ion (R-CO⁺)
+  explanation: 'The key intermediate in Friedel-Crafts acylation is the acylium ion (R-CO⁺), also called acyl cation. It is formed when the acyl chloride (R-COCl) reacts with Lewis acid AlCl₃: R-COCl + AlCl₃ → [R-CO⁺][AlCl₄⁻]. The acylium ion is resonance stabilized: R-C≡O⁺ ↔ R-C⁺=O, making it relatively stable. This positively charged electrophile then attacks the electron-rich benzene ring in electrophilic aromatic substitution. The acylium ion is more stable and less prone to rearrangement than carbocations formed in Friedel-Crafts alkylation, which is why acylation gives more predictable products without skeletal rearrangements.'

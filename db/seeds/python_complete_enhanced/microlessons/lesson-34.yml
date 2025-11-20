@@ -1,0 +1,418 @@
+slug: lesson-34
+title: Lesson 34
+sequence_order: 34
+estimated_minutes: 2
+difficulty: easy
+key_concepts: []
+content_md: "# Microlesson \U0001F680\n\n# Introduction to Go\n\n    Go (or Golang)\
+  \ is a statically typed, compiled programming language designed at Google. It's\
+  \ known for its simplicity, efficiency, and excellent concurrency support.\n\n \
+  \   ## Why Learn Go?\n\n    - **Simple and Clean Syntax**: Easy to learn and read\n\
+  \    - **Fast Compilation**: Compiles to native machine code\n    - **Built-in Concurrency**:\
+  \ Goroutines and channels make concurrent programming easy\n    - **Strong Standard\
+  \ Library**: Rich set of packages included\n    - **Used by**: Google, Uber, Netflix,\
+  \ Docker, Kubernetes, and more\n\n    ## Your First Go Program\n\n    ```go\n  \
+  \  package main\n\n    import \"fmt\"\n\n    func main() {\n        fmt.Println(\"\
+  Hello, Go!\")\n    }\n    ```\n\n    ### Key Components:\n    - `package main`:\
+  \ Every Go program starts with a package declaration\n    - `import \"fmt\"`: Import\
+  \ the format package for I/O operations\n    - `func main()`: The entry point of\
+  \ your program\n    - `fmt.Println()`: Prints text to the console\n\n    ## Variables\
+  \ and Types\n\n    ### What is Static Typing?\n\n    **Static typing** means every\
+  \ variable has a fixed type that must be known at compile time. Once a variable\
+  \ is declared as a string, it can ONLY hold strings - never numbers or booleans.\n\
+  \n    **Why does this matter?**\n    - **Catches errors early**: Type mismatches\
+  \ are caught before your program runs\n    - **Better performance**: No runtime\
+  \ type checking overhead\n    - **Better tooling**: IDEs can provide accurate autocomplete\
+  \ and refactoring\n    - **Self-documenting**: The code clearly shows what type\
+  \ of data it works with\n\n    **Contrast with dynamic typing (Python, JavaScript):**\n\
+  \    ```python\n    # Python - type changes at runtime\n    x = \"hello\"    # x\
+  \ is a string\n    x = 42         # Now x is an integer - allowed!\n    x = True\
+  \       # Now x is a boolean - allowed!\n    ```\n\n    ```go\n    // Go - type\
+  \ is fixed at compile time\n    var x string = \"hello\"  // x is a string\n   \
+  \ x = 42                   // ERROR: cannot assign int to string\n    ```\n\n  \
+  \  ### Variable Declaration: Two Ways\n\n    **Method 1: Explicit type declaration\
+  \ with `var`**\n    ```go\n    var name string = \"John\"\n    var age int = 30\n\
+  \    var salary float64 = 50000.50\n    var isActive bool = true\n    ```\n\n  \
+  \  **What happens here:**\n    1. `var` keyword tells Go \"I'm declaring a variable\"\
+  \n    2. `name` is the variable name\n    3. `string` explicitly specifies the type\n\
+  \    4. `\"John\"` is the initial value\n\n    **When to use:**\n    - Package-level\
+  \ variables (outside functions)\n    - When you want to be explicit about the type\n\
+  \    - When declaring without initialization: `var count int` (defaults to 0)\n\n\
+  \    **Method 2: Short declaration with `:=` (type inference)**\n    ```go\n   \
+  \ city := \"New York\"  // Go infers type: string\n    count := 42         // Go\
+  \ infers type: int\n    price := 19.99      // Go infers type: float64\n    active\
+  \ := true      // Go infers type: bool\n    ```\n\n    **How type inference works:**\n\
+  \    Go's compiler examines the value on the right side and determines the type:\n\
+  \    - Text in quotes → `string`\n    - Whole numbers → `int`\n    - Decimal numbers\
+  \ → `float64`\n    - `true`/`false` → `bool`\n\n    **When to use `:=`:**\n    -\
+  \ Inside functions (most common)\n    - When the type is obvious from the value\n\
+  \    - Shorter, more readable code\n\n    **Cannot use `:=` for:**\n    - Package-level\
+  \ variables\n    - Redeclaration (can only use once per variable name in a scope)\n\
+  \n    ### Understanding Integer Types\n\n    Go provides multiple integer types\
+  \ based on size:\n\n    **Signed integers (can be negative):**\n    - `int8`: -128\
+  \ to 127 (1 byte)\n    - `int16`: -32,768 to 32,767 (2 bytes)\n    - `int32`: -2\
+  \ billion to +2 billion (4 bytes)\n    - `int64`: Very large numbers (8 bytes)\n\
+  \    - `int`: Size depends on system (32-bit or 64-bit)\n\n    **Unsigned integers\
+  \ (only positive):**\n    - `uint8`: 0 to 255\n    - `uint16`: 0 to 65,535\n   \
+  \ - `uint32`: 0 to 4 billion\n    - `uint64`: 0 to 18 quintillion\n    - `uint`:\
+  \ Size depends on system\n\n    **When to use which:**\n    - **Use `int` by default**\
+  \ - most common, Go compiler optimizes it\n    - **Use `int64` for timestamps**\
+  \ - Unix timestamps require 64 bits\n    - **Use `uint8` for bytes** - representing\
+  \ raw byte data\n    - **Use specific sizes** only when interfacing with hardware/protocols\
+  \ that require exact sizes\n\n    **Example: Why size matters**\n    ```go\n   \
+  \ var age int8 = 127     // OK\n    age = 128              // ERROR: 128 doesn't\
+  \ fit in int8 (max is 127)\n\n    var distance uint32 = 4000000000  // OK\n    var\
+  \ distance2 uint16 = 4000000000 // ERROR: too big for uint16\n    ```\n\n    ###\
+  \ String Type\n\n    **What is a string in Go?**\n\n    A string is a **read-only**\
+  \ slice of bytes representing text encoded in UTF-8.\n\n    ```go\n    name := \"\
+  Alice\"\n    greeting := \"Hello, 世界\"  // UTF-8 supports all Unicode characters\n\
+  \    ```\n\n    **Key properties:**\n    - **Immutable**: Once created, strings\
+  \ cannot be modified\n    - **UTF-8 encoded**: Supports international characters\n\
+  \    - **Not arrays**: Strings are more than just character arrays\n\n    **Why\
+  \ immutability matters:**\n    ```go\n    name := \"Alice\"\n    name[0] = 'B' \
+  \ // ERROR: cannot modify string\n\n    // To \"change\" a string, create a new\
+  \ one:\n    name = \"Bob\"   // OK: creates new string, assigns to name\n    ```\n\
+  \n    This prevents bugs where multiple parts of code accidentally modify shared\
+  \ strings.\n\n    ### Float Types\n\n    **Two floating-point types:**\n    - `float32`:\
+  \ Single precision (6-7 decimal digits accuracy)\n    - `float64`: Double precision\
+  \ (15-16 decimal digits accuracy)\n\n    ```go\n    var price float32 = 19.99\n\
+  \    var precise float64 = 3.141592653589793\n    ```\n\n    **When to use:**\n\
+  \    - **Use `float64` by default** - more accurate, and it's what Go literals default\
+  \ to\n    - **Use `float32`** only when memory is critical (like graphics, large\
+  \ arrays)\n\n    **Important: Floating-point precision issues**\n    ```go\n   \
+  \ // Floats can't represent all decimal numbers exactly\n    var x float64 = 0.1\
+  \ + 0.2\n    fmt.Println(x)  // 0.30000000000000004 (not exactly 0.3!)\n    ```\n\
+  \n    **For money calculations, NEVER use float!** Use integers (cents) or the `decimal`\
+  \ package.\n\n    ### Boolean Type\n\n    **Simple true/false:**\n    ```go\n  \
+  \  var isActive bool = true\n    var hasPermission bool = false\n    ```\n\n   \
+  \ **Used for:**\n    - Control flow (if statements)\n    - Flags and switches\n\
+  \    - Comparison results\n\n    **Boolean operations:**\n    ```go\n    isAdult\
+  \ := age >= 18           // Comparison returns bool\n    canVote := isAdult && isCitizen\
+  \ // && (AND)\n    needsHelp := isChild || isElderly // || (OR)\n    isInvalid :=\
+  \ !isValid          // ! (NOT)\n    ```\n\n    ### Special Types: Byte and Rune\n\
+  \n    **Byte (alias for uint8):**\n    ```go\n    var b byte = 'A'  // Single character\
+  \ (ASCII)\n    ```\n    Used for raw binary data, file I/O, network protocols.\n\
+  \n    **Rune (alias for int32):**\n    ```go\n    var r rune = '世'  // Unicode character\n\
+  \    ```\n\n    **Why runes exist:**\n    ```go\n    text := \"Hello, 世界\"\n   \
+  \ fmt.Println(len(text))  // 13 (bytes, not characters!)\n\n    // Count actual\
+  \ characters (runes):\n    chars := []rune(text)\n    fmt.Println(len(chars))  //\
+  \ 9 (actual characters)\n    ```\n\n    Strings are byte sequences, but runes let\
+  \ you work with actual characters.\n\n    ### Zero Values: Go's Safety Net\n\n \
+  \   **Every type has a \"zero value\"** - variables without initialization automatically\
+  \ get this:\n\n    ```go\n    var name string      // \"\" (empty string)\n    var\
+  \ count int        // 0\n    var price float64    // 0.0\n    var active bool  \
+  \    // false\n    var ptr *int         // nil (null pointer)\n    ```\n\n    **Why\
+  \ this is important:**\n    - **No undefined behavior**: Variables always have a\
+  \ valid value\n    - **No null pointer exceptions** from uninitialized variables\n\
+  \    - **Predictable**: You know exactly what an uninitialized variable contains\n\
+  \n    ### Type Conversion (Not Coercion!)\n\n    Go requires **explicit type conversion**\
+  \ - no automatic conversions:\n\n    ```go\n    var x int = 42\n    var y float64\
+  \ = x        // ERROR: cannot assign int to float64\n\n    var y float64 = float64(x)\
+  \  // OK: explicit conversion\n    ```\n\n    **Common conversions:**\n    ```go\n\
+  \    // Number conversions\n    var i int = 42\n    var f float64 = float64(i)\n\
+  \    var u uint = uint(i)\n\n    // String conversions\n    var num int = 65\n \
+  \   var s string = string(num)        // \"A\" (ASCII 65)\n    var s2 string = strconv.Itoa(num)\
+  \ // \"65\" (number as text)\n\n    // String to number\n    str := \"123\"\n  \
+  \  num, err := strconv.Atoi(str)  // 123, nil\n    ```\n\n    **Why no automatic\
+  \ conversion?**\n    Explicit conversions prevent subtle bugs. You must consciously\
+  \ decide when to convert types.\n\n    ### Practical Example: Type Safety in Action\n\
+  \n    ```go\n    // Function that calculates price with tax\n    func calculateTotal(price\
+  \ float64, taxRate float64) float64 {\n        return price * (1 + taxRate)\n  \
+  \  }\n\n    // Usage\n    itemPrice := 29.99\n    tax := 0.08  // 8%\n\n    total\
+  \ := calculateTotal(itemPrice, tax)\n    fmt.Printf(\"Total: $%.2f\\n\", total)\
+  \  // Total: $32.39\n\n    // This won't compile (type safety!):\n    quantity :=\
+  \ 3  // int\n    total = calculateTotal(quantity, tax)  // ERROR: cannot use int\
+  \ as float64\n\n    // Must explicitly convert:\n    total = calculateTotal(float64(quantity),\
+  \ tax)  // OK\n    ```\n\n    **Key takeaways:**\n    1. Static typing catches errors\
+  \ at compile time, not runtime\n    2. Use `int` and `float64` as defaults unless\
+  \ you have specific needs\n    3. The `:=` operator is your friend for concise variable\
+  \ declarations\n    4. Go's zero values ensure variables are always initialized\n\
+  \    5. Explicit type conversion prevents subtle bugs\n\n    ## Slices and Arrays\n\
+  \n    ### Arrays: Fixed-Size Collections\n\n    **What is an array?**\n\n    An\
+  \ array is a **fixed-size**, numbered sequence of elements of the same type. Once\
+  \ you create an array, its size CANNOT change.\n\n    ```go\n    // Array declaration:\
+  \ [size]type\n    var numbers [5]int = [5]int{1, 2, 3, 4, 5}\n\n    // Shorter syntax\n\
+  \    nums := [3]int{10, 20, 30}\n\n    // Let Go count the size\n    items := [...]string{\"\
+  a\", \"b\", \"c\"}  // Size is 3\n    ```\n\n    **Key properties:**\n    - **Fixed\
+  \ size**: Size is part of the type (`[5]int` is different from `[10]int`)\n    -\
+  \ **Value type**: Arrays are copied when passed to functions (not references!)\n\
+  \    - **Memory efficient**: Stored contiguously in memory\n    - **Rarely used**:\
+  \ Most Go code uses slices instead\n\n    **Why arrays are rarely used:**\n    ```go\n\
+  \    func process(arr [5]int) {  // Only accepts arrays of exactly 5 ints!\n   \
+  \     // ...\n    }\n\n    nums1 := [5]int{1, 2, 3, 4, 5}\n    nums2 := [10]int{1,\
+  \ 2, 3, 4, 5, 6, 7, 8, 9, 10}\n\n    process(nums1)  // OK\n    process(nums2) \
+  \ // ERROR: [10]int is not [5]int\n    ```\n\n    This inflexibility is why slices\
+  \ were created.\n\n    ### Slices: Dynamic-Size Collections\n\n    **What is a slice?**\n\
+  \n    A slice is a **dynamic-size**, flexible view into an underlying array. Think\
+  \ of it as a \"window\" that can grow and shrink.\n\n    **Anatomy of a slice:**\n\
+  \    A slice is actually three things:\n    1. **Pointer**: Points to the first\
+  \ element in the underlying array\n    2. **Length**: Number of elements in the\
+  \ slice (use `len()`)\n    3. **Capacity**: Maximum elements the slice can hold\
+  \ before needing reallocation (use `cap()`)\n\n    ```\n    Underlying array: [A][B][C][D][E][F][G][H]\n\
+  \                       ↑\n    Slice:            ptr  len=3  cap=8\n    View:  \
+  \           [A][B][C]\n    ```\n\n    **Creating slices:**\n    ```go\n    // From\
+  \ a literal (most common)\n    fruits := []string{\"apple\", \"banana\", \"cherry\"\
+  }\n\n    // Make a slice with specific length and capacity\n    scores := make([]int,\
+  \ 0, 10)\n    // length=0 (empty now), capacity=10 (can hold 10 before reallocation)\n\
+  \n    // Make with length (defaults to zero values)\n    values := make([]int, 5)\
+  \  // [0, 0, 0, 0, 0]\n\n    // From an array\n    arr := [5]int{1, 2, 3, 4, 5}\n\
+  \    slice := arr[1:4]  // [2, 3, 4] (from index 1 to 3)\n    ```\n\n    ### Understanding\
+  \ Length vs Capacity\n\n    **Length** (`len`): How many elements are in the slice\
+  \ right now\n    **Capacity** (`cap`): How many elements the slice can hold before\
+  \ needing more memory\n\n    ```go\n    s := make([]int, 3, 5)\n    fmt.Println(len(s))\
+  \  // 3 (current elements)\n    fmt.Println(cap(s))  // 5 (max before reallocation)\n\
+  \n    // The slice looks like: [0, 0, 0] with room for 2 more\n    ```\n\n    **Why\
+  \ capacity matters:**\n    When you append beyond capacity, Go allocates a NEW,\
+  \ larger array and copies everything over - expensive!\n\n    ### Appending to Slices\n\
+  \n    **The append() function:**\n    ```go\n    fruits := []string{\"apple\", \"\
+  banana\"}\n    fruits = append(fruits, \"cherry\")      // Add one element\n   \
+  \ fruits = append(fruits, \"date\", \"fig\") // Add multiple\n    fmt.Println(fruits)\
+  \  // [apple banana cherry date fig]\n    ```\n\n    **CRITICAL: append returns\
+  \ a NEW slice!**\n    ```go\n    fruits := []string{\"apple\", \"banana\"}\n   \
+  \ append(fruits, \"cherry\")  // ❌ WRONG: doesn't modify fruits!\n\n    fruits =\
+  \ append(fruits, \"cherry\")  // ✅ CORRECT: assigns result\n    ```\n\n    **How\
+  \ append works internally:**\n\n    **Case 1: Capacity available**\n    ```go\n\
+  \    s := make([]int, 2, 5)  // len=2, cap=5\n    s = append(s, 10)       // Fits\
+  \ within capacity\n    // No new allocation, just increases length\n    ```\n\n\
+  \    **Case 2: No capacity - reallocation needed**\n    ```go\n    s := []int{1,\
+  \ 2, 3}     // len=3, cap=3\n    s = append(s, 4)        // Exceeds capacity!\n\n\
+  \    // Go does:\n    // 1. Allocates new array (usually 2x capacity)\n    // 2.\
+  \ Copies all existing elements\n    // 3. Adds new element\n    // 4. Returns new\
+  \ slice pointing to new array\n    ```\n\n    **Performance tip:**\n    If you know\
+  \ final size, pre-allocate capacity:\n    ```go\n    // ❌ Slow: multiple reallocations\n\
+  \    s := []int{}\n    for i := 0; i < 1000; i++ {\n        s = append(s, i)  //\
+  \ Reallocates ~10 times\n    }\n\n    // ✅ Fast: one allocation\n    s := make([]int,\
+  \ 0, 1000)\n    for i := 0; i < 1000; i++ {\n        s = append(s, i)  // No reallocations!\n\
+  \    }\n    ```\n\n    ### Slice Operations\n\n    **Accessing elements:**\n   \
+  \ ```go\n    fruits := []string{\"apple\", \"banana\", \"cherry\"}\n    first :=\
+  \ fruits[0]      // \"apple\"\n    last := fruits[len(fruits)-1]  // \"cherry\"\n\
+  \    ```\n\n    **Slicing (creating sub-slices):**\n    ```go\n    numbers := []int{0,\
+  \ 1, 2, 3, 4, 5}\n\n    slice1 := numbers[1:4]   // [1, 2, 3] (index 1 to 3)\n \
+  \   slice2 := numbers[:3]    // [0, 1, 2] (start to index 2)\n    slice3 := numbers[2:]\
+  \    // [2, 3, 4, 5] (index 2 to end)\n    slice4 := numbers[:]     // [0, 1, 2,\
+  \ 3, 4, 5] (full slice)\n    ```\n\n    **Syntax: `[start:end]`**\n    - Includes\
+  \ `start` index\n    - Excludes `end` index\n    - Creates a NEW slice pointing\
+  \ to SAME underlying array\n\n    **⚠️ WARNING: Slices share memory!**\n    ```go\n\
+  \    original := []int{1, 2, 3, 4, 5}\n    slice := original[1:4]  // [2, 3, 4]\n\
+  \n    slice[0] = 99           // Modifies slice\n    fmt.Println(original)   //\
+  \ [1, 99, 3, 4, 5] - original changed too!\n    ```\n\n    They share the same underlying\
+  \ array! To avoid this, use `copy()`:\n    ```go\n    original := []int{1, 2, 3,\
+  \ 4, 5}\n    slice := make([]int, 3)\n    copy(slice, original[1:4])  // Copies\
+  \ data, no sharing\n\n    slice[0] = 99\n    fmt.Println(original)  // [1, 2, 3,\
+  \ 4, 5] - unchanged\n    ```\n\n    ### When to Use Arrays vs Slices\n\n    **Use\
+  \ arrays when:**\n    - Size is fixed and known at compile time\n    - You need\
+  \ guaranteed size (cryptographic keys, coordinates)\n    - Passing by value is desired\
+  \ (want a copy)\n\n    **Use slices when (99% of the time):**\n    - Size is dynamic\
+  \ or unknown\n    - You want to pass by reference (no copying)\n    - Working with\
+  \ functions that process collections\n\n    ### Common Slice Patterns\n\n    **Check\
+  \ if empty:**\n    ```go\n    if len(slice) == 0 {\n        fmt.Println(\"Empty\
+  \ slice\")\n    }\n    ```\n\n    **Iterate over slice:**\n    ```go\n    fruits\
+  \ := []string{\"apple\", \"banana\", \"cherry\"}\n\n    // With index and value\n\
+  \    for i, fruit := range fruits {\n        fmt.Printf(\"%d: %s\\n\", i, fruit)\n\
+  \    }\n\n    // Value only (ignore index with _)\n    for _, fruit := range fruits\
+  \ {\n        fmt.Println(fruit)\n    }\n\n    // Index only\n    for i := range\
+  \ fruits {\n        fmt.Println(i)\n    }\n    ```\n\n    **Remove element (tricky!):**\n\
+  \    ```go\n    // Remove element at index 2\n    fruits := []string{\"apple\",\
+  \ \"banana\", \"cherry\", \"date\"}\n    i := 2\n\n    // Method: append slices\
+  \ before and after the element\n    fruits = append(fruits[:i], fruits[i+1:]...)\n\
+  \    // Result: [\"apple\", \"banana\", \"date\"]\n    ```\n\n    **Key takeaways:**\n\
+  \    1. Arrays are fixed-size, slices are dynamic - use slices almost always\n \
+  \   2. Slices are references - modifying a slice can affect others sharing the same\
+  \ array\n    3. append() returns a new slice - always assign the result\n    4.\
+  \ Pre-allocate capacity with make() for better performance\n    5. Slices are the\
+  \ foundation of many Go data structures\n\n    ## Maps: Key-Value Storage\n\n  \
+  \  ### What is a Map?\n\n    A **map** is Go's built-in hash table data structure\
+  \ that stores key-value pairs. Think of it like a real dictionary: you look up a\
+  \ word (key) to get its definition (value).\n\n    **Real-world analogy:**\n   \
+  \ - Phone book: Name (key) → Phone number (value)\n    - Student grades: Student\
+  \ ID (key) → Grade (value)\n    - Configuration: Setting name (key) → Setting value\
+  \ (value)\n\n    **Why use maps?**\n    - **Fast lookups**: O(1) average time to\
+  \ find a value by key\n    - **Dynamic**: Can add/remove entries anytime\n    -\
+  \ **Flexible keys**: Use strings, ints, or any comparable type as keys\n\n    ###\
+  \ Creating Maps\n\n    **Method 1: Literal syntax (most common)**\n    ```go\n \
+  \   // Map syntax: map[KeyType]ValueType\n    ages := map[string]int{\n        \"\
+  Alice\": 25,\n        \"Bob\":   30,\n    }\n    ```\n\n    **Method 2: Using make()**\n\
+  \    ```go\n    // Create empty map\n    scores := make(map[string]int)\n\n    //\
+  \ Create with capacity hint (performance optimization)\n    users := make(map[string]User,\
+  \ 100)  // Expect ~100 entries\n    ```\n\n    **Method 3: Declaration (nil map\
+  \ - read-only!)**\n    ```go\n    var settings map[string]string  // nil map\n \
+  \   // ⚠️ Cannot add to nil map! Will panic\n    // settings[\"key\"] = \"value\"\
+  \  // PANIC!\n\n    // Must initialize first:\n    settings = make(map[string]string)\n\
+  \    settings[\"key\"] = \"value\"  // OK\n    ```\n\n    ### Adding and Updating\
+  \ Values\n\n    **Adding/updating is the same operation:**\n    ```go\n    ages\
+  \ := make(map[string]int)\n\n    // Add new entry\n    ages[\"Alice\"] = 25    \
+  \  // Alice didn't exist, now she does\n\n    // Update existing entry\n    ages[\"\
+  Alice\"] = 26      // Alice's age updated to 26\n    ```\n\n    **There's no difference\
+  \ between add and update!** If the key exists, it updates; if not, it adds.\n\n\
+  \    **Bulk initialization:**\n    ```go\n    inventory := map[string]int{\n   \
+  \     \"apples\":  50,\n        \"bananas\": 30,\n        \"oranges\": 20,\n   \
+  \ }\n    ```\n\n    ### Retrieving Values\n\n    **Basic retrieval:**\n    ```go\n\
+  \    ages := map[string]int{\n        \"Alice\": 25,\n        \"Bob\":   30,\n \
+  \   }\n\n    age := ages[\"Alice\"]  // 25\n    ```\n\n    **What happens if key\
+  \ doesn't exist?**\n    ```go\n    age := ages[\"Charlie\"]  // Returns zero value\
+  \ (0 for int)\n    ```\n\n    ⚠️ **Problem**: Can't tell if Charlie doesn't exist\
+  \ or if Charlie's age is actually 0!\n\n    **Solution: Two-value retrieval (the\
+  \ \"comma ok\" idiom)**\n    ```go\n    age, exists := ages[\"Alice\"]\n    if exists\
+  \ {\n        fmt.Printf(\"Alice is %d years old\\n\", age)\n    } else {\n     \
+  \   fmt.Println(\"Alice not found\")\n    }\n\n    // Or check directly:\n    if\
+  \ age, ok := ages[\"Charlie\"]; ok {\n        fmt.Println(\"Charlie:\", age)\n \
+  \   } else {\n        fmt.Println(\"Charlie not found\")  // This runs\n    }\n\
+  \    ```\n\n    **How it works:**\n    - First value: The value associated with\
+  \ the key (or zero value if not found)\n    - Second value: Boolean indicating if\
+  \ the key exists\n\n    ### Deleting Entries\n\n    **Use the built-in delete()\
+  \ function:**\n    ```go\n    ages := map[string]int{\n        \"Alice\": 25,\n\
+  \        \"Bob\":   30,\n    }\n\n    delete(ages, \"Bob\")  // Removes Bob from\
+  \ map\n    ```\n\n    **Important behaviors:**\n    - Deleting a non-existent key:\
+  \ Does nothing (no error)\n    - Deleting from a nil map: Does nothing (no panic)\n\
+  \n    ```go\n    delete(ages, \"Charlie\")  // OK - Charlie doesn't exist, no-op\n\
+  \n    var nilMap map[string]int\n    delete(nilMap, \"key\")    // OK - does nothing\n\
+  \    ```\n\n    ### Iterating Over Maps\n\n    **Use range loop:**\n    ```go\n\
+  \    ages := map[string]int{\n        \"Alice\": 25,\n        \"Bob\":   30,\n \
+  \       \"Charlie\": 35,\n    }\n\n    // Iterate over key-value pairs\n    for\
+  \ name, age := range ages {\n        fmt.Printf(\"%s is %d years old\\n\", name,\
+  \ age)\n    }\n\n    // Iterate over keys only\n    for name := range ages {\n \
+  \       fmt.Println(name)\n    }\n\n    // Iterate over values only (ignore keys\
+  \ with _)\n    for _, age := range ages {\n        fmt.Println(age)\n    }\n   \
+  \ ```\n\n    ⚠️ **CRITICAL: Map iteration order is RANDOM!**\n    ```go\n    //\
+  \ Run this multiple times - order changes each time:\n    for name := range ages\
+  \ {\n        fmt.Println(name)\n    }\n    // Output could be: Alice, Bob, Charlie\n\
+  \    // Or: Charlie, Alice, Bob\n    // Or: Bob, Charlie, Alice\n    ```\n\n   \
+  \ **Why random?** Go intentionally randomizes iteration order to prevent you from\
+  \ relying on it. Hash maps have no inherent order!\n\n    **Need sorted output?**\
+  \ Extract keys, sort them, then iterate:\n    ```go\n    // Get all keys\n    names\
+  \ := make([]string, 0, len(ages))\n    for name := range ages {\n        names =\
+  \ append(names, name)\n    }\n\n    // Sort keys\n    sort.Strings(names)\n\n  \
+  \  // Iterate in sorted order\n    for _, name := range names {\n        fmt.Printf(\"\
+  %s: %d\\n\", name, ages[name])\n    }\n    ```\n\n    ### Checking Map Length\n\n\
+  \    ```go\n    ages := map[string]int{\n        \"Alice\": 25,\n        \"Bob\"\
+  :   30,\n    }\n\n    count := len(ages)  // 2\n\n    // Check if empty\n    if\
+  \ len(ages) == 0 {\n        fmt.Println(\"No entries\")\n    }\n    ```\n\n    ###\
+  \ Maps are Reference Types\n\n    **Maps are passed by reference, not copied:**\n\
+  \    ```go\n    func addYear(ages map[string]int) {\n        for name := range ages\
+  \ {\n            ages[name]++  // Modifies original map!\n        }\n    }\n\n \
+  \   ages := map[string]int{\"Alice\": 25}\n    addYear(ages)\n    fmt.Println(ages[\"\
+  Alice\"])  // 26 - original map changed!\n    ```\n\n    This is different from\
+  \ slices (which are also references but to an underlying array). Maps are ALWAYS\
+  \ references.\n\n    ### Common Patterns\n\n    **1. Count occurrences:**\n    ```go\n\
+  \    words := []string{\"apple\", \"banana\", \"apple\", \"cherry\", \"banana\"\
+  , \"apple\"}\n    counts := make(map[string]int)\n\n    for _, word := range words\
+  \ {\n        counts[word]++  // Zero value (0) + 1 = 1 for first occurrence\n  \
+  \  }\n\n    fmt.Println(counts)  // map[apple:3 banana:2 cherry:1]\n    ```\n\n\
+  \    **2. Group items:**\n    ```go\n    students := []struct{Name string; Grade\
+  \ string}{\n        {\"Alice\", \"A\"},\n        {\"Bob\", \"B\"},\n        {\"\
+  Charlie\", \"A\"},\n        {\"Dave\", \"B\"},\n    }\n\n    byGrade := make(map[string][]string)\n\
+  \n    for _, student := range students {\n        byGrade[student.Grade] = append(byGrade[student.Grade],\
+  \ student.Name)\n    }\n\n    // Result: map[A:[Alice Charlie] B:[Bob Dave]]\n \
+  \   ```\n\n    **3. Set (map with bool values):**\n    ```go\n    seen := make(map[string]bool)\n\
+  \n    words := []string{\"apple\", \"banana\", \"apple\", \"cherry\"}\n    unique\
+  \ := []string{}\n\n    for _, word := range words {\n        if !seen[word] {\n\
+  \            seen[word] = true\n            unique = append(unique, word)\n    \
+  \    }\n    }\n\n    // unique = [\"apple\", \"banana\", \"cherry\"]\n    ```\n\n\
+  \    Or use empty struct for memory efficiency:\n    ```go\n    seen := make(map[string]struct{})\
+  \  // struct{} takes 0 bytes!\n    seen[\"key\"] = struct{}{}\n\n    if _, exists\
+  \ := seen[\"key\"]; exists {\n        // Key is in set\n    }\n    ```\n\n    ###\
+  \ Valid Key Types\n\n    **Keys must be comparable** (can use `==` and `!=`):\n\n\
+  \    ✅ **Valid key types:**\n    - Strings, integers, floats, booleans\n    - Pointers\n\
+  \    - Arrays (if element type is comparable)\n    - Structs (if all fields are\
+  \ comparable)\n    - Interfaces (if dynamic type is comparable)\n\n    ❌ **Invalid\
+  \ key types:**\n    - Slices (not comparable)\n    - Maps (not comparable)\n   \
+  \ - Functions (not comparable)\n\n    ```go\n    // ✅ OK\n    map[string]int   \
+  \        // String keys\n    map[int]string           // Int keys\n    map[[3]int]bool\
+  \          // Array keys\n\n    // ❌ ERROR\n    map[[]int]bool           // Slice\
+  \ keys - won't compile!\n    map[map[string]int]bool  // Map keys - won't compile!\n\
+  \    ```\n\n    ### Performance Characteristics\n\n    **Time complexity:**\n  \
+  \  - Lookup: O(1) average\n    - Insert: O(1) average\n    - Delete: O(1) average\n\
+  \n    **Space complexity:**\n    Maps use more memory than slices due to hash table\
+  \ overhead. Pre-allocate capacity if you know the size:\n\n    ```go\n    // Bad:\
+  \ Multiple rehashes\n    m := make(map[string]int)\n    for i := 0; i < 10000; i++\
+  \ {\n        m[fmt.Sprint(i)] = i  // Frequent resizing\n    }\n\n    // Good: Single\
+  \ allocation\n    m := make(map[string]int, 10000)  // Pre-allocated\n    for i\
+  \ := 0; i < 10000; i++ {\n        m[fmt.Sprint(i)] = i  // No resizing\n    }\n\
+  \    ```\n\n    ### Map vs Slice: When to Use Which?\n\n    **Use Map when:**\n\
+  \    - ✅ Need fast lookups by key\n    - ✅ Keys are not sequential integers\n  \
+  \  - ✅ Need to check existence\n    - ✅ Order doesn't matter\n\n    **Use Slice\
+  \ when:**\n    - ✅ Sequential access (index 0, 1, 2...)\n    - ✅ Order matters\n\
+  \    - ✅ Need to sort\n    - ✅ Lower memory overhead\n\n    **Example:**\n    ```go\n\
+  \    // Good: User IDs aren't sequential\n    userCache := map[string]*User{\n \
+  \       \"user123\": &User{Name: \"Alice\"},\n        \"user789\": &User{Name: \"\
+  Bob\"},\n    }\n\n    // Good: Sequential high scores\n    highScores := []int{1000,\
+  \ 950, 900, 850}  // Already ordered\n    ```\n\n    ### Common Mistakes\n\n   \
+  \ **1. Adding to nil map:**\n    ```go\n    var m map[string]int\n    m[\"key\"\
+  ] = 1  // PANIC: assignment to nil map\n\n    // Fix: Initialize first\n    m =\
+  \ make(map[string]int)\n    m[\"key\"] = 1  // OK\n    ```\n\n    **2. Not checking\
+  \ existence:**\n    ```go\n    age := ages[\"Unknown\"]  // Returns 0 - but does\
+  \ Unknown exist?\n\n    // Better:\n    if age, ok := ages[\"Unknown\"]; ok {\n\
+  \        // Use age\n    }\n    ```\n\n    **3. Concurrent access without synchronization:**\n\
+  \    ```go\n    // ⚠️ RACE CONDITION - will crash!\n    m := make(map[string]int)\n\
+  \n    go func() { m[\"key\"] = 1 }()\n    go func() { m[\"key\"] = 2 }()\n\n   \
+  \ // Fix: Use sync.Mutex or sync.Map\n    ```\n\n    ### Key Takeaways\n\n    1.\
+  \ Maps store key-value pairs with O(1) lookup time\n    2. Use `make()` to create\
+  \ empty maps (avoid nil maps)\n    3. Use the \"comma ok\" idiom to check if keys\
+  \ exist\n    4. Map iteration order is RANDOM - don't rely on it\n    5. Maps are\
+  \ reference types - passed functions modify the original\n    6. Only comparable\
+  \ types can be map keys (no slices, maps, or functions)\n    7. Pre-allocate capacity\
+  \ for better performance with large maps\n\n    ## Control Flow\n\n    ### If Statements\n\
+  \    ```go\n    if age >= 18 {\n        fmt.Println(\"Adult\")\n    } else {\n \
+  \       fmt.Println(\"Minor\")\n    }\n\n    // If with initialization\n    if num\
+  \ := 10; num > 5 {\n        fmt.Println(\"Greater than 5\")\n    }\n    ```\n\n\
+  \    ### For Loops\n    Go has only one looping construct: `for`\n\n    ```go\n\
+  \    // Traditional for loop\n    for i := 0; i < 5; i++ {\n        fmt.Println(i)\n\
+  \    }\n\n    // While-style loop\n    sum := 0\n    for sum < 100 {\n        sum\
+  \ += 10\n    }\n\n    // Range over slice\n    numbers := []int{1, 2, 3, 4, 5}\n\
+  \    for index, value := range numbers {\n        fmt.Printf(\"Index: %d, Value:\
+  \ %d\\\\n\", index, value)\n    }\n    ```\n\n    ## Functions\n\n    ```go\n  \
+  \  // Basic function\n    func greet(name string) {\n        fmt.Println(\"Hello,\
+  \ \" + name)\n    }\n\n    // Function with return value\n    func add(a int, b\
+  \ int) int {\n        return a + b\n    }\n\n    // Multiple return values\n   \
+  \ func divide(a, b float64) (float64, error) {\n        if b == 0 {\n          \
+  \  return 0, errors.New(\"division by zero\")\n        }\n        return a / b,\
+  \ nil\n    }\n\n    // Named return values\n    func calculate(a, b int) (sum int,\
+  \ product int) {\n        sum = a + b\n        product = a * b\n        return \
+  \ // naked return\n    }\n    ```\n\n    ## Structs\n\n    ```go\n    type Person\
+  \ struct {\n        Name string\n        Age  int\n    }\n\n    // Create struct\n\
+  \    person := Person{Name: \"Alice\", Age: 25}\n    fmt.Println(person.Name)\n\n\
+  \    // Struct methods\n    func (p Person) Greet() {\n        fmt.Printf(\"Hi,\
+  \ I'm %s\\\\n\", p.Name)\n    }\n\n    person.Greet()\n    ```\n\n    **Practice:**\
+  \ Try the Go Basics lab!"
+exercises:
+- type: mcq
+  slug: lesson-34-mcq-1
+  sequence_order: 1
+  question: What is the primary advantage of Redis storing data in RAM?
+  options:
+  - Sub-millisecond latency and 100,000+ operations per second
+  - Lower cost than disk storage
+  - Automatic data backup
+  - Better security
+  correct_answer_index: 0
+  explanation: Redis stores all data in RAM (not disk), which provides sub-millisecond latency and can handle 100,000+ operations per second on commodity hardware. This makes it ideal for caching, real-time analytics, and high-performance applications where speed is critical.
+- type: mcq
+  slug: lesson-34-mcq-2
+  sequence_order: 2
+  question: What does the Redis command INCR do?
+  options:
+  - Atomically increments a numeric value stored at a key by 1
+  - Increases the expiration time of a key
+  - Increments all keys in the database
+  - Inserts a new record
+  correct_answer_index: 0
+  explanation: INCR atomically increments the integer value of a key by 1. If the key does not exist, it is set to 0 before performing the operation. This is useful for counters, rate limiting, and metrics. The operation is atomic, making it safe in concurrent environments.
+- type: mcq
+  slug: lesson-34-mcq-3
+  sequence_order: 3
+  question: Why would you use Redis with an expiration time (ex parameter)?
+  options:
+  - To automatically remove data after a certain time, useful for caching and sessions
+  - To make queries run faster
+  - To compress the data
+  - To create backups
+  correct_answer_index: 0
+  explanation: Setting an expiration time (using EX or EXPIRE) automatically removes the key after the specified seconds. This is essential for caching (auto-invalidate stale data), session management (auto-logout), and rate limiting (reset counters). Redis handles cleanup automatically, preventing memory bloat.
+objectives:
+- Understand core concepts of Introduction to Go
+- Apply learned concepts in practical scenarios
+- Identify best practices and common patterns
+- Recognize trade-offs in different approaches
+next_recommended:
+- control
+- data-structures

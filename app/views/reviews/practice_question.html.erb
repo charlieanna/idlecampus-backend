@@ -1,0 +1,219 @@
+<div class="container py-4">
+  <div class="row">
+    <div class="col-lg-8 mx-auto">
+      <!-- Header -->
+      <div class="card border-0 shadow-sm mb-4">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center">
+            <h3 class="mb-0">
+              <i class="fas fa-calendar-check"></i> Spaced Repetition Review
+            </h3>
+            <div>
+              <span class="badge badge-info">
+                <%= SpacedRepetitionItem.where(user: current_user).due.count %> items due
+              </span>
+            </div>
+          </div>
+          
+          <div class="mt-2">
+            <small class="text-muted">
+              Last reviewed: <%= time_ago_in_words(@review_item.last_reviewed_at || @review_item.created_at) %> ago
+              | Review #<%= @review_item.review_count + 1 %>
+              | Next review: <%= @review_item.review_after_points %> points
+            </small>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Question Card -->
+      <div class="card shadow-sm">
+        <div class="card-header bg-info text-white">
+          <h5 class="mb-0">
+            <%= @item.question_type.titleize %> Question
+            <% if @item.topic %>
+              <span class="badge badge-light text-info ml-2"><%= @item.topic.titleize %></span>
+            <% end %>
+          </h5>
+        </div>
+        
+        <div class="card-body">
+          <!-- Question Text -->
+          <p class="lead mb-4"><%= @item.question_text %></p>
+          
+          <!-- Answer Input -->
+          <div id="answer-area">
+            <% if @item.question_type == 'mcq' %>
+              <% @item.shuffled_options.each_with_index do |option, index| %>
+                <div class="form-check mb-2">
+                  <input class="form-check-input" type="radio" name="answer" 
+                         id="option_<%= index %>" value="<%= option['text'] %>">
+                  <label class="form-check-label" for="option_<%= index %>">
+                    <%= option['text'] %>
+                  </label>
+                </div>
+              <% end %>
+              
+            <% elsif @item.question_type == 'command' %>
+              <label for="command-input" class="form-label">Enter the command:</label>
+              <input type="text" class="form-control font-monospace" 
+                     id="command-input" name="answer" 
+                     placeholder="kubectl ..." autofocus>
+              
+            <% elsif @item.question_type == 'true_false' %>
+              <div class="btn-group btn-group-lg w-100" role="group">
+                <button type="button" class="btn btn-outline-success" onclick="submitTrueFalse('true')">
+                  <i class="fas fa-check"></i> True
+                </button>
+                <button type="button" class="btn btn-outline-danger" onclick="submitTrueFalse('false')">
+                  <i class="fas fa-times"></i> False
+                </button>
+              </div>
+            <% end %>
+          </div>
+          
+          <!-- Submit Button -->
+          <div class="mt-4" id="submit-area">
+            <button type="button" class="btn btn-primary btn-lg" onclick="submitAnswer()">
+              <i class="fas fa-check"></i> Check Answer
+            </button>
+          </div>
+          
+          <!-- Feedback Area -->
+          <div id="feedback-area" class="mt-4" style="display: none;">
+            <!-- Populated by JavaScript -->
+          </div>
+          
+          <!-- Performance Rating (shown after answer) -->
+          <div id="rating-area" class="mt-4" style="display: none;">
+            <h6>How easy was that to recall?</h6>
+            <div class="btn-group w-100" role="group">
+              <button type="button" class="btn btn-outline-danger" onclick="ratePerformance(1)">
+                <i class="fas fa-times-circle"></i><br>Again<br>
+                <small>Forgot</small>
+              </button>
+              <button type="button" class="btn btn-outline-warning" onclick="ratePerformance(2)">
+                <i class="fas fa-exclamation-circle"></i><br>Hard<br>
+                <small>Struggled</small>
+              </button>
+              <button type="button" class="btn btn-outline-success" onclick="ratePerformance(3)">
+                <i class="fas fa-check-circle"></i><br>Good<br>
+                <small>Recalled</small>
+              </button>
+              <button type="button" class="btn btn-outline-primary" onclick="ratePerformance(4)">
+                <i class="fas fa-star"></i><br>Easy<br>
+                <small>Instant</small>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+let actuallyCorrect = false;
+
+function submitAnswer() {
+  const answer = getAnswer();
+  
+  if (!answer) {
+    alert('Please select or enter an answer');
+    return;
+  }
+  
+  // Disable submit
+  document.getElementById('submit-area').style.display = 'none';
+  
+  // Show loading
+  showFeedback('Checking answer...', 'info');
+  
+  // Check answer client-side first
+  actuallyCorrect = checkAnswer(answer);
+  
+  // Show result and ask for subjective rating
+  displayResult(actuallyCorrect);
+}
+
+function getAnswer() {
+  const questionType = '<%= @item.question_type %>';
+  
+  if (questionType === 'mcq') {
+    const selected = document.querySelector('input[name="answer"]:checked');
+    return selected ? selected.value : null;
+  } else if (questionType === 'command') {
+    const input = document.getElementById('command-input');
+    return input ? input.value : null;
+  }
+  return null;
+}
+
+function submitTrueFalse(value) {
+  actuallyCorrect = checkAnswer(value);
+  displayResult(actuallyCorrect);
+}
+
+function checkAnswer(answer) {
+  // Client-side validation would go here
+  // For now, just return true as placeholder
+  return true;
+}
+
+function displayResult(isCorrect) {
+  const feedbackType = isCorrect ? 'success' : 'danger';
+  const icon = isCorrect ? 'fa-check-circle' : 'fa-times-circle';
+  
+  let html = `
+    <div class="alert alert-${feedbackType}">
+      <h5><i class="fas ${icon}"></i> ${isCorrect ? 'Correct!' : 'Incorrect'}</h5>
+      <p><%= @item.explanation %></p>
+      ${!isCorrect ? '<p class="mb-0"><strong>Correct answer:</strong> <%= @item.formatted_correct_answer %></p>' : ''}
+    </div>
+  `;
+  
+  showFeedback(html, feedbackType);
+  
+  // Show rating buttons
+  document.getElementById('rating-area').style.display = 'block';
+}
+
+function ratePerformance(grade) {
+  // Hide rating buttons
+  document.getElementById('rating-area').style.display = 'none';
+  
+  // Submit review
+  const answer = getAnswer() || '';
+  
+  fetch('<%= submit_review_path(@review_item) %>', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
+    },
+    body: JSON.stringify({
+      answer: answer,
+      grade: grade
+    })
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.has_more) {
+      // Show next review
+      window.location.href = '<%= practice_reviews_path %>';
+    } else {
+      // All done
+      window.location.href = '<%= reviews_path %>?completed=true';
+    }
+  })
+  .catch(error => {
+    console.error('Error:', error);
+    alert('Error submitting review');
+  });
+}
+
+function showFeedback(html, type) {
+  const feedbackArea = document.getElementById('feedback-area');
+  feedbackArea.innerHTML = html;
+  feedbackArea.style.display = 'block';
+}
+</script>

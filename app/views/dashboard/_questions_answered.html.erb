@@ -1,0 +1,33 @@
+<% question_id_to_check = "23148812" %>
+<% question_found = false %> 
+
+<h4>Questions You've Answered</h4>
+<ul>
+  <% if @results && @results[site_name] && @results[site_name][:answered_questions] %>
+    <% @results[site_name][:answered_questions].each do |entry| %>
+      <% if entry[:question][:id] == question_id_to_check %>
+        <% question_found = true %>
+        <!-- Optional: Do something special for this question, if you want -->
+      <% end %>
+      <li>
+        <!-- Your existing code for displaying each question -->
+      </li>
+    <% end %>
+  <% else %>
+    <li>No answered questions available.</li>
+  <% end %>
+</ul>
+
+<% if question_found %>
+  <!-- Code to execute if the question_id was found -->
+  <%= "The question with ID #{question_id_to_check} is present." %>
+<% else %>
+  <!-- Code to execute if the question_id was not found -->
+  <%= "The question with ID #{question_id_to_check} is not present." %>
+<% end %>
+
+
+
+<% if @results && @results[site_name] && @results[site_name][:tag_weights] %>
+  <%= render 'user_interests', site_name: site_name %>
+<% end %>

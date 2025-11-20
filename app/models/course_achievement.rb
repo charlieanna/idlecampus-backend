@@ -1,0 +1,2 @@
+class CourseAchievement < ApplicationRecord
+end

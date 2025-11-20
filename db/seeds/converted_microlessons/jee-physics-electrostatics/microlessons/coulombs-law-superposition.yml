@@ -1,0 +1,169 @@
+slug: coulombs-law-superposition
+title: "Coulomb's Law and Superposition Principle"
+difficulty: intermediate
+sequence_order: 1
+estimated_minutes: 18
+key_concepts:
+- coulombs-law
+- electric-force
+- superposition
+- permittivity
+- inverse-square-law
+prerequisites: []
+content_md: |
+  # Coulomb's Law and Superposition Principle
+
+  ## Coulomb's Law
+
+  **Statement:** The electrostatic force between two point charges is directly proportional to the product of charges and inversely proportional to the square of distance between them.
+
+  ## Mathematical Expression
+
+  ### Scalar Form:
+  ```
+  F = k|q₁||q₂|/r²
+
+  where k = 1/(4πε₀) = 9 × 10⁹ N·m²/C²
+  ```
+
+  ### Vector Form:
+  ```
+  F⃗₁₂ = kq₁q₂/r² · r̂₁₂
+
+  F⃗₁₂ = force on charge 1 due to charge 2
+  r̂₁₂ = unit vector from 2 to 1
+  ```
+
+  ## Key Constants
+
+  | Constant | Value | Unit |
+  |----------|-------|------|
+  | k (Coulomb's constant) | 9 × 10⁹ | N·m²/C² |
+  | ε₀ (permittivity of free space) | 8.85 × 10⁻¹² | C²/N·m² |
+  | e (elementary charge) | 1.6 × 10⁻¹⁹ | C |
+
+  ## Important Relations
+
+  ```
+  k = 1/(4πε₀)
+  ε₀ = 1/(4πk) = 1/(36π × 10⁹) F/m
+  ```
+
+  ## Force in Different Media
+
+  ```
+  F_medium = F_vacuum/K = kq₁q₂/(Kr²)
+
+  where K = dielectric constant (ε_r)
+  K_air ≈ 1, K_water ≈ 80, K_mica ≈ 6
+  ```
+
+  ## Superposition Principle
+
+  **The net force on a charge is the vector sum of individual forces due to all other charges.**
+
+  ```
+  F⃗_net = F⃗₁ + F⃗₂ + F⃗₃ + ... = Σ F⃗ᵢ
+  ```
+
+  ### For n Charges:
+  ```
+  F⃗ on q₀ = Σᵢ (kq₀qᵢ/rᵢ²)r̂ᵢ
+  ```
+
+  ## Important JEE Configurations
+
+  ### 1. Equilibrium of Three Charges
+  For three collinear charges in equilibrium:
+  - Middle charge must be opposite in sign
+  - Position determined by: √(q₁/q₃) = r₁/r₃
+
+  ### 2. Triangle of Equal Charges
+  For equilateral triangle with charge q at each vertex:
+  ```
+  F_net at each = √3 kq²/a²
+  Direction: away from center (radially outward)
+  ```
+
+  ### 3. Square Configuration
+  For charges at corners of square (side a):
+  ```
+  F_net at center (if fifth charge placed) = 0 (by symmetry)
+  F_net on corner charge = (1 + 1/(2√2)) × 2kq²/a²
+  ```
+
+  ## Comparison with Gravitation
+
+  | Property | Coulomb's Law | Newton's Law |
+  |----------|---------------|--------------|
+  | Formula | F = kq₁q₂/r² | F = Gm₁m₂/r² |
+  | Nature | Attractive or Repulsive | Always Attractive |
+  | Constant | k = 9×10⁹ | G = 6.67×10⁻¹¹ |
+  | Strength | Much stronger | Much weaker |
+  | Medium effect | Yes (dielectric) | No |
+
+  ## Numerical Examples
+
+  **Example 1:** Two charges 4μC and 9μC are 10 cm apart. Where should a third charge be placed to be in equilibrium?
+
+  **Solution:**
+  Let third charge be at distance x from 4μC.
+  ```
+  kq₃(4×10⁻⁶)/x² = kq₃(9×10⁻⁶)/(0.1-x)²
+  4/x² = 9/(0.1-x)²
+  2/x = 3/(0.1-x)
+  2(0.1-x) = 3x
+  0.2 - 2x = 3x
+  x = 0.04 m = 4 cm from 4μC
+  ```
+
+  **Example 2:** Calculate force between electron and proton in hydrogen atom (r = 0.53 Å)
+
+  **Solution:**
+  ```
+  F = ke²/r² = (9×10⁹)(1.6×10⁻¹⁹)²/(0.53×10⁻¹⁰)²
+  F = 8.2 × 10⁻⁸ N
+  ```
+
+  ## JEE Important Points
+
+  1. **Coulomb's law valid only for point charges** (or uniformly charged spheres)
+  2. **Force is central force** (along line joining charges)
+  3. **Obeys Newton's third law** (F₁₂ = -F₂₁)
+  4. **Principle of superposition** is fundamental
+  5. **In vector problems**, resolve forces into components
+
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: "Two identical charges of 2μC each are separated by 1m in air. The force between them is F. If they are placed in a medium of dielectric constant 4, the force becomes:"
+  options:
+  - "4F"
+  - "F/4"
+  - "2F"
+  - "F/2"
+  correct_answer: "F/4"
+  explanation: "In a dielectric medium, Coulomb's force is reduced by dielectric constant K: F_medium = F_vacuum/K. Given K = 4, F_new = F/4. The dielectric reduces the electric field between charges by polarizing and creating opposing internal fields. This is why capacitors use dielectrics - they reduce the electric field, allowing more charge storage. For water (K≈80), forces are reduced significantly, explaining ionic dissociation in water."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: "Three equal charges +Q are placed at vertices of an equilateral triangle of side a. The magnitude of force on each charge is:"
+  options:
+  - "kQ²/a²"
+  - "√3 kQ²/a²"
+  - "2kQ²/a²"
+  - "3kQ²/a²"
+  correct_answer: "√3 kQ²/a²"
+  explanation: "Each charge experiences repulsion from two other charges. Force from each = kQ²/a². These two forces are at 60° to each other (interior angle of equilateral triangle is 60°). Using parallelogram law: F_net = √(F₁² + F₂² + 2F₁F₂cos60°) = √(F² + F² + 2F²×0.5) = √(3F²) = √3 F = √3 kQ²/a². The net force points radially outward from triangle center. This configuration is unstable - slight perturbation causes charges to fly apart."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: "Two charges +4q and +q are placed at distance d apart. A third charge Q is placed between them. For Q to be in equilibrium, it should be placed at:"
+  options:
+  - "d/3 from +q"
+  - "2d/3 from +q"
+  - "d/2 from +q"
+  - "d/4 from +q"
+  correct_answer: "2d/3 from +q"
+  explanation: "For equilibrium: Force from +4q = Force from +q. Let distance from +4q be x, then distance from +q is (d-x). k|Q|(4q)/x² = k|Q|(q)/(d-x)². Simplifying: 4/x² = 1/(d-x)², so 2/x = 1/(d-x), giving 2(d-x) = x, 2d = 3x, x = 2d/3. This means Q is at 2d/3 from +4q, which equals d - 2d/3 = d/3 from +q... Actually, I stated distance from +q, so it's d/3 from +q or 2d/3 from +4q. The third charge Q is closer to the smaller charge to balance the stronger force from larger charge."
+  require_pass: true

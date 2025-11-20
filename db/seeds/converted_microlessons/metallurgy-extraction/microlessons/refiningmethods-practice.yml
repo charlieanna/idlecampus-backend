@@ -1,0 +1,92 @@
+slug: refiningmethods-practice
+title: refining_methods — Practice
+difficulty: hard
+sequence_order: 15
+estimated_minutes: 2
+key_concepts:
+- refining_methods
+prerequisites: []
+content_md: '# refining_methods — Practice 🚀
+
+
+  Mond process: Ni + 4CO → Ni(CO)₄ (50-60°C, volatile) → Ni + 4CO (180°C, decomposition).
+  This gives very pure nickel.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 2
+  question: Which statements about the Mond process are correct?
+  options:
+  - It is used for refining nickel using CO at different temperatures
+  - It produces volatile Ni(CO)₄ which decomposes to pure nickel
+  - Both statements are correct
+  - Neither statement is correct
+  require_pass: true
+  correct_answer: Both statements are correct
+  explanation: 'The **Mond process** refines impure nickel to 99.99% purity using
+    carbonyl formation: **Step 1 (50-60°C)**: Impure Ni + 4CO → Ni(CO)₄ (nickel
+    tetracarbonyl, volatile gas). Impurities don''t form carbonyls and remain behind.
+    **Step 2 (180-200°C)**: Ni(CO)₄ → Ni + 4CO (decomposition to pure nickel). The
+    CO is recycled back to Step 1. Why it works: (1) Ni(CO)₄ is volatile (boiling
+    point 43°C) while nickel metal is solid (melting point 1455°C), (2) Temperature
+    control: low temp for formation, high temp for decomposition, (3) Reversible
+    reaction allows CO recycling. Advantages: Produces extremely pure nickel (99.99%+),
+    Used in electronics and special alloys. Disadvantage: Ni(CO)₄ is highly toxic
+    and carcinogenic! Similar processes: van Arkel method (refining Zr, Ti using
+    iodides), Parkes process (removing Ag from Pb using Zn).'
+- type: mcq
+  sequence_order: 3
+  question: Zone refining is most suitable for purifying which type of materials?
+  options:
+  - Metals with high melting points only
+  - Semiconductors and metals requiring ultra-high purity
+  - All metals regardless of purity requirements
+  - Only radioactive materials
+  require_pass: true
+  correct_answer: Semiconductors and metals requiring ultra-high purity
+  explanation: '**Zone refining** (or zone melting) produces ultra-pure materials
+    by repeatedly passing a molten zone through a solid rod: Process: (1) A rod of
+    impure metal is taken, (2) A narrow region is heated and melted (the "zone"),
+    (3) The heater slowly moves along the rod, (4) Impurities concentrate in the
+    molten zone and move with it, (5) Pure metal crystallizes behind the moving zone,
+    (6) Process repeated many times (10-15 passes), (7) Impurities accumulate at
+    one end, which is cut off. Principle: Impurities are more soluble in molten state
+    than solid state (distribution coefficient k < 1). Applications: **Semiconductors**
+    (Si, Ge) - Requires 99.9999999% purity (9N) for electronics! **Ultra-pure metals**
+    (Ga, In) for special applications. Advantage: Can achieve impurity levels below
+    1 ppb (part per billion). Disadvantage: Very slow and expensive process, only
+    economical for high-value materials.'
+- type: mcq
+  sequence_order: 4
+  question: 'Which refining method is based on differences in vapor pressures?'
+  options:
+  - Liquation
+  - Distillation
+  - Poling
+  - Cupellation
+  require_pass: true
+  correct_answer: Distillation
+  explanation: '**Distillation** refines metals based on differences in vapor pressure
+    (or boiling points): Process: Impure metal is heated in vacuum or inert atmosphere.
+    The metal vaporizes and condenses elsewhere, leaving impurities behind. Used
+    for: **Zinc** (bp 907°C), **Mercury** (bp 357°C), **Cadmium** (bp 767°C) - metals
+    with relatively low boiling points. Example: Crude zinc is heated to ~1000°C
+    in retorts, zinc vapor condenses in cooler regions as pure metal. Other refining
+    methods: **Liquation** (melting-based): Low melting metal (like tin, bp 232°C)
+    melts and drains away from high-melting impurities on a sloping hearth. **Poling**
+    (oxidation + reduction): For Cu containing Cu₂O. Green wood poles are thrust
+    into molten Cu, producing reducing gases (CO, CH₄) that reduce Cu₂O to Cu. **Cupellation**
+    (oxidative): Refining Ag/Au by oxidizing base metal impurities (Pb, Cu, Zn) which
+    form oxides and are absorbed by porous cupel, leaving pure noble metals. Each
+    method exploits different physical/chemical properties!'

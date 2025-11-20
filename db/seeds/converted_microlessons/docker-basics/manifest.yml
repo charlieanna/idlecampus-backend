@@ -1,0 +1,14 @@
+course:
+  slug: docker-basics
+  title: Docker Basics
+  description: ''
+  estimated_hours: null
+  level: null
+modules:
+- slug: default
+  title: Default Module
+  lessons:
+  - docker-ps-listing-running-containers
+  - docker-run-creating-and-starting-containers
+  - docker-stop-gracefully-stopping-containers
+  - docker-rm-removing-containers

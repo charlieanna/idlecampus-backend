@@ -1,0 +1,197 @@
+---
+slug: heap-min-heap
+title: Min Heap & Priority Queue
+sequence_order: 53
+estimated_minutes: 20
+difficulty: medium
+key_concepts:
+- Min Heap & Priority Queue
+- Using Python's heapq (Min Heap)
+content_md: |
+  # Min Heap & Priority Queue
+
+  Binary heap maintaining minimum element at root for efficient priority-based operations
+
+  ---
+
+  ## Min Heap Data Structure
+
+  A min heap is a complete binary tree where each parent node is smaller than or equal to its children. The minimum element is always at the root.
+
+  **Properties:**
+  - Complete binary tree
+  - Parent ≤ Children (min heap property)
+  - Root contains minimum element
+  - Height: O(log n)
+
+  **Array Representation:**
+  - Parent of i: (i-1)//2
+  - Left child of i: 2*i + 1
+  - Right child of i: 2*i + 2
+
+  **Operations:**
+  - Insert: O(log n) - Add at end, bubble up
+  - Extract Min: O(log n) - Remove root, bubble down
+  - Get Min: O(1) - Return root
+  - Heapify: O(n) - Build heap from array
+
+  **Applications:**
+  - Priority queues
+  - Dijkstra's algorithm
+  - Huffman coding
+  - K-way merge
+  - Finding median in stream
+
+
+  ---
+
+  ## Common Patterns
+
+  ### Pattern 1: Using Python's heapq (Min Heap)
+  ```python
+  import heapq
+
+  # Create heap
+  heap = []
+
+  # Insert elements
+  heapq.heappush(heap, 5)
+  heapq.heappush(heap, 3)
+  heapq.heappush(heap, 7)
+
+  # Get minimum (peek)
+  min_val = heap[0]  # O(1)
+
+  # Extract minimum
+  min_val = heapq.heappop(heap)  # O(log n)
+
+  # Heapify existing list
+  arr = [5, 3, 7, 1]
+  heapq.heapify(arr)  # O(n)
+  ```
+
+  ### Pattern 2: K Smallest Elements
+  ```python
+  def k_smallest(arr, k):
+      # Use max heap to keep k smallest
+      # Negate values for max heap behavior
+      heap = []
+
+      for num in arr:
+          heapq.heappush(heap, -num)
+          if len(heap) > k:
+              heapq.heappop(heap)
+
+      return [-x for x in heap]
+  ```
+
+  ### Pattern 3: Merge K Sorted Lists
+  ```python
+  def merge_k_sorted(lists):
+      heap = []
+      result = []
+
+      # Push first element of each list
+      for i, lst in enumerate(lists):
+          if lst:
+              heapq.heappush(heap, (lst[0], i, 0))  # (value, list_idx, elem_idx)
+
+      while heap:
+          val, list_idx, elem_idx = heapq.heappop(heap)
+          result.append(val)
+
+          # Add next element from same list
+          if elem_idx + 1 < len(lists[list_idx]):
+              next_val = lists[list_idx][elem_idx + 1]
+              heapq.heappush(heap, (next_val, list_idx, elem_idx + 1))
+
+      return result
+  ```
+
+  ### Pattern 4: Custom Priority Queue with Objects
+  ```python
+  import heapq
+
+  class Task:
+      def __init__(self, priority, name):
+          self.priority = priority
+          self.name = name
+
+      def __lt__(self, other):
+          return self.priority < other.priority
+
+  pq = []
+  heapq.heappush(pq, Task(3, "Low priority"))
+  heapq.heappush(pq, Task(1, "High priority"))
+
+  highest_priority = heapq.heappop(pq)
+  ```
+
+
+  ---
+
+  ## When to Use This Technique
+
+  Use min heap for: finding minimum element repeatedly, priority queue implementation, k smallest elements, merging sorted arrays, or scheduling tasks by priority.
+
+  ---
+
+  ## Common Pitfalls to Avoid
+
+  - Confusing min heap and max heap (Python heapq is min heap)
+  - Forgetting to negate values for max heap simulation
+  - Not maintaining heap property after modifications
+  - Trying to find k largest with min heap directly
+  - Not handling empty heap operations
+  - Comparing uncomparable objects without __lt__
+
+  ---
+
+  ## Practice Problems
+
+  Start with these problems to master this concept:
+
+  ### 1. Min Heap 4 [Easy]
+
+  Heap problem: min-heap.
+
+  **Complexity:** Time O(O(n log k)), Space O(O(k))
+
+
+  ### 2. Min Heap 6 [Easy]
+
+  Heap problem: min-heap.
+
+  **Complexity:** Time O(O(n log k)), Space O(O(k))
+
+
+  ### 3. Min Heap 7 [Easy]
+
+  Heap problem: min-heap.
+
+  **Complexity:** Time O(O(n log k)), Space O(O(k))
+
+
+  ### 4. Min Heap 9 [Easy]
+
+  Heap problem: min-heap.
+
+  **Complexity:** Time O(O(n log k)), Space O(O(k))
+
+
+  ### 5. Min Heap 10 [Easy]
+
+  Heap problem: min-heap.
+
+  **Complexity:** Time O(O(n log k)), Space O(O(k))
+
+
+
+  ---
+
+  ## Key Takeaways
+
+  - Min Heap & Priority Queue is essential for binary heap maintaining minimum element at root for efficient priority-based operations
+  - Time complexity improvements can be significant with this technique
+  - Practice problems in order of difficulty to build intuition
+  - Focus on recognizing patterns in problem statements

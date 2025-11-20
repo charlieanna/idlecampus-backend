@@ -1,0 +1,229 @@
+slug: lesson-19
+title: Lesson 19
+sequence_order: 19
+estimated_minutes: 2
+difficulty: easy
+content_md: "# Microlesson \U0001F680\n\n# Error Handling in Go\n\n    ### Go's Philosophy:\
+  \ Errors are Values\n\n    Unlike many languages that use exceptions (try/catch),\
+  \ **Go treats errors as values**. This makes error handling explicit, predictable,\
+  \ and part of the normal control flow.\n\n    **Key principle:** If a function can\
+  \ fail, it returns an error value that you must check.\n\n    ### The Error Interface\n\
+  \n    **error is a built-in interface:**\n    ```go\n    type error interface {\n\
+  \        Error() string\n    }\n    ```\n\n    Any type that implements the `Error()\
+  \ string` method satisfies the error interface.\n\n    **Simple example:**\n   \
+  \ ```go\n    type MyError struct {\n        Message string\n        Code    int\n\
+  \    }\n\n    func (e MyError) Error() string {\n        return fmt.Sprintf(\"Error\
+  \ %d: %s\", e.Code, e.Message)\n    }\n\n    // MyError now implements the error\
+  \ interface!\n    ```\n\n    ### Basic Error Handling Pattern\n\n    **The idiomatic\
+  \ Go pattern:**\n    ```go\n    result, err := someFunction()\n    if err != nil\
+  \ {\n        // Handle the error\n        return err  // or log it, or fix it\n\
+  \    }\n    // Use result (we know there's no error)\n    ```\n\n    **Complete\
+  \ example:**\n    ```go\n    package main\n\n    import (\n        \"errors\"\n\
+  \        \"fmt\"\n    )\n\n    func divide(a, b float64) (float64, error) {\n  \
+  \      if b == 0 {\n            return 0, errors.New(\"division by zero\")\n   \
+  \     }\n        return a / b, nil\n    }\n\n    func main() {\n        result,\
+  \ err := divide(10, 2)\n        if err != nil {\n            fmt.Println(\"Error:\"\
+  , err)\n            return\n        }\n        fmt.Println(\"Result:\", result)\
+  \  // Result: 5\n\n        result, err = divide(10, 0)\n        if err != nil {\n\
+  \            fmt.Println(\"Error:\", err)  // Error: division by zero\n        \
+  \    return\n        }\n    }\n    ```\n\n    ### Creating Errors\n\n    **Method\
+  \ 1: errors.New() - Simple string errors**\n    ```go\n    import \"errors\"\n\n\
+  \    err := errors.New(\"something went wrong\")\n    ```\n\n    **Method 2: fmt.Errorf()\
+  \ - Formatted errors**\n    ```go\n    import \"fmt\"\n\n    age := -5\n    err\
+  \ := fmt.Errorf(\"invalid age: %d (must be positive)\", age)\n    // Error: \"invalid\
+  \ age: -5 (must be positive)\"\n    ```\n\n    **Method 3: Custom error types**\n\
+  \    ```go\n    type ValidationError struct {\n        Field string\n        Value\
+  \ interface{}\n        Issue string\n    }\n\n    func (e ValidationError) Error()\
+  \ string {\n        return fmt.Sprintf(\"validation failed for %s: %v (%s)\",\n\
+  \            e.Field, e.Value, e.Issue)\n    }\n\n    // Usage\n    err := ValidationError{\n\
+  \        Field: \"email\",\n        Value: \"notanemail\",\n        Issue: \"invalid\
+  \ format\",\n    }\n    fmt.Println(err)\n    // \"validation failed for email:\
+  \ notanemail (invalid format)\"\n    ```\n\n    ### Multiple Return Values Pattern\n\
+  \n    **Go functions commonly return (result, error):**\n    ```go\n    func readFile(path\
+  \ string) ([]byte, error) {\n        // If successful: return data, nil\n      \
+  \  // If failed: return nil, error\n    }\n\n    func parseJSON(data []byte) (User,\
+  \ error) {\n        // If successful: return user, nil\n        // If failed: return\
+  \ User{}, error\n    }\n    ```\n\n    **Why this works well:**\n    - Explicit:\
+  \ Can't ignore errors (compiler would complain about unused variable)\n    - Clear:\
+  \ Success case and failure case are obvious\n    - No hidden control flow (unlike\
+  \ exceptions)\n\n    ### Error Checking Patterns\n\n    **Pattern 1: Return immediately**\n\
+  \    ```go\n    func processUser(id int) error {\n        user, err := getUser(id)\n\
+  \        if err != nil {\n            return err  // Propagate error up\n      \
+  \  }\n\n        err = validateUser(user)\n        if err != nil {\n            return\
+  \ err\n        }\n\n        err = saveUser(user)\n        if err != nil {\n    \
+  \        return err\n        }\n\n        return nil  // Success!\n    }\n    ```\n\
+  \n    **Pattern 2: Handle and continue**\n    ```go\n    func loadConfig(path string)\
+  \ Config {\n        config, err := readConfig(path)\n        if err != nil {\n \
+  \           // Use default config\n            log.Printf(\"Using default config:\
+  \ %v\", err)\n            return DefaultConfig\n        }\n        return config\n\
+  \    }\n    ```\n\n    **Pattern 3: Wrap and add context**\n    ```go\n    func\
+  \ loadUserProfile(id int) (*Profile, error) {\n        user, err := getUser(id)\n\
+  \        if err != nil {\n            return nil, fmt.Errorf(\"failed to load profile\
+  \ for user %d: %w\", id, err)\n        }\n        return user.Profile, nil\n   \
+  \ }\n    ```\n\n    ### Error Wrapping (Go 1.13+)\n\n    **The %w verb wraps errors:**\n\
+  \    ```go\n    func outer() error {\n        err := inner()\n        if err !=\
+  \ nil {\n            return fmt.Errorf(\"outer failed: %w\", err)\n        }\n \
+  \       return nil\n    }\n\n    func inner() error {\n        return errors.New(\"\
+  inner error\")\n    }\n\n    // Result: \"outer failed: inner error\"\n    // The\
+  \ original error is preserved!\n    ```\n\n    **Unwrapping errors:**\n    ```go\n\
+  \    import \"errors\"\n\n    err := outer()\n    // Check if err wraps a specific\
+  \ error\n    if errors.Is(err, SomeSpecificError) {\n        // Handle specific\
+  \ error\n    }\n\n    // Extract wrapped error type\n    var validationErr *ValidationError\n\
+  \    if errors.As(err, &validationErr) {\n        fmt.Println(\"Validation failed:\"\
+  , validationErr.Field)\n    }\n    ```\n\n    ### Sentinel Errors\n\n    **Predefined\
+  \ errors for comparison:**\n    ```go\n    package io\n\n    var EOF = errors.New(\"\
+  EOF\")\n    var ErrClosedPipe = errors.New(\"io: read/write on closed pipe\")\n\
+  \    ```\n\n    **Usage:**\n    ```go\n    import \"io\"\n\n    data, err := reader.Read(buffer)\n\
+  \    if err == io.EOF {\n        fmt.Println(\"Reached end of file\")\n        return\n\
+  \    }\n    if err != nil {\n        return fmt.Errorf(\"read failed: %w\", err)\n\
+  \    }\n    ```\n\n    **With errors.Is() (preferred):**\n    ```go\n    if errors.Is(err,\
+  \ io.EOF) {\n        // Handle EOF\n    }\n    ```\n\n    ### Custom Error Types\
+  \ with Data\n\n    **Rich errors with context:**\n    ```go\n    type HTTPError\
+  \ struct {\n        StatusCode int\n        Message    string\n        URL     \
+  \   string\n    }\n\n    func (e *HTTPError) Error() string {\n        return fmt.Sprintf(\"\
+  HTTP %d: %s (URL: %s)\",\n            e.StatusCode, e.Message, e.URL)\n    }\n\n\
+  \    func fetchURL(url string) ([]byte, error) {\n        resp, err := http.Get(url)\n\
+  \        if err != nil {\n            return nil, err\n        }\n        defer\
+  \ resp.Body.Close()\n\n        if resp.StatusCode != 200 {\n            return nil,\
+  \ &HTTPError{\n                StatusCode: resp.StatusCode,\n                Message:\
+  \    \"request failed\",\n                URL:        url,\n            }\n    \
+  \    }\n\n        return io.ReadAll(resp.Body)\n    }\n\n    // Usage\n    data,\
+  \ err := fetchURL(\"https://api.example.com/data\")\n    if err != nil {\n     \
+  \   var httpErr *HTTPError\n        if errors.As(err, &httpErr) {\n            if\
+  \ httpErr.StatusCode == 404 {\n                fmt.Println(\"Resource not found\"\
+  )\n            } else {\n                fmt.Printf(\"HTTP error: %d\\\\n\", httpErr.StatusCode)\n\
+  \            }\n        } else {\n            fmt.Println(\"Network error:\", err)\n\
+  \        }\n        return\n    }\n    ```\n\n    ### Don't Panic!\n\n    **panic\
+  \ is for unrecoverable errors:**\n    ```go\n    // ❌ BAD: Don't panic for expected\
+  \ errors\n    func getUser(id int) User {\n        user, err := db.FindUser(id)\n\
+  \        if err != nil {\n            panic(err)  // DON'T DO THIS!\n        }\n\
+  \        return user\n    }\n\n    // ✅ GOOD: Return errors\n    func getUser(id\
+  \ int) (User, error) {\n        user, err := db.FindUser(id)\n        if err !=\
+  \ nil {\n            return User{}, err\n        }\n        return user, nil\n \
+  \   }\n    ```\n\n    **When to use panic:**\n    - Programming errors (nil pointer,\
+  \ array out of bounds)\n    - Initialization failures (can't load required config)\n\
+  \    - Impossible states (should never happen)\n\n    **Example of reasonable panic:**\n\
+  \    ```go\n    func MustCompileRegex(pattern string) *regexp.Regexp {\n       \
+  \ re, err := regexp.Compile(pattern)\n        if err != nil {\n            panic(fmt.Sprintf(\"\
+  invalid regex pattern: %s\", pattern))\n        }\n        return re\n    }\n\n\
+  \    // Used in initialization\n    var emailRegex = MustCompileRegex(\\`^[a-z0-9]+@[a-z]+\\\
+  \\.[a-z]{2,}$\\`)\n    ```\n\n    ### Error Handling Best Practices\n\n    **1.\
+  \ Always check errors:**\n    ```go\n    // ❌ BAD: Ignoring errors\n    data, _\
+  \ := os.ReadFile(\"config.json\")\n\n    // ✅ GOOD: Check and handle\n    data,\
+  \ err := os.ReadFile(\"config.json\")\n    if err != nil {\n        return fmt.Errorf(\"\
+  failed to read config: %w\", err)\n    }\n    ```\n\n    **2. Add context when wrapping:**\n\
+  \    ```go\n    // ❌ BAD: No context\n    if err != nil {\n        return err\n\
+  \    }\n\n    // ✅ GOOD: Add context\n    if err != nil {\n        return fmt.Errorf(\"\
+  processing user %d: %w\", userID, err)\n    }\n    ```\n\n    **3. Return early,\
+  \ avoid nesting:**\n    ```go\n    // ❌ BAD: Nested error handling\n    func process()\
+  \ error {\n        if err := step1(); err == nil {\n            if err := step2();\
+  \ err == nil {\n                if err := step3(); err == nil {\n              \
+  \      return nil\n                } else {\n                    return err\n  \
+  \              }\n            } else {\n                return err\n           \
+  \ }\n        } else {\n            return err\n        }\n    }\n\n    // ✅ GOOD:\
+  \ Early returns\n    func process() error {\n        if err := step1(); err != nil\
+  \ {\n            return err\n        }\n        if err := step2(); err != nil {\n\
+  \            return err\n        }\n        if err := step3(); err != nil {\n  \
+  \          return err\n        }\n        return nil\n    }\n    ```\n\n    **4.\
+  \ Don't ignore errors with blank identifier:**\n    ```go\n    // ❌ BAD: Silently\
+  \ ignoring errors\n    file, _ := os.Open(\"important.txt\")\n\n    // ✅ GOOD: Handle\
+  \ or at least log\n    file, err := os.Open(\"important.txt\")\n    if err != nil\
+  \ {\n        log.Printf(\"Warning: could not open file: %v\", err)\n        // Use\
+  \ default behavior\n    }\n    ```\n\n    **5. Use custom error types for public\
+  \ APIs:**\n    ```go\n    // ✅ Package users can check error types\n    type NotFoundError\
+  \ struct {\n        Resource string\n        ID       int\n    }\n\n    func (e\
+  \ *NotFoundError) Error() string {\n        return fmt.Sprintf(\"%s with ID %d not\
+  \ found\", e.Resource, e.ID)\n    }\n\n    // Callers can check:\n    user, err\
+  \ := api.GetUser(123)\n    if err != nil {\n        var notFound *NotFoundError\n\
+  \        if errors.As(err, &notFound) {\n            // Handle not found specifically\n\
+  \        }\n    }\n    ```\n\n    ### Practical Example: File Processing\n\n   \
+  \ ```go\n    package main\n\n    import (\n        \"bufio\"\n        \"fmt\"\n\
+  \        \"os\"\n        \"strconv\"\n        \"strings\"\n    )\n\n    type ParseError\
+  \ struct {\n        Line   int\n        Column int\n        Value  string\n    }\n\
+  \n    func (e *ParseError) Error() string {\n        return fmt.Sprintf(\"parse\
+  \ error at line %d, column %d: invalid value %q\",\n            e.Line, e.Column,\
+  \ e.Value)\n    }\n\n    func processFile(path string) error {\n        // Open\
+  \ file\n        file, err := os.Open(path)\n        if err != nil {\n          \
+  \  return fmt.Errorf(\"failed to open file %s: %w\", path, err)\n        }\n   \
+  \     defer file.Close()\n\n        // Process line by line\n        scanner :=\
+  \ bufio.NewScanner(file)\n        lineNum := 0\n\n        for scanner.Scan() {\n\
+  \            lineNum++\n            line := scanner.Text()\n\n            // Parse\
+  \ line\n            if err := parseLine(line, lineNum); err != nil {\n         \
+  \       return fmt.Errorf(\"processing line %d: %w\", lineNum, err)\n          \
+  \  }\n        }\n\n        // Check for scan errors\n        if err := scanner.Err();\
+  \ err != nil {\n            return fmt.Errorf(\"error reading file: %w\", err)\n\
+  \        }\n\n        return nil\n    }\n\n    func parseLine(line string, lineNum\
+  \ int) error {\n        parts := strings.Split(line, \",\")\n        if len(parts)\
+  \ < 2 {\n            return &ParseError{\n                Line:   lineNum,\n   \
+  \             Column: 0,\n                Value:  line,\n            }\n       \
+  \ }\n\n        // Parse number\n        num, err := strconv.Atoi(strings.TrimSpace(parts[1]))\n\
+  \        if err != nil {\n            return &ParseError{\n                Line:\
+  \   lineNum,\n                Column: len(parts[0]) + 1,\n                Value:\
+  \  parts[1],\n            }\n        }\n\n        fmt.Printf(\"Line %d: %s = %d\\\
+  \\n\", lineNum, parts[0], num)\n        return nil\n    }\n\n    func main() {\n\
+  \        err := processFile(\"data.csv\")\n        if err != nil {\n           \
+  \ // Check for specific error types\n            var parseErr *ParseError\n    \
+  \        if errors.As(err, &parseErr) {\n                fmt.Printf(\"Invalid data:\
+  \ %v\\\\n\", parseErr)\n            } else {\n                fmt.Printf(\"Failed\
+  \ to process file: %v\\\\n\", err)\n            }\n            os.Exit(1)\n    \
+  \    }\n\n        fmt.Println(\"File processed successfully!\")\n    }\n    ```\n\
+  \n    ### Error vs Exception: The Go Way\n\n    **Other languages (exceptions):**\n\
+  \    ```python\n    # Python\n    try:\n        user = get_user(123)\n        process(user)\n\
+  \    except UserNotFoundError:\n        print(\"User not found\")\n    except DatabaseError\
+  \ as e:\n        print(f\"Database error: {e}\")\n    ```\n\n    **Go (explicit\
+  \ errors):**\n    ```go\n    user, err := getUser(123)\n    if err != nil {\n  \
+  \      var notFoundErr *NotFoundError\n        if errors.As(err, &notFoundErr) {\n\
+  \            fmt.Println(\"User not found\")\n            return\n        }\n  \
+  \      return fmt.Errorf(\"failed to get user: %w\", err)\n    }\n\n    if err :=\
+  \ process(user); err != nil {\n        return fmt.Errorf(\"failed to process user:\
+  \ %w\", err)\n    }\n    ```\n\n    **Why Go's approach is better:**\n    - ✅ **Explicit**:\
+  \ Error handling is visible in the code\n    - ✅ **Predictable**: No hidden control\
+  \ flow jumps\n    - ✅ **Forced**: Can't forget to handle errors (unused variable)\n\
+  \    - ✅ **Fast**: No stack unwinding overhead\n    - ✅ **Clear**: Easy to see what\
+  \ can fail\n\n    ### Common Patterns\n\n    **1. Cleanup with defer:**\n    ```go\n\
+  \    func processFile(path string) error {\n        file, err := os.Open(path)\n\
+  \        if err != nil {\n            return err\n        }\n        defer file.Close()\
+  \  // Always closes, even on error\n\n        return process(file)\n    }\n    ```\n\
+  \n    **2. Collecting multiple errors:**\n    ```go\n    func validateUser(u *User)\
+  \ error {\n        var errs []string\n\n        if u.Name == \"\" {\n          \
+  \  errs = append(errs, \"name is required\")\n        }\n        if u.Age < 0 {\n\
+  \            errs = append(errs, \"age must be positive\")\n        }\n        if\
+  \ !strings.Contains(u.Email, \"@\") {\n            errs = append(errs, \"invalid\
+  \ email\")\n        }\n\n        if len(errs) > 0 {\n            return fmt.Errorf(\"\
+  validation failed: %s\", strings.Join(errs, \"; \"))\n        }\n        return\
+  \ nil\n    }\n    ```\n\n    **3. Retry on error:**\n    ```go\n    func fetchWithRetry(url\
+  \ string, maxRetries int) ([]byte, error) {\n        var lastErr error\n\n     \
+  \   for i := 0; i < maxRetries; i++ {\n            data, err := http.Get(url)\n\
+  \            if err == nil {\n                return data, nil\n            }\n\n\
+  \            lastErr = err\n            time.Sleep(time.Second * time.Duration(i+1))\n\
+  \        }\n\n        return nil, fmt.Errorf(\"failed after %d retries: %w\", maxRetries,\
+  \ lastErr)\n    }\n    ```\n\n    ### Key Takeaways\n\n    1. **Errors are values**\
+  \ - not exceptions\n    2. **Always check errors** - use `if err != nil`\n    3.\
+  \ **Add context** - use `fmt.Errorf(\"context: %w\", err)`\n    4. **errors.Is()**\
+  \ - check for sentinel errors\n    5. **errors.As()** - extract custom error types\n\
+  \    6. **Return early** - avoid nested error handling\n    7. **Don't panic** -\
+  \ use panic only for programming errors\n    8. **Custom error types** - for rich\
+  \ error information\n    9. **Wrap errors** - preserve error chain with %w\n   \
+  \ 10. **Make errors useful** - include context, IDs, values\n\n    **Error handling\
+  \ is not optional in Go - it's the Go way!**"
+exercises:
+- type: mcq
+  slug: lesson-19-mcq
+  sequence_order: 1
+  question: What is the main focus of this lesson on Lesson 19?
+  options:
+  - Understanding core concepts and practical applications related to Lesson 19
+  - Only theoretical knowledge without application
+  - Memorizing definitions without context
+  - Learning unrelated peripheral topics
+  correct_answer_index: 0
+  explanation: This lesson on Lesson 19 aims to build both conceptual understanding
+    and practical knowledge. Effective learning combines theory with application,
+    allowing you to not only understand concepts but also apply them in real-world
+    contexts. This integrated approach is more valuable than rote memorization or
+    purely theoretical study.
+objectives:
+- Apply least privilege
+- Design policies
+- Harden auth & keys
+next_recommended: []

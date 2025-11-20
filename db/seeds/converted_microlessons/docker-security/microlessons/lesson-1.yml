@@ -1,0 +1,209 @@
+slug: lesson-1
+title: Lesson 1
+difficulty: easy
+sequence_order: 1
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Docker Secret Create - Secure Secrets Management\n\
+  \n    ## What Are Docker Secrets?\n\n    Docker secrets provide a secure way to\
+  \ store and manage sensitive data such as:\n    - **Passwords** for databases and\
+  \ services\n    - **API keys** and tokens\n    - **TLS certificates** and private\
+  \ keys\n    - **SSH keys** for remote access\n    - **Configuration files** with\
+  \ sensitive data\n\n    Secrets are encrypted during transit and at rest in the\
+  \ Swarm, and are only mounted in memory for containers that need them.\n\n    ##\
+  \ Core Concepts\n\n    ### Security Features\n    - **Encryption at Rest**: Secrets\
+  \ are encrypted in the Swarm raft log\n    - **Encryption in Transit**: TLS-encrypted\
+  \ when transmitted to nodes\n    - **Access Control**: Only containers with explicit\
+  \ access can read secrets\n    - **Memory-Only Mount**: Secrets never written to\
+  \ disk in containers\n    - **Automatic Rotation**: Update secrets without rebuilding\
+  \ images\n\n    ### Secret Lifecycle\n    1. **Create**: Store sensitive data as\
+  \ a secret\n    2. **Grant Access**: Assign secrets to services\n    3. **Mount**:\
+  \ Secrets appear as files in `/run/secrets/`\n    4. **Rotate**: Update secrets\
+  \ for security compliance\n    5. **Remove**: Delete secrets when no longer needed\n\
+  \n    ## Basic Syntax\n\n    ```bash\n    # Create from stdin\n    docker secret\
+  \ create <secret-name> -\n\n    # Create from file\n    docker secret create <secret-name>\
+  \ <file-path>\n\n    # With labels\n    docker secret create --label env=production\
+  \ <secret-name> <file>\n    ```\n\n    ## Common Use Cases\n\n    ### 1. Database\
+  \ Credentials\n    ```bash\n    # Create database password from stdin\n    echo\
+  \ \"mySecurePassword123!\" | docker secret create db_password -\n\n    # Create\
+  \ from environment variable\n    echo \"$DB_PASSWORD\" | docker secret create db_password\
+  \ -\n\n    # Use in service\n    docker service create \\\\\n      --name postgres\
+  \ \\\\\n      --secret db_password \\\\\n      -e POSTGRES_PASSWORD_FILE=/run/secrets/db_password\
+  \ \\\\\n      postgres:15\n    ```\n\n    ### 2. API Keys and Tokens\n    ```bash\n\
+  \    # Create API key from file\n    echo \"sk-abc123def456\" > /tmp/api_key.txt\n\
+  \    docker secret create openai_api_key /tmp/api_key.txt\n    rm /tmp/api_key.txt\
+  \  # Remove temporary file\n\n    # Use in application\n    docker service create\
+  \ \\\\\n      --name api-service \\\\\n      --secret openai_api_key \\\\\n    \
+  \  -e API_KEY_FILE=/run/secrets/openai_api_key \\\\\n      my-api-app:latest\n \
+  \   ```\n\n    ### 3. TLS Certificates\n    ```bash\n    # Create certificate and\
+  \ key secrets\n    docker secret create server_cert server.crt\n    docker secret\
+  \ create server_key server.key\n\n    # Use in nginx service\n    docker service\
+  \ create \\\\\n      --name web \\\\\n      --secret server_cert \\\\\n      --secret\
+  \ server_key \\\\\n      --publish 443:443 \\\\\n      nginx:alpine\n    ```\n\n\
+  \    ### 4. Configuration Files with Sensitive Data\n    ```bash\n    # Create config\
+  \ file with credentials\n    cat > app_config.json <<EOF\n    {\n      \"database\"\
+  : {\n        \"host\": \"db.example.com\",\n        \"username\": \"admin\",\n \
+  \       \"password\": \"secure_pass_123\"\n      },\n      \"api_keys\": {\n   \
+  \     \"stripe\": \"sk_live_abc123\",\n        \"sendgrid\": \"SG.xyz789\"\n   \
+  \   }\n    }\n    EOF\n\n    docker secret create app_config app_config.json\n \
+  \   rm app_config.json\n    ```\n\n    ### 5. SSH Keys for Git Access\n    ```bash\n\
+  \    # Create SSH key secret for private repos\n    docker secret create github_ssh_key\
+  \ ~/.ssh/github_deploy_key\n\n    # Use in CI/CD container\n    docker service create\
+  \ \\\\\n      --name ci-runner \\\\\n      --secret github_ssh_key \\\\\n      -e\
+  \ SSH_KEY_FILE=/run/secrets/github_ssh_key \\\\\n      gitlab/gitlab-runner:latest\n\
+  \    ```\n\n    ## Advanced Options\n\n    ### Labels and Metadata\n    ```bash\n\
+  \    # Create with descriptive labels\n    docker secret create \\\\\n      --label\
+  \ environment=production \\\\\n      --label tier=database \\\\\n      --label rotation_date=2025-03-01\
+  \ \\\\\n      prod_db_password -\n\n    # Create with team ownership\n    docker\
+  \ secret create \\\\\n      --label team=backend \\\\\n      --label owner=alice@example.com\
+  \ \\\\\n      backend_api_key -\n    ```\n\n    ### Template Variable Pattern\n\
+  \    ```bash\n    # Create secrets for different environments\n    for env in dev\
+  \ staging prod; do\n      echo \"$\\{${env}_db_password\\}\" | \\\\\n        docker\
+  \ secret create \"${env}_db_password\" -\n    done\n\n    # Use environment-specific\
+  \ secrets\n    docker service create \\\\\n      --name app-prod \\\\\n      --secret\
+  \ prod_db_password \\\\\n      --env ENVIRONMENT=production \\\\\n      myapp:latest\n\
+  \    ```\n\n    ## Reading Secrets in Containers\n\n    ### Bash/Shell Scripts\n\
+  \    ```bash\n    #!/bin/bash\n    # Read secret from file\n    DB_PASSWORD=$(cat\
+  \ /run/secrets/db_password)\n\n    # Connect to database\n    psql -h db -U admin\
+  \ -W \"$DB_PASSWORD\" mydb\n    ```\n\n    ### Python Applications\n    ```python\n\
+  \    # Read secret in Python\n    def read_secret(secret_name):\n        try:\n\
+  \            with open(f'/run/secrets/{secret_name}', 'r') as f:\n             \
+  \   return f.read().strip()\n        except FileNotFoundError:\n            return\
+  \ None\n\n    db_password = read_secret('db_password')\n    api_key = read_secret('api_key')\n\
+  \    ```\n\n    ### Node.js Applications\n    ```javascript\n    const fs = require('fs');\n\
+  \n    function readSecret(secretName) {\n      try {\n        return fs.readFileSync(\n\
+  \          `/run/secrets/${secretName}`, \n          'utf8'\n        ).trim();\n\
+  \      } catch (err) {\n        return null;\n      }\n    }\n\n    const dbPassword\
+  \ = readSecret('db_password');\n    ```\n\n    ## Production Best Practices\n\n\
+  \    ### 1. Secret Naming Convention\n    ```bash\n    # Use descriptive, hierarchical\
+  \ names\n    docker secret create prod_mysql_root_password -\n    docker secret\
+  \ create staging_redis_password -\n    docker secret create api_stripe_secret_key\
+  \ -\n    ```\n\n    ### 2. Never Commit Secrets to Version Control\n    ```bash\n\
+  \    # Store in secure vault, load at runtime\n    vault read -field=value secret/db/password\
+  \ | \\\\\n      docker secret create db_password -\n    ```\n\n    ### 3. Implement\
+  \ Secret Rotation\n    ```bash\n    # Create new version of secret\n    echo \"\
+  newPassword456\" | docker secret create db_password_v2 -\n\n    # Update service\
+  \ to use new secret\n    docker service update \\\\\n      --secret-rm db_password\
+  \ \\\\\n      --secret-add db_password_v2 \\\\\n      my-service\n\n    # Remove\
+  \ old secret after verification\n    docker secret rm db_password\n    ```\n\n \
+  \   ### 4. Use Least Privilege\n    ```bash\n    # Only grant secrets to services\
+  \ that need them\n    docker service create \\\\\n      --name frontend \\\\\n \
+  \     # No secrets - public facing\n      nginx:alpine\n\n    docker service create\
+  \ \\\\\n      --name backend \\\\\n      --secret db_password \\\\\n      --secret\
+  \ api_key \\\\\n      # Only necessary secrets\n      my-backend:latest\n    ```\n\
+  \n    ### 5. Audit and Monitor Secret Usage\n    ```bash\n    # List secrets with\
+  \ labels\n    docker secret ls --filter label=environment=production\n\n    # Inspect\
+  \ which services use a secret\n    docker secret inspect --format '{{.Spec.Name}}'\
+  \ db_password\n    docker service ls --filter label=uses_secrets=true\n    ```\n\
+  \n    ## Common Pitfalls to Avoid\n\n    ❌ **Don't use environment variables for\
+  \ secrets**\n    ```bash\n    # BAD - visible in process list and docker inspect\n\
+  \    docker service create -e PASSWORD=secret123 myapp\n    ```\n\n    ✅ **Use Docker\
+  \ secrets instead**\n    ```bash\n    # GOOD - encrypted and access-controlled\n\
+  \    echo \"secret123\" | docker secret create password -\n    docker service create\
+  \ --secret password myapp\n    ```\n\n    ❌ **Don't store secrets in images**\n\
+  \    ```dockerfile\n    # BAD - secrets baked into image layers\n    RUN echo \"\
+  password123\" > /etc/app/secret\n    ```\n\n    ✅ **Mount secrets at runtime**\n\
+  \    ```bash\n    # GOOD - secrets injected at runtime\n    docker service create\
+  \ --secret app_secret myapp\n    ```\n\n    ## Comparison with Other Secret Management\n\
+  \n    | Feature | Docker Secrets | Environment Variables | Config Files |\n    |---------|---------------|----------------------|--------------|\n\
+  \    | Encryption | ✅ Yes | ❌ No | ❌ No |\n    | Memory-Only | ✅ Yes | ❌ No | ❌\
+  \ No |\n    | Swarm Required | ✅ Yes | ❌ No | ❌ No |\n    | Easy Rotation | ✅ Yes\
+  \ | ⚠️ Manual | ⚠️ Manual |\n    | Access Control | ✅ Granular | ❌ Limited | ❌ Limited\
+  \ |\n\n    ## Key Takeaways\n\n    - **Secrets are encrypted** at rest and in transit\n\
+  \    - **Swarm mode required** - secrets only work in Swarm\n    - **Mount as files**\
+  \ in `/run/secrets/` directory\n    - **Access control** - only authorized services\
+  \ can read\n    - **No disk writes** - secrets stay in memory only\n    - **Use\
+  \ for sensitive data** like passwords, keys, certificates\n    - **Implement rotation**\
+  \ for enhanced security compliance"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: Why should you use Docker secrets instead of environment variables for
+    sensitive data?
+  options:
+  - Docker secrets are encrypted at rest and in transit, mounted in memory only, while
+    environment variables are visible in process lists and docker inspect
+  - Environment variables are more secure than Docker secrets
+  - Docker secrets and environment variables provide the same security
+  - Docker secrets are only for development environments
+  correct_answer: Docker secrets are encrypted at rest and in transit, mounted in
+    memory only, while environment variables are visible in process lists and docker
+    inspect
+  explanation: 'Docker secrets and environment variables have fundamentally different
+    security properties making secrets essential for production sensitive data. Environment
+    variables (insecure): Visible in docker inspect output (anyone with Docker access
+    sees values), exposed in process list (ps aux shows environment), logged in application
+    logs if printed, inherited by child processes, stored in plain text in container
+    config, accessible through /proc filesystem. Example attack: docker inspect myapp
+    reveals DATABASE_PASSWORD=secret123, attacker with read-only Docker access compromises
+    database. Docker secrets (secure): Encrypted in Swarm raft log (AES-256 encryption),
+    encrypted during transit over TLS to nodes, decrypted only in target container''s
+    memory, never written to disk in container, mounted as files in /run/secrets/
+    (tmpfs memory filesystem), automatically removed when container stops, access
+    controlled per service (only authorized services read secrets). Example protection:
+    Secret db_password encrypted in Swarm, transmitted encrypted to worker node, mounted
+    in memory at /run/secrets/db_password, application reads file, secret never visible
+    in docker inspect or process list. Security comparison scenario: Database password
+    needed by 5 services. Environment variable approach: All 5 services have PASSWORD=secret123
+    in config, visible in docker inspect for each service, any compromise exposes
+    password, changing password requires updating 5 service configs. Docker secret
+    approach: Single secret db_password created once, granted to 5 services individually,
+    docker inspect shows services use secret but not value, changing password rotates
+    one secret, all services automatically get new value. Real-world breach prevention:
+    Company used environment variables for API keys, junior developer ran docker inspect
+    > debug.txt, committed to GitHub, API keys leaked, $50K AWS bill from cryptomining.
+    Docker secrets would have shown secret name only, not value. Best practices: Never
+    use environment variables for passwords, API keys, private keys, certificates,
+    OAuth tokens. Always use Docker secrets for sensitive data in Swarm, use external
+    secret managers (Vault, AWS Secrets Manager) for non-Swarm environments, rotate
+    secrets regularly (quarterly minimum), audit who has access to secrets. Migration:
+    Replace -e DATABASE_PASSWORD=secret with echo secret | docker secret create db_password
+    - and --secret db_password, update application to read from /run/secrets/db_password
+    instead of environment variable.'
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: Why do Docker secrets require Swarm mode and what are the implications?
+  options:
+  - Docker secrets rely on Swarm's raft consensus and encrypted storage, so single
+    Docker hosts and docker-compose cannot use secrets without Swarm mode
+  - Docker secrets work on any Docker installation without Swarm
+  - Swarm mode is optional for Docker secrets
+  - Docker secrets only work in Kubernetes, not Swarm
+  correct_answer: Docker secrets rely on Swarm's raft consensus and encrypted storage,
+    so single Docker hosts and docker-compose cannot use secrets without Swarm mode
+  explanation: 'Docker secrets depend on Swarm mode infrastructure for encryption,
+    distribution, and access control, creating important deployment considerations.
+    Why Swarm required: Secrets stored in Swarm''s raft consensus log (distributed,
+    encrypted database), raft provides consistency across cluster nodes, TLS-encrypted
+    distribution from managers to workers, RBAC controls which services access secrets,
+    automatic secret rotation propagation. Without Swarm, these features don''t exist.
+    Implications for development: docker run cannot use secrets (Swarm required),
+    docker-compose v3 file with secrets: section requires docker stack deploy in Swarm
+    mode, cannot docker-compose up with secrets on single host. Workarounds for local
+    dev: Docker Compose v3.8+ supports secrets via files for local development (not
+    encrypted, just file bind mounts), use .env files for local dev (not production),
+    init Swarm on single machine (docker swarm init) for testing. Example incompatibility:
+    Production docker-compose.yml has services: webapp: secrets: [db_password]. Running
+    docker-compose up fails with "secrets are not supported in this Compose version",
+    must use docker stack deploy --compose-file docker-compose.yml mystack in Swarm
+    mode. Swarm initialization for development: docker swarm init creates single-node
+    Swarm, now docker stack deploy works with secrets, minimal overhead for development,
+    secrets encrypted even on single node. Production deployment: Multi-node Swarm
+    cluster (3+ manager nodes for HA), secrets replicated across managers, encrypted
+    storage on all nodes, services scheduled across workers get secrets automatically.
+    Alternatives without Swarm: Kubernetes has native Secrets (similar concept, different
+    implementation), docker run can bind mount secret files (not encrypted), third-party
+    tools like HashiCorp Vault, AWS Secrets Manager for external secret management.
+    Decision matrix: Use Docker secrets: Running Swarm in production, need encrypted
+    secret storage, want Docker-native solution. Use alternatives: Kubernetes deployment
+    (use K8s Secrets), single Docker host without Swarm (bind mount files or use Vault),
+    multi-cloud deployment (cloud-native secrets managers). Migration path: Start
+    development with file-based secrets in docker-compose, initialize Swarm for testing
+    (docker swarm init), deploy to production Swarm with proper secrets, or migrate
+    to Kubernetes with ConfigMaps/Secrets. Real-world scenario: Team develops with
+    docker-compose using .env files, CI/CD deploys to Swarm cluster, secrets created
+    in Swarm during deployment, production uses encrypted Docker secrets, development
+    uses unencrypted env files (different data, acceptable).'
+  require_pass: true

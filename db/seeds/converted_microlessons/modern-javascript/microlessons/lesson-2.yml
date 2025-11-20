@@ -1,0 +1,105 @@
+slug: lesson-2
+title: Lesson 2
+difficulty: easy
+sequence_order: 2
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# JavaScript ES6+ Features\n\n    Modern\
+  \ JavaScript (ES6/ES2015 and beyond) introduced powerful features that make code\
+  \ more concise and maintainable.\n\n    ## Variables: let, const, var\n\n    ```javascript\n\
+  \    // var - function scoped, can be redeclared (OLD, avoid)\n    var x = 1;\n\
+  \    var x = 2;  // OK but confusing\n\n    // let - block scoped, can be reassigned\n\
+  \    let count = 0;\n    count = 1;  // OK\n\n    // const - block scoped, cannot\
+  \ be reassigned\n    const API_KEY = 'abc123';\n    // API_KEY = 'new';  // ERROR\n\
+  \n    // But objects can be modified\n    const user = { name: 'Alice' };\n    user.name\
+  \ = 'Bob';  // OK - modifying property\n    // user = {};  // ERROR - reassigning\n\
+  \    ```\n\n    **Best Practice**: Use `const` by default, `let` when you need to\
+  \ reassign, never `var`.\n\n    ## Arrow Functions\n\n    ```javascript\n    //\
+  \ Traditional function\n    function add(a, b) {\n      return a + b;\n    }\n\n\
+  \    // Arrow function\n    const add = (a, b) => a + b;\n\n    // With block\n\
+  \    const multiply = (a, b) => {\n      const result = a * b;\n      return result;\n\
+  \    };\n\n    // Single parameter (parentheses optional)\n    const square = x\
+  \ => x * x;\n\n    // No parameters\n    const greet = () => console.log('Hello!');\n\
+  \n    // Arrow functions and 'this'\n    const person = {\n      name: 'Alice',\n\
+  \      hobbies: ['reading', 'coding'],\n\n      // Arrow function inherits 'this'\
+  \ from parent scope\n      printHobbies() {\n        this.hobbies.forEach(hobby\
+  \ => {\n          console.log(\\`\\${this.name} likes \\${hobby}\\`);\n        });\n\
+  \      }\n    };\n    ```\n\n    ## Template Literals\n\n    ```javascript\n   \
+  \ const name = 'Alice';\n    const age = 25;\n\n    // Old way\n    const message\
+  \ = 'Hello, ' + name + '! You are ' + age + ' years old.';\n\n    // Template literals\
+  \ (backticks)\n    const message = \\`Hello, \\${name}! You are \\${age} years old.\\\
+  `;\n\n    // Multiline strings\n    const html = \\`\n      <div>\n        <h1>\\\
+  ${title}</h1>\n        <p>\\${content}</p>\n      </div>\n    \\`;\n\n    // Expression\
+  \ evaluation\n    const total = \\`Total: $\\${price * quantity}\\`;\n    ```\n\n\
+  \    ## Destructuring\n\n    ### Array Destructuring\n\n    ```javascript\n    const\
+  \ colors = ['red', 'green', 'blue'];\n\n    // Old way\n    const first = colors[0];\n\
+  \    const second = colors[1];\n\n    // Destructuring\n    const [first, second,\
+  \ third] = colors;\n    console.log(first);  // 'red'\n\n    // Skip elements\n\
+  \    const [, , third] = colors;  // Only 'blue'\n\n    // Rest operator\n    const\
+  \ [first, ...rest] = colors;\n    console.log(rest);  // ['green', 'blue']\n\n \
+  \   // Default values\n    const [a, b, c, d = 'yellow'] = colors;\n    ```\n\n\
+  \    ### Object Destructuring\n\n    ```javascript\n    const user = {\n      name:\
+  \ 'Alice',\n      age: 25,\n      email: 'alice@example.com',\n      city: 'NYC'\n\
+  \    };\n\n    // Extract properties\n    const { name, age } = user;\n    console.log(name);\
+  \  // 'Alice'\n\n    // Rename variables\n    const { name: userName, age: userAge\
+  \ } = user;\n\n    // Default values\n    const { name, country = 'USA' } = user;\n\
+  \n    // Nested destructuring\n    const data = {\n      user: {\n        profile:\
+  \ {\n          name: 'Alice'\n        }\n      }\n    };\n    const { user: { profile:\
+  \ { name } } } = data;\n\n    // Function parameters\n    function greet({ name,\
+  \ age }) {\n      console.log(\\`Hello \\${name}, age \\${age}\\`);\n    }\n   \
+  \ greet(user);\n    ```\n\n    ## Spread and Rest Operators\n\n    ### Spread (...)\
+  \ - Expand elements\n\n    ```javascript\n    // Arrays\n    const arr1 = [1, 2,\
+  \ 3];\n    const arr2 = [4, 5, 6];\n    const combined = [...arr1, ...arr2];  //\
+  \ [1,2,3,4,5,6]\n\n    // Copy array\n    const copy = [...arr1];\n\n    // Objects\n\
+  \    const defaults = { theme: 'dark', lang: 'en' };\n    const userPrefs = { lang:\
+  \ 'fr', fontSize: 14 };\n    const settings = { ...defaults, ...userPrefs };\n \
+  \   // { theme: 'dark', lang: 'fr', fontSize: 14 }\n\n    // Function arguments\n\
+  \    const numbers = [1, 2, 3];\n    Math.max(...numbers);  // 3\n    ```\n\n  \
+  \  ### Rest (...) - Collect remaining elements\n\n    ```javascript\n    // Function\
+  \ parameters\n    function sum(...numbers) {\n      return numbers.reduce((total,\
+  \ n) => total + n, 0);\n    }\n    sum(1, 2, 3, 4);  // 10\n\n    // Mixed parameters\n\
+  \    function greet(greeting, ...names) {\n      names.forEach(name => console.log(\\\
+  `\\${greeting}, \\${name}!\\`));\n    }\n    greet('Hello', 'Alice', 'Bob', 'Charlie');\n\
+  \n    // Array destructuring\n    const [first, ...rest] = [1, 2, 3, 4];\n    //\
+  \ first = 1, rest = [2, 3, 4]\n    ```\n\n    ## Enhanced Object Literals\n\n  \
+  \  ```javascript\n    const name = 'Alice';\n    const age = 25;\n\n    // Property\
+  \ shorthand\n    const user = { name, age };\n    // Same as: { name: name, age:\
+  \ age }\n\n    // Method shorthand\n    const obj = {\n      // Old way\n      greet:\
+  \ function() {\n        return 'Hello';\n      },\n\n      // New way\n      greet()\
+  \ {\n        return 'Hello';\n      }\n    };\n\n    // Computed property names\n\
+  \    const key = 'email';\n    const user = {\n      name: 'Alice',\n      [key]:\
+  \ 'alice@example.com',\n      [\\`user_\\${key}\\`]: 'alice@example.com'\n    };\n\
+  \    ```\n\n    ## Modules (Import/Export)\n\n    ```javascript\n    // math.js\n\
+  \    export const PI = 3.14159;\n    export function square(x) {\n      return x\
+  \ * x;\n    }\n    export default function add(a, b) {\n      return a + b;\n  \
+  \  }\n\n    // app.js\n    import add, { PI, square } from './math.js';\n    console.log(add(2,\
+  \ 3));     // 5\n    console.log(PI);            // 3.14159\n    console.log(square(4));\
+  \     // 16\n\n    // Import all\n    import * as math from './math.js';\n    math.square(5);\n\
+  \n    // Rename imports\n    import { square as sq } from './math.js';\n    ```\n\
+  \n    ## Default Parameters\n\n    ```javascript\n    // Old way\n    function greet(name)\
+  \ {\n      name = name || 'Guest';\n      return \\`Hello, \\${name}\\`;\n    }\n\
+  \n    // New way\n    function greet(name = 'Guest') {\n      return \\`Hello, \\\
+  ${name}\\`;\n    }\n\n    // With expressions\n    function createUser(name, role\
+  \ = 'user', id = generateId()) {\n      return { name, role, id };\n    }\n    ```\n\
+  \n    ## Classes\n\n    ```javascript\n    class Person {\n      constructor(name,\
+  \ age) {\n        this.name = name;\n        this.age = age;\n      }\n\n      greet()\
+  \ {\n        return \\`Hello, I'm \\${this.name}\\`;\n      }\n\n      // Static\
+  \ method\n      static create(name, age) {\n        return new Person(name, age);\n\
+  \      }\n\n      // Getter\n      get info() {\n        return \\`\\${this.name},\
+  \ \\${this.age}\\`;\n      }\n\n      // Setter\n      set age(value) {\n      \
+  \  if (value < 0) throw new Error('Invalid age');\n        this._age = value;\n\
+  \      }\n    }\n\n    // Inheritance\n    class Developer extends Person {\n  \
+  \    constructor(name, age, language) {\n        super(name, age);\n        this.language\
+  \ = language;\n      }\n\n      code() {\n        return \\`Coding in \\${this.language}\\\
+  `;\n      }\n    }\n\n    const dev = new Developer('Alice', 25, 'JavaScript');\n\
+  \    ```\n\n    ## Promises and Async/Await (Preview)\n\n    ```javascript\n   \
+  \ // Promise\n    function fetchUser(id) {\n      return new Promise((resolve, reject)\
+  \ => {\n        setTimeout(() => {\n          resolve({ id, name: 'Alice' });\n\
+  \        }, 1000);\n      });\n    }\n\n    // Using promise\n    fetchUser(1)\n\
+  \      .then(user => console.log(user))\n      .catch(error => console.error(error));\n\
+  \n    // Async/await (cleaner)\n    async function getUser(id) {\n      try {\n\
+  \        const user = await fetchUser(id);\n        console.log(user);\n      }\
+  \ catch (error) {\n        console.error(error);\n      }\n    }\n    ```\n\n  \
+  \  **Next**: We'll dive deep into asynchronous JavaScript!"
+exercises: []

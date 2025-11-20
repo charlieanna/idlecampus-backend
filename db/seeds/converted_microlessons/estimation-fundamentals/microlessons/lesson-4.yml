@@ -1,0 +1,82 @@
+slug: lesson-4
+title: Lesson 4
+difficulty: easy
+sequence_order: 4
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Numbers Every Programmer Should Know\n\n\
+  \    Essential numbers for back-of-envelope calculations in system design.\n\n \
+  \   ## Latency Numbers (2024)\n\n    | Operation | Latency |\n    |-----------|---------|\n\
+  \    | L1 cache reference | 0.5 ns |\n    | Branch mispredict | 5 ns |\n    | L2\
+  \ cache reference | 7 ns |\n    | Mutex lock/unlock | 100 ns |\n    | Main memory\
+  \ reference | 100 ns |\n    | Compress 1KB with Snappy | 10,000 ns = 10 µs |\n \
+  \   | Send 2KB over 1 Gbps network | 20,000 ns = 20 µs |\n    | Read 1 MB sequentially\
+  \ from memory | 250,000 ns = 250 µs |\n    | Round trip within datacenter | 500,000\
+  \ ns = 500 µs |\n    | Disk seek | 10,000,000 ns = 10 ms |\n    | Read 1 MB sequentially\
+  \ from SSD | 1,000,000 ns = 1 ms |\n    | Read 1 MB sequentially from disk | 30,000,000\
+  \ ns = 30 ms |\n    | Send packet CA → Netherlands → CA | 150,000,000 ns = 150 ms\
+  \ |\n\n    ## Powers of 2\n\n    Essential for capacity planning:\n\n    | Power\
+  \ | Exact Value | Approx | Bytes |\n    |-------|-------------|--------|-------|\n\
+  \    | 2^10 | 1,024 | ~1 thousand | 1 KB |\n    | 2^20 | 1,048,576 | ~1 million\
+  \ | 1 MB |\n    | 2^30 | 1,073,741,824 | ~1 billion | 1 GB |\n    | 2^40 | 1,099,511,627,776\
+  \ | ~1 trillion | 1 TB |\n    | 2^50 | ~1.126 × 10^15 | ~1 quadrillion | 1 PB |\n\
+  \n    ## Time Units\n\n    | Unit | Value |\n    |------|-------|\n    | 1 second\
+  \ | 1,000 milliseconds |\n    | 1 millisecond | 1,000 microseconds |\n    | 1 microsecond\
+  \ | 1,000 nanoseconds |\n\n    ## Common Metrics\n\n    ### QPS (Queries Per Second)\n\
+  \    - **Low traffic**: 100-1,000 QPS\n    - **Medium traffic**: 1,000-10,000 QPS\n\
+  \    - **High traffic**: 10,000-100,000 QPS\n    - **Very high traffic**: 100,000+\
+  \ QPS\n\n    ### Daily Active Users (DAU)\n    - **Small app**: 1K-100K users\n\
+  \    - **Medium app**: 100K-1M users\n    - **Large app**: 1M-10M users\n    - **Massive\
+  \ app**: 10M+ users\n\n    ### Bandwidth Estimates\n    - **Text**: ~1-2 KB per\
+  \ message\n    - **Image**: ~200 KB - 2 MB\n    - **Video SD**: ~1-2 GB/hour\n \
+  \   - **Video HD**: ~3-5 GB/hour\n    - **Video 4K**: ~15-25 GB/hour\n\n    ## Storage\
+  \ Estimates\n\n    ### Database Storage\n    - **User profile**: ~1-2 KB\n    -\
+  \ **Tweet**: ~200-300 bytes\n    - **Photo metadata**: ~1 KB\n    - **Photo (compressed)**:\
+  \ ~200 KB\n    - **Video metadata**: ~1 KB\n    - **Video file**: Varies greatly\n\
+  \n    ## Key Principles\n\n    1. **Round numbers**: Use approximations (1M instead\
+  \ of 1,048,576)\n    2. **Write assumptions**: Make your assumptions explicit\n\
+  \    3. **Think in orders of magnitude**: Focus on 10x differences\n    4. **Use\
+  \ powers of 2**: Simplify calculations\n    5. **Sanity check**: Does the result\
+  \ make sense?\n\n    ## Example Calculation\n\n    **Question**: How much storage\
+  \ for 100M users posting 1 photo/day for 5 years?\n\n    **Calculation**:\n    ```\n\
+  \    Assumptions:\n    - 100M users\n    - 1 photo/day average\n    - Photo size:\
+  \ 200 KB\n    - Time: 5 years = 1,825 days\n\n    Total photos:\n    100M users\
+  \ × 1 photo/day × 1,825 days = 182.5B photos\n\n    Storage needed:\n    182.5B\
+  \ photos × 200 KB = 36.5 PB\n\n    With replication (3x):\n    36.5 PB × 3 = ~110\
+  \ PB\n    ```\n\n    **Sanity check**: 110 PB for 5 years of Instagram-like service?\
+  \ Reasonable!\n\n    Now practice with the System Design labs!"
+exercises:
+  - type: mcq
+    sequence_order: 1
+    question: "According to the latency numbers, approximately how much slower is reading from disk compared to reading from memory?"
+    options:
+      - "10x slower"
+      - "100x slower"
+      - "300x slower (disk ~30ms vs memory ~100ns)"
+      - "Same speed"
+    correct_answer: "300x slower (disk ~30ms vs memory ~100ns)"
+    explanation: "Understanding latency differences is crucial for system design decisions. Memory reference: ~100 nanoseconds (ns); SSD sequential read of 1MB: ~1 millisecond (ms) = 1,000,000 ns = 10,000x slower than single memory reference; HDD sequential read of 1MB: ~30 milliseconds = 30,000,000 ns = 300,000x slower than memory; Disk seek (random access): ~10 ms = 100,000x slower than memory. Real-world implications: (1) Caching is critical: storing frequently accessed data in memory (Redis, Memcached) can make reads 10,000x faster; (2) Sequential vs random access: reading 1MB sequentially from SSD takes 1ms, but reading 1MB in 1KB random chunks takes ~10ms (10x slower due to seeks); (3) Database design: why databases use indexes (avoid full table scans), why SSD adoption improved database performance 10-100x. Rule of thumb: Memory < 1μs, SSD < 1ms, HDD ~10ms, Network within datacenter ~1ms, Cross-continent ~100ms. Example calculation: loading 100MB dataset from disk (30ms/MB) = 3 seconds, but from memory (250μs/MB) = 25ms = 120x faster. This is why databases keep 'working set' in RAM."
+    require_pass: true
+  - type: mcq
+    sequence_order: 2
+    question: "What is the '80/20 rule' in the context of system design and caching?"
+    options:
+      - "80% of servers handle 20% of traffic"
+      - "20% of data accounts for 80% of access traffic, so cache that 20% for maximum impact"
+      - "Use 80% of memory for cache and 20% for processing"
+      - "20% of users create 80% of content"
+    correct_answer: "20% of data accounts for 80% of access traffic, so cache that 20% for maximum impact"
+    explanation: "The 80/20 rule (Pareto Principle) states that approximately 20% of data receives 80% of traffic. This has profound implications for caching strategy. Real-world examples: (1) YouTube: 20% of videos get 80% of views (cache those popular videos at CDN edge); (2) E-commerce: 20% of products get 80% of views (cache product pages, images); (3) Social media: 20% of posts get 80% of engagement (celebrity posts, viral content). Caching impact: if serving from cache is 100x faster than database, and you cache the hot 20% of data that serves 80% of requests, then 80% of your users experience 100x faster response. Example calculation: 1M users, 80% (800K) hit cache (1ms response), 20% (200K) hit database (100ms response). Average latency: (800K × 1ms + 200K × 100ms) / 1M = 20.8ms. Without cache: 100ms for all = 5x slower average. Cache size optimization: if you have 1TB total data, caching just 200GB (20%) can handle 80% of traffic. Practical: use LRU eviction, monitor cache hit rates (aim for 80%+), identify hot keys."
+    require_pass: true
+  - type: mcq
+    sequence_order: 3
+    question: "Why is it recommended to 'round aggressively' when doing capacity estimations in interviews?"
+    options:
+      - "To save time and focus on orders of magnitude rather than precise calculations"
+      - "Because exact numbers are always wrong"
+      - "To confuse the interviewer"
+      - "Rounding is not recommended"
+    correct_answer: "To save time and focus on orders of magnitude rather than precise calculations"
+    explanation: "In system design interviews and capacity planning, precision is less important than understanding scale and making reasonable approximations quickly. Why round aggressively: (1) Orders of magnitude matter more: difference between 1K QPS vs 100K QPS is critical (1000x different architecture), but 85K vs 100K QPS is not (same architecture, 15% difference); (2) Time efficiency: calculating 2.7M → 3M saves time for actual design discussion; (3) Assumptions are approximations anyway: actual traffic patterns vary, growth is unpredictable; (4) Building in buffer: rounding up provides safety margin. Examples: 86,400 seconds/day → 100K; 1,048,576 bytes → 1M bytes; 2.7M requests → 3M requests. Good rounding: maintain order of magnitude (2.7M → 3M ✓, 2.7M → 10M ✗ too aggressive). Real capacity planning: engineers add 20-50% buffer anyway, so whether you calculate 37 servers or 40 servers, you'll deploy 50 for safety. Interview tips: state 'approximately' or '~', show you understand it's an estimate, demonstrate correct methodology, spend time on architecture rather than arithmetic. Example: 'approximately 100M users generate roughly 100K QPS' is better than '97.3M users generate 97,342 QPS'."
+    require_pass: true

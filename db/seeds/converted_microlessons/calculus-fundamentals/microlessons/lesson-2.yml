@@ -1,0 +1,122 @@
+slug: lesson-2
+title: Lesson 2
+difficulty: easy
+sequence_order: 2
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Derivatives and Gradients\n\n    Calculus\
+  \ is the foundation of machine learning optimization. Understanding derivatives\
+  \ is essential for gradient descent and backpropagation.\n\n    ## What is a Derivative?\n\
+  \n    **The rate of change of a function**\n\n    ```\n    f'(x) = lim(h→0) [f(x+h)\
+  \ - f(x)] / h\n    ```\n\n    ### Geometric Interpretation\n    - **Slope** of the\
+  \ tangent line at a point\n    - **Instantaneous rate** of change\n\n    ### Notation\n\
+  \    ```\n    f'(x)    Newton's notation\n    df/dx    Leibniz's notation\n    ∂f/∂x\
+  \    Partial derivative\n    ∇f       Gradient (vector of partial derivatives)\n\
+  \    ```\n\n    ## Basic Derivative Rules\n\n    ### Power Rule\n    ```\n    f(x)\
+  \ = x^n\n    f'(x) = nx^(n-1)\n\n    Examples:\n    f(x) = x^3       →  f'(x) =\
+  \ 3x^2\n    f(x) = x^2       →  f'(x) = 2x\n    f(x) = x         →  f'(x) = 1\n\
+  \    f(x) = 1         →  f'(x) = 0\n    ```\n\n    ### Sum Rule\n    ```\n    [f(x)\
+  \ + g(x)]' = f'(x) + g'(x)\n\n    Example:\n    f(x) = x^2 + 3x + 5\n    f'(x) =\
+  \ 2x + 3 + 0 = 2x + 3\n    ```\n\n    ### Product Rule\n    ```\n    [f(x)·g(x)]'\
+  \ = f'(x)·g(x) + f(x)·g'(x)\n\n    Example:\n    f(x) = x^2·sin(x)\n    f'(x) =\
+  \ 2x·sin(x) + x^2·cos(x)\n    ```\n\n    ### Chain Rule\n    **Most important for\
+  \ neural networks!**\n\n    ```\n    [f(g(x))]' = f'(g(x))·g'(x)\n\n    Example:\n\
+  \    f(x) = (x^2 + 1)^3\n    Let u = x^2 + 1\n    f(u) = u^3\n    f'(x) = 3u^2·2x\
+  \ = 3(x^2 + 1)^2·2x = 6x(x^2 + 1)^2\n    ```\n\n    ## Common Derivatives\n\n  \
+  \  ```\n    f(x) = e^x       →  f'(x) = e^x\n    f(x) = ln(x)     →  f'(x) = 1/x\n\
+  \    f(x) = sin(x)    →  f'(x) = cos(x)\n    f(x) = cos(x)    →  f'(x) = -sin(x)\n\
+  \    f(x) = tan(x)    →  f'(x) = sec^2(x)\n    f(x) = a^x       →  f'(x) = a^x·ln(a)\n\
+  \    ```\n\n    ## Partial Derivatives\n\n    **Derivatives with respect to one\
+  \ variable, holding others constant**\n\n    ```\n    f(x, y) = x^2 + 3xy + y^2\n\
+  \n    ∂f/∂x = 2x + 3y   (treat y as constant)\n    ∂f/∂y = 3x + 2y   (treat x as\
+  \ constant)\n    ```\n\n    ### Example: Linear Regression Loss\n\n    ```\n   \
+  \ Loss function:\n    L(w, b) = (1/n)Σ(y_i - (wx_i + b))^2\n\n    Partial derivatives:\n\
+  \    ∂L/∂w = -(2/n)Σ x_i(y_i - (wx_i + b))\n    ∂L/∂b = -(2/n)Σ (y_i - (wx_i + b))\n\
+  \    ```\n\n    ## The Gradient\n\n    **Vector of all partial derivatives**\n\n\
+  \    ```\n    f(x, y, z) = x^2 + 2y^2 + 3z^2\n\n    ∇f = [∂f/∂x, ∂f/∂y, ∂f/∂z]\n\
+  \       = [2x, 4y, 6z]\n    ```\n\n    **The gradient points in the direction of\
+  \ steepest ascent**\n\n    ## Gradient Descent\n\n    **Core optimization algorithm\
+  \ for machine learning**\n\n    ```python\n    # Update rule\n    θ = θ - α·∇L(θ)\n\
+  \n    # where:\n    # θ = parameters\n    # α = learning rate\n    # ∇L(θ) = gradient\
+  \ of loss function\n    ```\n\n    ### Python Implementation\n\n    ```python\n\
+  \    import numpy as np\n\n    def gradient_descent(gradient_func, initial_params,\
+  \ learning_rate=0.01, num_iterations=1000):\n        params = initial_params\n\n\
+  \        for i in range(num_iterations):\n            # Compute gradient\n     \
+  \       gradient = gradient_func(params)\n\n            # Update parameters\n  \
+  \          params = params - learning_rate * gradient\n\n            if i % 100\
+  \ == 0:\n                loss = compute_loss(params)\n                print(f\"\
+  Iteration {i}: Loss = {loss}\")\n\n        return params\n    ```\n\n    ### Example:\
+  \ Minimizing f(x) = x^2\n\n    ```python\n    def gradient(x):\n        return 2\
+  \ * x  # f'(x) = 2x\n\n    # Start at x = 10\n    x = np.array([10.0])\n    learning_rate\
+  \ = 0.1\n\n    for i in range(50):\n        grad = gradient(x)\n        x = x -\
+  \ learning_rate * grad\n        if i % 10 == 0:\n            print(f\"Iteration\
+  \ {i}: x = {x[0]:.4f}, f(x) = {x[0]**2:.4f}\")\n\n    # Output:\n    # Iteration\
+  \ 0: x = 8.0000, f(x) = 64.0000\n    # Iteration 10: x = 0.8958, f(x) = 0.8024\n\
+  \    # Iteration 20: x = 0.1002, f(x) = 0.0100\n    # ...converges to x = 0\n  \
+  \  ```\n\n    ## Higher-Order Derivatives\n\n    ### Second Derivative\n\n    ```\n\
+  \    f''(x) = d²f/dx²\n    ```\n\n    **Measures curvature (concavity)**\n    -\
+  \ f''(x) > 0: concave up (minimum)\n    - f''(x) < 0: concave down (maximum)\n \
+  \   - f''(x) = 0: inflection point\n\n    ### Hessian Matrix\n\n    **Matrix of\
+  \ all second-order partial derivatives**\n\n    ```\n    For f(x, y):\n\n    H =\
+  \ [∂²f/∂x²    ∂²f/∂x∂y]\n        [∂²f/∂y∂x   ∂²f/∂y²  ]\n    ```\n\n    Used in\
+  \ Newton's method and second-order optimization.\n\n    ## Optimization\n\n    ###\
+  \ Finding Extrema\n\n    1. **Find critical points**: Set f'(x) = 0\n    2. **Test\
+  \ with second derivative**:\n       - f''(x) > 0 → local minimum\n       - f''(x)\
+  \ < 0 → local maximum\n\n    ### Example\n\n    ```\n    f(x) = x^3 - 3x^2 + 2\n\
+  \n    1. f'(x) = 3x^2 - 6x = 3x(x - 2) = 0\n       Critical points: x = 0, x = 2\n\
+  \n    2. f''(x) = 6x - 6\n       f''(0) = -6 < 0  → local maximum at x = 0\n   \
+  \    f''(2) = 6 > 0   → local minimum at x = 2\n    ```\n\n    ## Applications in\
+  \ ML\n\n    ### Activation Functions\n\n    ```python\n    # Sigmoid\n    def sigmoid(x):\n\
+  \        return 1 / (1 + np.exp(-x))\n\n    def sigmoid_derivative(x):\n       \
+  \ s = sigmoid(x)\n        return s * (1 - s)\n\n    # ReLU (Rectified Linear Unit)\n\
+  \    def relu(x):\n        return np.maximum(0, x)\n\n    def relu_derivative(x):\n\
+  \        return np.where(x > 0, 1, 0)\n\n    # Tanh\n    def tanh(x):\n        return\
+  \ np.tanh(x)\n\n    def tanh_derivative(x):\n        return 1 - np.tanh(x)**2\n\
+  \    ```\n\n    ### Backpropagation\n\n    **Chain rule applied to neural networks**\n\
+  \n    ```python\n    # Forward pass\n    z1 = W1 @ x + b1\n    a1 = relu(z1)\n \
+  \   z2 = W2 @ a1 + b2\n    output = sigmoid(z2)\n\n    # Backward pass (chain rule)\n\
+  \    dL_dz2 = output - y\n    dL_dW2 = dL_dz2 @ a1.T\n    dL_da1 = W2.T @ dL_dz2\n\
+  \    dL_dz1 = dL_da1 * relu_derivative(z1)\n    dL_dW1 = dL_dz1 @ x.T\n    ```\n\
+  \n    ### Loss Functions and Their Derivatives\n\n    ```python\n    # Mean Squared\
+  \ Error\n    def mse_loss(y_pred, y_true):\n        return np.mean((y_pred - y_true)**2)\n\
+  \n    def mse_derivative(y_pred, y_true):\n        return 2 * (y_pred - y_true)\
+  \ / len(y_true)\n\n    # Binary Cross-Entropy\n    def bce_loss(y_pred, y_true):\n\
+  \        return -np.mean(y_true * np.log(y_pred) + (1 - y_true) * np.log(1 - y_pred))\n\
+  \n    def bce_derivative(y_pred, y_true):\n        return -(y_true / y_pred - (1\
+  \ - y_true) / (1 - y_pred))\n    ```\n\n    **Next**: We'll explore vectors and\
+  \ matrices in linear algebra!"
+exercises:
+  - type: multiple_choice_question
+    sequence_order: 1
+    question: "What is the chain rule used for in calculus?"
+    options:
+      - "Adding two functions together"
+      - "Differentiating composite functions"
+      - "Finding the area under a curve"
+      - "Solving linear equations"
+    correct_answer: "Differentiating composite functions"
+    explanation: "The chain rule is essential for differentiating composite functions, where one function is nested inside another. The rule states that [f(g(x))]' = f'(g(x))·g'(x), meaning we multiply the derivative of the outer function (evaluated at the inner function) by the derivative of the inner function. This is absolutely critical in neural networks and is the foundation of backpropagation. In deep learning, signals pass through multiple layers of composed functions, and the chain rule allows us to compute how changes in early layers affect the final output. For example, in a neural network with layers h1 = f1(x), h2 = f2(h1), and output y = f3(h2), we need the chain rule to compute gradients with respect to the input layer weights. Without the chain rule, training deep neural networks would be impossible. The rule elegantly handles the complexity of nested transformations by breaking them into manageable pieces."
+    require_pass: true
+  - type: multiple_choice_question
+    sequence_order: 2
+    question: "For the function f(x, y) = x^2 + 3xy + y^2, what is ∂f/∂x?"
+    options:
+      - "3x + 2y"
+      - "2x + 3y"
+      - "x^2 + 3y"
+      - "2x + 3x"
+    correct_answer: "2x + 3y"
+    explanation: "When computing the partial derivative ∂f/∂x, we differentiate with respect to x while treating y as a constant. For f(x, y) = x^2 + 3xy + y^2, we get: ∂f/∂x = 2x + 3y + 0. The term x^2 becomes 2x (power rule), the term 3xy becomes 3y (y is treated as a constant coefficient), and y^2 becomes 0 (constant with respect to x). Partial derivatives are fundamental in machine learning because most loss functions depend on multiple parameters simultaneously. In linear regression, for instance, the loss depends on both the weight w and bias b, requiring us to compute partial derivatives with respect to each parameter separately. This allows us to update each parameter independently during gradient descent. Understanding partial derivatives is crucial for working with multivariable optimization problems, which is essentially every real-world machine learning problem. The gradient vector consists of all partial derivatives, giving us the complete picture of how the function changes in all directions."
+    require_pass: true
+  - type: multiple_choice_question
+    sequence_order: 3
+    question: "What does a second derivative f''(x) > 0 indicate about a function?"
+    options:
+      - "The function is decreasing"
+      - "The function has a local maximum"
+      - "The function is concave up (has a local minimum)"
+      - "The function is linear"
+    correct_answer: "The function is concave up (has a local minimum)"
+    explanation: "When the second derivative f''(x) > 0, it indicates that the function is concave up, curving upward like a cup. This curvature means that if we find a critical point where f'(x) = 0, this point is a local minimum. The second derivative measures the rate of change of the rate of change, essentially describing how the slope itself is changing. In optimization, this is important for the second derivative test, which helps us classify critical points as minima, maxima, or saddle points. Positive second derivative means the slope is increasing, creating that upward-curving shape. In machine learning, second-order optimization methods (like Newton's method) use the Hessian matrix (the multivariable equivalent of the second derivative) to make more informed steps toward optima. Understanding curvature helps us recognize when we're approaching a minimum and can inform decisions about learning rates and convergence criteria in optimization algorithms."
+    require_pass: true

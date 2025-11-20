@@ -1,0 +1,59 @@
+slug: faradayslaws-practice
+title: faradays_laws — Practice
+difficulty: medium
+sequence_order: 13
+estimated_minutes: 2
+key_concepts:
+- faradays_laws
+prerequisites: []
+content_md: '# faradays_laws — Practice 🚀
+
+
+  E(Ag) = 108/1 = 108, E(Cu) = 63.5/2 = 31.75. m(Cu)/m(Ag) = E(Cu)/E(Ag) → m(Cu) =
+  1.08 × 31.75/108 = 0.317 g
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: 'When the same quantity of electricity is passed through solutions of AgNO₃ and CuSO₄, if 1.08 g of Ag is deposited, how much Cu is deposited? (E_Ag = 108, E_Cu = 31.75)'
+  options:
+  - 0.317 g
+  - 0.540 g
+  - 2.16 g
+  - 3.40 g
+  correct_answer: 0.317 g
+  explanation: "According to Faraday's Second Law, when the same quantity of electricity passes through different electrolytes, the masses deposited are proportional to their chemical equivalent weights (E). For Ag: E = 108/1 = 108. For Cu: E = 63.5/2 = 31.75. Using m(Cu)/m(Ag) = E(Cu)/E(Ag), we get: m(Cu) = 1.08 × (31.75/108) = 1.08 × 0.294 = 0.317 g. The chemical equivalent is molar mass divided by the number of electrons transferred in the reaction."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: 'Which statement correctly describes Faraday''s First Law of Electrolysis?'
+  options:
+  - Mass deposited is proportional to the quantity of electricity passed
+  - Mass deposited is inversely proportional to current
+  - Mass deposited is independent of the substance
+  - Mass deposited equals the charge passed
+  correct_answer: Mass deposited is proportional to the quantity of electricity passed
+  explanation: "Faraday's First Law states that the mass (m) of substance deposited or liberated at an electrode is directly proportional to the quantity of electricity (Q) passed through the electrolyte: m ∝ Q, or m = Z × Q, where Z is the electrochemical equivalent. Since Q = I × t (current × time), we get m = Z × I × t. This means doubling the current or time will double the mass deposited."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: 'What is one Faraday of charge equivalent to?'
+  options:
+  - 96,500 coulombs
+  - 1 coulomb
+  - 1 ampere
+  - 6.022 × 10²³ coulombs
+  correct_answer: 96,500 coulombs
+  explanation: "One Faraday (F) is the charge carried by one mole of electrons, which equals 96,500 coulombs (or more precisely 96,485 C). It's calculated as: F = N_A × e, where N_A is Avogadro's number (6.022 × 10²³) and e is the charge on one electron (1.602 × 10⁻¹⁹ C). One Faraday will deposit one gram-equivalent of any substance. For example, 96,500 C will deposit 108 g of Ag (1 mole, n=1) or 31.75 g of Cu (1 equivalent, since n=2 for Cu²⁺)."
+  require_pass: true

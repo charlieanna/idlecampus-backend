@@ -1,0 +1,68 @@
+slug: nernstequation-practice
+title: nernst_equation — Practice
+difficulty: easy
+sequence_order: 10
+estimated_minutes: 2
+key_concepts:
+- nernst_equation
+prerequisites: []
+content_md: '# nernst_equation — Practice 🚀
+
+
+  Concentration cells have same electrodes at both ends, so E°cell = E°cathode - E°anode
+  = 0. EMF comes only from concentration difference via Nernst equation.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: 'For concentration cell with same electrodes but different concentrations,
+    E°cell is:'
+  options:
+  - 0 V
+  - Positive
+  - Negative
+  - Depends on concentration
+  require_pass: true
+  correct_answer: 0 V
+  explanation: 'For a concentration cell with the same electrodes at both anode and
+    cathode, E°_cell = E°_cathode - E°_anode = 0 V because both electrodes have identical
+    standard reduction potentials. The EMF of a concentration cell arises ONLY from
+    the concentration difference, not from different electrode materials. The Nernst
+    equation for concentration cells: E_cell = (RT/nF) × ln([dilute]/[concentrated])
+    or E_cell = (0.059/n) × log([dilute]/[concentrated]) at 25°C. Example: Cu(s)|Cu²⁺(0.01M)||Cu²⁺(1M)|Cu(s)
+    gives E_cell = (0.059/2) × log(0.01/1) = -0.059 V. The cell potential depends
+    on concentration ratio, and the cell operates until concentrations equalize (equilibrium),
+    at which point E_cell = 0.'
+- type: mcq
+  sequence_order: 2
+  question: 'The Nernst equation at 25°C is: E_cell = E°_cell - (0.059/n) × log Q. What does ''n'' represent?'
+  options:
+  - Number of electrons transferred in the cell reaction
+  - Number of moles of product
+  - Avogadro's number
+  - Number of ions in solution
+  correct_answer: Number of electrons transferred in the cell reaction
+  explanation: "In the Nernst equation, 'n' represents the number of moles of electrons transferred in the balanced cell reaction. For example, in the reaction Zn + Cu²⁺ → Zn²⁺ + Cu, n = 2 because two electrons are transferred. The factor 0.059/n comes from (2.303RT)/(nF) at 25°C, where R is the gas constant, T is temperature in Kelvin, and F is Faraday's constant (96,500 C/mol). A larger n makes the cell potential less sensitive to concentration changes."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: 'According to the Nernst equation, what happens to the cell potential (E_cell) when the reaction quotient Q increases?'
+  options:
+  - E_cell decreases
+  - E_cell increases
+  - E_cell remains constant
+  - E_cell becomes zero
+  correct_answer: E_cell decreases
+  explanation: "From the Nernst equation E_cell = E°_cell - (0.059/n) × log Q, as Q increases, the term (0.059/n) × log Q increases, which means E_cell decreases. This makes sense: Q = [products]/[reactants], so when Q increases (more products, fewer reactants), the reaction is closer to equilibrium and the driving force (cell potential) decreases. At equilibrium, Q = K and E_cell = 0. When Q < 1 (excess reactants), E_cell > E°_cell. When Q > 1 (excess products), E_cell < E°_cell."
+  require_pass: true

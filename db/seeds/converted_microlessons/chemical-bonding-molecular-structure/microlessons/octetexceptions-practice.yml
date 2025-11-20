@@ -1,0 +1,67 @@
+slug: octetexceptions-practice
+title: octet_exceptions — Practice
+difficulty: medium
+sequence_order: 16
+estimated_minutes: 2
+key_concepts:
+- octet_exceptions
+prerequisites: []
+content_md: '# octet_exceptions — Practice 🚀
+
+
+  PCl₅ (10 electrons on P) and SF₆ (12 electrons on S) have expanded octets using
+  d-orbitals. BF₃ has incomplete octet (6 on B), CH₄ follows octet.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 2
+  question: Which of the following molecules have expanded octets?
+  options:
+  - PCl₅
+  - SF₆
+  - BF₃
+  - CH₄
+  require_pass: true
+  correct_answer: SF₆
+  explanation: 'SF₆ (sulfur hexafluoride) violates the octet rule - sulfur has 12
+    electrons in its valence shell (expanded octet). Structure has 6 S-F single bonds,
+    with sulfur using sp³d² hybridization (octahedral geometry, 90° bond angles).
+    This is possible because: (1) Sulfur is a 3rd period element with accessible 3d
+    orbitals for expanding valence shell, (2) Fluorine is highly electronegative and
+    small, allowing 6 to bond without excessive steric repulsion. SF₆ is exceptionally
+    stable, inert, and used as electrical insulator. Other expanded octets: PCl₅ (10e⁻,
+    sp³d), ICl₄⁻ (12e⁻, sp³d²), XeF₆ (14e⁻). 1st/2nd period elements (C, N, O, F)
+    cannot expand octets - no accessible d orbitals.'
+- type: mcq
+  sequence_order: 3
+  question: Which of the following molecules has an incomplete octet?
+  options:
+  - BF₃
+  - CF₄
+  - NF₃
+  - OF₂
+  require_pass: true
+  correct_answer: BF₃
+  explanation: 'BF₃ (boron trifluoride) has an incomplete octet with only 6 electrons around the central boron atom. Boron has 3 valence electrons and forms 3 B-F single bonds, giving it 3 bonding pairs = 6 electrons, falling short of the 8-electron octet. Structure: trigonal planar with 120° bond angles. Boron is stable with 6 electrons because: (1) it is a small atom in period 2, (2) achieving an octet would require forming a double bond or accepting electrons, which is energetically unfavorable. BF₃ acts as a Lewis acid, readily accepting electron pairs. Other incomplete octets: BeH₂ (4e⁻ on Be), BCl₃ (6e⁻ on B), AlCl₃ (6e⁻ on Al). In contrast: CF₄ (8e⁻ on C), NF₃ (8e⁻ on N with 3 bonds + 1 lone pair), OF₂ (8e⁻ on O with 2 bonds + 2 lone pairs) all satisfy the octet rule.'
+- type: mcq
+  sequence_order: 4
+  question: Which period of elements can have expanded octets?
+  options:
+  - Period 1 and 2 only
+  - Period 2 and beyond
+  - Period 3 and beyond
+  - All periods equally
+  require_pass: true
+  correct_answer: Period 3 and beyond
+  explanation: 'Only elements in period 3 and beyond can have expanded octets because they have accessible d orbitals in their valence shell. Period 3 elements (Si, P, S, Cl) have 3s, 3p, and 3d orbitals available. Although 3d orbitals are typically higher in energy, they can be used when forming bonds to highly electronegative atoms like F, O, or Cl. Examples: PCl₅ (10e⁻), SF₆ (12e⁻), ClF₃ (10e⁻), H₂SO₄ (S has 12e⁻). Period 1 and 2 elements (H, He, C, N, O, F, Ne) cannot expand their octets because they lack d orbitals - they only have s and p orbitals (maximum 8 electrons). This is why carbon can form only 4 bonds (CH₄) while silicon can form 6 (SiF₆²⁻), and nitrogen forms NH₃ while phosphorus forms PCl₅. The availability of d orbitals explains the expanded bonding capacity of larger atoms.'

@@ -1,0 +1,215 @@
+slug: biot-savart-law-applications
+title: "Biot-Savart Law and Applications"
+difficulty: advanced
+sequence_order: 2
+estimated_minutes: 20
+key_concepts:
+- biot-savart-law
+- magnetic-field
+- current-element
+- circular-loop
+- straight-wire
+prerequisites:
+- magnetic-field-moving-charges
+content_md: |
+  # Biot-Savart Law and Applications
+
+  ## Statement
+
+  **Magnetic field due to current element:**
+  ```
+  dB⃗ = (μ₀/4π) × (Idl⃗ × r̂)/r²
+
+  or
+
+  dB = (μ₀/4π) × (I dl sin θ)/r²
+  ```
+
+  Where:
+  - μ₀ = 4π × 10⁻⁷ T·m/A (permeability of free space)
+  - I = current
+  - dl = length element
+  - r = distance from element to point
+  - θ = angle between dl and r
+
+  ## Direction of Field
+
+  **Right Hand Thumb Rule:**
+  - Thumb → Current direction
+  - Curled fingers → Magnetic field direction
+
+  **Cross Product:**
+  dB⃗ ∝ dl⃗ × r̂ (perpendicular to both)
+
+  ## Applications
+
+  ### 1. Magnetic Field on Axis of Circular Loop
+
+  At distance x from center on axis:
+  ```
+  B = (μ₀IR²)/(2(R² + x²)^(3/2))
+
+  At center (x = 0):
+  B₀ = μ₀I/(2R)
+  ```
+
+  **Direction:** Along axis (perpendicular to loop plane)
+
+  ### 2. Magnetic Field Due to Straight Wire
+
+  At perpendicular distance r:
+  ```
+  B = (μ₀I/4πr)(sin φ₁ + sin φ₂)
+
+  For infinitely long wire:
+  B = μ₀I/(2πr) (φ₁ = φ₂ = 90°)
+  ```
+
+  **Direction:** Concentric circles around wire
+
+  ### 3. Magnetic Field Due to Arc
+
+  At center of arc:
+  ```
+  B = (μ₀I/4πR) × θ = (μ₀Iθ)/(4πR)
+
+  For semicircle (θ = π):
+  B = μ₀I/(4R)
+
+  For full circle (θ = 2π):
+  B = μ₀I/(2R)
+  ```
+
+  ### 4. Magnetic Field at Center of Square Loop
+
+  ```
+  B = (4μ₀I)/(π√2 a) = (2√2 μ₀I)/(πa)
+
+  where a = side of square
+  ```
+
+  ### 5. Solenoid
+
+  Inside solenoid:
+  ```
+  B = μ₀nI = μ₀(N/L)I
+
+  n = number of turns per unit length
+  N = total turns, L = length
+  ```
+
+  At ends of solenoid:
+  ```
+  B_end = μ₀nI/2
+  ```
+
+  ### 6. Toroid
+
+  Inside toroid:
+  ```
+  B = μ₀NI/(2πr)
+
+  N = total turns
+  r = distance from center
+  ```
+
+  Outside toroid: B = 0
+
+  ## Comparison Table
+
+  | Configuration | Field at Center/Axis | Field at Distance r |
+  |---------------|---------------------|---------------------|
+  | Circular loop (center) | μ₀I/(2R) | - |
+  | Circular loop (axis) | μ₀IR²/(2(R²+x²)^(3/2)) | - |
+  | Long straight wire | - | μ₀I/(2πr) |
+  | Semicircular arc | μ₀I/(4R) | - |
+  | Square loop (center) | 2√2μ₀I/(πa) | - |
+  | Solenoid (inside) | μ₀nI | - |
+  | Toroid (inside) | μ₀NI/(2πr) | - |
+
+  ## Important Ratios
+
+  ```
+  B_center (circle) : B_center (semicircle) = 2 : 1
+  B_center (square, side a) : B_center (circle, dia a) = 8√2/π² ≈ 1.15
+  ```
+
+  ## Numerical Examples
+
+  **Example 1:** Current 2A flows through circular loop of radius 10 cm. Find B at center.
+
+  **Solution:**
+  ```
+  B = μ₀I/(2R) = (4π×10⁻⁷ × 2)/(2 × 0.1)
+  B = 4π×10⁻⁶ T ≈ 12.56 μT
+  ```
+
+  **Example 2:** Infinite straight wire carries 5A. Find B at 10 cm distance.
+
+  **Solution:**
+  ```
+  B = μ₀I/(2πr) = (4π×10⁻⁷ × 5)/(2π × 0.1)
+  B = (2×10⁻⁶ × 5)/0.1 = 10⁻⁵ T = 10 μT
+  ```
+
+  **Example 3:** Solenoid with 1000 turns, length 50 cm, current 3A. Find B inside.
+
+  **Solution:**
+  ```
+  n = N/L = 1000/0.5 = 2000 turns/m
+  B = μ₀nI = 4π×10⁻⁷ × 2000 × 3
+  B ≈ 7.54×10⁻³ T = 7.54 mT
+  ```
+
+  ## JEE Key Points
+
+  1. **Biot-Savart law** is to magnetism what Coulomb's law is to electrostatics
+  2. **Field ∝ 1/r²** for current element, **∝ 1/r** for long wire
+  3. **Superposition principle** applies (vector addition)
+  4. **Solenoid field uniform** inside, nearly zero outside
+  5. **Toroid is closed loop** - no field leakage
+  6. **At center of loop**: B independent of shape, depends on area and current
+  7. **Right hand rule** for field direction
+
+  ## Common Mistakes
+
+  1. ❌ Forgetting to integrate for complete wire
+  2. ❌ Wrong direction using cross product
+  3. ❌ Confusing μ₀ with ε₀
+  4. ❌ Not converting units (cm to m)
+  5. ❌ Using wrong formula for different configurations
+
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: "Ratio of magnetic field at center of circular loop to that at point on axis at distance equal to radius is:"
+  options:
+  - "2√2 : 1"
+  - "1 : 1"
+  - "4 : 1"
+  - "2 : 1"
+  correct_answer: "2√2 : 1"
+  explanation: "At center (x=0): B₀ = μ₀I/(2R). At axis (x=R): B = μ₀IR²/(2(R²+R²)^(3/2)) = μ₀IR²/(2(2R²)^(3/2)) = μ₀IR²/(2×2√2×R³) = μ₀I/(4√2R). Ratio B₀/B = [μ₀I/(2R)]/[μ₀I/(4√2R)] = (4√2R)/(2R) = 2√2. So B₀:B = 2√2:1 ≈ 2.83:1. Field decreases along axis as distance from center increases. This is important for understanding magnetic field profiles and designing coils for specific field distributions."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: "A wire bent into semicircle of radius r carries current I. Magnetic field at center is:"
+  options:
+  - "μ₀I/(2r)"
+  - "μ₀I/(4r)"
+  - "μ₀I/(πr)"
+  - "μ₀Iπ/(4r)"
+  correct_answer: "μ₀I/(4r)"
+  explanation: "Using arc formula: B = μ₀Iθ/(4πr). For semicircle, θ = π radians. B = μ₀Iπ/(4πr) = μ₀I/(4r). This is exactly half of the field at center of complete circular loop (B = μ₀I/(2r)). Makes sense: half the wire, half the field (by superposition). If wire had quarter circle (90°), B = μ₀I/(8r). Field contribution proportional to arc length for same current and radius. Direction determined by right-hand thumb rule."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: "Two long parallel wires carry currents 10A and 20A in same direction. Distance between them is 10 cm. Force per unit length on each wire is:"
+  options:
+  - "4×10⁻⁴ N/m, attractive"
+  - "4×10⁻⁴ N/m, repulsive"
+  - "2×10⁻⁴ N/m, attractive"
+  - "8×10⁻⁴ N/m, attractive"
+  correct_answer: "4×10⁻⁴ N/m, attractive"
+  explanation: "Force per unit length: F/L = μ₀I₁I₂/(2πd) = (4π×10⁻⁷ × 10 × 20)/(2π × 0.1) = (4×10⁻⁷ × 200)/0.2 = 4×10⁻⁴ N/m. Currents in same direction attract (parallel currents attract, antiparallel currents repel). This is basis of definition of Ampere: 1A is current which, flowing in two infinite parallel wires 1m apart, produces force of 2×10⁻⁷ N/m. The force is equal and opposite on both wires (Newton's third law)."
+  require_pass: true

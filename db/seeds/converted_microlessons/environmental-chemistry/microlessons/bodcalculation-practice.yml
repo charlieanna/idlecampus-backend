@@ -1,0 +1,91 @@
+slug: bodcalculation-practice
+title: bod_calculation — Practice
+difficulty: medium
+sequence_order: 12
+estimated_minutes: 2
+key_concepts:
+- bod_calculation
+prerequisites: []
+content_md: '# bod_calculation — Practice 🚀
+
+
+  Pollution factor = 18 / 5 = 3.6. The water sample is 3.6 times more polluted than
+  the upper limit of clean water. Water with BOD > 15 ppm is considered highly polluted.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: A water sample has BOD of 18 ppm. The upper limit for clean water is
+    5 ppm. By what factor is this water more polluted?
+  options:
+  - '2.6'
+  - '3.6'
+  - '4.0'
+  - '1.8'
+  require_pass: true
+  correct_answer: '3.6'
+  explanation: 'BOD (Biochemical Oxygen Demand) measures the amount of oxygen required
+    by aerobic microorganisms to decompose organic matter in water over 5 days at
+    20°C. It indicates the level of organic pollution. Pollution factor = (BOD of
+    sample) / (Upper limit for clean water) = 18 ppm / 5 ppm = 3.6. The water is
+    3.6 times more polluted than the maximum acceptable level for clean water. **BOD
+    classification**: BOD < 5 ppm: Clean water, suitable for drinking (with treatment).
+    BOD 5-15 ppm: Moderately polluted, suitable for bathing. BOD 15-30 ppm: Highly
+    polluted, unsuitable for most uses. BOD > 30 ppm: Severely polluted, nearly septic.
+    At BOD = 18 ppm, this water is highly polluted and cannot be used for drinking
+    or bathing without extensive treatment.'
+- type: mcq
+  sequence_order: 2
+  question: What does a high BOD value indicate about a water sample?
+  options:
+  - Low organic pollution and good water quality
+  - High organic pollution and poor water quality
+  - High dissolved oxygen and clean water
+  - Low microbial activity
+  require_pass: true
+  correct_answer: High organic pollution and poor water quality
+  explanation: 'A high BOD value indicates **high organic pollution** and **poor
+    water quality**. Here''s why: When organic matter (sewage, agricultural runoff,
+    industrial waste) enters water, aerobic bacteria decompose it using dissolved
+    oxygen. High organic content means bacteria need more oxygen, resulting in high
+    BOD. Consequences of high BOD: (1) **Oxygen depletion**: Rapid consumption of
+    dissolved oxygen, (2) **Hypoxia/Anoxia**: Oxygen levels drop below what fish
+    and aquatic animals need (typically < 5 mg/L), (3) **Fish kills**: Aquatic life
+    dies due to lack of oxygen, (4) **Anaerobic conditions**: In severe cases, water
+    becomes anaerobic, producing foul-smelling compounds (H₂S, CH₄). Sources of high
+    BOD: untreated sewage, food processing waste, paper mill effluents, agricultural
+    runoff. BOD is a key water quality parameter used to assess pollution and design
+    wastewater treatment systems.'
+- type: mcq
+  sequence_order: 3
+  question: 'BOD test is conducted at which standard conditions?'
+  options:
+  - 25°C for 3 days
+  - 20°C for 5 days
+  - 30°C for 7 days
+  - 15°C for 10 days
+  require_pass: true
+  correct_answer: 20°C for 5 days
+  explanation: 'The standard BOD test (BOD₅) is conducted at **20°C for 5 days**.
+    This is an internationally standardized protocol (ISO, APHA methods). **Why these
+    conditions?**: **Temperature (20°C)**: Represents average environmental temperature,
+    optimal for aerobic bacterial activity, standardizes results for comparison across
+    different locations. **Duration (5 days)**: By day 5, typically 60-70% of biodegradable
+    organic matter is oxidized (first stage of decomposition), balances practical
+    time constraints with meaningful results, approximates natural decomposition
+    rate in rivers/lakes. **Test procedure**: (1) Measure initial dissolved oxygen
+    (DO₁), (2) Incubate water sample in dark at 20°C for 5 days (dark prevents photosynthetic
+    oxygen production by algae), (3) Measure final dissolved oxygen (DO₂), (4) BOD₅
+    = DO₁ - DO₂. Ultimate BOD (BOD₂₀ or BOD∞) measures oxygen demand over 20+ days
+    but is impractical for routine testing.'

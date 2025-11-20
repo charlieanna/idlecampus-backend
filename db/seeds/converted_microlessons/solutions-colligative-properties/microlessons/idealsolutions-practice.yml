@@ -1,0 +1,65 @@
+slug: idealsolutions-practice
+title: ideal_solutions — Practice
+difficulty: medium
+sequence_order: 11
+estimated_minutes: 2
+key_concepts:
+- ideal_solutions
+prerequisites: []
+content_md: '# ideal_solutions — Practice 🚀
+
+
+  Ideal solutions have ΔH = 0, ΔV = 0, and obey Raoult\
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 2
+  question: Which are characteristics of ideal solutions?
+  options:
+  - ΔH_mixing = 0 and ΔV_mixing = 0
+  - Show positive deviation from Raoult's law
+  - Show negative deviation from Raoult's law
+  - ΔH_mixing ≠ 0
+  require_pass: true
+  correct_answer: ΔH_mixing = 0 and ΔV_mixing = 0
+  explanation: 'Ideal solutions are characterized by: (1) ΔH_mixing = 0 (no heat is
+    absorbed or released during mixing because A-B interactions equal average of A-A
+    and B-B interactions), (2) ΔV_mixing = 0 (total volume is exactly the sum of component
+    volumes, no expansion or contraction), and (3) They obey Raoult''s law at all
+    concentrations (P_A = X_A × P_A°). Ideal solutions do NOT show positive or negative
+    deviations from Raoult''s law. Examples include benzene-toluene, n-hexane-n-heptane,
+    and mixtures of similar substances. The key requirement is that A-B interactions
+    must be similar in strength to A-A and B-B interactions.'
+- type: mcq
+  sequence_order: 3
+  question: 'Which pair is most likely to form an ideal solution?'
+  options:
+  - Benzene and toluene
+  - Ethanol and water
+  - HCl and water
+  - Acetone and chloroform
+  correct_answer: Benzene and toluene
+  explanation: "Benzene (C₆H₆) and toluene (C₆H₅CH₃) form an almost ideal solution because they are chemically similar aromatic hydrocarbons with similar molecular sizes and intermolecular forces (London dispersion forces). The benzene-benzene, toluene-toluene, and benzene-toluene interactions are nearly identical. Other ideal solution examples: n-hexane + n-heptane, CCl₄ + SiCl₄. In contrast, ethanol-water shows positive deviation, HCl-water shows negative deviation, and acetone-chloroform shows negative deviation."
+  require_pass: false
+- type: mcq
+  sequence_order: 4
+  question: 'For an ideal binary solution, the total vapor pressure is:'
+  options:
+  - P_total = X_A·P_A° + X_B·P_B°
+  - P_total = P_A° + P_B°
+  - P_total = X_A·P_B° + X_B·P_A°
+  - P_total = 0
+  correct_answer: P_total = X_A·P_A° + X_B·P_B°
+  explanation: "For an ideal binary solution obeying Raoult's law, each component contributes to the total vapor pressure according to its mole fraction: P_A = X_A·P_A° and P_B = X_B·P_B°. The total vapor pressure is the sum: P_total = P_A + P_B = X_A·P_A° + X_B·P_B°. Since X_A + X_B = 1, we can also write P_total = X_A·P_A° + (1-X_A)·P_B°. This shows that total pressure varies linearly with composition for ideal solutions, a relationship used in fractional distillation."
+  require_pass: false

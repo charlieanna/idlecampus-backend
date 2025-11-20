@@ -1,0 +1,107 @@
+slug: security-principles-best-practices
+title: Security Principles & Best Practices
+sequence_order: 1
+estimated_minutes: 2
+difficulty: easy
+content_md: "# Security Principles & Best Practices \U0001F680\n\n# Security Principles\
+  \ & Best Practices\n\n    ## Core Security Principles\n\n    ### 1. Defense in Depth\n\
+  \    Multiple layers of security controls.\n\n    **Example Stack:**\n    - **Network**:\
+  \ Firewalls, VPNs\n    - **Host**: Hardened OS, antivirus\n    - **Application**:\
+  \ Input validation, authentication\n    - **Data**: Encryption at rest and in transit\n\
+  \n    ### 2. Principle of Least Privilege\n    Grant minimum permissions required.\n\
+  \n    ```bash\n    # BAD - Running as root\n    docker run --user root myapp\n\n\
+  \    # GOOD - Non-root user\n    docker run --user 1000:1000 myapp\n    ```\n\n\
+  \    ### 3. Zero Trust\n    \"Never trust, always verify\"\n    - Verify every request\n\
+  \    - Assume breach\n    - Micro-segmentation\n\n    ### 4. Fail Securely\n   \
+  \ Errors should not expose sensitive data.\n\n    ```python\n    # BAD - Leaks information\n\
+  \    except Exception as e:\n        return f\"Database error: {str(e)}\"\n\n  \
+  \  # GOOD - Generic error\n    except Exception as e:\n        logger.error(f\"\
+  Database error: {str(e)}\")\n        return \"An error occurred. Please try again.\"\
+  \n    ```\n\n    ## Common Vulnerabilities (OWASP Top 10)\n\n    ### 1. Injection\
+  \ (SQL, Command, etc.)\n    ```python\n    # BAD - SQL Injection vulnerable\n  \
+  \  query = f\"SELECT * FROM users WHERE username='{username}'\"\n\n    # GOOD -\
+  \ Parameterized query\n    query = \"SELECT * FROM users WHERE username=%s\"\n \
+  \   cursor.execute(query, (username,))\n    ```\n\n    ### 2. Broken Authentication\n\
+  \    - Weak passwords\n    - No MFA\n    - Session hijacking\n\n    **Mitigations:**\n\
+  \    - Enforce strong passwords\n    - Implement MFA\n    - Use secure session management\n\
+  \    - Rate limiting on login\n\n    ### 3. Sensitive Data Exposure\n    - Unencrypted\
+  \ data in transit\n    - Weak encryption\n    - Exposed secrets\n\n    **Mitigations:**\n\
+  \    - Use TLS everywhere\n    - Encrypt data at rest\n    - Use strong algorithms\
+  \ (AES-256)\n\n    ### 4. XML External Entities (XXE)\n    Disable external entity\
+  \ processing in XML parsers.\n\n    ### 5. Broken Access Control\n    ```python\n\
+  \    # BAD - No authorization check\n    @app.route('/user/<id>')\n    def get_user(id):\n\
+  \        return User.get(id)\n\n    # GOOD - Verify ownership\n    @app.route('/user/<id>')\n\
+  \    @login_required\n    def get_user(id):\n        if current_user.id != id and\
+  \ not current_user.is_admin:\n            abort(403)\n        return User.get(id)\n\
+  \    ```\n\n    ### 6. Security Misconfiguration\n    - Default credentials\n  \
+  \  - Unnecessary services enabled\n    - Verbose error messages\n\n    ### 7. Cross-Site\
+  \ Scripting (XSS)\n    ```html\n    <!-- BAD - Unsanitized input -->\n    <div>${user_input}</div>\n\
+  \n    <!-- GOOD - Escaped/sanitized -->\n    <div>${escape(user_input)}</div>\n\
+  \    ```\n\n    ### 8. Insecure Deserialization\n    Don't deserialize untrusted\
+  \ data.\n\n    ### 9. Using Components with Known Vulnerabilities\n    ```bash\n\
+  \    # Scan for vulnerabilities\n    npm audit\n    pip-audit\n    snyk test\n \
+  \   ```\n\n    ### 10. Insufficient Logging & Monitoring\n    - Log security events\n\
+  \    - Monitor for anomalies\n    - Set up alerts\n\n    ## Container Security\n\
+  \n    ### 1. Use Official Images\n    ```dockerfile\n    # GOOD - Official base\
+  \ image\n    FROM node:18-alpine\n\n    # BAD - Random image\n    FROM random-user/node-maybe\n\
+  \    ```\n\n    ### 2. Run as Non-Root\n    ```dockerfile\n    FROM node:18-alpine\n\
+  \n    # Create non-root user\n    RUN addgroup -g 1000 appuser && \\\\\n       \
+  \ adduser -D -u 1000 -G appuser appuser\n\n    USER appuser\n\n    WORKDIR /app\n\
+  \    COPY --chown=appuser:appuser . .\n\n    CMD [\"node\", \"server.js\"]\n   \
+  \ ```\n\n    ### 3. Scan Images\n    ```bash\n    # Scan for vulnerabilities\n \
+  \   docker scan myimage:latest\n\n    # Using Trivy\n    trivy image myimage:latest\n\
+  \n    # Using Anchore\n    anchore-cli image scan myimage:latest\n    ```\n\n  \
+  \  ### 4. Minimal Base Images\n    ```dockerfile\n    # Smaller attack surface\n\
+  \    FROM alpine:3.18\n    FROM gcr.io/distroless/nodejs:18\n    ```\n\n    ###\
+  \ 5. Read-Only Filesystem\n    ```bash\n    docker run --read-only --tmpfs /tmp\
+  \ myapp\n    ```\n\n    ### 6. Drop Capabilities\n    ```bash\n    docker run --cap-drop=ALL\
+  \ --cap-add=NET_BIND_SERVICE myapp\n    ```\n\n    ## Network Security\n\n    ###\
+  \ Firewalls\n    ```bash\n    # List firewall rules (ufw)\n    sudo ufw status\n\
+  \n    # Allow specific port\n    sudo ufw allow 22/tcp\n    sudo ufw allow 443/tcp\n\
+  \n    # Deny port\n    sudo ufw deny 3306/tcp\n\n    # Enable firewall\n    sudo\
+  \ ufw enable\n    ```\n\n    ### Port Scanning\n    ```bash\n    # Scan your own\
+  \ systems only!\n    nmap -sV localhost\n    nmap -p 1-1000 192.168.1.1\n    ```\n\
+  \n    ## Security Scanning\n\n    ### Dependency Scanning\n    ```bash\n    # Node.js\n\
+  \    npm audit\n    npm audit fix\n\n    # Python\n    pip-audit\n    safety check\n\
+  \n    # Ruby\n    bundle audit\n    ```\n\n    ### Static Analysis\n    ```bash\n\
+  \    # Bandit (Python)\n    bandit -r ./src\n\n    # Semgrep (multi-language)\n\
+  \    semgrep --config=auto .\n\n    # SonarQube\n    sonar-scanner\n    ```\n\n\
+  \    ### Secret Scanning\n    ```bash\n    # TruffleHog\n    trufflehog git https://github.com/user/repo\n\
+  \n    # git-secrets\n    git secrets --scan\n\n    # gitleaks\n    gitleaks detect\
+  \ --source .\n    ```\n\n    ## Monitoring & Logging\n\n    ### What to Log\n  \
+  \  - Authentication attempts (success/failure)\n    - Authorization failures\n \
+  \   - Input validation failures\n    - Security exceptions\n    - Admin actions\n\
+  \n    ### What NOT to Log\n    - Passwords\n    - Session tokens\n    - Credit card\
+  \ numbers\n    - Personal data (PII)\n\n    ### Log Analysis\n    ```bash\n    #\
+  \ Check failed SSH attempts\n    grep \"Failed password\" /var/log/auth.log\n\n\
+  \    # Monitor logs in real-time\n    tail -f /var/log/app.log\n\n    # Count unique\
+  \ IPs\n    awk '{print $1}' access.log | sort | uniq -c | sort -rn\n    ```\n\n\
+  \    ## Security Checklist\n\n    - [ ] All traffic uses HTTPS/TLS\n    - [ ] Secrets\
+  \ not in source code or logs\n    - [ ] Strong authentication (MFA enabled)\n  \
+  \  - [ ] Authorization checks on all endpoints\n    - [ ] Input validation on all\
+  \ user input\n    - [ ] Security headers configured\n    - [ ] Dependencies up to\
+  \ date\n    - [ ] Security scanning in CI/CD\n    - [ ] Logs collected and monitored\n\
+  \    - [ ] Incident response plan documented\n    - [ ] Regular backups tested\n\
+  \    - [ ] Containers run as non-root\n    - [ ] Firewall configured\n    - [ ]\
+  \ Rate limiting enabled\n    - [ ] Security training for team"
+exercises:
+- type: mcq
+  slug: security-principles-best-practices-mcq
+  sequence_order: 1
+  question: What does the principle of 'least privilege' mean?
+  options:
+  - Users and systems should have only the minimum permissions needed to perform their
+    tasks
+  - Security should be as simple as possible
+  - Passwords should be as short as possible
+  - Systems should have the least amount of security
+  correct_answer_index: 0
+  explanation: Least privilege means granting only the minimum permissions necessary
+    for a user or system to do their job. This limits damage from compromised accounts,
+    reduces attack surface, and prevents accidental mistakes. Regularly review and
+    reduce excessive permissions.
+objectives:
+- Understand the fundamental concepts and mechanisms of security principles best practices
+- Apply chemical principles to solve related problems
+- Identify key reactions, equations, and chemical behaviors
+next_recommended: []

@@ -1,0 +1,92 @@
+slug: coloredcompounds-practice
+title: colored_compounds — Practice
+difficulty: easy
+sequence_order: 9
+estimated_minutes: 2
+key_concepts:
+- colored_compounds
+prerequisites: []
+content_md: '# colored_compounds — Practice 🚀
+
+
+  Zn²⁺ is colorless because it has d¹⁰ configuration (fully filled d-orbitals). No
+  d-d transitions are possible. Cu²⁺ (blue), Fe²⁺ (green), and Ni²⁺ (green) are colored
+  due to d-d transitions.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 2
+  question: Which of the following ions is colorless in aqueous solution?
+  options:
+  - Cu²⁺
+  - Fe²⁺
+  - Zn²⁺
+  - Ni²⁺
+  require_pass: true
+  correct_answer: Zn²⁺
+  explanation: 'Zn²⁺ is colorless in aqueous solution because it has a d¹⁰ electronic
+    configuration (all d-orbitals are fully filled). With no unpaired electrons and
+    no possibility of d-d transitions (electrons moving between d-orbitals), it cannot
+    absorb visible light, making it colorless. In contrast: **Cu²⁺ (blue)** has d⁹
+    configuration with one unpaired electron, allowing d-d transitions that absorb
+    red/orange light and transmit blue. **Fe²⁺ (pale green)** has d⁶ configuration
+    with unpaired electrons enabling d-d transitions. **Ni²⁺ (green)** has d⁸ configuration
+    with unpaired electrons. The general rule: Transition metal ions are colored
+    when they have partially filled d-orbitals (d¹-d⁹), allowing electrons to be
+    promoted between split d-orbitals in the presence of ligands. Ions with d⁰ (Sc³⁺,
+    Ti⁴⁺) or d¹⁰ (Zn²⁺, Cu⁺) configurations are colorless.'
+- type: mcq
+  sequence_order: 3
+  question: Why are transition metal compounds generally colored?
+  options:
+  - Due to s-s electronic transitions
+  - Due to p-p electronic transitions
+  - Due to d-d electronic transitions in partially filled d-orbitals
+  - Due to complete absence of electrons in d-orbitals
+  require_pass: true
+  correct_answer: Due to d-d electronic transitions in partially filled d-orbitals
+  explanation: 'Transition metal compounds are colored due to d-d electronic transitions
+    in partially filled d-orbitals. Here''s the mechanism: (1) **Crystal field splitting**:
+    When ligands approach the metal ion, they create an electric field that splits
+    the five degenerate d-orbitals into two sets of different energies (e.g., t₂g
+    and eᵍ in octahedral complexes). (2) **Light absorption**: When visible light
+    passes through the compound, electrons in the lower energy d-orbitals absorb
+    photons and get excited to higher energy d-orbitals. The energy gap (Δ) corresponds
+    to visible light wavelengths. (3) **Complementary color**: The color we observe
+    is the complementary color of the absorbed light. For example, if a compound
+    absorbs red light, it appears green. Examples: [Ti(H₂O)₆]³⁺ is purple (d¹, absorbs
+    green-yellow), [Cu(H₂O)₆]²⁺ is blue (d⁹, absorbs red-orange), [Fe(H₂O)₆]²⁺
+    is pale green (d⁶). This requires partially filled d-orbitals (d¹-d⁹).'
+- type: mcq
+  sequence_order: 4
+  question: Which of the following ions would you expect to be colorless?
+  options:
+  - Ti³⁺ (d¹)
+  - V³⁺ (d²)
+  - Sc³⁺ (d⁰)
+  - Cr³⁺ (d³)
+  require_pass: true
+  correct_answer: Sc³⁺ (d⁰)
+  explanation: 'Sc³⁺ with d⁰ configuration is colorless because it has no electrons
+    in d-orbitals, making d-d transitions impossible. Without d-d transitions, the
+    ion cannot absorb visible light and appears colorless. The other ions are colored:
+    **Ti³⁺ (d¹)** is purple/violet because the single d-electron can be excited to
+    higher d-orbitals in the crystal field, absorbing yellow-green light. **V³⁺
+    (d²)** is green due to d-d transitions with two d-electrons. **Cr³⁺ (d³)** is
+    green/violet depending on ligands, with three d-electrons allowing multiple d-d
+    transitions. General rule for colorless ions: **d⁰ configuration**: Sc³⁺, Ti⁴⁺,
+    V⁵⁺ (no d-electrons for transitions). **d¹⁰ configuration**: Zn²⁺, Cu⁺, Ag⁺
+    (all d-orbitals filled, no vacant orbitals for promotion). Note: Even though
+    Ti⁴⁺ compounds can appear colored due to charge-transfer transitions (different
+    from d-d transitions), pure d-d transitions require d¹-d⁹ configurations.'

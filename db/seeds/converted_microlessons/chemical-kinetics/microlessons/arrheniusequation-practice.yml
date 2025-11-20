@@ -1,0 +1,71 @@
+slug: arrheniusequation-practice
+title: arrhenius_equation — Practice
+difficulty: easy
+sequence_order: 14
+estimated_minutes: 2
+key_concepts:
+- arrhenius_equation
+prerequisites: []
+content_md: '# arrhenius_equation — Practice 🚀
+
+
+  k = Ae^(-Ea/RT). k increases with temperature (exponentially). While lower Ea gives
+  higher k for same T, the question asks what k increases WITH. The answer focuses
+  on temperature increase.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 2
+  question: 'According to Arrhenius equation, rate constant k increases with:'
+  options:
+  - Increase in temperature
+  - Decrease in activation energy
+  - Increase in concentration
+  - Both A and B
+  require_pass: true
+  correct_answer: Increase in temperature
+  explanation: 'According to the Arrhenius equation k = A·e^(-Ea/RT), the rate constant
+    k increases with increasing temperature (T). As temperature increases, the exponential
+    term e^(-Ea/RT) increases, making k larger. This is because: (1) Higher temperature
+    gives molecules more kinetic energy, (2) More molecules have energy ≥ Ea (activation
+    energy), (3) More effective collisions occur per unit time. The relationship is
+    exponential, not linear - small temperature increase can significantly increase
+    k. While k also depends on activation energy (lower Ea gives higher k for the
+    same T), the question asks what k increases WITH, meaning what variable, when
+    increased, causes k to increase - that''s temperature. At constant T: lower Ea
+    → higher k, but Ea is a property of the reaction, not a variable we control. Temperature
+    is the variable we can change. Taking logarithm: ln k = ln A - Ea/RT, plot of
+    ln k vs 1/T gives straight line with slope -Ea/R.'
+- type: mcq
+  sequence_order: 3
+  question: 'The Arrhenius equation in logarithmic form is ln k = ln A - Ea/RT. What can be determined from a plot of ln k versus 1/T?'
+  options:
+  - Slope = Ea, Intercept = ln A
+  - Slope = -Ea/R, Intercept = ln A
+  - Slope = Ea/R, Intercept = A
+  - Slope = -R/Ea, Intercept = ln A
+  correct_answer: Slope = -Ea/R, Intercept = ln A
+  explanation: 'The logarithmic form of the Arrhenius equation is: ln k = ln A - Ea/RT, which can be rewritten as: ln k = -Ea/R × (1/T) + ln A. This is in the form y = mx + c, where: y = ln k (y-axis), x = 1/T (x-axis), m = slope = -Ea/R, c = intercept = ln A. EXPERIMENTAL DETERMINATION: (1) Measure rate constant k at different temperatures T. (2) Calculate ln k and 1/T for each data point. (3) Plot ln k (y-axis) vs 1/T (x-axis) - this is called an Arrhenius plot. (4) The plot should be linear for reactions following Arrhenius behavior. (5) From the slope = -Ea/R, calculate activation energy: Ea = -slope × R. (6) From the intercept = ln A, calculate pre-exponential factor: A = e^(intercept). Example: If slope = -12000 K and R = 8.314 J/(mol·K), then Ea = -(-12000) × 8.314 = 99,768 J/mol ≈ 100 kJ/mol. If intercept = 25, then A = e^25 ≈ 7.2 × 10^10 s^-1 (units depend on reaction order). Note: The negative slope makes physical sense - as 1/T increases (T decreases), ln k decreases (k decreases), confirming that lower temperature gives slower reactions.'
+  require_pass: true
+- type: mcq
+  sequence_order: 4
+  question: 'A reaction has activation energy Ea = 50 kJ/mol. If the rate constant at 300 K is k₁, approximately how much larger is the rate constant at 310 K? (Use R = 8.314 J/(mol·K))'
+  options:
+  - About 1.5 times larger
+  - About 2 times larger
+  - About 3 times larger
+  - About 10 times larger
+  correct_answer: About 2 times larger
+  explanation: 'To find the ratio of rate constants at two temperatures, use the Arrhenius equation in ratio form: ln(k₂/k₁) = -Ea/R × (1/T₂ - 1/T₁) = Ea/R × (1/T₁ - 1/T₂). Given: Ea = 50 kJ/mol = 50,000 J/mol, T₁ = 300 K, T₂ = 310 K, R = 8.314 J/(mol·K). Calculate: ln(k₂/k₁) = (50,000/8.314) × (1/300 - 1/310) = 6014 × (0.003333 - 0.003226) = 6014 × 0.000107 = 0.643. Therefore: k₂/k₁ = e^0.643 ≈ 1.90 ≈ 2. The rate constant roughly doubles with a 10 K temperature increase. RULE OF THUMB: For reactions with Ea around 50-60 kJ/mol, the rate typically doubles for every 10°C (10 K) increase in temperature near room temperature. This is why reactions are often significantly faster at higher temperatures. For higher Ea, the temperature effect is even more pronounced. For example, with Ea = 100 kJ/mol, the same 10 K increase would give k₂/k₁ = e^1.286 ≈ 3.6 (more than tripling). This exponential dependence on temperature is why cooking (higher T) speeds up chemical reactions in food, and why refrigeration (lower T) slows spoilage reactions.'
+  require_pass: true

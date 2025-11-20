@@ -1,0 +1,87 @@
+slug: lesson-14
+title: Lesson 14
+difficulty: easy
+sequence_order: 14
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Storage & Persistence\n\n    Learn to provide\
+  \ persistent storage for stateful applications in Kubernetes.\n\n    ## Volume Types\n\
+  \n    **Ephemeral Volumes (Pod lifetime):**\n    - **emptyDir**: Temporary storage,\
+  \ deleted when pod dies\n    - **configMap/secret**: Configuration mounted as volumes\n\
+  \n    **Persistent Volumes (Beyond pod lifetime):**\n    - **hostPath**: Mount directory\
+  \ from node filesystem\n    - **nfs**: Network File System mount\n    - **cloud\
+  \ volumes**: AWS EBS, GCE PD, Azure Disk\n    - **csi**: Container Storage Interface\
+  \ drivers\n\n    ## Persistent Volume (PV)\n\n    Cluster-level storage resource\
+  \ provisioned by admin:\n    - Lifecycle independent of pods\n    - Can be statically\
+  \ or dynamically provisioned\n    - Has capacity, access modes, and reclaim policy\n\
+  \n    **Access Modes:**\n    - **ReadWriteOnce (RWO)**: Single node read-write\n\
+  \    - **ReadOnlyMany (ROX)**: Multiple nodes read-only\n    - **ReadWriteMany (RWX)**:\
+  \ Multiple nodes read-write\n\n    **Reclaim Policies:**\n    - **Retain**: Manual\
+  \ reclamation\n    - **Delete**: Automatic deletion\n    - **Recycle**: Basic scrub\
+  \ (deprecated)\n\n    ## Persistent Volume Claim (PVC)\n\n    User request for storage:\n\
+  \    - Requests specific size and access modes\n    - Binds to available PV\n  \
+  \  - Can specify StorageClass\n\n    ## Storage Classes\n\n    Dynamic provisioning\
+  \ of storage:\n    - Define storage provisioner (AWS, GCE, etc.)\n    - Set parameters\
+  \ (type, IOPS, replication)\n    - Enable automatic PV creation\n    - Support for\
+  \ different storage tiers\n\n    ## Essential Commands\n\n    ```bash\n    # List\
+  \ persistent volumes\n    kubectl get pv\n\n    # List persistent volume claims\n\
+  \    kubectl get pvc\n\n    # Describe PVC\n    kubectl describe pvc my-pvc\n\n\
+  \    # List storage classes\n    kubectl get storageclass\n    kubectl get sc\n\
+  \    ```\n\n    Practice storage configuration in the labs!"
+exercises:
+- type: multiple_choice_question
+  sequence_order: 2
+  question: In Kubernetes RBAC, what is the primary purpose of a ServiceAccount?
+  options:
+  - To store application configuration
+  - To provide an identity for processes running in pods to interact with the Kubernetes
+    API
+  - To manage network policies
+  - To create persistent volumes
+  correct_answer: To provide an identity for processes running in pods to interact
+    with the Kubernetes API
+  explanation: ServiceAccounts provide identities for processes running in pods, enabling
+    them to authenticate with the Kubernetes API server and perform authorized operations.
+    Every namespace has a 'default' ServiceAccount automatically assigned to pods
+    that don't specify one. Applications running in pods can use the ServiceAccount's
+    token (automatically mounted at /var/run/secrets/kubernetes.io/serviceaccount/token)
+    to make API calls. Combined with RBAC (Roles and RoleBindings), ServiceAccounts
+    control what API operations pods can perform. For example, a CI/CD tool running
+    in a pod might need a ServiceAccount with permissions to create and update Deployments.
+    ServiceAccounts are different from user accounts (for humans) - they're namespace-scoped
+    and managed declaratively as Kubernetes resources. They don't store configuration
+    (that's ConfigMaps/Secrets), manage network policies (that's NetworkPolicy resources),
+    or create volumes (that's PersistentVolumeClaims). Understanding ServiceAccounts
+    is crucial for implementing the principle of least privilege in Kubernetes applications.
+  require_pass: true
+- type: terminal
+  sequence_order: 1
+  command: kubectl get pv
+  description: 'Practice the command: kubectl get pv'
+  hints:
+  - 'Try: kubectl get pv'
+  - Use kubectl --help if you need help
+  timeout_sec: 60
+  require_pass: true
+- type: terminal
+  sequence_order: 2
+  command: kubectl get pvc
+  description: 'Practice the command: kubectl get pvc'
+  hints:
+  - 'Try: kubectl get pvc'
+  - Use kubectl --help if you need help
+  timeout_sec: 60
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: What command lists all pods in all namespaces?
+  options:
+  - kubectl get pods -A
+  - kubectl list pods --all
+  - kubectl get pods --everywhere
+  - kubectl pods list -A
+  correct_answer_index: 0
+  explanation: kubectl get pods -A (or --all-namespaces) lists pods across all namespaces.
+    The -A flag is shorthand for --all-namespaces.
+  require_pass: true

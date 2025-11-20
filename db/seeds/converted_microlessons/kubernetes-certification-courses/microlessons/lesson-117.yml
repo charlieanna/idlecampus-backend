@@ -1,0 +1,84 @@
+slug: lesson-117
+title: Lesson 117
+difficulty: easy
+sequence_order: 117
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Service Mesh Basics\n\n    - sidecar proxies\
+  \ and data plane\n    - traffic splitting and retries\n    - mTLS overview"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: In a service mesh architecture, what is the role of sidecar proxies?
+  options:
+  - To replace the application containers
+  - To intercept and manage all network traffic to and from application containers
+  - To store application configuration
+  - To provide storage volumes for applications
+  correct_answer: To intercept and manage all network traffic to and from application
+    containers
+  explanation: 'Sidecar proxies are the fundamental building block of service mesh
+    architectures, running alongside each application container to transparently intercept
+    and manage all network traffic. In service meshes like Istio, Linkerd, or Consul
+    Connect, every pod automatically gets a sidecar proxy (typically Envoy proxy for
+    Istio) injected by a mutating admission webhook. The proxy intercepts traffic
+    through iptables rules, so applications send/receive traffic through the proxy
+    without code changes. This enables powerful capabilities: traffic management (retries,
+    timeouts, circuit breaking, traffic splitting for canary deployments), security
+    (mutual TLS between services, authorization policies), and observability (automatic
+    metrics, logs, and distributed traces for all requests). For example, when Service
+    A calls Service B, the flow is: Service A container -> Sidecar A (egress) -> Sidecar
+    B (ingress) -> Service B container. The sidecars handle TLS encryption/decryption,
+    load balancing, retry logic, and telemetry collection transparently. This pattern
+    separates network concerns from application logic - developers focus on business
+    logic while the mesh handles cross-cutting concerns. The data plane consists of
+    all these sidecar proxies, while the control plane (Istiod in Istio) configures
+    the proxies based on mesh policies. Benefits include consistent policies across
+    all services, improved security with zero-trust networking, and deep observability
+    without application instrumentation. Trade-offs include increased latency (proxy
+    overhead), resource consumption (one proxy per pod), and operational complexity.'
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What is mutual TLS (mTLS) in the context of service mesh?
+  options:
+  - TLS encryption only for external traffic
+  - Two-way TLS where both client and server authenticate each other using certificates
+  - Multiple TLS versions supported simultaneously
+  - TLS that automatically renews certificates
+  correct_answer: Two-way TLS where both client and server authenticate each other
+    using certificates
+  explanation: 'Mutual TLS (mTLS) is a security protocol where both the client and
+    server authenticate each other using TLS certificates, providing strong identity
+    verification for both parties in a communication. This differs from standard TLS
+    (like HTTPS) where only the server proves its identity to the client. In service
+    meshes, mTLS provides automatic, transparent encryption and authentication for
+    all service-to-service communication. When Service A calls Service B, both services
+    prove their identity using certificates issued by the service mesh''s certificate
+    authority. The service mesh control plane automatically provisions, rotates, and
+    distributes certificates to sidecar proxies, requiring zero code changes in applications.
+    For example, in Istio, mTLS can be enabled cluster-wide, automatically encrypting
+    all inter-pod traffic and ensuring each service can only be accessed by authenticated
+    services. This implements zero-trust networking where services never trust the
+    network layer and always verify peer identity. mTLS provides several security
+    benefits: encrypts traffic in transit (preventing eavesdropping), authenticates
+    service identities (preventing impersonation), enables fine-grained authorization
+    policies (only Service A with valid cert can call Service B''s /admin endpoint),
+    and provides audit trails. Service meshes can operate in permissive mode (accepting
+    both mTLS and plain traffic during migration) or strict mode (requiring mTLS).
+    This is particularly valuable in multi-tenant clusters or regulated industries
+    requiring encryption at rest and in transit.'
+  require_pass: true
+- type: mcq
+  sequence_order: 1
+  question: What kubectl command checks if you can perform an action?
+  options:
+  - kubectl auth can-i create pods
+  - kubectl check permissions create pods
+  - kubectl verify action create pods
+  - kubectl test auth create pods
+  correct_answer_index: 0
+  explanation: kubectl auth can-i <action> <resource> checks if the current user has
+    permission to perform the specified action.
+  require_pass: true

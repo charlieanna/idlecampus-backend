@@ -1,0 +1,262 @@
+slug: lesson-12
+title: Lesson 12
+difficulty: easy
+sequence_order: 12
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Unit Testing Fundamentals\n\n    **Unit\
+  \ testing** is the practice of testing individual components of your code in isolation\
+  \ to ensure they work correctly.\n\n    ## Types of Tests\n\n    ### 1. Unit Tests\n\
+  \    **Test individual functions/methods in isolation**\n\n    ```javascript\n \
+  \   // Function to test\n    function add(a, b) {\n      return a + b;\n    }\n\n\
+  \    // Unit test\n    test('add function adds two numbers', () => {\n      expect(add(2,\
+  \ 3)).toBe(5);\n      expect(add(-1, 1)).toBe(0);\n      expect(add(0, 0)).toBe(0);\n\
+  \    });\n    ```\n\n    **Characteristics:**\n    - Fast (milliseconds)\n    -\
+  \ Isolated (no external dependencies)\n    - Focused (one component)\n    - Many\
+  \ (hundreds to thousands)\n\n    ✅ **Pros:**\n    - Quick feedback\n    - Easy to\
+  \ debug (small scope)\n    - Safe to run anywhere\n    - Cheap to maintain\n\n \
+  \   ❌ **Cons:**\n    - Don't test integration\n    - Mocking can be complex\n  \
+  \  - False confidence if too many mocks\n\n    ### 2. Integration Tests\n    **Test\
+  \ how components work together**\n\n    ```javascript\n    // Integration test:\
+  \ API + Database\n    test('POST /users creates user in database', async () => {\n\
+  \      const response = await request(app)\n        .post('/api/users')\n      \
+  \  .send({ name: 'Alice', email: 'alice@example.com' });\n\n      expect(response.status).toBe(201);\n\
+  \n      // Verify database has the user\n      const user = await db.users.findOne({\
+  \ email: 'alice@example.com' });\n      expect(user.name).toBe('Alice');\n    });\n\
+  \    ```\n\n    **Characteristics:**\n    - Slower (seconds)\n    - Tests real interactions\n\
+  \    - May require database/services\n    - Moderate number (dozens to hundreds)\n\
+  \n    ✅ **Pros:**\n    - Tests real behavior\n    - Catches integration issues\n\
+  \    - More confidence\n\n    ❌ **Cons:**\n    - Slower execution\n    - More setup\
+  \ required\n    - Harder to debug\n    - Environment dependencies\n\n    ### 3.\
+  \ End-to-End (E2E) Tests\n    **Test complete user workflows**\n\n    ```javascript\n\
+  \    // E2E test with Cypress\n    describe('User Login Flow', () => {\n      it('user\
+  \ can log in and see dashboard', () => {\n        cy.visit('/login');\n        cy.get('input[name=\"\
+  email\"]').type('user@example.com');\n        cy.get('input[name=\"password\"]').type('password123');\n\
+  \        cy.get('button[type=\"submit\"]').click();\n\n        // Verify redirect\
+  \ to dashboard\n        cy.url().should('include', '/dashboard');\n        cy.contains('Welcome\
+  \ back').should('be.visible');\n      });\n    });\n    ```\n\n    **Characteristics:**\n\
+  \    - Slowest (seconds to minutes)\n    - Tests from user perspective\n    - Full\
+  \ stack involved\n    - Few tests (dozens)\n\n    ✅ **Pros:**\n    - Tests real\
+  \ user scenarios\n    - Highest confidence\n    - Catches UI issues\n\n    ❌ **Cons:**\n\
+  \    - Very slow\n    - Brittle (UI changes break tests)\n    - Expensive to maintain\n\
+  \    - Harder to debug\n\n    ## The Test Pyramid\n\n    ```\n                 \
+  \   ╱╲\n                   ╱  ╲\n                  ╱ E2E ╲      ← Few (slow, expensive)\n\
+  \                 ╱────────╲\n                ╱          ╲\n               ╱   \
+  \         ╲\n              ╱ Integration  ╲  ← Some (medium speed)\n           \
+  \  ╱────────────────╲\n            ╱                  ╲\n           ╱          \
+  \          ╱\n          ╱    Unit Tests      ╱  ← Many (fast, cheap)\n         ╱────────────────────╱\n\
+  \    ```\n\n    **Ideal distribution:**\n    - 70% Unit tests\n    - 20% Integration\
+  \ tests\n    - 10% E2E tests\n\n    **Why this ratio?**\n\n    ```python\n    #\
+  \ Unit tests: Fast feedback loop\n    Run 1000 unit tests: 5 seconds ✓\n    Run\
+  \ 100 integration tests: 2 minutes\n    Run 10 E2E tests: 5 minutes\n\n    Total:\
+  \ ~7 minutes for comprehensive coverage\n    ```\n\n    ### Anti-Pattern: Ice Cream\
+  \ Cone\n\n    ```\n         ╱╲\n        ╱  ╲\n       ╱    ╲\n      ╱ E2E  ╲    \
+  \  ← Too many! Slow, brittle\n     ╱────────╲\n    ╱          ╲\n    ╲ Integration/\
+  \    ← Some\n     ╲──────────╱\n      ╲        ╱\n       ╲ Unit ╱       ← Too few!\
+  \ Miss bugs\n        ╲────╱\n    ```\n\n    ❌ **Problems:**\n    - Tests take hours\
+  \ to run\n    - High maintenance cost\n    - Slow feedback\n    - Developers skip\
+  \ tests\n\n    ## AAA Pattern (Arrange, Act, Assert)\n\n    **Standard structure\
+  \ for writing clear tests**\n\n    ### Example 1: JavaScript (Jest)\n\n    ```javascript\n\
+  \    describe('ShoppingCart', () => {\n      test('adds item to cart', () => {\n\
+  \        // ARRANGE: Set up test data\n        const cart = new ShoppingCart();\n\
+  \        const item = { id: 1, name: 'Book', price: 10 };\n\n        // ACT: Perform\
+  \ the action\n        cart.addItem(item);\n\n        // ASSERT: Verify the result\n\
+  \        expect(cart.items).toHaveLength(1);\n        expect(cart.items[0]).toEqual(item);\n\
+  \        expect(cart.total()).toBe(10);\n      });\n\n      test('calculates total\
+  \ with multiple items', () => {\n        // ARRANGE\n        const cart = new ShoppingCart();\n\
+  \        const item1 = { id: 1, name: 'Book', price: 10 };\n        const item2\
+  \ = { id: 2, name: 'Pen', price: 5 };\n\n        // ACT\n        cart.addItem(item1);\n\
+  \        cart.addItem(item2);\n\n        // ASSERT\n        expect(cart.total()).toBe(15);\n\
+  \      });\n    });\n    ```\n\n    ### Example 2: Python (Pytest)\n\n    ```python\n\
+  \    import pytest\n    from shopping_cart import ShoppingCart, Item\n\n    class\
+  \ TestShoppingCart:\n        def test_add_item_to_cart(self):\n            # ARRANGE\n\
+  \            cart = ShoppingCart()\n            item = Item(id=1, name='Book', price=10.0)\n\
+  \n            # ACT\n            cart.add_item(item)\n\n            # ASSERT\n \
+  \           assert len(cart.items) == 1\n            assert cart.items[0] == item\n\
+  \            assert cart.total() == 10.0\n\n        def test_remove_item_from_cart(self):\n\
+  \            # ARRANGE\n            cart = ShoppingCart()\n            item = Item(id=1,\
+  \ name='Book', price=10.0)\n            cart.add_item(item)\n\n            # ACT\n\
+  \            cart.remove_item(item.id)\n\n            # ASSERT\n            assert\
+  \ len(cart.items) == 0\n            assert cart.total() == 0.0\n    ```\n\n    ###\
+  \ Example 3: Java (JUnit)\n\n    ```java\n    import org.junit.jupiter.api.Test;\n\
+  \    import static org.junit.jupiter.api.Assertions.*;\n\n    class ShoppingCartTest\
+  \ {\n        @Test\n        void testAddItemToCart() {\n            // ARRANGE\n\
+  \            ShoppingCart cart = new ShoppingCart();\n            Item item = new\
+  \ Item(1, \"Book\", 10.0);\n\n            // ACT\n            cart.addItem(item);\n\
+  \n            // ASSERT\n            assertEquals(1, cart.getItems().size());\n\
+  \            assertEquals(item, cart.getItems().get(0));\n            assertEquals(10.0,\
+  \ cart.getTotal(), 0.01);\n        }\n\n        @Test\n        void testApplyDiscount()\
+  \ {\n            // ARRANGE\n            ShoppingCart cart = new ShoppingCart();\n\
+  \            cart.addItem(new Item(1, \"Book\", 100.0));\n\n            // ACT\n\
+  \            cart.applyDiscount(0.10); // 10% discount\n\n            // ASSERT\n\
+  \            assertEquals(90.0, cart.getTotal(), 0.01);\n        }\n    }\n    ```\n\
+  \n    ## Mocking and Stubbing\n\n    **Isolate units by replacing dependencies with\
+  \ test doubles**\n\n    ### What are Test Doubles?\n\n    - **Stub**: Returns predefined\
+  \ data\n    - **Mock**: Verifies interactions were called\n    - **Fake**: Working\
+  \ implementation (simpler)\n    - **Spy**: Records calls for verification\n\n  \
+  \  ### Example 1: Mocking in Jest\n\n    ```javascript\n    // user-service.js\n\
+  \    class UserService {\n      constructor(database) {\n        this.database =\
+  \ database;\n      }\n\n      async getUser(id) {\n        return await this.database.query('SELECT\
+  \ * FROM users WHERE id = ?', id);\n      }\n\n      async createUser(userData)\
+  \ {\n        const existingUser = await this.database.query(\n          'SELECT\
+  \ * FROM users WHERE email = ?',\n          userData.email\n        );\n\n     \
+  \   if (existingUser) {\n          throw new Error('User already exists');\n   \
+  \     }\n\n        return await this.database.insert('users', userData);\n     \
+  \ }\n    }\n\n    // user-service.test.js\n    describe('UserService', () => {\n\
+  \      test('getUser returns user from database', async () => {\n        // ARRANGE:\
+  \ Mock database\n        const mockDatabase = {\n          query: jest.fn().mockResolvedValue({\
+  \ id: 1, name: 'Alice' })\n        };\n        const userService = new UserService(mockDatabase);\n\
+  \n        // ACT\n        const user = await userService.getUser(1);\n\n       \
+  \ // ASSERT\n        expect(mockDatabase.query).toHaveBeenCalledWith(\n        \
+  \  'SELECT * FROM users WHERE id = ?',\n          1\n        );\n        expect(user).toEqual({\
+  \ id: 1, name: 'Alice' });\n      });\n\n      test('createUser throws error if\
+  \ user exists', async () => {\n        // ARRANGE\n        const mockDatabase =\
+  \ {\n          query: jest.fn().mockResolvedValue({ id: 1, email: 'alice@test.com'\
+  \ }),\n          insert: jest.fn()\n        };\n        const userService = new\
+  \ UserService(mockDatabase);\n\n        // ACT & ASSERT\n        await expect(\n\
+  \          userService.createUser({ email: 'alice@test.com', name: 'Alice' })\n\
+  \        ).rejects.toThrow('User already exists');\n\n        expect(mockDatabase.insert).not.toHaveBeenCalled();\n\
+  \      });\n    });\n    ```\n\n    ### Example 2: Mocking in Python (unittest.mock)\n\
+  \n    ```python\n    from unittest.mock import Mock, patch\n    import pytest\n\
+  \    from user_service import UserService\n\n    class TestUserService:\n      \
+  \  def test_get_user_returns_user_from_database(self):\n            # ARRANGE: Mock\
+  \ database\n            mock_db = Mock()\n            mock_db.query.return_value\
+  \ = {'id': 1, 'name': 'Alice'}\n            user_service = UserService(mock_db)\n\
+  \n            # ACT\n            user = user_service.get_user(1)\n\n           \
+  \ # ASSERT\n            mock_db.query.assert_called_once_with(\n               \
+  \ 'SELECT * FROM users WHERE id = ?', 1\n            )\n            assert user\
+  \ == {'id': 1, 'name': 'Alice'}\n\n        @patch('user_service.send_email')\n \
+  \       def test_create_user_sends_welcome_email(self, mock_send_email):\n     \
+  \       # ARRANGE\n            mock_db = Mock()\n            mock_db.query.return_value\
+  \ = None  # No existing user\n            mock_db.insert.return_value = {'id': 1,\
+  \ 'email': 'alice@test.com'}\n            user_service = UserService(mock_db)\n\n\
+  \            # ACT\n            user_service.create_user({'email': 'alice@test.com',\
+  \ 'name': 'Alice'})\n\n            # ASSERT\n            mock_send_email.assert_called_once_with(\n\
+  \                to='alice@test.com',\n                subject='Welcome!',\n   \
+  \             body='Welcome to our service'\n            )\n    ```\n\n    ### Example\
+  \ 3: Mocking HTTP Requests\n\n    ```javascript\n    // weather-service.js\n   \
+  \ const axios = require('axios');\n\n    class WeatherService {\n      async getTemperature(city)\
+  \ {\n        const response = await axios.get(\n          `https://api.weather.com/forecast?city=${city}`\n\
+  \        );\n        return response.data.temperature;\n      }\n    }\n\n    //\
+  \ weather-service.test.js\n    jest.mock('axios');\n\n    describe('WeatherService',\
+  \ () => {\n      test('getTemperature returns temperature for city', async () =>\
+  \ {\n        // ARRANGE\n        axios.get.mockResolvedValue({\n          data:\
+  \ { temperature: 72, city: 'San Francisco' }\n        });\n        const weatherService\
+  \ = new WeatherService();\n\n        // ACT\n        const temp = await weatherService.getTemperature('San\
+  \ Francisco');\n\n        // ASSERT\n        expect(temp).toBe(72);\n        expect(axios.get).toHaveBeenCalledWith(\n\
+  \          'https://api.weather.com/forecast?city=San Francisco'\n        );\n \
+  \     });\n\n      test('getTemperature handles API errors', async () => {\n   \
+  \     // ARRANGE\n        axios.get.mockRejectedValue(new Error('API Error'));\n\
+  \        const weatherService = new WeatherService();\n\n        // ACT & ASSERT\n\
+  \        await expect(\n          weatherService.getTemperature('InvalidCity')\n\
+  \        ).rejects.toThrow('API Error');\n      });\n    });\n    ```\n\n    ###\
+  \ Example 4: Spy Pattern\n\n    ```python\n    # payment_processor.py\n    class\
+  \ PaymentProcessor:\n        def __init__(self, payment_gateway):\n            self.payment_gateway\
+  \ = payment_gateway\n            self.logger = Logger()\n\n        def process_payment(self,\
+  \ amount, card):\n            self.logger.info(f'Processing payment: ${amount}')\n\
+  \            result = self.payment_gateway.charge(amount, card)\n\n            if\
+  \ result.success:\n                self.logger.info(f'Payment successful: {result.transaction_id}')\n\
+  \            else:\n                self.logger.error(f'Payment failed: {result.error}')\n\
+  \n            return result\n\n    # test_payment_processor.py\n    from unittest.mock\
+  \ import Mock, call\n    import pytest\n\n    def test_process_payment_logs_correctly():\n\
+  \        # ARRANGE\n        mock_gateway = Mock()\n        mock_gateway.charge.return_value\
+  \ = Mock(\n            success=True,\n            transaction_id='txn_123'\n   \
+  \     )\n\n        processor = PaymentProcessor(mock_gateway)\n        processor.logger\
+  \ = Mock()  # Spy on logger\n\n        # ACT\n        processor.process_payment(100.0,\
+  \ {'number': '4111111111111111'})\n\n        # ASSERT: Verify logger was called\
+  \ correctly\n        assert processor.logger.info.call_count == 2\n        processor.logger.info.assert_has_calls([\n\
+  \            call('Processing payment: $100.0'),\n            call('Payment successful:\
+  \ txn_123')\n        ])\n    ```\n\n    ## When to Mock vs Use Real Dependencies\n\
+  \n    ### Mock These:\n    - External APIs (slow, costs money, rate limits)\n  \
+  \  - Databases (in unit tests)\n    - File system operations\n    - Email services\n\
+  \    - Payment gateways\n    - Time/dates (for deterministic tests)\n\n    ```python\n\
+  \    # Mock time for deterministic tests\n    from unittest.mock import patch\n\
+  \    from datetime import datetime\n\n    def test_is_business_hours():\n      \
+  \  # Test at 2 PM (business hours)\n        with patch('datetime.datetime') as mock_datetime:\n\
+  \            mock_datetime.now.return_value = datetime(2024, 1, 1, 14, 0)\n    \
+  \        assert is_business_hours() == True\n\n        # Test at 8 PM (after hours)\n\
+  \        with patch('datetime.datetime') as mock_datetime:\n            mock_datetime.now.return_value\
+  \ = datetime(2024, 1, 1, 20, 0)\n            assert is_business_hours() == False\n\
+  \    ```\n\n    ### Use Real Dependencies:\n    - Pure functions (no side effects)\n\
+  \    - Simple utilities\n    - Value objects\n    - Your own domain logic\n\n  \
+  \  ```javascript\n    // Don't mock these - test directly\n    class Money {\n \
+  \     constructor(amount, currency) {\n        this.amount = amount;\n        this.currency\
+  \ = currency;\n      }\n\n      add(other) {\n        if (this.currency !== other.currency)\
+  \ {\n          throw new Error('Currency mismatch');\n        }\n        return\
+  \ new Money(this.amount + other.amount, this.currency);\n      }\n    }\n\n    //\
+  \ Test with real objects\n    test('Money.add combines amounts', () => {\n     \
+  \ const m1 = new Money(10, 'USD');\n      const m2 = new Money(20, 'USD');\n\n \
+  \     const result = m1.add(m2);\n\n      expect(result.amount).toBe(30);\n    \
+  \  expect(result.currency).toBe('USD');\n    });\n    ```\n\n    ## Test Naming\
+  \ Conventions\n\n    ### Good Test Names\n\n    ```javascript\n    // Pattern: test_[method]_[scenario]_[expected_result]\n\
+  \n    // ✅ Good\n    test('add_validNumbers_returnsSum')\n    test('createUser_duplicateEmail_throwsError')\n\
+  \    test('calculateDiscount_vipCustomer_applies20PercentDiscount')\n\n    // ❌\
+  \ Bad (too vague)\n    test('test1')\n    test('addTest')\n    test('userCreation')\n\
+  \    ```\n\n    ### Describe Blocks for Organization\n\n    ```javascript\n    describe('ShoppingCart',\
+  \ () => {\n      describe('addItem', () => {\n        test('adds item to empty cart',\
+  \ () => { /* ... */ });\n        test('adds item to cart with existing items', ()\
+  \ => { /* ... */ });\n        test('throws error if item is null', () => { /* ...\
+  \ */ });\n      });\n\n      describe('removeItem', () => {\n        test('removes\
+  \ item by id', () => { /* ... */ });\n        test('throws error if item not found',\
+  \ () => { /* ... */ });\n      });\n\n      describe('total', () => {\n        test('returns\
+  \ zero for empty cart', () => { /* ... */ });\n        test('sums all item prices',\
+  \ () => { /* ... */ });\n        test('applies discount if applicable', () => {\
+  \ /* ... */ });\n      });\n    });\n    ```\n\n    ## Best Practices\n\n    1.\
+  \ **One assertion per test** (when possible)\n    ```javascript\n    // ✅ Good\n\
+  \    test('cart total is correct', () => {\n      expect(cart.total()).toBe(100);\n\
+  \    });\n\n    // ❌ Avoid (testing multiple things)\n    test('cart works', ()\
+  \ => {\n      expect(cart.items).toHaveLength(2);\n      expect(cart.total()).toBe(100);\n\
+  \      expect(cart.isEmpty()).toBe(false);\n    });\n    ```\n\n    2. **Tests should\
+  \ be independent**\n    ```javascript\n    // ❌ Bad: Tests depend on execution order\n\
+  \    let cart;\n    test('test 1', () => {\n      cart = new ShoppingCart();\n \
+  \     cart.addItem(item);\n    });\n    test('test 2', () => {\n      expect(cart.items).toHaveLength(1);\
+  \ // Depends on test 1!\n    });\n\n    // ✅ Good: Each test is independent\n  \
+  \  test('test 1', () => {\n      const cart = new ShoppingCart();\n      cart.addItem(item);\n\
+  \      expect(cart.items).toHaveLength(1);\n    });\n    test('test 2', () => {\n\
+  \      const cart = new ShoppingCart();\n      expect(cart.items).toHaveLength(0);\n\
+  \    });\n    ```\n\n    3. **Use test fixtures/setup**\n    ```python\n    import\
+  \ pytest\n\n    @pytest.fixture\n    def cart():\n        \"\"\"Reusable cart fixture\"\
+  \"\"\n        return ShoppingCart()\n\n    @pytest.fixture\n    def cart_with_items():\n\
+  \        \"\"\"Cart pre-populated with items\"\"\"\n        cart = ShoppingCart()\n\
+  \        cart.add_item(Item(1, 'Book', 10.0))\n        cart.add_item(Item(2, 'Pen',\
+  \ 5.0))\n        return cart\n\n    def test_empty_cart_total(cart):\n        assert\
+  \ cart.total() == 0.0\n\n    def test_cart_with_items_total(cart_with_items):\n\
+  \        assert cart_with_items.total() == 15.0\n    ```\n\n    **Next**: We'll\
+  \ explore integration testing and E2E testing in depth."
+exercises:
+  - type: mcq
+    sequence_order: 1
+    question: "What is the correct distribution of tests according to the Test Pyramid?"
+    options:
+      - "Equal amounts of unit, integration, and E2E tests"
+      - "70% unit tests, 20% integration tests, 10% E2E tests"
+      - "Most E2E tests, few unit tests (Ice Cream Cone)"
+      - "Only unit tests are needed"
+    correct_answer: "70% unit tests, 20% integration tests, 10% E2E tests"
+    explanation: "The Test Pyramid recommends 70% unit tests at the base, 20% integration tests in the middle, and 10% E2E tests at the top. This distribution balances test coverage with execution speed and maintenance cost. Unit tests are fast (milliseconds), isolated, cheap to maintain, and provide quick feedback, making them ideal for the bulk of testing. Integration tests (seconds) verify components work together and catch integration bugs, requiring moderate numbers. E2E tests (minutes) validate complete user workflows but are slow, brittle, and expensive to maintain, so use them sparingly for critical paths. The anti-pattern Ice Cream Cone inverts this with too many slow E2E tests and too few unit tests, resulting in slow test suites (hours), high maintenance costs, and developers skipping tests. Example: 1000 unit tests (5 sec) + 100 integration tests (2 min) + 10 E2E tests (5 min) = ~7 min total, providing comprehensive coverage efficiently."
+    require_pass: true
+
+  - type: mcq
+    sequence_order: 2
+    question: "In the AAA testing pattern, what do Arrange, Act, and Assert represent?"
+    options:
+      - "Three types of test frameworks"
+      - "Arrange: set up test data; Act: perform the action being tested; Assert: verify the result"
+      - "Steps for deploying code"
+      - "Three levels of the test pyramid"
+    correct_answer: "Arrange: set up test data; Act: perform the action being tested; Assert: verify the result"
+    explanation: "The AAA pattern is the standard structure for writing clear, maintainable tests. Arrange: Set up the test environment and test data needed for the test. Create objects, initialize variables, configure mocks. Act: Execute the specific action or method being tested. This should be a single, focused operation. Assert: Verify that the action produced the expected result. Check return values, state changes, or method calls. Example: test('cart calculates total correctly') { // ARRANGE const cart = new ShoppingCart(); cart.addItem({price: 10}); cart.addItem({price: 5}); // ACT const total = cart.total(); // ASSERT expect(total).toBe(15); }. This structure makes tests self-documenting and easy to understand. Each section has a clear purpose, and anyone reading the test can quickly identify what's being tested and why it might fail."
+    require_pass: true
+
+  - type: mcq
+    sequence_order: 3
+    question: "When should you mock a dependency versus using the real implementation in unit tests?"
+    options:
+      - "Always mock everything for isolation"
+      - "Mock external dependencies (APIs, databases, slow/unreliable services); use real implementations for pure functions and domain logic"
+      - "Never mock anything to test real behavior"
+      - "Only mock if the code is slow"
+    correct_answer: "Mock external dependencies (APIs, databases, slow/unreliable services); use real implementations for pure functions and domain logic"
+    explanation: "Mocking decisions balance test isolation, speed, and realism. Mock these: External APIs (slow, costs money, rate limits, unavailable in tests), databases (in unit tests - use real ones in integration tests), file system operations, email/payment gateways, time/dates (for deterministic tests). Example: mock_payment.charge.mockResolvedValue({success: true}). Use real implementations for: Pure functions with no side effects, simple utilities, value objects, your own domain logic. Example: don't mock Money.add() - test it directly. Excessive mocking creates tests that only verify mocks are called correctly without testing actual behavior. For a UserService that uses a database, mock the database in unit tests (fast, no DB setup needed), but use a real test database in integration tests (catch actual SQL errors, test real queries). The guideline: mock I/O and external systems; test logic with real objects."
+    require_pass: true

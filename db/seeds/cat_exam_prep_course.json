@@ -1,0 +1,107 @@
+{
+  "course": {
+    "slug": "cat-exam-prep-mba",
+    "title": "CAT Exam Preparation for MBA",
+    "description": "Comprehensive preparation course for the Common Admission Test (CAT) - India's premier MBA entrance exam. Master Quantitative Aptitude, Data Interpretation & Logical Reasoning, and Verbal Ability with 500+ practice questions and adaptive learning.",
+    "level": "intermediate",
+    "estimated_hours": 200,
+    "prerequisites": ["Basic mathematics", "English proficiency", "Logical thinking"],
+    "learning_objectives": [
+      "Master all CAT exam sections with deep conceptual understanding",
+      "Develop speed and accuracy for time-bound problem solving",
+      "Build strong analytical and reasoning skills",
+      "Learn exam strategies and time management techniques",
+      "Track progress with adaptive difficulty adjustment"
+    ],
+    "tags": ["CAT", "MBA", "competitive-exam", "quantitative-aptitude", "logical-reasoning", "verbal-ability"],
+    "modules": [
+      {
+        "slug": "quantitative-aptitude",
+        "title": "Quantitative Aptitude",
+        "description": "Master mathematical concepts and problem-solving techniques for CAT",
+        "order": 1,
+        "estimated_hours": 80,
+        "lessons": [
+          "number-systems-fundamentals",
+          "percentages-profit-loss",
+          "ratio-proportion-variation",
+          "time-speed-distance",
+          "time-work-pipes",
+          "averages-mixtures",
+          "simple-compound-interest",
+          "linear-equations",
+          "quadratic-equations",
+          "progressions-sequences",
+          "geometry-mensuration",
+          "coordinate-geometry",
+          "trigonometry-basics",
+          "permutations-combinations",
+          "probability-statistics",
+          "set-theory-venn-diagrams",
+          "logarithms-exponents",
+          "functions-graphs",
+          "inequalities-modulus",
+          "number-theory-advanced"
+        ]
+      },
+      {
+        "slug": "data-interpretation-logical-reasoning",
+        "title": "Data Interpretation & Logical Reasoning",
+        "description": "Develop analytical skills for complex data sets and logical puzzles",
+        "order": 2,
+        "estimated_hours": 60,
+        "lessons": [
+          "tables-data-analysis",
+          "bar-charts-interpretation",
+          "line-graphs-analysis",
+          "pie-charts-calculations",
+          "caselets-complex-data",
+          "seating-arrangements-linear",
+          "seating-arrangements-circular",
+          "blood-relations",
+          "syllogisms-logical-deductions",
+          "input-output-patterns",
+          "coding-decoding",
+          "puzzles-constraints",
+          "venn-diagrams-lr",
+          "series-patterns",
+          "decision-making",
+          "logical-connectives",
+          "assumption-conclusion",
+          "critical-reasoning",
+          "binary-logic",
+          "games-tournaments"
+        ]
+      },
+      {
+        "slug": "verbal-ability-reading-comprehension",
+        "title": "Verbal Ability & Reading Comprehension",
+        "description": "Enhance English language skills and comprehension abilities",
+        "order": 3,
+        "estimated_hours": 60,
+        "lessons": [
+          "reading-comprehension-strategies",
+          "rc-inference-questions",
+          "rc-main-idea-tone",
+          "rc-vocabulary-context",
+          "para-jumbles-coherence",
+          "para-summary",
+          "odd-sentence-out",
+          "sentence-completion",
+          "grammar-fundamentals",
+          "subject-verb-agreement",
+          "tenses-usage",
+          "articles-prepositions",
+          "vocabulary-building",
+          "synonyms-antonyms",
+          "word-usage-idioms",
+          "analogies-relationships",
+          "sentence-correction",
+          "critical-reasoning-verbal",
+          "fact-inference-judgment",
+          "para-completion"
+        ]
+      }
+    ]
+  }
+}

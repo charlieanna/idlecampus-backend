@@ -1,0 +1,106 @@
+slug: lesson-114
+title: Lesson 114
+sequence_order: 114
+estimated_minutes: 2
+difficulty: easy
+content_md: "# Microlesson \U0001F680\n\n# DNS and Service Discovery in Kubernetes\n\
+  \n## Introduction\n\nService discovery is fundamental to microservices communication\
+  \ in Kubernetes. DNS provides automatic name resolution, allowing pods to find and\
+  \ communicate with services using human-readable names instead of IP addresses.\n\
+  \n## CoreDNS Architecture\n\nCoreDNS is the default DNS server in Kubernetes clusters\
+  \ since version 1.13. It's:\n- Plugin-based and highly extensible\n- Written in\
+  \ Go for performance\n- Configured via Corefile\n- Deployed as a Deployment in kube-system\
+  \ namespace\n\n### CoreDNS Components\n\n```bash\n# Check CoreDNS deployment\nkubectl\
+  \ get deployment -n kube-system coredns\n\n# View CoreDNS configuration\nkubectl\
+  \ get configmap -n kube-system coredns -o yaml\n```\n\n**Typical Corefile:**\n```\n\
+  .:53 {\n    errors\n    health {\n       lameduck 5s\n    }\n    ready\n    kubernetes\
+  \ cluster.local in-addr.arpa ip6.arpa {\n       pods insecure\n       fallthrough\
+  \ in-addr.arpa ip6.arpa\n       ttl 30\n    }\n    prometheus :9153\n    forward\
+  \ . /etc/resolv.conf {\n       max_concurrent 1000\n    }\n    cache 30\n    loop\n\
+  \    reload\n    loadbalance\n}\n```\n\n## Service DNS Names\n\nEvery Kubernetes\
+  \ service automatically gets DNS records:\n\n### A Records (IPv4)\n```\n<service-name>.<namespace>.svc.<cluster-domain>\n\
+  ```\n\n**Examples:**\n- `mysql.database.svc.cluster.local` - Full FQDN\n- `mysql.database`\
+  \ - Cross-namespace short form\n- `mysql` - Same namespace only\n\n### Headless\
+  \ Service DNS\n\nHeadless services (clusterIP: None) return pod IPs instead of service\
+  \ IP:\n```\n<pod-ip-dashed>.<service-name>.<namespace>.svc.<cluster-domain>\n```\n\
+  \nExample: `10-244-1-5.mysql.database.svc.cluster.local`\n\n### StatefulSet DNS\n\
+  \nStatefulSets get predictable DNS names for each pod:\n```\n<pod-name>.<service-name>.<namespace>.svc.<cluster-domain>\n\
+  ```\n\nExample: `mysql-0.mysql.database.svc.cluster.local`\n\n## SRV Records\n\n\
+  SRV (Service) records provide port and protocol information:\n\n### Format\n```\n\
+  _<port-name>._<protocol>.<service-name>.<namespace>.svc.<cluster-domain>\n```\n\n\
+  ### Example Service with Named Ports\n\n```yaml\napiVersion: v1\nkind: Service\n\
+  metadata:\n  name: myapp\n  namespace: production\nspec:\n  ports:\n  - name: http\n\
+  \    port: 80\n    protocol: TCP\n  - name: metrics\n    port: 9090\n    protocol:\
+  \ TCP\n  selector:\n    app: myapp\n```\n\n**SRV Records created:**\n- `_http._tcp.myapp.production.svc.cluster.local`\n\
+  - `_metrics._tcp.myapp.production.svc.cluster.local`\n\n### Querying SRV Records\n\
+  \n```bash\n# From inside cluster\nkubectl run -it --rm debug --image=tutum/dnsutils\
+  \ --restart=Never -- sh\n\n# Query SRV record\ndig SRV _http._tcp.myapp.production.svc.cluster.local\n\
+  ```\n\n**Response:**\n```\n;; ANSWER SECTION:\n_http._tcp.myapp.production.svc.cluster.local.\
+  \ 30 IN SRV 0 100 80 myapp.production.svc.cluster.local.\n```\n\n## DNS Search Paths\n\
+  \nPods get automatic DNS search paths configured in `/etc/resolv.conf`:\n\n```bash\n\
+  nameserver 10.96.0.10\nsearch default.svc.cluster.local svc.cluster.local cluster.local\n\
+  options ndots:5\n```\n\n### How Search Paths Work\n\nQuery for `mysql` from pod\
+  \ in `default` namespace tries:\n1. `mysql.default.svc.cluster.local`\n2. `mysql.svc.cluster.local`\n\
+  3. `mysql.cluster.local`\n4. `mysql` (external DNS)\n\n### The ndots Problem\n\n\
+  - `ndots:5` means names with fewer than 5 dots use search paths\n- Can cause unnecessary\
+  \ DNS queries and latency\n- Best practice: Use short names within namespace, FQDN\
+  \ for cross-namespace\n\n## Stub Domains\n\nStub domains route queries for specific\
+  \ domains to custom DNS servers:\n\n```yaml\napiVersion: v1\nkind: ConfigMap\nmetadata:\n\
+  \  name: coredns\n  namespace: kube-system\ndata:\n  Corefile: |\n    cluster.local:53\
+  \ {\n        kubernetes cluster.local {\n            pods insecure\n           \
+  \ fallthrough\n        }\n    }\n    \n    # Route internal.company.com to corporate\
+  \ DNS\n    internal.company.com:53 {\n        forward . 10.100.0.10\n    }\n   \
+  \ \n    # Route consul service discovery\n    consul:53 {\n        forward . 127.0.0.1:8600\n\
+  \    }\n    \n    # Default - forward to upstream\n    .:53 {\n        forward .\
+  \ /etc/resolv.conf\n        cache 30\n    }\n```\n\n### Use Cases\n- Integration\
+  \ with corporate DNS\n- Multi-cluster service discovery\n- Hybrid cloud/on-prem\
+  \ environments\n- Service mesh integration (Consul, Istio)\n\n## Custom DNS Configuration\
+  \ per Pod\n\nOverride DNS settings for specific pods:\n\n```yaml\napiVersion: v1\n\
+  kind: Pod\nmetadata:\n  name: custom-dns-pod\nspec:\n  dnsPolicy: \"None\"\n  dnsConfig:\n\
+  \    nameservers:\n      - 1.1.1.1\n      - 8.8.8.8\n    searches:\n      - custom.local\n\
+  \      - cluster.local\n    options:\n      - name: ndots\n        value: \"2\"\n\
+  \      - name: timeout\n        value: \"3\"\n```\n\n**DNS Policies:**\n- `ClusterFirst`\
+  \ (default) - Use cluster DNS, fallback to upstream\n- `ClusterFirstWithHostNet`\
+  \ - For pods using hostNetwork\n- `Default` - Inherit from node\n- `None` - Use\
+  \ dnsConfig only\n\n## Troubleshooting DNS\n\n### Test DNS Resolution\n\n```bash\n\
+  # Create debug pod\nkubectl run -it --rm debug --image=busybox --restart=Never --\
+  \ sh\n\n# Inside pod\nnslookup kubernetes.default\nnslookup my-service.my-namespace.svc.cluster.local\n\
+  cat /etc/resolv.conf\nwget -O- http://my-service\n```\n\n### Common Issues\n\n**1.\
+  \ Service not resolving:**\n```bash\n# Check service exists\nkubectl get svc my-service\
+  \ -n my-namespace\n\n# Check endpoints\nkubectl get endpoints my-service -n my-namespace\n\
+  \n# Check CoreDNS is running\nkubectl get pods -n kube-system -l k8s-app=kube-dns\n\
+  ```\n\n**2. Slow DNS resolution:**\n```bash\n# Check ndots value\nkubectl exec my-pod\
+  \ -- cat /etc/resolv.conf\n\n# Monitor CoreDNS\nkubectl logs -n kube-system -l k8s-app=kube-dns\
+  \ -f\n```\n\n**3. External DNS not working:**\n```bash\n# Check CoreDNS forwarding\n\
+  kubectl get configmap -n kube-system coredns -o yaml\n\n# Test from CoreDNS pod\n\
+  kubectl exec -n kube-system coredns-xxx -- nslookup google.com\n```\n\n## DNS Performance\
+  \ Optimization\n\n### NodeLocal DNSCache\n\nDeploy local DNS cache on each node\
+  \ to reduce latency:\n```bash\nkubectl apply -f https://k8s.io/examples/admin/dns/nodelocaldns.yaml\n\
+  ```\n\nBenefits:\n- Reduced CoreDNS load\n- Lower DNS query latency\n- Better reliability\n\
+  \n### DNS Caching\n\nConfigure appropriate TTL values:\n```\ncache 30  # Cache for\
+  \ 30 seconds\n```\n\nBalance between:\n- Lower values = more accurate, higher load\n\
+  - Higher values = less load, slower updates\n\n## Key Points\n\n- CoreDNS provides\
+  \ automatic service discovery via DNS\n- Services get DNS names: `<service>.<namespace>.svc.cluster.local`\n\
+  - SRV records include port and protocol information\n- Stub domains enable custom\
+  \ DNS routing for specific domains\n- Search paths allow short names within namespace\n\
+  - DNS configuration can be customized per-pod\n- Performance optimization through\
+  \ caching and NodeLocal DNSCache"
+exercises:
+- type: mcq
+  slug: lesson-114-mcq
+  sequence_order: 1
+  question: What role does CoreDNS play in Kubernetes?
+  options:
+  - Provides DNS-based service discovery for pods and services within the cluster
+  - Manages container images
+  - Handles authentication
+  - Monitors cluster health
+  correct_answer_index: 0
+  explanation: CoreDNS is the default DNS server in Kubernetes. It provides service
+    discovery by resolving service names to cluster IPs, supports stub domains, and
+    manages DNS search paths.
+objectives:
+- Understand the fundamental concepts and mechanisms of lesson 114
+- Apply chemical principles to solve related problems
+- Identify key reactions, equations, and chemical behaviors
+next_recommended: []

@@ -1,0 +1,226 @@
+slug: friction-on-inclined-plane
+title: "Friction on Inclined Planes"
+difficulty: advanced
+sequence_order: 7
+estimated_minutes: 18
+key_concepts:
+- inclined-plane
+- static-friction
+- kinetic-friction
+- angle-of-repose
+- limiting-friction
+prerequisites:
+- free-body-diagrams
+- static-kinetic-friction
+content_md: |
+  # Friction on Inclined Planes
+
+  ## Forces on Inclined Plane
+
+  For mass m on plane inclined at angle θ:
+
+  ### Component Analysis:
+  ```
+  Along incline (down): mg sin θ
+  Perpendicular to incline: mg cos θ
+  Normal force: N = mg cos θ
+  Friction force: f ≤ μN = μmg cos θ
+  ```
+
+  ## Angle of Repose (α)
+
+  **Definition:** Maximum angle at which object remains at rest on inclined plane.
+
+  ```
+  tan α = μₛ (static friction coefficient)
+
+  α = tan⁻¹(μₛ)
+  ```
+
+  ### When θ < α:
+  - Object remains stationary
+  - f < μₛN (static friction adjusts)
+  - f = mg sin θ (just enough to prevent sliding)
+
+  ### When θ = α:
+  - Limiting friction reached
+  - f = μₛN = mg sin θ
+  - Object about to slide
+
+  ### When θ > α:
+  - Object slides down
+  - Kinetic friction applies
+  - a = g(sin θ - μₖ cos θ)
+
+  ## Different Cases
+
+  ### Case 1: Object at Rest (θ < α)
+  ```
+  Friction force: f = mg sin θ
+  Normal force: N = mg cos θ
+  Acceleration: a = 0
+  ```
+
+  ### Case 2: Object Sliding Down (θ > α)
+  ```
+  Net force = mg sin θ - μₖ mg cos θ
+  a = g(sin θ - μₖ cos θ)
+  ```
+
+  ### Case 3: Object Pushed Up
+  ```
+  Net force = mg sin θ + μₖ mg cos θ (both oppose motion)
+  a = -g(sin θ + μₖ cos θ) (deceleration)
+  ```
+
+  ### Case 4: Object Moving Up with Initial Velocity
+  - First decelerates: a = -g(sin θ + μₖ cos θ)
+  - Stops at highest point
+  - May stay or slide back depending on θ vs α
+
+  ## Key Formulas
+
+  ### Acceleration Down the Plane:
+  ```
+  a = g sin θ (frictionless)
+  a = g(sin θ - μₖ cos θ) (with friction)
+  ```
+
+  ### Velocity at Bottom:
+  ```
+  v = √(2gh) (frictionless)
+  v = √(2as) where s = h/sin θ
+  ```
+
+  ### Time to Slide Down:
+  ```
+  t = √(2s/a) = √(2h/(a sin θ))
+  ```
+
+  ### Critical Angle for Motion:
+  ```
+  θ_critical = tan⁻¹(μₛ)
+  ```
+
+  ## Special Situations
+
+  ### 1. Minimum Force to Push Up:
+  ```
+  F_min = mg(sin θ + μₛ cos θ)
+  ```
+  Applied parallel to incline
+
+  ### 2. Maximum Force Before Sliding Up:
+  ```
+  F_max = mg(sin θ + μₛ cos θ)
+  ```
+
+  ### 3. Force to Prevent Sliding Down:
+  ```
+  F = mg(sin θ - μₛ cos θ)
+  ```
+  If negative, object won't slide anyway.
+
+  ### 4. Force at Angle to Incline:
+  Resolve force into components, then analyze.
+
+  ## Connected Systems on Incline
+
+  ### Two Blocks Connected by String:
+  ```
+  Block 1 (on incline): T - m₁g sin θ - f₁ = m₁a
+  Block 2 (hanging): m₂g - T = m₂a
+  ```
+
+  ### Block on Block (on incline):
+  - Check if they move together
+  - Find maximum acceleration without slipping
+  - Analyze limiting friction between blocks
+
+  ## Numerical Examples
+
+  **Example 1:** A block on 30° incline has μₛ = 0.6 and μₖ = 0.5. Will it slide? If yes, find acceleration.
+
+  **Solution:**
+  ```
+  Angle of repose: α = tan⁻¹(0.6) ≈ 31°
+  Since θ = 30° < α = 31°, block won't slide.
+
+  If somehow started moving:
+  a = g(sin 30° - 0.5 cos 30°)
+  a = 10(0.5 - 0.5 × 0.866)
+  a = 10(0.5 - 0.433) = 0.67 m/s²
+  ```
+
+  **Example 2:** Block slides down 45° incline with a = 2.5 m/s². Find μₖ.
+
+  **Solution:**
+  ```
+  a = g(sin θ - μₖ cos θ)
+  2.5 = 10(sin 45° - μₖ cos 45°)
+  2.5 = 10(1/√2 - μₖ/√2)
+  0.25 = (1 - μₖ)/√2
+  1 - μₖ = 0.25√2 ≈ 0.354
+  μₖ = 0.646
+  ```
+
+  **Example 3:** A 2 kg block on 37° incline is connected by string over pulley to 3 kg hanging mass. If μₖ = 0.25, find acceleration.
+
+  **Solution:**
+  ```
+  For 2 kg on incline (moving up):
+  T - 2g sin 37° - μₖ(2g cos 37°) = 2a
+  T - 12 - 4 = 2a
+  T - 16 = 2a ... (1)
+
+  For 3 kg (moving down):
+  3g - T = 3a
+  30 - T = 3a ... (2)
+
+  Adding: 14 = 5a
+  a = 2.8 m/s²
+  T = 30 - 8.4 = 21.6 N
+  ```
+
+  ## JEE Important Points
+
+  1. **Always resolve forces** along and perpendicular to incline
+  2. **N ≠ mg on incline** (N = mg cos θ)
+  3. **Friction opposes relative motion** (up or down the incline)
+  4. **Check θ vs angle of repose** before assuming motion
+  5. **Different accelerations** going up vs coming down
+
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: "A block rests on a 30° incline. If μₛ = 0.6, the frictional force acting on it is: (mass = 2 kg, g = 10 m/s²)"
+  options:
+  - "12 N"
+  - "10 N"
+  - "10.4 N"
+  - "6 N"
+  correct_answer: "10 N"
+  explanation: "Since tan 30° = 1/√3 ≈ 0.577 < μₛ = 0.6, block doesn't slide. Friction = mg sin 30° = 2 × 10 × 0.5 = 10 N. This is less than maximum possible friction: f_max = μₛN = 0.6 × 2 × 10 × cos 30° = 0.6 × 20 × 0.866 ≈ 10.4 N. Static friction adjusts to exactly balance component of weight along incline. If you mistakenly use f = μₛN = 10.4 N, you'd be wrong - that's only the maximum possible, not actual value. Key: For equilibrium, f = mg sin θ, NOT μₛN."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: "A block slides down a frictionless incline of length 10 m and height 5 m. Its speed at bottom is:"
+  options:
+  - "5 m/s"
+  - "10 m/s"
+  - "7.07 m/s"
+  - "14.14 m/s"
+  correct_answer: "10 m/s"
+  explanation: "Using energy conservation: mgh = ½mv². So v = √(2gh) = √(2 × 10 × 5) = √100 = 10 m/s. Note: This is independent of incline angle or length! Whether incline is 30° or 60°, if height is 5 m, final speed is 10 m/s. The length (10 m) is given but not needed for frictionless case. If friction existed, we'd need length: Work by friction = μₖmg cos θ × L, and v² = 2gh - 2μₖgL cos θ. This demonstrates power of energy methods over force analysis."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: "The angle of repose for a rough inclined plane is 45°. The coefficient of static friction is:"
+  options:
+  - "0.5"
+  - "1.0"
+  - "0.707"
+  - "1.414"
+  correct_answer: "1.0"
+  explanation: "At angle of repose α, mg sin α = μₛmg cos α. Therefore tan α = μₛ. Given α = 45°, μₛ = tan 45° = 1.0. This means friction force can be as large as normal force. Physical interpretation: At 45°, both components (along and perpendicular to incline) are equal: mg sin 45° = mg cos 45° = mg/√2. For block to just remain stationary, friction must equal parallel component, requiring μₛ = 1. Materials with μₛ ≥ 1 are rare but exist (rubber on rubber, some adhesives)."
+  require_pass: true

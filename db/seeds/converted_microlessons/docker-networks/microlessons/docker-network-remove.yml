@@ -1,0 +1,88 @@
+slug: docker-network-remove
+title: Docker Network Remove
+difficulty: easy
+sequence_order: 6
+estimated_minutes: 2
+key_concepts:
+- networking
+- docker-network
+- cleanup
+- removal
+prerequisites: []
+content_md: '# Docker Network Remove 🚀
+
+
+  Delete one or more Docker networks
+
+
+  ## Syntax/Command
+
+
+  ```bash
+
+  docker network rm my-network
+
+  ```
+
+
+  ## Example
+
+
+  ```bash
+
+  docker network rm network1 network2 network3
+
+  ```
+
+
+  ## Key Points
+
+
+  - Remove network: docker network rm <name>
+
+
+  - Remove multiple: docker network rm <name1> <name2>
+
+
+  - Remove unused: docker network prune'
+exercises:
+- type: terminal
+  problem_statement: Remove the Docker network named 'my-network' that is no longer in use
+  expected_output: Network ID or name confirming successful removal
+  language: bash
+  starter_code: "# Remove Docker network\n"
+  sequence_order: 1
+  command: docker network rm my-network
+  description: Remove a Docker network that is no longer needed
+  hints:
+  - 'Remove network: docker network rm <name>'
+  - 'Remove multiple: docker network rm <name1> <name2>'
+  - 'Remove unused: docker network prune'
+  validation:
+    must_not_include:
+    - Error
+    - 'panic:'
+  timeout_sec: 60
+  require_pass: true
+- type: sandbox
+  sequence_order: 99
+  hints:
+  - Run under CPU pressure to surface leaks or races
+  - Keep commands idempotent in CI
+  validation:
+    must_not_include:
+    - Error
+    - 'panic:'
+  timeout_sec: 60
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: Can you remove a Docker network that has containers still connected to it?
+  options:
+  - No, you must disconnect all containers from the network first
+  - Yes, containers automatically disconnect when the network is removed
+  - Yes, but only if you use the -f (force) flag
+  - Only if all connected containers are stopped
+  correct_answer: No, you must disconnect all containers from the network first
+  explanation: "Docker will refuse to remove a network that has containers connected to it, showing an error like 'network has active endpoints'. You must first disconnect all containers using 'docker network disconnect' or stop/remove the containers, then you can remove the network."
+  require_pass: true

@@ -1,0 +1,90 @@
+slug: docker-container-create-create-container-without-starting
+title: 'Docker Container Create: Create Container Without Starting'
+difficulty: medium
+sequence_order: 13
+estimated_minutes: 2
+key_concepts:
+- containers
+- docker-create
+- lifecycle
+- initialization
+- configuration
+prerequisites: []
+content_md: '# Docker Container Create: Create Container Without Starting 🚀
+
+
+  Create a container from an image without starting it - useful for configuration
+  before launch.
+
+
+  ## Syntax/Command
+
+
+  ```bash
+
+  docker container create --name my-app nginx
+
+  ```
+
+
+  ## Example
+
+
+  ```bash
+
+  docker container create -p 8080:80 nginx
+
+  ```
+
+
+  ## Key Points
+
+
+  - Create: docker container create <image>
+
+
+  - With name: docker container create --name <name> <image>
+
+
+  - Start later: docker container start <name>'
+exercises:
+- type: terminal
+  problem_statement: Create a container named 'my-app' using the nginx image without starting it
+  expected_output: Container ID returned
+  language: bash
+  starter_code: "# Create a container without starting it\n"
+  sequence_order: 1
+  command: docker container create --name my-app nginx
+  description: Create container with specific configuration without starting it
+  hints:
+  - 'Create: docker container create <image>'
+  - 'With name: docker container create --name <name> <image>'
+  - 'Start later: docker container start <name>'
+  validation:
+    must_not_include:
+    - Error
+    - 'panic:'
+  timeout_sec: 60
+  require_pass: true
+- type: sandbox
+  sequence_order: 99
+  hints:
+  - Run under CPU pressure to surface leaks or races
+  - Keep commands idempotent in CI
+  validation:
+    must_not_include:
+    - Error
+    - 'panic:'
+  timeout_sec: 60
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What is the difference between docker create and docker run?
+  options:
+  - docker create only creates the container without starting it, docker run creates and starts it
+  - docker create is faster than docker run
+  - They are identical commands with different names
+  - docker create requires root privileges but docker run does not
+  correct_answer: docker create only creates the container without starting it, docker run creates and starts it
+  explanation: "docker container create sets up a container from an image but leaves it in a stopped state, allowing you to configure it before starting. docker run both creates and starts the container in one command."
+  require_pass: true

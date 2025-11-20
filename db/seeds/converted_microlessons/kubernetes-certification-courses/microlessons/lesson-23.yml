@@ -1,0 +1,91 @@
+slug: lesson-23
+title: Lesson 23
+difficulty: easy
+sequence_order: 23
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Service Types and Endpoints (Admin)\n\n\
+  \    - ClusterIP/NodePort/LoadBalancer and externalTrafficPolicy\n    - EndpointSlice\
+  \ and readiness gates for endpoints"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What is an EndpointSlice and how does it differ from the older Endpoints
+    resource?
+  options:
+  - EndpointSlice is for external endpoints only
+  - EndpointSlice scales better by splitting large endpoint lists into smaller slices
+  - They are identical resources with different names
+  - EndpointSlice only works with headless services
+  correct_answer: EndpointSlice scales better by splitting large endpoint lists into
+    smaller slices
+  explanation: 'EndpointSlice is a more scalable alternative to the Endpoints resource,
+    introduced to address scalability limitations. The traditional Endpoints resource
+    contains all IPs and ports for a Service in a single object. For Services with
+    thousands of pods (common in large clusters), this creates huge Endpoints objects
+    that cause performance issues - every pod change triggers updates to the entire
+    object, consumed by every kube-proxy on every node, causing network and CPU spikes.
+    EndpointSlice splits endpoints into multiple smaller objects (slices), each containing
+    up to 100 endpoints by default. For a Service with 1000 pods, instead of one 1000-endpoint
+    Endpoints object, there are 10 EndpointSlices with 100 endpoints each. When a
+    pod is added/removed, only the affected slice is updated, not all 1000 endpoints.
+    Benefits: reduced network traffic (only changed slices propagate), improved kube-proxy
+    performance (processes smaller updates), better scalability (supports services
+    with 10,000+ endpoints), and additional features (topology hints for traffic optimization,
+    dual-stack IP support). EndpointSlice also stores more information: ready/serving/terminating
+    states (vs just ready), and zone/topology information for locality-aware routing.
+    Kubernetes automatically creates EndpointSlices for Services (enabled by default
+    in v1.21+), and the EndpointSlice controller manages them. For backward compatibility,
+    Endpoints resources are still created and maintained. Most users don''t interact
+    with EndpointSlices directly - kube-proxy and service mesh proxies consume them.
+    The migration from Endpoints to EndpointSlice significantly improved Kubernetes''
+    ability to scale services, particularly benefiting large clusters and services
+    with high pod churn.'
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What are readiness gates in Kubernetes endpoints?
+  options:
+  - Gates that control network access
+  - Custom conditions that must be satisfied before a pod is marked ready in Service
+    endpoints
+  - Security checks for endpoint access
+  - API endpoints for checking readiness
+  correct_answer: Custom conditions that must be satisfied before a pod is marked
+    ready in Service endpoints
+  explanation: 'Readiness gates are custom conditions that extend the default readiness
+    check for pods in Service endpoints. Normally, a pod is considered ready for Service
+    traffic when its readinessProbe succeeds. Readiness gates add additional custom
+    conditions that must also be met before the pod receives traffic. This is useful
+    for complex readiness scenarios not covered by simple HTTP/TCP/exec probes. Readiness
+    gates are defined in pod spec: ''readinessGates: - conditionType: "example.com/feature-ready"''.
+    External controllers (like load balancer controllers, service mesh controllers,
+    or custom operators) watch pods and update their status conditions: ''status:
+    conditions: - type: "example.com/feature-ready", status: "True"''. The pod is
+    only added to Service endpoints when both the readinessProbe passes AND all readinessGates
+    are satisfied. Use cases: Load balancer registration - AWS Load Balancer Controller
+    uses readiness gates to ensure pods are registered with ALB/NLB before receiving
+    Service traffic. This prevents traffic loss during pod startup. Service mesh readiness
+    - ensure sidecar proxy is fully configured before routing traffic. External dependency
+    checks - wait for external systems (databases, caches) to be accessible. Feature
+    flag readiness - coordinate feature rollouts across pods. Multi-stage initialization
+    - complex apps with multiple initialization phases. Configuration validation -
+    ensure configuration is valid before serving traffic. The gate mechanism enables
+    integrating external systems and custom logic into Kubernetes'' native traffic
+    routing, providing more control over when pods receive traffic. This is particularly
+    valuable in production environments where incorrect routing can cause outages
+    or data inconsistency.'
+  require_pass: true
+- type: mcq
+  sequence_order: 1
+  question: What is the default service type in Kubernetes?
+  options:
+  - ClusterIP
+  - NodePort
+  - LoadBalancer
+  - ExternalName
+  correct_answer_index: 0
+  explanation: ClusterIP is the default service type. It exposes the service on an
+    internal cluster IP, making it only reachable within the cluster.
+  require_pass: true

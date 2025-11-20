@@ -1,0 +1,65 @@
+slug: lesson-64
+title: Lesson 64
+difficulty: easy
+sequence_order: 64
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# etcd Backup and Restore\n\n    - etcdctl\
+  \ v3 snapshot save/restore\n    - Certificates and endpoints"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What command creates a backup of etcd?
+  options:
+  - kubectl backup etcd
+  - etcdctl snapshot save <backup-file>
+  - etcd-backup create
+  - etcdctl backup
+  correct_answer: etcdctl snapshot save <backup-file>
+  explanation: 'To backup etcd, use ''etcdctl snapshot save /path/to/backup.db'' with
+    the v3 API. You must specify the etcd endpoints, CA certificate, client certificate,
+    and client key for authentication. A typical command looks like: ''ETCDCTL_API=3
+    etcdctl --endpoints=https://127.0.0.1:2379 --cacert=/etc/kubernetes/pki/etcd/ca.crt
+    --cert=/etc/kubernetes/pki/etcd/server.crt --key=/etc/kubernetes/pki/etcd/server.key
+    snapshot save /backup/etcd-snapshot.db''. This creates a point-in-time snapshot
+    of all cluster data. Regular etcd backups are critical for disaster recovery -
+    if you lose etcd, you lose all cluster state. Automate backups using cron jobs
+    or backup operators. Store backups securely off-cluster, as they contain sensitive
+    information including Secrets. Test restores regularly to ensure backups are valid.'
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: Why is backing up etcd critical for Kubernetes clusters?
+  options:
+  - etcd stores application data
+  - etcd stores all cluster state and configuration; losing it means losing the entire
+    cluster
+  - etcd stores container images
+  - Backups are optional, not critical
+  correct_answer: etcd stores all cluster state and configuration; losing it means
+    losing the entire cluster
+  explanation: 'etcd is Kubernetes'' single source of truth, storing all cluster state
+    including pod definitions, services, secrets, configmaps, RBAC policies, and every
+    other object. If etcd is lost without backups, you lose all cluster configuration
+    and must rebuild the cluster from scratch, reapplying all manifests and configurations.
+    Even running pods would be orphaned without the control plane''s knowledge. This
+    makes etcd backup absolutely critical for production clusters. Best practices
+    include: automated daily backups, offsite backup storage, tested restore procedures,
+    and potentially running etcd as a highly-available cluster (3 or 5 members). Many
+    managed Kubernetes services (EKS, GKE, AKS) handle etcd backups automatically.
+    For self-managed clusters, backup automation is essential. Combine etcd backups
+    with disaster recovery plans and regular restore testing.'
+  require_pass: true
+- type: mcq
+  sequence_order: 1
+  question: What kubectl command checks if you can perform an action?
+  options:
+  - kubectl auth can-i create pods
+  - kubectl check permissions create pods
+  - kubectl verify action create pods
+  - kubectl test auth create pods
+  correct_answer_index: 0
+  explanation: kubectl auth can-i <action> <resource> checks if the current user has
+    permission to perform the specified action.
+  require_pass: true

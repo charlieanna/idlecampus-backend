@@ -1,0 +1,222 @@
+slug: second-law-entropy
+title: "Second Law and Entropy"
+difficulty: advanced
+sequence_order: 9
+estimated_minutes: 18
+key_concepts:
+- second-law
+- entropy
+- reversible-process
+- heat-engine-efficiency
+- carnot-cycle
+prerequisites:
+- first-law-thermodynamics
+- thermodynamic-processes-isothermal-adiabatic
+content_md: |
+  # Second Law of Thermodynamics and Entropy
+
+  ## Limitations of First Law
+
+  First law (energy conservation) doesn't tell us:
+  - Direction of heat flow
+  - Why some processes are spontaneous
+  - Why heat can't be completely converted to work
+
+  **Second law provides direction!**
+
+  ## Statements of Second Law
+
+  ### Kelvin-Planck Statement:
+  **"No heat engine can convert all heat into work."**
+  ```
+  η < 100% always
+  ```
+
+  Some heat must be rejected to cold reservoir.
+
+  ### Clausius Statement:
+  **"Heat cannot flow spontaneously from cold to hot body."**
+
+  External work is needed (refrigerator).
+
+  ### Equivalence:
+  Violation of one statement implies violation of the other.
+
+  ## Entropy (S)
+
+  **Measure of disorder or randomness in a system.**
+
+  ### Definition (Clausius):
+  ```
+  dS = dQ_rev/T
+
+  ΔS = ∫dQ_rev/T
+  ```
+
+  For reversible process only!
+
+  **Unit:** J/K or J·mol⁻¹·K⁻¹
+
+  ## Properties of Entropy
+
+  1. **State function** (depends only on state)
+  2. **Extensive property** (depends on amount)
+  3. **Can increase or decrease** for system
+  4. **Always increases** for universe (isolated system)
+
+  ## Entropy Change Formulas
+
+  ### For Ideal Gas:
+  ```
+  ΔS = nCᵥ ln(T₂/T₁) + nR ln(V₂/V₁)
+
+  Or:
+  ΔS = nCₚ ln(T₂/T₁) - nR ln(P₂/P₁)
+  ```
+
+  ### Special Cases:
+  - **Isothermal:** ΔS = nR ln(V₂/V₁)
+  - **Isobaric:** ΔS = nCₚ ln(T₂/T₁)
+  - **Isochoric:** ΔS = nCᵥ ln(T₂/T₁)
+  - **Adiabatic reversible:** ΔS = 0
+
+  ## Second Law in Terms of Entropy
+
+  ```
+  ΔS_universe ≥ 0
+
+  Equality for reversible process
+  Inequality for irreversible process
+  ```
+
+  **Entropy of universe always increases!**
+
+  ## Heat Engine
+
+  ```
+  Efficiency: η = W/Q_H = (Q_H - Q_C)/Q_H = 1 - Q_C/Q_H
+
+  For all engines: η < 1
+  ```
+
+  ### Carnot Engine (Maximum Efficiency):
+  ```
+  η_Carnot = 1 - T_C/T_H
+
+  Most efficient engine operating between T_H and T_C
+  ```
+
+  ## Carnot Cycle
+
+  Four reversible processes:
+  1. **Isothermal expansion** at T_H (absorbs Q_H)
+  2. **Adiabatic expansion** (T_H → T_C)
+  3. **Isothermal compression** at T_C (rejects Q_C)
+  4. **Adiabatic compression** (T_C → T_H)
+
+  ```
+  η = 1 - T_C/T_H = W/Q_H
+
+  Q_H/T_H = Q_C/T_C (for Carnot)
+  ```
+
+  ## Refrigerator
+
+  ```
+  Coefficient of Performance (COP):
+  β = Q_C/W = Q_C/(Q_H - Q_C)
+
+  For Carnot refrigerator:
+  β_max = T_C/(T_H - T_C)
+  ```
+
+  **Higher COP = Better refrigerator**
+
+  ## Numerical Examples
+
+  **Example 1:** Carnot engine operates between 500 K and 300 K. Find efficiency.
+
+  **Solution:**
+  ```
+  η = 1 - T_C/T_H = 1 - 300/500 = 1 - 0.6 = 0.4 = 40%
+
+  Maximum possible efficiency between these temperatures.
+  ```
+
+  **Example 2:** 1 mole ideal gas expands isothermally at 300 K from V to 2V. Find ΔS.
+
+  **Solution:**
+  ```
+  ΔS = nR ln(V₂/V₁) = 1 × 8.314 × ln(2)
+  ΔS = 8.314 × 0.693 ≈ 5.76 J/K
+
+  Entropy increases (expansion = more disorder)
+  ```
+
+  **Example 3:** Heat engine absorbs 1000 J at 500 K, rejects 600 J at 300 K. Is this possible?
+
+  **Solution:**
+  ```
+  Efficiency = (1000-600)/1000 = 40%
+  Carnot efficiency = 1 - 300/500 = 40%
+
+  Yes, possible (but only for ideal Carnot engine).
+  Any real engine would have η < 40%.
+  ```
+
+  ## Entropy of Universe
+
+  ### For Heat Transfer:
+  ```
+  Hot body loses: ΔS₁ = -Q/T_H
+  Cold body gains: ΔS₂ = +Q/T_C
+
+  ΔS_universe = Q/T_C - Q/T_H = Q(1/T_C - 1/T_H) > 0
+  ```
+
+  Since T_C < T_H, entropy increases!
+
+  ## JEE Key Points
+
+  1. **Entropy = Disorder** (qualitative understanding)
+  2. **dS = dQ_rev/T** (only for reversible)
+  3. **ΔS_universe ≥ 0** (second law)
+  4. **Carnot efficiency** is maximum possible
+  5. **100% efficiency impossible** (would violate second law)
+  6. **Refrigerator COP** can exceed 1 (not violation!)
+  7. **Irreversible process** increases universal entropy
+
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: "A Carnot engine operates between 627°C and 27°C. Its efficiency is:"
+  options:
+  - "95.7%"
+  - "66.7%"
+  - "33.3%"
+  - "4.3%"
+  correct_answer: "66.7%"
+  explanation: "First convert to Kelvin: T_H = 627 + 273 = 900 K, T_C = 27 + 273 = 300 K. η = 1 - T_C/T_H = 1 - 300/900 = 1 - 1/3 = 2/3 = 66.7%. CRITICAL: Always use Kelvin for Carnot efficiency! Using Celsius gives wrong answer: 1 - 27/627 ≠ correct. This 66.7% is maximum efficiency possible. Real engines operating between same temperatures would have lower efficiency due to irreversibilities (friction, heat loss, etc.)."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: "Entropy change of universe in an irreversible process is:"
+  options:
+  - "Zero"
+  - "Positive"
+  - "Negative"
+  - "Cannot be determined"
+  correct_answer: "Positive"
+  explanation: "Second law: ΔS_universe ≥ 0. Equality holds only for reversible processes. For all real (irreversible) processes, ΔS_universe > 0. This is nature's direction: entropy increases, disorder grows. Examples: Heat flows cold to hot (never reverse spontaneously), gas expands into vacuum (never compresses spontaneously), ice melts at room temperature (never freezes spontaneously). The increase in entropy is why perpetual motion machines are impossible and why the universe tends toward thermal equilibrium ('heat death')."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: "A refrigerator maintains -23°C inside with room at 27°C. If it's a Carnot refrigerator, COP is:"
+  options:
+  - "5"
+  - "0.2"
+  - "10"
+  - "2.5"
+  correct_answer: "5"
+  explanation: "T_C = -23 + 273 = 250 K, T_H = 27 + 273 = 300 K. COP = T_C/(T_H - T_C) = 250/(300-250) = 250/50 = 5. This means for every 1 J of work input, 5 J of heat is removed from cold space (6 J total rejected to room). COP > 1 is normal for refrigerators - they're not heat engines! Real refrigerators have COP < 5 due to irreversibilities. Higher COP means more efficient cooling. Note: AC units also work on this principle; higher COP means lower electricity bills."
+  require_pass: true

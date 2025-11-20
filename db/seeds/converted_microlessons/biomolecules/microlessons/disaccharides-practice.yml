@@ -1,0 +1,59 @@
+slug: disaccharides-practice
+title: disaccharides — Practice
+difficulty: easy
+sequence_order: 5
+estimated_minutes: 2
+key_concepts:
+- disaccharides
+prerequisites: []
+content_md: '# disaccharides — Practice 🚀
+
+
+  Sucrose is non-reducing (no free aldehyde/ketone). Maltose, lactose, and glucose
+  are reducing sugars (free -CHO or >C=O group).
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: Which is a non-reducing sugar?
+  options:
+  - Sucrose
+  - Maltose
+  - Lactose
+  - Glucose
+  correct_answer: Sucrose
+  explanation: "Sucrose is a non-reducing sugar because both anomeric carbons (C-1 of glucose and C-2 of fructose) are involved in the glycosidic bond (α-1,2 linkage), leaving no free aldehyde or ketone group. In contrast, maltose (glucose-glucose, α-1,4), lactose (galactose-glucose, β-1,4), and glucose itself are reducing sugars because they have a free or potentially free carbonyl group that can reduce reagents like Fehling's or Benedict's solution, giving a positive test."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: 'Lactose is composed of:'
+  options:
+  - Galactose and glucose
+  - Glucose and fructose
+  - Two glucose units
+  - Glucose and mannose
+  correct_answer: Galactose and glucose
+  explanation: "Lactose, also known as milk sugar, is a disaccharide composed of galactose and glucose linked by a β-1,4 glycosidic bond. It is found naturally in milk and dairy products. The enzyme lactase is required to break down lactose into its constituent monosaccharides for absorption. People who are lactose intolerant lack sufficient lactase enzyme. In contrast, sucrose is glucose-fructose, maltose is glucose-glucose (α-1,4), and while glucose-mannose combinations exist, they don't form the common disaccharide lactose."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: 'Maltose is formed by the hydrolysis of:'
+  options:
+  - Starch
+  - Cellulose
+  - Sucrose
+  - Proteins
+  correct_answer: Starch
+  explanation: "Maltose is a disaccharide formed during the hydrolysis (breakdown) of starch. When starch (a polysaccharide) is broken down by enzymes like amylase or by acid hydrolysis, it produces maltose as an intermediate product. Maltose consists of two glucose units connected by an α-1,4 glycosidic bond. This is the same type of linkage found in starch. Complete hydrolysis of starch eventually yields glucose. Cellulose has β-1,4 linkages and produces cellobiose upon partial hydrolysis, not maltose. Sucrose is already a disaccharide, and proteins don't yield maltose."
+  require_pass: true

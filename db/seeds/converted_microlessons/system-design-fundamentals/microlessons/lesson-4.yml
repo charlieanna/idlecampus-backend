@@ -1,0 +1,160 @@
+slug: lesson-4
+title: Lesson 4
+difficulty: easy
+sequence_order: 4
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Caching Strategies\n\n    **Caching** stores\
+  \ frequently accessed data in fast storage to reduce latency and load.\n\n    ##\
+  \ Why Cache?\n\n    ```\n    Database query: 100ms\n    Cache lookup:   1ms\n  \
+  \  Speed up:       100x faster!\n\n    Without cache:  1000 req/s × 100ms = Max\
+  \ 10 concurrent\n    With cache:     1000 req/s × 1ms = Easy!\n    ```\n\n    ##\
+  \ Cache Levels\n\n    ### 1. Client-Side Cache (Browser)\n\n    ```html\n    <!--\
+  \ HTTP caching headers -->\n    Cache-Control: public, max-age=31536000, immutable\n\
+  \    ```\n\n    **Benefits:**\n    - Fastest (no network request)\n    - Reduces\
+  \ bandwidth\n    - Improves UX\n\n    **Example:**\n    ```javascript\n    // Static\
+  \ assets cached for 1 year\n    app.use('/static', express.static('public', {\n\
+  \      maxAge: '1y',\n      immutable: true\n    }));\n    ```\n\n    ### 2. CDN\
+  \ Cache\n\n    ```\n    User in Tokyo → Tokyo edge cache (10ms latency)\n    vs\n\
+  \    User in Tokyo → US origin server (200ms latency)\n    ```\n\n    **How it works:**\n\
+  \    ```\n    1. User requests image.jpg\n    2. CDN checks edge cache\n    3. If\
+  \ cached → Return (fast!)\n    4. If not → Fetch from origin, cache, return\n  \
+  \  ```\n\n    **Popular CDNs:**\n    - Cloudflare\n    - AWS CloudFront\n    - Fastly\n\
+  \    - Akamai\n\n    ### 3. Application Cache (Redis/Memcached)\n\n    ```python\n\
+  \    # Check cache first\n    user = cache.get(f'user:{user_id}')\n\n    if user\
+  \ is None:\n        # Cache miss - query database\n        user = db.query('SELECT\
+  \ * FROM users WHERE id = ?', user_id)\n        # Store in cache for 1 hour\n  \
+  \      cache.set(f'user:{user_id}', user, ttl=3600)\n\n    return user\n    ```\n\
+  \n    ### 4. Database Cache\n\n    ```sql\n    -- Query result cache (MySQL)\n \
+  \   SELECT SQL_CACHE * FROM products WHERE category = 'electronics';\n    ```\n\n\
+  \    ## Caching Patterns\n\n    ### 1. Cache-Aside (Lazy Loading)\n\n    **Application\
+  \ manages cache**\n\n    ```python\n    def get_user(user_id):\n        # Try cache\
+  \ first\n        user = cache.get(f'user:{user_id}')\n\n        if user is None:\
+  \  # Cache miss\n            user = db.get_user(user_id)\n            cache.set(f'user:{user_id}',\
+  \ user, ttl=3600)\n\n        return user\n\n    def update_user(user_id, data):\n\
+  \        # Update database\n        db.update_user(user_id, data)\n        # Invalidate\
+  \ cache\n        cache.delete(f'user:{user_id}')\n    ```\n\n    ✅ Only cache what's\
+  \ needed\n    ✅ Cache survives failures\n    ❌ Cache miss penalty\n    ❌ Potential\
+  \ stale data\n\n    **When to use:** Most common pattern, general-purpose caching\n\
+  \n    ### 2. Write-Through\n\n    **Write to cache AND database**\n\n    ```python\n\
+  \    def update_user(user_id, data):\n        # Write to database\n        db.update_user(user_id,\
+  \ data)\n        # Update cache\n        cache.set(f'user:{user_id}', data, ttl=3600)\n\
+  \    ```\n\n    ✅ Cache always consistent\n    ❌ Write latency (2 writes)\n    ❌\
+  \ Most data never read (wasted cache)\n\n    **When to use:** Read-heavy workloads\
+  \ where consistency is critical\n\n    ### 3. Write-Behind (Write-Back)\n\n    **Write\
+  \ to cache, async write to database**\n\n    ```python\n    def update_user(user_id,\
+  \ data):\n        # Write to cache immediately\n        cache.set(f'user:{user_id}',\
+  \ data)\n        # Queue database update\n        queue.enqueue('update_user_db',\
+  \ user_id, data)\n\n    # Background worker\n    def worker():\n        job = queue.dequeue()\n\
+  \        db.update_user(job.user_id, job.data)\n    ```\n\n    ✅ Low write latency\n\
+  \    ✅ Batch database writes\n    ❌ Data loss risk if cache fails\n    ❌ Complex\
+  \ to implement\n\n    **When to use:** Write-heavy workloads, analytics, logging\n\
+  \n    ### 4. Read-Through\n\n    **Cache automatically loads from database**\n\n\
+  \    ```python\n    # Cache library handles everything\n    @cache.memoize(ttl=3600)\n\
+  \    def get_user(user_id):\n        return db.get_user(user_id)\n\n    # First\
+  \ call: Cache miss → DB query → Cache store → Return\n    # Later calls: Cache hit\
+  \ → Return (no DB query)\n    ```\n\n    ✅ Simple application code\n    ❌ Cache\
+  \ coupled to database\n    ❌ Less control\n\n    **When to use:** Simple applications,\
+  \ ORMs with caching support\n\n    ## Cache Eviction Policies\n\n    ### LRU (Least\
+  \ Recently Used)\n\n    ```python\n    # Most common eviction policy\n    # Removes\
+  \ least recently accessed items first\n\n    Cache (max 3 items):\n    Access A\
+  \ → [A]\n    Access B → [B, A]\n    Access C → [C, B, A]\n    Access D → [D, C,\
+  \ B]  # A evicted (least recently used)\n    Access B → [B, D, C]  # B moved to\
+  \ front\n    ```\n\n    **When to use:** General-purpose caching (default choice)\n\
+  \n    ### LFU (Least Frequently Used)\n\n    ```python\n    # Removes least frequently\
+  \ accessed items\n    # Tracks access count\n\n    A: 10 accesses\n    B: 5 accesses\n\
+  \    C: 2 accesses ← Evicted first\n    ```\n\n    **When to use:** Items have different\
+  \ access patterns over time\n\n    ### FIFO (First In, First Out)\n\n    ```python\n\
+  \    # Removes oldest items first\n    # Like a queue\n\n    Add A → [A]\n    Add\
+  \ B → [B, A]\n    Add C → [C, B, A]\n    Add D → [D, C, B]  # A evicted (oldest)\n\
+  \    ```\n\n    **When to use:** Time-based data, logs\n\n    ### TTL (Time To Live)\n\
+  \n    ```python\n    # Auto-expire after time period\n    cache.set('session:123',\
+  \ data, ttl=3600)  # Expires in 1 hour\n    ```\n\n    **When to use:** Sessions,\
+  \ temporary data, rate limiting\n\n    ## Cache Invalidation\n\n    **\"There are\
+  \ only two hard things in Computer Science: cache invalidation and naming things.\"\
+  **\n\n    ### 1. TTL-Based\n\n    ```python\n    # Set expiration time\n    cache.set('products:list',\
+  \ products, ttl=300)  # 5 minutes\n    ```\n\n    ✅ Simple\n    ❌ Stale data before\
+  \ expiration\n\n    ### 2. Event-Based\n\n    ```python\n    # Invalidate on events\n\
+  \    def create_product(product):\n        db.insert(product)\n        cache.delete('products:list')\
+  \  # Invalidate list cache\n        cache.delete(f'products:category:{product.category}')\n\
+  \    ```\n\n    ✅ Cache always fresh\n    ❌ Careful with dependencies\n\n    ###\
+  \ 3. Version-Based\n\n    ```python\n    # Include version in key\n    def get_products(version):\n\
+  \        return cache.get(f'products:list:v{version}')\n\n    # When data changes,\
+  \ increment version\n    PRODUCT_VERSION = 2  # Invalidates old cache\n    ```\n\
+  \n    ✅ No explicit invalidation needed\n    ❌ Must track versions\n\n    ## Distributed\
+  \ Caching\n\n    ### Redis Cluster\n\n    ```python\n    # Data sharded across nodes\n\
+  \    import redis\n\n    # Connect to cluster\n    rc = redis.RedisCluster(\n  \
+  \      startup_nodes=[\n            {\"host\": \"node1\", \"port\": 6379},\n   \
+  \         {\"host\": \"node2\", \"port\": 6379},\n            {\"host\": \"node3\"\
+  , \"port\": 6379}\n        ]\n    )\n\n    # Automatically routes to correct node\n\
+  \    rc.set('user:123', user_data)\n    ```\n\n    **Benefits:**\n    - Horizontal\
+  \ scaling\n    - High availability\n    - Automatic sharding\n\n    ### Memcached\n\
+  \n    ```python\n    # Simpler, no persistence\n    from pymemcache.client import\
+  \ base\n\n    client = base.Client(('localhost', 11211))\n    client.set('key',\
+  \ 'value', expire=3600)\n    value = client.get('key')\n    ```\n\n    **Redis vs\
+  \ Memcached:**\n\n    | Feature | Redis | Memcached |\n    |---------|-------|-----------|\n\
+  \    | Data structures | Hash, List, Set, Sorted Set | Only strings |\n    | Persistence\
+  \ | Yes | No |\n    | Replication | Yes | No |\n    | Pub/Sub | Yes | No |\n   \
+  \ | Transactions | Yes | No |\n    | Speed | Fast | Slightly faster for simple ops\
+  \ |\n\n    ## Cache Stampede Problem\n\n    **Many requests hit cache miss simultaneously**\n\
+  \n    ```python\n    # Problem:\n    # 1000 concurrent requests\n    # Cache expires\n\
+  \    # All 1000 query database simultaneously → Database overload!\n    ```\n\n\
+  \    ### Solution 1: Locking\n\n    ```python\n    def get_product(product_id):\n\
+  \        data = cache.get(f'product:{product_id}')\n\n        if data is None:\n\
+  \            # Acquire lock\n            lock_key = f'lock:product:{product_id}'\n\
+  \            if cache.set(lock_key, '1', nx=True, ex=10):\n                # Got\
+  \ lock - query DB\n                data = db.get_product(product_id)\n         \
+  \       cache.set(f'product:{product_id}', data, ttl=3600)\n                cache.delete(lock_key)\n\
+  \            else:\n                # Wait and retry\n                time.sleep(0.1)\n\
+  \                return get_product(product_id)\n\n        return data\n    ```\n\
+  \n    ### Solution 2: Probabilistic Early Expiration\n\n    ```python\n    import\
+  \ random\n\n    def get_product(product_id):\n        data, ttl = cache.get_with_ttl(f'product:{product_id}')\n\
+  \n        # Probabilistically refresh before expiration\n        if ttl < 300 and\
+  \ random.random() < 0.1:\n            # Refresh in background\n            queue.enqueue('refresh_cache',\
+  \ product_id)\n\n        return data\n    ```\n\n    ## Caching in Practice\n\n\
+  \    ### Facebook\n\n    ```python\n    # Memcached cluster\n    # 1000s of servers\n\
+  \    # Trillions of requests/day\n    # 95%+ cache hit rate\n\n    # Reduces database\
+  \ load by 100x\n    ```\n\n    ### Twitter\n\n    ```python\n    # Redis for timeline\
+  \ cache\n    # User's timeline cached\n    # Fan-out on write:\n    #   User posts\
+  \ → Update all follower timelines (in cache)\n    #   User reads → Fast read from\
+  \ cache\n\n    # Trade-off: Write amplification for read performance\n    ```\n\n\
+  \    ### Amazon\n\n    ```python\n    # Multi-layer caching:\n    # 1. Browser cache\
+  \ (static assets)\n    # 2. CloudFront CDN\n    # 3. Application cache (ElastiCache)\n\
+  \    # 4. Database query cache\n\n    # Result: Sub-100ms page loads globally\n\
+  \    ```\n\n    ## Best Practices\n\n    1. **Cache at multiple levels**\n     \
+  \  - Browser, CDN, application, database\n\n    2. **Use appropriate TTL**\n   \
+  \    - Static content: Long (hours/days)\n       - User data: Medium (minutes)\n\
+  \       - Real-time data: Short (seconds)\n\n    3. **Monitor cache hit rate**\n\
+  \       ```python\n       hit_rate = cache_hits / (cache_hits + cache_misses)\n\
+  \       # Target: 80%+ for most workloads\n       ```\n\n    4. **Plan for cache\
+  \ failures**\n       ```python\n       try:\n           data = cache.get(key)\n\
+  \       except CacheError:\n           data = db.query(...)  # Fallback to DB\n\
+  \       ```\n\n    5. **Warm up cache**\n       ```python\n       # Pre-populate\
+  \ cache on deployment\n       for popular_item in get_popular_items():\n       \
+  \    cache.set(f'item:{item.id}', item)\n       ```\n\n    **Next**: We'll explore\
+  \ database design patterns and when to use SQL vs NoSQL."
+exercises: []
+exercises:
+  - type: mcq
+    sequence_order: 1
+    question: "What is caching and why is it important in system design?"
+    options:
+      - "Permanently storing all data"
+      - "Temporarily storing frequently accessed data to reduce latency and database load"
+      - "Deleting old data"
+      - "Encrypting data"
+    correct_answer: "Temporarily storing frequently accessed data to reduce latency and database load"
+    explanation: "Caching stores frequently accessed data in fast storage (memory) to avoid expensive operations like database queries or API calls. Benefits: dramatically reduced latency (microseconds vs milliseconds), lower database load, and better user experience. Common caching layers: browser cache, CDN (content delivery network), application cache (Redis, Memcached), database query cache. Cache strategies: Cache-aside (application checks cache, then database), Write-through (write to cache and database simultaneously), Write-back (write to cache, async update database). Key consideration: cache invalidation—ensuring cached data stays fresh is one of the hardest problems in computer science!"
+    require_pass: true
+  - type: mcq
+    sequence_order: 2
+    question: "What is the 'cache eviction policy' and why does it matter?"
+    options:
+      - "How to delete the entire cache"
+      - "The strategy for deciding which items to remove when the cache is full"
+      - "How to encrypt cached data"
+      - "When to backup the cache"
+    correct_answer: "The strategy for deciding which items to remove when the cache is full"
+    explanation: "Cache eviction policies determine what to remove when the cache reaches capacity. Common policies: LRU (Least Recently Used—remove items not accessed recently), LFU (Least Frequently Used—remove items accessed least often), FIFO (First In First Out—remove oldest items), and TTL (Time To Live—expire after set time). LRU is most common because recently accessed data is likely to be accessed again. Example: A cache with 1000 slots gets request for item 1001—LRU removes the item that was accessed longest ago. Choice affects hit rate and performance. Most caching systems (Redis) support multiple policies."
+    require_pass: true

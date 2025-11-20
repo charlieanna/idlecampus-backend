@@ -1,0 +1,109 @@
+slug: lesson-8
+title: Lesson 8
+difficulty: easy
+sequence_order: 8
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Understanding Semaphores\n\n    A **semaphore**\
+  \ is a synchronization primitive that controls access to a shared resource through\
+  \ a counter.\n\n    ## What is a Semaphore?\n\n    Think of a semaphore as a bouncer\
+  \ at a club with a counter:\n    - Counter tracks available \"permits\"\n    - Threads\
+  \ can acquire permits (decreasing counter)\n    - Threads release permits when done\
+  \ (increasing counter)\n    - If no permits available, thread waits\n\n    ## Types\
+  \ of Semaphores\n\n    ### 1. Binary Semaphore (0 or 1)\n    - Similar to a mutex\n\
+  \    - Only one permit available\n    - Values: 0 (locked) or 1 (unlocked)\n\n \
+  \   ### 2. Counting Semaphore (0 to N)\n    - Multiple permits available\n    -\
+  \ Limits concurrent access to N threads\n    - Good for resource pools\n\n    ##\
+  \ Semaphore Operations\n\n    ### Wait/Acquire/P (Proberen - Dutch for \"try\")\n\
+  \    ```python\n    semaphore.acquire()  # Decrement counter, block if 0\n    ```\n\
+  \n    ### Signal/Release/V (Verhogen - Dutch for \"increment\")\n    ```python\n\
+  \    semaphore.release()  # Increment counter, wake waiting thread\n    ```\n\n\
+  \    ## Python Examples\n\n    ### Binary Semaphore (Mutex-like)\n    ```python\n\
+  \    from threading import Semaphore\n\n    semaphore = Semaphore(1)  # Only 1 permit\n\
+  \n    def critical_section():\n        semaphore.acquire()\n        try:\n     \
+  \       # Only one thread here at a time\n            shared_data += 1\n       \
+  \ finally:\n            semaphore.release()\n    ```\n\n    ### Counting Semaphore\
+  \ (Connection Pool)\n    ```python\n    # Limit to 5 concurrent database connections\n\
+  \    db_pool = Semaphore(5)\n\n    def database_query():\n        db_pool.acquire()\
+  \  # Get connection\n        try:\n            result = db.execute(\"SELECT ...\"\
+  )\n            return result\n        finally:\n            db_pool.release()  #\
+  \ Return connection\n\n    # 6th thread will wait until one of first 5 finishes\n\
+  \    ```\n\n    ### Producer-Consumer Pattern\n    ```python\n    from threading\
+  \ import Semaphore, Thread\n    from queue import Queue\n\n    # Semaphores for\
+  \ synchronization\n    empty_slots = Semaphore(10)  # Buffer has 10 slots\n    filled_slots\
+  \ = Semaphore(0)   # Initially no items\n    buffer = Queue(maxsize=10)\n\n    def\
+  \ producer():\n        for i in range(100):\n            item = f\"item-{i}\"\n\
+  \            empty_slots.acquire()  # Wait for empty slot\n            buffer.put(item)\n\
+  \            filled_slots.release()  # Signal item available\n\n    def consumer():\n\
+  \        for _ in range(100):\n            filled_slots.acquire()  # Wait for item\n\
+  \            item = buffer.get()\n            empty_slots.release()  # Signal slot\
+  \ empty\n            process(item)\n    ```\n\n    ## Semaphore vs Mutex\n\n   \
+  \ | Feature | Mutex | Semaphore |\n    |---------|-------|-----------|\n    | Counter\
+  \ | Binary (0/1) | Can be N |\n    | Ownership | Thread that locks must unlock |\
+  \ Any thread can signal |\n    | Use Case | Protect critical section | Resource\
+  \ counting, signaling |\n    | Can track owner | Yes | No |\n\n    ## Classic Problems\n\
+  \n    ### 1. Bounded Buffer (Producer-Consumer)\n    - Producers add items to buffer\n\
+  \    - Consumers remove items from buffer\n    - Buffer has limited capacity\n \
+  \   - Use two semaphores: empty and full\n\n    ### 2. Readers-Writers\n    - Multiple\
+  \ readers can read simultaneously\n    - Writers need exclusive access\n    - Prevent\
+  \ reader/writer or writer/writer conflicts\n\n    ### 3. Dining Philosophers\n \
+  \   - N philosophers alternate thinking and eating\n    - Need two forks to eat\n\
+  \    - Prevent deadlock (all grab left fork)\n\n    ## Implementation in Different\
+  \ Languages\n\n    ### Java\n    ```java\n    Semaphore semaphore = new Semaphore(3);\n\
+  \n    semaphore.acquire();\n    try {\n        // Critical section\n    } finally\
+  \ {\n        semaphore.release();\n    }\n    ```\n\n    ### C++ (C++20)\n    ```cpp\n\
+  \    #include <semaphore>\n\n    std::counting_semaphore<10> semaphore(3);\n\n \
+  \   semaphore.acquire();\n    // Critical section\n    semaphore.release();\n  \
+  \  ```\n\n    ### Go (using buffered channel as semaphore)\n    ```go\n    semaphore\
+  \ := make(chan struct{}, 3)\n\n    // Acquire\n    semaphore <- struct{}{}\n\n \
+  \   // Critical section\n\n    // Release\n    <-semaphore\n    ```\n\n    ## Common\
+  \ Patterns\n\n    ### Throttling Concurrent Operations\n    ```python\n    # Limit\
+  \ to 10 concurrent API requests\n    api_semaphore = Semaphore(10)\n\n    async\
+  \ def make_request(url):\n        async with api_semaphore:\n            response\
+  \ = await http_client.get(url)\n            return response\n    ```\n\n    ###\
+  \ Signaling Between Threads\n    ```python\n    # Thread A signals Thread B to continue\n\
+  \    signal = Semaphore(0)\n\n    def thread_a():\n        prepare_data()\n    \
+  \    signal.release()  # Signal ready\n\n    def thread_b():\n        signal.acquire()\
+  \  # Wait for signal\n        process_data()\n    ```\n\n    ## Pitfalls to Avoid\n\
+  \n    1. **Forgetting to Release**: Always use try-finally or context managers\n\
+  \    2. **Releasing Too Many Times**: Can allow more threads than intended\n   \
+  \ 3. **Deadlock**: Careful with multiple semaphores\n    4. **Priority Inversion**:\
+  \ Low-priority thread holds semaphore needed by high-priority thread\n\n    **Next**:\
+  \ We'll explore deadlocks in depth and learn prevention strategies."
+exercises:
+  - type: mcq
+    sequence_order: 1
+    question: "What is the key difference between a mutex and a counting semaphore?"
+    options:
+      - "Mutexes are faster than semaphores"
+      - "A mutex is binary (0/1) and enforces ownership, while a counting semaphore can have N permits and any thread can signal"
+      - "Semaphores cannot be used for synchronization"
+      - "Mutexes work across processes while semaphores only work with threads"
+    correct_answer: "A mutex is binary (0/1) and enforces ownership, while a counting semaphore can have N permits and any thread can signal"
+    explanation: "Mutexes and semaphores serve different purposes. A mutex (mutual exclusion) is binary with only two states (locked/unlocked) and enforces ownership - the thread that locks it must be the one to unlock it. This makes mutexes ideal for protecting critical sections. A counting semaphore maintains a counter from 0 to N, allowing N threads concurrent access. Crucially, any thread can release a semaphore, not just the one that acquired it, making semaphores suitable for signaling between threads and managing resource pools. For example, Semaphore(5) for a database connection pool allows 5 threads to hold connections simultaneously. When a 6th thread tries to acquire, it blocks until one of the first 5 releases. This flexibility makes semaphores powerful for producer-consumer patterns where one thread produces (releases) and another consumes (acquires), which would be impossible with a mutex's ownership requirement."
+    require_pass: true
+
+  - type: mcq
+    sequence_order: 2
+    question: "In the producer-consumer pattern with semaphores, why do we need two semaphores (empty_slots and filled_slots)?"
+    options:
+      - "To make the code run faster"
+      - "To track both available buffer space and available items, preventing buffer overflow and underflow"
+      - "Because one semaphore is not thread-safe"
+      - "To support multiple producers only"
+    correct_answer: "To track both available buffer space and available items, preventing buffer overflow and underflow"
+    explanation: "The producer-consumer pattern uses two semaphores to coordinate access to a bounded buffer. The empty_slots semaphore (initialized to buffer size) tracks available space - producers acquire it before adding items, preventing buffer overflow. The filled_slots semaphore (initialized to 0) tracks available items - consumers acquire it before removing items, preventing buffer underflow. This elegant design ensures: (1) Producers block when buffer is full (empty_slots = 0), (2) Consumers block when buffer is empty (filled_slots = 0), (3) The sum of semaphore values always equals buffer capacity. Example: Buffer size 10: empty=10, filled=0. After producer adds 3 items: empty=7, filled=3. If consumer takes 1: empty=8, filled=2. This automatic blocking and synchronization makes the pattern robust without complex conditional logic. Using just one semaphore couldn't distinguish between 'buffer full' and 'buffer empty' conditions."
+    require_pass: true
+
+  - type: mcq
+    sequence_order: 3
+    question: "What problem can occur if you release a semaphore more times than you acquire it?"
+    options:
+      - "The program will crash immediately"
+      - "It can allow more threads than intended to enter the critical section, violating the resource limit"
+      - "The semaphore will reset to zero"
+      - "It has no effect on the program"
+    correct_answer: "It can allow more threads than intended to enter the critical section, violating the resource limit"
+    explanation: "Releasing a semaphore increments its counter, and each release without a corresponding acquire effectively creates an extra permit. This is dangerous because it can allow more threads than intended to access a limited resource concurrently, violating the resource constraints your code relies on. For example, if you create Semaphore(5) for a 5-connection database pool but accidentally call release() 7 times while only acquiring 5 times, the semaphore counter becomes 7. Now 7 threads can acquire simultaneously, but you only have 5 actual database connections, leading to errors when the 6th and 7th threads try to use non-existent connections. This is why you should always pair acquire() and release() in try-finally blocks: semaphore.acquire(); try: use_resource(); finally: semaphore.release(). Unlike mutexes which often prevent double-release through ownership tracking, semaphores don't track ownership and will blindly increment the counter, making this a subtle but serious bug."
+    require_pass: true

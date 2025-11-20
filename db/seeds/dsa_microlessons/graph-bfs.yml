@@ -1,0 +1,144 @@
+---
+slug: graph-bfs
+title: Breadth First Search (BFS)
+sequence_order: 38
+estimated_minutes: 10
+difficulty: medium
+key_concepts:
+- Breadth First Search (BFS)
+- Basic BFS
+content_md: |
+  # Breadth First Search (BFS)
+
+  Graph traversal that explores all neighbors before going deeper
+
+  ---
+
+  ## BFS Algorithm
+
+  BFS explores graph level by level, visiting all neighbors before moving to next level.
+
+  **Characteristics:**
+  - Uses queue
+  - Finds shortest path in unweighted graphs
+  - Explores breadth before depth
+
+  **Applications:**
+  - Shortest path (unweighted)
+  - Level-order traversal
+  - Finding nearest nodes
+  - Web crawling
+
+  **Complexity:**
+  - Time: O(V + E)
+  - Space: O(V) for queue
+
+
+  ---
+
+  ## Common Patterns
+
+  ### Pattern 1: Basic BFS
+  ```python
+  from collections import deque
+
+  def bfs(graph, start):
+      visited = {start}
+      queue = deque([start])
+
+      while queue:
+          node = queue.popleft()
+          process(node)
+
+          for neighbor in graph[node]:
+              if neighbor not in visited:
+                  visited.add(neighbor)
+                  queue.append(neighbor)
+  ```
+
+  ### Pattern 2: BFS with Distance Tracking
+  ```python
+  def bfs_shortest_path(graph, start, target):
+      visited = {start}
+      queue = deque([(start, 0)])  # (node, distance)
+
+      while queue:
+          node, dist = queue.popleft()
+
+          if node == target:
+              return dist
+
+          for neighbor in graph[node]:
+              if neighbor not in visited:
+                  visited.add(neighbor)
+                  queue.append((neighbor, dist + 1))
+
+      return -1  # Target not reachable
+  ```
+
+
+  ---
+
+  ## When to Use This Technique
+
+  Use BFS for shortest path in unweighted graphs, level-order traversal, finding connected components at same distance, or minimum steps problems.
+
+  ---
+
+  ## Common Pitfalls to Avoid
+
+  - Using BFS for weighted graphs (use Dijkstra)
+  - Not using queue (using stack makes it DFS)
+  - Marking visited too late (duplicates in queue)
+  - Not handling disconnected graphs
+
+  ---
+
+  ## Practice Problems
+
+  Start with these problems to master this concept:
+
+  ### 1. Bfs 1 [Easy]
+
+  Graph problem: bfs.
+
+  **Complexity:** Time O(O(V+E)), Space O(O(V))
+
+
+  ### 2. Bfs 2 [Easy]
+
+  Graph problem: bfs.
+
+  **Complexity:** Time O(O(V+E)), Space O(O(V))
+
+
+  ### 3. Bfs 7 [Easy]
+
+  Graph problem: bfs.
+
+  **Complexity:** Time O(O(V+E)), Space O(O(V))
+
+
+  ### 4. Bfs 12 [Easy]
+
+  Graph problem: bfs.
+
+  **Complexity:** Time O(O(V+E)), Space O(O(V))
+
+
+  ### 5. Bfs 18 [Easy]
+
+  Graph problem: bfs.
+
+  **Complexity:** Time O(O(V+E)), Space O(O(V))
+
+
+
+  ---
+
+  ## Key Takeaways
+
+  - Breadth First Search (BFS) is essential for graph traversal that explores all neighbors before going deeper
+  - Time complexity improvements can be significant with this technique
+  - Practice problems in order of difficulty to build intuition
+  - Focus on recognizing patterns in problem statements

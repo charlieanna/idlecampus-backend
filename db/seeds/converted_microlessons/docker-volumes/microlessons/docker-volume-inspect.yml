@@ -1,0 +1,84 @@
+slug: docker-volume-inspect
+title: Docker Volume Inspect
+difficulty: medium
+sequence_order: 3
+estimated_minutes: 2
+key_concepts:
+- volumes
+- docker-volume
+- inspection
+- debugging
+prerequisites: []
+content_md: '# Docker Volume Inspect 🚀
+
+
+  View detailed information about a volume
+
+
+  ## Syntax/Command
+
+
+  ```bash
+
+  docker volume inspect my-volume
+
+  ```
+
+
+  ## Example
+
+
+  ```bash
+
+  docker volume inspect --format="{{.Mountpoint}}" my-volume
+
+  ```
+
+
+  ## Key Points
+
+
+  - Inspect volume: docker volume inspect <name>
+
+
+  - Get mountpoint: --format="{{.Mountpoint}}"'
+exercises:
+- type: terminal
+  problem_statement: Inspect the volume named 'my-volume' to view its detailed configuration including driver, mountpoint, and labels
+  expected_output: JSON output showing volume details including Name, Driver, Mountpoint, and Options
+  language: bash
+  starter_code: "# Inspect volume details\n"
+  sequence_order: 1
+  command: docker volume inspect my-volume
+  description: View volume configuration and mountpoint location
+  hints:
+  - 'Inspect volume: docker volume inspect <name>'
+  - 'Get mountpoint: --format="{{.Mountpoint}}"'
+  validation:
+    must_not_include:
+    - Error
+    - 'panic:'
+  timeout_sec: 60
+  require_pass: true
+- type: sandbox
+  sequence_order: 99
+  hints:
+  - Run under CPU pressure to surface leaks or races
+  - Keep commands idempotent in CI
+  validation:
+    must_not_include:
+    - Error
+    - 'panic:'
+  timeout_sec: 60
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: Where does Docker store volume data by default on Linux?
+  options:
+  - /var/lib/docker/volumes/ (managed by Docker daemon)
+  - /docker/volumes/ (in the root directory)
+  - /tmp/docker/volumes/ (in the temporary directory)
+  - /opt/docker/volumes/ (in the optional software directory)
+  correct_answer: /var/lib/docker/volumes/ (managed by Docker daemon)
+  explanation: "On Linux, Docker stores named volumes in /var/lib/docker/volumes/ by default. Each volume gets its own subdirectory with a hash name (for anonymous volumes) or the volume name (for named volumes). This location is managed entirely by Docker and shouldn't be modified directly - use Docker commands instead."
+  require_pass: true

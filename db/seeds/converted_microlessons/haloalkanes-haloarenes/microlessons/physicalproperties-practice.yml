@@ -1,0 +1,59 @@
+slug: physicalproperties-practice
+title: physical_properties — Practice
+difficulty: medium
+sequence_order: 8
+estimated_minutes: 2
+key_concepts:
+- physical_properties
+prerequisites: []
+content_md: '# physical_properties — Practice 🚀
+
+
+  Boiling point increases with molecular weight and van der Waals forces: CH₃F < CH₃Cl
+  < CH₃Br < CH₃I. Iodine is largest, so CH₃I has highest boiling point.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: Which of the following has the HIGHEST boiling point?
+  options:
+  - CH₃F
+  - CH₃Cl
+  - CH₃Br
+  - CH₃I
+  correct_answer: CH₃I
+  explanation: "Among the methyl halides, boiling point increases with molecular weight and strength of van der Waals forces. The order is: CH₃F < CH₃Cl < CH₃Br < CH₃I. Iodine is the largest halogen, so CH₃I has the strongest intermolecular van der Waals forces and highest boiling point (42°C). Despite fluorine being most electronegative, CH₃F has the lowest boiling point (-78°C) because it's the smallest and lightest molecule with weakest dispersion forces."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: Why are haloalkanes generally insoluble in water?
+  options:
+  - They are heavier than water
+  - They cannot form hydrogen bonds with water
+  - They have high boiling points
+  - They contain carbon atoms
+  correct_answer: They cannot form hydrogen bonds with water
+  explanation: "Haloalkanes are generally insoluble in water because they cannot form hydrogen bonds with water molecules. Although C-X bonds are polar, haloalkanes are primarily non-polar or weakly polar overall, and the energy released from van der Waals interactions with water is not sufficient to overcome the strong hydrogen bonding network in water. The principle 'like dissolves like' applies - polar water dissolves polar/ionic compounds, while haloalkanes (relatively non-polar) are soluble in organic solvents."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: What is the trend in density of haloalkanes as we go down the halogen group?
+  options:
+  - Density decreases (F > Cl > Br > I)
+  - Density increases (I > Br > Cl > F)
+  - Density remains constant
+  - No specific trend exists
+  correct_answer: Density increases (I > Br > Cl > F)
+  explanation: "The density of haloalkanes increases as we move down the halogen group from fluorine to iodine. Iodoalkanes are denser than bromoalkanes, which are denser than chloroalkanes and fluoroalkanes. This is because the atomic mass of the halogen increases significantly down the group (F=19, Cl=35.5, Br=80, I=127), while the increase in atomic size is relatively smaller. Most bromoalkanes and iodoalkanes are denser than water (density > 1 g/mL), which is why they sink in water."
+  require_pass: true

@@ -1,0 +1,118 @@
+slug: balancing-redox-equations-and-electrochemical-series
+title: Balancing Redox Equations and Electrochemical Series
+difficulty: easy
+sequence_order: 4
+estimated_minutes: 2
+key_concepts:
+- Half-reaction method
+- Ion-electron method
+- Balancing in acidic medium
+- Balancing in basic medium
+- Electrochemical series
+- Standard electrode potential
+prerequisites: []
+content_md: "# Balancing Redox Equations and Electrochemical Series \U0001F680\n\n\
+  # Balancing Redox Equations and Electrochemical Series\n\n    ## Methods for Balancing\
+  \ Redox Equations\n\n    ### 1. Oxidation Number Method\n    ### 2. Half-Reaction\
+  \ (Ion-Electron) Method ⭐\n\n    We'll focus on the **Half-Reaction Method** (preferred\
+  \ for IIT JEE)\n\n    ## Half-Reaction Method (Ion-Electron Method)\n\n    ### Steps\
+  \ for Acidic Medium:\n\n    **Step 1:** Write separate oxidation and reduction half-reactions\n\
+  \    **Step 2:** Balance atoms other than O and H\n    **Step 3:** Balance O by\
+  \ adding H₂O\n    **Step 4:** Balance H by adding H⁺\n    **Step 5:** Balance charge\
+  \ by adding electrons\n    **Step 6:** Multiply to equalize electrons\n    **Step\
+  \ 7:** Add half-reactions and cancel common terms\n\n    ### Example 1: MnO₄⁻ +\
+  \ Fe²⁺ → Mn²⁺ + Fe³⁺ (acidic)\n\n    **Step 1: Separate half-reactions**\n\n   \
+  \ Oxidation: Fe²⁺ → Fe³⁺\n    Reduction: MnO₄⁻ → Mn²⁺\n\n    **Step 2: Balance atoms\
+  \ (except O, H)**\n\n    Already balanced\n\n    **Step 3: Balance O with H₂O**\n\
+  \n    Fe²⁺ → Fe³⁺\n    MnO₄⁻ → Mn²⁺ + 4H₂O\n\n    **Step 4: Balance H with H⁺**\n\
+  \n    Fe²⁺ → Fe³⁺\n    MnO₄⁻ + 8H⁺ → Mn²⁺ + 4H₂O\n\n    **Step 5: Balance charge\
+  \ with electrons**\n\n    Fe²⁺ → Fe³⁺ + e⁻ ... (1)\n    MnO₄⁻ + 8H⁺ + 5e⁻ → Mn²⁺\
+  \ + 4H₂O ... (2)\n\n    **Step 6: Multiply to equalize electrons**\n\n    (1) ×\
+  \ 5: 5Fe²⁺ → 5Fe³⁺ + 5e⁻\n    (2) × 1: MnO₄⁻ + 8H⁺ + 5e⁻ → Mn²⁺ + 4H₂O\n\n    **Step\
+  \ 7: Add and simplify**\n\n    **MnO₄⁻ + 5Fe²⁺ + 8H⁺ → Mn²⁺ + 5Fe³⁺ + 4H₂O**\n\n\
+  \    ### Example 2: Cr₂O₇²⁻ + SO₃²⁻ → Cr³⁺ + SO₄²⁻ (acidic)\n\n    **Oxidation:**\
+  \ SO₃²⁻ → SO₄²⁻\n    **Reduction:** Cr₂O₇²⁻ → Cr³⁺\n\n    **Balance atoms:**\n \
+  \   SO₃²⁻ → SO₄²⁻\n    Cr₂O₇²⁻ → 2Cr³⁺\n\n    **Balance O with H₂O:**\n    SO₃²⁻\
+  \ + H₂O → SO₄²⁻\n    Cr₂O₇²⁻ → 2Cr³⁺ + 7H₂O\n\n    **Balance H with H⁺:**\n    SO₃²⁻\
+  \ + H₂O → SO₄²⁻ + 2H⁺\n    Cr₂O₇²⁻ + 14H⁺ → 2Cr³⁺ + 7H₂O\n\n    **Balance charge:**\n\
+  \    SO₃²⁻ + H₂O → SO₄²⁻ + 2H⁺ + 2e⁻ ... (1)\n    Cr₂O₇²⁻ + 14H⁺ + 6e⁻ → 2Cr³⁺ +\
+  \ 7H₂O ... (2)\n\n    **Multiply (1)×3:**\n    3SO₃²⁻ + 3H₂O → 3SO₄²⁻ + 6H⁺ + 6e⁻\n\
+  \n    **Add:**\n    **Cr₂O₇²⁻ + 3SO₃²⁻ + 8H⁺ → 2Cr³⁺ + 3SO₄²⁻ + 4H₂O**\n\n    ##\
+  \ Balancing in Basic Medium\n\n    ### Method 1: Balance in acidic, then convert\
+  \ to basic\n\n    **Steps:**\n    1. Balance as if in acidic medium\n    2. Add\
+  \ OH⁻ to both sides equal to H⁺\n    3. Combine H⁺ + OH⁻ → H₂O\n    4. Cancel excess\
+  \ H₂O\n\n    ### Example: MnO₄⁻ + I⁻ → MnO₂ + IO₃⁻ (basic)\n\n    **Step 1: Balance\
+  \ in acidic medium**\n\n    Oxidation: I⁻ + 3H₂O → IO₃⁻ + 6H⁺ + 6e⁻\n    Reduction:\
+  \ MnO₄⁻ + 4H⁺ + 3e⁻ → MnO₂ + 2H₂O\n\n    Multiply reduction ×2:\n    2MnO₄⁻ + 8H⁺\
+  \ + 6e⁻ → 2MnO₂ + 4H₂O\n\n    Add:\n    2MnO₄⁻ + I⁻ + 8H⁺ + 3H₂O → 2MnO₂ + IO₃⁻\
+  \ + 6H⁺ + 4H₂O\n\n    Simplify:\n    2MnO₄⁻ + I⁻ + 2H⁺ → 2MnO₂ + IO₃⁻ + H₂O ...\
+  \ (acidic)\n\n    **Step 2: Convert to basic (add 2OH⁻ to both sides)**\n\n    2MnO₄⁻\
+  \ + I⁻ + 2H⁺ + 2OH⁻ → 2MnO₂ + IO₃⁻ + H₂O + 2OH⁻\n\n    **Step 3: H⁺ + OH⁻ → H₂O**\n\
+  \n    2MnO₄⁻ + I⁻ + 2H₂O → 2MnO₂ + IO₃⁻ + H₂O + 2OH⁻\n\n    **Step 4: Simplify**\n\
+  \n    **2MnO₄⁻ + I⁻ + H₂O → 2MnO₂ + IO₃⁻ + 2OH⁻**\n\n    ## Method 2: Direct Balancing\
+  \ in Basic Medium\n\n    **Steps:**\n    1. Write half-reactions\n    2. Balance\
+  \ atoms except O, H\n    3. Balance O with H₂O\n    4. Balance H with H₂O and OH⁻\
+  \ (add H₂O to H-deficient side, equal OH⁻ to other)\n    5. Balance charge with\
+  \ electrons\n    6. Equalize electrons and add\n\n    ## Complex Examples\n\n  \
+  \  ### Example 3: H₂O₂ + KMnO₄ → O₂ + MnO₂ (basic)\n\n    **Oxidation:** H₂O₂ →\
+  \ O₂\n    **Reduction:** MnO₄⁻ → MnO₂\n\n    **In basic:**\n    H₂O₂ → O₂ + 2H⁺\
+  \ + 2e⁻\n    Add 2OH⁻: H₂O₂ + 2OH⁻ → O₂ + 2H₂O + 2e⁻\n\n    MnO₄⁻ + 4H⁺ + 3e⁻ →\
+  \ MnO₂ + 2H₂O\n    Add 4OH⁻: MnO₄⁻ + 4H₂O + 3e⁻ → MnO₂ + 2H₂O + 4OH⁻\n    Simplify:\
+  \ MnO₄⁻ + 2H₂O + 3e⁻ → MnO₂ + 4OH⁻\n\n    Multiply: (ox)×3, (red)×2\n\n    3H₂O₂\
+  \ + 6OH⁻ → 3O₂ + 6H₂O + 6e⁻\n    2MnO₄⁻ + 4H₂O + 6e⁻ → 2MnO₂ + 8OH⁻\n\n    Add:\n\
+  \    **3H₂O₂ + 2MnO₄⁻ → 3O₂ + 2MnO₂ + 2OH⁻ + 2H₂O**\n\n    ## Electrochemical Series\n\
+  \n    **Definition:** Arrangement of metals/electrodes in order of their standard\
+  \ reduction potentials\n\n    ### Standard Hydrogen Electrode (SHE):\n\n    **2H⁺\
+  \ + 2e⁻ → H₂**\n    **E° = 0.00 V** (reference)\n\n    ### Standard Electrode Potential\
+  \ (E°):\n\n    Potential of half-cell measured against SHE under standard conditions:\n\
+  \    - Concentration: 1 M\n    - Pressure: 1 atm\n    - Temperature: 25°C (298 K)\n\
+  \n    ## Electrochemical Series (Partial)\n\n    | Half-Reaction | E° (V) | Strength\
+  \ |\n    |---------------|--------|----------|\n    | F₂ + 2e⁻ → 2F⁻ | +2.87 | Strongest\
+  \ oxidizer |\n    | MnO₄⁻ + 8H⁺ + 5e⁻ → Mn²⁺ + 4H₂O | +1.51 | |\n    | Cl₂ + 2e⁻\
+  \ → 2Cl⁻ | +1.36 | |\n    | Cr₂O₇²⁻ + 14H⁺ + 6e⁻ → 2Cr³⁺ + 7H₂O | +1.33 | |\n  \
+  \  | Br₂ + 2e⁻ → 2Br⁻ | +1.09 | |\n    | Ag⁺ + e⁻ → Ag | +0.80 | |\n    | Fe³⁺ +\
+  \ e⁻ → Fe²⁺ | +0.77 | |\n    | I₂ + 2e⁻ → 2I⁻ | +0.54 | |\n    | Cu²⁺ + 2e⁻ → Cu\
+  \ | +0.34 | |\n    | **2H⁺ + 2e⁻ → H₂** | **0.00** | **Reference** |\n    | Pb²⁺\
+  \ + 2e⁻ → Pb | -0.13 | |\n    | Sn²⁺ + 2e⁻ → Sn | -0.14 | |\n    | Ni²⁺ + 2e⁻ →\
+  \ Ni | -0.25 | |\n    | Fe²⁺ + 2e⁻ → Fe | -0.44 | |\n    | Zn²⁺ + 2e⁻ → Zn | -0.76\
+  \ | |\n    | Al³⁺ + 3e⁻ → Al | -1.66 | |\n    | Mg²⁺ + 2e⁻ → Mg | -2.37 | |\n  \
+  \  | Na⁺ + e⁻ → Na | -2.71 | |\n    | K⁺ + e⁻ → K | -2.93 | |\n    | Li⁺ + e⁻ →\
+  \ Li | -3.05 | Strongest reducer |\n\n    ## Applications of Electrochemical Series\n\
+  \n    ### 1. Predicting Oxidizing/Reducing Strength:\n\n    **Higher E°** → Better\
+  \ oxidizing agent (easily reduced)\n    **Lower E°** → Better reducing agent (easily\
+  \ oxidized)\n\n    **Example:**\n    - F₂ (E° = +2.87) is strongest oxidizer\n \
+  \   - Li (E° = -3.05) is strongest reducer\n\n    ### 2. Predicting Spontaneity:\n\
+  \n    **For reaction:** A + B⁺ → A⁺ + B\n\n    If E°(B⁺/B) > E°(A⁺/A), reaction\
+  \ is **spontaneous**\n\n    **Example:** Can Cu reduce Ag⁺?\n\n    Cu → Cu²⁺ + 2e⁻\
+  \ (E° = -0.34 V for reverse)\n    Ag⁺ + e⁻ → Ag (E° = +0.80 V)\n\n    Since E°(Ag⁺/Ag)\
+  \ > E°(Cu²⁺/Cu), **YES, spontaneous**\n\n    ### 3. Displacement Reactions:\n\n\
+  \    **Metal with lower E° can displace metal with higher E° from solution**\n\n\
+  \    **Example:** Zn + CuSO₄ → ZnSO₄ + Cu ✓\n    - E°(Zn²⁺/Zn) = -0.76 < E°(Cu²⁺/Cu)\
+  \ = +0.34\n\n    But: Cu + ZnSO₄ → ? ✗ (Not spontaneous)\n\n    ### 4. Reactivity\
+  \ with Acids:\n\n    **Metals with E° < 0** (below H₂) can liberate H₂ from acids\n\
+  \n    **Example:**\n    - Zn + HCl → ZnCl₂ + H₂ ✓ (E° = -0.76 V)\n    - Cu + HCl\
+  \ → ? ✗ (E° = +0.34 V)\n\n    ## Solved Problems\n\n    ### Problem 1: Balance equation\
+  \ (acidic)\n\n    **Q: Balance: MnO₄⁻ + H₂O₂ → Mn²⁺ + O₂ (acidic)**\n\n    Solution:\n\
+  \    Oxidation: H₂O₂ → O₂ + 2H⁺ + 2e⁻\n    Reduction: MnO₄⁻ + 8H⁺ + 5e⁻ → Mn²⁺ +\
+  \ 4H₂O\n\n    Multiply: (ox)×5, (red)×2\n\n    5H₂O₂ → 5O₂ + 10H⁺ + 10e⁻\n    2MnO₄⁻\
+  \ + 16H⁺ + 10e⁻ → 2Mn²⁺ + 8H₂O\n\n    **2MnO₄⁻ + 5H₂O₂ + 6H⁺ → 2Mn²⁺ + 5O₂ + 8H₂O**\n\
+  \n    ### Problem 2: Predict spontaneity\n\n    **Q: Will Fe reduce Cu²⁺? E°(Cu²⁺/Cu)\
+  \ = +0.34 V, E°(Fe²⁺/Fe) = -0.44 V**\n\n    Solution:\n    - E°(Cu²⁺/Cu) > E°(Fe²⁺/Fe)\n\
+  \    - Fe has lower E°, stronger reducer\n    - **YES, Fe + Cu²⁺ → Fe²⁺ + Cu is\
+  \ spontaneous**\n\n    ### Problem 3: Displacement\n\n    **Q: Which metal can displace\
+  \ Ag from AgNO₃: Cu or Au?**\n\n    E°: Ag⁺/Ag = +0.80, Cu²⁺/Cu = +0.34, Au³⁺/Au\
+  \ = +1.50\n\n    Solution:\n    - Cu has lower E° than Ag → **Cu can displace Ag**\
+  \ ✓\n    - Au has higher E° than Ag → Au cannot displace Ag ✗\n\n    ## IIT JEE\
+  \ Key Points\n\n    1. **Half-reaction method:** Balance O with H₂O, H with H⁺,\
+  \ charge with e⁻\n    2. **Basic medium:** Add OH⁻ equal to H⁺, combine to H₂O\n\
+  \    3. **E° scale:** SHE = 0.00 V reference\n    4. **Higher E°:** Better oxidizing\
+  \ agent\n    5. **Lower E°:** Better reducing agent\n    6. **Spontaneous:** Higher\
+  \ E° oxidizer + lower E° reducer\n    7. **Displacement:** Lower E° displaces higher\
+  \ E°\n    8. **Metals below H₂:** React with acids\n    9. **F₂:** Strongest oxidizer\n\
+  \    10. **Li/K:** Strongest reducers\n\n    ## Quick Formulas\n\n    | Concept\
+  \ | Method |\n    |---------|--------|\n    | Balance redox | Half-reaction method\
+  \ |\n    | Acidic medium | Add H⁺ and H₂O |\n    | Basic medium | Convert H⁺ to\
+  \ H₂O using OH⁻ |\n    | Spontaneity | E°(oxidizer) > E°(reducer) |\n    | Displacement\
+  \ | Lower E° displaces higher E° |\n\n## Key Points\n\n- Half-reaction method\n\n\
+  - Ion-electron method\n\n- Balancing in acidic medium"
+exercises: []

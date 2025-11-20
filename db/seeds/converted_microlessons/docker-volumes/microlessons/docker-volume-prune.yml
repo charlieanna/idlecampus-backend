@@ -1,0 +1,89 @@
+slug: docker-volume-prune
+title: Docker Volume Prune
+difficulty: easy
+sequence_order: 5
+estimated_minutes: 2
+key_concepts:
+- volumes
+- docker-volume
+- cleanup
+- prune
+- maintenance
+prerequisites: []
+content_md: '# Docker Volume Prune 🚀
+
+
+  Remove all unused volumes in one command
+
+
+  ## Syntax/Command
+
+
+  ```bash
+
+  docker volume prune
+
+  ```
+
+
+  ## Example
+
+
+  ```bash
+
+  docker volume prune -f
+
+  ```
+
+
+  ## Key Points
+
+
+  - Prune volumes: docker volume prune
+
+
+  - Skip confirmation: -f flag
+
+
+  - Filter by label: --filter label=<key>=<value>'
+exercises:
+- type: terminal
+  problem_statement: Remove all unused Docker volumes in one command to free up disk space
+  expected_output: Confirmation message showing deleted volumes and total space reclaimed
+  language: bash
+  starter_code: "# Prune unused volumes\n"
+  sequence_order: 1
+  command: docker volume prune
+  description: Remove all unused volumes to reclaim disk space
+  hints:
+  - 'Prune volumes: docker volume prune'
+  - 'Skip confirmation: -f flag'
+  - 'Filter by label: --filter label=<key>=<value>'
+  validation:
+    must_not_include:
+    - Error
+    - 'panic:'
+  timeout_sec: 60
+  require_pass: true
+- type: sandbox
+  sequence_order: 99
+  hints:
+  - Run under CPU pressure to surface leaks or races
+  - Keep commands idempotent in CI
+  validation:
+    must_not_include:
+    - Error
+    - 'panic:'
+  timeout_sec: 60
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What volumes does docker volume prune remove?
+  options:
+  - Only volumes not currently referenced or mounted by any containers (both named and anonymous)
+  - Only anonymous volumes regardless of usage
+  - Only named volumes that are unused
+  - Only volumes created more than 24 hours ago
+  correct_answer: Only volumes not currently referenced or mounted by any containers (both named and anonymous)
+  explanation: "docker volume prune removes all volumes (both named and anonymous) that are not currently being used by at least one container. A volume is considered 'in use' if any container (running or stopped) has it mounted. This makes it safe to run regularly for cleanup without losing data from existing containers."
+  require_pass: true

@@ -1,0 +1,86 @@
+slug: docker-cp-copy-files-between-container-and-host
+title: 'Docker CP: Copy Files Between Container and Host'
+difficulty: medium
+sequence_order: 4
+estimated_minutes: 2
+key_concepts:
+- containers
+- docker-cp
+- file-transfer
+- deployment
+- backup
+prerequisites: []
+content_md: '# Docker CP: Copy Files Between Container and Host 🚀
+
+
+  Copy files and directories bidirectionally between containers and host filesystem,
+  even while containers are running.
+
+
+  ## Syntax/Command
+
+
+  ```bash
+
+  docker cp my-file.txt my-container:/app/
+
+  ```
+
+
+  ## Example
+
+
+  ```bash
+
+  docker cp host-file.txt container:/path/
+
+  ```
+
+
+  ## Key Points
+
+
+  - Host to container: docker cp /local/file container:/remote/
+
+
+  - Container to host: docker cp container:/remote/file /local/'
+exercises:
+- type: terminal
+  problem_statement: Copy a file named 'my-file.txt' from the host to the /app/ directory inside a container named 'my-container'
+  expected_output: Silent success (no output on success)
+  language: bash
+  starter_code: "# Copy file from host to container\n"
+  sequence_order: 1
+  command: docker cp my-file.txt my-container:/app/
+  description: Copy configuration file from host to running container
+  hints:
+  - 'Host to container: docker cp /local/file container:/remote/'
+  - 'Container to host: docker cp container:/remote/file /local/'
+  validation:
+    must_not_include:
+    - No such container
+    - Error
+  timeout_sec: 30
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: Can you use docker cp on a stopped container?
+  options:
+  - Yes, docker cp works on both running and stopped containers
+  - No, the container must be running first
+  - Only for copying files FROM the container to host
+  - Only if you use the --force flag
+  correct_answer: Yes, docker cp works on both running and stopped containers
+  explanation: "docker cp works on both running and stopped containers. You can copy files to or from a container regardless of its state, making it useful for extracting data from stopped containers or preparing containers before they start."
+  require_pass: true
+- type: sandbox
+  sequence_order: 3
+  hints:
+  - Use an existing container or start a temporary one
+  - Absolute paths avoid surprises
+  validation:
+    must_not_include:
+    - Error
+    - No such container
+  timeout_sec: 60
+  require_pass: true

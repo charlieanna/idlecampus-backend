@@ -1,0 +1,66 @@
+slug: lesson-43
+title: Lesson 43
+difficulty: easy
+sequence_order: 43
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Init Containers and Pod Lifecycle\n\n \
+  \   Init containers run to completion before app containers start.\n    Use cases:\n\
+  \    - Fetch configuration or warm caches\n    - Wait for dependencies\n    - Perform\
+  \ pre-flight checks\n\n    ## Lifecycle Hooks\n    - postStart and preStop hooks\
+  \ allow custom lifecycle actions"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: In what order do initContainers execute in a pod with multiple initContainers?
+  options:
+  - All initContainers run in parallel
+  - They run in random order
+  - They run sequentially in the order defined in the pod spec
+  - Only one initContainer runs, chosen randomly
+  correct_answer: They run sequentially in the order defined in the pod spec
+  explanation: InitContainers execute sequentially in the exact order they are defined
+    in the pod specification. Each initContainer must complete successfully before
+    the next one starts. If any initContainer fails, Kubernetes restarts the pod (according
+    to the restartPolicy) until all initContainers succeed. This sequential execution
+    is crucial for multi-stage initialization tasks - for example, the first initContainer
+    might clone a git repository, the second might process configuration files, and
+    the third might run database migrations. This is fundamentally different from
+    regular containers in a pod, which start in parallel once all initContainers have
+    completed. The sequential nature allows each initContainer to depend on the work
+    of previous ones.
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What is the purpose of the postStart lifecycle hook in a container?
+  options:
+  - To run after the container has stopped
+  - To run immediately after the container is created, before the ENTRYPOINT is executed
+  - To run when a readiness probe succeeds
+  - To run when the pod is scheduled
+  correct_answer: To run immediately after the container is created, before the ENTRYPOINT
+    is executed
+  explanation: The postStart hook executes immediately after a container is created,
+    but there's no guarantee it will run before the container's ENTRYPOINT. It runs
+    asynchronously with the main container process. Common use cases include registering
+    with a service discovery system, warming up caches, or initializing resources.
+    If the postStart handler fails, the container is killed and restarted according
+    to the restartPolicy. It's important to note that the hook is called at least
+    once, but in some cases it might be called more than once. The preStop hook is
+    the counterpart, running before a container is terminated, giving the application
+    a chance to gracefully shut down, finish processing requests, or deregister from
+    service discovery. Both hooks support exec (run command) and httpGet handlers.
+  require_pass: true
+- type: mcq
+  sequence_order: 1
+  question: What command lists all pods in all namespaces?
+  options:
+  - kubectl get pods -A
+  - kubectl list pods --all
+  - kubectl get pods --everywhere
+  - kubectl pods list -A
+  correct_answer_index: 0
+  explanation: kubectl get pods -A (or --all-namespaces) lists pods across all namespaces.
+    The -A flag is shorthand for --all-namespaces.
+  require_pass: true

@@ -1,0 +1,81 @@
+slug: lesson-10
+title: Lesson 10
+sequence_order: 10
+estimated_minutes: 2
+difficulty: easy
+key_concepts: []
+content_md: "# Microlesson \U0001F680\n\n# Exception Handling\n\n    Handle errors\
+  \ gracefully instead of crashing your program.\n\n    ## Try-Except\n\n    ```python\n\
+  \    try:\n        number = int(input(\"Enter a number: \"))\n        result = 10\
+  \ / number\n        print(result)\n    except ValueError:\n        print(\"That's\
+  \ not a valid number!\")\n    except ZeroDivisionError:\n        print(\"Cannot\
+  \ divide by zero!\")\n    ```\n\n    ## Multiple Exceptions\n\n    ```python\n \
+  \   try:\n        # Risky code\n        file = open('data.txt', 'r')\n        content\
+  \ = file.read()\n        number = int(content)\n    except FileNotFoundError:\n\
+  \        print(\"File not found!\")\n    except ValueError:\n        print(\"File\
+  \ doesn't contain a number!\")\n    except Exception as e:\n        print(f\"Unexpected\
+  \ error: {e}\")\n    finally:\n        print(\"This always runs\")\n    ```\n\n\
+  \    ## Else and Finally\n\n    ```python\n    try:\n        number = int(input(\"\
+  Enter number: \"))\n    except ValueError:\n        print(\"Invalid input!\")\n\
+  \    else:\n        # Runs if no exception\n        print(f\"You entered: {number}\"\
+  )\n    finally:\n        # Always runs\n        print(\"Done!\")\n    ```\n\n  \
+  \  ## Raising Exceptions\n\n    ```python\n    def divide(a, b):\n        if b ==\
+  \ 0:\n            raise ValueError(\"Cannot divide by zero!\")\n        return a\
+  \ / b\n\n    try:\n        result = divide(10, 0)\n    except ValueError as e:\n\
+  \        print(e)\n    ```\n\n    ## Custom Exceptions\n\n    ```python\n    class\
+  \ NegativeAgeError(Exception):\n        pass\n\n    def set_age(age):\n        if\
+  \ age < 0:\n            raise NegativeAgeError(\"Age cannot be negative!\")\n  \
+  \      return age\n\n    try:\n        set_age(-5)\n    except NegativeAgeError\
+  \ as e:\n        print(e)\n    ```\n\n    ## Common Exceptions\n\n    | Exception\
+  \ | When it occurs |\n    |-----------|----------------|\n    | `ValueError` | Invalid\
+  \ value |\n    | `TypeError` | Wrong type |\n    | `ZeroDivisionError` | Division\
+  \ by zero |\n    | `FileNotFoundError` | File doesn't exist |\n    | `KeyError`\
+  \ | Dict key not found |\n    | `IndexError` | List index out of range |\n    |\
+  \ `AttributeError` | Attribute doesn't exist |\n    | `ImportError` | Cannot import\
+  \ module |\n\n    ## Best Practices\n\n    1. **Be specific**: Catch specific exceptions,\
+  \ not all\n    2. **Don't hide errors**: Log or handle properly\n    3. **Use finally**:\
+  \ For cleanup (close files, etc.)\n    4. **Fail gracefully**: Provide helpful error\
+  \ messages\n    5. **Validate early**: Check inputs before processing\n\n    **Practice:**\
+  \ Try the Error Handling exercises!"
+exercises:
+- type: mcq
+  slug: lesson-10-mcq-1
+  sequence_order: 1
+  question: What is the difference between a list and a tuple in Python?
+  options:
+  - Lists are mutable (can be modified), tuples are immutable (cannot be changed)
+  - Lists are faster than tuples
+  - Tuples can only store strings
+  - Lists use less memory
+  correct_answer_index: 0
+  explanation: Lists are mutable - you can add, remove, or modify elements after creation using methods like append(), remove(), etc. Tuples are immutable - once created, they cannot be modified. Tuples are slightly faster and use less memory, making them ideal for fixed collections of data.
+- type: mcq
+  slug: lesson-10-mcq-2
+  sequence_order: 2
+  question: What is a list comprehension in Python?
+  options:
+  - A concise way to create lists using a single line of code with optional filtering
+  - A method to compress lists
+  - A way to compare two lists
+  - A list sorting algorithm
+  correct_answer_index: 0
+  explanation: List comprehensions provide a concise syntax to create lists: [expression for item in iterable if condition]. For example, [x**2 for x in range(10) if x % 2 == 0] creates a list of squares of even numbers. This is more readable and often faster than traditional loops.
+- type: mcq
+  slug: lesson-10-mcq-3
+  sequence_order: 3
+  question: What does the try-except block do in Python?
+  options:
+  - Handles exceptions (errors) gracefully without crashing the program
+  - Tries to optimize code performance
+  - Tests if code syntax is correct
+  - Executes code multiple times until it succeeds
+  correct_answer_index: 0
+  explanation: try-except blocks catch and handle exceptions, preventing program crashes. Code in the try block is executed, and if an exception occurs, the except block handles it. For example, catching ValueError when converting user input to int prevents crashes from invalid input.
+objectives:
+- Understand core concepts of Exception Handling
+- Apply learned concepts in practical scenarios
+- Identify best practices and common patterns
+- Recognize trade-offs in different approaches
+next_recommended:
+- control
+- data-structures

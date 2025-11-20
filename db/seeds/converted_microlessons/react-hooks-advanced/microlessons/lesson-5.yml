@@ -1,0 +1,222 @@
+slug: lesson-5
+title: Lesson 5
+difficulty: easy
+sequence_order: 5
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# React Performance Optimization\n\n    React\
+  \ is fast by default, but as apps grow, performance optimization becomes critical.\
+  \ Learn when and how to optimize.\n\n    ## Understanding Re-renders\n\n    **React\
+  \ re-renders a component when:**\n    1. State changes (useState, useReducer)\n\
+  \    2. Props change\n    3. Parent component re-renders\n    4. Context value changes\n\
+  \n    ```jsx\n    // Example: Why components re-render\n    function Parent() {\n\
+  \      const [count, setCount] = useState(0);\n\n      console.log('Parent render');\n\
+  \n      return (\n        <div>\n          <button onClick={() => setCount(count\
+  \ + 1)}>Count: {count}</button>\n          <ExpensiveChild />  {/* Re-renders even\
+  \ though props don't change! */}\n        </div>\n      );\n    }\n\n    function\
+  \ ExpensiveChild() {\n      console.log('ExpensiveChild render');\n\n      // Expensive\
+  \ calculation\n      const result = Array.from({ length: 10000 }, (_, i) => i).reduce((a,\
+  \ b) => a + b, 0);\n\n      return <div>Result: {result}</div>;\n    }\n\n    //\
+  \ Every click re-renders both Parent AND ExpensiveChild unnecessarily!\n    ```\n\
+  \n    ## React.memo\n\n    **Prevent re-renders when props haven't changed**\n\n\
+  \    ```jsx\n    import { memo } from 'react';\n\n    // ✅ Memoized component -\
+  \ only re-renders if props change\n    const ExpensiveChild = memo(function ExpensiveChild()\
+  \ {\n      console.log('ExpensiveChild render');\n\n      const result = Array.from({\
+  \ length: 10000 }, (_, i) => i).reduce((a, b) => a + b, 0);\n\n      return <div>Result:\
+  \ {result}</div>;\n    });\n\n    function Parent() {\n      const [count, setCount]\
+  \ = useState(0);\n\n      return (\n        <div>\n          <button onClick={()\
+  \ => setCount(count + 1)}>Count: {count}</button>\n          <ExpensiveChild />\
+  \  {/* Now only renders once! */}\n        </div>\n      );\n    }\n    ```\n\n\
+  \    ### React.memo with Props\n\n    ```jsx\n    // Component with props\n    const\
+  \ UserCard = memo(function UserCard({ user, onEdit }) {\n      console.log('UserCard\
+  \ render');\n\n      return (\n        <div className=\"user-card\">\n         \
+  \ <h3>{user.name}</h3>\n          <p>{user.email}</p>\n          <button onClick={()\
+  \ => onEdit(user.id)}>Edit</button>\n        </div>\n      );\n    });\n\n    //\
+  \ ❌ Problem: This still re-renders unnecessarily!\n    function UserList() {\n \
+  \     const [users, setUsers] = useState([...]);\n      const [count, setCount]\
+  \ = useState(0);\n\n      const handleEdit = (userId) => {\n        console.log('Edit\
+  \ user', userId);\n      };\n\n      return (\n        <div>\n          <button\
+  \ onClick={() => setCount(count + 1)}>Count: {count}</button>\n          {users.map(user\
+  \ => (\n            <UserCard\n              key={user.id}\n              user={user}\n\
+  \              onEdit={handleEdit}  {/* New function every render! */}\n       \
+  \     />\n          ))}\n        </div>\n      );\n    }\n    // handleEdit is a\
+  \ new function reference every render, so memo doesn't help!\n    ```\n\n    ##\
+  \ useCallback\n\n    **Memoize function references**\n\n    ```jsx\n    import {\
+  \ useState, useCallback, memo } from 'react';\n\n    const UserCard = memo(function\
+  \ UserCard({ user, onEdit }) {\n      console.log('UserCard render');\n\n      return\
+  \ (\n        <div className=\"user-card\">\n          <h3>{user.name}</h3>\n   \
+  \       <button onClick={() => onEdit(user.id)}>Edit</button>\n        </div>\n\
+  \      );\n    });\n\n    function UserList() {\n      const [users, setUsers] =\
+  \ useState([...]);\n      const [count, setCount] = useState(0);\n\n      // ✅ Memoized\
+  \ function - same reference across renders\n      const handleEdit = useCallback((userId)\
+  \ => {\n        console.log('Edit user', userId);\n        // Edit logic...\n  \
+  \    }, []); // Empty deps = never changes\n\n      return (\n        <div>\n  \
+  \        <button onClick={() => setCount(count + 1)}>Count: {count}</button>\n \
+  \         {users.map(user => (\n            <UserCard\n              key={user.id}\n\
+  \              user={user}\n              onEdit={handleEdit}  {/* Same reference\
+  \ every render! */}\n            />\n          ))}\n        </div>\n      );\n \
+  \   }\n    // Now UserCard only re-renders when user prop changes!\n    ```\n\n\
+  \    ### useCallback with Dependencies\n\n    ```jsx\n    function TodoList({ filter\
+  \ }) {\n      const [todos, setTodos] = useState([...]);\n\n      // ✅ Function\
+  \ recreated only when filter changes\n      const handleToggle = useCallback((id)\
+  \ => {\n        setTodos(prevTodos =>\n          prevTodos.map(todo =>\n       \
+  \     todo.id === id ? { ...todo, completed: !todo.completed } : todo\n        \
+  \  )\n        );\n      }, []); // No dependencies needed (using functional update)\n\
+  \n      // ✅ Function recreated when filter changes\n      const filteredTodos =\
+  \ useMemo(() => {\n        return todos.filter(todo => {\n          if (filter ===\
+  \ 'active') return !todo.completed;\n          if (filter === 'completed') return\
+  \ todo.completed;\n          return true;\n        });\n      }, [todos, filter]);\n\
+  \n      return (\n        <ul>\n          {filteredTodos.map(todo => (\n       \
+  \     <TodoItem key={todo.id} todo={todo} onToggle={handleToggle} />\n         \
+  \ ))}\n        </ul>\n      );\n    }\n    ```\n\n    ## useMemo\n\n    **Memoize\
+  \ expensive calculations**\n\n    ```jsx\n    import { useMemo } from 'react';\n\
+  \n    function ProductList({ products, sortBy }) {\n      // ❌ Bad: Expensive calculation\
+  \ on every render\n      const sortedProducts = products.sort((a, b) => {\n    \
+  \    if (sortBy === 'price') return a.price - b.price;\n        if (sortBy === 'name')\
+  \ return a.name.localeCompare(b.name);\n        return 0;\n      });\n\n      return\
+  \ (\n        <ul>\n          {sortedProducts.map(product => (\n            <li key={product.id}>{product.name}\
+  \ - \\${product.price}</li>\n          ))}\n        </ul>\n      );\n    }\n\n \
+  \   // ✅ Good: Memoize expensive calculation\n    function ProductList({ products,\
+  \ sortBy }) {\n      const sortedProducts = useMemo(() => {\n        console.log('Sorting\
+  \ products...');\n        return [...products].sort((a, b) => {\n          if (sortBy\
+  \ === 'price') return a.price - b.price;\n          if (sortBy === 'name') return\
+  \ a.name.localeCompare(b.name);\n          return 0;\n        });\n      }, [products,\
+  \ sortBy]); // Only re-sort when products or sortBy changes\n\n      return (\n\
+  \        <ul>\n          {sortedProducts.map(product => (\n            <li key={product.id}>{product.name}\
+  \ - \\${product.price}</li>\n          ))}\n        </ul>\n      );\n    }\n   \
+  \ ```\n\n    ### useMemo vs useCallback\n\n    ```jsx\n    // useMemo returns the\
+  \ memoized VALUE\n    const expensiveValue = useMemo(() => computeExpensiveValue(a,\
+  \ b), [a, b]);\n\n    // useCallback returns the memoized FUNCTION\n    const memoizedCallback\
+  \ = useCallback(() => doSomething(a, b), [a, b]);\n\n    // These are equivalent:\n\
+  \    const memoizedCallback = useCallback(() => doSomething(a, b), [a, b]);\n  \
+  \  const memoizedCallback = useMemo(() => () => doSomething(a, b), [a, b]);\n  \
+  \  ```\n\n    ## Code Splitting with lazy() and Suspense\n\n    **Load components\
+  \ only when needed**\n\n    ```jsx\n    import { lazy, Suspense } from 'react';\n\
+  \n    // ❌ Bad: Import everything upfront\n    import Dashboard from './Dashboard';\n\
+  \    import Profile from './Profile';\n    import Settings from './Settings';\n\n\
+  \    // Bundle size: 500KB (all loaded immediately)\n\n    // ✅ Good: Lazy load\
+  \ components\n    const Dashboard = lazy(() => import('./Dashboard'));\n    const\
+  \ Profile = lazy(() => import('./Profile'));\n    const Settings = lazy(() => import('./Settings'));\n\
+  \n    function App() {\n      const [currentPage, setCurrentPage] = useState('dashboard');\n\
+  \n      return (\n        <div>\n          <nav>\n            <button onClick={()\
+  \ => setCurrentPage('dashboard')}>Dashboard</button>\n            <button onClick={()\
+  \ => setCurrentPage('profile')}>Profile</button>\n            <button onClick={()\
+  \ => setCurrentPage('settings')}>Settings</button>\n          </nav>\n\n       \
+  \   <Suspense fallback={<div>Loading...</div>}>\n            {currentPage === 'dashboard'\
+  \ && <Dashboard />}\n            {currentPage === 'profile' && <Profile />}\n  \
+  \          {currentPage === 'settings' && <Settings />}\n          </Suspense>\n\
+  \        </div>\n      );\n    }\n    // Initial bundle: 150KB, then 150KB each\
+  \ when navigating\n    ```\n\n    ### Route-Based Code Splitting\n\n    ```jsx\n\
+  \    import { BrowserRouter, Routes, Route } from 'react-router-dom';\n    import\
+  \ { lazy, Suspense } from 'react';\n\n    const Home = lazy(() => import('./pages/Home'));\n\
+  \    const About = lazy(() => import('./pages/About'));\n    const Products = lazy(()\
+  \ => import('./pages/Products'));\n    const Contact = lazy(() => import('./pages/Contact'));\n\
+  \n    function App() {\n      return (\n        <BrowserRouter>\n          <Suspense\
+  \ fallback={<PageLoader />}>\n            <Routes>\n              <Route path=\"\
+  /\" element={<Home />} />\n              <Route path=\"/about\" element={<About\
+  \ />} />\n              <Route path=\"/products\" element={<Products />} />\n  \
+  \            <Route path=\"/contact\" element={<Contact />} />\n            </Routes>\n\
+  \          </Suspense>\n        </BrowserRouter>\n      );\n    }\n\n    function\
+  \ PageLoader() {\n      return (\n        <div className=\"page-loader\">\n    \
+  \      <div className=\"spinner\" />\n          <p>Loading...</p>\n        </div>\n\
+  \      );\n    }\n    ```\n\n    ### Preloading Lazy Components\n\n    ```jsx\n\
+  \    const ProductDetails = lazy(() => import('./ProductDetails'));\n\n    function\
+  \ ProductCard({ product }) {\n      // Preload component on hover\n      const handleMouseEnter\
+  \ = () => {\n        // Start loading ProductDetails component\n        import('./ProductDetails');\n\
+  \      };\n\n      return (\n        <div onMouseEnter={handleMouseEnter}>\n   \
+  \       <h3>{product.name}</h3>\n          <Link to={\\`/products/\\${product.id}\\\
+  `}>View Details</Link>\n        </div>\n      );\n    }\n    // Component likely\
+  \ already loaded when user clicks!\n    ```\n\n    ## Virtualization with react-window\n\
+  \n    **Render only visible items in long lists**\n\n    ```jsx\n    // ❌ Bad: Render\
+  \ 10,000 items (slow!)\n    function ProductList({ products }) {\n      return (\n\
+  \        <div className=\"product-list\">\n          {products.map(product => (\n\
+  \            <ProductCard key={product.id} product={product} />\n          ))}\n\
+  \        </div>\n      );\n    }\n    // 10,000 DOM nodes = Slow rendering, high\
+  \ memory usage\n\n    // ✅ Good: Virtualized list (fast!)\n    import { FixedSizeList\
+  \ } from 'react-window';\n\n    function ProductList({ products }) {\n      const\
+  \ Row = ({ index, style }) => (\n        <div style={style}>\n          <ProductCard\
+  \ product={products[index]} />\n        </div>\n      );\n\n      return (\n   \
+  \     <FixedSizeList\n          height={600}           // Viewport height\n    \
+  \      itemCount={products.length}  // Total items\n          itemSize={120}   \
+  \      // Height of each item\n          width=\"100%\"\n        >\n          {Row}\n\
+  \        </FixedSizeList>\n      );\n    }\n    // Only renders ~10 visible items\
+  \ + buffer!\n    ```\n\n    ### Variable Size Lists\n\n    ```jsx\n    import {\
+  \ VariableSizeList } from 'react-window';\n\n    function MessageList({ messages\
+  \ }) {\n      const listRef = useRef();\n\n      // Function to calculate item height\n\
+  \      const getItemSize = (index) => {\n        const message = messages[index];\n\
+  \        // Base height + character-based calculation\n        return 50 + Math.ceil(message.text.length\
+  \ / 50) * 20;\n      };\n\n      const Row = ({ index, style }) => {\n        const\
+  \ message = messages[index];\n        return (\n          <div style={style} className=\"\
+  message\">\n            <strong>{message.author}</strong>\n            <p>{message.text}</p>\n\
+  \          </div>\n        );\n      };\n\n      return (\n        <VariableSizeList\n\
+  \          ref={listRef}\n          height={600}\n          itemCount={messages.length}\n\
+  \          itemSize={getItemSize}\n          width=\"100%\"\n        >\n       \
+  \   {Row}\n        </VariableSizeList>\n      );\n    }\n    ```\n\n    ## Profiler\
+  \ and DevTools\n\n    **Identify performance bottlenecks**\n\n    ```jsx\n    import\
+  \ { Profiler } from 'react';\n\n    function onRenderCallback(\n      id,      \
+  \     // Component identifier\n      phase,        // \"mount\" or \"update\"\n\
+  \      actualDuration,  // Time spent rendering\n      baseDuration,    // Estimated\
+  \ time without memoization\n      startTime,\n      commitTime,\n      interactions\n\
+  \    ) {\n      console.log(\\`\\${id} (\\${phase}) took \\${actualDuration}ms\\\
+  `);\n    }\n\n    function App() {\n      return (\n        <Profiler id=\"App\"\
+  \ onRender={onRenderCallback}>\n          <Dashboard />\n        </Profiler>\n \
+  \     );\n    }\n\n    // Log performance data to analytics\n    function onRenderCallback(id,\
+  \ phase, actualDuration) {\n      if (actualDuration > 100) {\n        analytics.track('slow-render',\
+  \ {\n          component: id,\n          phase,\n          duration: actualDuration\n\
+  \        });\n      }\n    }\n    ```\n\n    ### React DevTools Profiler\n\n   \
+  \ **Steps to profile:**\n    1. Open React DevTools\n    2. Click \"Profiler\" tab\n\
+  \    3. Click record button\n    4. Interact with your app\n    5. Click stop button\n\
+  \    6. Analyze flame graph\n\n    **What to look for:**\n    - Components that\
+  \ render frequently\n    - Components with long render times\n    - Unnecessary\
+  \ re-renders (same props/state)\n    - Deep component trees\n\n    ## Common Performance\
+  \ Pitfalls\n\n    ### 1. Creating Objects/Arrays in Render\n\n    ```jsx\n    //\
+  \ ❌ Bad: New object every render\n    function UserProfile({ userId }) {\n     \
+  \ return <ExpensiveComponent config={{ userId, theme: 'dark' }} />;\n      // config\
+  \ is a new object reference every render!\n    }\n\n    // ✅ Good: Memoize the object\n\
+  \    function UserProfile({ userId }) {\n      const config = useMemo(() => ({ userId,\
+  \ theme: 'dark' }), [userId]);\n      return <ExpensiveComponent config={config}\
+  \ />;\n    }\n    ```\n\n    ### 2. Inline Function Props\n\n    ```jsx\n    //\
+  \ ❌ Bad: New function every render\n    function TodoList({ todos }) {\n      return\
+  \ (\n        <ul>\n          {todos.map(todo => (\n            <TodoItem\n     \
+  \         key={todo.id}\n              todo={todo}\n              onDelete={() =>\
+  \ deleteTodo(todo.id)}  {/* New function! */}\n            />\n          ))}\n \
+  \       </ul>\n      );\n    }\n\n    // ✅ Good: Pass stable function + id\n   \
+  \ function TodoList({ todos }) {\n      const handleDelete = useCallback((id) =>\
+  \ deleteTodo(id), []);\n\n      return (\n        <ul>\n          {todos.map(todo\
+  \ => (\n            <TodoItem\n              key={todo.id}\n              todo={todo}\n\
+  \              onDelete={handleDelete}\n            />\n          ))}\n        </ul>\n\
+  \      );\n    }\n\n    const TodoItem = memo(({ todo, onDelete }) => (\n      <li>\n\
+  \        {todo.text}\n        <button onClick={() => onDelete(todo.id)}>Delete</button>\n\
+  \      </li>\n    ));\n    ```\n\n    ### 3. Not Using Keys Properly\n\n    ```jsx\n\
+  \    // ❌ Bad: Index as key (causes re-renders on reorder)\n    {todos.map((todo,\
+  \ index) => (\n      <TodoItem key={index} todo={todo} />\n    ))}\n\n    // ✅ Good:\
+  \ Stable unique identifier\n    {todos.map(todo => (\n      <TodoItem key={todo.id}\
+  \ todo={todo} />\n    ))}\n    ```\n\n    ### 4. Large Context Values\n\n    ```jsx\n\
+  \    // ❌ Bad: All consumers re-render on any change\n    const AppContext = createContext();\n\
+  \n    function AppProvider({ children }) {\n      const [state, setState] = useState({\n\
+  \        user: null,\n        theme: 'light',\n        notifications: [],\n    \
+  \    settings: {}\n      });\n\n      return (\n        <AppContext.Provider value={state}>\n\
+  \          {children}\n        </AppContext.Provider>\n      );\n    }\n\n    //\
+  \ ✅ Good: Split contexts or memoize selectively\n    const UserContext = createContext();\n\
+  \    const ThemeContext = createContext();\n    const NotificationContext = createContext();\n\
+  \n    // Or use context selectors with useSyncExternalStore\n    ```\n\n    ## Performance\
+  \ Checklist\n\n    ✅ **Do:**\n    - Profile before optimizing\n    - Use React.memo\
+  \ for expensive components\n    - Use useCallback for functions passed as props\n\
+  \    - Use useMemo for expensive calculations\n    - Code split by route\n    -\
+  \ Virtualize long lists (1000+ items)\n    - Debounce/throttle frequent updates\n\
+  \    - Use production builds for benchmarking\n\n    ❌ **Don't:**\n    - Optimize\
+  \ prematurely\n    - Use memo/useMemo everywhere (overhead!)\n    - Create new objects/arrays\
+  \ in render\n    - Use index as key for dynamic lists\n    - Put everything in one\
+  \ Context\n    - Render 1000+ items without virtualization\n\n    ## Measuring Performance\n\
+  \n    ```jsx\n    // Measure component render time\n    function MyComponent() {\n\
+  \      const startTime = performance.now();\n\n      // Component logic...\n\n \
+  \     useEffect(() => {\n        const endTime = performance.now();\n        console.log(\\\
+  `Render took \\${endTime - startTime}ms\\`);\n      });\n\n      return <div>...</div>;\n\
+  \    }\n\n    // Track Core Web Vitals\n    import { getCLS, getFID, getFCP, getLCP,\
+  \ getTTFB } from 'web-vitals';\n\n    getCLS(console.log);  // Cumulative Layout\
+  \ Shift\n    getFID(console.log);  // First Input Delay\n    getFCP(console.log);\
+  \  // First Contentful Paint\n    getLCP(console.log);  // Largest Contentful Paint\n\
+  \    getTTFB(console.log); // Time to First Byte\n    ```\n\n    **Next**: We'll\
+  \ explore advanced component design patterns."
+exercises: []

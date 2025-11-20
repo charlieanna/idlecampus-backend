@@ -1,0 +1,67 @@
+slug: vseprtheory-practice
+title: vsepr_theory — Practice
+difficulty: easy
+sequence_order: 8
+estimated_minutes: 2
+key_concepts:
+- vsepr_theory
+prerequisites: []
+content_md: '# vsepr_theory — Practice 🚀
+
+
+  NH₃ has 3 bonding pairs and 1 lone pair (sp³ hybridized). The molecular geometry
+  is trigonal pyramidal with bond angle ~107°.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 2
+  question: What is the molecular geometry of NH₃?
+  options:
+  - Tetrahedral
+  - Trigonal pyramidal
+  - Trigonal planar
+  - Bent
+  require_pass: true
+  correct_answer: Trigonal pyramidal
+  explanation: 'NH₃ (ammonia) has trigonal pyramidal molecular geometry according
+    to VSEPR theory. Nitrogen has 5 valence electrons: 3 bonding pairs (N-H bonds)
+    + 1 lone pair. Electron pair geometry is tetrahedral (4 electron pairs), but molecular
+    geometry (atomic positions only) is trigonal pyramidal. Bond angle ≈107° (compressed
+    from ideal 109.5° due to lone pair-bonding pair repulsion > bonding pair-bonding
+    pair repulsion). The lone pair occupies more angular space, pushing the three
+    H atoms closer together. This pyramidal shape gives NH₃ a net dipole moment (1.47
+    D), making it polar and capable of hydrogen bonding. Similar to H₂O (bent, 2 lone
+    pairs) but with 3 bonds instead of 2.'
+- type: mcq
+  sequence_order: 3
+  question: What is the molecular geometry of SF₄ (sulfur tetrafluoride)?
+  options:
+  - Tetrahedral
+  - Square planar
+  - See-saw
+  - Trigonal bipyramidal
+  require_pass: true
+  correct_answer: See-saw
+  explanation: 'SF₄ has see-saw molecular geometry. Sulfur has 6 valence electrons: 4 bonding pairs (S-F bonds) + 1 lone pair = 5 electron pairs total. According to VSEPR theory, 5 electron pairs arrange in trigonal bipyramidal electron pair geometry. The lone pair occupies an equatorial position (where there is more space), leaving 4 fluorine atoms in a see-saw arrangement: 2 axial F atoms (180° apart) and 2 equatorial F atoms. Bond angles: axial-equatorial ~173° and ~101°, equatorial-equatorial ~116° (all deviate from ideal due to lone pair repulsion). The see-saw shape is asymmetric, giving SF₄ a net dipole moment, making it polar. Other examples: Tetrahedral = 4 bonding pairs, 0 lone pairs (CH₄); Square planar = 4 bonding pairs, 2 lone pairs in octahedral arrangement (XeF₄); Trigonal bipyramidal = 5 bonding pairs, 0 lone pairs (PCl₅).'
+- type: mcq
+  sequence_order: 4
+  question: According to VSEPR theory, which repulsion is strongest?
+  options:
+  - Bonding pair - Bonding pair
+  - Bonding pair - Lone pair
+  - Lone pair - Lone pair
+  - All repulsions are equal
+  require_pass: true
+  correct_answer: Lone pair - Lone pair
+  explanation: 'According to VSEPR theory, lone pair-lone pair (LP-LP) repulsion is strongest, followed by lone pair-bonding pair (LP-BP), then bonding pair-bonding pair (BP-BP). Order of repulsion strength: LP-LP > LP-BP > BP-BP. This is because lone pairs are attracted to only one nucleus and occupy more angular space than bonding pairs (which are attracted to two nuclei and constrained between them). Consequences: (1) Lone pairs compress bond angles - H₂O has 104.5° (2 lone pairs) vs ideal 109.5°, (2) Lone pairs prefer equatorial positions in trigonal bipyramidal geometries (more space), (3) Multiple lone pairs stay as far apart as possible - XeF₄ has square planar geometry with 2 lone pairs opposite each other. This explains trends in bond angles: CH₄ (109.5°, 0 LP) > NH₃ (107°, 1 LP) > H₂O (104.5°, 2 LP). Understanding these relative repulsions is key to predicting accurate molecular geometries and bond angles.'

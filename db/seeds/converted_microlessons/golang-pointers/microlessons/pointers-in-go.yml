@@ -1,0 +1,113 @@
+slug: pointers-in-go
+title: Pointers in Go
+difficulty: easy
+sequence_order: 1
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Pointers in Go \U0001F680\n\n# Pointers in Go\n\n    Pointers are variables\
+  \ that store memory addresses. Understanding pointers is essential for efficient\
+  \ Go programming and is crucial for working with methods and large data structures.\n\
+  \n    ## What is a Pointer?\n\n    A pointer holds the memory address of a value,\
+  \ not the value itself.\n\n    ```go\n    var x int = 42\n    var p *int = &x  //\
+  \ p is a pointer to an int\n\n    fmt.Println(x)   // 42 (the value)\n    fmt.Println(&x)\
+  \  // 0xc0000140b8 (memory address)\n    fmt.Println(p)   // 0xc0000140b8 (same\
+  \ address)\n    fmt.Println(*p)  // 42 (dereference - get the value at address)\n\
+  \    ```\n\n    **Key operators:**\n    - `&` - Address-of operator (gets memory\
+  \ address)\n    - `*` - Dereference operator (gets value at address)\n    - `*Type`\
+  \ - Pointer type declaration\n\n    ## Why Use Pointers?\n\n    **1. Modify Original\
+  \ Values**\n\n    Without pointers, Go passes values by copy:\n\n    ```go\n   \
+  \ func increment(x int) {\n        x = x + 1\n        fmt.Println(\"Inside:\", x)\
+  \  // 11\n    }\n\n    func main() {\n        num := 10\n        increment(num)\n\
+  \        fmt.Println(\"Outside:\", num)  // Still 10! (not modified)\n    }\n  \
+  \  ```\n\n    With pointers, you can modify the original:\n\n    ```go\n    func\
+  \ increment(x *int) {\n        *x = *x + 1  // Modify value at address\n    }\n\n\
+  \    func main() {\n        num := 10\n        increment(&num)  // Pass address\n\
+  \        fmt.Println(num)  // 11 (modified!)\n    }\n    ```\n\n    **2. Avoid Copying\
+  \ Large Structures**\n\n    Passing large structs by value copies all data. Pointers\
+  \ are more efficient:\n\n    ```go\n    type LargeStruct struct {\n        data\
+  \ [1000000]int\n    }\n\n    // Inefficient - copies entire struct\n    func processByValue(ls\
+  \ LargeStruct) {\n        // Works with a copy\n    }\n\n    // Efficient - passes\
+  \ only address (8 bytes)\n    func processByPointer(ls *LargeStruct) {\n       \
+  \ // Works with original\n    }\n    ```\n\n    ## Declaring and Using Pointers\n\
+  \n    ```go\n    var x int = 10\n\n    // Method 1: Declare pointer and assign\n\
+  \    var p *int\n    p = &x\n\n    // Method 2: Short declaration\n    p := &x\n\
+  \n    // Method 3: Using new() - allocates memory\n    p := new(int)  // p points\
+  \ to a new int (zero value)\n    *p = 42        // Set the value\n\n    fmt.Println(*p)\
+  \  // 42\n    ```\n\n    ## Nil Pointers\n\n    A pointer with no value is `nil`:\n\
+  \n    ```go\n    var p *int\n    fmt.Println(p)  // nil\n\n    if p == nil {\n \
+  \       fmt.Println(\"Pointer is nil\")\n    }\n\n    // Dereferencing nil pointer\
+  \ causes panic!\n    // *p = 10  // panic: runtime error\n    ```\n\n    ## Pointers\
+  \ and Structs\n\n    Pointers are commonly used with structs:\n\n    ```go\n   \
+  \ type Person struct {\n        Name string\n        Age  int\n    }\n\n    func\
+  \ main() {\n        // Method 1: Regular struct\n        p1 := Person{Name: \"Alice\"\
+  , Age: 25}\n\n        // Method 2: Pointer to struct using &\n        p2 := &Person{Name:\
+  \ \"Bob\", Age: 30}\n\n        // Method 3: Using new\n        p3 := new(Person)\n\
+  \        p3.Name = \"Carol\"\n        p3.Age = 28\n\n        // Accessing fields\
+  \ (Go auto-dereferences)\n        fmt.Println(p2.Name)  // Bob (same as (*p2).Name)\n\
+  \    }\n    ```\n\n    **Go's convenience:** You can use `.` on pointer to struct\
+  \ (Go dereferences automatically):\n\n    ```go\n    p := &Person{Name: \"Alice\"\
+  }\n\n    // These are equivalent:\n    p.Name = \"Bob\"\n    (*p).Name = \"Bob\"\
+  \n\n    // Both work, but first is more idiomatic\n    ```\n\n    ## Modifying Struct\
+  \ Fields\n\n    ```go\n    type Counter struct {\n        count int\n    }\n\n \
+  \   // Won't modify original (receives copy)\n    func incrementByValue(c Counter)\
+  \ {\n        c.count++\n    }\n\n    // Will modify original (receives pointer)\n\
+  \    func incrementByPointer(c *Counter) {\n        c.count++\n    }\n\n    func\
+  \ main() {\n        counter := Counter{count: 0}\n\n        incrementByValue(counter)\n\
+  \        fmt.Println(counter.count)  // 0 (not changed)\n\n        incrementByPointer(&counter)\n\
+  \        fmt.Println(counter.count)  // 1 (changed!)\n    }\n    ```\n\n    ## When\
+  \ to Use Pointers vs Values\n\n    **Use Pointers when:**\n    - ✅ Function needs\
+  \ to modify the value\n    - ✅ Struct is large (avoid copying overhead)\n    - ✅\
+  \ You need to represent \"no value\" (nil)\n    - ✅ Sharing data between goroutines\
+  \ (with proper sync)\n\n    **Use Values when:**\n    - ✅ Data is small (ints, bools,\
+  \ small structs)\n    - ✅ Value should not be modified\n    - ✅ Simplicity is preferred\n\
+  \    - ✅ You want immutability\n\n    ## Slice and Map Pointers\n\n    **Important:**\
+  \ Slices and maps are already reference types! You usually don't need pointers to\
+  \ them:\n\n    ```go\n    // ❌ Usually unnecessary\n    func addToSlice(s *[]int,\
+  \ val int) {\n        *s = append(*s, val)\n    }\n\n    // ✅ Better - slices are\
+  \ already references\n    func addToSlice(s []int, val int) []int {\n        return\
+  \ append(s, val)\n    }\n\n    // Maps work similarly\n    func updateMap(m map[string]int)\
+  \ {\n        m[\"key\"] = 10  // Modifies original map\n    }\n    ```\n\n    ##\
+  \ Common Pointer Patterns\n\n    ### 1. Factory Functions\n\n    ```go\n    func\
+  \ NewPerson(name string, age int) *Person {\n        return &Person{\n         \
+  \   Name: name,\n            Age:  age,\n        }\n    }\n\n    p := NewPerson(\"\
+  Alice\", 25)\n    ```\n\n    ### 2. Optional Fields\n\n    ```go\n    type Config\
+  \ struct {\n        Host    string\n        Port    *int  // Optional - can be nil\n\
+  \        Timeout *int  // Optional\n    }\n\n    config := Config{\n        Host:\
+  \ \"localhost\",\n        Port: intPtr(8080),  // Helper function\n    }\n\n   \
+  \ func intPtr(i int) *int {\n        return &i\n    }\n    ```\n\n    ### 3. Linked\
+  \ Lists\n\n    ```go\n    type Node struct {\n        Value int\n        Next  *Node\
+  \  // Points to next node (or nil)\n    }\n\n    head := &Node{Value: 1}\n    head.Next\
+  \ = &Node{Value: 2}\n    head.Next.Next = &Node{Value: 3}\n    ```\n\n    ## Pointer\
+  \ Pitfalls\n\n    ### 1. Loop Variable Pointers\n\n    ```go\n    // ❌ WRONG - all\
+  \ pointers point to same variable\n    var pointers []*int\n    for i := 0; i <\
+  \ 3; i++ {\n        pointers = append(pointers, &i)\n    }\n    // All pointers\
+  \ point to i (final value: 3)\n\n    // ✅ CORRECT - create new variable each iteration\n\
+  \    var pointers []*int\n    for i := 0; i < 3; i++ {\n        num := i  // New\
+  \ variable\n        pointers = append(pointers, &num)\n    }\n    ```\n\n    ###\
+  \ 2. Nil Pointer Dereference\n\n    ```go\n    var p *int\n    // *p = 10  // ❌\
+  \ PANIC - nil pointer\n\n    // ✅ Always check for nil\n    if p != nil {\n    \
+  \    *p = 10\n    }\n    ```\n\n    ## Performance Considerations\n\n    From benchmarks,\
+  \ for small structs (< 32 bytes), passing by value is often faster than pointers\
+  \ due to CPU cache efficiency. For larger structs, pointers are more efficient.\n\
+  \n    ```go\n    type SmallStruct struct {\n        x, y int\n    }\n    // Pass\
+  \ by value - efficient (16 bytes)\n\n    type LargeStruct struct {\n        data\
+  \ [1000]int\n    }\n    // Pass by pointer - efficient (avoids 8KB copy)\n    ```\n\
+  \n    ## Summary\n\n    - **Pointers store memory addresses, not values**\n    -\
+  \ **`&` gets address, `*` dereferences (gets value)**\n    - **Use pointers to modify\
+  \ original values**\n    - **Use pointers to avoid copying large structs**\n   \
+  \ - **Slices and maps are already references**\n    - **Nil pointers are valid but\
+  \ dangerous to dereference**\n    - **Consider size and mutability when choosing\
+  \ pointers vs values**"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: Which operator dereferences a pointer in Go?
+  options:
+  - '*'
+  - '&'
+  - ->
+  - '@'
+  correct_answer: '*'
+  explanation: "The * (asterisk) operator dereferences a pointer in Go, meaning it accesses the value stored at the memory address the pointer holds. For example, if p is a pointer to an int, *p gives you the actual int value. The & operator does the opposite - it gets the memory address of a variable. The -> operator is used in C/C++ but not in Go, and @ is not a pointer operator in any of these languages."
+  require_pass: true

@@ -1,0 +1,414 @@
+<div class="practice-quiz-dashboard">
+  <div class="dashboard-header">
+    <h1>📚 Practice Quizzes</h1>
+    <p class="dashboard-subtitle">Choose your practice mode to strengthen your skills</p>
+  </div>
+
+  <div class="quiz-cards-grid">
+    <!-- Review Session Card -->
+    <div class="quiz-card review-session-card">
+      <div class="card-icon">🔄</div>
+      <h3>Review Session</h3>
+      <p class="card-description">Practice items due for review using spaced repetition</p>
+
+      <div class="card-stats">
+        <% if @due_review_count > 0 %>
+          <span class="stat-badge due"><%= @due_review_count %> items due</span>
+        <% else %>
+          <span class="stat-badge no-due">✅ All caught up!</span>
+        <% end %>
+      </div>
+
+      <% if @due_review_count > 0 %>
+        <%= button_to "Start Review Session", generate_review_session_quizzes_path,
+            method: :post,
+            class: "quiz-action-btn primary",
+            data: { confirm: "This will create a quiz with #{@due_review_count} review items. Ready?" } %>
+      <% else %>
+        <button class="quiz-action-btn disabled" disabled>No Reviews Due</button>
+      <% end %>
+
+      <div class="card-footer">
+        <small>⏱️ ~<%= (@due_review_count * 1.5).round %> minutes</small>
+      </div>
+    </div>
+
+    <!-- Topic Deep-Dive Card -->
+    <div class="quiz-card topic-deepdive-card">
+      <div class="card-icon">🎯</div>
+      <h3>Topic Deep-Dive</h3>
+      <p class="card-description">Master a specific topic with focused practice</p>
+
+      <div class="card-stats">
+        <span class="stat-badge"><%= @available_topics.length %> topics available</span>
+      </div>
+
+      <%= form_with url: generate_topic_deepdive_quizzes_path, method: :post, local: true, class: "topic-selection-form" do |f| %>
+        <div class="topic-select-wrapper">
+          <%= f.select :topic,
+              options_for_select(@available_topics),
+              { prompt: "Select a topic..." },
+              { class: "topic-select", required: true } %>
+        </div>
+
+        <%= f.submit "Start Deep-Dive", class: "quiz-action-btn primary" %>
+      <% end %>
+
+      <div class="card-footer">
+        <small>⏱️ ~15 minutes | 📝 15 questions</small>
+      </div>
+    </div>
+
+    <!-- Mastery Challenge Card -->
+    <div class="quiz-card mastery-challenge-card">
+      <div class="card-icon">🔥</div>
+      <h3>Mastery Challenge</h3>
+      <p class="card-description">Timed rapid-fire quiz to push commands to 100%</p>
+
+      <div class="card-stats">
+        <% if @near_mastery_commands > 0 %>
+          <span class="stat-badge challenge"><%= @near_mastery_commands %> commands ready</span>
+        <% else %>
+          <span class="stat-badge no-challenge">Keep practicing to unlock!</span>
+        <% end %>
+      </div>
+
+      <% if @near_mastery_commands >= 3 %>
+        <%= button_to "Take Challenge", generate_mastery_challenge_quizzes_path,
+            method: :post,
+            class: "quiz-action-btn challenge",
+            data: { confirm: "🔥 Ready for a 5-minute challenge? Let's do this!" } %>
+      <% else %>
+        <button class="quiz-action-btn disabled" disabled>
+          <%= @near_mastery_commands == 0 ? "No commands ready" : "Need #{3 - @near_mastery_commands} more" %>
+        </button>
+      <% end %>
+
+      <div class="card-footer">
+        <small>⏱️ 5 minutes | ⚡ Speed bonus</small>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recent Practice Quizzes -->
+  <% if @recent_quizzes.any? %>
+    <div class="recent-quizzes-section">
+      <h2>📊 Recent Practice</h2>
+      <div class="recent-quizzes-list">
+        <% @recent_quizzes.each do |quiz| %>
+          <% attempt = quiz.quiz_attempts.where(user: current_user).order(created_at: :desc).first %>
+          <div class="recent-quiz-item">
+            <div class="quiz-type-badge <%= quiz.quiz_type %>">
+              <%= quiz.quiz_type.humanize %>
+            </div>
+            <div class="quiz-info">
+              <h4><%= quiz.title %></h4>
+              <p><%= quiz.description %></p>
+            </div>
+            <div class="quiz-score">
+              <span class="score <%= attempt.passed? ? 'passed' : 'failed' %>">
+                <%= attempt.score %>%
+              </span>
+              <small><%= time_ago_in_words(attempt.created_at) %> ago</small>
+            </div>
+            <%= link_to "View Results", result_quiz_path(quiz, attempt_id: attempt.id),
+                class: "view-results-btn" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<style>
+.practice-quiz-dashboard {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.dashboard-header {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.dashboard-header h1 {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+  color: #2c3e50;
+}
+
+.dashboard-subtitle {
+  font-size: 1.1rem;
+  color: #7f8c8d;
+}
+
+.quiz-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 30px;
+  margin-bottom: 60px;
+}
+
+.quiz-card {
+  background: white;
+  border-radius: 15px;
+  padding: 30px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.quiz-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+.card-icon {
+  font-size: 3rem;
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+.quiz-card h3 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+  color: #2c3e50;
+  text-align: center;
+}
+
+.card-description {
+  text-align: center;
+  color: #7f8c8d;
+  margin-bottom: 20px;
+  min-height: 40px;
+}
+
+.card-stats {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.stat-badge {
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.stat-badge.due {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.stat-badge.no-due {
+  background: #d4edda;
+  color: #155724;
+}
+
+.stat-badge.challenge {
+  background: #ffe5e5;
+  color: #dc3545;
+}
+
+.stat-badge.no-challenge {
+  background: #e7e7e7;
+  color: #666;
+}
+
+.quiz-action-btn {
+  width: 100%;
+  padding: 15px;
+  border: none;
+  border-radius: 10px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 10px;
+}
+
+.quiz-action-btn.primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.quiz-action-btn.primary:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+.quiz-action-btn.challenge {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  color: white;
+}
+
+.quiz-action-btn.challenge:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(240, 147, 251, 0.4);
+}
+
+.quiz-action-btn.disabled {
+  background: #e0e0e0;
+  color: #999;
+  cursor: not-allowed;
+}
+
+.card-footer {
+  text-align: center;
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 1px solid #e0e0e0;
+  color: #7f8c8d;
+}
+
+.topic-selection-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.topic-select-wrapper {
+  position: relative;
+}
+
+.topic-select {
+  width: 100%;
+  padding: 12px 15px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 1rem;
+  background: white;
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+}
+
+.topic-select:focus {
+  outline: none;
+  border-color: #667eea;
+}
+
+/* Recent Quizzes Section */
+.recent-quizzes-section {
+  margin-top: 60px;
+  padding-top: 40px;
+  border-top: 2px solid #e0e0e0;
+}
+
+.recent-quizzes-section h2 {
+  font-size: 1.8rem;
+  margin-bottom: 25px;
+  color: #2c3e50;
+}
+
+.recent-quizzes-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.recent-quiz-item {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.quiz-type-badge {
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.quiz-type-badge.review_session {
+  background: #e3f2fd;
+  color: #1565c0;
+}
+
+.quiz-type-badge.topic_deepdive {
+  background: #f3e5f5;
+  color: #6a1b9a;
+}
+
+.quiz-type-badge.mastery_challenge {
+  background: #fce4ec;
+  color: #c2185b;
+}
+
+.quiz-info {
+  flex: 1;
+}
+
+.quiz-info h4 {
+  margin: 0 0 5px 0;
+  font-size: 1.1rem;
+  color: #2c3e50;
+}
+
+.quiz-info p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #7f8c8d;
+}
+
+.quiz-score {
+  text-align: center;
+}
+
+.quiz-score .score {
+  display: block;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 5px;
+}
+
+.quiz-score .score.passed {
+  color: #28a745;
+}
+
+.quiz-score .score.failed {
+  color: #dc3545;
+}
+
+.quiz-score small {
+  font-size: 0.8rem;
+  color: #999;
+}
+
+.view-results-btn {
+  padding: 10px 20px;
+  background: #667eea;
+  color: white;
+  text-decoration: none;
+  border-radius: 6px;
+  font-weight: 600;
+  transition: background 0.3s ease;
+}
+
+.view-results-btn:hover {
+  background: #5568d3;
+  text-decoration: none;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .quiz-cards-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .recent-quiz-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .quiz-score {
+    width: 100%;
+    text-align: left;
+  }
+}
+</style>

@@ -1,0 +1,93 @@
+slug: extractionmethods-practice
+title: extraction_methods — Practice
+difficulty: medium
+sequence_order: 9
+estimated_minutes: 2
+key_concepts:
+- extraction_methods
+prerequisites: []
+content_md: '# extraction_methods — Practice 🚀
+
+
+  Highly reactive metals (Al, Na, K, Ca, Mg) have very stable oxides and require electrolytic
+  reduction. Fe is extracted by carbon reduction, Cu by self-reduction.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 2
+  question: Which metals are extracted by electrolytic reduction?
+  options:
+  - Na, K, Ca, Mg, Al
+  - Fe, Zn, Pb, Cu
+  - Ag, Au, Pt
+  - Hg, Sn, Ni
+  require_pass: true
+  correct_answer: Na, K, Ca, Mg, Al
+  explanation: 'Metal extraction methods depend on reactivity (position in reactivity
+    series): **ELECTROLYTIC REDUCTION** (for highly reactive metals): Na, K, Ca,
+    Mg, Al - These have very stable oxides that cannot be reduced by carbon or CO.
+    They require electrolysis of molten salts (e.g., Al from Al₂O₃, Na from NaCl).
+    **CARBON/CO REDUCTION** (for moderately reactive metals): Fe, Zn, Pb, Sn - Extracted
+    by heating their oxides with carbon/coke in furnaces (e.g., Fe from Fe₂O₃ in
+    blast furnace). **SELF-REDUCTION** (for less reactive metals): Cu, Hg - Cu₂S
+    partially oxidizes to Cu₂O, which then reacts with remaining Cu₂S (self-reduction).
+    **OCCUR FREE** (for noble/least reactive metals): Ag, Au, Pt - Found naturally
+    in metallic state, need only physical separation. Reactivity series: K > Na >
+    Ca > Mg > Al > Zn > Fe > Pb > Cu > Hg > Ag > Au. General rule: Higher reactivity
+    = more energy needed for extraction = more expensive.'
+- type: mcq
+  sequence_order: 3
+  question: Why cannot aluminum be extracted by carbon reduction?
+  options:
+  - Carbon is more expensive than electricity
+  - Aluminum oxide is too stable and carbon cannot reduce it
+  - Aluminum reacts with carbon forming carbides
+  - Carbon reduction produces impure aluminum
+  require_pass: true
+  correct_answer: Aluminum oxide is too stable and carbon cannot reduce it
+  explanation: 'Aluminum cannot be extracted by carbon reduction because: **Al₂O₃
+    is extremely stable** - Aluminum has very high affinity for oxygen. In Ellingham
+    diagram, the Al₂O₃ line lies **below** the C→CO line at all temperatures, meaning
+    the reaction Al₂O₃ + C → Al + CO is **thermodynamically unfavorable** (positive
+    ΔG). Carbon simply cannot "steal" oxygen from Al₂O₃. Additionally: (1) Even if
+    attempted, Al forms carbides (Al₄C₃) with carbon, contaminating the product.
+    (2) Very high temperatures (~2000°C+) would be needed, making it impractical.
+    **Solution: Hall-Heroult process** - Electrolysis of molten Al₂O₃ dissolved in
+    cryolite at ~950°C. Electrical energy (not chemical reducing agent) breaks the
+    strong Al-O bonds. This is why aluminum was once more precious than gold (before
+    1886)! Historical: Napoleon III had aluminum cutlery for special guests while
+    others used gold/silver. After Hall-Heroult process made aluminum extraction
+    feasible, price dropped dramatically.'
+- type: mcq
+  sequence_order: 4
+  question: Which extraction method involves heating the ore in limited air to remove
+    moisture and CO₂?
+  options:
+  - Roasting
+  - Calcination
+  - Smelting
+  - Leaching
+  require_pass: true
+  correct_answer: Calcination
+  explanation: '**Calcination** = heating ore in **limited or absent air** to remove
+    volatile impurities like H₂O, CO₂, organic matter. Examples: (1) ZnCO₃ → ZnO
+    + CO₂ (zinc carbonate to zinc oxide), (2) CaCO₃ → CaO + CO₂ (limestone to quicklime),
+    (3) Al₂O₃·2H₂O → Al₂O₃ + 2H₂O (hydrated alumina to alumina). Used for: carbonate
+    ores, hydrated ores. **Roasting** = heating ore in **excess air/oxygen** to convert
+    sulfides to oxides. Examples: 2ZnS + 3O₂ → 2ZnO + 2SO₂, 2Cu₂S + 3O₂ → 2Cu₂O
+    + 2SO₂. Used for: sulfide ores. **Key difference**: Air supply! Calcination (limited
+    air) vs Roasting (excess air). **Smelting** = heating ore with reducing agent
+    (C, CO) to obtain metal. Example: ZnO + C → Zn + CO. **Leaching** = chemical
+    extraction using solvents (not heating). Example: Bauxite (Al₂O₃) + NaOH → NaAlO₂
+    (Bayer process).'

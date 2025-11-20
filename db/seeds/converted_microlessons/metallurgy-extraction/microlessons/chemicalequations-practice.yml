@@ -1,0 +1,79 @@
+slug: chemicalequations-practice
+title: chemical_equations — Practice
+difficulty: medium
+sequence_order: 14
+estimated_minutes: 2
+key_concepts:
+- chemical_equations
+prerequisites: []
+content_md: '# chemical_equations — Practice 🚀
+
+
+  Balanced equation: 2ZnS + 3O₂ → 2ZnO + 2SO₂. This is the roasting of zinc sulfide
+  to convert it to zinc oxide before reduction.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: short_answer
+  sequence_order: 2
+  hints:
+  - Re-read the question carefully.
+  - Recall the relevant formula or rule.
+  - Review the explanation once you answer.
+  question: 'Balance the roasting reaction: ZnS + O₂ → ZnO + SO₂'
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: 'Which of the following represents the thermite reaction for aluminum
+    extraction?'
+  options:
+  - Fe₂O₃ + 2Al → 2Fe + Al₂O₃
+  - 2Al₂O₃ → 4Al + 3O₂
+  - Al₂O₃ + 3C → 2Al + 3CO
+  - 2Al + 3H₂O → Al₂O₃ + 3H₂
+  require_pass: true
+  correct_answer: Fe₂O₃ + 2Al → 2Fe + Al₂O₃
+  explanation: 'The thermite reaction is an **aluminothermic process** where aluminum
+    reduces metal oxides: **Fe₂O₃ + 2Al → 2Fe + Al₂O₃**. This is a highly exothermic
+    reaction (releases enormous heat, temperature reaches ~2500°C). Process: (1) Aluminum
+    powder mixed with iron oxide (rust), (2) Ignited with magnesium ribbon, (3) Produces
+    molten iron and aluminum oxide slag. The reaction is so vigorous that iron becomes
+    white-hot and molten! Applications: (1) Welding railway tracks (thermite welding),
+    (2) Incendiary devices (military), (3) Emergency cutting through metal. Why aluminum?
+    Aluminum has higher affinity for oxygen than iron (more reactive), so it displaces
+    iron from its oxide. This demonstrates the reactivity series: more reactive metals
+    can displace less reactive metals from their compounds. The thermite reaction
+    is NOT used for aluminum extraction itself - aluminum is extracted by electrolysis
+    of Al₂O₃.'
+- type: mcq
+  sequence_order: 4
+  question: 'In the blast furnace for iron extraction, which reaction reduces Fe₂O₃
+    to iron?'
+  options:
+  - Fe₂O₃ + 3C → 2Fe + 3CO
+  - Fe₂O₃ + 3CO → 2Fe + 3CO₂
+  - Fe₂O₃ + 3H₂ → 2Fe + 3H₂O
+  - 2Fe₂O₃ + 3O₂ → 4Fe + 3CO₂
+  require_pass: true
+  correct_answer: Fe₂O₃ + 3CO → 2Fe + 3CO₂
+  explanation: 'Iron extraction in blast furnace involves **carbon monoxide as the
+    main reducing agent**: **Fe₂O₃ + 3CO → 2Fe + 3CO₂**. The process occurs in stages:
+    (1) Coke (C) burns in hot air: **C + O₂ → CO₂** (exothermic, provides heat),
+    (2) CO₂ reacts with more coke: **CO₂ + C → 2CO** (endothermic, produces reducing
+    agent), (3) CO reduces iron ore: **Fe₂O₃ + 3CO → 2Fe + 3CO₂** (main reduction).
+    The reduction actually happens in three steps: Fe₂O₃ → Fe₃O₄ → FeO → Fe (gradual
+    reduction). Temperature zones in blast furnace: Bottom (1900°C) - molten iron
+    collects, Middle (800-1200°C) - reduction occurs, Top (200-400°C) - heating and
+    drying. Common misconception: While carbon (C) does reduce some iron oxide directly
+    (Fe₂O₃ + 3C → 2Fe + 3CO), the **primary reducing agent is CO, not C**. This makes
+    the process more efficient at lower temperatures.'

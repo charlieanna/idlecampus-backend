@@ -1,0 +1,58 @@
+slug: osmoticpressure-practice
+title: osmotic_pressure — Practice
+difficulty: medium
+sequence_order: 13
+estimated_minutes: 2
+key_concepts:
+- osmotic_pressure
+prerequisites: []
+content_md: '# osmotic_pressure — Practice 🚀
+
+
+  π = CRT = 0.2 × 0.0821 × 300 = 4.926 atm
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: 'Calculate the osmotic pressure of a 0.2 M solution at 300 K. (R = 0.0821 L atm K⁻¹ mol⁻¹)'
+  options:
+  - '4.926 atm'
+  - '2.463 atm'
+  - '9.852 atm'
+  - '0.493 atm'
+  correct_answer: '4.926 atm'
+  explanation: "Using the van't Hoff equation: π = CRT, where π is osmotic pressure, C is molar concentration, R is gas constant, and T is temperature in Kelvin. Given: C = 0.2 M, R = 0.0821 L atm K⁻¹ mol⁻¹, T = 300 K. Therefore, π = 0.2 × 0.0821 × 300 = 4.926 atm. This equation is analogous to the ideal gas equation PV = nRT, treating the solution like an ideal gas."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: 'Osmotic pressure is the pressure required to:'
+  options:
+  - Prevent osmosis (flow of solvent into solution through semipermeable membrane)
+  - Increase the rate of osmosis
+  - Dissolve more solute
+  - Decrease temperature
+  correct_answer: Prevent osmosis (flow of solvent into solution through semipermeable membrane)
+  explanation: "Osmotic pressure is the external pressure that must be applied to the solution side to prevent osmosis - the spontaneous flow of solvent from pure solvent (or dilute solution) into solution (or concentrated solution) through a semipermeable membrane. The membrane allows solvent molecules to pass but blocks solute particles. Osmotic pressure is a colligative property and can be used to determine molar mass of polymers and biomolecules."
+  require_pass: false
+- type: mcq
+  sequence_order: 3
+  question: 'Reverse osmosis is used for:'
+  options:
+  - Desalination of seawater by applying pressure greater than osmotic pressure
+  - Increasing salt content in water
+  - Measuring molecular weight
+  - Decreasing pressure
+  correct_answer: Desalination of seawater by applying pressure greater than osmotic pressure
+  explanation: "Reverse osmosis is the process where pressure greater than the osmotic pressure is applied to the solution side, forcing solvent (water) to flow from the concentrated solution (seawater) through the semipermeable membrane to the pure solvent side - opposite to natural osmosis. This is used commercially for desalination of seawater to produce drinking water, purification of water, and concentration of solutions. It's an energy-intensive but effective purification method."
+  require_pass: false

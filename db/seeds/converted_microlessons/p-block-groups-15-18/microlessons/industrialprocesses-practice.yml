@@ -1,0 +1,59 @@
+slug: industrialprocesses-practice
+title: industrial_processes — Practice
+difficulty: easy
+sequence_order: 18
+estimated_minutes: 2
+key_concepts:
+- industrial_processes
+prerequisites: []
+content_md: '# industrial_processes — Practice 🚀
+
+
+  Contact process uses V₂O₅ as catalyst for oxidation: 2SO₂ + O₂ → 2SO₃. Pt is used
+  in Ostwald process (HNO₃), Fe in Haber (NH₃).
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 2
+  question: In Contact process for H₂SO₄ production, which catalyst is used?
+  options:
+  - Platinum (Pt)
+  - Iron (Fe)
+  - Vanadium pentoxide (V₂O₅)
+  - Nickel (Ni)
+  correct_answer: Vanadium pentoxide (V₂O₅)
+  explanation: "In the Contact process for sulfuric acid production, vanadium pentoxide (V₂O₅) is used as a catalyst for the oxidation of SO₂ to SO₃: 2SO₂ + O₂ ⇌ 2SO₃. The reaction is carried out at approximately 450°C. While platinum can also catalyze this reaction, V₂O₅ is preferred industrially because it is cheaper and not poisoned by impurities. Iron (Fe) is used in the Haber process for ammonia production, and platinum is used in the Ostwald process for nitric acid production."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: Which catalyst is used in the Ostwald process for nitric acid production?
+  options:
+  - Vanadium pentoxide (V₂O₅)
+  - Platinum (Pt)
+  - Iron (Fe)
+  - Manganese dioxide (MnO₂)
+  correct_answer: Platinum (Pt)
+  explanation: "In the Ostwald process for nitric acid production, platinum (Pt) is used as a catalyst for the oxidation of ammonia: 4NH₃ + 5O₂ → 4NO + 6H₂O. This reaction is carried out at high temperature (around 800°C). The platinum catalyst is typically in the form of a platinum-rhodium gauze. The nitric oxide (NO) produced is then further oxidized to NO₂, which reacts with water to form nitric acid. V₂O₅ is used in the Contact process for sulfuric acid, and Fe is used in the Haber process for ammonia."
+  require_pass: true
+- type: mcq
+  sequence_order: 4
+  question: What is the optimum temperature and pressure for the Haber process?
+  options:
+  - 450°C and 200 atm
+  - 800°C and 1 atm
+  - 250°C and 100 atm
+  - 600°C and 50 atm
+  correct_answer: 450°C and 200 atm
+  explanation: "The Haber process for ammonia production (N₂ + 3H₂ ⇌ 2NH₃) operates at approximately 450°C and 200 atm pressure, using an iron (Fe) catalyst. These conditions represent a compromise: the reaction is exothermic, so lower temperatures favor product formation, but rates would be too slow. Higher pressure favors ammonia formation (fewer moles of gas on product side), but extremely high pressures are expensive to maintain. The temperature and pressure are optimized to give maximum yield at economically viable reaction rates."
+  require_pass: true

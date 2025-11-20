@@ -1,0 +1,58 @@
+slug: packingefficiency-practice
+title: packing_efficiency — Practice
+difficulty: easy
+sequence_order: 9
+estimated_minutes: 2
+key_concepts:
+- packing_efficiency
+prerequisites: []
+content_md: '# packing_efficiency — Practice 🚀
+
+
+  FCC (also called CCP) has the maximum packing efficiency of 74%.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What is the maximum packing efficiency in a crystal structure?
+  options:
+  - 52%
+  - 68%
+  - 74%
+  - 100%
+  correct_answer: 74%
+  explanation: "The maximum packing efficiency in crystal structures is 74%, achieved by FCC (face-centered cubic) and HCP (hexagonal close packing) structures. These are called closest packing arrangements. BCC has 68% and simple cubic has 52% packing efficiency."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What is the packing efficiency of BCC structure?
+  options:
+  - 52%
+  - 68%
+  - 74%
+  - 90%
+  correct_answer: 68%
+  explanation: "Body-centered cubic (BCC) structure has a packing efficiency of 68%. This is intermediate between simple cubic (52%) and the closest packing structures FCC/HCP (74%). The packing efficiency represents the percentage of space occupied by atoms in the unit cell."
+  require_pass: false
+- type: mcq
+  sequence_order: 3
+  question: Which structures have the same packing efficiency?
+  options:
+  - FCC and HCP
+  - BCC and FCC
+  - Simple cubic and BCC
+  - HCP and BCC
+  correct_answer: FCC and HCP
+  explanation: "FCC (face-centered cubic) and HCP (hexagonal close packing) both have the same maximum packing efficiency of 74%. They are both closest packing arrangements, differing only in the stacking sequence: ABCABC for FCC and ABAB for HCP."
+  require_pass: false

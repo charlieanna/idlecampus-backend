@@ -1,0 +1,260 @@
+slug: lesson-6
+title: Lesson 6
+difficulty: easy
+sequence_order: 6
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Message Queues in Production\n\n    Building\
+  \ production-ready message queue systems requires handling edge cases, monitoring,\
+  \ and robust error handling.\n\n    ## Idempotency and Deduplication\n\n    **Idempotency**:\
+  \ Processing a message multiple times has the same effect as processing it once.\n\
+  \n    ### Why Idempotency Matters\n\n    ```python\n    # Problem: Message delivered\
+  \ twice\n    def handle_order_payment(order_id, amount):\n        charge_credit_card(order_id,\
+  \ amount)  # DANGER!\n        # If message processed twice → Customer charged twice!\
+  \ ❌\n\n    # Same message delivered twice:\n    Message 1: Charge $100\n    Message\
+  \ 2: Charge $100 (duplicate)\n    Result: Customer charged $200 ❌\n    ```\n\n \
+  \   **Causes of duplicates:**\n    - Network failures (producer retries)\n    -\
+  \ Consumer crashes after processing but before ACK\n    - Queue redelivers message\n\
+  \n    ### Solution 1: Idempotent Operations\n\n    **Make operations naturally idempotent**\n\
+  \n    ```python\n    # Idempotent: Set operations\n    def handle_order_status(order_id,\
+  \ status):\n        db.execute(\n            \"UPDATE orders SET status = ? WHERE\
+  \ id = ?\",\n            status, order_id\n        )\n        # Setting status='shipped'\
+  \ multiple times → Same result ✓\n\n    # Idempotent: Upsert\n    def handle_user_update(user_id,\
+  \ data):\n        db.execute(\"\"\"\n            INSERT INTO users (id, name, email)\n\
+  \            VALUES (?, ?, ?)\n            ON CONFLICT (id) DO UPDATE\n        \
+  \    SET name = EXCLUDED.name, email = EXCLUDED.email\n        \"\"\", user_id,\
+  \ data['name'], data['email'])\n        # Duplicate messages → Same final state\
+  \ ✓\n    ```\n\n    ### Solution 2: Deduplication with Message ID\n\n    **Track\
+  \ processed message IDs**\n\n    ```python\n    # Schema for tracking processed\
+  \ messages\n    CREATE TABLE processed_messages (\n        message_id VARCHAR(255)\
+  \ PRIMARY KEY,\n        processed_at TIMESTAMP NOT NULL,\n        INDEX idx_processed_at\
+  \ (processed_at)\n    );\n\n    # Clean up old entries (keep 7 days)\n    DELETE\
+  \ FROM processed_messages\n    WHERE processed_at < NOW() - INTERVAL '7 days';\n\
+  \n    # Idempotent handler\n    def handle_payment(message):\n        message_id\
+  \ = message['id']\n\n        # Check if already processed\n        if db.exists(\"\
+  SELECT 1 FROM processed_messages WHERE message_id = ?\", message_id):\n        \
+  \    print(f\"Message {message_id} already processed, skipping\")\n            return\
+  \  # Skip duplicate ✓\n\n        # Process message\n        try:\n            #\
+  \ Use transaction for atomicity\n            with db.transaction():\n          \
+  \      # 1. Record message as processed\n                db.execute(\n         \
+  \           \"INSERT INTO processed_messages (message_id, processed_at) VALUES (?,\
+  \ ?)\",\n                    message_id, datetime.now()\n                )\n\n \
+  \               # 2. Perform business logic\n                charge_credit_card(message['order_id'],\
+  \ message['amount'])\n\n                # Both succeed or both fail (atomic)\n \
+  \       except Exception as e:\n            # Transaction rolled back\n        \
+  \    raise\n    ```\n\n    ### Solution 3: Idempotency Key\n\n    **Let client provide\
+  \ idempotency key**\n\n    ```python\n    # Client generates idempotency key\n \
+  \   import uuid\n\n    idempotency_key = str(uuid.uuid4())\n\n    response = requests.post('/api/orders',\
+  \ json={\n        'items': [...],\n        'idempotency_key': idempotency_key\n\
+  \    })\n\n    # If request fails, retry with SAME key\n    if response.status_code\
+  \ >= 500:\n        # Retry with same idempotency key\n        response = requests.post('/api/orders',\
+  \ json={\n            'items': [...],\n            'idempotency_key': idempotency_key\
+  \  # Same key!\n        })\n\n    # Server-side\n    def create_order(request):\n\
+  \        idempotency_key = request['idempotency_key']\n\n        # Check if already\
+  \ processed\n        existing = db.query(\n            \"SELECT * FROM orders WHERE\
+  \ idempotency_key = ?\",\n            idempotency_key\n        )\n\n        if existing:\n\
+  \            # Return existing result\n            return existing\n\n        #\
+  \ Create new order\n        order = Order.create(request['items'])\n        order.idempotency_key\
+  \ = idempotency_key\n        db.save(order)\n\n        return order\n    ```\n\n\
+  \    ## Message Ordering\n\n    **Guarantee messages processed in order**\n\n  \
+  \  ### Problem: Out-of-Order Processing\n\n    ```python\n    # Events arrive in\
+  \ order:\n    Event 1: AccountCreated(id=123, balance=0)\n    Event 2: MoneyDeposited(id=123,\
+  \ amount=100)\n    Event 3: MoneyWithdrawn(id=123, amount=50)\n\n    # Multiple\
+  \ consumers process in parallel:\n    Consumer A: Processes Event 2 → Error! Account\
+  \ doesn't exist yet ❌\n    Consumer B: Processes Event 1 → Creates account ✓\n \
+  \   Consumer C: Processes Event 3 → Error! Insufficient funds ❌\n    ```\n\n   \
+  \ ### Solution 1: Partition by Key (Kafka)\n\n    **Messages with same key go to\
+  \ same partition → Ordered**\n\n    ```python\n    # Producer: Use account_id as\
+  \ key\n    producer.send(\n        topic='accounts',\n        key=str(account_id),\
+  \  # Partition key\n        value=event\n    )\n\n    # Kafka guarantees:\n    #\
+  \ - All messages with key=123 go to same partition\n    # - Single partition → Ordered\
+  \ processing ✓\n    # - Single consumer per partition → No race conditions ✓\n\n\
+  \    # Consumer\n    consumer = KafkaConsumer(\n        'accounts',\n        group_id='account-service',\n\
+  \        max_poll_records=1  # Process one message at a time\n    )\n\n    for message\
+  \ in consumer:\n        process_event(message.value)  # Ordered! ✓\n    ```\n\n\
+  \    ### Solution 2: Sequence Numbers\n\n    **Track sequence, detect gaps**\n\n\
+  \    ```python\n    # Add sequence number to messages\n    class EventProducer:\n\
+  \        def __init__(self):\n            self.sequences = {}  # {aggregate_id:\
+  \ sequence}\n\n        def publish(self, aggregate_id, event):\n            # Get\
+  \ next sequence for this aggregate\n            seq = self.sequences.get(aggregate_id,\
+  \ 0) + 1\n            self.sequences[aggregate_id] = seq\n\n            event['sequence']\
+  \ = seq\n            event['aggregate_id'] = aggregate_id\n\n            kafka.send('events',\
+  \ event)\n\n    # Consumer with sequence tracking\n    class EventConsumer:\n  \
+  \      def __init__(self):\n            self.next_expected = {}  # {aggregate_id:\
+  \ next_seq}\n            self.buffer = {}  # {aggregate_id: [events]}\n\n      \
+  \  def process(self, event):\n            aggregate_id = event['aggregate_id']\n\
+  \            sequence = event['sequence']\n\n            expected = self.next_expected.get(aggregate_id,\
+  \ 1)\n\n            if sequence == expected:\n                # Process this event\n\
+  \                self.handle_event(event)\n                self.next_expected[aggregate_id]\
+  \ = sequence + 1\n\n                # Process buffered events\n                self._process_buffer(aggregate_id)\n\
+  \n            elif sequence > expected:\n                # Gap detected! Buffer\
+  \ this event\n                if aggregate_id not in self.buffer:\n            \
+  \        self.buffer[aggregate_id] = []\n                self.buffer[aggregate_id].append(event)\n\
+  \n                print(f\"Gap detected: expected {expected}, got {sequence}\")\n\
+  \n            else:\n                # Duplicate (sequence < expected)\n       \
+  \         print(f\"Duplicate: {sequence} already processed\")\n\n        def _process_buffer(self,\
+  \ aggregate_id):\n            if aggregate_id not in self.buffer:\n            \
+  \    return\n\n            # Sort buffered events by sequence\n            self.buffer[aggregate_id].sort(key=lambda\
+  \ e: e['sequence'])\n\n            # Process consecutive events\n            expected\
+  \ = self.next_expected[aggregate_id]\n            for event in self.buffer[aggregate_id][:]:\n\
+  \                if event['sequence'] == expected:\n                    self.handle_event(event)\n\
+  \                    self.next_expected[aggregate_id] = expected + 1\n         \
+  \           expected += 1\n                    self.buffer[aggregate_id].remove(event)\n\
+  \                else:\n                    break\n    ```\n\n    ### Solution 3:\
+  \ Single-Threaded Consumer per Aggregate\n\n    **Ensure one consumer per aggregate\
+  \ ID**\n\n    ```python\n    # RabbitMQ with consistent hashing\n    def get_queue_for_aggregate(aggregate_id,\
+  \ num_queues=10):\n        # Hash aggregate_id to queue number\n        queue_num\
+  \ = hash(aggregate_id) % num_queues\n        return f\"accounts_queue_{queue_num}\"\
+  \n\n    # Producer\n    def publish_event(aggregate_id, event):\n        queue =\
+  \ get_queue_for_aggregate(aggregate_id)\n        channel.basic_publish(\n      \
+  \      exchange='',\n            routing_key=queue,\n            body=json.dumps(event)\n\
+  \        )\n\n    # Multiple consumers, each handling different queues\n    # Consumer\
+  \ 1: accounts_queue_0\n    # Consumer 2: accounts_queue_1\n    # ...\n    # Consumer\
+  \ 10: accounts_queue_9\n\n    # Same aggregate_id always goes to same queue → Same\
+  \ consumer → Ordered! ✓\n    ```\n\n    ## Monitoring and Observability\n\n    **Track\
+  \ message queue health and performance**\n\n    ### Key Metrics\n\n    ```python\n\
+  \    # 1. Queue Depth (Messages Waiting)\n    queue_depth = rabbitmq.get_queue_depth('orders')\n\
+  \n    # Alert if queue backs up\n    if queue_depth > 10000:\n        alert(\"Queue\
+  \ depth too high: consumers can't keep up\")\n\n    # 2. Processing Rate\n    messages_per_second\
+  \ = processed_count / time_window\n\n    # 3. Consumer Lag (Kafka)\n    consumer_lag\
+  \ = latest_offset - current_offset\n\n    if consumer_lag > 100000:\n        alert(\"\
+  Consumer lag too high: falling behind\")\n\n    # 4. Processing Time\n    start\
+  \ = time.time()\n    process_message(message)\n    duration = time.time() - start\n\
+  \n    metrics.histogram('message.processing_time', duration)\n\n    # 5. Error Rate\n\
+  \    error_rate = errors / total_messages\n\n    if error_rate > 0.01:  # 1%\n \
+  \       alert(\"High error rate\")\n\n    # 6. Dead Letter Queue Size\n    dlq_size\
+  \ = rabbitmq.get_queue_depth('orders_dlq')\n\n    if dlq_size > 100:\n        alert(\"\
+  Many messages failing\")\n    ```\n\n    ### Prometheus Metrics\n\n    ```python\n\
+  \    from prometheus_client import Counter, Histogram, Gauge\n\n    # Define metrics\n\
+  \    messages_processed = Counter(\n        'messages_processed_total',\n      \
+  \  'Total messages processed',\n        ['queue', 'status']\n    )\n\n    processing_duration\
+  \ = Histogram(\n        'message_processing_duration_seconds',\n        'Time to\
+  \ process message',\n        ['queue']\n    )\n\n    queue_depth = Gauge(\n    \
+  \    'queue_depth',\n        'Current queue depth',\n        ['queue']\n    )\n\n\
+  \    # Instrument consumer\n    def process_message(message):\n        start = time.time()\n\
+  \n        try:\n            # Business logic\n            handle_order(message)\n\
+  \n            # Record success\n            messages_processed.labels(queue='orders',\
+  \ status='success').inc()\n\n        except Exception as e:\n            # Record\
+  \ failure\n            messages_processed.labels(queue='orders', status='error').inc()\n\
+  \            raise\n\n        finally:\n            # Record duration\n        \
+  \    duration = time.time() - start\n            processing_duration.labels(queue='orders').observe(duration)\n\
+  \n    # Background: Update queue depth\n    def update_queue_metrics():\n      \
+  \  while True:\n            depth = rabbitmq.get_queue_depth('orders')\n       \
+  \     queue_depth.labels(queue='orders').set(depth)\n            time.sleep(10)\n\
+  \    ```\n\n    ### Distributed Tracing\n\n    ```python\n    from opentelemetry\
+  \ import trace\n    from opentelemetry.propagate import extract\n\n    tracer =\
+  \ trace.get_tracer(__name__)\n\n    # Producer: Inject trace context\n    def publish_order(order):\n\
+  \        with tracer.start_as_current_span('publish_order') as span:\n         \
+  \   span.set_attribute('order_id', order['id'])\n\n            # Inject trace context\
+  \ into message\n            ctx = {}\n            inject(ctx)\n\n            message\
+  \ = {\n                'data': order,\n                'trace_context': ctx  # Propagate\
+  \ trace\n            }\n\n            kafka.send('orders', message)\n\n    # Consumer:\
+  \ Extract trace context\n    def handle_order(message):\n        # Extract trace\
+  \ context\n        ctx = extract(message['trace_context'])\n\n        with tracer.start_as_current_span('handle_order',\
+  \ context=ctx) as span:\n            span.set_attribute('order_id', message['data']['id'])\n\
+  \n            # Process order\n            process_order(message['data'])\n\n  \
+  \      # Now entire flow traced across services! ✓\n    ```\n\n    ## Error Handling\
+  \ and Circuit Breakers\n\n    ### Circuit Breaker Pattern\n\n    **Stop calling\
+  \ failing service**\n\n    ```python\n    class CircuitBreaker:\n        def __init__(self,\
+  \ failure_threshold=5, timeout=60):\n            self.failure_threshold = failure_threshold\n\
+  \            self.timeout = timeout\n            self.failures = 0\n           \
+  \ self.last_failure_time = None\n            self.state = 'closed'  # closed, open,\
+  \ half_open\n\n        def call(self, func, *args, **kwargs):\n            if self.state\
+  \ == 'open':\n                if time.time() - self.last_failure_time > self.timeout:\n\
+  \                    # Try again (half-open)\n                    self.state = 'half_open'\n\
+  \                else:\n                    # Still open, fail fast\n          \
+  \          raise Exception(\"Circuit breaker open\")\n\n            try:\n     \
+  \           result = func(*args, **kwargs)\n\n                # Success - reset\n\
+  \                if self.state == 'half_open':\n                    self.state =\
+  \ 'closed'\n                    self.failures = 0\n\n                return result\n\
+  \n            except Exception as e:\n                self.failures += 1\n     \
+  \           self.last_failure_time = time.time()\n\n                if self.failures\
+  \ >= self.failure_threshold:\n                    self.state = 'open'\n        \
+  \            print(f\"Circuit breaker opened after {self.failures} failures\")\n\
+  \n                raise\n\n    # Usage in message handler\n    email_circuit_breaker\
+  \ = CircuitBreaker(failure_threshold=5, timeout=60)\n\n    def handle_order(message):\n\
+  \        try:\n            # Try to send email\n            email_circuit_breaker.call(send_email,\
+  \ message['email'], message['order'])\n        except Exception as e:\n        \
+  \    # Circuit breaker open or email failed\n            print(f\"Email failed:\
+  \ {e}\")\n\n            # Store for retry later\n            db.save_failed_email(message)\n\
+  \n            # Don't fail entire message processing\n            # Continue with\
+  \ other logic\n\n        # Update inventory (critical - must succeed)\n        update_inventory(message['items'])\n\
+  \    ```\n\n    ### Bulkhead Pattern\n\n    **Isolate resources to prevent cascading\
+  \ failures**\n\n    ```python\n    import concurrent.futures\n\n    # Separate thread\
+  \ pools for different operations\n    email_pool = concurrent.futures.ThreadPoolExecutor(max_workers=5)\n\
+  \    inventory_pool = concurrent.futures.ThreadPoolExecutor(max_workers=20)\n  \
+  \  analytics_pool = concurrent.futures.ThreadPoolExecutor(max_workers=2)\n\n   \
+  \ def handle_order(message):\n        # Non-critical: Email (limited pool)\n   \
+  \     email_future = email_pool.submit(send_email, message)\n\n        # Critical:\
+  \ Inventory (larger pool)\n        inventory_future = inventory_pool.submit(update_inventory,\
+  \ message)\n\n        # Non-critical: Analytics (small pool)\n        analytics_future\
+  \ = analytics_pool.submit(track_analytics, message)\n\n        # Wait for critical\
+  \ operations\n        inventory_future.result()  # Must succeed\n\n        # Best\
+  \ effort for non-critical\n        try:\n            email_future.result(timeout=5)\n\
+  \        except Exception:\n            pass  # Don't fail if email fails\n    ```\n\
+  \n    ## Scaling Strategies\n\n    ### Horizontal Scaling\n\n    **Add more consumers**\n\
+  \n    ```python\n    # Scale consumers based on queue depth\n\n    # Kubernetes\
+  \ HPA (Horizontal Pod Autoscaler)\n    apiVersion: autoscaling/v2\n    kind: HorizontalPodAutoscaler\n\
+  \    metadata:\n      name: order-consumer\n    spec:\n      scaleTargetRef:\n \
+  \       apiVersion: apps/v1\n        kind: Deployment\n        name: order-consumer\n\
+  \      minReplicas: 2\n      maxReplicas: 50\n      metrics:\n      - type: External\n\
+  \        external:\n          metric:\n            name: rabbitmq_queue_messages_ready\n\
+  \            selector:\n              matchLabels:\n                queue: orders\n\
+  \          target:\n            type: AverageValue\n            averageValue: \"\
+  100\"  # Scale if >100 msgs per pod\n    ```\n\n    ### Partitioning\n\n    **Distribute\
+  \ load across partitions**\n\n    ```python\n    # Kafka: More partitions = more\
+  \ parallelism\n\n    # Create topic with 30 partitions\n    kafka.create_topic('orders',\
+  \ num_partitions=30, replication_factor=3)\n\n    # Deploy 30 consumers in same\
+  \ group\n    # Each consumer gets 1 partition\n    # 30x parallelism! ✓\n\n    #\
+  \ Scale up: Add more partitions + consumers\n    kafka.alter_topic('orders', num_partitions=60)\n\
+  \    # Deploy 60 consumers → 60x parallelism\n    ```\n\n    ### Batch Processing\n\
+  \n    **Process multiple messages together**\n\n    ```python\n    # Process in\
+  \ batches for efficiency\n    def batch_consumer():\n        batch = []\n      \
+  \  batch_size = 100\n\n        for message in consumer:\n            batch.append(message)\n\
+  \n            if len(batch) >= batch_size:\n                process_batch(batch)\n\
+  \                batch = []\n\n    def process_batch(messages):\n        # Extract\
+  \ data\n        orders = [msg['data'] for msg in messages]\n\n        # Bulk database\
+  \ insert\n        db.bulk_insert('orders', orders)\n\n        # Bulk commit offsets\n\
+  \        consumer.commit()\n\n        # 100x fewer DB calls! ✓\n    ```\n\n    ##\
+  \ Common Pitfalls\n\n    ### 1. Poison Messages\n\n    **Message that always fails**\n\
+  \n    ```python\n    # Problem: Poison message blocks queue\n    def handle_message(message):\n\
+  \        data = json.loads(message)  # Parse error!\n        # Message redelivered\
+  \ infinitely ❌\n\n    # Solution: Dead letter queue with retry limit\n    def handle_message(message):\n\
+  \        retry_count = message.get('retry_count', 0)\n\n        try:\n         \
+  \   data = json.loads(message)\n            process(data)\n        except Exception\
+  \ as e:\n            if retry_count >= 3:\n                # Send to DLQ\n     \
+  \           dlq.send(message)\n                ack(message)\n            else:\n\
+  \                # Retry\n                message['retry_count'] = retry_count +\
+  \ 1\n                nack(message)\n    ```\n\n    ### 2. Large Messages\n\n   \
+  \ **Messages too big for queue**\n\n    ```python\n    # Problem: Send 10MB image\
+  \ in message\n    kafka.send('images', {\n        'image_data': base64.encode(large_image)\
+  \  # Too big! ❌\n    })\n\n    # Solution: Send reference, not data\n    # 1. Upload\
+  \ to S3\n    s3_url = s3.upload(large_image)\n\n    # 2. Send reference\n    kafka.send('images',\
+  \ {\n        'image_url': s3_url,  # Small message ✓\n        'size': len(large_image)\n\
+  \    })\n\n    # 3. Consumer downloads from S3\n    def handle_image(message):\n\
+  \        image = s3.download(message['image_url'])\n        process_image(image)\n\
+  \    ```\n\n    ### 3. Message Loss\n\n    **Producer doesn't wait for confirmation**\n\
+  \n    ```python\n    # Problem: Fire and forget\n    kafka.send('orders', order)\
+  \  # Not confirmed! ❌\n\n    # Solution: Wait for ack\n    future = kafka.send('orders',\
+  \ order)\n    future.get(timeout=10)  # Wait for confirmation ✓\n\n    # Solution:\
+  \ Transactions\n    producer.begin_transaction()\n    try:\n        producer.send('orders',\
+  \ order1)\n        producer.send('orders', order2)\n        producer.commit_transaction()\
+  \  # Atomic ✓\n    except Exception:\n        producer.abort_transaction()\n   \
+  \ ```\n\n    ### 4. Consumer Too Slow\n\n    **Processing takes too long**\n\n \
+  \   ```python\n    # Problem: Slow processing blocks queue\n    def handle_message(message):\n\
+  \        time.sleep(60)  # 60 seconds! ❌\n        # Other messages wait\n\n    #\
+  \ Solution: Async processing\n    executor = ThreadPoolExecutor(max_workers=20)\n\
+  \n    def handle_message(message):\n        # Process in thread pool\n        executor.submit(process_message,\
+  \ message)\n        # Immediately ready for next message ✓\n\n    def process_message(message):\n\
+  \        time.sleep(60)  # OK in background\n        # Other messages processed\
+  \ in parallel\n    ```\n\n    ## Production Checklist\n\n    ✅ **Idempotency**:\
+  \ Can handle duplicate messages\n    ✅ **Ordering**: Messages processed in correct\
+  \ order (if needed)\n    ✅ **Error Handling**: Retry logic, DLQ, circuit breakers\n\
+  \    ✅ **Monitoring**: Metrics, alerts, tracing\n    ✅ **Scaling**: Auto-scaling\
+  \ based on queue depth\n    ✅ **Persistence**: Messages survive broker restart\n\
+  \    ✅ **Security**: Authentication, encryption, ACLs\n    ✅ **Testing**: Test with\
+  \ failures, duplicates, out-of-order\n    ✅ **Documentation**: Runbooks for common\
+  \ issues\n\n    **Congratulations!** You now understand how to build production-ready\
+  \ message queue systems."
+exercises: []

@@ -1,0 +1,59 @@
+slug: electrochemistry-practice
+title: electrochemistry — Practice
+difficulty: medium
+sequence_order: 4
+estimated_minutes: 2
+key_concepts:
+- electrochemistry
+prerequisites: []
+content_md: '# electrochemistry — Practice 🚀
+
+
+  Practice key electrochemistry formulas including Nernst equation, cell potential,
+  and Faraday''s laws.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What is the Nernst equation for cell potential at non-standard conditions?
+  options:
+  - E = E° - (RT/nF) ln Q
+  - E = E° + (RT/nF) ln Q
+  - E = E° - (nF/RT) ln Q
+  - E = nFE°
+  correct_answer: E = E° - (RT/nF) ln Q
+  explanation: "The Nernst equation is E = E° - (RT/nF) ln Q, where E is cell potential, E° is standard cell potential, R is gas constant (8.314 J/mol·K), T is temperature (K), n is number of electrons transferred, F is Faraday constant (96500 C/mol), and Q is reaction quotient. At 25°C, it simplifies to E = E° - (0.0591/n) log Q."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What is the relationship between cell potential and Gibbs free energy?
+  options:
+  - ΔG = -nFE
+  - ΔG = nFE
+  - ΔG = -RT ln E
+  - ΔG = E/nF
+  correct_answer: ΔG = -nFE
+  explanation: "The relationship is ΔG = -nFE, where ΔG is Gibbs free energy change, n is number of electrons transferred, F is Faraday constant (96500 C/mol), and E is cell potential. For spontaneous reactions, ΔG < 0 and E > 0. At standard conditions: ΔG° = -nFE°."
+  require_pass: false
+- type: mcq
+  sequence_order: 3
+  question: What is Faraday's first law of electrolysis?
+  options:
+  - m = (M × I × t) / (n × F)
+  - m = nFE
+  - m = Molar mass / F
+  - m = Q/nF
+  correct_answer: m = (M × I × t) / (n × F)
+  explanation: "Faraday's first law: m = (M × I × t) / (n × F), where m is mass deposited, M is molar mass, I is current (amperes), t is time (seconds), n is number of electrons, and F is Faraday constant. Also written as m = ZQ, where Z is electrochemical equivalent and Q = I × t is charge."
+  require_pass: false

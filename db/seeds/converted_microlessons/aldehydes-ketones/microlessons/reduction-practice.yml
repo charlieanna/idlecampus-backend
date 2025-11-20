@@ -1,0 +1,59 @@
+slug: reduction-practice
+title: reduction — Practice
+difficulty: medium
+sequence_order: 13
+estimated_minutes: 2
+key_concepts:
+- reduction
+prerequisites: []
+content_md: '# reduction — Practice 🚀
+
+
+  To alkane: (1) Clemmensen (Zn-Hg/HCl, acidic) ✓, (2) Wolff-Kishner (NH₂NH₂/KOH,
+  basic) ✓. LiAlH₄ and NaBH₄ reduce to alcohols (R-CH₂OH or R₂CHOH), not alkanes.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: 'Which reagents can reduce aldehydes and ketones to alkanes?'
+  options:
+  - LiAlH₄ and NaBH₄
+  - Clemmensen (Zn-Hg/HCl) and Wolff-Kishner (NH₂NH₂/KOH)
+  - KMnO₄ and K₂Cr₂O₇
+  - H₂/Pt
+  require_pass: true
+  correct_answer: Clemmensen (Zn-Hg/HCl) and Wolff-Kishner (NH₂NH₂/KOH)
+  explanation: 'Only Clemmensen reduction (Zn-Hg/HCl, acidic conditions) and Wolff-Kishner reduction (NH₂NH₂/KOH, basic conditions) can reduce aldehydes and ketones directly to alkanes (R-CH₃ or R-CH₂-R''). Both methods completely remove the oxygen of the carbonyl group. Clemmensen is used for acid-sensitive compounds, while Wolff-Kishner is used for base-sensitive compounds. In contrast, LiAlH₄ and NaBH₄ reduce carbonyls only to alcohols (R-CH₂OH or R₂CHOH), not to alkanes. KMnO₄ and K₂Cr₂O₇ are oxidizing agents, not reducing agents. H₂/Pt primarily reduces C=C double bonds, not C=O.'
+- type: mcq
+  sequence_order: 2
+  question: 'What is the difference between Clemmensen and Wolff-Kishner reductions?'
+  options:
+  - Clemmensen uses acidic conditions, Wolff-Kishner uses basic conditions
+  - Clemmensen gives alcohols, Wolff-Kishner gives alkanes
+  - Clemmensen is for ketones only, Wolff-Kishner is for aldehydes only
+  - There is no difference
+  require_pass: true
+  correct_answer: Clemmensen uses acidic conditions, Wolff-Kishner uses basic conditions
+  explanation: 'The main difference between Clemmensen and Wolff-Kishner reductions is the reaction conditions: Clemmensen reduction uses Zn-Hg (zinc amalgam) in concentrated HCl (strongly acidic conditions), while Wolff-Kishner reduction uses hydrazine (NH₂NH₂) with KOH at high temperature (strongly basic conditions). Both methods reduce carbonyl compounds (aldehydes and ketones) to alkanes. The choice depends on the substrate: use Clemmensen for base-sensitive compounds and Wolff-Kishner for acid-sensitive compounds. For example, if a molecule contains acid-sensitive groups (like acetals), use Wolff-Kishner; if it contains base-sensitive groups (like esters), use Clemmensen.'
+- type: mcq
+  sequence_order: 3
+  question: 'What product is formed when acetone is reduced with NaBH₄?'
+  options:
+  - Propane (CH₃-CH₂-CH₃)
+  - Isopropanol (CH₃-CHOH-CH₃)
+  - Propanol (CH₃-CH₂-CH₂OH)
+  - Acetic acid
+  require_pass: true
+  correct_answer: Isopropanol (CH₃-CHOH-CH₃)
+  explanation: 'When acetone (CH₃-CO-CH₃) is reduced with NaBH₄ (sodium borohydride), it forms isopropanol or 2-propanol (CH₃-CHOH-CH₃), a secondary alcohol. NaBH₄ is a mild reducing agent that reduces aldehydes and ketones to alcohols by adding H⁻ to the carbonyl carbon and H⁺ to oxygen. It does NOT reduce carbonyls to alkanes. For aldehyde reduction: R-CHO → R-CH₂OH (1° alcohol). For ketone reduction: R-CO-R'' → R-CHOH-R'' (2° alcohol). To get propane (alkane) from acetone, you would need Clemmensen or Wolff-Kishner reduction, not NaBH₄. LiAlH₄ is stronger than NaBH₄ but also gives alcohols, not alkanes.'

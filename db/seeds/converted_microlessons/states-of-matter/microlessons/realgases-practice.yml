@@ -1,0 +1,58 @@
+slug: realgases-practice
+title: real_gases — Practice
+difficulty: medium
+sequence_order: 13
+estimated_minutes: 2
+key_concepts:
+- real_gases
+prerequisites: []
+content_md: '# real_gases — Practice 🚀
+
+
+  In van der Waals equation: \
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: 'In the van der Waals equation (P + a/V²)(V - b) = RT, what does the term "a/V²" represent?'
+  options:
+  - Molecular volume correction
+  - Pressure correction due to intermolecular forces
+  - Temperature correction
+  - Volume correction due to molecular collisions
+  require_pass: true
+  correct_answer: Pressure correction due to intermolecular forces
+  explanation: 'In the van der Waals equation, the term "a/V²" corrects for the pressure reduction caused by intermolecular attractive forces. The observed pressure (P) is less than the ideal pressure because molecules attract each other, reducing the force of collisions with container walls. The corrected pressure is (P + a/V²), where "a" is a constant specific to each gas that measures the strength of intermolecular attractions. Key points: (1) Larger "a" values indicate stronger intermolecular forces (e.g., NH₃ has larger "a" than He), (2) The correction is proportional to 1/V² because attraction depends on molecular density squared (molecules must be close to attract, and both attracting molecules contribute), (3) At high volumes (low density), this term becomes negligible. The "b" term corrects for molecular volume: (V - b) represents the actual free volume available for molecular motion.'
+- type: mcq
+  sequence_order: 2
+  question: 'Under which conditions do real gases behave most like ideal gases?'
+  options:
+  - High pressure and low temperature
+  - Low pressure and high temperature
+  - High pressure and high temperature
+  - Low pressure and low temperature
+  require_pass: true
+  correct_answer: Low pressure and high temperature
+  explanation: 'Real gases behave most ideally at low pressure and high temperature. Explanation: (1) Low pressure means large volume and greater distance between molecules, making intermolecular forces negligible and molecular volume insignificant compared to container volume, (2) High temperature means high kinetic energy, which overcomes intermolecular attractions and prevents condensation. Under these conditions, both van der Waals corrections (a/V² and b) become negligible, and PV = nRT holds. Conversely, gases deviate most from ideal behavior at: (1) High pressure (molecules forced closer, intermolecular forces significant, molecular volume appreciable), (2) Low temperature (low kinetic energy, molecules can''t overcome attractions, may condense). This explains why gases can be liquefied by cooling and compressing them. Examples: At room temperature and 1 atm, most gases behave nearly ideally (deviation < 5%).'
+- type: mcq
+  sequence_order: 3
+  question: 'Which gas shows maximum deviation from ideal behavior: He, N₂, CO₂, or NH₃?'
+  options:
+  - He
+  - N₂
+  - CO₂
+  - NH₃
+  require_pass: true
+  correct_answer: NH₃
+  explanation: 'Ammonia (NH₃) shows maximum deviation from ideal behavior due to: (1) Strong intermolecular forces: NH₃ has hydrogen bonding (strongest intermolecular force), making the "a" constant large, (2) Larger molecular size compared to He and N₂, making the "b" constant significant, (3) High polarity increases intermolecular attractions. Comparison: He - smallest molecule, no intermolecular forces (only weak London dispersion), behaves most ideally; N₂ - nonpolar, weak dispersion forces, moderate size, fairly ideal behavior; CO₂ - larger, weak dipole interactions, moderate deviation; NH₃ - hydrogen bonding, highly polar, strongest intermolecular forces, maximum deviation. The compressibility factor Z = PV/nRT measures deviation: Z = 1 for ideal gas, Z < 1 when attractive forces dominate (low T, moderate P), Z > 1 when molecular volume dominates (high P). NH₃ has the most significant Z deviations.'

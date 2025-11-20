@@ -1,0 +1,93 @@
+<div class="lesson-card <%= 'additional-lesson' if local_assigns[:is_additional] %> mb-2">
+  <div class="card">
+    <div class="card-body p-3">
+      <div class="d-flex justify-content-between align-items-start">
+        <div class="flex-grow-1">
+          <h6 class="card-title mb-1">
+            <%= mapping[:lesson_title] %>
+            <% if mapping[:is_primary] %>
+              <span class="badge badge-primary">Primary</span>
+            <% end %>
+          </h6>
+          
+          <% if mapping[:section_title] %>
+            <p class="text-muted small mb-2">
+              <i class="fas fa-bookmark"></i> Section: <%= mapping[:section_title] %>
+            </p>
+          <% end %>
+          
+          <div class="progress mb-2" style="height: 6px;">
+            <div class="progress-bar bg-info" role="progressbar" 
+                 style="width: <%= mapping[:relevance_weight] %>%"
+                 aria-valuenow="<%= mapping[:relevance_weight] %>" 
+                 aria-valuemin="0" aria-valuemax="100">
+            </div>
+          </div>
+          <p class="text-muted small mb-0">
+            <%= mapping[:relevance_weight] %>% relevant to this question
+          </p>
+        </div>
+        
+        <div class="ml-3">
+          <%= link_to mapping[:url], 
+              class: "btn btn-sm btn-primary",
+              data: { 
+                track: 'remediation_click',
+                quiz_attempt_id: quiz_attempt_id,
+                question_id: question_id,
+                lesson_id: mapping[:lesson_id]
+              },
+              target: '_blank' do %>
+            <i class="fas fa-external-link-alt"></i> Review
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+.lesson-card.additional-lesson {
+  opacity: 0.9;
+}
+
+.lesson-card .card {
+  border-left: 3px solid #007bff;
+  transition: all 0.2s;
+}
+
+.lesson-card .card:hover {
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  transform: translateY(-2px);
+}
+
+.lesson-card.additional-lesson .card {
+  border-left-color: #6c757d;
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Track when users click on lesson recommendations
+  document.querySelectorAll('[data-track="remediation_click"]').forEach(function(link) {
+    link.addEventListener('click', function(e) {
+      const data = {
+        quiz_attempt_id: this.dataset.quizAttemptId,
+        question_id: this.dataset.questionId,
+        lesson_id: this.dataset.lessonId
+      };
+      
+      // Send tracking request
+      fetch('/remediation/track_lesson_review', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-Token': document.querySelector('[name="csrf-token"]').content
+        },
+        body: JSON.stringify(data)
+      }).catch(err => console.error('Tracking error:', err));
+    });
+  });
+});
+</script>
+

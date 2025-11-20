@@ -1,0 +1,59 @@
+slug: group15-practice
+title: group_15 — Practice
+difficulty: easy
+sequence_order: 9
+estimated_minutes: 2
+key_concepts:
+- group_15
+prerequisites: []
+content_md: '# group_15 — Practice 🚀
+
+
+  Group 15 elements have 5 valence electrons with configuration ns² np³, giving half-filled
+  p-orbitals.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 2
+  question: 'The electronic configuration of Group 15 elements is:'
+  options:
+  - ns² np³
+  - ns² np⁵
+  - ns² np⁴
+  - ns² np⁶
+  correct_answer: ns² np³
+  explanation: "Group 15 elements (nitrogen family: N, P, As, Sb, Bi) have 5 valence electrons with the general electronic configuration ns² np³. This gives them half-filled p-orbitals (one electron in each of the three p orbitals), which provides extra stability. ns² np⁵ is for Group 17 (halogens), ns² np⁴ is for Group 16 (chalcogens), and ns² np⁶ is for Group 18 (noble gases)."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: What is the maximum covalency that nitrogen can exhibit?
+  options:
+  - 3
+  - 4
+  - 5
+  - 6
+  correct_answer: 4
+  explanation: "Nitrogen can exhibit a maximum covalency of 4, as seen in the ammonium ion (NH₄⁺), where nitrogen forms four bonds using one dative (coordinate) bond. Nitrogen cannot expand its octet beyond 4 bonds because it lacks d-orbitals in its valence shell (only 2s and 2p orbitals available). In contrast, other Group 15 elements like phosphorus can show maximum covalency of 5 or 6 (e.g., PCl₅, PF₅) because they have vacant d-orbitals available for bonding. This is one of nitrogen's anomalous properties."
+  require_pass: true
+- type: mcq
+  sequence_order: 4
+  question: Which trend is observed for the stability of +5 and +3 oxidation states in Group 15 elements?
+  options:
+  - Both +5 and +3 increase down the group
+  - +5 decreases, +3 increases down the group
+  - +5 increases, +3 decreases down the group
+  - Both remain constant down the group
+  correct_answer: +5 decreases, +3 increases down the group
+  explanation: "In Group 15 elements, the stability of the +5 oxidation state decreases down the group (from N to Bi), while the stability of the +3 oxidation state increases down the group. This is due to the inert pair effect, where the ns² pair of electrons becomes increasingly reluctant to participate in bonding as we move down the group due to poor shielding by d and f electrons. Thus, nitrogen prefers +5 state (HNO₃), while bismuth prefers +3 state (BiCl₃). Phosphorus shows both states fairly well (H₃PO₄ for +5, H₃PO₃ for +3)."
+  require_pass: true

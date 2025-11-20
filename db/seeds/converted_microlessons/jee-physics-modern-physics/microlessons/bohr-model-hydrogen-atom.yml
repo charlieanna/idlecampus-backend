@@ -1,0 +1,270 @@
+slug: bohr-model-hydrogen-atom
+title: "Bohr Model of Hydrogen Atom"
+difficulty: advanced
+sequence_order: 3
+estimated_minutes: 20
+key_concepts:
+- bohr-model
+- quantized-orbits
+- energy-levels
+- spectral-lines
+- hydrogen-spectrum
+prerequisites:
+- photoelectric-effect-einsteins-equation
+- de-broglie-hypothesis
+content_md: |
+  # Bohr Model of Hydrogen Atom
+
+  ## Bohr's Postulates (1913)
+
+  ### 1. Quantized Orbits
+  Electrons revolve in certain stable orbits without radiating energy.
+
+  ### 2. Angular Momentum Quantization
+  ```
+  mvr = nh/2π = nℏ
+
+  where n = 1, 2, 3, ... (principal quantum number)
+  ℏ = h/(2π) = 1.055×10⁻³⁴ J·s
+  ```
+
+  ### 3. Energy Transitions
+  Electrons can jump between orbits by absorbing/emitting photons:
+  ```
+  hf = E₂ - E₁
+  ```
+
+  ## Derivation of Bohr Radii
+
+  ### Centripetal Force = Electrostatic Force:
+  ```
+  mv²/r = ke²/r²
+  mv² = ke²/r ... (1)
+  ```
+
+  ### Angular Momentum Quantization:
+  ```
+  mvr = nℏ
+  v = nℏ/(mr) ... (2)
+  ```
+
+  ### Substituting (2) in (1):
+  ```
+  m(nℏ/(mr))² = ke²/r
+  n²ℏ²/(mr) = ke²
+  r = n²ℏ²/(mke²)
+  ```
+
+  ### Bohr Radius (n = 1):
+  ```
+  a₀ = ℏ²/(mke²) = 0.529 Å = 5.29×10⁻¹¹ m
+
+  For nth orbit: rₙ = n²a₀ = n²(0.529 Å)
+  ```
+
+  ## Velocity of Electron
+
+  ```
+  vₙ = ke²/(nℏ) = v₁/n
+
+  v₁ = ke²/ℏ = 2.18×10⁶ m/s = c/137
+
+  Fine structure constant: α = v₁/c ≈ 1/137
+  ```
+
+  ## Energy of Electron
+
+  ### Kinetic Energy:
+  ```
+  KE = ½mv² = ke²/(2r) = E₀/n²
+  ```
+
+  ### Potential Energy:
+  ```
+  PE = -ke²/r = -2KE
+  ```
+
+  ### Total Energy:
+  ```
+  Eₙ = KE + PE = -ke²/(2r) = -13.6/n² eV
+
+  E₁ = -13.6 eV (ground state)
+  E₂ = -3.4 eV
+  E₃ = -1.51 eV
+  E∞ = 0 (ionization)
+  ```
+
+  ## Important Formulas
+
+  ### Radius:
+  ```
+  rₙ = n²a₀ = n²(0.529 Å)
+  rₙ ∝ n²
+  ```
+
+  ### Velocity:
+  ```
+  vₙ = v₁/n
+  vₙ ∝ 1/n
+  ```
+
+  ### Energy:
+  ```
+  Eₙ = -13.6/n² eV
+  Eₙ ∝ -1/n²
+  ```
+
+  ### Time Period:
+  ```
+  Tₙ = 2πrₙ/vₙ ∝ n³
+  ```
+
+  ### Frequency of Revolution:
+  ```
+  fₙ = 1/Tₙ ∝ 1/n³
+  ```
+
+  ### Current:
+  ```
+  iₙ = ef_n ∝ 1/n³
+  ```
+
+  ## Hydrogen Spectrum
+
+  ### Emission Spectrum:
+  When electron falls from higher to lower orbit:
+  ```
+  1/λ = RH(1/n₁² - 1/n₂²)
+
+  RH = 1.097×10⁷ m⁻¹ (Rydberg constant)
+  ```
+
+  ### Spectral Series:
+
+  | Series | n₁ | n₂ | Region |
+  |--------|----|----|--------|
+  | Lyman | 1 | 2,3,4,... | UV |
+  | Balmer | 2 | 3,4,5,... | Visible |
+  | Paschen | 3 | 4,5,6,... | IR |
+  | Brackett | 4 | 5,6,7,... | IR |
+  | Pfund | 5 | 6,7,8,... | Far IR |
+
+  ### Balmer Series (Visible):
+  - n₂ = 3: Hα (656 nm, red)
+  - n₂ = 4: Hβ (486 nm, blue-green)
+  - n₂ = 5: Hγ (434 nm, violet)
+  - Series limit: n₂ → ∞ (365 nm)
+
+  ### Lyman Series (UV):
+  ```
+  First line: 1/λ = RH(1 - 1/4) = 3RH/4
+  λ = 121.5 nm
+
+  Series limit: λ = 91.2 nm
+  ```
+
+  ## Ionization Energy
+
+  Energy needed to remove electron from ground state:
+  ```
+  IE = 13.6 eV = 2.18×10⁻¹⁸ J
+  ```
+
+  ## Excitation Energy
+
+  Energy needed to move electron to higher level:
+  ```
+  First excitation (n=1 to n=2):
+  ΔE = -3.4 - (-13.6) = 10.2 eV
+  ```
+
+  ## Number of Spectral Lines
+
+  When electron falls from n to ground state:
+  ```
+  Total lines = n(n-1)/2
+  ```
+
+  Example: From n=4: Lines = 4(3)/2 = 6
+
+  ## For Hydrogen-like Ions
+
+  For ions with atomic number Z:
+  ```
+  rₙ = n²a₀/Z
+  Eₙ = -13.6Z²/n² eV
+  vₙ = Zv₁/n
+  ```
+
+  Examples:
+  - He⁺ (Z=2): E₁ = -54.4 eV
+  - Li²⁺ (Z=3): E₁ = -122.4 eV
+
+  ## Limitations of Bohr Model
+
+  1. Works only for single-electron systems
+  2. Cannot explain fine structure
+  3. Cannot predict line intensities
+  4. No explanation for Zeeman effect
+  5. Violates uncertainty principle
+
+  ## Numerical Examples
+
+  **Example 1:** Find wavelength of Hα line (Balmer series first line).
+
+  **Solution:**
+  ```
+  1/λ = RH(1/4 - 1/9) = RH(9-4)/36 = 5RH/36
+  λ = 36/(5RH) = 36/(5×1.097×10⁷)
+  λ = 656.3 nm (red line)
+  ```
+
+  **Example 2:** Ionization potential of Li²⁺ is:
+
+  **Solution:**
+  ```
+  E₁ = -13.6Z²/1² = -13.6(9) = -122.4 eV
+  IP = 122.4 V
+  ```
+
+  **Example 3:** Ratio of radii of second to first orbit is:
+
+  **Solution:**
+  ```
+  r₂/r₁ = (2²a₀)/(1²a₀) = 4/1 = 4
+  ```
+
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: "The ratio of velocities of electron in first and third Bohr orbits is:"
+  options:
+  - "1:3"
+  - "3:1"
+  - "1:9"
+  - "9:1"
+  correct_answer: "3:1"
+  explanation: "Velocity vₙ = v₁/n, so vₙ ∝ 1/n. For first orbit: v₁ ∝ 1. For third orbit: v₃ ∝ 1/3. Ratio v₁:v₃ = 1:(1/3) = 3:1. The electron moves slower in outer orbits because it's farther from nucleus (less electrostatic pull). Compare with classical orbits: Planets farther from Sun also move slower (Kepler's laws). The velocity ratio helps calculate kinetic energy ratio, time period ratio, etc. KE ratio = v²: (v/3)² = 9:1."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: "Ionization energy of hydrogen atom is 13.6 eV. The energy required to excite electron from ground state to first excited state is:"
+  options:
+  - "13.6 eV"
+  - "10.2 eV"
+  - "3.4 eV"
+  - "12.1 eV"
+  correct_answer: "10.2 eV"
+  explanation: "Ground state energy E₁ = -13.6 eV. First excited state (n=2): E₂ = -13.6/4 = -3.4 eV. Excitation energy = E₂ - E₁ = -3.4 - (-13.6) = 10.2 eV. This means 10.2 eV photon (or electron with KE ≥ 10.2 eV) can excite hydrogen from ground to first excited state. The remaining 3.4 eV (difference from ionization 13.6 eV) keeps electron bound. When atom de-excites, it emits 10.2 eV photon (Lyman α line at 121.5 nm, UV)."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: "When electron in hydrogen atom jumps from n=4 to n=2, the wavelength of emitted radiation belongs to:"
+  options:
+  - "Lyman series"
+  - "Balmer series"
+  - "Paschen series"
+  - "Brackett series"
+  correct_answer: "Balmer series"
+  explanation: "Series are defined by the final state: Lyman (n→1), Balmer (n→2), Paschen (n→3), etc. Transition from n=4 to n=2 is Balmer series (second line, Hβ). Energy: ΔE = 13.6(1/4 - 1/16) = 13.6(3/16) = 2.55 eV. Wavelength: λ = hc/E = 1240/2.55 ≈ 486 nm (blue-green, visible). Balmer series is special as it falls in visible range (400-700 nm), making it historically important for discovering atomic structure. Lyman is UV, Paschen and beyond are IR."
+  require_pass: true

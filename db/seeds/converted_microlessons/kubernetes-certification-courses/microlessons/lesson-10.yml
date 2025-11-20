@@ -1,0 +1,379 @@
+slug: lesson-10
+title: Kubernetes Networking Troubleshooting
+difficulty: medium
+sequence_order: 10
+estimated_minutes: 12
+key_concepts:
+  - DNS troubleshooting
+  - Service debugging
+  - Endpoints inspection
+  - CNI plugin diagnostics
+  - Network connectivity
+prerequisites: []
+content_md: |
+  # Kubernetes Networking Troubleshooting
+
+  ## Introduction
+
+  Networking is one of the most common sources of issues in Kubernetes clusters. Understanding how to diagnose and resolve DNS, Service, and CNI plugin problems is essential for cluster administration.
+
+  ## DNS Troubleshooting
+
+  ### CoreDNS Basics
+
+  Kubernetes uses CoreDNS for internal DNS resolution.
+
+  **Check CoreDNS pods:**
+  ```bash
+  kubectl get pods -n kube-system -l k8s-app=kube-dns
+
+  # Check CoreDNS logs
+  kubectl logs -n kube-system -l k8s-app=kube-dns
+  ```
+
+  ### Common DNS Issues
+
+  **1. DNS Resolution Failures**
+
+  **Test DNS from a pod:**
+  ```bash
+  # Create a test pod
+  kubectl run -it --rm debug --image=busybox --restart=Never -- sh
+
+  # Test DNS resolution
+  nslookup kubernetes.default
+  nslookup google.com
+  ```
+
+  **2. CoreDNS Not Running**
+
+  ```bash
+  # Check CoreDNS deployment
+  kubectl get deployment -n kube-system coredns
+
+  # Describe to see issues
+  kubectl describe deployment -n kube-system coredns
+  ```
+
+  **3. ConfigMap Issues**
+
+  ```bash
+  # Check CoreDNS ConfigMap
+  kubectl get configmap -n kube-system coredns -o yaml
+
+  # Restart CoreDNS after ConfigMap changes
+  kubectl rollout restart -n kube-system deployment/coredns
+  ```
+
+  ### DNS Debugging Commands
+
+  ```bash
+  # Check if DNS service exists
+  kubectl get svc -n kube-system kube-dns
+
+  # Verify DNS endpoints
+  kubectl get endpoints -n kube-system kube-dns
+
+  # Test specific DNS query
+  kubectl run -it dns-test --image=busybox --restart=Never -- \
+    nslookup kubernetes.default.svc.cluster.local
+  ```
+
+  ## Service Troubleshooting
+
+  ### Understanding Services
+
+  Services provide stable endpoints for Pods.
+
+  **Service types:**
+  - **ClusterIP** - Internal cluster access only
+  - **NodePort** - External access via node IP
+  - **LoadBalancer** - Cloud provider load balancer
+  - **ExternalName** - DNS CNAME record
+
+  ### Common Service Issues
+
+  **1. Service Not Accessible**
+
+  ```bash
+  # Check service exists
+  kubectl get svc my-service
+
+  # Describe service
+  kubectl describe svc my-service
+
+  # Key things to check:
+  # - Selector matches pod labels
+  # - Endpoints exist
+  # - Port configuration correct
+  ```
+
+  **2. No Endpoints**
+
+  ```bash
+  # Check endpoints
+  kubectl get endpoints my-service
+
+  # If empty, check:
+  # 1. Pod labels match service selector
+  kubectl get pods --show-labels
+  kubectl get svc my-service -o yaml | grep selector
+
+  # 2. Pods are running and ready
+  kubectl get pods -o wide
+  ```
+
+  **3. Wrong Port Configuration**
+
+  ```yaml
+  apiVersion: v1
+  kind: Service
+  metadata:
+    name: my-service
+  spec:
+    selector:
+      app: myapp
+    ports:
+    - protocol: TCP
+      port: 80        # Service port (what clients use)
+      targetPort: 8080 # Container port (where app listens)
+  ```
+
+  ### Service Debugging Workflow
+
+  ```bash
+  # 1. Verify service exists
+  kubectl get svc my-service
+
+  # 2. Check service details
+  kubectl describe svc my-service
+
+  # 3. Verify endpoints
+  kubectl get endpoints my-service
+
+  # 4. Check pod labels
+  kubectl get pods -l app=myapp --show-labels
+
+  # 5. Test from inside cluster
+  kubectl run -it curl --image=curlimages/curl --restart=Never -- \
+    curl http://my-service:80
+
+  # 6. Check pod logs
+  kubectl logs -l app=myapp
+  ```
+
+  ## Endpoints Inspection
+
+  ### What Are Endpoints?
+
+  Endpoints link Services to Pods.
+
+  **View endpoints:**
+  ```bash
+  # List all endpoints
+  kubectl get endpoints
+
+  # Describe specific endpoint
+  kubectl describe endpoints my-service
+
+  # Get endpoint details in YAML
+  kubectl get endpoints my-service -o yaml
+  ```
+
+  ### Endpoint Troubleshooting
+
+  **Problem: Service has no endpoints**
+
+  ```bash
+  # Check if selector matches any pods
+  SERVICE_SELECTOR=$(kubectl get svc my-service -o jsonpath='{.spec.selector}')
+  kubectl get pods -l app=myapp
+
+  # Verify pod readiness
+  kubectl get pods -l app=myapp -o wide
+
+  # Check readiness probes
+  kubectl describe pod my-pod | grep -A5 Readiness
+  ```
+
+  **Problem: Endpoints exist but connection fails**
+
+  ```bash
+  # Verify pod IPs match endpoint IPs
+  kubectl get pods -o wide
+  kubectl get endpoints my-service
+
+  # Test direct pod connectivity
+  kubectl exec -it test-pod -- curl http://<pod-ip>:<port>
+  ```
+
+  ## CNI Plugin Diagnostics
+
+  ### Container Network Interface (CNI)
+
+  CNI plugins handle pod networking.
+
+  **Common CNI plugins:**
+  - Calico
+  - Flannel
+  - Weave
+  - Cilium
+
+  ### Check CNI Plugin
+
+  ```bash
+  # Check CNI plugin pods (example: Calico)
+  kubectl get pods -n kube-system -l k8s-app=calico-node
+
+  # Check CNI logs
+  kubectl logs -n kube-system -l k8s-app=calico-node
+
+  # For Flannel
+  kubectl get pods -n kube-system -l app=flannel
+  ```
+
+  ### CNI Configuration
+
+  **Location on nodes:**
+  ```bash
+  # SSH to node and check
+  ls /etc/cni/net.d/
+  cat /etc/cni/net.d/10-calico.conflist
+  ```
+
+  ### Common CNI Issues
+
+  **1. CNI Plugin Not Running**
+
+  ```bash
+  # Check daemonset
+  kubectl get daemonset -n kube-system
+
+  # Describe to see issues
+  kubectl describe daemonset -n kube-system calico-node
+  ```
+
+  **2. Pod Network Connectivity Issues**
+
+  ```bash
+  # Test pod-to-pod communication
+  kubectl exec -it pod1 -- ping <pod2-ip>
+
+  # Check iptables rules (on node)
+  sudo iptables-save | grep <pod-name>
+
+  # Check routes (on node)
+  ip route
+  ```
+
+  ## Network Connectivity Testing
+
+  ### Pod-to-Pod Communication
+
+  ```bash
+  # Create two test pods
+  kubectl run pod1 --image=busybox -- sleep 3600
+  kubectl run pod2 --image=busybox -- sleep 3600
+
+  # Get pod IPs
+  kubectl get pods -o wide
+
+  # Test connectivity
+  kubectl exec pod1 -- ping <pod2-ip>
+  ```
+
+  ### Pod-to-Service Communication
+
+  ```bash
+  # Test service by name
+  kubectl exec pod1 -- wget -O- http://my-service:80
+
+  # Test service by ClusterIP
+  kubectl exec pod1 -- wget -O- http://<cluster-ip>:80
+  ```
+
+  ## Network Policies
+
+  Network Policies can block traffic.
+
+  ```bash
+  # Check if network policies exist
+  kubectl get networkpolicy
+
+  # Describe policy
+  kubectl describe networkpolicy my-policy
+
+  # Check if policy affects your pod
+  kubectl get networkpolicy -o yaml
+  ```
+
+  ## Practical Debugging Scenario
+
+  **Problem:** Cannot reach service from another pod
+
+  **Steps:**
+  1. Verify service exists: `kubectl get svc my-service`
+  2. Check endpoints: `kubectl get endpoints my-service`
+  3. If no endpoints, check pod labels and readiness
+  4. Test DNS: `kubectl exec test-pod -- nslookup my-service`
+  5. Test direct connection: `kubectl exec test-pod -- curl http://my-service`
+  6. Check CNI plugin health
+  7. Review network policies
+
+  ## Useful Debug Commands
+
+  ```bash
+  # Create debug pod with network tools
+  kubectl run netshoot --rm -it --image=nicolaka/netshoot -- bash
+
+  # Inside debug pod:
+  # - ping, curl, wget, dig, nslookup
+  # - traceroute, tcpdump, netstat
+  # - iperf, iftop
+
+  # Check kube-proxy
+  kubectl get pods -n kube-system -l k8s-app=kube-proxy
+  kubectl logs -n kube-system -l k8s-app=kube-proxy
+  ```
+
+  ## Key Takeaways
+
+  1. **DNS issues** - Check CoreDNS pods and ConfigMap
+  2. **Service issues** - Verify selector, endpoints, and ports
+  3. **No endpoints** - Check pod labels and readiness
+  4. **CNI issues** - Check plugin pods and node configuration
+  5. **Network policies** - Can silently block traffic
+  6. **Use debug pods** - Tools like netshoot are invaluable
+
+exercises:
+  - type: mcq
+    question: "What command would you use to check if a Service has any Endpoints?"
+    options:
+      - "kubectl describe svc my-service"
+      - "kubectl get endpoints my-service"
+      - "kubectl get pods -l app=myapp"
+      - "kubectl logs my-service"
+    correct_answer: "kubectl get endpoints my-service"
+    explanation: "kubectl get endpoints shows the backend Pod IPs associated with a Service. If empty, the Service selector doesn't match any ready Pods."
+    sequence_order: 1
+
+  - type: mcq
+    question: "If CoreDNS is not resolving DNS names, which namespace should you check for CoreDNS pods?"
+    options:
+      - "default"
+      - "kube-system"
+      - "kube-public"
+      - "coredns"
+    correct_answer: "kube-system"
+    explanation: "CoreDNS runs in the kube-system namespace. Check with: kubectl get pods -n kube-system -l k8s-app=kube-dns"
+    sequence_order: 2
+
+  - type: terminal
+    problem_statement: "Create a temporary debug pod using the busybox image and test DNS resolution for 'kubernetes.default' service."
+    expected_output: "DNS resolution successful"
+    language: bash
+    starter_code: "# Run a temporary pod and test DNS\n"
+    command: kubectl run -it --rm debug --image=busybox --restart=Never -- nslookup kubernetes.default
+    hints:
+      - "Use: kubectl run -it --rm debug --image=busybox --restart=Never -- nslookup kubernetes.default"
+    sequence_order: 3

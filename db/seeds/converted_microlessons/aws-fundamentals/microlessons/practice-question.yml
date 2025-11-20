@@ -1,0 +1,59 @@
+slug: practice-question
+title: Practice Question
+difficulty: medium
+sequence_order: 17
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: '# Practice Question 🚀
+
+
+  ## What is this?
+
+  A concise explanation of the concept.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What is the primary benefit of using cloud computing services like AWS?
+  options:
+  - On-demand access to computing resources with pay-as-you-go pricing, eliminating
+    upfront infrastructure costs
+  - Cloud services are always free to use
+  - Cloud eliminates the need for system administrators
+  - Cloud resources are slower than on-premises hardware
+  correct_answer: On-demand access to computing resources with pay-as-you-go pricing,
+    eliminating upfront infrastructure costs
+  explanation: 'Cloud computing revolutionizes IT infrastructure by providing on-demand
+    access to computing resources without large capital investments. Traditional on-premises:
+    Buy servers upfront ($10K-$100K+), wait weeks for delivery and setup, pay for
+    capacity you don''t use (over-provisioning), difficult to scale up/down, responsible
+    for hardware maintenance, refresh cycle every 3-5 years. AWS cloud model: Launch
+    resources in minutes via API/Console, pay only for what you use (per hour/second),
+    scale up during traffic spikes, scale down to save money, no hardware maintenance
+    (AWS handles it), access latest hardware without capital expense. Cost comparison
+    example: Startup needs 10 servers. On-premises: $50K upfront + $10K/year maintenance
+    = high barrier. AWS: $0 upfront, $300/month when needed, $0 when not - pay $3,600/year
+    first year vs $60K on-premises. Elasticity benefits: E-commerce site needs 2 servers
+    normally, 20 servers during Black Friday. On-premises: Buy 20 servers, 18 sit
+    idle 360 days/year (wasted money). AWS: Run 2 servers daily ($60/month), scale
+    to 20 for 1 week ($50 spike), total $660/month vs $600/month for unused on-premises
+    capacity. Other advantages: Global reach (deploy in 33 regions), innovation speed
+    (use new services immediately), reliability (AWS SLA 99.99%), security (AWS invests
+    billions in security). Use cases: Startups (avoid upfront costs), enterprises
+    (hybrid cloud for burst capacity), SaaS companies (multi-tenant efficiency), development
+    (spin up/destroy test environments). Not suitable for: Extremely latency-sensitive
+    (microsecond requirements), strict data residency beyond AWS regions, applications
+    requiring specialized hardware AWS doesn''t offer.'
+  require_pass: true

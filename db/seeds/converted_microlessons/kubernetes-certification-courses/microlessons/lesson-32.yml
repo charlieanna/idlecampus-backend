@@ -1,0 +1,90 @@
+slug: lesson-32
+title: Lesson 32
+difficulty: easy
+sequence_order: 32
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Resource Management and QoS\n\n    - requests/limits\
+  \ and QoS classes\n    - eviction thresholds and scheduling implications"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What triggers pod eviction in Kubernetes based on resource pressure?
+  options:
+  - Eviction only happens when nodes crash
+  - When node resources fall below eviction thresholds (memory, disk, inodes), kubelet
+    evicts pods to reclaim resources
+  - Pods are never evicted based on resource usage
+  - Only the cluster administrator can trigger eviction
+  correct_answer: When node resources fall below eviction thresholds (memory, disk,
+    inodes), kubelet evicts pods to reclaim resources
+  explanation: 'The kubelet monitors node resources and evicts pods when resources
+    are critically low to prevent node failure. Eviction thresholds are configured
+    for: memory.available (RAM), nodefs.available (root filesystem), nodefs.inodesFree
+    (inodes on root fs), imagefs.available (image filesystem if separate), and imagefs.inodesFree.
+    Default soft thresholds include ''memory.available<100Mi'', ''nodefs.available<10%'',
+    and hard thresholds are more aggressive. When a threshold is crossed, kubelet
+    evicts pods following this order: 1) BestEffort QoS pods (no requests/limits),
+    2) Burstable QoS pods exceeding requests, 3) Burstable pods within requests, 4)
+    Guaranteed QoS pods, and 5) system-critical pods (lowest priority for eviction).
+    Within each tier, pods are ranked by: priority (lower priority evicted first),
+    resource usage relative to requests (those exceeding requests more are evicted
+    first). For example, if memory drops below threshold, a BestEffort pod using 500Mi
+    would be evicted before a Burstable pod using 200Mi/256Mi requested. The kubelet
+    provides a grace period (default 30s) for pods to terminate gracefully. After
+    eviction, the pod''s status shows ''Evicted'' reason, and controllers (Deployments,
+    StatefulSets) recreate it on another node if resources are available. Eviction
+    thresholds can be configured via kubelet flags: ''--eviction-hard=memory.available<500Mi,nodefs.available<10%'',
+    ''--eviction-soft=memory.available<1Gi'', ''--eviction-soft-grace-period=memory.available=1m30s''.
+    Monitoring eviction events is crucial - frequent evictions indicate under-provisioned
+    nodes, memory leaks, or incorrect resource requests. Prevention: set appropriate
+    resource requests/limits, use Guaranteed QoS for critical pods, monitor node metrics,
+    and provision adequate node capacity.'
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: How do resource requests affect scheduling decisions?
+  options:
+  - Requests don't affect scheduling; only limits matter
+  - The scheduler only places pods on nodes that have sufficient allocatable resources
+    to satisfy the sum of all pod requests
+  - Requests are just hints and can be ignored
+  - Scheduling is random regardless of requests
+  correct_answer: The scheduler only places pods on nodes that have sufficient allocatable
+    resources to satisfy the sum of all pod requests
+  explanation: 'Resource requests are the primary factor in scheduling decisions -
+    they represent guaranteed resources that the node must provide to the pod. During
+    scheduling, the scheduler calculates each node''s allocatable resources (total
+    capacity minus system reserved) and subtracts the sum of all existing pods'' requests.
+    A pod can only be scheduled if the node has sufficient remaining resources to
+    satisfy the new pod''s requests. For example, a node with 4 CPU cores and 16Gi
+    RAM might have 3.5 cores and 14Gi allocatable (after reserving for system). If
+    existing pods request 2 cores and 8Gi, the node can accommodate a new pod requesting
+    up to 1.5 cores and 6Gi. If the pod requests 2 cores, it won''t fit even if actual
+    usage is low - requests are guarantees, not current consumption. This can lead
+    to node underutilization if pods request more than they use. The scheduler doesn''t
+    consider current actual resource usage (CPU/memory consumption) - only requests.
+    This design ensures pods get resources they need and prevents oversubscription
+    that could cause failures. However, nodes can be overcommitted if total limits
+    exceed capacity (since limits are upper bounds, not guarantees). For example,
+    a 4-core node could run pods with total requests of 3 cores but total limits of
+    8 cores, betting pods won''t all hit limits simultaneously. This is why setting
+    appropriate requests is crucial - too high wastes capacity, too low risks resource
+    contention. Best practices: set requests based on typical usage, use Vertical
+    Pod Autoscaler for recommendations, monitor request vs. actual usage ratios, and
+    adjust over time. Understanding this helps with: capacity planning, troubleshooting
+    pending pods, and optimizing cluster utilization.'
+  require_pass: true
+- type: mcq
+  sequence_order: 1
+  question: What kubectl command checks if you can perform an action?
+  options:
+  - kubectl auth can-i create pods
+  - kubectl check permissions create pods
+  - kubectl verify action create pods
+  - kubectl test auth create pods
+  correct_answer_index: 0
+  explanation: kubectl auth can-i <action> <resource> checks if the current user has
+    permission to perform the specified action.
+  require_pass: true

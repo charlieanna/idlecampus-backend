@@ -1,0 +1,3220 @@
+<div class="continuous-learning-container">
+  <%
+  # Calculate progress for top bar (before any rendering)
+  content_library = (@track == 'kubernetes' || @track == 'k8s') ? KubernetesContentLibrary : DockerContentLibrary
+  learning_path = if content_library.respond_to?(:learning_path_order)
+                     content_library.learning_path_order
+                   else
+                     content_library::LEARNING_PATH_ORDER
+                   end
+
+  # Merge DB units for Docker track
+  units_by_slug = {}
+  begin
+    if defined?(InteractiveLearningUnit) && @track != 'kubernetes' && @track != 'k8s'
+      all_units = InteractiveLearningUnit.published.ordered
+      units_by_slug = all_units.index_by(&:slug)
+      # Don't merge unit slugs here if learning_path is module-grouped
+      # The module structure already includes all lessons from the database
+      unless learning_path.first.is_a?(Hash) && learning_path.first[:module_id]
+        # Legacy flat structure - merge as before
+        all_unit_slugs = all_units.pluck(:slug)
+        learning_path = (learning_path + all_unit_slugs).uniq
+      end
+    end
+  rescue => e
+    units_by_slug = {}
+  end
+
+  # Get completed chapters
+  completed_chapters = []
+  current_user.command_masteries.where('proficiency_score >= ?', 50).each do |m|
+    completed_chapters << m.canonical_command
+  end
+
+  # Calculate progress
+  total_chapters = learning_path.length
+  completed_count = completed_chapters.length
+  progress_percentage = total_chapters > 0 ? ((completed_count.to_f / total_chapters) * 100).round : 0
+
+  # Find current chapter index
+  content_chapter = @content&.dig(:metadata, :chapter) || @content&.dig(:metadata, :canonical_command)
+  session_chapter = @session.get_state('current_chapter')
+  current_chapter = content_chapter || session_chapter
+  current_index = learning_path.index(current_chapter.to_s) if current_chapter
+  current_chapter_number = current_index ? current_index + 1 : 1
+  %>
+
+  <!-- Linear Progress Bar -->
+  <div class="learning-progress-bar-container">
+    <div class="learning-progress-content">
+      <div class="progress-text">
+        <span class="progress-chapter">Chapter <%= current_chapter_number %> of <%= total_chapters %></span>
+        <span class="progress-separator">•</span>
+        <span class="progress-percentage"><%= progress_percentage %>% Complete</span>
+      </div>
+      <div class="progress-bar-track">
+        <div class="progress-bar-fill" style="width: <%= progress_percentage %>%"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chapter Progress Sidebar -->
+  <div class="learning-layout">
+    <div class="progress-sidebar" id="progress-sidebar">
+      <div class="sidebar-header">
+        <h3 class="sidebar-title">Your Journey</h3>
+        <%= link_to practice_quizzes_path, class: "practice-quizzes-btn" do %>
+          <i data-lucide="graduation-cap" class="lucide-icon-sm"></i> Practice Quizzes
+        <% end %>
+        <%
+        # Calculate pending reviews for badge
+        pending_reviews_count = 0
+        if current_user.command_masteries.any?
+          # Count critical reviews (< 60% after decay)
+          current_user.command_masteries.each do |mastery|
+            hybrid_service = HybridDecayService.new(mastery)
+            decayed_score = hybrid_service.current_decayed_score
+            pending_reviews_count += 1 if decayed_score < 60 && mastery.proficiency_score > 0
+          end
+        end
+        %>
+        <% if pending_reviews_count > 0 %>
+          <div class="review-pending-badge" title="<%= pending_reviews_count %> commands need review">
+            <i data-lucide="refresh-cw" class="review-badge-icon lucide-icon-sm"></i>
+            <span class="badge-count"><%= pending_reviews_count %></span>
+          </div>
+        <% end %>
+      </div>
+      <div class="chapter-list journey-map">
+        <%
+        # Debug: log current chapter detection
+        Rails.logger.info "🔍 Sidebar current_chapter detection: content_chapter=#{content_chapter.inspect}, session_chapter=#{session_chapter.inspect}, final=#{current_chapter.inspect}"
+
+        # Check if learning_path is module-grouped (array of hashes) or flat (array of strings)
+        is_module_grouped = learning_path.present? && learning_path.first.is_a?(Hash) && learning_path.first.key?(:module_id)
+
+        # Flatten module structure into a simple array with module markers
+        flat_path_with_modules = []
+        module_info = {} # Store module data for headers
+
+        if is_module_grouped
+          learning_path.each do |mod|
+            next unless mod.is_a?(Hash) # Skip non-hash items
+            # Add module header marker
+            module_id = mod[:module_id] || "advanced"
+            flat_path_with_modules << "module_header_#{module_id}"
+            module_info["module_header_#{module_id}"] = mod
+            # Add all items in this module
+            flat_path_with_modules.concat(mod[:items] || [])
+          end
+        else
+          # Legacy flat structure - use as-is
+          flat_path_with_modules = learning_path || []
+        end
+
+        flat_path_with_modules.each_with_index do |chapter, index|
+          chapter_str = chapter.to_s
+
+          # Check if this is a module header
+          if chapter_str.start_with?('module_header_')
+            mod_data = module_info[chapter_str]
+            if mod_data
+              # Render module header
+              %>
+              <div class="module-header" data-module-id="<%= mod_data[:module_id] %>">
+                <div class="module-header-content">
+                  <i data-lucide="chevron-down" class="module-expand-icon lucide-icon"></i>
+                  <div class="module-header-text">
+                    <div class="module-title"><%= mod_data[:module_title] %></div>
+                    <div class="module-stats">
+                      <%= mod_data[:lesson_count] %> lessons
+                      <% if mod_data[:lab_count] > 0 %>
+                        • <%= mod_data[:lab_count] %> labs
+                      <% end %>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <%
+            end
+            next # Skip to next item
+          end
+
+          # Find mastery - ONLY check by exact slug match (don't use related mastery for score display)
+          # Related mastery is only used for navigation, not for score display
+          mastery = current_user.command_masteries.find_by(canonical_command: chapter_str)
+
+          # Score should ONLY be from this specific chapter, not related chapters
+          # Future chapters without direct mastery should show 0%
+          # USE HYBRID DECAY (FSRS + Progress) to show realistic retention over time
+          score = if mastery
+                    hybrid_service = HybridDecayService.new(mastery)
+                    hybrid_service.current_decayed_score.round
+                  else
+                    0
+                  end
+          
+          # For navigation purposes only (not score), check related mastery
+          # This allows going back to related chapters like "codesprout-docker-run" vs "running-first-container"
+          has_related_progress = false
+          if !mastery && units_by_slug[chapter]
+            unit = units_by_slug[chapter]
+            if unit.command_to_learn.present?
+              command_base = unit.command_to_learn.split.first(2).join(' ') # e.g., "docker run"
+              related_mastery = current_user.command_masteries.where("canonical_command LIKE ?", "#{command_base}%").first
+              has_related_progress = related_mastery && related_mastery.proficiency_score > 0
+            end
+          end
+          
+          # Check if this is the current chapter - compare as strings with multiple checks
+          current_chapter_str = current_chapter.to_s if current_chapter
+          content_meta_chapter = @content&.dig(:metadata, :chapter).to_s if @content&.dig(:metadata, :chapter)
+          content_meta_canonical = @content&.dig(:metadata, :canonical_command).to_s if @content&.dig(:metadata, :canonical_command)
+          content_meta_micro = @content&.dig(:metadata, :micro_id).to_s if @content&.dig(:metadata, :micro_id)
+          
+          is_current = false
+          if current_chapter_str.present?
+            is_current = (chapter_str == current_chapter_str) ||
+                        (chapter_str == content_chapter.to_s) ||
+                        (chapter_str == session_chapter.to_s) ||
+                        (chapter_str == content_meta_chapter) ||
+                        (chapter_str == content_meta_canonical) ||
+                        (chapter_str == content_meta_micro)
+          end
+          
+          # Also check if this unit's slug matches the micro_id (for database units)
+          if !is_current && @content&.dig(:metadata, :micro_id)
+            unit_micro_id = @content[:metadata][:micro_id].to_s
+            is_current = (chapter_str == unit_micro_id)
+          end
+          
+          # Debug log for current chapter match
+          if is_current
+            Rails.logger.info "✅ Current chapter matched: #{chapter_str} (current_chapter=#{current_chapter_str}, content_meta=#{content_meta_chapter}, session=#{session_chapter.to_s})"
+          end
+          
+          # A chapter is accessible if:
+          # - It's completed (score >= 50), OR
+          # - It's the current one, OR  
+          # - User has ANY mastery score on THIS specific chapter (even if decayed below 50%), OR
+          # - It's the first chapter (index 0), OR
+          # - Any previous chapter in sequence (user can always go back)
+          has_any_progress = mastery && mastery.proficiency_score > 0
+          is_completed = completed_chapters.include?(chapter)
+          
+          # Find current chapter index in learning path
+          # Try multiple ways to find current chapter in learning_path
+          current_index = nil
+          if current_chapter_str.present?
+            current_index = learning_path.index(current_chapter_str)
+            # If not found, try matching by micro_id from content metadata
+            if current_index.nil? && @content&.dig(:metadata, :micro_id)
+              micro_id_str = @content[:metadata][:micro_id].to_s
+              current_index = learning_path.index(micro_id_str)
+            end
+            # If still not found, try matching this chapter_str to micro_id (for database units where slug == micro_id)
+            if current_index.nil? && @content&.dig(:metadata, :micro_id)
+              micro_id_str = @content[:metadata][:micro_id].to_s
+              if chapter_str == micro_id_str
+                current_index = index
+              end
+            end
+          end
+          
+          # If still nil, check if this chapter matches any content metadata
+          if current_index.nil? && @content&.dig(:metadata)
+            if chapter_str == @content[:metadata][:micro_id].to_s ||
+               chapter_str == @content[:metadata][:chapter].to_s ||
+               chapter_str == @content[:metadata][:canonical_command].to_s
+              current_index = index
+            end
+          end
+          
+          is_before_current = current_index && index < current_index
+          is_after_current = current_index && index > current_index
+
+          # NEW LOGIC: A chapter is locked ONLY if user shouldn't have access yet
+          # Don't lock based on position - unlock based on progression and current state
+
+          # A chapter is UNLOCKED if:
+          # 1. It's the first chapter (always accessible) OR
+          # 2. User has progress/mastery on it (they've started it) OR
+          # 3. User has completed it OR
+          # 4. User has completed the PREVIOUS chapter (natural progression) OR
+          # 5. It's the CURRENT chapter in the session (user is working on it)
+
+          # Check if previous chapter is completed (for progressive unlock)
+          previous_chapter_completed = false
+          if index > 0
+            previous_chapter = flat_path_with_modules[index - 1]
+            previous_mastery = current_user.command_masteries.find_by(canonical_command: previous_chapter)
+            previous_chapter_completed = previous_mastery && previous_mastery.proficiency_score >= 50
+          end
+
+          # Check if this is the current session chapter
+          is_session_chapter = (chapter_str == session_chapter.to_s) ||
+                               (chapter_str == content_meta_chapter) ||
+                               (chapter_str == content_meta_micro)
+
+          # Unlock if ANY of these conditions are true
+          should_unlock = (index == 0) ||                    # First chapter
+                         has_any_progress ||                  # Has started it
+                         is_completed ||                      # Has completed it
+                         previous_chapter_completed ||        # Completed previous chapter
+                         is_session_chapter ||                # Current session chapter
+                         is_current                           # Currently viewing it
+
+          is_locked = !should_unlock
+
+          # Determine if clickable - SIMPLIFIED RULES:
+          # - Clickable if NOT locked
+          # - That's it! If user has progress/completed, or it's the first chapter, it's unlocked and clickable
+          clickable = !is_locked
+
+          # Debug logging for chapter state (now that clickable is defined)
+          Rails.logger.info "📋 Chapter: #{chapter_str}, index=#{index}, current_index=#{current_index.inspect}, has_progress=#{has_any_progress}, completed=#{is_completed}, prev_completed=#{previous_chapter_completed}, is_session=#{is_session_chapter}, locked=#{is_locked}, is_current=#{is_current}, clickable=#{clickable}"
+
+          # Debug logging for locked chapters
+          if is_locked
+            Rails.logger.info "🔒 Locked chapter: #{chapter_str} (index=#{index}, current_index=#{current_index.inspect}, has_progress=#{has_any_progress}, completed=#{is_completed})"
+          end
+
+          # Detect if this is a lesson or a lab
+          is_lab = false
+          is_lesson = false
+          type_icon = ""
+          lab_record = nil
+
+          if units_by_slug[chapter]
+            is_lesson = true
+            type_icon = '<i data-lucide="book-open" class="chapter-type-icon lucide-icon-sm"></i>'.html_safe
+          else
+            # Check if it's a lab by slug or by "lab_#{id}" pattern
+            lab_record = HandsOnLab.find_by(slug: chapter.to_s)
+
+            if !lab_record && chapter.to_s.start_with?('lab_')
+              lab_id = chapter.to_s.sub('lab_', '').to_i
+              lab_record = HandsOnLab.find_by(id: lab_id, is_active: true)
+            end
+
+            if lab_record
+              is_lab = true
+              type_icon = '<i data-lucide="flask" class="chapter-type-icon lucide-icon-sm"></i>'.html_safe
+            else
+              # Fallback - if it's not in units or labs, assume lesson
+              is_lesson = true
+              type_icon = '<i data-lucide="book-open" class="chapter-type-icon lucide-icon-sm"></i>'.html_safe
+            end
+          end
+
+          display_name = if units_by_slug[chapter]
+                            units_by_slug[chapter].title
+                          elsif lab_record
+                            lab_record.title
+                          elsif chapter.to_s.include?('-') || !chapter.to_s.include?(' ')
+                            chapter.to_s.tr('-', ' ').split.map(&:capitalize).join(' ')
+                          else
+                            chapter.to_s.split.map(&:capitalize).join(' ')
+                          end
+          # Don't set URL for locked items to prevent any navigation
+          chapter_url = (clickable && !is_locked) ? "/#{@track}/learn?chapter=#{CGI.escape(chapter.to_s)}" : "javascript:void(0);"
+
+          # Build CSS classes
+          css_classes = ['chapter-item']
+          css_classes << 'current' if is_current
+          css_classes << 'completed' if is_completed
+          css_classes << 'locked' if is_locked
+          css_classes << 'clickable' if clickable
+          css_classes << 'lab-item' if is_lab
+          css_classes << 'lesson-item' if is_lesson
+        %>
+          <div class="journey-step">
+            <% if index > 0 %>
+              <div class="journey-connector <%= 'completed' if flat_path_with_modules[0..index-1].all? { |ch| completed_chapters.include?(ch) } %>"></div>
+            <% end %>
+            <div class="<%= css_classes.join(' ') %>"
+                 data-chapter="<%= chapter_str %>"
+                 data-current="<%= is_current %>"
+                 data-clickable="<%= clickable %>"
+                 data-url="<%= chapter_url %>"
+                 <%= "style='cursor: pointer;'" if clickable %>>
+              <div class="chapter-status">
+                <% if is_completed %>
+                  <i data-lucide="check-circle" class="status-icon completed-icon lucide-icon"></i>
+                <% elsif is_current %>
+                  <i data-lucide="arrow-right" class="status-icon current-icon lucide-icon"></i>
+                <% elsif is_locked %>
+                  <i data-lucide="lock" class="status-icon locked-icon lucide-icon"></i>
+                <% elsif has_any_progress %>
+                  <i data-lucide="loader" class="status-icon progress-icon lucide-icon"></i>
+                <% else %>
+                  <i data-lucide="circle" class="status-icon next-icon lucide-icon"></i>
+                <% end %>
+              </div>
+              <div class="chapter-info">
+                <div class="chapter-name-row">
+                  <span class="chapter-type-icon"><%= type_icon %></span>
+                  <div class="chapter-name"><%= display_name %></div>
+                  <%
+                  # Check if any lab is available after this chapter
+                  has_available_lab = false
+                  if units_by_slug[chapter] && units_by_slug[chapter].command_to_learn.present?
+                    command = units_by_slug[chapter].command_to_learn.split.first(2).join(' ')
+                    content_library.labs.each do |lab|
+                      prerequisites = lab[:requires_mastery] || []
+                      if prerequisites.include?(command)
+                        all_met = prerequisites.all? do |cmd|
+                          m = current_user.command_masteries.find_by(canonical_command: cmd)
+                          m && m.proficiency_score >= 60
+                        end
+                        has_available_lab = true if all_met
+                      end
+                    end
+                  end
+                  %>
+                  <% if has_available_lab %>
+                    <span class="lab-available-indicator" title="Lab available!">🎯</span>
+                  <% end %>
+                </div>
+                <% if mastery && score > 0 %>
+                  <div class="mastery-bar-mini">
+                    <div class="mastery-fill <%= 'high' if score >= 80 %> <%= 'medium' if score >= 60 && score < 80 %> <%= 'low' if score < 60 %>" style="width: <%= score %>%"></div>
+                  </div>
+                  <div class="mastery-score"><%= score %>%</div>
+                <% elsif !is_locked %>
+                  <!-- Show 0% for unlocked chapters with no progress -->
+                  <div class="mastery-bar-mini">
+                    <div class="mastery-fill" style="width: 0%"></div>
+                  </div>
+                  <div class="mastery-score">0%</div>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+    
+    <div class="main-learning-content">
+      <!-- Split Container: Content on left, Terminal on right -->
+      <div class="split-container" id="splitContainer">
+        <!-- Left Panel: Content Area -->
+        <div id="content-panel" class="content-panel-split">
+  <%
+  # Build breadcrumbs
+  course_name = @track == 'kubernetes' ? 'Kubernetes Fundamentals' : 'Docker Fundamentals'
+
+  # Determine module based on current lesson's actual module assignment
+  module_name = "Getting Started"
+
+  if current_chapter
+    current_chapter_str = current_chapter.to_s
+
+    # Try to find the lesson's module from database
+    if current_chapter_str.start_with?('lab_')
+      # Handle labs - look up by lab ID in the lab_to_module mapping
+      lab_id_match = current_chapter_str.match(/lab_(\d+)/)
+      if lab_id_match
+        lab_id = lab_id_match[1].to_i
+        # Map labs to modules (matching the mapping in docker_content_library.rb)
+        lab_to_module = {
+          1 => 791, 2 => 782, 3 => 791, 4 => 783, 5 => 784,
+          6 => 781, 7 => 784, 8 => 784, 9 => 785, 10 => 786,
+          11 => 786, 12 => 791, 13 => 791, 14 => 782, 15 => 783,
+          16 => 784, 17 => 785
+        }
+        module_id = lab_to_module[lab_id]
+        if module_id
+          course_module = CourseModule.find_by(id: module_id)
+          module_name = course_module.title if course_module
+        end
+      end
+    else
+      # Regular lesson - find by slug
+      lesson = InteractiveLearningUnit.find_by(slug: current_chapter_str)
+      if lesson
+        # Find which module this lesson belongs to via the join table
+        module_unit = ModuleInteractiveUnit.find_by(interactive_learning_unit_id: lesson.id)
+        if module_unit && module_unit.course_module
+          module_name = module_unit.course_module.title
+        end
+      end
+    end
+  end
+
+  # Get current lesson name
+  current_lesson = if @content && @content[:metadata]
+    @content[:metadata][:title] || @content[:content][:title] || current_chapter.to_s.tr('-', ' ').titleize
+  else
+    current_chapter.to_s.tr('-', ' ').titleize
+  end
+
+  # Determine content type for icon
+  content_type_icon = case @content[:type]
+  when 'quick_review', 'scenario_review'
+    '<i data-lucide="refresh-cw" class="lucide-icon-sm"></i>'.html_safe
+  when 'lab', 'comprehensive_lab'
+    '<i data-lucide="flask" class="lucide-icon-sm"></i>'.html_safe
+  else
+    '<i data-lucide="book-open" class="lucide-icon-sm"></i>'.html_safe
+  end
+  %>
+
+  <!-- Breadcrumb Navigation -->
+  <div class="breadcrumb-container">
+    <div class="breadcrumb-content">
+      <span class="breadcrumb-item course-name">
+        <%= course_name %>
+      </span>
+      <span class="breadcrumb-separator">→</span>
+      <span class="breadcrumb-item module-name">
+        <%= module_name %>
+      </span>
+      <span class="breadcrumb-separator">→</span>
+      <span class="breadcrumb-item current-lesson">
+        <span class="lesson-icon"><%= content_type_icon %></span>
+        <%= current_lesson %>
+      </span>
+    </div>
+  </div>
+
+  <%
+  # Check if there are pending reviews (but only show notification if NOT currently on a review)
+  show_review_notification = false
+  critical_review_commands = []
+
+  if @content[:type] != 'quick_review' && @content[:type] != 'scenario_review'
+    # Count commands needing review
+    if current_user.command_masteries.any?
+      current_user.command_masteries.each do |mastery|
+        next if mastery.proficiency_score == 0
+        hybrid_service = HybridDecayService.new(mastery)
+        decayed_score = hybrid_service.current_decayed_score
+
+        if decayed_score < 60
+          # Get friendly command name
+          unit = InteractiveLearningUnit.find_by(slug: mastery.canonical_command)
+          command_name = unit ? unit.title : mastery.canonical_command.tr('-', ' ').titleize
+          critical_review_commands << {name: command_name, score: decayed_score.round}
+        end
+      end
+    end
+    show_review_notification = critical_review_commands.length > 0
+  end
+  %>
+
+  <% if show_review_notification %>
+  <!-- Review Notification Banner -->
+  <div class="review-notification-banner" id="reviewNotificationBanner">
+    <div class="review-notification-content">
+      <div class="review-notification-icon">🔄</div>
+      <div class="review-notification-text">
+        <div class="review-notification-title">
+          <%= critical_review_commands.length %> Command<%= critical_review_commands.length > 1 ? 's' : '' %> Need Review
+        </div>
+        <div class="review-notification-subtitle">
+          <%= critical_review_commands.take(3).map { |c| "#{c[:name]} (#{c[:score]}%)" }.join(', ') %>
+          <%= '...' if critical_review_commands.length > 3 %>
+        </div>
+      </div>
+      <div class="review-notification-actions">
+        <button class="review-later-btn" onclick="document.getElementById('reviewNotificationBanner').style.display='none'">
+          Later
+        </button>
+        <a href="/<%= @track %>/learn?force_review=true" class="review-now-btn">
+          Review Now
+        </a>
+      </div>
+    </div>
+  </div>
+  <% end %>
+
+  <!-- Enhanced Content Area -->
+  <div class="content-card" id="learning-content">
+    <div class="content-inner">
+      <% if @content.nil? %>
+        <div class="no-content-message">
+          <h2>🎓 Starting Your Learning Journey</h2>
+          <p>Loading your first lesson...</p>
+          <p><small>If this message persists, please refresh the page.</small></p>
+        </div>
+      <% elsif @content[:type] == 'interactive' %>
+        <%= render partial: 'continuous_learning/modes/interactive', locals: { content: @content } %>
+      <% elsif @content[:type] == 'lesson' || @content[:type] == 'stealth_review' %>
+        <%= render partial: 'continuous_learning/modes/interactive', locals: { content: @content } %>
+      <% elsif @content[:type] == 'quick_review' || @content[:type] == 'scenario_review' %>
+        <%# Show regular lesson content in background (dimmed) if user was on a chapter %>
+        <% if @session && @session.get_state('current_chapter').present? %>
+          <div style="filter: blur(3px) brightness(0.7); pointer-events: none;">
+            <%= render partial: 'continuous_learning/modes/interactive', locals: { content: @content } %>
+          </div>
+        <% end %>
+        <%# Overlay the review modal on top %>
+        <%= render partial: 'continuous_learning/modes/review_modal', locals: { content: @content } %>
+      <% elsif @content[:type] == 'review' || @content[:type] == 'practice' %>
+        <%= render partial: 'continuous_learning/modes/testing', locals: { content: @content } %>
+      <% elsif @content[:type] == 'lab' || @content[:type] == 'comprehensive_lab' %>
+        <%# Show regular lesson content in background (dimmed) if user was on a chapter %>
+        <% if @session && @session.get_state('current_chapter').present? %>
+          <div style="filter: blur(3px) brightness(0.7); pointer-events: none;">
+            <%= render partial: 'continuous_learning/modes/interactive', locals: { content: @content } %>
+          </div>
+        <% end %>
+        <%# Overlay the lab modal on top %>
+        <%= render partial: 'continuous_learning/modes/lab_modal', locals: { content: @content } %>
+      <% else %>
+        <div class="no-content-message">
+          <h2>Unknown Content Type</h2>
+          <p>Content type: <%= @content[:type] %></p>
+        </div>
+      <% end %>
+    </div>
+  </div>
+        </div> <!-- close content-panel -->
+
+        <!-- Right Panel: Persistent Terminal -->
+        <div id="terminal-panel" class="terminal-panel-split">
+          <%= render partial: 'continuous_learning/persistent_terminal' %>
+        </div>
+      </div> <!-- close split-container -->
+    </div> <!-- close main-learning-content -->
+  </div> <!-- close learning-layout -->
+</div>
+
+<!-- Initialize Split.js for resizable panels -->
+<script src="https://cdn.jsdelivr.net/npm/split.js@1.6.5/dist/split.min.js"></script>
+<script>
+  // Initialize split panels
+  document.addEventListener('DOMContentLoaded', function() {
+    if (document.getElementById('splitContainer')) {
+      Split(['#content-panel', '#terminal-panel'], {
+        sizes: [60, 40],
+        minSize: [400, 350],
+        gutterSize: 8,
+        cursor: 'col-resize',
+        direction: 'horizontal',
+        onDragEnd: function(sizes) {
+          // Resize terminal when panel size changes
+          if (window.persistentTerminal && window.persistentTerminal.term) {
+            window.persistentTerminal.term.fit();
+          }
+        }
+      });
+
+      console.log('Split panels initialized');
+    }
+  });
+</script>
+
+<style>
+/* Linear Progress Bar at Top */
+.learning-progress-bar-container {
+  position: sticky;
+  top: 56px; /* Below navbar */
+  left: 0;
+  right: 0;
+  background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  z-index: 100;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.learning-progress-content {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 12px 20px;
+}
+
+.progress-text {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #e2e8f0;
+}
+
+.progress-chapter {
+  color: #ffffff;
+}
+
+.progress-separator {
+  color: #64748b;
+  opacity: 0.6;
+}
+
+.progress-percentage {
+  color: #a5f3fc;
+}
+
+.progress-bar-track {
+  width: 100%;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #667eea 0%, #764ba2 50%, #00d4ff 100%);
+  border-radius: 3px;
+  transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 0 10px rgba(118, 75, 162, 0.5);
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    filter: brightness(1);
+  }
+  50% {
+    filter: brightness(1.2);
+  }
+  100% {
+    filter: brightness(1);
+  }
+}
+
+/* Hero Section */
+.learning-hero {
+  position: relative;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 60px 20px;
+  margin-bottom: 40px;
+  overflow: hidden;
+}
+
+.hero-pattern {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(255,255,255,.05) 35px, rgba(255,255,255,.05) 70px);
+  animation: patternMove 20s linear infinite;
+}
+
+@keyframes patternMove {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(70px); }
+}
+
+.hero-content {
+  position: relative;
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: center;
+  color: white;
+}
+
+.hero-title {
+  font-size: 3rem;
+  font-weight: 800;
+  margin-bottom: 10px;
+  text-shadow: 0 2px 20px rgba(0,0,0,0.2);
+  animation: fadeInDown 0.6s ease-out;
+}
+
+.emoji-icon {
+  display: inline-block;
+  animation: bounce 2s infinite;
+  margin-right: 10px;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.hero-subtitle {
+  font-size: 1.2rem;
+  opacity: 0.95;
+  animation: fadeInUp 0.6s ease-out 0.2s both;
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+}
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Main Container */
+.continuous-learning-container {
+  max-width: 100%;
+  margin: 0;
+  padding: 0 20px 60px 340px;  /* Left padding = sidebar (280px) + sidebar left (20px) + gap (40px) */
+  position: relative;
+}
+
+.learning-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 30px;
+  align-items: start;
+  position: relative;
+}
+
+.progress-sidebar {
+  position: fixed;
+  left: 20px;
+  top: 80px;
+  width: 280px;
+  background: white;
+  border-radius: 16px;
+  padding: 25px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  z-index: 900;
+  max-height: calc(100vh - 100px);
+  overflow-y: auto;
+}
+
+.sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid #e8e8e8;
+}
+
+.sidebar-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #2c3e50;
+  margin: 0;
+}
+
+.practice-quizzes-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  text-decoration: none;
+  border-radius: 25px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 10px rgba(102, 126, 234, 0.3);
+}
+
+.practice-quizzes-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+  color: white;
+  text-decoration: none;
+}
+
+.practice-quizzes-btn i {
+  font-size: 1.1rem;
+}
+
+.review-pending-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: linear-gradient(135deg, #ff6b6b 0%, #fa5252 100%);
+  color: white;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(250, 82, 82, 0.3);
+  animation: pulseReview 2s ease-in-out infinite;
+}
+
+@keyframes pulseReview {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 2px 8px rgba(250, 82, 82, 0.3);
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(250, 82, 82, 0.5);
+  }
+}
+
+.badge-icon {
+  font-size: 0.9rem;
+  animation: spin 3s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.badge-count {
+  font-weight: 700;
+  min-width: 18px;
+  text-align: center;
+}
+
+.chapter-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.journey-map {
+  position: relative;
+}
+
+/* Module Headers */
+.module-header {
+  margin: 20px 0 12px 0;
+  padding: 0;
+  cursor: pointer;
+  user-select: none;
+}
+
+.module-header:first-child {
+  margin-top: 0;
+}
+
+.module-header-content {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.2);
+}
+
+.module-header-content:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.module-expand-icon {
+  font-size: 0.9rem;
+  color: white;
+  transition: transform 0.3s ease;
+  flex-shrink: 0;
+}
+
+.module-header.collapsed .module-expand-icon {
+  transform: rotate(-90deg);
+}
+
+.module-header-text {
+  flex: 1;
+  color: white;
+}
+
+.module-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin-bottom: 3px;
+}
+
+.module-stats {
+  font-size: 0.75rem;
+  opacity: 0.9;
+  font-weight: 500;
+}
+
+.journey-step {
+  position: relative;
+  margin-bottom: 10px;
+}
+
+.journey-connector {
+  position: absolute;
+  left: 18px;
+  top: -10px;
+  width: 3px;
+  height: 10px;
+  background: linear-gradient(to bottom, #e8e8e8 0%, #d0d0d0 100%);
+  z-index: 1;
+}
+
+.journey-connector.completed {
+  background: linear-gradient(to bottom, #51cf66 0%, #37b24d 100%);
+  box-shadow: 0 0 8px rgba(81, 207, 102, 0.4);
+}
+
+.chapter-item {
+  display: flex;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  opacity: 0.6;
+  position: relative;
+  z-index: 2;
+  background: white;
+}
+
+/* Disable all transitions and interactions for locked items */
+.chapter-item.locked {
+  transition: none !important;
+}
+
+.chapter-item.current {
+  background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+  border-left: 4px solid #667eea;
+  opacity: 1;
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.2);
+}
+
+.chapter-item.completed {
+  opacity: 0.9;
+  background: #f5f7fa;
+}
+
+.chapter-item.locked {
+  opacity: 0.4 !important;
+  cursor: not-allowed !important;
+  pointer-events: none !important;
+  transform: none !important;
+  transition: none !important;
+  user-select: none !important;
+}
+
+/* Prevent ALL hover effects on locked items - must override everything */
+.chapter-item.locked:hover,
+.chapter-item.locked:active,
+.chapter-item.locked:focus {
+  background: inherit !important;
+  transform: none !important;
+  opacity: 0.4 !important;
+  cursor: not-allowed !important;
+  pointer-events: none !important;
+  box-shadow: none !important;
+}
+
+.chapter-item.clickable,
+.chapter-item[data-clickable="true"] {
+  cursor: pointer !important;
+  pointer-events: auto !important;
+}
+
+.chapter-item.clickable:hover,
+.chapter-item[data-clickable="true"]:hover {
+  background: #f0f4f8 !important;
+  transform: translateX(4px);
+}
+
+/* Ensure locked items are never clickable, even if they have clickable class */
+.chapter-item.locked[data-clickable="true"],
+.chapter-item.locked.clickable {
+  pointer-events: none !important;
+  cursor: not-allowed !important;
+  transform: none !important;
+}
+
+.chapter-item.locked[data-clickable="true"]:hover,
+.chapter-item.locked.clickable:hover {
+  pointer-events: none !important;
+  cursor: not-allowed !important;
+  transform: none !important;
+  background: inherit !important;
+}
+
+.chapter-status {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #f5f7fa;
+}
+
+.status-icon {
+  font-size: 1.3rem;
+  display: block;
+  line-height: 1;
+}
+
+.completed-icon {
+  color: #51cf66;
+  filter: drop-shadow(0 2px 4px rgba(81, 207, 102, 0.3));
+}
+
+.current-icon {
+  color: #667eea;
+  filter: drop-shadow(0 2px 4px rgba(102, 126, 234, 0.3));
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.15);
+  }
+}
+
+.locked-icon {
+  color: #adb5bd;
+  filter: grayscale(50%);
+}
+
+.progress-icon {
+  color: #fab005;
+  animation: rotate 4s linear infinite;
+}
+
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.next-icon {
+  color: #868e96;
+}
+
+.chapter-info {
+  flex: 1;
+}
+
+.chapter-name-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 5px;
+}
+
+.chapter-type-icon {
+  font-size: 1.1rem;
+  flex-shrink: 0;
+  opacity: 0.8;
+  margin-right: 4px;
+}
+
+.chapter-name {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #2c3e50;
+  font-family: 'Monaco', 'Courier New', monospace;
+  flex: 1;
+}
+
+/* Lab items get special styling to stand out */
+.chapter-item.lab-item {
+  background: linear-gradient(135deg, #fff9e6 0%, #fff3d6 100%);
+  border-left: 4px solid #f59e0b;
+  padding: 14px;
+  margin: 8px 0;
+}
+
+.chapter-item.lab-item .chapter-name {
+  font-weight: 700;
+  color: #92400e;
+}
+
+.chapter-item.lab-item.current {
+  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+  border-left: 4px solid #d97706;
+}
+
+.chapter-item.lab-item.completed {
+  background: #fef9e6;
+  opacity: 0.85;
+}
+
+.lab-available-indicator {
+  font-size: 0.9rem;
+  animation: bounce 2s ease-in-out infinite;
+  filter: drop-shadow(0 2px 4px rgba(255, 193, 7, 0.4));
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+.mastery-bar-mini {
+  height: 4px;
+  background: #e8e8e8;
+  border-radius: 2px;
+  overflow: hidden;
+  margin: 5px 0 3px 0;
+}
+
+.mastery-fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.5s ease;
+}
+
+.mastery-fill.high {
+  background: linear-gradient(90deg, #51cf66 0%, #37b24d 100%);
+}
+
+.mastery-fill.medium {
+  background: linear-gradient(90deg, #ffd43b 0%, #fab005 100%);
+}
+
+.mastery-fill.low {
+  background: linear-gradient(90deg, #ff6b6b 0%, #fa5252 100%);
+}
+
+.mastery-score {
+  font-size: 0.75rem;
+  color: #7f8c8d;
+  font-weight: 600;
+}
+
+.labs-section {
+  margin-top: 25px;
+  padding-top: 20px;
+  border-top: 2px solid #e8e8e8;
+}
+
+.labs-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #2c3e50;
+  margin: 0 0 15px 0;
+}
+
+.lab-item {
+  display: flex;
+  gap: 10px;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  transition: all 0.3s ease;
+}
+
+.lab-item.available {
+  background: linear-gradient(135deg, #d4fc79 0%, #96e6a1 100%);
+  border-left: 3px solid #51cf66;
+  cursor: pointer;
+  animation: pulseGlow 2s ease-in-out infinite;
+}
+
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 0 5px rgba(81, 207, 102, 0.3); }
+  50% { box-shadow: 0 0 15px rgba(81, 207, 102, 0.6); }
+}
+
+.lab-item.available:hover {
+  transform: translateX(3px);
+  box-shadow: 0 4px 12px rgba(81, 207, 102, 0.4);
+}
+
+.lab-item.locked {
+  opacity: 0.5;
+  background: #f5f5f5;
+}
+
+.lab-status-icon {
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+
+.lab-name {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #2c3e50;
+  line-height: 1.3;
+}
+
+.lab-prereq {
+  font-size: 0.7rem;
+  color: #7f8c8d;
+  margin-top: 3px;
+  font-style: italic;
+}
+
+.main-learning-content {
+  min-width: 0;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+  height: calc(100vh - 140px);
+}
+
+/* Split Container for Content + Terminal */
+.split-container {
+  display: flex;
+  height: 100%;
+  overflow: hidden;
+}
+
+.content-panel-split {
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 0 20px;
+  background: #f5f7fa;
+}
+
+.terminal-panel-split {
+  overflow: hidden;
+  background: #1E1E1E;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Split.js Gutter Styling */
+.gutter {
+  background-color: #cbd5e0;
+  background-repeat: no-repeat;
+  background-position: 50%;
+  transition: background-color 0.2s ease;
+}
+
+.gutter:hover {
+  background-color: #667eea;
+}
+
+.gutter.gutter-horizontal {
+  background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==');
+  cursor: col-resize;
+}
+
+/* Persistent Terminal Container */
+.persistent-terminal-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+  overflow: hidden;
+}
+
+.terminal-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+#xterm-container {
+  flex: 1 !important;
+  min-height: 0 !important;
+  height: auto !important;
+}
+
+/* Breadcrumb Navigation */
+.breadcrumb-container {
+  background: white;
+  border-radius: 12px;
+  padding: 16px 24px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  animation: slideInDown 0.5s ease-out;
+}
+
+@keyframes slideInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.breadcrumb-content {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-size: 0.95rem;
+}
+
+.breadcrumb-item {
+  color: #6b7280;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.breadcrumb-item.course-name {
+  color: #667eea;
+  font-weight: 700;
+}
+
+.breadcrumb-item.module-name {
+  color: #9ca3af;
+  font-weight: 600;
+}
+
+.breadcrumb-item.current-lesson {
+  color: #1f2937;
+  font-weight: 700;
+  font-family: 'Monaco', 'Courier New', monospace;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.breadcrumb-separator {
+  color: #d1d5db;
+  font-weight: 300;
+  font-size: 1.1rem;
+}
+
+.lesson-icon {
+  font-size: 1.1rem;
+}
+
+/* Review Notification Banner */
+.review-notification-banner {
+  background: linear-gradient(135deg, #fff5e6 0%, #ffe8cc 100%);
+  border: 2px solid #f59e0b;
+  border-radius: 12px;
+  padding: 18px 24px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2);
+  animation: slideInDown 0.5s ease-out 0.2s both, gentlePulse 3s ease-in-out infinite;
+}
+
+@keyframes gentlePulse {
+  0%, 100% {
+    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2);
+  }
+  50% {
+    box-shadow: 0 6px 16px rgba(245, 158, 11, 0.35);
+  }
+}
+
+.review-notification-content {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.review-notification-icon {
+  font-size: 2rem;
+  animation: spin 4s linear infinite;
+  flex-shrink: 0;
+}
+
+.review-notification-text {
+  flex: 1;
+}
+
+.review-notification-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #92400e;
+  margin-bottom: 4px;
+}
+
+.review-notification-subtitle {
+  font-size: 0.9rem;
+  color: #b45309;
+  font-family: 'Monaco', 'Courier New', monospace;
+}
+
+.review-notification-actions {
+  display: flex;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.review-later-btn {
+  background: white;
+  border: 2px solid #fbbf24;
+  color: #92400e;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.review-later-btn:hover {
+  background: #fef3c7;
+  transform: translateY(-2px);
+}
+
+.review-now-btn {
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  color: white;
+  padding: 10px 24px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(217, 119, 6, 0.3);
+}
+
+.review-now-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(217, 119, 6, 0.4);
+}
+
+/* Progress Section */
+.progress-section {
+  background: white;
+  border-radius: 16px;
+  padding: 30px;
+  margin-bottom: 30px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  animation: slideInLeft 0.5s ease-out;
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.progress-wrapper {
+  margin-bottom: 25px;
+}
+
+.progress-bar-container {
+  position: relative;
+}
+
+.progress-bar-bg {
+  height: 12px;
+  background: linear-gradient(to right, #f0f0f0, #e8e8e8);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+  background-size: 200% 100%;
+  border-radius: 20px;
+  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  animation: gradientShift 3s ease infinite;
+}
+
+@keyframes gradientShift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+.progress-shimmer {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% { left: -100%; }
+  100% { left: 100%; }
+}
+
+.progress-text {
+  display: block;
+  text-align: center;
+  margin-top: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #667eea;
+}
+
+/* Stats Cards */
+.stats-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 20px;
+}
+
+.stat-card {
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  animation: fadeIn 0.5s ease-out;
+  animation-fill-mode: both;
+}
+
+.stat-card:nth-child(1) { animation-delay: 0.1s; }
+.stat-card:nth-child(2) { animation-delay: 0.2s; }
+.stat-card:nth-child(3) { animation-delay: 0.3s; }
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.25);
+}
+
+.accuracy-card {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.streak-card {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.items-card {
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+}
+
+.stat-icon {
+  font-size: 2.5rem;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+}
+
+.stat-info {
+  flex: 1;
+  color: white;
+}
+
+.stat-value {
+  font-size: 1.8rem;
+  font-weight: 800;
+  line-height: 1;
+  margin-bottom: 5px;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.stat-label {
+  font-size: 0.85rem;
+  opacity: 0.9;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Content Card */
+.content-card {
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+  overflow: hidden;
+  animation: slideInRight 0.5s ease-out 0.3s both;
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.content-inner {
+  padding: 50px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 2rem;
+  }
+
+  .hero-subtitle {
+    font-size: 1rem;
+  }
+
+  .stats-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .content-inner {
+    padding: 30px 20px;
+  }
+
+  .progress-section {
+    padding: 20px;
+  }
+
+  /* Sidebar positioning on mobile */
+  .progress-sidebar {
+    left: 10px;
+    top: 70px;
+    width: 260px;
+  }
+
+  /* Container padding on mobile */
+  .continuous-learning-container {
+    padding: 0 10px 60px 290px;  /* Sidebar (260px) + left (10px) + gap (20px) */
+  }
+
+  .main-learning-content {
+    max-width: 100%;
+  }
+}
+
+/* Loading Animation */
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.loading {
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+/* Interactive Micro Styles */
+.interactive-micro {
+  animation: fadeInContent 0.5s ease-out;
+}
+
+.interactive-badge {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.review-alert {
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+  padding: 20px 25px;
+  margin: 20px 0;
+  background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+  border-left: 5px solid #f39c12;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(243, 156, 18, 0.2);
+  animation: slideDown 0.5s ease-out;
+}
+
+.review-icon {
+  font-size: 2rem;
+  flex-shrink: 0;
+  animation: rotateIn 0.6s ease-out;
+}
+
+@keyframes rotateIn {
+  from {
+    transform: rotate(-180deg) scale(0);
+  }
+  to {
+    transform: rotate(0deg) scale(1);
+  }
+}
+
+.review-content {
+  flex: 1;
+}
+
+.review-content strong {
+  display: block;
+  font-size: 1.1rem;
+  color: #2c3e50;
+  margin-bottom: 5px;
+  letter-spacing: 0.5px;
+}
+
+.review-content p {
+  margin: 0;
+  font-size: 1rem;
+  color: #34495e;
+  line-height: 1.5;
+}
+
+/* Explanation Box Styles */
+.explanation-box {
+  margin: 30px 0;
+  padding: 0;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border-left: 5px solid #667eea;
+  overflow: hidden;
+  animation: slideInUp 0.5s ease-out;
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.explanation-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 20px 30px;
+  background: linear-gradient(135deg, #f5f7fa 0%, #e8f0f8 100%);
+  border-bottom: 2px solid #e8e8e8;
+}
+
+.explanation-icon {
+  font-size: 2rem;
+  animation: iconPulse 2s ease-in-out infinite;
+}
+
+@keyframes iconPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+.explanation-title {
+  margin: 0;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #2c3e50;
+  letter-spacing: -0.5px;
+}
+
+.explanation-content {
+  padding: 20px;
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+}
+
+.explanation-paragraph {
+  font-size: 1.02rem;
+  line-height: 1.6;
+  color: #374151;
+  margin: 0 0 10px 0;
+  text-align: left;
+}
+
+.explanation-paragraph:last-child {
+  margin-bottom: 0;
+}
+
+.explanation-paragraph strong {
+  color: #2c3e50;
+  font-weight: 700;
+  font-size: 1.05em;
+}
+
+/* Paragraph-style list items */
+.explanation-box .explanation-point {
+  margin: 0 0 8px 0;
+  color: #1f2937;
+  font-size: 1.02rem;
+  line-height: 1.5;
+}
+.explanation-box .explanation-point .point-index {
+  font-weight: 700;
+  color: #111827;
+  margin-right: 6px;
+}
+.explanation-box .explanation-story {
+  margin: 0 0 10px 0;
+  color: #1f2937;
+  font-size: 1.02rem;
+  line-height: 1.6;
+}
+
+/* Fenced code block */
+.explanation-box pre.code-block {
+  background: #f8fafc;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin: 12px 0;
+  overflow-x: auto;
+  color: #111827;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Courier New', monospace;
+  font-size: 0.95rem;
+}
+.explanation-box pre.code-block code { background: transparent; border: none; padding: 0; }
+
+.explanation-box .inline-code {
+  display: inline-block;
+  padding: 3px 8px;
+  background: #f3f4f6;
+  color: #111827;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Courier New', monospace;
+  font-size: 0.9em;
+  border-radius: 5px;
+  font-weight: 600;
+  margin: 0 2px;
+  border: 1px solid #e5e7eb;
+  box-shadow: none;
+}
+
+.explanation-box .formatted-list {
+  margin: 20px 0;
+  padding-left: 0;
+  list-style: none;
+}
+
+.explanation-box .formatted-list li {
+  padding: 12px 0 12px 12px;
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: #34495e;
+  position: relative;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.explanation-box .formatted-list li:last-child {
+  border-bottom: none;
+}
+
+.explanation-box .formatted-list ol {
+  counter-reset: list-counter;
+  list-style: none;
+}
+
+.explanation-box .formatted-list li.numbered-item {
+  counter-increment: list-counter;
+}
+
+.explanation-box .formatted-list li.numbered-item::before {
+  content: counter(list-counter);
+  position: absolute;
+  left: 0;
+  top: 12px;
+  width: 28px;
+  height: 28px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.9rem;
+  box-shadow: 0 2px 6px rgba(102, 126, 234, 0.3);
+}
+
+.explanation-box .formatted-list li.bullet-item::before { content: none; display: none; }
+
+.explanation-box .formatted-list ul {
+  list-style: none;
+}
+
+.explanation-box .formatted-list li strong {
+  color: #2c3e50;
+  font-weight: 700;
+}
+
+.explanation-box .formatted-list li .inline-code {
+  margin: 0 3px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .explanation-box {
+    margin: 20px 0;
+    border-radius: 12px;
+  }
+  
+  .explanation-header {
+    padding: 15px 20px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  
+  .explanation-title {
+    font-size: 1.2rem;
+  }
+  
+  .explanation-content {
+    padding: 20px;
+  }
+  
+  .explanation-paragraph {
+    font-size: 1rem;
+    line-height: 1.7;
+  }
+  
+  .explanation-box .formatted-list li {
+    padding-left: 30px;
+    font-size: 0.95rem;
+  }
+}
+
+.examples-compact {
+  margin: 25px 0;
+}
+
+.examples-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.example-compact {
+  padding: 10px 16px;
+  background: #2c3e50;
+  border-radius: 8px;
+  border: 2px solid #34495e;
+  transition: all 0.3s ease;
+}
+
+.example-compact:hover {
+  border-color: #00f2fe;
+  transform: translateY(-2px);
+}
+
+.example-compact code {
+  color: #00f2fe;
+  font-family: 'Monaco', 'Courier New', monospace;
+  font-size: 0.9rem;
+}
+
+.task-section {
+  margin: 30px 0;
+  padding: 25px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 15px;
+  color: white;
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+}
+
+.task-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.task-icon {
+  font-size: 2rem;
+}
+
+.task-header h3 {
+  margin: 0;
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+.task-instruction {
+  font-size: 1.15rem;
+  font-weight: 600;
+  text-align: center;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+  font-family: 'Monaco', 'Courier New', monospace;
+  letter-spacing: 0.5px;
+}
+
+/* Lab Interface Styles (for dynamically injected content) */
+.lab-exercise {
+  animation: fadeInContent 0.5s ease-out;
+}
+
+.lab-badge {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  color: white;
+  box-shadow: 0 4px 15px rgba(240, 147, 251, 0.3);
+}
+
+.lab-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #2c3e50;
+  margin: 25px 0;
+}
+
+.problem-box {
+  display: flex;
+  gap: 20px;
+  padding: 30px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 15px;
+  color: white;
+  margin: 25px 0;
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+}
+
+.problem-icon {
+  font-size: 3rem;
+  flex-shrink: 0;
+}
+
+.problem-content h4 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin: 0 0 10px 0;
+}
+
+.problem-content p {
+  font-size: 1.15rem;
+  margin: 0;
+  line-height: 1.5;
+  opacity: 0.95;
+}
+
+/* Why/Real-World Sections */
+.why-section, .real-world-section {
+  display: flex;
+  gap: 15px;
+  padding: 20px;
+  margin: 20px 0;
+  border-radius: 12px;
+  animation: slideIn 0.5s ease-out;
+}
+
+.why-section {
+  background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+  border-left: 5px solid #fdcb6e;
+}
+
+.real-world-section {
+  background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+  border-left: 5px solid #a8edea;
+}
+
+.why-icon, .rw-icon {
+  font-size: 2rem;
+  flex-shrink: 0;
+}
+
+.why-content h4, .rw-content h4 {
+  margin: 0 0 8px 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #2c3e50;
+}
+
+.why-content p, .rw-content p {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: #34495e;
+}
+
+/* Reference Commands Section */
+.reference-commands {
+  margin: 25px 0;
+  background: white;
+  border: 2px solid #e8e8e8;
+  border-radius: 15px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.reference-commands.collapsed .reference-body {
+  display: none;
+}
+
+.reference-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 15px 20px;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  cursor: pointer;
+}
+
+.ref-icon {
+  font-size: 1.5rem;
+}
+
+.reference-header h4 {
+  flex: 1;
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #2c3e50;
+}
+
+.toggle-ref {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: white;
+  border: 2px solid #667eea;
+  color: #667eea;
+  font-size: 1.2rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.toggle-ref:hover {
+  background: #667eea;
+  color: white;
+}
+
+.reference-body {
+  padding: 20px;
+}
+
+.ref-hint {
+  font-size: 0.85rem;
+  color: #7f8c8d;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.ref-commands-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 10px;
+}
+
+.ref-command-card {
+  padding: 12px 15px;
+  background: #f8f9fa;
+  border: 2px solid #e8e8e8;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  user-select: text;
+}
+
+.ref-command-card:hover {
+  border-color: #667eea;
+  background: #f0f4ff;
+}
+
+.ref-command-card code {
+  font-family: 'Monaco', 'Courier New', monospace;
+  font-size: 0.9rem;
+  color: #667eea;
+  font-weight: 600;
+}
+
+.ref-desc {
+  font-size: 0.8rem;
+  color: #7f8c8d;
+}
+
+/* Task instruction box (above terminal) */
+.task-instruction-box {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 12px;
+  padding: 18px 24px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+  animation: slideDown 0.5s ease-out;
+}
+
+.task-label {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 8px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.task-text {
+  font-size: 1.05rem;
+  color: #ffffff;
+  line-height: 1.6;
+  font-weight: 500;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.terminal-section {
+  margin: 0;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.06);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  background: #1E1E1E;
+}
+
+.terminal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  background: #2d2d2d;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.terminal-controls {
+  display: flex;
+  gap: 8px;
+}
+
+.terminal-dot { width: 10px; height: 10px; border-radius: 50%; }
+
+.terminal-dot.red { background: #ff5f56; }
+.terminal-dot.yellow { background: #ffbd2e; }
+.terminal-dot.green { background: #27c93f; }
+
+.terminal-title {
+  font-size: 0.8rem;
+  color: #9ca3af;
+  letter-spacing: 0.2px;
+  font-family: Monaco, Menlo, ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+.terminal-actions { display: flex; align-items: center; }
+.terminal-status { display: inline-flex; align-items: center; gap: 6px; color: #9ca3af; font-size: 0.8rem; font-family: Monaco, Menlo, ui-monospace, SFMono-Regular, Consolas, "Courier New", monospace; }
+.status-dot { width: 6px; height: 6px; border-radius: 50%; background: #22c55e; display: inline-block; box-shadow: 0 0 0 2px rgba(34,197,94,0.15); }
+
+.terminal-body {
+  display: flex;
+  flex-direction: column;
+  height: 340px;
+  background: #1E1E1E;
+  font-family: Monaco, Menlo, ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 1rem;
+  color: #e5e7eb;
+  cursor: text;
+}
+
+/* Terminal task line - compact instruction inside terminal */
+.terminal-task-line {
+  padding: 10px 14px 5px 14px;
+  font-size: 0.85rem;
+  line-height: 1.4;
+  color: #9ca3af;
+}
+
+.terminal-task-label {
+  color: #22c55e;
+  font-weight: 600;
+  margin-right: 6px;
+}
+
+.terminal-task-text {
+  color: #e5e7eb;
+  font-weight: 400;
+}
+
+.terminal-task-separator {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.06);
+  margin: 8px 14px 6px 14px;
+}
+
+.terminal-body:hover .terminal-input-line { background: #252525; }
+
+.interactive-terminal {
+  cursor: text;
+}
+
+.interactive-terminal:hover { background: #252525; }
+
+.terminal-inline-input {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #e5e7eb;
+  font-family: Monaco, Menlo, ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", "Courier New", monospace;
+  caret-color: #00ff00;
+  caret-shape: block;
+  font-size: 1rem;
+  flex: 1;
+  width: 100%;
+  min-width: 0;
+  caret-color: #e5e7eb;
+  padding: 0;
+  margin: 0;
+}
+
+.terminal-inline-input:focus {
+  background: transparent;
+  outline: none;
+  border: none;
+}
+
+.terminal-inline-input::placeholder { color: #6b7280; font-style: italic; }
+
+.terminal-inline-input::selection { background: #374151; color: #e5e7eb; }
+
+.terminal-input-line {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: text;
+  background: transparent;
+  padding: 8px 14px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.terminal-input-line:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.terminal-output {
+  flex: 1;
+  overflow-y: auto;
+  padding: 8px 14px;
+  color: #e5e7eb;
+  white-space: pre-wrap;
+  line-height: 1.4;
+  font-size: 0.95rem;
+}
+
+.terminal-welcome {
+  color: #22c55e;
+  margin-bottom: 8px;
+}
+
+.terminal-command {
+  margin: 0 0 2px 0;
+  color: #e5e7eb;
+}
+
+.terminal-command .prompt {
+  color: #22c55e;
+  font-weight: 600;
+}
+
+.terminal-command .cmd {
+  color: #e5e7eb;
+  font-weight: 400;
+}
+
+.terminal-output > div {
+  margin: 2px 0;
+}
+
+/* Minimal scrollbars for output */
+.terminal-output::-webkit-scrollbar { width: 8px; height: 8px; }
+.terminal-output::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 4px; }
+.terminal-output::-webkit-scrollbar-track { background: transparent; }
+
+.terminal-prompt { color: #22c55e; font-weight: 600; flex-shrink: 0; }
+
+/* Terminal Animations */
+.terminal-executing {
+  color: #fdcb6e;
+  font-style: italic;
+  margin: 8px 0;
+  transition: opacity 0.3s ease;
+}
+
+.executing-dots {
+  display: inline-block;
+}
+
+.executing-dots .dot {
+  animation: dotPulse 1.4s infinite;
+  opacity: 0;
+}
+
+.executing-dots .dot:nth-child(1) { animation-delay: 0s; }
+.executing-dots .dot:nth-child(2) { animation-delay: 0.2s; }
+.executing-dots .dot:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes dotPulse {
+  0%, 60%, 100% { opacity: 0; }
+  30% { opacity: 1; }
+}
+
+.terminal-slide-in {
+  animation: terminalSlideIn 0.4s ease-out;
+}
+
+@keyframes terminalSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.success-glow {
+  animation: successPulse 0.8s ease-in-out 2;
+  box-shadow: 0 0 30px rgba(17, 153, 142, 0.6) !important;
+}
+
+@keyframes successPulse {
+  0%, 100% {
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(17, 153, 142, 0.8);
+  }
+}
+
+.shake-animation {
+  animation: shake 0.5s ease-in-out;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+  20%, 40%, 60%, 80% { transform: translateX(5px); }
+}
+
+.feedback-bounce {
+  animation: feedbackBounce 0.6s ease-out;
+}
+
+@keyframes feedbackBounce {
+  0% {
+    opacity: 0;
+    transform: scale(0.8) translateY(-20px);
+  }
+  50% {
+    transform: scale(1.05) translateY(0);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.feedback-icon {
+  font-size: 1.8rem;
+  display: inline-block;
+  animation: iconSpin 0.6s ease-out;
+}
+
+@keyframes iconSpin {
+  from {
+    transform: rotate(-180deg) scale(0);
+  }
+  to {
+    transform: rotate(0deg) scale(1);
+  }
+}
+
+.feedback-text {
+  font-size: 1.15rem;
+  font-weight: 600;
+}
+
+.input-help-top {
+  text-align: center;
+  font-size: 0.9rem;
+  color: #7f8c8d;
+  margin-bottom: 10px;
+  font-style: italic;
+}
+
+.command-input-section {
+  margin: 25px 0;
+}
+
+.command-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: white;
+  border: 3px solid #667eea;
+  border-radius: 15px;
+  padding: 5px;
+  transition: all 0.3s ease;
+}
+
+.command-wrapper:focus-within {
+  box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.2);
+  transform: translateY(-2px);
+}
+
+.cmd-icon {
+  padding: 0 15px;
+  font-size: 1.5rem;
+  color: #667eea;
+  font-weight: 700;
+}
+
+.lab-input {
+  flex: 1;
+  padding: 15px 10px;
+  border: none;
+  background: transparent;
+  font-family: 'Monaco', 'Courier New', monospace;
+  font-size: 1.1rem;
+  color: #2c3e50;
+  outline: none;
+}
+
+.lab-input::placeholder {
+  color: #bdc3c7;
+}
+
+.execute-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 15px 30px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.execute-btn:hover:not(:disabled) {
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+.execute-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.execute-icon {
+  font-size: 1.2rem;
+}
+
+.input-help {
+  margin-top: 10px;
+  text-align: center;
+  font-size: 0.9rem;
+  color: #7f8c8d;
+}
+
+.input-help kbd {
+  padding: 3px 8px;
+  background: #f0f0f0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-family: monospace;
+  font-size: 0.85rem;
+  box-shadow: 0 2px 0 #999;
+}
+
+.lab-feedback {
+  margin-top: 20px;
+  font-family: Monaco, Menlo, ui-monospace, SFMono-Regular, Consolas, monospace;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  min-height: 0;
+}
+
+/* Terminal-style error messages */
+.lab-feedback .error,
+.lab-feedback .incorrect {
+  color: #ff6b6b;
+  padding: 12px 16px;
+  background: rgba(255, 107, 107, 0.1);
+  border-left: 3px solid #ff6b6b;
+  border-radius: 4px;
+  margin: 8px 0;
+}
+
+.lab-feedback .error::before {
+  content: "bash: ";
+  color: #ff6b6b;
+  font-weight: 600;
+}
+
+/* Terminal-style success messages */
+.lab-feedback .success,
+.lab-feedback .correct {
+  color: #00ff00;
+  padding: 12px 16px;
+  background: rgba(0, 255, 0, 0.05);
+  border-left: 3px solid #00ff00;
+  border-radius: 4px;
+  margin: 8px 0;
+}
+
+/* Terminal command history */
+.terminal-output .command-history {
+  margin: 8px 0;
+  color: #e5e7eb;
+}
+
+.terminal-output .command-history .prompt {
+  color: #22c55e;
+  font-weight: 600;
+}
+
+.terminal-output .command-history .cmd {
+  color: #e5e7eb;
+}
+
+/* Terminal error output */
+.terminal-output .error-line {
+  color: #ff6b6b;
+  margin: 4px 0;
+}
+
+/* Terminal success output */
+.terminal-output .success-line {
+  color: #00ff00;
+  margin: 4px 0;
+}
+
+.hints-section {
+  margin-top: 25px;
+  padding: 20px 25px;
+  background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+  border-left: 5px solid #fdcb6e;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(253, 203, 110, 0.3);
+  animation: slideDown 0.4s ease-out;
+}
+
+.hints-section h4 {
+  margin: 0 0 10px 0;
+  color: #2d3436;
+  font-size: 1.1rem;
+}
+
+.hints-section p {
+  margin: 0;
+  color: #2d3436;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.lab-navigation {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 30px;
+  padding-top: 25px;
+  border-top: 2px solid #e8e8e8;
+}
+
+.skip-btn, .restart-btn {
+  padding: 12px 25px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+}
+
+.skip-btn {
+  background: #f0f0f0;
+  color: #666;
+}
+
+.skip-btn:hover {
+  background: #e0e0e0;
+  transform: translateY(-2px);
+}
+
+.restart-btn {
+  background: linear-gradient(135deg, #ee0979 0%, #ff6a00 100%);
+  color: white;
+}
+
+.restart-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(238, 9, 121, 0.3);
+}
+
+/* Success Modal Styles */
+.success-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(5px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.success-modal-overlay.active {
+  opacity: 1;
+}
+
+.success-modal {
+  background: white;
+  border-radius: 20px;
+  padding: 50px 40px;
+  max-width: 500px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  transform: scale(0.9);
+  transition: transform 0.3s ease;
+}
+
+.success-modal-overlay.active .success-modal {
+  transform: scale(1);
+}
+
+.success-animation {
+  margin-bottom: 30px;
+}
+
+.success-checkmark {
+  width: 100px;
+  height: 100px;
+  margin: 0 auto;
+}
+
+.checkmark {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  display: block;
+  stroke-width: 3;
+  stroke: #10b981;
+  stroke-miterlimit: 10;
+  animation: fill 0.4s ease-in-out 0.4s forwards, scale 0.3s ease-in-out 0.9s both;
+}
+
+.checkmark-circle {
+  stroke-dasharray: 166;
+  stroke-dashoffset: 166;
+  stroke-width: 3;
+  stroke-miterlimit: 10;
+  stroke: #10b981;
+  fill: none;
+  animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+}
+
+.checkmark-check {
+  transform-origin: 50% 50%;
+  stroke-dasharray: 48;
+  stroke-dashoffset: 48;
+  stroke: #10b981;
+  animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+}
+
+@keyframes stroke {
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes scale {
+  0%, 100% {
+    transform: none;
+  }
+  50% {
+    transform: scale3d(1.1, 1.1, 1);
+  }
+}
+
+@keyframes fill {
+  100% {
+    box-shadow: inset 0px 0px 0px 30px #10b981;
+  }
+}
+
+.success-title {
+  font-size: 2rem;
+  color: #1f2937;
+  margin: 0 0 15px 0;
+  font-weight: 700;
+}
+
+.success-message {
+  font-size: 1.1rem;
+  color: #6b7280;
+  margin: 0 0 35px 0;
+  line-height: 1.6;
+}
+
+.success-actions {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.next-chapter-btn {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  padding: 16px 40px;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+.next-chapter-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
+}
+
+.next-chapter-btn:active {
+  transform: translateY(-1px);
+}
+
+/* Enhanced success modal elements */
+.mastery-boost {
+  background: linear-gradient(135deg, #d4fc79 0%, #96e6a1 100%);
+  padding: 12px 24px;
+  border-radius: 12px;
+  margin: 20px auto;
+  font-size: 1rem;
+  color: #22543d;
+  font-weight: 600;
+  display: inline-block;
+  box-shadow: 0 4px 12px rgba(150, 230, 161, 0.4);
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.boost-value {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #276749;
+  margin-left: 8px;
+}
+
+.next-preview {
+  background: #f9fafb;
+  border: 2px dashed #d1d5db;
+  border-radius: 12px;
+  padding: 20px;
+  margin: 25px 0;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.next-preview-label {
+  font-size: 0.85rem;
+  color: #9ca3af;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.next-preview-chapter {
+  font-size: 1.2rem;
+  color: #667eea;
+  font-weight: 700;
+  font-family: 'Monaco', 'Courier New', monospace;
+}
+
+/* Staggered fade-in-up animation */
+.fade-in-up {
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.success-checkmark.animate {
+  animation: checkmarkPop 0.5s ease-out;
+}
+
+@keyframes checkmarkPop {
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Confetti animation */
+.success-confetti {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.confetti-piece {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  top: -10px;
+  opacity: 0;
+  animation: confettiFall linear forwards;
+}
+
+@keyframes confettiFall {
+  0% {
+    opacity: 1;
+    transform: translateY(0) rotate(0deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(100vh) rotate(720deg);
+  }
+}
+
+.success-message strong {
+  color: #667eea;
+  font-weight: 700;
+}
+
+.success-title,
+.success-message,
+.success-actions {
+  opacity: 0;
+  transform: translateY(20px);
+}
+</style>
+
+<%= javascript_pack_tag 'continuous_learning' %>
+<script>
+  // Make sidebar chapters clickable (only if they're not locked)
+  document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.chapter-item').forEach(function(item) {
+      const isClickable = item.getAttribute('data-clickable') === 'true';
+      const isLocked = item.classList.contains('locked');
+      const url = item.getAttribute('data-url');
+      
+      // If locked, completely disable all interactions
+      if (isLocked) {
+        item.style.pointerEvents = 'none';
+        item.style.cursor = 'not-allowed';
+        item.onclick = function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          return false;
+        };
+        item.style.transform = 'none';
+        item.style.transition = 'none';
+        // Prevent any clicks from bubbling
+        item.addEventListener('click', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          e.stopImmediatePropagation();
+          return false;
+        }, true); // Use capture phase to catch before anything else
+        return; // Don't process locked items further
+      }
+      
+      // Only attach click handler if it's actually clickable and not locked
+      if (isClickable && !isLocked && url && url !== '#' && url !== 'javascript:void(0);') {
+        item.addEventListener('click', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          window.location.href = url;
+        });
+        
+        // Add hover effect for clickable items only
+        item.addEventListener('mouseenter', function() {
+          if (!this.classList.contains('locked')) {
+            this.style.backgroundColor = '#f0f4f8';
+            this.style.cursor = 'pointer';
+          }
+        });
+        
+        item.addEventListener('mouseleave', function() {
+          if (!this.classList.contains('current')) {
+            this.style.backgroundColor = '';
+          }
+        });
+      } else {
+        // Explicitly disable for non-clickable/locked items
+        item.style.cursor = isLocked ? 'not-allowed' : 'default';
+        item.style.pointerEvents = 'none';
+        item.onclick = function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          return false;
+        };
+      }
+    });
+
+    // Module expand/collapse functionality
+    document.querySelectorAll('.module-header').forEach(function(header) {
+      const moduleId = header.getAttribute('data-module-id');
+
+      header.addEventListener('click', function() {
+        // Toggle collapsed class
+        this.classList.toggle('collapsed');
+
+        // Find all journey-steps that belong to this module
+        // (they come after this header until the next header or end)
+        let nextElement = this.nextElementSibling;
+        const itemsToToggle = [];
+
+        while (nextElement && !nextElement.classList.contains('module-header')) {
+          if (nextElement.classList.contains('journey-step')) {
+            itemsToToggle.push(nextElement);
+          }
+          nextElement = nextElement.nextElementSibling;
+        }
+
+        // Toggle visibility of all items in this module
+        itemsToToggle.forEach(function(item) {
+          if (header.classList.contains('collapsed')) {
+            item.style.display = 'none';
+          } else {
+            item.style.display = '';
+          }
+        });
+
+        // Store collapsed state in localStorage
+        const collapsedModules = JSON.parse(localStorage.getItem('collapsedModules') || '[]');
+        if (header.classList.contains('collapsed')) {
+          if (!collapsedModules.includes(moduleId)) {
+            collapsedModules.push(moduleId);
+          }
+        } else {
+          const index = collapsedModules.indexOf(moduleId);
+          if (index > -1) {
+            collapsedModules.splice(index, 1);
+          }
+        }
+        localStorage.setItem('collapsedModules', JSON.stringify(collapsedModules));
+      });
+    });
+
+    // Restore collapsed state from localStorage
+    const collapsedModules = JSON.parse(localStorage.getItem('collapsedModules') || '[]');
+    collapsedModules.forEach(function(moduleId) {
+      const header = document.querySelector(`.module-header[data-module-id="${moduleId}"]`);
+      if (header && !header.classList.contains('collapsed')) {
+        header.click(); // Trigger collapse
+      }
+    });
+  });
+
+  // Sidebar is always visible - no toggle needed
+</script>
+<script>
+  // Prevent terminal inputs from getting focus during page load
+  (function() {
+    window.pageLoadComplete = false;
+    
+    // Immediately blur any terminal inputs or elements that might exist
+    function blurTerminalElements() {
+      // Blur terminal inputs
+      const inputs = document.querySelectorAll('#terminalDirectInput, #labCommand');
+      inputs.forEach(input => {
+        if (input) {
+          input.blur();
+          // Prevent focus from scrolling
+          input.addEventListener('focus', function(e) {
+            if (!window.pageLoadComplete) {
+              window.scrollTo(0, 0);
+              setTimeout(() => this.blur(), 0);
+            }
+          }, { once: true, capture: true });
+        }
+      });
+      
+      // Blur terminal container if it has tabindex (prevents it from receiving focus)
+      const terminal = document.getElementById('labTerminal');
+      if (terminal && terminal.hasAttribute('tabindex')) {
+        terminal.blur();
+        // Prevent terminal container from getting focus during page load
+        terminal.addEventListener('focus', function(e) {
+          if (!window.pageLoadComplete) {
+            window.scrollTo(0, 0);
+            setTimeout(() => this.blur(), 0);
+          }
+        }, { once: true, capture: true });
+      }
+    }
+    
+    function blurTerminalInputs() {
+      blurTerminalElements();
+    }
+    
+    // Run immediately and on DOM ready
+    blurTerminalInputs();
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', blurTerminalInputs);
+    }
+    
+    // Mark as complete after page fully loads
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        window.pageLoadComplete = true;
+      }, 500);
+    });
+  })();
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // Initialize Lucide icons
+    if (typeof lucide !== 'undefined') {
+      lucide.createIcons();
+      console.log('✅ Lucide icons initialized');
+    }
+
+    if (typeof window.ContinuousLearning !== 'undefined') {
+      const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content;
+      const track = '<%= @track || "docker" %>';
+
+      window.ContinuousLearning.init({
+        csrfToken: csrfToken,
+        track: track,
+        mode: '<%= @content[:type] || "teaching" %>'
+      });
+    }
+  });
+</script>

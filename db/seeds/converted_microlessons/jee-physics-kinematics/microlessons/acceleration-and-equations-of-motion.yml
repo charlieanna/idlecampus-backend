@@ -1,0 +1,240 @@
+slug: acceleration-and-equations-of-motion
+title: "Acceleration and Equations of Motion"
+difficulty: intermediate
+sequence_order: 3
+estimated_minutes: 18
+key_concepts:
+- acceleration
+- uniform-acceleration
+- equations-of-motion
+- kinematic-equations
+- graphical-analysis
+prerequisites:
+- distance-displacement-fundamentals
+- speed-velocity-concepts
+content_md: |
+  # Acceleration and Equations of Motion
+
+  ## Acceleration
+
+  **Definition:** Rate of change of velocity with respect to time.
+
+  ### Mathematical Expression:
+  ```
+  a⃗ = dv⃗/dt = d²r⃗/dt²
+
+  Average acceleration: a_avg = Δv/Δt = (v₂ - v₁)/(t₂ - t₁)
+  ```
+
+  ### Properties:
+  - **Vector quantity** (magnitude + direction)
+  - SI unit: **m/s²**
+  - Dimensions: [LT⁻²]
+  - Can be positive (speeding up) or negative (slowing down)
+
+  ## Types of Acceleration
+
+  ### 1. Uniform Acceleration
+  - Constant magnitude and direction
+  - Velocity changes equally in equal time intervals
+  - Example: Free fall, motion on inclined plane
+
+  ### 2. Non-uniform Acceleration
+  - Changes with time or position
+  - a = f(t) or a = f(x)
+  - Example: SHM, projectile motion (direction changes)
+
+  ### 3. Centripetal Acceleration
+  - Directed towards center of circular path
+  - a = v²/r = ω²r
+  - Changes direction continuously
+
+  ## Equations of Motion (SUVAT)
+
+  For **uniformly accelerated motion** in one dimension:
+
+  ### First Equation:
+  ```
+  v = u + at
+  ```
+  (Velocity-time relation)
+
+  ### Second Equation:
+  ```
+  s = ut + ½at²
+  ```
+  (Displacement-time relation)
+
+  ### Third Equation:
+  ```
+  v² = u² + 2as
+  ```
+  (Velocity-displacement relation)
+
+  ### Additional Useful Equations:
+  ```
+  s = ((u + v)/2) × t
+  s = vt - ½at²
+  sₙ = u + a(n - ½)  (displacement in nth second)
+  ```
+
+  ## Sign Convention
+
+  Choose positive direction:
+  - **Along motion**: acceleration positive if speeding up
+  - **Against motion**: acceleration negative (retardation)
+  - **Vertical**: Usually up positive, down negative (or vice versa)
+
+  **Important:** Be consistent throughout problem!
+
+  ## Graphical Analysis
+
+  ### 1. Position-Time (x-t) Graph
+  - **Slope = Velocity**
+  - Straight line → Uniform velocity
+  - Parabola → Uniform acceleration
+  - Slope increasing → Positive acceleration
+
+  ### 2. Velocity-Time (v-t) Graph
+  - **Slope = Acceleration**
+  - **Area under curve = Displacement**
+  - Horizontal line → Zero acceleration
+  - Inclined line → Uniform acceleration
+
+  ### 3. Acceleration-Time (a-t) Graph
+  - **Area under curve = Change in velocity**
+  - Horizontal line → Uniform acceleration
+  - Above x-axis → Positive acceleration
+
+  ## Important Relations from Graphs
+
+  ```
+  v = dx/dt (slope of x-t graph)
+  a = dv/dt (slope of v-t graph)
+  x = ∫v dt (area under v-t graph)
+  v = ∫a dt (area under a-t graph)
+  ```
+
+  ## Motion Under Gravity
+
+  ### Free Fall (downward positive):
+  ```
+  v = u + gt
+  h = ut + ½gt²
+  v² = u² + 2gh
+  ```
+
+  ### Thrown Upward (upward positive):
+  ```
+  v = u - gt
+  h = ut - ½gt²
+  v² = u² - 2gh
+
+  Time to reach max height: t = u/g
+  Max height: H = u²/(2g)
+  Time of flight: T = 2u/g
+  ```
+
+  ## JEE Important Concepts
+
+  ### 1. Displacement in nth Second:
+  ```
+  sₙ = u + ½a(2n - 1)
+
+  Ratio s₁:s₂:s₃:... = 1:3:5:7:... (if u = 0)
+  ```
+
+  ### 2. Stopping Distance:
+  ```
+  s = u²/(2a)  (when v = 0)
+
+  s ∝ u²  (distance ∝ square of initial speed)
+  ```
+
+  ### 3. Average Velocity:
+  ```
+  For uniform acceleration:
+  v_avg = (u + v)/2 = u + ½at
+
+  NOT equal to (v₁ + v₂)/2 in general!
+  ```
+
+  ## Numerical Examples
+
+  **Example 1:** A car accelerates from rest at 2 m/s² for 10s, then moves with uniform velocity for 20s, then decelerates at 4 m/s² until rest. Find total distance.
+
+  **Solution:**
+  Phase 1 (acceleration):
+  ```
+  v = 0 + 2(10) = 20 m/s
+  s₁ = 0 + ½(2)(10)² = 100 m
+  ```
+
+  Phase 2 (uniform):
+  ```
+  s₂ = 20(20) = 400 m
+  ```
+
+  Phase 3 (deceleration):
+  ```
+  0² = 20² - 2(4)s₃
+  s₃ = 400/8 = 50 m
+  ```
+
+  Total: s = 100 + 400 + 50 = **550 m**
+
+  **Example 2:** A ball dropped from height h reaches ground in time t. At what height was it at t/2?
+
+  **Solution:**
+  ```
+  h = ½gt²  ... (1)
+
+  At t/2: h' = ½g(t/2)² = ½gt²/4 = h/4
+
+  Height from ground = h - h/4 = 3h/4
+  ```
+
+  ## Common JEE Mistakes
+
+  1. ❌ Forgetting to square (t/2) in kinematic equations
+  2. ❌ Wrong sign convention for acceleration
+  3. ❌ Confusing distance with displacement
+  4. ❌ Using average formula for non-uniform acceleration
+  5. ❌ Not converting units (km/h to m/s)
+
+  **Conversion:** 1 km/h = 5/18 m/s
+
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: "A body starts from rest and moves with uniform acceleration. The ratio of distances covered in 1st, 2nd, and 3rd seconds is:"
+  options:
+  - "1:2:3"
+  - "1:3:5"
+  - "1:4:9"
+  - "1:1:1"
+  correct_answer: "1:3:5"
+  explanation: "For uniformly accelerated motion from rest: sₙ = u + ½a(2n-1) = 0 + ½a(2n-1) = a(n-½). So s₁ = a(1-½) = a/2, s₂ = a(2-½) = 3a/2, s₃ = a(3-½) = 5a/2. Ratio: (a/2):(3a/2):(5a/2) = 1:3:5. This is the famous 'odd number sequence' for equal time intervals starting from rest. Total distance in n seconds: s = ½an², giving s₁:s₂:s₃ = 1:4:9 (cumulative). But distance IN each second follows 1:3:5:7..."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: "A car moving at 72 km/h applies brakes and stops in 5 seconds. The retardation is:"
+  options:
+  - "2 m/s²"
+  - "4 m/s²"
+  - "14.4 m/s²"
+  - "72 m/s²"
+  correct_answer: "4 m/s²"
+  explanation: "First convert: 72 km/h = 72 × (5/18) = 20 m/s. Using v = u + at: 0 = 20 + a(5), so a = -4 m/s². The negative sign indicates deceleration (retardation). Magnitude of retardation = 4 m/s². Stopping distance = v²-u²/(2a) = (0-400)/(2×-4) = 50 m. This is a practical example - at higher speeds, both stopping time and distance increase significantly. If speed doubles, stopping distance quadruples (s ∝ u²)."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: "From the top of a tower, a stone is dropped and another is thrown vertically downward with velocity 10 m/s. After 2s, the distance between them is:"
+  options:
+  - "10 m"
+  - "20 m"
+  - "40 m"
+  - "5 m"
+  correct_answer: "20 m"
+  explanation: "For dropped stone: s₁ = 0 + ½gt² = ½(10)(4) = 20 m. For thrown stone: s₂ = 10(2) + ½(10)(4) = 20 + 20 = 40 m. Separation = s₂ - s₁ = 40 - 20 = 20 m. Alternative method: The difference in initial velocities = 10 m/s. In 2 seconds, extra distance = 10 × 2 = 20 m. Since both have same acceleration (g), their separation increases linearly with time. This principle is used in relative motion - when two objects have same acceleration, their relative velocity remains constant."
+  require_pass: true

@@ -1,0 +1,237 @@
+slug: electrophilic-aromatic-substitution-mechanisms-and-reactions
+title: Electrophilic Aromatic Substitution - Mechanisms and Reactions
+difficulty: easy
+sequence_order: 5
+estimated_minutes: 2
+key_concepts:
+- General mechanism of EAS
+- Halogenation
+- Nitration
+- Sulfonation
+- Friedel-Crafts alkylation and acylation
+- Energy profile and intermediate stability
+prerequisites: []
+content_md: "# Electrophilic Aromatic Substitution - Mechanisms and Reactions \U0001F680\
+  \n\n# Electrophilic Aromatic Substitution (EAS)\n\n    ## 1. Why Substitution Instead\
+  \ of Addition?\n\n    ### Benzene vs Alkenes\n\n    **Alkenes:** Undergo addition\
+  \ reactions\n    ```\n    CH₂=CH₂ + Br₂ → CH₂Br-CH₂Br\n    (Addition product - no\
+  \ loss of unsaturation)\n    ```\n\n    **Benzene:** Undergoes substitution reactions\n\
+  \    ```\n    C₆H₆ + Br₂ → C₆H₅Br + HBr\n    (Substitution product - maintains aromaticity)\n\
+  \    ```\n\n    ### Reason\n    - **Addition** would destroy aromaticity (loss of\
+  \ 150 kJ/mol stabilization)\n    - **Substitution** maintains aromaticity (energetically\
+  \ favorable)\n    - Benzene sacrifices one H to keep aromatic system intact\n\n\
+  \    ---\n\n    ## 2. General Mechanism of EAS\n\n    ### Two-Step Process\n\n \
+  \   **Step 1: Formation of σ-complex (Slow, Rate-determining)**\n    ```\n    Electrophile\
+  \ (E⁺) attacks π cloud\n    → Arenium ion (σ-complex, Wheland intermediate)\n  \
+  \  → Loss of aromaticity (carbocation intermediate)\n    ```\n\n    **Step 2: Deprotonation\
+  \ (Fast)**\n    ```\n    Loss of H⁺ from carbocation\n    → Restoration of aromaticity\n\
+  \    → Substituted benzene\n    ```\n\n    ### Detailed Mechanism\n\n    ```\n \
+  \   Step 1: Electrophilic Attack (SLOW)\n\n          H   E                    H\
+  \   E⁺\n          |   |                    |   |\n      ⬡       →              \
+  \ ⬡\n     /  \\\\                    /  \\\\\n    |    |                  |    |\
+  \  (σ-complex)\n     \\\\  /                    \\\\  /\n      ⬡               \
+  \       ⬡\n\n    (Aromatic)           (Non-aromatic, less stable)\n\n\n    Step\
+  \ 2: Deprotonation (FAST)\n\n         H   E⁺                    E\n         |  \
+  \ |                     |\n     ⬡           + Base→       ⬡\n    /  \\\\       \
+  \               /  \\\\\n   |    |                    |    |\n    \\\\  /      \
+  \                \\\\  /\n     ⬡                        ⬡\n\n    (σ-complex)   \
+  \           (Aromatic, restored)\n    ```\n\n    ### Energy Diagram\n\n    ```\n\
+  \    Energy\n      ↑\n      |           σ-complex (arenium ion)\n      |       \
+  \       /\\\\\n      |             /  \\\\\n      |            /    \\\\\n     \
+  \ |  E⁺       /      \\\\        Product\n      |  +    Ea₁/        \\\\Ea₂    (aromatic)\n\
+  \      | Benzene  /          \\\\___________\n      |    ___/\n      |   /\n   \
+  \   |__________________________________→\n                Reaction coordinate\n\n\
+  \    Step 1 (slow): Formation of carbocation (rate-determining)\n    Step 2 (fast):\
+  \ Loss of H⁺\n    ```\n\n    ---\n\n    ## 3. Halogenation\n\n    ### Reaction\n\
+  \    ```\n    Benzene + X₂ → Chlorobenzene/Bromobenzene + HX\n    (X = Cl or Br)\n\
+  \    ```\n\n    ### Mechanism\n\n    **Step 1: Generation of electrophile**\n  \
+  \  ```\n    Br₂ + FeBr₃ → Br⁺ (bromonium ion) + FeBr₄⁻\n\n    FeBr₃ acts as Lewis\
+  \ acid catalyst\n    ```\n\n    **Step 2: Electrophilic attack**\n    ```\n    \
+  \    H  Br⁺\n        |  |\n    ⬡      →  σ-complex\n    ```\n\n    **Step 3: Deprotonation**\n\
+  \    ```\n    σ-complex → Bromobenzene + HBr + FeBr₃\n    ```\n\n    ### Key Points\n\
+  \    - **Requires Lewis acid catalyst:** FeBr₃, FeCl₃, AlCl₃, AlBr₃\n    - **Iodination:**\
+  \ Difficult (reversible), needs oxidizing agent\n    - **Fluorination:** Too violent,\
+  \ not used\n    - **Only Cl₂ and Br₂** are practical\n\n    ---\n\n    ## 4. Nitration\n\
+  \n    ### Reaction\n    ```\n    Benzene + HNO₃ → Nitrobenzene + H₂O\n    (Requires\
+  \ H₂SO₄ catalyst)\n    ```\n\n    ### Mechanism\n\n    **Step 1: Generation of nitronium\
+  \ ion (NO₂⁺)**\n    ```\n    HNO₃ + 2H₂SO₄ → NO₂⁺ + H₃O⁺ + 2HSO₄⁻\n\n    Nitronium\
+  \ ion (NO₂⁺) is the electrophile\n    ```\n\n    **Step 2: Electrophilic attack**\n\
+  \    ```\n        H  NO₂⁺\n        |  |\n    ⬡      →  σ-complex\n    ```\n\n  \
+  \  **Step 3: Deprotonation**\n    ```\n    σ-complex → Nitrobenzene + H₂SO₄\n  \
+  \  ```\n\n    ### Key Points\n    - **Electrophile:** NO₂⁺ (nitronium ion)\n   \
+  \ - **Reagents:** Conc. HNO₃ + Conc. H₂SO₄ (nitrating mixture)\n    - **Product:**\
+  \ Nitrobenzene (yellow liquid)\n    - **Application:** Starting material for aniline\
+  \ synthesis\n\n    ---\n\n    ## 5. Sulfonation\n\n    ### Reaction\n    ```\n \
+  \   Benzene + H₂SO₄ (fuming) → Benzenesulfonic acid + H₂O\n    ```\n\n    ### Mechanism\n\
+  \n    **Step 1: Generation of electrophile**\n    ```\n    H₂SO₄ → SO₃ (sulfur trioxide)\
+  \ + H₂O\n    OR\n    2H₂SO₄ → SO₃H⁺ (protonated sulfur trioxide)\n\n    Electrophile:\
+  \ SO₃ or SO₃H⁺\n    ```\n\n    **Step 2: Electrophilic attack**\n    ```\n     \
+  \   H  SO₃H⁺\n        |  |\n    ⬡      →  σ-complex\n    ```\n\n    **Step 3: Deprotonation**\n\
+  \    ```\n    σ-complex → Benzenesulfonic acid\n    ```\n\n    ### Key Points\n\
+  \    - **Electrophile:** SO₃ or SO₃H⁺\n    - **Reagent:** Fuming H₂SO₄ (oleum, contains\
+  \ SO₃)\n    - **Reversible reaction:** Can be reversed by heating with dilute H₂SO₄\n\
+  \    - **Application:** Detergent synthesis, dye intermediates\n\n    ---\n\n  \
+  \  ## 6. Friedel-Crafts Alkylation\n\n    ### Reaction\n    ```\n    Benzene + R-X\
+  \ → Alkylbenzene + HX\n    (Requires AlCl₃ catalyst)\n    ```\n\n    ### Mechanism\n\
+  \n    **Step 1: Generation of carbocation**\n    ```\n    R-Cl + AlCl₃ → R⁺ (carbocation)\
+  \ + AlCl₄⁻\n\n    Carbocation is the electrophile\n    ```\n\n    **Step 2: Electrophilic\
+  \ attack**\n    ```\n        H  R⁺\n        |  |\n    ⬡      →  σ-complex\n    ```\n\
+  \n    **Step 3: Deprotonation**\n    ```\n    σ-complex → Alkylbenzene + HCl + AlCl₃\n\
+  \    ```\n\n    ### Limitations\n\n    #### 1. Polyalkylation\n    - Product is\
+  \ more reactive than starting benzene\n    - Leads to multiple substitutions\n \
+  \   ```\n    Benzene → Toluene → Xylene → Trimethylbenzene\n    (Difficult to stop\
+  \ at one substitution)\n    ```\n\n    #### 2. Carbocation Rearrangement\n    -\
+  \ Primary and secondary carbocations rearrange to more stable forms\n    ```\n \
+  \   CH₃-CH₂-CH₂-Cl + AlCl₃ → CH₃-CH₂-CH₂⁺\n    → CH₃-CH⁺-CH₃ (more stable 2° carbocation)\n\
+  \n    Expected: n-propylbenzene\n    Actual: Isopropylbenzene (major product)\n\
+  \    ```\n\n    #### 3. Cannot Use with Deactivated Rings\n    - NO₂, COOH, SO₃H,\
+  \ etc. deactivate benzene\n    - Friedel-Crafts reactions do NOT work on deactivated\
+  \ rings\n\n    ---\n\n    ## 7. Friedel-Crafts Acylation\n\n    ### Reaction\n \
+  \   ```\n    Benzene + RCOCl → Acylbenzene (ketone) + HCl\n    (Requires AlCl₃ catalyst)\n\
+  \    ```\n\n    ### Mechanism\n\n    **Step 1: Generation of acylium ion**\n   \
+  \ ```\n    R-CO-Cl + AlCl₃ → R-CO⁺ (acylium ion) + AlCl₄⁻\n\n    Acylium ion: R-C≡O⁺\
+  \ (resonance stabilized)\n    ```\n\n    **Step 2: Electrophilic attack**\n    ```\n\
+  \        H  R-CO⁺\n        |  |\n    ⬡      →  σ-complex\n    ```\n\n    **Step\
+  \ 3: Deprotonation**\n    ```\n    σ-complex → Acylbenzene (ketone) + HCl + AlCl₃\n\
+  \    ```\n\n    ### Advantages over Alkylation\n\n    #### 1. No Polyacylation\n\
+  \    - Ketone product is LESS reactive (C=O is electron-withdrawing)\n    - Stops\
+  \ after one substitution\n\n    #### 2. No Rearrangement\n    - Acylium ion (R-C≡O⁺)\
+  \ is resonance stabilized\n    - Does not rearrange\n\n    #### 3. Can be Reduced\
+  \ to Alkylbenzene\n    ```\n    Acylbenzene → Alkylbenzene (via Clemmensen or Wolff-Kishner\
+  \ reduction)\n\n    Better route to alkylbenzenes than direct alkylation!\n    ```\n\
+  \n    ---\n\n    ## 8. Comparison of EAS Reactions\n\n    | Reaction | Electrophile\
+  \ | Reagents | Catalyst | Product |\n    |----------|--------------|----------|----------|---------|\n\
+  \    | **Halogenation** | X⁺ (Cl⁺, Br⁺) | Cl₂, Br₂ | FeCl₃, FeBr₃ | Halobenzene\
+  \ |\n    | **Nitration** | NO₂⁺ | HNO₃ | H₂SO₄ | Nitrobenzene |\n    | **Sulfonation**\
+  \ | SO₃, SO₃H⁺ | H₂SO₄ (fuming) | None | Benzenesulfonic acid |\n    | **F-C Alkylation**\
+  \ | R⁺ | R-X | AlCl₃ | Alkylbenzene |\n    | **F-C Acylation** | RCO⁺ | RCOCl |\
+  \ AlCl₃ | Acylbenzene (ketone) |\n\n    ---\n\n    ## 9. Stability of σ-Complex\
+  \ (Arenium Ion)\n\n    ### Resonance Structures\n    The carbocation intermediate\
+  \ (σ-complex) is stabilized by resonance:\n\n    ```\n         H   E⁺          \
+  \ H   E⁺           H   E⁺\n         |   |            |   |            |   |\n  \
+  \   ⬡             ⟷  ⬡             ⟷  ⬡\n    /  \\\\              /  \\\\      \
+  \        /  \\\\\n   |    |            |    |            |    |\n    \\\\  /   \
+  \           \\\\  /              \\\\  /\n\n    Positive charge delocalized over\
+  \ 3 carbons\n    (ortho, meta positions relative to attack site)\n    ```\n\n  \
+  \  ### Factors Affecting Stability\n    1. **Electron-donating groups (+I, +M)**\
+  \ stabilize σ-complex → Faster reaction\n    2. **Electron-withdrawing groups (-I,\
+  \ -M)** destabilize σ-complex → Slower reaction\n    3. **Position of substituent**\
+  \ affects which positions are stabilized\n\n    ---\n\n    ## Important Points for\
+  \ IIT JEE\n\n    1. **Benzene prefers substitution:**\n       - Maintains aromaticity\
+  \ (150 kJ/mol stabilization)\n       - Addition would destroy aromatic system\n\n\
+  \    2. **Rate-determining step:**\n       - Formation of σ-complex (Step 1)\n \
+  \      - Electrophile attacks benzene ring\n       - Loss of aromaticity is costly\
+  \ energetically\n\n    3. **Friedel-Crafts limitations:**\n       - Alkylation:\
+  \ polyalkylation, rearrangement issues\n       - Acylation: better alternative,\
+  \ no rearrangement\n       - Neither works on deactivated rings (NO₂, COOH, etc.)\n\
+  \n    4. **Electrophile generation:**\n       - Always requires catalyst or strong\
+  \ acid\n       - Memorize electrophiles: X⁺, NO₂⁺, SO₃/SO₃H⁺, R⁺, RCO⁺\n\n    5.\
+  \ **Sulfonation is reversible:**\n       - Can remove -SO₃H by heating with dilute\
+  \ H₂SO₄\n       - Useful for temporary blocking positions\n\n    ---\n\n    ## Practice\
+  \ Questions\n\n    1. Why does benzene undergo substitution rather than addition\
+  \ with Br₂?\n    2. Draw the mechanism for nitration of benzene.\n    3. What is\
+  \ the major product when n-propyl chloride reacts with benzene in presence of AlCl₃?\n\
+  \    4. Why is Friedel-Crafts acylation preferred over alkylation?\n    5. Why don't\
+  \ Friedel-Crafts reactions work on nitrobenzene?\n\n## Key Points\n\n- General mechanism\
+  \ of EAS\n\n- Halogenation\n\n- Nitration"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: Why does benzene undergo substitution reactions instead of addition reactions
+    like alkenes, and what is the energetic advantage?
+  options:
+  - Benzene is less reactive than alkenes so it cannot undergo addition
+  - Substitution maintains the aromatic stabilization (150 kJ/mol), while addition
+    would destroy aromaticity, making substitution energetically favorable
+  - Benzene has no π electrons so it cannot undergo addition
+  - The carbon atoms in benzene are sp² hybridized so they prefer substitution
+  correct_answer: Substitution maintains the aromatic stabilization (150 kJ/mol),
+    while addition would destroy aromaticity, making substitution energetically favorable
+  explanation: 'Benzene''s preference for substitution over addition is rooted in
+    aromaticity - the exceptional stability from cyclic conjugation of 6 π electrons
+    (Hückel''s rule: 4n+2 π electrons). Benzene has resonance stabilization energy
+    of approximately 150 kJ/mol compared to a hypothetical cyclohexatriene with localized
+    double bonds. If benzene underwent addition (like alkenes: C₆H₆ + Br₂ → C₆H₆Br₂),
+    the product would lose aromaticity - the conjugated π system would break, sacrificing
+    150 kJ/mol of stabilization. This is energetically unfavorable. Instead, substitution
+    (C₆H₆ + Br₂ → C₆H₅Br + HBr) replaces one hydrogen while maintaining the aromatic
+    sextet. Though the reaction temporarily disrupts aromaticity during formation
+    of the σ-complex (arenium ion) intermediate, the final product restores aromaticity
+    by losing H⁺. The net result: aromatic stabilization is preserved in the product,
+    making the overall reaction thermodynamically favorable despite the high activation
+    energy for the first step. Comparison: Cyclohexene readily undergoes addition
+    (Br₂ → dibromocyclohexane) because it has no aromatic stabilization to lose. This
+    fundamental difference explains why benzene and aromatic compounds undergo electrophilic
+    aromatic substitution (EAS) - halogenation, nitration, sulfonation, Friedel-Crafts
+    reactions - all maintaining the aromatic ring, while alkenes undergo addition
+    reactions.'
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: In the general mechanism of electrophilic aromatic substitution, which
+    step is rate-determining, and what is the structure and significance of the σ-complex
+    (arenium ion) intermediate?
+  options:
+  - Deprotonation is rate-determining; the σ-complex is fully aromatic
+  - Formation of the σ-complex is rate-determining (slow); it is a resonance-stabilized
+    carbocation where aromaticity is temporarily lost, making this step energetically
+    costly
+  - Both steps are equally fast; the σ-complex is a transition state, not an intermediate
+  - Protonation of benzene is rate-determining; the σ-complex is sp³ hybridized and
+    planar
+  correct_answer: Formation of the σ-complex is rate-determining (slow); it is a resonance-stabilized
+    carbocation where aromaticity is temporarily lost, making this step energetically
+    costly
+  explanation: 'Electrophilic aromatic substitution proceeds through a two-step mechanism.
+    STEP 1 (SLOW, rate-determining): Electrophile E⁺ attacks the π cloud of benzene,
+    forming the σ-complex (also called arenium ion or Wheland intermediate). This
+    step is slow because aromaticity is destroyed - the 6 π electron conjugation breaks,
+    creating a non-aromatic carbocation. The carbon where E⁺ attaches becomes sp³
+    hybridized (tetrahedral), breaking planarity. This loss of ~150 kJ/mol aromatic
+    stabilization creates a high activation energy barrier, making this the rate-determining
+    step. However, the σ-complex is resonance-stabilized: the positive charge delocalizes
+    over 3 carbons (ortho and meta positions) through resonance, providing some stability.
+    STEP 2 (FAST): A base abstracts H⁺ from the sp³ carbon, restoring the π system
+    and aromaticity. This is fast because it regenerates the highly stable aromatic
+    system - energetically very favorable. Energy diagram: Starting benzene (aromatic,
+    stable) → high energy barrier → σ-complex at peak (non-aromatic carbocation, high
+    energy) → small barrier → product (aromatic, stable). The rate depends on Step
+    1: factors stabilizing the σ-complex (electron-donating groups) accelerate the
+    reaction, while factors destabilizing it (electron-withdrawing groups) slow the
+    reaction. This explains directing effects: substituents that stabilize σ-complex
+    at certain positions direct electrophiles there (ortho/para or meta directors).'
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: What are the key limitations of Friedel-Crafts alkylation, and why is
+    Friedel-Crafts acylation considered superior despite both using AlCl₃ catalyst?
+  options:
+  - Alkylation is too slow; acylation is faster
+  - Alkylation suffers from polyalkylation, carbocation rearrangement, and fails on
+    deactivated rings; acylation avoids these issues due to resonance-stabilized acylium
+    ion and deactivating ketone product
+  - Alkylation requires higher temperatures; acylation works at room temperature
+  - Acylation produces alcohols which are more useful than alkanes
+  correct_answer: Alkylation suffers from polyalkylation, carbocation rearrangement,
+    and fails on deactivated rings; acylation avoids these issues due to resonance-stabilized
+    acylium ion and deactivating ketone product
+  explanation: 'Friedel-Crafts alkylation has three major limitations. (1) POLYALKYLATION:
+    The alkylated product is more reactive than starting benzene (alkyl groups are
+    electron-donating, activating the ring), so further substitution occurs, giving
+    mixtures of mono-, di-, tri-alkylated products. Difficult to stop at monosubstitution.
+    Example: benzene + CH₃Cl → toluene → xylenes → trimethylbenzenes. (2) CARBOCATION
+    REARRANGEMENT: Primary and secondary carbocations (R⁺) rearrange to more stable
+    forms via 1,2-hydride or 1,2-alkyl shifts. Example: n-propyl chloride (CH₃CH₂CH₂Cl)
+    generates 1° carbocation which rearranges to 2° carbocation (CH₃CH⁺CH₃), giving
+    isopropylbenzene instead of expected n-propylbenzene. (3) FAILS ON DEACTIVATED
+    RINGS: Strong electron-withdrawing groups (NO₂, COOH, SO₃H, CN, aldehydes, ketones)
+    deactivate benzene, making it too unreactive for Friedel-Crafts reactions. Friedel-Crafts
+    ACYLATION avoids all three problems: (1) NO POLYACYLATION - the ketone product
+    (Ar-CO-R) has electron-withdrawing carbonyl group, deactivating the ring and preventing
+    further substitution. Reaction stops cleanly at monosubstituted product. (2) NO
+    REARRANGEMENT - the acylium ion (R-C≡O⁺) is resonance-stabilized by the adjacent
+    positive oxygen (R-C⁺=O ↔ R-C≡O⁺), making it stable and not prone to rearrangement.
+    (3) The acyl product (ketone) can be reduced to alkylbenzene using Clemmensen
+    (Zn-Hg/HCl) or Wolff-Kishner (NH₂NH₂/KOH) reduction, providing a superior indirect
+    route to alkylbenzenes without rearrangement.'
+  require_pass: true

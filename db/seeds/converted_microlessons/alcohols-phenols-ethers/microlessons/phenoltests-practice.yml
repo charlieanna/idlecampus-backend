@@ -1,0 +1,69 @@
+slug: phenoltests-practice
+title: phenol_tests — Practice
+difficulty: medium
+sequence_order: 1
+estimated_minutes: 2
+key_concepts:
+- phenol_tests
+prerequisites: []
+content_md: '# phenol_tests — Practice 🚀
+
+
+  Tests for phenol: (1) Br₂ water → white ppt (2,4,6-tribromophenol) ✓, (2) FeCl₃
+  → violet color ✓. Neither phenol nor alcohol reacts with NaHCO₃. Lucas test for
+  alcohols only.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 2
+  question: Which tests distinguish phenol from alcohol?
+  options:
+  - Br₂ water gives white precipitate with phenol
+  - FeCl₃ gives violet color with phenol
+  - Both react with NaHCO₃
+  - Both give positive Lucas test
+  require_pass: true
+  correct_answer: FeCl₃ gives violet color with phenol
+  explanation: The FeCl₃ test (ferric chloride test) is a definitive test to distinguish
+    phenol from alcohols. Phenol reacts with neutral FeCl₃ solution to give a characteristic
+    violet (or blue-green) colored complex. The color is due to formation of a complex
+    between Fe³⁺ and phenoxide ion. Alcohols do not give this coloration. While both
+    phenol and alcohols can react with bromine water, the Br₂ water test for phenol
+    gives a white precipitate of 2,4,6-tribromophenol immediately without catalyst
+    (phenol is so activated by -OH that it undergoes electrophilic substitution at
+    all three available positions). Alcohols do not react with Br₂ water. Neither
+    phenol nor alcohols react with NaHCO₃ (only carboxylic acids do). Lucas test is
+    for alcohols, not phenols.
+- type: mcq
+  sequence_order: 3
+  question: 'What observation confirms the presence of phenol in the bromine water test?'
+  options:
+  - Yellow color appears
+  - White precipitate of 2,4,6-tribromophenol forms immediately
+  - Gas is evolved
+  - No visible change occurs
+  require_pass: true
+  correct_answer: White precipitate of 2,4,6-tribromophenol forms immediately
+  explanation: 'When phenol is added to bromine water (Br₂/H₂O), an immediate white precipitate forms. This precipitate is 2,4,6-tribromophenol. The reaction is: C₆H₅OH + 3Br₂ → 2,4,6-Br₃C₆H₂OH (white ppt) + 3HBr. The -OH group in phenol is a strong activating group that makes the benzene ring highly reactive toward electrophilic aromatic substitution. Phenol is so activated that bromination occurs at all three available positions (two ortho and one para) even without a catalyst. This is in stark contrast to benzene, which requires Br₂/FeBr₃ catalyst and gives only monobromination. The bromine water is decolorized as it reacts, and the white precipitate settles out. This test is diagnostic for phenols. Alcohols do not react with bromine water. The test is so sensitive that even very dilute phenol solutions give a positive result.'
+- type: mcq
+  sequence_order: 4
+  question: 'Which reagent can be used to distinguish between phenol and benzoic acid?'
+  options:
+  - FeCl₃ solution - both give colored complexes
+  - NaHCO₃ solution - only benzoic acid evolves CO₂ gas
+  - Br₂ water - both give white precipitates
+  - Lucas reagent - only phenol reacts
+  require_pass: true
+  correct_answer: NaHCO₃ solution - only benzoic acid evolves CO₂ gas
+  explanation: 'Sodium bicarbonate (NaHCO₃) can distinguish between phenol and benzoic acid based on their different acidities. Benzoic acid (C₆H₅COOH, pKa ~4.2) is a stronger acid than carbonic acid (H₂CO₃, pKa ~6.4), so it reacts with NaHCO₃ to liberate CO₂ gas (fizzing/effervescence): C₆H₅COOH + NaHCO₃ → C₆H₅COONa + H₂O + CO₂↑. Phenol (C₆H₅OH, pKa ~10) is much weaker than carbonic acid, so it does NOT react with NaHCO₃. However, phenol does react with stronger bases like NaOH to form sodium phenoxide. Both phenol and benzoic acid react with FeCl₃, though they may give different colored complexes. While phenol gives a white precipitate with Br₂ water, benzoic acid does not react readily. The Lucas test (ZnCl₂/HCl) is for alcohols, not phenol or benzoic acid. Summary: Use NaHCO₃ - only carboxylic acids (like benzoic acid) react to evolve CO₂.'

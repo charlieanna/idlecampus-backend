@@ -1,0 +1,192 @@
+slug: lesson-8
+title: Lesson 8
+difficulty: easy
+sequence_order: 8
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# IAM: Identity and Access Management\n\n\
+  \    Control access to AWS services securely.\n\n    ## IAM Components\n\n    ###\
+  \ 1. Users\n    Individual people or applications.\n\n    ```bash\n    # Create\
+  \ user\n    aws iam create-user --user-name alice\n\n    # List users\n    aws iam\
+  \ list-users\n    ```\n\n    **Best Practices**:\n    - One user per person/app\n\
+  \    - Enable MFA (Multi-Factor Authentication)\n    - Use strong passwords\n  \
+  \  - Rotate access keys regularly\n\n    ### 2. Groups\n    Collection of users\
+  \ with shared permissions.\n\n    ```bash\n    # Create group\n    aws iam create-group\
+  \ --group-name developers\n\n    # Add user to group\n    aws iam add-user-to-group\
+  \ --user-name alice --group-name developers\n    ```\n\n    Common groups:\n   \
+  \ - Admins\n    - Developers\n    - ReadOnly\n    - Auditors\n\n    ### 3. Roles\n\
+  \    Temporary permissions for AWS services or users.\n\n    **Use cases**:\n  \
+  \  - EC2 instance accessing S3\n    - Lambda function accessing DynamoDB\n    -\
+  \ Cross-account access\n    - External identity federation\n\n    ```bash\n    #\
+  \ Create role\n    aws iam create-role --role-name EC2-S3-Access \\\\\n      --assume-role-policy-document\
+  \ file://trust-policy.json\n    ```\n\n    ### 4. Policies\n    JSON documents defining\
+  \ permissions.\n\n    **Policy Structure**:\n    ```json\n    {\n      \"Version\"\
+  : \"2012-10-17\",\n      \"Statement\": [\n        {\n          \"Effect\": \"Allow\"\
+  ,\n          \"Action\": \"s3:GetObject\",\n          \"Resource\": \"arn:aws:s3:::my-bucket/*\"\
+  \n        }\n      ]\n    }\n    ```\n\n    **Components**:\n    - `Effect`: Allow\
+  \ or Deny\n    - `Action`: What can be done\n    - `Resource`: Which resources\n\
+  \    - `Condition` (optional): When it applies\n\n    ## Policy Types\n\n    ###\
+  \ 1. AWS Managed Policies\n    Pre-built by AWS.\n\n    Examples:\n    - `AdministratorAccess`:\
+  \ Full access\n    - `ReadOnlyAccess`: Read all services\n    - `PowerUserAccess`:\
+  \ All except IAM\n\n    ### 2. Customer Managed Policies\n    Custom policies you\
+  \ create.\n\n    ```json\n    {\n      \"Version\": \"2012-10-17\",\n      \"Statement\"\
+  : [\n        {\n          \"Effect\": \"Allow\",\n          \"Action\": [\n    \
+  \        \"s3:ListBucket\",\n            \"s3:GetObject\"\n          ],\n      \
+  \    \"Resource\": [\n            \"arn:aws:s3:::my-app-bucket\",\n            \"\
+  arn:aws:s3:::my-app-bucket/*\"\n          ]\n        }\n      ]\n    }\n    ```\n\
+  \n    ### 3. Inline Policies\n    Embedded directly in user/group/role.\n\n    ##\
+  \ IAM Best Practices\n\n    ### 1. Principle of Least Privilege\n    Grant minimum\
+  \ permissions needed.\n\n    ❌ Bad:\n    ```json\n    {\n      \"Effect\": \"Allow\"\
+  ,\n      \"Action\": \"*\",\n      \"Resource\": \"*\"\n    }\n    ```\n\n    ✅\
+  \ Good:\n    ```json\n    {\n      \"Effect\": \"Allow\",\n      \"Action\": [\"\
+  s3:GetObject\", \"s3:PutObject\"],\n      \"Resource\": \"arn:aws:s3:::my-bucket/uploads/*\"\
+  \n    }\n    ```\n\n    ### 2. Enable MFA\n    Especially for:\n    - Root account\
+  \ (always!)\n    - Admin users\n    - Production access\n\n    ### 3. Use Roles,\
+  \ Not Keys\n    For EC2, Lambda, etc., use IAM roles instead of hardcoding keys.\n\
+  \n    ❌ Bad:\n    ```python\n    # Hardcoded credentials\n    aws_access_key = \"\
+  AKIAIOSFODNN7EXAMPLE\"\n    aws_secret_key = \"wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY\"\
+  \n    ```\n\n    ✅ Good:\n    ```python\n    # Use IAM role attached to EC2\n  \
+  \  s3 = boto3.client('s3')  # Credentials from role\n    ```\n\n    ### 4. Rotate\
+  \ Credentials\n    - Access keys: Every 90 days\n    - Passwords: Every 90 days\n\
+  \    - Use AWS Secrets Manager for app secrets\n\n    ### 5. Monitor with CloudTrail\n\
+  \    Log all API calls for audit.\n\n    ## IAM Access Methods\n\n    ### 1. AWS\
+  \ Management Console\n    Web-based UI with username/password + MFA.\n\n    ###\
+  \ 2. AWS CLI\n    Command-line with access keys.\n\n    ```bash\n    aws configure\n\
+  \    # Enter Access Key ID\n    # Enter Secret Access Key\n    # Enter Region\n\
+  \    ```\n\n    ### 3. AWS SDK\n    Programmatic access with access keys or IAM\
+  \ roles.\n\n    ## Cross-Account Access\n\n    Allow users from Account A to access\
+  \ Account B.\n\n    **Account B (Resource Account)**:\n    1. Create role with trust\
+  \ policy allowing Account A\n    2. Attach permissions policy\n\n    **Account A\
+  \ (User Account)**:\n    1. Grant users permission to assume role\n    2. Users\
+  \ switch to role via console or CLI\n\n    ## IAM Policy Evaluation Logic\n\n  \
+  \  ```\n    1. Deny by default\n    2. Evaluate all policies\n    3. Explicit DENY\
+  \ overrides everything\n    4. Explicit ALLOW granted if no DENY\n    5. Otherwise:\
+  \ DENY\n    ```\n\n    ## Common IAM Policies\n\n    ### S3 Read-Only\n    ```json\n\
+  \    {\n      \"Version\": \"2012-10-17\",\n      \"Statement\": [\n        {\n\
+  \          \"Effect\": \"Allow\",\n          \"Action\": [\n            \"s3:GetObject\"\
+  ,\n            \"s3:ListBucket\"\n          ],\n          \"Resource\": [\n    \
+  \        \"arn:aws:s3:::my-bucket\",\n            \"arn:aws:s3:::my-bucket/*\"\n\
+  \          ]\n        }\n      ]\n    }\n    ```\n\n    ### EC2 Start/Stop\n   \
+  \ ```json\n    {\n      \"Version\": \"2012-10-17\",\n      \"Statement\": [\n \
+  \       {\n          \"Effect\": \"Allow\",\n          \"Action\": [\n         \
+  \   \"ec2:StartInstances\",\n            \"ec2:StopInstances\"\n          ],\n \
+  \         \"Resource\": \"arn:aws:ec2:*:*:instance/*\",\n          \"Condition\"\
+  : {\n            \"StringEquals\": {\n              \"ec2:ResourceTag/Environment\"\
+  : \"dev\"\n            }\n          }\n        }\n      ]\n    }\n    ```\n\n  \
+  \  **Practice**: Try the IAM lab!"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What is the Principle of Least Privilege in IAM and why is it critical
+    for security?
+  options:
+  - Grant users minimum permissions needed for their job; prevents unauthorized access
+    and limits damage from compromised credentials
+  - Give all users full administrator access for convenience
+  - Only restrict access for external users, not internal employees
+  - Least Privilege means using the cheapest AWS services
+  correct_answer: Grant users minimum permissions needed for their job; prevents unauthorized
+    access and limits damage from compromised credentials
+  explanation: 'The Principle of Least Privilege is a fundamental security concept
+    requiring users have only permissions necessary to perform their specific job
+    functions. Why it matters: Reduces attack surface, limits damage from compromised
+    credentials, prevents accidental destructive actions, meets compliance requirements,
+    provides accountability. Bad practice example: Developer needs to deploy to S3
+    bucket my-app-assets, granted AdministratorAccess (full AWS access). Risk: Can
+    accidentally delete production database, create expensive EC2 instances, access
+    sensitive customer data, if laptop stolen, attacker has full AWS access. Good
+    practice example: Grant specific S3 permissions only. Policy allows s3:PutObject
+    and s3:GetObject on arn:aws:s3:::my-app-assets/*, denies everything else. Result:
+    Can deploy assets but cannot access database, EC2, billing, other S3 buckets.
+    If credentials leaked, damage limited to single bucket. Implementation: Start
+    with zero permissions, add specific permissions as needed, use AWS managed policies
+    as templates (ReadOnlyAccess, PowerUserAccess), create custom policies for specific
+    roles, regularly audit with IAM Access Analyzer. Real-world incident: Company
+    gave contractor AdministratorAccess, contractor terminated but access not revoked,
+    deleted production database costing $500K recovery + lost revenue. With least privilege,
+    contractor would only have had test environment access. Common scenarios: Developer
+    role: EC2, S3, Lambda in dev account only. Data analyst: Read-only RDS, S3 analytics
+    bucket. Finance: Billing and Cost Explorer only. DevOps: Deploy permissions but
+    not IAM/billing. Tools: Use IAM Policy Simulator to test permissions, CloudTrail
+    to audit API calls, IAM Access Analyzer to identify overly permissive policies.
+    Cost of not following: Data breaches, compliance violations, accidental resource
+    deletion, insider threats amplified.'
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: Why should you use IAM Roles instead of hardcoding Access Keys for EC2
+    instances?
+  options:
+  - Roles provide temporary credentials that rotate automatically, eliminating risk
+    of leaked keys and simplifying credential management
+  - Access Keys are faster than Roles
+  - Roles are more expensive than Access Keys
+  - Access Keys and Roles work exactly the same way
+  correct_answer: Roles provide temporary credentials that rotate automatically, eliminating
+    risk of leaked keys and simplifying credential management
+  explanation: 'IAM Roles provide secure, automatic credential management superior
+    to hardcoded Access Keys. Access Keys (bad practice): Long-term credentials (Access
+    Key ID + Secret Access Key) that never expire unless manually rotated, stored
+    in code or config files, easily leaked through Git commits, log files, error messages,
+    difficult to rotate (update everywhere they''re used), if compromised, attacker
+    has access until keys manually revoked. Hardcoded example: Python code with aws_access_key_id
+    = AKIAIOSFODNN7EXAMPLE hardcoded. Risks: Committed to GitHub (publicly accessible),
+    logged in CloudWatch (visible to support), extracted from memory dump, used indefinitely
+    if leaked. IAM Roles (best practice): Temporary credentials that auto-rotate every
+    15 minutes to 12 hours, no keys to manage or store, credentials retrieved from
+    instance metadata service, automatically refreshed by AWS SDK, if instance compromised,
+    credentials expire quickly. How it works: (1) Create IAM role with S3 read policy,
+    (2) Attach role to EC2 instance at launch, (3) Application code uses boto3.client(''s3'')
+    without any credentials, (4) SDK automatically retrieves temporary credentials
+    from http://169.254.169.254/latest/meta-data/iam/security-credentials/, (5) Credentials
+    valid for 6 hours, SDK refreshes automatically. Benefits comparison: Security:
+    Roles eliminate leaked credentials risk, Access Keys easily compromised. Rotation:
+    Roles automatic every 6 hours, Access Keys require manual rotation. Management:
+    Roles centrally managed in IAM, Access Keys scattered across systems. Auditability:
+    Role assumption logged in CloudTrail, Access Key usage harder to track. Real-world
+    disaster: Company hardcoded keys in GitHub repo, keys discovered in public repository,
+    attacker launched 500 EC2 instances for cryptocurrency mining, $100K AWS bill
+    in 3 days. With roles, credentials would have expired in 6 hours limiting damage.
+    Migration path: Replace all hardcoded keys with roles, use AWS Secrets Manager
+    for external applications, enable Access Key rotation alerts, audit for embedded
+    keys using git-secrets tool.'
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: How does MFA (Multi-Factor Authentication) enhance IAM security?
+  options:
+  - MFA requires two forms of authentication (password + time-based code), preventing
+    account access even if password is compromised
+  - MFA makes passwords unnecessary
+  - MFA is only for AWS Console, not CLI access
+  - MFA slows down access without security benefits
+  correct_answer: MFA requires two forms of authentication (password + time-based
+    code), preventing account access even if password is compromised
+  explanation: 'Multi-Factor Authentication (MFA) adds critical second layer of security
+    beyond passwords. How MFA works: Requires two independent authentication factors
+    - something you know (password) and something you have (MFA device). Types: Virtual
+    MFA device (phone app like Google Authenticator, Authy), generates 6-digit code
+    rotating every 30 seconds. Hardware MFA device (YubiKey, physical token), generates
+    or displays codes. SMS MFA (text message codes, least secure, not recommended).
+    Login flow without MFA: Enter username + password, if password stolen/phished,
+    attacker has full access. Login flow with MFA: Enter username + password, enter
+    6-digit code from MFA device (changes every 30 seconds), even if password stolen,
+    attacker cannot access without physical MFA device. Attack scenario without MFA:
+    Employee''s password phished via fake AWS login page, attacker logs into AWS Console
+    with stolen password, deletes production resources, steals data, creates backdoor
+    IAM users. Impact: Total compromise. Attack scenario with MFA: Employee''s password
+    phished, attacker tries logging in with stolen password, AWS prompts for MFA code,
+    attacker doesn''t have employee''s phone/device, login fails, security team notified
+    of failed attempt. Impact: Zero compromise. Who needs MFA: (1) Root account (absolutely
+    required - full AWS access), (2) IAM users with admin privileges, (3) IAM users
+    accessing production, (4) Privileged CLI access (can enable MFA for CLI). Implementation:
+    Enable MFA for root immediately, enforce MFA for IAM users via policy, use virtual
+    MFA (most practical), backup MFA devices (lose phone = locked out). Cost: Virtual
+    MFA is free (Google Authenticator), hardware devices $20-50. ROI: Prevents account
+    takeover that could cost $100K+ in damage. Compliance: PCI-DSS, SOC 2, HIPAA require
+    MFA for privileged access. Statistics: 99.9% of account compromises involve accounts
+    without MFA enabled. Best practice: Enable MFA for all human users, exclude service
+    accounts (use roles instead), test MFA during onboarding, document MFA recovery
+    process.'
+  require_pass: true

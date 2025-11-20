@@ -1,0 +1,293 @@
+<div class="container-fluid">
+  <div class="row">
+    <!-- Sidebar with course context -->
+    <% if @course && @course_module %>
+      <div class="col-md-3 bg-light border-end" style="min-height: 100vh;">
+        <div class="p-3">
+          <h5 class="mb-3">
+            <%= link_to @course.title, course_path(@course), class: "text-decoration-none text-dark" %>
+          </h5>
+          
+          <h6 class="text-muted mb-3">
+            <%= link_to @course_module.title, course_module_path(@course, @course_module), class: "text-decoration-none text-dark" %>
+          </h6>
+          
+          <div class="progress mb-3" style="height: 8px;">
+            <div class="progress-bar bg-success" role="progressbar" 
+                 style="width: <%= @enrollment&.progress_percentage || 0 %>%"
+                 aria-valuenow="<%= @enrollment&.progress_percentage || 0 %>" 
+                 aria-valuemin="0" aria-valuemax="100">
+            </div>
+          </div>
+          <p class="small text-muted mb-3">
+            <%= (@enrollment&.progress_percentage || 0).round %>% Complete
+          </p>
+
+          <hr>
+
+          <!-- Module Items List -->
+          <div class="module-items">
+            <% @course_module.module_items.order(:sequence_order).each do |item| %>
+              <div class="module-item mb-2 <%= 'active' if item.item_id == @lesson.id %>">
+                <% url = case item.item_type
+                        when 'CourseLesson' then lesson_path(item.item)
+                        when 'Quiz' then quiz_path(item.item)
+                        when 'HandsOnLab' then hands_on_lab_path(item.item)
+                        else '#'
+                        end %>
+                <%= link_to url,
+                    class: "d-block p-2 rounded text-decoration-none #{item.item_id == @lesson.id ? 'bg-primary text-white' : 'text-dark'}" do %>
+                  <div class="d-flex align-items-center">
+                    <% if item.item_type == 'CourseLesson' %>
+                      <i class="fas fa-book text-primary me-2"></i>
+                    <% elsif item.item_type == 'Quiz' %>
+                      <i class="fas fa-question-circle text-warning me-2"></i>
+                    <% elsif item.item_type == 'HandsOnLab' %>
+                      <i class="fas fa-flask text-success me-2"></i>
+                    <% end %>
+                    <div class="flex-grow-1">
+                      <div class="fw-bold small"><%= item.title %></div>
+                    </div>
+                    <% if item.item_type == 'CourseLesson' && current_user && item.item.completed_by?(current_user) %>
+                      <i class="fas fa-check-circle text-success"></i>
+                    <% end %>
+                  </div>
+                <% end %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+
+    <!-- Main content area -->
+    <div class="<%= @course ? 'col-md-9' : 'col-12' %>">
+      <div class="p-4">
+        <!-- Lesson header -->
+        <div class="mb-4">
+          <h1><%= @lesson.title %></h1>
+          
+          <div class="d-flex gap-2 mb-3">
+            <span class="badge bg-info">
+              <i class="fas fa-clock"></i> <%= @lesson.reading_time_minutes || 15 %> minutes
+            </span>
+            <% if @completed %>
+              <span class="badge bg-success">
+                <i class="fas fa-check"></i> Completed
+              </span>
+            <% end %>
+          </div>
+        </div>
+
+        <!-- Lesson content -->
+        <div class="lesson-content">
+          <div class="card">
+            <div class="card-body">
+              <!-- On this page (auto TOC) -->
+              <div id="toc" class="mb-4 d-none">
+                <h6 class="text-uppercase text-muted">On this page</h6>
+                <ul class="small list-unstyled" id="toc-list"></ul>
+                <hr>
+              </div>
+              <div id="lesson-markdown">
+                <%= render_markdown(@lesson.content) %>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Key concepts -->
+        <% if @lesson.key_concepts.present? %>
+          <div class="card mt-4">
+            <div class="card-header">
+              <h5 class="mb-0"><i class="fas fa-lightbulb"></i> Key Concepts</h5>
+            </div>
+            <div class="card-body">
+              <% begin %>
+                <% concepts = JSON.parse(@lesson.key_concepts) %>
+                <ul class="list-unstyled">
+                  <% concepts.each do |concept| %>
+                    <li class="mb-2">
+                      <i class="fas fa-check text-success me-2"></i>
+                      <%= concept %>
+                    </li>
+                  <% end %>
+                </ul>
+              <% rescue JSON::ParserError %>
+                <p class="text-muted"><%= @lesson.key_concepts %></p>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+
+        <!-- Navigation buttons -->
+        <div class="d-flex justify-content-between mt-4">
+          <% if @course_module %>
+            <%= link_to course_module_path(@course, @course_module), class: "btn btn-outline-secondary" do %>
+              <i class="fas fa-arrow-left"></i> Back to Module
+            <% end %>
+          <% else %>
+            <div></div>
+          <% end %>
+
+          <% if @completed %>
+            <span class="badge bg-success p-2">
+              <i class="fas fa-check"></i> Completed
+            </span>
+          <% else %>
+            <%= button_to "Mark as Complete", complete_lesson_path(@lesson), 
+                method: :post, class: "btn btn-success" %>
+          <% end %>
+
+          <% if @next_item %>
+            <% if @next_item.is_a?(CourseLesson) %>
+              <%= link_to lesson_path(@next_item), class: "btn btn-primary" do %>
+                Next Lesson <i class="fas fa-arrow-right"></i>
+              <% end %>
+            <% elsif @next_item.is_a?(Quiz) %>
+              <%= link_to quiz_path(@next_item), class: "btn btn-primary" do %>
+                Start Quiz <i class="fas fa-arrow-right"></i>
+              <% end %>
+            <% elsif @next_item.is_a?(HandsOnLab) %>
+              <%= link_to hands_on_lab_path(@next_item), class: "btn btn-primary" do %>
+                Start Lab <i class="fas fa-arrow-right"></i>
+              <% end %>
+            <% end %>
+          <% elsif @course_module %>
+            <%= link_to course_module_path(@course, @course_module), class: "btn btn-outline-primary" do %>
+              Back to Module
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .module-item.active {
+    border-left: 3px solid #0d6efd;
+  }
+  
+  .lesson-content img {
+    max-width: 100%;
+    height: auto;
+  }
+  
+  .lesson-content pre {
+    background-color: #f8f9fa;
+    padding: 1rem;
+    border-radius: 0.25rem;
+    overflow-x: auto;
+  }
+  .lesson-content code {
+    background: #f1f3f5;
+    padding: 0.1rem 0.3rem;
+    border-radius: 3px;
+  }
+  .lesson-content pre code {
+    background: transparent;
+    padding: 0;
+  }
+  
+  .lesson-content h1, .lesson-content h2, .lesson-content h3 {
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+  }
+  
+  .lesson-content p {
+    margin-bottom: 1rem;
+  }
+
+  .lesson-content blockquote {
+    border-left: 4px solid #e3e7ee;
+    padding-left: 1rem;
+    color: #6c757d;
+  }
+</style>
+
+<script>
+  // Build a simple table of contents from h2/h3
+  (function() {
+    const container = document.getElementById('lesson-markdown');
+    if (!container) return;
+    const tocList = document.getElementById('toc-list');
+    const toc = document.getElementById('toc');
+    if (!tocList || !toc) return;
+    const heads = container.querySelectorAll('h2, h3');
+    if (!heads.length) return;
+    toc.classList.remove('d-none');
+    heads.forEach(function(h) {
+      const id = h.getAttribute('id');
+      if (!id) return;
+      const li = document.createElement('li');
+      li.style.marginLeft = h.tagName === 'H3' ? '12px' : '0';
+      const a = document.createElement('a');
+      a.textContent = h.textContent;
+      a.href = '#' + id;
+      a.className = 'text-decoration-none';
+      li.appendChild(a);
+      tocList.appendChild(li);
+    });
+  })();
+
+  // Add copy buttons to code blocks
+  (function() {
+    const blocks = document.querySelectorAll('.lesson-content pre');
+    blocks.forEach(function(pre) {
+      const btn = document.createElement('button');
+      btn.className = 'btn btn-sm btn-outline-secondary position-absolute';
+      btn.style.right = '1rem';
+      btn.style.marginTop = '0.25rem';
+      btn.textContent = 'Copy';
+      btn.onclick = function() {
+        const code = pre.querySelector('code');
+        if (!code) return;
+        navigator.clipboard.writeText(code.innerText);
+        btn.textContent = 'Copied!';
+        setTimeout(() => btn.textContent = 'Copy', 1500);
+      };
+      pre.style.position = 'relative';
+      pre.prepend(btn);
+    });
+  })();
+  
+  // Deep-link support: Auto-scroll to section if anchor provided
+  (function() {
+    const anchor = window.location.hash;
+    if (anchor) {
+      // Wait for page to fully load
+      setTimeout(function() {
+        const section = document.querySelector(anchor);
+        if (section) {
+          // Scroll to section
+          section.scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'start' 
+          });
+          
+          // Highlight the section
+          section.classList.add('highlighted-section');
+          section.style.backgroundColor = '#fff3cd';
+          section.style.padding = '15px';
+          section.style.borderRadius = '8px';
+          section.style.transition = 'background-color 2s ease';
+          
+          // Remove highlight after 3 seconds
+          setTimeout(function() {
+            section.style.backgroundColor = 'transparent';
+            setTimeout(function() {
+              section.classList.remove('highlighted-section');
+            }, 2000);
+          }, 3000);
+          
+          // Track that user reached the recommended section (if coming from remediation)
+          const urlParams = new URLSearchParams(window.location.search);
+          if (urlParams.get('from') === 'remediation') {
+            console.log('Tracked remediation section view:', anchor);
+          }
+        }
+      }, 500);
+    }
+  })();
+</script>

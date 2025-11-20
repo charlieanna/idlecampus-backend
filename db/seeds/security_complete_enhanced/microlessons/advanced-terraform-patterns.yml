@@ -1,0 +1,292 @@
+slug: advanced-terraform-patterns
+title: Advanced Terraform Patterns
+sequence_order: 2
+estimated_minutes: 2
+difficulty: easy
+content_md: "# Advanced Terraform Patterns \U0001F680\n\n# Advanced Terraform Patterns\n\
+  \n    ## Terraform Modules\n\n    Modules are containers for multiple resources\
+  \ that are used together. They enable code reuse, organization, and abstraction.\n\
+  \n    ### Why Use Modules?\n\n    1. **Reusability**: Write once, use many times\n\
+  \    2. **Organization**: Group related resources\n    3. **Abstraction**: Hide\
+  \ complexity\n    4. **Consistency**: Standardize resource creation\n    5. **Encapsulation**:\
+  \ Control what's configurable\n\n    ### Module Structure\n\n    ```\n    modules/\n\
+  \    └── vpc/\n        ├── main.tf\n        ├── variables.tf\n        ├── outputs.tf\n\
+  \        └── README.md\n    ```\n\n    ### Creating a VPC Module\n\n    #### modules/vpc/main.tf\n\
+  \    ```hcl\n    resource \"aws_vpc\" \"main\" {\n      cidr_block           = var.cidr_block\n\
+  \      enable_dns_hostnames = var.enable_dns_hostnames\n      enable_dns_support\
+  \   = var.enable_dns_support\n\n      tags = merge(\n        var.tags,\n       \
+  \ {\n          Name = var.name\n        }\n      )\n    }\n\n    resource \"aws_subnet\"\
+  \ \"public\" {\n      count                   = length(var.public_subnet_cidrs)\n\
+  \      vpc_id                  = aws_vpc.main.id\n      cidr_block             \
+  \ = var.public_subnet_cidrs[count.index]\n      availability_zone       = var.availability_zones[count.index]\n\
+  \      map_public_ip_on_launch = true\n\n      tags = merge(\n        var.tags,\n\
+  \        {\n          Name = \"${var.name}-public-${count.index + 1}\"\n       \
+  \   Type = \"Public\"\n        }\n      )\n    }\n\n    resource \"aws_subnet\"\
+  \ \"private\" {\n      count             = length(var.private_subnet_cidrs)\n  \
+  \    vpc_id            = aws_vpc.main.id\n      cidr_block        = var.private_subnet_cidrs[count.index]\n\
+  \      availability_zone = var.availability_zones[count.index]\n\n      tags = merge(\n\
+  \        var.tags,\n        {\n          Name = \"${var.name}-private-${count.index\
+  \ + 1}\"\n          Type = \"Private\"\n        }\n      )\n    }\n\n    resource\
+  \ \"aws_internet_gateway\" \"main\" {\n      vpc_id = aws_vpc.main.id\n\n      tags\
+  \ = merge(\n        var.tags,\n        {\n          Name = \"${var.name}-igw\"\n\
+  \        }\n      )\n    }\n\n    resource \"aws_route_table\" \"public\" {\n  \
+  \    vpc_id = aws_vpc.main.id\n\n      route {\n        cidr_block = \"0.0.0.0/0\"\
+  \n        gateway_id = aws_internet_gateway.main.id\n      }\n\n      tags = merge(\n\
+  \        var.tags,\n        {\n          Name = \"${var.name}-public-rt\"\n    \
+  \    }\n      )\n    }\n\n    resource \"aws_route_table_association\" \"public\"\
+  \ {\n      count          = length(aws_subnet.public)\n      subnet_id      = aws_subnet.public[count.index].id\n\
+  \      route_table_id = aws_route_table.public.id\n    }\n    ```\n\n    #### modules/vpc/variables.tf\n\
+  \    ```hcl\n    variable \"name\" {\n      description = \"Name prefix for VPC\
+  \ resources\"\n      type        = string\n    }\n\n    variable \"cidr_block\"\
+  \ {\n      description = \"CIDR block for VPC\"\n      type        = string\n  \
+  \    default     = \"10.0.0.0/16\"\n    }\n\n    variable \"availability_zones\"\
+  \ {\n      description = \"List of availability zones\"\n      type        = list(string)\n\
+  \    }\n\n    variable \"public_subnet_cidrs\" {\n      description = \"CIDR blocks\
+  \ for public subnets\"\n      type        = list(string)\n    }\n\n    variable\
+  \ \"private_subnet_cidrs\" {\n      description = \"CIDR blocks for private subnets\"\
+  \n      type        = list(string)\n    }\n\n    variable \"enable_dns_hostnames\"\
+  \ {\n      description = \"Enable DNS hostnames in VPC\"\n      type        = bool\n\
+  \      default     = true\n    }\n\n    variable \"enable_dns_support\" {\n    \
+  \  description = \"Enable DNS support in VPC\"\n      type        = bool\n     \
+  \ default     = true\n    }\n\n    variable \"tags\" {\n      description = \"Tags\
+  \ to apply to all resources\"\n      type        = map(string)\n      default  \
+  \   = {}\n    }\n    ```\n\n    #### modules/vpc/outputs.tf\n    ```hcl\n    output\
+  \ \"vpc_id\" {\n      description = \"ID of the VPC\"\n      value       = aws_vpc.main.id\n\
+  \    }\n\n    output \"vpc_cidr\" {\n      description = \"CIDR block of the VPC\"\
+  \n      value       = aws_vpc.main.cidr_block\n    }\n\n    output \"public_subnet_ids\"\
+  \ {\n      description = \"IDs of public subnets\"\n      value       = aws_subnet.public[*].id\n\
+  \    }\n\n    output \"private_subnet_ids\" {\n      description = \"IDs of private\
+  \ subnets\"\n      value       = aws_subnet.private[*].id\n    }\n\n    output \"\
+  internet_gateway_id\" {\n      description = \"ID of the Internet Gateway\"\n  \
+  \    value       = aws_internet_gateway.main.id\n    }\n    ```\n\n    ### Using\
+  \ Modules\n\n    #### Local Module\n    ```hcl\n    module \"vpc\" {\n      source\
+  \ = \"./modules/vpc\"\n\n      name               = \"production\"\n      cidr_block\
+  \         = \"10.0.0.0/16\"\n      availability_zones = [\"us-west-2a\", \"us-west-2b\"\
+  , \"us-west-2c\"]\n\n      public_subnet_cidrs  = [\"10.0.1.0/24\", \"10.0.2.0/24\"\
+  , \"10.0.3.0/24\"]\n      private_subnet_cidrs = [\"10.0.11.0/24\", \"10.0.12.0/24\"\
+  , \"10.0.13.0/24\"]\n\n      tags = {\n        Environment = \"production\"\n  \
+  \      Project     = \"myapp\"\n      }\n    }\n\n    # Reference module outputs\n\
+  \    resource \"aws_instance\" \"web\" {\n      ami           = \"ami-0c55b159cbfafe1f0\"\
+  \n      instance_type = \"t3.micro\"\n      subnet_id     = module.vpc.public_subnet_ids[0]\n\
+  \n      tags = {\n        Name = \"web-server\"\n      }\n    }\n    ```\n\n   \
+  \ #### Remote Module (Terraform Registry)\n    ```hcl\n    module \"vpc\" {\n  \
+  \    source  = \"terraform-aws-modules/vpc/aws\"\n      version = \"5.0.0\"\n\n\
+  \      name = \"my-vpc\"\n      cidr = \"10.0.0.0/16\"\n\n      azs            \
+  \ = [\"us-west-2a\", \"us-west-2b\", \"us-west-2c\"]\n      private_subnets = [\"\
+  10.0.1.0/24\", \"10.0.2.0/24\", \"10.0.3.0/24\"]\n      public_subnets  = [\"10.0.101.0/24\"\
+  , \"10.0.102.0/24\", \"10.0.103.0/24\"]\n\n      enable_nat_gateway = true\n   \
+  \   enable_vpn_gateway = false\n\n      tags = {\n        Environment = \"dev\"\n\
+  \      }\n    }\n    ```\n\n    #### Module from Git\n    ```hcl\n    module \"\
+  vpc\" {\n      source = \"git::https://github.com/myorg/terraform-modules.git//vpc?ref=v1.2.0\"\
+  \n\n      name       = \"staging\"\n      cidr_block = \"10.1.0.0/16\"\n    }\n\
+  \    ```\n\n    ### Module Composition\n\n    Build complex infrastructure from\
+  \ smaller modules:\n\n    ```hcl\n    # Network layer\n    module \"vpc\" {\n  \
+  \    source = \"./modules/vpc\"\n      name   = var.environment\n    }\n\n    #\
+  \ Security layer\n    module \"security_groups\" {\n      source = \"./modules/security-groups\"\
+  \n      vpc_id = module.vpc.vpc_id\n    }\n\n    # Compute layer\n    module \"\
+  web_cluster\" {\n      source = \"./modules/asg-web\"\n\n      vpc_id         =\
+  \ module.vpc.vpc_id\n      subnet_ids     = module.vpc.public_subnet_ids\n     \
+  \ security_group = module.security_groups.web_sg_id\n    }\n\n    # Data layer\n\
+  \    module \"database\" {\n      source = \"./modules/rds\"\n\n      vpc_id   \
+  \      = module.vpc.vpc_id\n      subnet_ids     = module.vpc.private_subnet_ids\n\
+  \      security_group = module.security_groups.db_sg_id\n    }\n    ```\n\n    ##\
+  \ State Management\n\n    Terraform state is a critical component that tracks resource\
+  \ mappings and metadata.\n\n    ### State File Contents\n    ```json\n    {\n  \
+  \    \"version\": 4,\n      \"terraform_version\": \"1.5.0\",\n      \"serial\"\
+  : 42,\n      \"lineage\": \"unique-id\",\n      \"outputs\": {},\n      \"resources\"\
+  : [\n        {\n          \"mode\": \"managed\",\n          \"type\": \"aws_instance\"\
+  ,\n          \"name\": \"web\",\n          \"instances\": []\n        }\n      ]\n\
+  \    }\n    ```\n\n    ### Local State Problems\n\n    - **No collaboration**: Can't\
+  \ share state with team\n    - **No locking**: Risk of concurrent modifications\n\
+  \    - **No versioning**: Can't recover from mistakes\n    - **Security**: Secrets\
+  \ stored in plain text\n\n    ### Remote State Backends\n\n    #### S3 Backend (Recommended\
+  \ for AWS)\n    ```hcl\n    terraform {\n      backend \"s3\" {\n        bucket\
+  \         = \"myapp-terraform-state\"\n        key            = \"production/terraform.tfstate\"\
+  \n        region         = \"us-west-2\"\n        encrypt        = true\n      \
+  \  dynamodb_table = \"terraform-state-lock\"\n\n        # Role-based access\n  \
+  \      role_arn = \"arn:aws:iam::123456789012:role/TerraformRole\"\n      }\n  \
+  \  }\n    ```\n\n    Setup S3 backend:\n    ```hcl\n    # backend-setup/main.tf\n\
+  \    resource \"aws_s3_bucket\" \"terraform_state\" {\n      bucket = \"myapp-terraform-state\"\
+  \n\n      lifecycle {\n        prevent_destroy = true\n      }\n    }\n\n    resource\
+  \ \"aws_s3_bucket_versioning\" \"terraform_state\" {\n      bucket = aws_s3_bucket.terraform_state.id\n\
+  \n      versioning_configuration {\n        status = \"Enabled\"\n      }\n    }\n\
+  \n    resource \"aws_s3_bucket_server_side_encryption_configuration\" \"terraform_state\"\
+  \ {\n      bucket = aws_s3_bucket.terraform_state.id\n\n      rule {\n        apply_server_side_encryption_by_default\
+  \ {\n          sse_algorithm = \"AES256\"\n        }\n      }\n    }\n\n    resource\
+  \ \"aws_s3_bucket_public_access_block\" \"terraform_state\" {\n      bucket = aws_s3_bucket.terraform_state.id\n\
+  \n      block_public_acls       = true\n      block_public_policy     = true\n \
+  \     ignore_public_acls      = true\n      restrict_public_buckets = true\n   \
+  \ }\n\n    resource \"aws_dynamodb_table\" \"terraform_locks\" {\n      name   \
+  \      = \"terraform-state-lock\"\n      billing_mode = \"PAY_PER_REQUEST\"\n  \
+  \    hash_key     = \"LockID\"\n\n      attribute {\n        name = \"LockID\"\n\
+  \        type = \"S\"\n      }\n    }\n    ```\n\n    #### Azure Backend\n    ```hcl\n\
+  \    terraform {\n      backend \"azurerm\" {\n        resource_group_name  = \"\
+  terraform-state-rg\"\n        storage_account_name = \"tfstatestore\"\n        container_name\
+  \       = \"tfstate\"\n        key                  = \"prod.terraform.tfstate\"\
+  \n      }\n    }\n    ```\n\n    #### Terraform Cloud Backend\n    ```hcl\n    terraform\
+  \ {\n      cloud {\n        organization = \"myorg\"\n\n        workspaces {\n \
+  \         name = \"production\"\n        }\n      }\n    }\n    ```\n\n    ### State\
+  \ Commands\n\n    ```bash\n    # List resources in state\n    terraform state list\n\
+  \n    # Show specific resource\n    terraform state show aws_instance.web\n\n  \
+  \  # Move resource (rename)\n    terraform state mv aws_instance.old aws_instance.new\n\
+  \n    # Remove resource from state (but keep in cloud)\n    terraform state rm aws_instance.web\n\
+  \n    # Import existing resource\n    terraform import aws_instance.web i-1234567890abcdef0\n\
+  \n    # Pull remote state to local file\n    terraform state pull > terraform.tfstate.backup\n\
+  \n    # Push local state to remote\n    terraform state push terraform.tfstate\n\
+  \n    # Replace provider in state (after provider changes)\n    terraform state\
+  \ replace-provider hashicorp/aws registry.terraform.io/hashicorp/aws\n    ```\n\n\
+  \    ### Importing Existing Infrastructure\n\n    ```hcl\n    # 1. Write configuration\n\
+  \    resource \"aws_instance\" \"existing\" {\n      ami           = \"ami-0c55b159cbfafe1f0\"\
+  \n      instance_type = \"t2.micro\"\n    }\n\n    # 2. Import existing resource\n\
+  \    terraform import aws_instance.existing i-1234567890abcdef0\n\n    # 3. Align\
+  \ configuration with actual state\n    terraform plan  # Shows differences\n   \
+  \ terraform apply # Aligns if needed\n    ```\n\n    ## Workspaces\n\n    Workspaces\
+  \ allow multiple state files for the same configuration - useful for environments.\n\
+  \n    ### Workspace Commands\n    ```bash\n    # List workspaces (* indicates current)\n\
+  \    terraform workspace list\n\n    # Create new workspace\n    terraform workspace\
+  \ new development\n    terraform workspace new staging\n    terraform workspace\
+  \ new production\n\n    # Switch workspace\n    terraform workspace select production\n\
+  \n    # Show current workspace\n    terraform workspace show\n\n    # Delete workspace\
+  \ (must be empty)\n    terraform workspace delete development\n    ```\n\n    ###\
+  \ Using Workspaces in Configuration\n\n    ```hcl\n    locals {\n      environment\
+  \ = terraform.workspace\n\n      instance_types = {\n        development = \"t2.micro\"\
+  \n        staging     = \"t3.small\"\n        production  = \"t3.large\"\n     \
+  \ }\n\n      instance_counts = {\n        development = 1\n        staging     =\
+  \ 2\n        production  = 3\n      }\n    }\n\n    resource \"aws_instance\" \"\
+  web\" {\n      count         = local.instance_counts[local.environment]\n      ami\
+  \           = data.aws_ami.amazon_linux.id\n      instance_type = local.instance_types[local.environment]\n\
+  \n      tags = {\n        Name        = \"web-${local.environment}-${count.index\
+  \ + 1}\"\n        Environment = local.environment\n      }\n    }\n    ```\n\n \
+  \   ### Workspace-Specific Backend Keys\n    ```hcl\n    terraform {\n      backend\
+  \ \"s3\" {\n        bucket = \"myapp-terraform-state\"\n        key    = \"env/${terraform.workspace}/terraform.tfstate\"\
+  \n        region = \"us-west-2\"\n      }\n    }\n    ```\n\n    This creates separate\
+  \ state files:\n    - `env/development/terraform.tfstate`\n    - `env/staging/terraform.tfstate`\n\
+  \    - `env/production/terraform.tfstate`\n\n    ## Count and For_Each\n\n    ###\
+  \ Count\n    Create multiple similar resources with an index.\n\n    ```hcl\n  \
+  \  variable \"availability_zones\" {\n      default = [\"us-west-2a\", \"us-west-2b\"\
+  , \"us-west-2c\"]\n    }\n\n    resource \"aws_subnet\" \"public\" {\n      count\
+  \             = length(var.availability_zones)\n      vpc_id            = aws_vpc.main.id\n\
+  \      cidr_block        = \"10.0.${count.index + 1}.0/24\"\n      availability_zone\
+  \ = var.availability_zones[count.index]\n\n      tags = {\n        Name = \"public-subnet-${count.index\
+  \ + 1}\"\n      }\n    }\n\n    # Reference: aws_subnet.public[0].id\n    ```\n\n\
+  \    **Limitation**: Removing an item from the middle of a list causes Terraform\
+  \ to destroy and recreate resources.\n\n    ### For_Each (Preferred)\n    Create\
+  \ resources based on a map or set.\n\n    ```hcl\n    variable \"subnets\" {\n \
+  \     type = map(object({\n        cidr_block        = string\n        availability_zone\
+  \ = string\n      }))\n\n      default = {\n        public-1 = {\n          cidr_block\
+  \        = \"10.0.1.0/24\"\n          availability_zone = \"us-west-2a\"\n     \
+  \   }\n        public-2 = {\n          cidr_block        = \"10.0.2.0/24\"\n   \
+  \       availability_zone = \"us-west-2b\"\n        }\n        public-3 = {\n  \
+  \        cidr_block        = \"10.0.3.0/24\"\n          availability_zone = \"us-west-2c\"\
+  \n        }\n      }\n    }\n\n    resource \"aws_subnet\" \"public\" {\n      for_each\
+  \          = var.subnets\n      vpc_id            = aws_vpc.main.id\n      cidr_block\
+  \        = each.value.cidr_block\n      availability_zone = each.value.availability_zone\n\
+  \n      tags = {\n        Name = each.key\n      }\n    }\n\n    # Reference: aws_subnet.public[\"\
+  public-1\"].id\n    ```\n\n    ### For_Each with Sets\n    ```hcl\n    variable\
+  \ \"users\" {\n      type    = set(string)\n      default = [\"alice\", \"bob\"\
+  , \"charlie\"]\n    }\n\n    resource \"aws_iam_user\" \"developers\" {\n      for_each\
+  \ = var.users\n      name     = each.value\n\n      tags = {\n        Role = \"\
+  Developer\"\n      }\n    }\n    ```\n\n    ### For_Each with Resources\n    ```hcl\n\
+  \    locals {\n      instances = {\n        web = {\n          instance_type = \"\
+  t3.small\"\n          subnet        = \"public\"\n        }\n        api = {\n \
+  \         instance_type = \"t3.medium\"\n          subnet        = \"private\"\n\
+  \        }\n        worker = {\n          instance_type = \"t3.large\"\n       \
+  \   subnet        = \"private\"\n        }\n      }\n    }\n\n    resource \"aws_instance\"\
+  \ \"app\" {\n      for_each      = local.instances\n      ami           = data.aws_ami.amazon_linux.id\n\
+  \      instance_type = each.value.instance_type\n      subnet_id     = each.value.subnet\
+  \ == \"public\" ? aws_subnet.public.id : aws_subnet.private.id\n\n      tags = {\n\
+  \        Name = \"${each.key}-server\"\n        Type = each.key\n      }\n    }\n\
+  \    ```\n\n    ## Dynamic Blocks\n\n    Generate nested blocks dynamically.\n\n\
+  \    ### Without Dynamic Blocks (Repetitive)\n    ```hcl\n    resource \"aws_security_group\"\
+  \ \"web\" {\n      name   = \"web-sg\"\n      vpc_id = aws_vpc.main.id\n\n     \
+  \ ingress {\n        from_port   = 80\n        to_port     = 80\n        protocol\
+  \    = \"tcp\"\n        cidr_blocks = [\"0.0.0.0/0\"]\n      }\n\n      ingress\
+  \ {\n        from_port   = 443\n        to_port     = 443\n        protocol    =\
+  \ \"tcp\"\n        cidr_blocks = [\"0.0.0.0/0\"]\n      }\n\n      ingress {\n \
+  \       from_port   = 22\n        to_port     = 22\n        protocol    = \"tcp\"\
+  \n        cidr_blocks = [\"203.0.113.0/24\"]\n      }\n    }\n    ```\n\n    ###\
+  \ With Dynamic Blocks (Clean)\n    ```hcl\n    variable \"ingress_rules\" {\n  \
+  \    type = list(object({\n        from_port   = number\n        to_port     = number\n\
+  \        protocol    = string\n        cidr_blocks = list(string)\n        description\
+  \ = string\n      }))\n\n      default = [\n        {\n          from_port   = 80\n\
+  \          to_port     = 80\n          protocol    = \"tcp\"\n          cidr_blocks\
+  \ = [\"0.0.0.0/0\"]\n          description = \"HTTP\"\n        },\n        {\n \
+  \         from_port   = 443\n          to_port     = 443\n          protocol   \
+  \ = \"tcp\"\n          cidr_blocks = [\"0.0.0.0/0\"]\n          description = \"\
+  HTTPS\"\n        },\n        {\n          from_port   = 22\n          to_port  \
+  \   = 22\n          protocol    = \"tcp\"\n          cidr_blocks = [\"203.0.113.0/24\"\
+  ]\n          description = \"SSH\"\n        }\n      ]\n    }\n\n    resource \"\
+  aws_security_group\" \"web\" {\n      name   = \"web-sg\"\n      vpc_id = aws_vpc.main.id\n\
+  \n      dynamic \"ingress\" {\n        for_each = var.ingress_rules\n        content\
+  \ {\n          from_port   = ingress.value.from_port\n          to_port     = ingress.value.to_port\n\
+  \          protocol    = ingress.value.protocol\n          cidr_blocks = ingress.value.cidr_blocks\n\
+  \          description = ingress.value.description\n        }\n      }\n\n     \
+  \ egress {\n        from_port   = 0\n        to_port     = 0\n        protocol \
+  \   = \"-1\"\n        cidr_blocks = [\"0.0.0.0/0\"]\n      }\n    }\n    ```\n\n\
+  \    ### Nested Dynamic Blocks\n    ```hcl\n    resource \"aws_autoscaling_group\"\
+  \ \"web\" {\n      name                = \"web-asg\"\n      max_size           \
+  \ = 5\n      min_size            = 1\n      vpc_zone_identifier = var.subnet_ids\n\
+  \n      dynamic \"tag\" {\n        for_each = var.tags\n        content {\n    \
+  \      key                 = tag.key\n          value               = tag.value\n\
+  \          propagate_at_launch = true\n        }\n      }\n\n      dynamic \"initial_lifecycle_hook\"\
+  \ {\n        for_each = var.lifecycle_hooks\n        content {\n          name \
+  \                = initial_lifecycle_hook.value.name\n          default_result \
+  \      = initial_lifecycle_hook.value.default_result\n          lifecycle_transition\
+  \ = initial_lifecycle_hook.value.transition\n\n          dynamic \"notification_metadata\"\
+  \ {\n            for_each = initial_lifecycle_hook.value.metadata != null ? [1]\
+  \ : []\n            content {\n              metadata = initial_lifecycle_hook.value.metadata\n\
+  \            }\n          }\n        }\n      }\n    }\n    ```\n\n    ## Terraform\
+  \ Cloud\n\n    Terraform Cloud provides remote execution, state management, and\
+  \ collaboration features.\n\n    ### Features\n    - **Remote state management**:\
+  \ Encrypted, versioned state storage\n    - **Remote operations**: Run plans and\
+  \ applies in the cloud\n    - **Workspaces**: Separate environments with role-based\
+  \ access\n    - **VCS integration**: Automatic runs on Git commits\n    - **Policy\
+  \ as code**: Sentinel policies for governance\n    - **Cost estimation**: Preview\
+  \ infrastructure costs\n    - **Private registry**: Share internal modules\n   \
+  \ - **Team collaboration**: Approval workflows\n\n    ### Configuration\n    ```hcl\n\
+  \    terraform {\n      cloud {\n        organization = \"mycompany\"\n\n      \
+  \  workspaces {\n          name = \"production-app\"\n        }\n      }\n    }\n\
+  \    ```\n\n    ### Login\n    ```bash\n    terraform login\n    ```\n\n    ###\
+  \ VCS-Driven Workflow\n\n    1. Connect workspace to Git repository\n    2. Push\
+  \ to main branch\n    3. Terraform Cloud automatically runs plan\n    4. Review\
+  \ and approve in UI\n    5. Apply runs automatically\n\n    ### API-Driven Workflow\n\
+  \n    ```bash\n    # Create configuration version\n    curl \\\n      --header \"\
+  Authorization: Bearer $TOKEN\" \\\n      --header \"Content-Type: application/vnd.api+json\"\
+  \ \\\n      --request POST \\\n      --data @payload.json \\\n      https://app.terraform.io/api/v2/workspaces/$WORKSPACE_ID/configuration-versions\n\
+  \    ```\n\n    ### Sentinel Policies\n\n    Enforce governance and compliance.\n\
+  \n    ```hcl\n    # policy/restrict-instance-type.sentinel\n    import \"tfplan/v2\"\
+  \ as tfplan\n\n    allowed_types = [\"t2.micro\", \"t2.small\", \"t3.micro\", \"\
+  t3.small\"]\n\n    main = rule {\n      all tfplan.resource_changes as _, rc {\n\
+  \        rc.type is \"aws_instance\" implies\n          rc.change.after.instance_type\
+  \ in allowed_types\n      }\n    }\n    ```\n\n    Apply policy set to workspace:\n\
+  \    ```hcl\n    # Policy fails if:\n    resource \"aws_instance\" \"web\" {\n \
+  \     ami           = \"ami-0c55b159cbfafe1f0\"\n      instance_type = \"m5.xlarge\"\
+  \  # NOT in allowed list\n    }\n    ```\n\n    ## Summary\n\n    Advanced Terraform\
+  \ patterns enable:\n    - **Modules**: Reusable, composable infrastructure components\n\
+  \    - **Remote state**: Secure, collaborative state management\n    - **Workspaces**:\
+  \ Environment isolation with shared configuration\n    - **For_each**: Flexible\
+  \ resource creation without index issues\n    - **Dynamic blocks**: Generate repetitive\
+  \ nested blocks\n    - **Terraform Cloud**: Enterprise-grade collaboration and governance\n\
+  \n    These patterns are essential for managing infrastructure at scale."
+exercises:
+- type: mcq
+  slug: advanced-terraform-patterns-mcq
+  sequence_order: 1
+  question: What is the main advantage of using for_each over count in Terraform?
+  options:
+  - for_each uses keys instead of indexes, preventing resource recreation when items
+    are removed from the middle
+  - for_each is faster than count
+  - for_each can only be used with maps, not lists
+  - for_each automatically creates backups of resources
+  correct_answer_index: 0
+  explanation: The key advantage of for_each over count is that it uses keys (map
+    keys or set values) instead of numeric indexes. When you remove an item from the
+    middle of a count-based list, Terraform must destroy and recreate all subsequent
+    resources because their indexes change. With for_each, each resource is identified
+    by its key, so removing one doesn't affect others.
+objectives:
+- Define the control
+- Choose tooling
+- Integrate checks in CI/CD
+next_recommended: []

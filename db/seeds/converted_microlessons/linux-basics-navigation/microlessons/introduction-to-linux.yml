@@ -1,0 +1,52 @@
+slug: introduction-to-linux
+title: Introduction to Linux
+difficulty: easy
+sequence_order: 16
+estimated_minutes: 2
+key_concepts:
+- Linux operating system
+- Shell and terminal
+- Linux distributions
+- Basic commands
+prerequisites: []
+content_md: "# Introduction to Linux \U0001F680\n\n# Introduction to Linux\n\n   \
+  \ Linux is an open-source operating system kernel that powers millions of servers,\
+  \ containers, and cloud platforms worldwide.\n\n    ## Why Learn Linux?\n\n    1.\
+  \ **Ubiquity**: Powers most web servers, cloud infrastructure, and containers\n\
+  \    2. **Docker & Kubernetes**: Built on Linux kernel features (cgroups, namespaces)\n\
+  \    3. **Career Skills**: Essential for DevOps, SRE, and cloud engineering\n  \
+  \  4. **Open Source**: Free, customizable, and community-driven\n\n    ## Linux\
+  \ Distributions\n\n    - **Ubuntu/Debian**: Popular for servers and beginners\n\
+  \    - **CentOS/RHEL**: Enterprise-focused distributions\n    - **Alpine**: Minimal\
+  \ distribution used in Docker images\n    - **Amazon Linux**: Optimized for AWS\
+  \ environments\n\n    ## The Shell\n\n    The shell is your interface to Linux.\
+  \ Common shells include:\n    - **bash** (Bourne Again Shell): Most common default\
+  \ shell\n    - **sh** (Bourne Shell): Basic POSIX-compliant shell\n    - **zsh**:\
+  \ Enhanced shell with advanced features\n\n    ### Your First Commands\n\n    ```bash\n\
+  \    # Display current user\n    whoami\n\n    # Show current date and time\n  \
+  \  date\n\n    # Display current directory\n    pwd\n\n    # List files in current\
+  \ directory\n    ls\n    ```\n\n## Key Points\n\n- Linux operating system\n\n- Shell\
+  \ and terminal\n\n- Linux distributions"
+exercises:
+  - type: mcq
+    sequence_order: 1
+    question: "Which of the following statements best describes why Linux is so widely used in servers, containers, and cloud platforms?"
+    options:
+      - "Linux is only free for educational purposes"
+      - "Linux is open-source, free, powers Docker/Kubernetes, and is essential for DevOps and cloud engineering"
+      - "Linux can only run on Intel processors"
+      - "Linux doesn't require any technical knowledge to use"
+    correct_answer: "Linux is open-source, free, powers Docker/Kubernetes, and is essential for DevOps and cloud engineering"
+    explanation: "Linux dominates the server and cloud infrastructure landscape for several critical reasons. First, it's open-source and free, eliminating licensing costs for enterprises running thousands of servers. Second, modern container technologies like Docker and Kubernetes are built on Linux kernel features (specifically cgroups and namespaces), making Linux essential for containerized applications. Third, it's a core skill for DevOps engineers, SREs, and cloud architects. According to industry surveys, over 90% of cloud workloads run on Linux. Major cloud providers (AWS, Google Cloud, Azure) primarily run Linux-based infrastructure. The open-source nature allows companies to customize the kernel for specific workloads, inspect security issues, and contribute improvements back to the community. Unlike proprietary systems, Linux provides transparency and control. Real-world impact: companies like Google, Facebook, and Netflix run millions of Linux servers. Understanding Linux is not optional for cloud computing—it's fundamental to how modern internet infrastructure operates."
+    require_pass: true
+  - type: mcq
+    sequence_order: 2
+    question: "What is the shell in Linux, and which is the most common default shell?"
+    options:
+      - "A graphical user interface for managing files"
+      - "An interface to the Linux kernel; bash (Bourne Again Shell) is the most common default"
+      - "A terminal emulator program"
+      - "A web browser for Linux systems"
+    correct_answer: "An interface to the Linux kernel; bash (Bourne Again Shell) is the most common default"
+    explanation: "The shell is a command-line interpreter that provides a text-based interface between the user and the Linux kernel. It's fundamentally different from a GUI—it accepts typed commands and executes them by communicating with the kernel. bash (Bourne Again Shell) is the default shell on most Linux distributions including Ubuntu, CentOS, and macOS (though macOS switched to zsh as default in 2019). Understanding shells is crucial because: (1) Remote server management happens exclusively through shells via SSH—there's no GUI on most servers; (2) Automation and scripting rely on shell commands; (3) DevOps tools (Ansible, Terraform, CI/CD pipelines) execute shell commands. Other common shells include: sh (original Bourne Shell, POSIX-compliant, used in scripts for maximum compatibility), zsh (enhanced features, better autocompletion, used by default on macOS), fish (user-friendly but not POSIX-compliant). When you SSH into a cloud server or work with Docker containers, you're always working with a shell. The shell prompt (usually ending with $ for regular users or # for root) is where you type commands like ls, cd, and pwd to interact with the system."
+    require_pass: true

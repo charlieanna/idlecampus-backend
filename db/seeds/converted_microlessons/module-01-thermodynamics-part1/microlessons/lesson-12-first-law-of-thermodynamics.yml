@@ -1,0 +1,221 @@
+slug: lesson-12-first-law-of-thermodynamics
+title: 'Lesson 1.2: First Law of Thermodynamics'
+difficulty: medium
+sequence_order: 2
+estimated_minutes: 15
+key_concepts:
+  - Energy conservation
+  - Internal energy
+  - Heat and work
+  - State functions
+  - Sign conventions
+prerequisites:
+  - thermodynamic-systems-and-processes
+content_md: |
+  # First Law of Thermodynamics
+
+  ## Introduction
+
+  The **First Law of Thermodynamics** is essentially the law of conservation of energy applied to thermodynamic systems. It states that energy cannot be created or destroyed, only converted from one form to another.
+
+  ## Statement of the First Law
+
+  **ΔU = Q - W**
+
+  Where:
+  - **ΔU** = Change in internal energy of the system
+  - **Q** = Heat added to the system
+  - **W** = Work done by the system
+
+  **Alternative form:**
+  ΔU = Q + W (when W is work done ON the system)
+
+  ## Understanding the Terms
+
+  ### Internal Energy (U)
+
+  - Total energy contained within a system
+  - Includes kinetic and potential energy of molecules
+  - **State function** - depends only on current state, not path taken
+  - For ideal gas: U depends only on temperature
+
+  ### Heat (Q)
+
+  - Energy transferred due to temperature difference
+  - **Sign conventions:**
+    - Q > 0: Heat absorbed by system (endothermic)
+    - Q < 0: Heat released by system (exothermic)
+  - **Path function** - depends on how process occurs
+
+  ### Work (W)
+
+  - Energy transferred through organized motion
+  - For gases: W = ∫P dV (pressure-volume work)
+  - **Sign conventions:**
+    - W > 0: Work done by system (expansion)
+    - W < 0: Work done on system (compression)
+  - **Path function** - depends on process
+
+  ## Sign Conventions Summary
+
+  | Process | Q | W | ΔU |
+  |---------|---|---|----|
+  | Heat absorbed, System expands | + | + | Depends |
+  | Heat released, System expands | - | + | Depends |
+  | Heat absorbed, System compresses | + | - | Depends |
+  | Heat released, System compresses | - | - | Depends |
+
+  ## Special Cases
+
+  ### 1. Isothermal Process (ΔT = 0)
+
+  For ideal gas: ΔU = 0
+
+  Therefore: **Q = W**
+
+  All heat absorbed is converted to work (or vice versa).
+
+  **Example:** Ideal gas expansion/compression at constant temperature
+  ```
+  ΔU = 0
+  Q = W = nRT ln(V₂/V₁)
+  ```
+
+  ### 2. Adiabatic Process (Q = 0)
+
+  No heat exchange with surroundings.
+
+  Therefore: **ΔU = -W**
+
+  All work comes from/goes to internal energy.
+
+  **Example:** Rapid compression/expansion
+  ```
+  Q = 0
+  ΔU = -W
+  TV^(γ-1) = constant (for ideal gas)
+  ```
+
+  ### 3. Isochoric Process (ΔV = 0)
+
+  Constant volume, so no P-V work.
+
+  Therefore: **ΔU = Q** (W = 0)
+
+  All heat changes internal energy.
+
+  **Example:** Heating gas in rigid container
+  ```
+  W = 0
+  ΔU = Q = nCᵥΔT
+  ```
+
+  ### 4. Isobaric Process (ΔP = 0)
+
+  Constant pressure.
+
+  **ΔU = Q - W**
+
+  Where W = PΔV
+
+  **Example:** Heating gas in cylinder with movable piston
+  ```
+  W = PΔV = nRΔT
+  Q = nCₚΔT
+  ΔU = nCᵥΔT
+  ```
+
+  ## Practical Examples
+
+  ### Example 1: Gas Expansion
+
+  **Problem:** 2 moles of ideal gas expands isothermally at 300K from 10L to 20L. Calculate Q, W, and ΔU.
+
+  **Solution:**
+  - Isothermal ⟹ ΔU = 0
+  - W = nRT ln(V₂/V₁) = 2 × 8.314 × 300 × ln(2) = 3457 J
+  - Q = W = 3457 J (heat absorbed)
+
+  ### Example 2: Adiabatic Compression
+
+  **Problem:** A gas is compressed adiabatically, doing 500 J of work on it. Find ΔU and Q.
+
+  **Solution:**
+  - Adiabatic ⟹ Q = 0
+  - Work done ON system ⟹ W = -500 J
+  - ΔU = Q - W = 0 - (-500) = 500 J (internal energy increases)
+
+  ### Example 3: Constant Volume Heating
+
+  **Problem:** 1 mole of gas at constant volume absorbs 750 J of heat. Cᵥ = 20.8 J/(mol·K). Find ΔT and ΔU.
+
+  **Solution:**
+  - Isochoric ⟹ W = 0, so ΔU = Q = 750 J
+  - ΔT = Q/nCᵥ = 750/(1 × 20.8) = 36.1 K
+
+  ## Cyclic Processes
+
+  For a complete cycle (returns to initial state):
+
+  **ΔU_cycle = 0**
+
+  Therefore: **Q_cycle = W_cycle**
+
+  Net heat absorbed equals net work done.
+
+  ## Applications
+
+  1. **Heat engines** - Convert heat to work
+  2. **Refrigerators** - Transfer heat from cold to hot
+  3. **Biological systems** - Energy metabolism
+  4. **Industrial processes** - Chemical reactors, power plants
+
+  ## Important Relationships
+
+  **For ideal gas:**
+  - Cₚ - Cᵥ = R (Mayer's relation)
+  - γ = Cₚ/Cᵥ (heat capacity ratio)
+  - ΔU = nCᵥΔT (always, any process)
+
+  **Work in various processes:**
+  - Isothermal: W = nRT ln(V₂/V₁)
+  - Isobaric: W = PΔV = nRΔT
+  - Isochoric: W = 0
+  - Adiabatic: W = (P₁V₁ - P₂V₂)/(γ - 1)
+
+  ## Key Takeaways
+
+  1. **Energy is conserved** - First law is energy conservation
+  2. **ΔU is a state function** - Depends only on initial and final states
+  3. **Q and W are path functions** - Depend on how process occurs
+  4. **Sign conventions matter** - Be consistent!
+  5. **Different processes** have different relationships between Q, W, and ΔU
+
+exercises:
+  - type: mcq
+    question: "According to the first law of thermodynamics, if a system absorbs 500 J of heat and does 300 J of work, what is the change in internal energy?"
+    options:
+      - "800 J"
+      - "200 J"
+      - "-200 J"
+      - "500 J"
+    correct_answer: "200 J"
+    explanation: "ΔU = Q - W = 500 J - 300 J = 200 J. The internal energy increases by 200 J."
+    sequence_order: 1
+
+  - type: mcq
+    question: "In an isothermal process for an ideal gas, which of the following is true?"
+    options:
+      - "ΔU = Q = W"
+      - "ΔU = 0 and Q = W"
+      - "Q = 0 and ΔU = -W"
+      - "W = 0 and ΔU = Q"
+    correct_answer: "ΔU = 0 and Q = W"
+    explanation: "In an isothermal process, temperature is constant, so ΔU = 0 for an ideal gas. Therefore, Q = W."
+    sequence_order: 2
+
+  - type: short_answer
+    question: "In an adiabatic process, if 800 J of work is done ON the system, what is the change in internal energy?"
+    expected_answer: "800 J"
+    explanation: "In an adiabatic process, Q = 0. Work done ON the system is negative (W = -800 J by convention). Therefore, ΔU = Q - W = 0 - (-800) = 800 J."
+    sequence_order: 3

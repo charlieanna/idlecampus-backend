@@ -1,0 +1,66 @@
+slug: lesson-75
+title: Lesson 75
+difficulty: easy
+sequence_order: 75
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Authentication Methods\n\n    - Client\
+  \ certs, bearer tokens, OIDC\n    - API server flags and configuration"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What authentication method uses X.509 certificates to identify users?
+  options:
+  - Bearer tokens
+  - OIDC
+  - Client certificates
+  - Basic authentication
+  correct_answer: Client certificates
+  explanation: Client certificate authentication uses X.509 certificates to identify
+    users to the Kubernetes API server. The certificate's Common Name (CN) becomes
+    the username, and Organization (O) fields become groups. The API server validates
+    certificates against a configured CA. This method is secure and commonly used
+    for cluster administrators and automated tools. Certificates are typically located
+    in ~/.kube/config or specified via kubectl flags. While secure, certificate management
+    can be challenging - distribution, rotation, and revocation require careful processes.
+    Client certs are often used in combination with RBAC for authorization. Modern
+    clusters increasingly use OIDC or other dynamic authentication methods for users,
+    reserving client certs for service accounts and system components due to simpler
+    management and better audit capabilities.
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What is OIDC authentication in Kubernetes?
+  options:
+  - A built-in Kubernetes user database
+  - Integration with external identity providers like Google, Azure AD, or Okta for
+    authentication
+  - A certificate-based authentication system
+  - A deprecated authentication method
+  correct_answer: Integration with external identity providers like Google, Azure
+    AD, or Okta for authentication
+  explanation: OIDC (OpenID Connect) authentication allows Kubernetes to integrate
+    with external identity providers (IdPs) like Google, Azure AD, Okta, or Keycloak.
+    Users authenticate with the IdP, receive an ID token, and present it to Kubernetes.
+    The API server validates the token against the IdP's public keys. This enables
+    centralized user management, single sign-on (SSO), and integration with corporate
+    identity systems. OIDC tokens contain claims like username and groups which map
+    to Kubernetes principals for RBAC. This is more scalable than client certificates
+    for many users as it leverages existing identity infrastructure, supports MFA,
+    and provides better audit trails. Configure OIDC via API server flags like --oidc-issuer-url,
+    --oidc-client-id, and --oidc-username-claim. OIDC is recommended for production
+    clusters with multiple human users.
+  require_pass: true
+- type: mcq
+  sequence_order: 1
+  question: What kubectl command checks if you can perform an action?
+  options:
+  - kubectl auth can-i create pods
+  - kubectl check permissions create pods
+  - kubectl verify action create pods
+  - kubectl test auth create pods
+  correct_answer_index: 0
+  explanation: kubectl auth can-i <action> <resource> checks if the current user has
+    permission to perform the specified action.
+  require_pass: true

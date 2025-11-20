@@ -1,0 +1,23 @@
+course:
+  slug: jee-physics-thermodynamics
+  title: "JEE Physics: Thermodynamics"
+  description: "Laws of thermodynamics, heat engines, entropy, and thermodynamic processes for IIT JEE"
+  estimated_hours: 14
+  level: advanced
+modules:
+- slug: thermal-properties
+  title: Thermal Properties and Kinetic Theory
+  lessons:
+  - temperature-scales-thermal-expansion
+  - calorimetry-specific-heat
+  - kinetic-theory-gases
+  - degrees-of-freedom-equipartition
+  - mean-free-path-transport
+- slug: laws-thermodynamics
+  title: Laws of Thermodynamics
+  lessons:
+  - first-law-thermodynamics
+  - thermodynamic-processes-isothermal-adiabatic
+  - work-done-pv-diagrams
+  - second-law-entropy
+  - heat-engines-carnot-cycle

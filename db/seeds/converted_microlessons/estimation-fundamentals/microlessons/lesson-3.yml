@@ -1,0 +1,104 @@
+slug: lesson-3
+title: Lesson 3
+difficulty: easy
+sequence_order: 3
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Scalability Patterns\n\n    Common patterns\
+  \ for building systems that scale to millions of users.\n\n    ## Load Balancing\n\
+  \n    Distribute traffic across multiple servers.\n\n    ### Types of Load Balancers\n\
+  \n    **Layer 4 (Transport Layer)**:\n    - Routes based on IP + Port\n    - Fast\
+  \ but limited routing logic\n    - Examples: AWS NLB, HAProxy\n\n    **Layer 7 (Application\
+  \ Layer)**:\n    - Routes based on HTTP headers, URL, cookies\n    - Slower but\
+  \ more intelligent\n    - Examples: AWS ALB, Nginx\n\n    ### Load Balancing Algorithms\n\
+  \n    1. **Round Robin**: Distribute requests evenly\n    2. **Least Connections**:\
+  \ Send to server with fewest active connections\n    3. **Least Response Time**:\
+  \ Send to fastest server\n    4. **IP Hash**: Same client always goes to same server\n\
+  \    5. **Weighted**: Some servers get more traffic\n\n    ## Caching\n\n    Store\
+  \ frequently accessed data in fast storage.\n\n    ### Cache Levels\n\n    ```\n\
+  \    Client → CDN → Load Balancer → Web Server → Application Cache → Database\n\
+  \    ```\n\n    ### Caching Strategies\n\n    **1. Cache-Aside (Lazy Loading)**:\n\
+  \    ```\n    1. Check cache\n    2. If miss, query database\n    3. Write to cache\n\
+  \    4. Return data\n    ```\n\n    **2. Write-Through**:\n    ```\n    1. Write\
+  \ to cache\n    2. Write to database\n    3. Return success\n    ```\n\n    **3.\
+  \ Write-Back**:\n    ```\n    1. Write to cache\n    2. Return success\n    3. Async\
+  \ write to database\n    ```\n\n    ### Cache Eviction Policies\n\n    - **LRU**\
+  \ (Least Recently Used): Remove oldest accessed\n    - **LFU** (Least Frequently\
+  \ Used): Remove least accessed\n    - **FIFO**: Remove oldest added\n    - **TTL**:\
+  \ Expire after time\n\n    ## Database Scaling\n\n    ### Vertical Scaling (Scale\
+  \ Up)\n    - Add more CPU/RAM/Disk to existing server\n    - ✅ Simple\n    - ❌ Limited\
+  \ by hardware\n    - ❌ Single point of failure\n\n    ### Horizontal Scaling (Scale\
+  \ Out)\n    - Add more database servers\n    - ✅ Unlimited scaling\n    - ❌ Complex\
+  \ implementation\n\n    ### Database Replication\n\n    **Primary-Replica (Master-Slave)**:\n\
+  \    ```\n    Primary (writes) → Replica 1 (reads)\n                    → Replica\
+  \ 2 (reads)\n                    → Replica N (reads)\n    ```\n\n    Benefits:\n\
+  \    - Read scaling\n    - High availability\n    - Disaster recovery\n\n    **Multi-Primary**:\n\
+  \    ```\n    Primary 1 ←→ Primary 2 ←→ Primary 3\n    ```\n\n    Benefits:\n  \
+  \  - Write scaling\n    - Lower latency (geo-distributed)\n\n    Challenges:\n \
+  \   - Conflict resolution\n    - Consistency issues\n\n    ### Database Sharding\n\
+  \n    Split data across multiple databases.\n\n    **Horizontal Sharding (by rows)**:\n\
+  \    ```\n    Users 1-1M    → Shard 1\n    Users 1M-2M   → Shard 2\n    Users 2M-3M\
+  \   → Shard 3\n    ```\n\n    **Sharding Strategies**:\n\n    1. **Range-based**:\
+  \ user_id 1-1M, 1M-2M\n       - ✅ Simple\n       - ❌ Uneven distribution\n\n   \
+  \ 2. **Hash-based**: hash(user_id) % num_shards\n       - ✅ Even distribution\n\
+  \       - ❌ Hard to add shards\n\n    3. **Geographic**: US users, EU users, Asia\
+  \ users\n       - ✅ Low latency\n       - ❌ Uneven growth\n\n    ## CDN (Content\
+  \ Delivery Network)\n\n    Distribute static content globally.\n\n    ### How CDN\
+  \ Works\n\n    ```\n    1. User requests image\n    2. CDN checks cache\n    3.\
+  \ If hit: Return from edge location\n    4. If miss:\n       a. Fetch from origin\n\
+  \       b. Cache at edge\n       c. Return to user\n    ```\n\n    ### What to CDN\n\
+  \n    ✅ Static content:\n    - Images, CSS, JavaScript\n    - Videos\n    - Static\
+  \ HTML\n\n    ❌ Don't CDN:\n    - Dynamic user-specific content\n    - Real-time\
+  \ data\n    - Content that changes rapidly\n\n    ## Message Queues\n\n    Decouple\
+  \ components for better scalability.\n\n    ### Pattern: Producer-Consumer\n\n \
+  \   ```\n    Producer → Queue → Consumer\n    ```\n\n    Benefits:\n    - Async\
+  \ processing\n    - Load smoothing\n    - Fault tolerance\n\n    Examples:\n   \
+  \ - RabbitMQ\n    - Apache Kafka\n    - AWS SQS\n\n    ## Microservices\n\n    Break\
+  \ monolith into smaller services.\n\n    ### Monolith\n\n    ```\n    [All-in-One\
+  \ Application]\n    ↓\n    Database\n    ```\n\n    ### Microservices\n\n    ```\n\
+  \    User Service → User DB\n    Order Service → Order DB\n    Payment Service →\
+  \ Payment DB\n    ```\n\n    Benefits:\n    - Independent scaling\n    - Technology\
+  \ flexibility\n    - Easier deployment\n\n    Challenges:\n    - Network latency\n\
+  \    - Data consistency\n    - Monitoring complexity\n\n    ## Eventual Consistency\n\
+  \n    Accept temporary inconsistency for better performance.\n\n    ### Strong Consistency\n\
+  \n    ```\n    Write → Wait for all replicas → Return success\n    ```\n\n    -\
+  \ ✅ Always consistent\n    - ❌ Slow writes\n    - ❌ Lower availability\n\n    ###\
+  \ Eventual Consistency\n\n    ```\n    Write → Return success immediately → Replicate\
+  \ async\n    ```\n\n    - ✅ Fast writes\n    - ✅ High availability\n    - ❌ Temporary\
+  \ inconsistency\n\n    ## Practice\n\n    Try the System Design labs to apply these\
+  \ patterns!"
+exercises:
+  - type: mcq
+    sequence_order: 1
+    question: "What is the main difference between Layer 4 and Layer 7 load balancers?"
+    options:
+      - "Layer 4 is faster; Layer 7 is slower but can route based on application data like URLs and headers"
+      - "Layer 7 is always better than Layer 4"
+      - "They are the same thing"
+      - "Layer 4 can only handle HTTP traffic"
+    correct_answer: "Layer 4 is faster; Layer 7 is slower but can route based on application data like URLs and headers"
+    explanation: "Layer 4 (L4) and Layer 7 (L7) load balancers operate at different OSI layers with distinct capabilities. L4 (Transport Layer): operates on TCP/UDP level, routes based only on IP address and port number, cannot inspect packet contents, extremely fast (nanosecond decisions), examples: AWS Network Load Balancer, HAProxy in TCP mode. Use cases: raw TCP traffic, extremely high throughput needs, simple routing. L7 (Application Layer): operates at HTTP/HTTPS level, inspects full request (URL path, headers, cookies, request method), can route /api/* to API servers and /static/* to CDN, supports SSL termination, content-based routing, sticky sessions, slower due to parsing overhead (microsecond decisions), examples: AWS Application Load Balancer, Nginx, HAProxy in HTTP mode. Real example: route www.example.com/api/users to backend API servers (servers A, B, C) and www.example.com/images/* to image servers (servers D, E). L7 enables microservices routing, A/B testing (10% traffic to new version), geographic routing, but costs more CPU."
+    require_pass: true
+  - type: mcq
+    sequence_order: 2
+    question: "What is database sharding and when should you use it?"
+    options:
+      - "Creating backups of the database"
+      - "Splitting data horizontally across multiple databases to handle scale beyond what one database can manage"
+      - "Compressing database tables"
+      - "Deleting old data"
+    correct_answer: "Splitting data horizontally across multiple databases to handle scale beyond what one database can manage"
+    explanation: "Database sharding partitions data across multiple database servers (shards) to overcome single-database limitations. Each shard holds a subset of total data. When to shard: (1) Data exceeds single server capacity (multi-TB datasets); (2) Write throughput exceeds single server capability (100K+ writes/sec); (3) Read load cannot be handled by replication alone. Sharding strategies: (1) Range-based: users 1-1M on shard1, 1M-2M on shard2 (simple but can create hotspots); (2) Hash-based: shard = hash(user_id) % num_shards (even distribution but hard to reshard); (3) Geographic: US users on US shard, EU on EU shard (low latency but uneven growth); (4) Entity-based: all data for user X on same shard (maintains relationships but complex). Challenges: cross-shard queries are expensive (avoid JOINs across shards), resharding is complex (Instagram resharded from 2 to 4 to 16 shards), hotspots (celebrity users), distributed transactions. Example: Instagram shards users by user_id hash across 1000+ PostgreSQL databases."
+    require_pass: true
+  - type: mcq
+    sequence_order: 3
+    question: "What is the purpose of eventual consistency in distributed systems?"
+    options:
+      - "To ensure data is always immediately consistent across all nodes"
+      - "To sacrifice temporary consistency for better performance, availability, and partition tolerance"
+      - "To delete inconsistent data"
+      - "To make systems slower but more reliable"
+    correct_answer: "To sacrifice temporary consistency for better performance, availability, and partition tolerance"
+    explanation: "Eventual consistency is a consistency model where updates propagate asynchronously to all replicas, guaranteeing that all nodes will eventually have the same data if no new updates occur. Trade-offs explained: Strong consistency: write to database → wait for all replicas to acknowledge → return success (slow, can fail if replica unavailable, guarantees immediate consistency). Eventual consistency: write to primary → return success immediately → asynchronously replicate to other nodes (fast, highly available, temporary inconsistency tolerated). Real examples: (1) Facebook: post status → appears immediately on your timeline, friends see it few milliseconds later (acceptable inconsistency); (2) DNS: update DNS record → propagates globally over minutes/hours (eventual); (3) Shopping cart: add item → might see different cart on mobile vs web briefly. When to use: social media (likes, posts), analytics (view counts), shopping carts, notifications. When NOT to use: financial transactions (bank balance must be consistent), inventory (cannot oversell), reservations (double-booking). Conflict resolution: last-write-wins (timestamp), version vectors, application-level merging."
+    require_pass: true

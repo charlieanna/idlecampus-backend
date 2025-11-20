@@ -1,0 +1,401 @@
+slug: lesson-5
+title: Lesson 5
+difficulty: easy
+sequence_order: 5
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Communication Patterns\n\n    In microservices,\
+  \ services must communicate over the network. Choosing the right communication pattern\
+  \ is critical for performance, reliability, and maintainability.\n\n    ## REST\
+  \ APIs Between Services\n\n    **RESTful HTTP is the most common synchronous communication\
+  \ pattern**\n\n    ### Basic REST Communication\n\n    ```python\n    # Order Service\
+  \ → User Service (REST)\n    import requests\n\n    class UserServiceClient:\n \
+  \       def __init__(self, base_url):\n            self.base_url = base_url\n\n\
+  \        def get_user(self, user_id):\n            response = requests.get(\n  \
+  \              f'{self.base_url}/users/{user_id}',\n                timeout=5  #\
+  \ Important: Always set timeout!\n            )\n\n            response.raise_for_status()\
+  \  # Raise on 4xx/5xx\n            return response.json()\n\n        def update_user(self,\
+  \ user_id, data):\n            response = requests.put(\n                f'{self.base_url}/users/{user_id}',\n\
+  \                json=data,\n                timeout=5\n            )\n\n      \
+  \      response.raise_for_status()\n            return response.json()\n\n    #\
+  \ Usage in Order Service\n    user_client = UserServiceClient('http://user-service:8000')\n\
+  \n    def create_order(user_id, items):\n        # Verify user exists\n        try:\n\
+  \            user = user_client.get_user(user_id)\n        except requests.HTTPError\
+  \ as e:\n            if e.response.status_code == 404:\n                return {'error':\
+  \ 'User not found'}, 404\n            raise\n\n        # Create order\n        order\
+  \ = db.save_order(user_id, items)\n        return order\n    ```\n\n    ### REST\
+  \ API Design Best Practices\n\n    **1. Use Resource-Based URLs**\n    ```\n   \
+  \ ✅ Good:\n    GET    /users/123           (get user)\n    POST   /users       \
+  \        (create user)\n    PUT    /users/123           (update user)\n    DELETE\
+  \ /users/123           (delete user)\n    GET    /users/123/orders    (get user's\
+  \ orders)\n\n    ❌ Bad:\n    GET    /getUser?id=123\n    POST   /createUser\n  \
+  \  POST   /updateUser\n    POST   /deleteUser\n    ```\n\n    **2. Use HTTP Methods\
+  \ Correctly**\n    ```\n    GET    - Read (idempotent, safe)\n    POST   - Create\n\
+  \    PUT    - Update/Replace (idempotent)\n    PATCH  - Partial update\n    DELETE\
+  \ - Delete (idempotent)\n    ```\n\n    **3. Use Proper Status Codes**\n    ```python\n\
+  \    # Success codes\n    200 OK           # Successful GET, PUT, PATCH\n    201\
+  \ Created      # Successful POST\n    204 No Content   # Successful DELETE\n\n \
+  \   # Client error codes\n    400 Bad Request      # Invalid input\n    401 Unauthorized\
+  \     # Missing/invalid auth\n    403 Forbidden        # Insufficient permissions\n\
+  \    404 Not Found        # Resource doesn't exist\n    409 Conflict         # Duplicate/conflict\n\
+  \    422 Unprocessable    # Validation error\n\n    # Server error codes\n    500\
+  \ Internal Server Error\n    502 Bad Gateway          # Upstream service error\n\
+  \    503 Service Unavailable  # Temporary overload\n    504 Gateway Timeout    \
+  \  # Upstream timeout\n    ```\n\n    **4. Version Your APIs**\n    ```python\n\
+  \    # URL versioning\n    GET /api/v1/users/123\n    GET /api/v2/users/123\n\n\
+  \    # Header versioning\n    GET /api/users/123\n    Accept: application/vnd.myapp.v1+json\n\
+  \n    # Maintain backward compatibility!\n    # Support old versions during migration\n\
+  \    ```\n\n    ### REST Challenges\n\n    ❌ **Problems:**\n    - **Verbose**: JSON\
+  \ over HTTP has overhead\n    - **Latency**: HTTP/1.1 has limitations\n    - **No\
+  \ type safety**: Client doesn't know schema\n    - **Over/under-fetching**: Can't\
+  \ customize response\n\n    ## gRPC for Performance\n\n    **gRPC uses Protocol\
+  \ Buffers (binary format) and HTTP/2 for high-performance RPC**\n\n    ### Why gRPC?\n\
+  \n    ```\n    Comparison (10,000 requests):\n\n    REST (JSON over HTTP/1.1):\n\
+  \    - Payload: 500 bytes (JSON)\n    - Latency: 50ms\n    - Throughput: 5,000 req/sec\n\
+  \n    gRPC (Protobuf over HTTP/2):\n    - Payload: 150 bytes (binary)\n    - Latency:\
+  \ 10ms\n    - Throughput: 25,000 req/sec\n\n    gRPC is 3-5x faster!\n    ```\n\n\
+  \    ### Define Service with Protocol Buffers\n\n    ```protobuf\n    // user_service.proto\n\
+  \    syntax = \"proto3\";\n\n    package user;\n\n    // Service definition\n  \
+  \  service UserService {\n      rpc GetUser(GetUserRequest) returns (User);\n  \
+  \    rpc CreateUser(CreateUserRequest) returns (User);\n      rpc UpdateUser(UpdateUserRequest)\
+  \ returns (User);\n      rpc ListUsers(ListUsersRequest) returns (stream User);\
+  \  // Streaming!\n    }\n\n    // Messages\n    message User {\n      int64 id =\
+  \ 1;\n      string email = 2;\n      string name = 3;\n      string created_at =\
+  \ 4;\n    }\n\n    message GetUserRequest {\n      int64 id = 1;\n    }\n\n    message\
+  \ CreateUserRequest {\n      string email = 1;\n      string name = 2;\n    }\n\n\
+  \    message UpdateUserRequest {\n      int64 id = 1;\n      string email = 2;\n\
+  \      string name = 3;\n    }\n\n    message ListUsersRequest {\n      int32 page\
+  \ = 1;\n      int32 page_size = 2;\n    }\n    ```\n\n    ### Generate Code\n\n\
+  \    ```bash\n    # Generate Python code from proto file\n    python -m grpc_tools.protoc\
+  \ \\\n      -I. \\\n      --python_out=. \\\n      --grpc_python_out=. \\\n    \
+  \  user_service.proto\n\n    # Generates:\n    # - user_service_pb2.py (messages)\n\
+  \    # - user_service_pb2_grpc.py (service stubs)\n    ```\n\n    ### Implement\
+  \ gRPC Server\n\n    ```python\n    import grpc\n    from concurrent import futures\n\
+  \    import user_service_pb2\n    import user_service_pb2_grpc\n\n    class UserServiceServicer(user_service_pb2_grpc.UserServiceServicer):\n\
+  \        def GetUser(self, request, context):\n            # Get user from database\n\
+  \            user_data = db.get_user(request.id)\n\n            if not user_data:\n\
+  \                context.set_code(grpc.StatusCode.NOT_FOUND)\n                context.set_details('User\
+  \ not found')\n                return user_service_pb2.User()\n\n            # Return\
+  \ protobuf message\n            return user_service_pb2.User(\n                id=user_data['id'],\n\
+  \                email=user_data['email'],\n                name=user_data['name'],\n\
+  \                created_at=user_data['created_at']\n            )\n\n        def\
+  \ CreateUser(self, request, context):\n            # Validate\n            if not\
+  \ request.email:\n                context.set_code(grpc.StatusCode.INVALID_ARGUMENT)\n\
+  \                context.set_details('Email is required')\n                return\
+  \ user_service_pb2.User()\n\n            # Create user\n            user_id = db.create_user(request.email,\
+  \ request.name)\n            user_data = db.get_user(user_id)\n\n            return\
+  \ user_service_pb2.User(\n                id=user_data['id'],\n                email=user_data['email'],\n\
+  \                name=user_data['name'],\n                created_at=user_data['created_at']\n\
+  \            )\n\n        def ListUsers(self, request, context):\n            #\
+  \ Server-side streaming\n            users = db.get_users(\n                page=request.page,\n\
+  \                page_size=request.page_size\n            )\n\n            for user_data\
+  \ in users:\n                yield user_service_pb2.User(\n                    id=user_data['id'],\n\
+  \                    email=user_data['email'],\n                    name=user_data['name'],\n\
+  \                    created_at=user_data['created_at']\n                )\n\n \
+  \   # Start server\n    def serve():\n        server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))\n\
+  \        user_service_pb2_grpc.add_UserServiceServicer_to_server(\n            UserServiceServicer(),\
+  \ server\n        )\n        server.add_insecure_port('[::]:50051')\n        server.start()\n\
+  \        server.wait_for_termination()\n\n    if __name__ == '__main__':\n     \
+  \   serve()\n    ```\n\n    ### Implement gRPC Client\n\n    ```python\n    import\
+  \ grpc\n    import user_service_pb2\n    import user_service_pb2_grpc\n\n    class\
+  \ UserServiceClient:\n        def __init__(self, host, port):\n            # Create\
+  \ channel\n            self.channel = grpc.insecure_channel(f'{host}:{port}')\n\
+  \            # Create stub (client)\n            self.stub = user_service_pb2_grpc.UserServiceStub(self.channel)\n\
+  \n        def get_user(self, user_id):\n            request = user_service_pb2.GetUserRequest(id=user_id)\n\
+  \n            try:\n                response = self.stub.GetUser(request, timeout=5)\n\
+  \                return {\n                    'id': response.id,\n            \
+  \        'email': response.email,\n                    'name': response.name,\n\
+  \                    'created_at': response.created_at\n                }\n    \
+  \        except grpc.RpcError as e:\n                if e.code() == grpc.StatusCode.NOT_FOUND:\n\
+  \                    return None\n                raise\n\n        def create_user(self,\
+  \ email, name):\n            request = user_service_pb2.CreateUserRequest(\n   \
+  \             email=email,\n                name=name\n            )\n         \
+  \   response = self.stub.CreateUser(request, timeout=5)\n            return response\n\
+  \n        def list_users(self, page=1, page_size=10):\n            request = user_service_pb2.ListUsersRequest(\n\
+  \                page=page,\n                page_size=page_size\n            )\n\
+  \n            # Receive stream\n            users = []\n            for user in\
+  \ self.stub.ListUsers(request):\n                users.append({\n              \
+  \      'id': user.id,\n                    'email': user.email,\n              \
+  \      'name': user.name\n                })\n\n            return users\n\n   \
+  \ # Usage\n    client = UserServiceClient('user-service', 50051)\n    user = client.get_user(123)\n\
+  \    ```\n\n    ### gRPC Features\n\n    **1. Four types of RPC**\n    ```protobuf\n\
+  \    service MyService {\n      // Unary: Single request, single response\n    \
+  \  rpc GetUser(GetUserRequest) returns (User);\n\n      // Server streaming: Single\
+  \ request, stream responses\n      rpc ListUsers(ListUsersRequest) returns (stream\
+  \ User);\n\n      // Client streaming: Stream requests, single response\n      rpc\
+  \ CreateUsers(stream CreateUserRequest) returns (CreateUsersResponse);\n\n     \
+  \ // Bidirectional streaming: Stream both ways\n      rpc Chat(stream ChatMessage)\
+  \ returns (stream ChatMessage);\n    }\n    ```\n\n    **2. Built-in features**\n\
+  \    - Load balancing\n    - Retries\n    - Timeouts\n    - Deadlines\n    - Cancellation\n\
+  \    - Authentication (TLS, JWT)\n\n    **gRPC vs REST:**\n\n    | Feature | REST\
+  \ | gRPC |\n    |---------|------|------|\n    | Format | JSON (text) | Protobuf\
+  \ (binary) |\n    | Performance | Slower | 3-5x faster |\n    | Browser support\
+  \ | Yes | Limited |\n    | Streaming | No (HTTP/1.1) | Yes (HTTP/2) |\n    | Type\
+  \ safety | No | Yes |\n    | Learning curve | Easy | Medium |\n\n    **When to use\
+  \ gRPC:**\n    - Internal microservices communication\n    - Performance-critical\
+  \ services\n    - Real-time/streaming data\n    - Polyglot environments (language-agnostic)\n\
+  \n    **When to use REST:**\n    - Public APIs\n    - Browser clients\n    - Simple\
+  \ CRUD operations\n    - When JSON is preferred\n\n    ## Message Queues (RabbitMQ,\
+  \ Kafka)\n\n    **Asynchronous communication via message brokers**\n\n    ### Why\
+  \ Message Queues?\n\n    ```\n    Problem (Synchronous):\n    Order Service → (HTTP)\
+  \ → Email Service\n\n    Issues:\n    - Order Service waits for email to send\n\
+  \    - If Email Service down, order fails\n    - Tight coupling\n\n    Solution\
+  \ (Asynchronous):\n    Order Service → (Publish message) → Queue → Email Service\n\
+  \n    Benefits:\n    - Order Service doesn't wait\n    - Email Service processes\
+  \ when ready\n    - Loose coupling\n    - Email Service can be down temporarily\n\
+  \    ```\n\n    ### RabbitMQ (Message Queue)\n\n    **Traditional message queue\
+  \ with exchanges and queues**\n\n    ```python\n    import pika\n\n    # Producer\
+  \ (Order Service)\n    class OrderEventPublisher:\n        def __init__(self):\n\
+  \            connection = pika.BlockingConnection(\n                pika.ConnectionParameters('rabbitmq')\n\
+  \            )\n            self.channel = connection.channel()\n\n            #\
+  \ Declare exchange\n            self.channel.exchange_declare(\n               \
+  \ exchange='orders',\n                exchange_type='topic',\n                durable=True\n\
+  \            )\n\n        def publish_order_created(self, order):\n            message\
+  \ = {\n                'order_id': order.id,\n                'user_id': order.user_id,\n\
+  \                'items': order.items,\n                'total': order.total,\n\
+  \                'timestamp': time.time()\n            }\n\n            self.channel.basic_publish(\n\
+  \                exchange='orders',\n                routing_key='order.created',\n\
+  \                body=json.dumps(message),\n                properties=pika.BasicProperties(\n\
+  \                    delivery_mode=2,  # Persistent message\n                )\n\
+  \            )\n\n            print(f\"Published order.created: {order.id}\")\n\n\
+  \    # Consumer (Email Service)\n    class OrderEventConsumer:\n        def __init__(self):\n\
+  \            connection = pika.BlockingConnection(\n                pika.ConnectionParameters('rabbitmq')\n\
+  \            )\n            self.channel = connection.channel()\n\n            #\
+  \ Declare exchange\n            self.channel.exchange_declare(\n               \
+  \ exchange='orders',\n                exchange_type='topic',\n                durable=True\n\
+  \            )\n\n            # Declare queue\n            result = self.channel.queue_declare(\n\
+  \                queue='email_service_queue',\n                durable=True\n  \
+  \          )\n\n            # Bind queue to exchange\n            self.channel.queue_bind(\n\
+  \                exchange='orders',\n                queue='email_service_queue',\n\
+  \                routing_key='order.created'\n            )\n\n        def start_consuming(self):\n\
+  \            self.channel.basic_consume(\n                queue='email_service_queue',\n\
+  \                on_message_callback=self.handle_order_created\n            )\n\n\
+  \            print('Waiting for messages...')\n            self.channel.start_consuming()\n\
+  \n        def handle_order_created(self, ch, method, properties, body):\n      \
+  \      message = json.loads(body)\n\n            try:\n                # Send email\n\
+  \                send_order_confirmation_email(\n                    order_id=message['order_id'],\n\
+  \                    user_id=message['user_id']\n                )\n\n         \
+  \       # Acknowledge message (remove from queue)\n                ch.basic_ack(delivery_tag=method.delivery_tag)\n\
+  \n                print(f\"Processed order: {message['order_id']}\")\n\n       \
+  \     except Exception as e:\n                # Reject message, requeue for retry\n\
+  \                ch.basic_nack(\n                    delivery_tag=method.delivery_tag,\n\
+  \                    requeue=True\n                )\n                print(f\"\
+  Failed to process order: {e}\")\n\n    # Start consumer\n    consumer = OrderEventConsumer()\n\
+  \    consumer.start_consuming()\n    ```\n\n    ### Kafka (Event Streaming Platform)\n\
+  \n    **Distributed log for high-throughput event streaming**\n\n    ```python\n\
+  \    from kafka import KafkaProducer, KafkaConsumer\n\n    # Producer (Order Service)\n\
+  \    class OrderEventProducer:\n        def __init__(self):\n            self.producer\
+  \ = KafkaProducer(\n                bootstrap_servers=['kafka:9092'],\n        \
+  \        value_serializer=lambda v: json.dumps(v).encode('utf-8')\n            )\n\
+  \n        def publish_order_created(self, order):\n            event = {\n     \
+  \           'order_id': order.id,\n                'user_id': order.user_id,\n \
+  \               'items': order.items,\n                'total': order.total,\n \
+  \               'timestamp': time.time()\n            }\n\n            # Send to\
+  \ Kafka topic\n            future = self.producer.send(\n                'order-events',\n\
+  \                key=str(order.id).encode('utf-8'),  # Partition by order_id\n \
+  \               value=event\n            )\n\n            # Block until sent (or\
+  \ use async)\n            future.get(timeout=10)\n\n            print(f\"Published\
+  \ to Kafka: {order.id}\")\n\n    # Consumer (Email Service)\n    class OrderEventConsumer:\n\
+  \        def __init__(self):\n            self.consumer = KafkaConsumer(\n     \
+  \           'order-events',\n                bootstrap_servers=['kafka:9092'],\n\
+  \                group_id='email-service',  # Consumer group\n                value_deserializer=lambda\
+  \ m: json.loads(m.decode('utf-8')),\n                auto_offset_reset='earliest',\
+  \  # Start from beginning\n                enable_auto_commit=False  # Manual commit\n\
+  \            )\n\n        def start_consuming(self):\n            for message in\
+  \ self.consumer:\n                try:\n                    event = message.value\n\
+  \n                    # Process event\n                    send_order_confirmation_email(\n\
+  \                        order_id=event['order_id'],\n                        user_id=event['user_id']\n\
+  \                    )\n\n                    # Commit offset (mark as processed)\n\
+  \                    self.consumer.commit()\n\n                    print(f\"Processed:\
+  \ {event['order_id']}\")\n\n                except Exception as e:\n           \
+  \         print(f\"Error processing message: {e}\")\n                    # Don't\
+  \ commit - will retry\n\n    # Multiple consumers in same group (load balancing)\n\
+  \    # Each message processed by one consumer in group\n    consumer = OrderEventConsumer()\n\
+  \    consumer.start_consuming()\n    ```\n\n    **RabbitMQ vs Kafka:**\n\n    |\
+  \ Feature | RabbitMQ | Kafka |\n    |---------|----------|-------|\n    | Model\
+  \ | Message queue | Event log |\n    | Throughput | 10K-50K msg/sec | 100K-1M msg/sec\
+  \ |\n    | Message retention | Until consumed | Configurable (days) |\n    | Ordering\
+  \ | Queue level | Partition level |\n    | Use case | Task queues | Event streaming\
+  \ |\n    | Replay | No | Yes |\n\n    **When to use RabbitMQ:**\n    - Task queues\
+  \ (job processing)\n    - Request-reply patterns\n    - Message routing (complex\
+  \ routing)\n    - Lower throughput\n\n    **When to use Kafka:**\n    - Event sourcing\n\
+  \    - Stream processing\n    - High throughput\n    - Message replay needed\n \
+  \   - Analytics/logging\n\n    ## Event-Driven Architecture\n\n    **Services react\
+  \ to domain events**\n\n    ### Event Types\n\n    **1. Domain Events**\n    ```python\n\
+  \    # Events that represent business facts\n    OrderCreated(order_id, user_id,\
+  \ items, total)\n    OrderShipped(order_id, tracking_number)\n    OrderCancelled(order_id,\
+  \ reason)\n    PaymentProcessed(payment_id, order_id, amount)\n    UserRegistered(user_id,\
+  \ email)\n    ```\n\n    **2. Event Notification**\n    ```python\n    # Minimal\
+  \ information, receiver fetches details\n    @event_bus.subscribe('order.created')\n\
+  \    def handle_order_created(event):\n        order_id = event['order_id']\n\n\
+  \        # Fetch full order details\n        order = order_service.get_order(order_id)\n\
+  \n        # Process\n        send_confirmation_email(order)\n    ```\n\n    **3.\
+  \ Event-Carried State Transfer**\n    ```python\n    # Full information in event,\
+  \ no need to fetch\n    @event_bus.subscribe('order.created')\n    def handle_order_created(event):\n\
+  \        # Event contains everything needed\n        order_id = event['order_id']\n\
+  \        user_id = event['user_id']\n        items = event['items']\n        total\
+  \ = event['total']\n\n        # Process without additional calls\n        send_confirmation_email(user_id,\
+  \ order_id, items, total)\n    ```\n\n    ### Event Sourcing\n\n    **Store events\
+  \ instead of current state**\n\n    ```python\n    # Traditional: Store current\
+  \ state\n    orders_table:\n      id | user_id | status    | total\n      1  | 123\
+  \     | SHIPPED   | 99.99\n\n    # Event Sourcing: Store all events\n    events_table:\n\
+  \      id | aggregate_id | event_type         | data\n      1  | order-1      |\
+  \ OrderCreated       | {user_id: 123, total: 99.99}\n      2  | order-1      | PaymentProcessed\
+  \   | {amount: 99.99}\n      3  | order-1      | OrderShipped       | {tracking:\
+  \ ABC123}\n\n    # Rebuild state by replaying events\n    def get_order_state(order_id):\n\
+  \        events = db.get_events(aggregate_id=order_id)\n\n        state = {}\n \
+  \       for event in events:\n            if event.type == 'OrderCreated':\n   \
+  \             state['user_id'] = event.data['user_id']\n                state['total']\
+  \ = event.data['total']\n                state['status'] = 'CREATED'\n         \
+  \   elif event.type == 'PaymentProcessed':\n                state['status'] = 'PAID'\n\
+  \            elif event.type == 'OrderShipped':\n                state['status']\
+  \ = 'SHIPPED'\n                state['tracking'] = event.data['tracking']\n\n  \
+  \      return state\n    ```\n\n    ✅ **Benefits:**\n    - Complete audit trail\n\
+  \    - Time travel (rebuild state at any point)\n    - Easy debugging\n    - Can\
+  \ add new projections\n\n    ❌ **Challenges:**\n    - Complex queries\n    - Need\
+  \ snapshots for performance\n    - Schema evolution\n    - Learning curve\n\n  \
+  \  ## Saga Pattern for Distributed Transactions\n\n    **Handle transactions across\
+  \ multiple services**\n\n    ### The Problem\n\n    ```python\n    # Create order\
+  \ workflow (spans 3 services):\n    # 1. Order Service: Create order\n    # 2. Payment\
+  \ Service: Charge customer\n    # 3. Inventory Service: Reserve items\n\n    # Problem:\
+  \ What if payment succeeds but inventory fails?\n    # Can't use database transactions\
+  \ across services!\n    ```\n\n    ### Saga Pattern (Choreography)\n\n    **Services\
+  \ coordinate via events**\n\n    ```python\n    # Order Service\n    def create_order(user_id,\
+  \ items):\n        # 1. Create order (pending)\n        order = db.save_order(user_id,\
+  \ items, status='PENDING')\n\n        # 2. Publish event\n        event_bus.publish('order.created',\
+  \ {\n            'order_id': order.id,\n            'user_id': user_id,\n      \
+  \      'items': items,\n            'total': order.total\n        })\n\n       \
+  \ return order\n\n    @event_bus.subscribe('payment.succeeded')\n    def handle_payment_succeeded(event):\n\
+  \        order_id = event['order_id']\n        db.update_order_status(order_id,\
+  \ 'PAID')\n\n    @event_bus.subscribe('payment.failed')\n    def handle_payment_failed(event):\n\
+  \        # Compensating transaction: Cancel order\n        order_id = event['order_id']\n\
+  \        db.update_order_status(order_id, 'CANCELLED')\n\n        event_bus.publish('order.cancelled',\
+  \ {'order_id': order_id})\n\n    # Payment Service\n    @event_bus.subscribe('order.created')\n\
+  \    def handle_order_created(event):\n        order_id = event['order_id']\n  \
+  \      total = event['total']\n\n        try:\n            # Charge customer\n \
+  \           payment = process_payment(event['user_id'], total)\n\n            #\
+  \ Success\n            event_bus.publish('payment.succeeded', {\n              \
+  \  'order_id': order_id,\n                'payment_id': payment.id\n           \
+  \ })\n\n        except PaymentError:\n            # Failed\n            event_bus.publish('payment.failed',\
+  \ {\n                'order_id': order_id,\n                'reason': 'insufficient_funds'\n\
+  \            })\n\n    # Inventory Service\n    @event_bus.subscribe('payment.succeeded')\n\
+  \    def handle_payment_succeeded(event):\n        order_id = event['order_id']\n\
+  \n        try:\n            # Reserve inventory\n            reserve_items(event['order_id'])\n\
+  \n            event_bus.publish('inventory.reserved', {'order_id': order_id})\n\n\
+  \        except InsufficientInventory:\n            # Compensating transaction:\
+  \ Refund payment\n            event_bus.publish('inventory.failed', {\n        \
+  \        'order_id': order_id,\n                'reason': 'out_of_stock'\n     \
+  \       })\n\n    @event_bus.subscribe('order.cancelled')\n    def handle_order_cancelled(event):\n\
+  \        # Release reserved inventory (if any)\n        release_items(event['order_id'])\n\
+  \    ```\n\n    **Flow:**\n    ```\n    Happy Path:\n    Order Service: Create order\
+  \ → Publish order.created\n    Payment Service: Receive order.created → Charge →\
+  \ Publish payment.succeeded\n    Inventory Service: Receive payment.succeeded →\
+  \ Reserve → Publish inventory.reserved\n    Order Service: Receive payment.succeeded\
+  \ → Update status to PAID\n    ✅ Done!\n\n    Failure Path:\n    Order Service:\
+  \ Create order → Publish order.created\n    Payment Service: Receive order.created\
+  \ → Charge fails → Publish payment.failed\n    Order Service: Receive payment.failed\
+  \ → Cancel order → Publish order.cancelled\n    ❌ Order cancelled (compensating\
+  \ transaction)\n    ```\n\n    ### Saga Pattern (Orchestration)\n\n    **Central\
+  \ coordinator manages saga**\n\n    ```python\n    # Order Saga Orchestrator\n \
+  \   class OrderSagaOrchestrator:\n        def execute_order_saga(self, user_id,\
+  \ items, total):\n            saga_id = generate_uuid()\n\n            # Track saga\
+  \ state\n            saga_state = {\n                'saga_id': saga_id,\n     \
+  \           'user_id': user_id,\n                'items': items,\n             \
+  \   'total': total,\n                'current_step': 'START',\n                'order_id':\
+  \ None,\n                'payment_id': None\n            }\n\n            try:\n\
+  \                # Step 1: Create order\n                saga_state['current_step']\
+  \ = 'CREATE_ORDER'\n                order = order_service.create_order(user_id,\
+  \ items)\n                saga_state['order_id'] = order.id\n\n                #\
+  \ Step 2: Process payment\n                saga_state['current_step'] = 'PROCESS_PAYMENT'\n\
+  \                payment = payment_service.charge(user_id, total)\n            \
+  \    saga_state['payment_id'] = payment.id\n\n                # Step 3: Reserve\
+  \ inventory\n                saga_state['current_step'] = 'RESERVE_INVENTORY'\n\
+  \                inventory_service.reserve(order.id, items)\n\n                #\
+  \ Success!\n                saga_state['current_step'] = 'COMPLETED'\n         \
+  \       return {'status': 'success', 'order_id': order.id}\n\n            except\
+  \ Exception as e:\n                # Execute compensating transactions\n       \
+  \         return self.compensate(saga_state, e)\n\n        def compensate(self,\
+  \ saga_state, error):\n            # Undo completed steps (reverse order)\n\n  \
+  \          if saga_state['current_step'] in ['RESERVE_INVENTORY', 'COMPLETED']:\n\
+  \                # Unreserve inventory\n                inventory_service.release(saga_state['order_id'])\n\
+  \n            if saga_state['current_step'] in ['PROCESS_PAYMENT', 'RESERVE_INVENTORY']:\n\
+  \                # Refund payment\n                payment_service.refund(saga_state['payment_id'])\n\
+  \n            if saga_state['order_id']:\n                # Cancel order\n     \
+  \           order_service.cancel(saga_state['order_id'])\n\n            return {\n\
+  \                'status': 'failed',\n                'error': str(error),\n   \
+  \             'saga_id': saga_state['saga_id']\n            }\n    ```\n\n    **Choreography\
+  \ vs Orchestration:**\n\n    | Aspect | Choreography | Orchestration |\n    |--------|--------------|---------------|\n\
+  \    | Coordination | Decentralized (events) | Centralized (orchestrator) |\n  \
+  \  | Complexity | Simple sagas | Complex sagas |\n    | Dependencies | Loose coupling\
+  \ | Orchestrator knows all |\n    | Debugging | Harder | Easier (central view) |\n\
+  \n    ## Circuit Breaker Pattern\n\n    **Prevent cascading failures**\n\n    ###\
+  \ The Problem\n\n    ```python\n    # Payment service is down\n    # Order service\
+  \ keeps calling it\n    # All requests fail after 30s timeout\n    # Order service\
+  \ becomes slow/unavailable\n    # Cascading failure!\n    ```\n\n    ### Circuit\
+  \ Breaker Solution\n\n    ```python\n    from circuitbreaker import circuit\n\n\
+  \    class PaymentServiceClient:\n        @circuit(failure_threshold=5, recovery_timeout=60,\
+  \ expected_exception=RequestException)\n        def charge(self, user_id, amount):\n\
+  \            response = requests.post(\n                f'{self.base_url}/charge',\n\
+  \                json={'user_id': user_id, 'amount': amount},\n                timeout=5\n\
+  \            )\n            response.raise_for_status()\n            return response.json()\n\
+  \n    # Usage\n    payment_client = PaymentServiceClient()\n\n    try:\n       \
+  \ payment = payment_client.charge(user_id=123, amount=99.99)\n    except CircuitBreakerError:\n\
+  \        # Circuit is open (service is down)\n        # Fail fast instead of waiting\
+  \ for timeout\n        return {'error': 'Payment service temporarily unavailable'},\
+  \ 503\n    ```\n\n    **Circuit Breaker States:**\n\n    ```\n    ┌─────────┐\n\
+  \    │ CLOSED  │  (Normal operation)\n    │         │  Requests pass through\n \
+  \   └────┬────┘  Count failures\n         │\n         │ failures >= threshold\n\
+  \         │\n         ▼\n    ┌─────────┐\n    │  OPEN   │  (Service down)\n    │\
+  \         │  Fail fast, don't call service\n    └────┬────┘  Start recovery timeout\n\
+  \         │\n         │ after timeout\n         │\n         ▼\n    ┌─────────┐\n\
+  \    │ HALF    │  (Testing recovery)\n    │ OPEN    │  Allow limited requests\n\
+  \    └────┬────┘\n         │\n         ├──► Success → CLOSED\n         └──► Failure\
+  \ → OPEN\n    ```\n\n    **Implementation with fallback:**\n\n    ```python\n  \
+  \  from circuitbreaker import circuit\n\n    @circuit(failure_threshold=5, recovery_timeout=60)\n\
+  \    def get_recommendations(user_id):\n        response = requests.get(\n     \
+  \       f'http://recommendation-service/users/{user_id}',\n            timeout=2\n\
+  \        )\n        response.raise_for_status()\n        return response.json()\n\
+  \n    def get_recommendations_with_fallback(user_id):\n        try:\n          \
+  \  return get_recommendations(user_id)\n        except CircuitBreakerError:\n  \
+  \          # Circuit open - use fallback\n            logger.warning('Recommendation\
+  \ service circuit open, using fallback')\n            return get_popular_products()\
+  \  # Fallback to popular products\n        except Exception as e:\n            logger.error(f'Recommendation\
+  \ service error: {e}')\n            return get_popular_products()\n    ```\n\n \
+  \   ## Best Practices\n\n    **1. Timeouts everywhere**\n    ```python\n    # Always\
+  \ set timeouts on external calls\n    requests.get(url, timeout=5)  # 5 seconds\
+  \ max\n    ```\n\n    **2. Idempotency**\n    ```python\n    # Same request multiple\
+  \ times = same result\n    # Use idempotency keys\n    payment_service.charge(\n\
+  \        user_id=123,\n        amount=99.99,\n        idempotency_key='order-456'\
+  \  # Prevents duplicate charges\n    )\n    ```\n\n    **3. Retry with exponential\
+  \ backoff**\n    ```python\n    from tenacity import retry, wait_exponential, stop_after_attempt\n\
+  \n    @retry(wait=wait_exponential(multiplier=1, min=2, max=30),\n           stop=stop_after_attempt(5))\n\
+  \    def call_service():\n        response = requests.get(url, timeout=5)\n    \
+  \    response.raise_for_status()\n        return response.json()\n    ```\n\n  \
+  \  **4. Monitor everything**\n    ```python\n    # Track metrics\n    - Request\
+  \ rate\n    - Error rate\n    - Latency (p50, p95, p99)\n    - Circuit breaker state\n\
+  \    - Queue depth\n    ```\n\n    **Next**: We'll explore deployment and operations\
+  \ - containerization with Docker, orchestration with Kubernetes, and observability\
+  \ strategies."
+  - type: multiple_choice_question
+    sequence_order: 1
+    question: "What is the main difference between monolithic and microservices architecture?"
+    options:
+      - "Monolithic applications are always slower than microservices"
+      - "Monolithic applications have all components in a single codebase while microservices split functionality into independent services"
+      - "Microservices can only be written in one programming language"
+      - "Monolithic applications cannot scale"
+    correct_answer: "Monolithic applications have all components in a single codebase while microservices split functionality into independent services"
+    explanation: "The fundamental difference between monolithic and microservices architectures lies in how the application is structured and deployed. A monolithic application combines all components (user management, products, orders, payments) into a single codebase, shared database, and deployment unit. Any change requires rebuilding and redeploying the entire application. Microservices architecture splits the application into small, independent services, each with its own codebase, database, and deployment lifecycle. Services communicate via APIs (REST, gRPC) or message queues. While monoliths are simpler initially (easy testing, no network calls, straightforward transactions), they become problematic as applications grow (tight coupling, scaling limitations, technology lock-in). Microservices offer independent scaling, technology diversity, faster deployments, and fault isolation, but introduce complexity (distributed systems, network latency, eventual consistency). Neither is inherently faster - performance depends on implementation. Microservices support multiple languages per service, while monoliths typically use one stack. Monoliths can scale (by running multiple instances), but must scale as a whole unit. The choice depends on application size, team structure, and operational maturity."
+    require_pass: true
+  - type: multiple_choice_question
+    sequence_order: 2
+    question: "What is the primary purpose of an API Gateway in microservices architecture?"
+    options:
+      - "To store data for all microservices"
+      - "To provide a single entry point for clients and handle cross-cutting concerns like authentication and routing"
+      - "To replace all microservices with a single service"
+      - "To slow down requests for security"
+    correct_answer: "To provide a single entry point for clients and handle cross-cutting concerns like authentication and routing"
+    explanation: "An API Gateway serves as the single entry point for all client requests in a microservices architecture, handling cross-cutting concerns that would otherwise need to be implemented in every service. Key responsibilities include: request routing (directing requests to appropriate services), authentication and authorization (verifying credentials once rather than in each service), rate limiting (preventing abuse), request aggregation (combining multiple service calls into one client request), protocol translation (REST to gRPC conversion), and load balancing. For example, a mobile app makes one request to the API Gateway for a user dashboard, and the gateway calls User Service, Order Service, and Recommendation Service in parallel, aggregating results before returning to the client. This simplifies client code, centralizes security, and hides internal service architecture. The API Gateway doesn't store data (services have their own databases), doesn't replace services (it routes to them), and doesn't slow requests (though it adds a network hop, it often improves performance through features like response caching and request aggregation). Popular API Gateways include Kong, AWS API Gateway, Nginx, and Envoy. Understanding API Gateway patterns is essential for building maintainable microservices architectures."
+    require_pass: true

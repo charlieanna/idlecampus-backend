@@ -1,0 +1,156 @@
+slug: lesson-2
+title: Lesson 2
+difficulty: easy
+sequence_order: 2
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# IAM: Identity and Access Management\n\n\
+  \    Control access to AWS services securely.\n\n    ## IAM Components\n\n    ###\
+  \ 1. Users\n    Individual people or applications.\n\n    ```bash\n    # Create\
+  \ user\n    aws iam create-user --user-name alice\n\n    # List users\n    aws iam\
+  \ list-users\n    ```\n\n    **Best Practices**:\n    - One user per person/app\n\
+  \    - Enable MFA (Multi-Factor Authentication)\n    - Use strong passwords\n  \
+  \  - Rotate access keys regularly\n\n    ### 2. Groups\n    Collection of users\
+  \ with shared permissions.\n\n    ```bash\n    # Create group\n    aws iam create-group\
+  \ --group-name developers\n\n    # Add user to group\n    aws iam add-user-to-group\
+  \ --user-name alice --group-name developers\n    ```\n\n    Common groups:\n   \
+  \ - Admins\n    - Developers\n    - ReadOnly\n    - Auditors\n\n    ### 3. Roles\n\
+  \    Temporary permissions for AWS services or users.\n\n    **Use cases**:\n  \
+  \  - EC2 instance accessing S3\n    - Lambda function accessing DynamoDB\n    -\
+  \ Cross-account access\n    - External identity federation\n\n    ```bash\n    #\
+  \ Create role\n    aws iam create-role --role-name EC2-S3-Access \\\\\n      --assume-role-policy-document\
+  \ file://trust-policy.json\n    ```\n\n    ### 4. Policies\n    JSON documents defining\
+  \ permissions.\n\n    **Policy Structure**:\n    ```json\n    {\n      \"Version\"\
+  : \"2012-10-17\",\n      \"Statement\": [\n        {\n          \"Effect\": \"Allow\"\
+  ,\n          \"Action\": \"s3:GetObject\",\n          \"Resource\": \"arn:aws:s3:::my-bucket/*\"\
+  \n        }\n      ]\n    }\n    ```\n\n    **Components**:\n    - `Effect`: Allow\
+  \ or Deny\n    - `Action`: What can be done\n    - `Resource`: Which resources\n\
+  \    - `Condition` (optional): When it applies\n\n    ## Policy Types\n\n    ###\
+  \ 1. AWS Managed Policies\n    Pre-built by AWS.\n\n    Examples:\n    - `AdministratorAccess`:\
+  \ Full access\n    - `ReadOnlyAccess`: Read all services\n    - `PowerUserAccess`:\
+  \ All except IAM\n\n    ### 2. Customer Managed Policies\n    Custom policies you\
+  \ create.\n\n    ```json\n    {\n      \"Version\": \"2012-10-17\",\n      \"Statement\"\
+  : [\n        {\n          \"Effect\": \"Allow\",\n          \"Action\": [\n    \
+  \        \"s3:ListBucket\",\n            \"s3:GetObject\"\n          ],\n      \
+  \    \"Resource\": [\n            \"arn:aws:s3:::my-app-bucket\",\n            \"\
+  arn:aws:s3:::my-app-bucket/*\"\n          ]\n        }\n      ]\n    }\n    ```\n\
+  \n    ### 3. Inline Policies\n    Embedded directly in user/group/role.\n\n    ##\
+  \ IAM Best Practices\n\n    ### 1. Principle of Least Privilege\n    Grant minimum\
+  \ permissions needed.\n\n    ❌ Bad:\n    ```json\n    {\n      \"Effect\": \"Allow\"\
+  ,\n      \"Action\": \"*\",\n      \"Resource\": \"*\"\n    }\n    ```\n\n    ✅\
+  \ Good:\n    ```json\n    {\n      \"Effect\": \"Allow\",\n      \"Action\": [\"\
+  s3:GetObject\", \"s3:PutObject\"],\n      \"Resource\": \"arn:aws:s3:::my-bucket/uploads/*\"\
+  \n    }\n    ```\n\n    ### 2. Enable MFA\n    Especially for:\n    - Root account\
+  \ (always!)\n    - Admin users\n    - Production access\n\n    ### 3. Use Roles,\
+  \ Not Keys\n    For EC2, Lambda, etc., use IAM roles instead of hardcoding keys.\n\
+  \n    ❌ Bad:\n    ```python\n    # Hardcoded credentials\n    aws_access_key = \"\
+  AKIAIOSFODNN7EXAMPLE\"\n    aws_secret_key = \"wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY\"\
+  \n    ```\n\n    ✅ Good:\n    ```python\n    # Use IAM role attached to EC2\n  \
+  \  s3 = boto3.client('s3')  # Credentials from role\n    ```\n\n    ### 4. Rotate\
+  \ Credentials\n    - Access keys: Every 90 days\n    - Passwords: Every 90 days\n\
+  \    - Use AWS Secrets Manager for app secrets\n\n    ### 5. Monitor with CloudTrail\n\
+  \    Log all API calls for audit.\n\n    ## IAM Access Methods\n\n    ### 1. AWS\
+  \ Management Console\n    Web-based UI with username/password + MFA.\n\n    ###\
+  \ 2. AWS CLI\n    Command-line with access keys.\n\n    ```bash\n    aws configure\n\
+  \    # Enter Access Key ID\n    # Enter Secret Access Key\n    # Enter Region\n\
+  \    ```\n\n    ### 3. AWS SDK\n    Programmatic access with access keys or IAM\
+  \ roles.\n\n    ## Cross-Account Access\n\n    Allow users from Account A to access\
+  \ Account B.\n\n    **Account B (Resource Account)**:\n    1. Create role with trust\
+  \ policy allowing Account A\n    2. Attach permissions policy\n\n    **Account A\
+  \ (User Account)**:\n    1. Grant users permission to assume role\n    2. Users\
+  \ switch to role via console or CLI\n\n    ## IAM Policy Evaluation Logic\n\n  \
+  \  ```\n    1. Deny by default\n    2. Evaluate all policies\n    3. Explicit DENY\
+  \ overrides everything\n    4. Explicit ALLOW granted if no DENY\n    5. Otherwise:\
+  \ DENY\n    ```\n\n    ## Common IAM Policies\n\n    ### S3 Read-Only\n    ```json\n\
+  \    {\n      \"Version\": \"2012-10-17\",\n      \"Statement\": [\n        {\n\
+  \          \"Effect\": \"Allow\",\n          \"Action\": [\n            \"s3:GetObject\"\
+  ,\n            \"s3:ListBucket\"\n          ],\n          \"Resource\": [\n    \
+  \        \"arn:aws:s3:::my-bucket\",\n            \"arn:aws:s3:::my-bucket/*\"\n\
+  \          ]\n        }\n      ]\n    }\n    ```\n\n    ### EC2 Start/Stop\n   \
+  \ ```json\n    {\n      \"Version\": \"2012-10-17\",\n      \"Statement\": [\n \
+  \       {\n          \"Effect\": \"Allow\",\n          \"Action\": [\n         \
+  \   \"ec2:StartInstances\",\n            \"ec2:StopInstances\"\n          ],\n \
+  \         \"Resource\": \"arn:aws:ec2:*:*:instance/*\",\n          \"Condition\"\
+  : {\n            \"StringEquals\": {\n              \"ec2:ResourceTag/Environment\"\
+  : \"dev\"\n            }\n          }\n        }\n      ]\n    }\n    ```\n\n  \
+  \  **Practice**: Try the IAM lab!"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What is the principle of least privilege in AWS IAM, and why is it important?
+  options:
+  - Always grant administrator access to users for flexibility
+  - Grant only the minimum permissions needed to perform required tasks
+  - Give read-only access to all AWS services by default
+  - Deny all permissions first, then add specific allows as requested
+  correct_answer: Grant only the minimum permissions needed to perform required tasks
+  explanation: 'The principle of least privilege means granting only the minimum permissions
+    necessary for users/services to perform their specific tasks - nothing more. Example:
+    A Lambda function that reads from S3 should have s3:GetObject permission ONLY
+    on specific bucket(s), not full S3 access or AdministratorAccess. Why critical:
+    (1) Security: Limits blast radius of compromised credentials - stolen keys with
+    limited scope cause limited damage, (2) Compliance: Required by SOC 2, ISO 27001,
+    PCI-DSS, (3) Accident prevention: Users can''t accidentally delete production
+    resources if they lack delete permissions. Bad practice: {"Effect": "Allow", "Action":
+    "*", "Resource": "*"} grants full access. Good practice: {"Effect": "Allow", "Action":
+    ["s3:GetObject"], "Resource": "arn:aws:s3:::my-bucket/uploads/*"} - specific actions,
+    specific resources. Implementation: (1) Start with no permissions, (2) Add minimal
+    permissions needed, (3) Test, (4) Review and remove unused permissions regularly
+    using IAM Access Analyzer. Never use root account for daily tasks - create IAM
+    users with specific permissions.'
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: When should you use IAM Roles instead of IAM Users with access keys?
+  options:
+  - Roles are only for cross-account access between AWS accounts
+  - Use roles for AWS services (EC2, Lambda) and temporary access; avoid hardcoding
+    access keys
+  - Roles are slower than access keys, so only use for infrequent operations
+  - Access keys are more secure than roles for application access
+  correct_answer: Use roles for AWS services (EC2, Lambda) and temporary access; avoid
+    hardcoding access keys
+  explanation: 'IAM Roles provide temporary security credentials and should be used
+    instead of long-term access keys whenever possible. Key use cases for roles: (1)
+    AWS service access: EC2 instances, Lambda functions, ECS tasks - attach role to
+    service instead of hardcoding keys, (2) Cross-account access: Users in Account
+    A assume role in Account B, (3) Federation: External identity providers (Active
+    Directory, Google) get temporary AWS access. Why roles are superior to access
+    keys: (1) Security: Credentials rotate automatically (typically hourly), no hardcoded
+    keys in code/config files, credentials can''t be accidentally committed to Git,
+    (2) Management: No manual key rotation needed, easy to revoke by detaching role,
+    (3) Audit: CloudTrail logs who assumed which role. Anti-pattern: Storing access
+    keys in EC2 instance: aws_access_key = "AKIAIOSFODNN7EXAMPLE" - keys could be
+    stolen, never expire, hard to rotate. Best practice: Attach IAM role to EC2, use
+    boto3.client(''s3'') to auto-discover credentials from instance metadata. Roles
+    use AssumeRole API to get temporary credentials (AccessKeyId, SecretAccessKey,
+    SessionToken) valid for limited time.'
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: In IAM policy evaluation, what happens when there is both an explicit
+    Allow and an explicit Deny for the same action?
+  options:
+  - The Allow takes precedence over Deny
+  - The Deny always overrides any Allow (explicit deny wins)
+  - The most recently created policy takes precedence
+  - The policies cancel out and default Allow is used
+  correct_answer: The Deny always overrides any Allow (explicit deny wins)
+  explanation: 'AWS IAM policy evaluation follows a strict order: explicit Deny ALWAYS
+    wins over any Allow. The evaluation logic: (1) Deny by default - all actions are
+    implicitly denied unless explicitly allowed, (2) Evaluate all applicable policies
+    (user, group, role, resource-based), (3) If any policy has explicit Deny for the
+    action - DENY (stop evaluation), (4) If any policy has explicit Allow and no Deny
+    - ALLOW, (5) Otherwise - DENY (implicit). Example scenario: User has policy allowing
+    s3:DeleteObject on all buckets, but also has policy explicitly denying s3:DeleteObject
+    on production-bucket. Result: User CANNOT delete from production-bucket (deny
+    wins). This enables safety guardrails: (1) Attach broad permissions via groups
+    (Allow), (2) Add specific Denies for sensitive resources (production, compliance
+    data), (3) Deny overrides prevent accidental access even with admin permissions.
+    Use case: Prevent deletion of critical resources: {"Effect": "Deny", "Action":
+    "s3:DeleteBucket", "Resource": "arn:aws:s3:::production-data"}. Even administrators
+    with full S3 access cannot delete this bucket if they have this deny policy. This
+    is why you can''t override Service Control Policies (SCPs) - organization-level
+    denies always win.'
+  require_pass: true

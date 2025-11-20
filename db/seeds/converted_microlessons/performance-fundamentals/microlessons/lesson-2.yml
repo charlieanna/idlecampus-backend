@@ -1,0 +1,215 @@
+slug: lesson-2
+title: Lesson 2
+difficulty: easy
+sequence_order: 2
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Optimizing JavaScript and CSS\n\n    JavaScript\
+  \ and CSS are often the largest blocking resources. Optimizing them is critical\
+  \ for performance.\n\n    ## Code Splitting\n\n    Breaking your JavaScript bundle\
+  \ into smaller chunks that load on-demand.\n\n    ### Route-based Code Splitting\n\
+  \n    ```javascript\n    // Using React Router with lazy loading\n    import { lazy,\
+  \ Suspense } from 'react';\n    import { BrowserRouter, Routes, Route } from 'react-router-dom';\n\
+  \n    // Lazy load route components\n    const Home = lazy(() => import('./pages/Home'));\n\
+  \    const Dashboard = lazy(() => import('./pages/Dashboard'));\n    const Profile\
+  \ = lazy(() => import('./pages/Profile'));\n\n    function App() {\n      return\
+  \ (\n        <BrowserRouter>\n          <Suspense fallback={<div>Loading...</div>}>\n\
+  \            <Routes>\n              <Route path=\"/\" element={<Home />} />\n \
+  \             <Route path=\"/dashboard\" element={<Dashboard />} />\n          \
+  \    <Route path=\"/profile\" element={<Profile />} />\n            </Routes>\n\
+  \          </Suspense>\n        </BrowserRouter>\n      );\n    }\n    ```\n\n \
+  \   ### Component-based Code Splitting\n\n    ```javascript\n    // Lazy load heavy\
+  \ components\n    import { lazy, Suspense } from 'react';\n\n    const HeavyChart\
+  \ = lazy(() => import('./HeavyChart'));\n    const VideoPlayer = lazy(() => import('./VideoPlayer'));\n\
+  \n    function Dashboard() {\n      const [showChart, setShowChart] = useState(false);\n\
+  \n      return (\n        <div>\n          <h1>Dashboard</h1>\n\n          <button\
+  \ onClick={() => setShowChart(true)}>\n            Show Chart\n          </button>\n\
+  \n          {showChart && (\n            <Suspense fallback={<ChartSkeleton />}>\n\
+  \              <HeavyChart data={chartData} />\n            </Suspense>\n      \
+  \    )}\n        </div>\n      );\n    }\n    ```\n\n    ### Webpack Code Splitting\
+  \ Configuration\n\n    ```javascript\n    // webpack.config.js\n    module.exports\
+  \ = {\n      entry: './src/index.js',\n      output: {\n        filename: '[name].[contenthash].js',\n\
+  \        chunkFilename: '[name].[contenthash].chunk.js',\n        path: path.resolve(__dirname,\
+  \ 'dist')\n      },\n      optimization: {\n        splitChunks: {\n          chunks:\
+  \ 'all',\n          cacheGroups: {\n            // Vendor code (node_modules)\n\
+  \            vendor: {\n              test: /[\\\\/]node_modules[\\\\/]/,\n    \
+  \          name: 'vendors',\n              priority: 10\n            },\n      \
+  \      // Common code used across multiple chunks\n            common: {\n     \
+  \         minChunks: 2,\n              priority: 5,\n              reuseExistingChunk:\
+  \ true,\n              name: 'common'\n            },\n            // Large libraries\
+  \ in separate chunks\n            react: {\n              test: /[\\\\/]node_modules[\\\
+  \\/](react|react-dom)[\\\\/]/,\n              name: 'react',\n              priority:\
+  \ 20\n            },\n            lodash: {\n              test: /[\\\\/]node_modules[\\\
+  \\/]lodash[\\\\/]/,\n              name: 'lodash',\n              priority: 20\n\
+  \            }\n          }\n        },\n        // Runtime chunk for webpack runtime\n\
+  \        runtimeChunk: 'single'\n      }\n    };\n    ```\n\n    ### Dynamic Imports\n\
+  \n    ```javascript\n    // Load modules dynamically based on user action\n    async\
+  \ function loadModule() {\n      const module = await import('./heavy-module.js');\n\
+  \      module.initialize();\n    }\n\n    button.addEventListener('click', loadModule);\n\
+  \n    // Import with magic comments for webpack\n    const getUserLocale = () =>\
+  \ {\n      return navigator.language.split('-')[0];\n    };\n\n    async function\
+  \ loadTranslations() {\n      const locale = getUserLocale();\n\n      // Webpack\
+  \ magic comments\n      const translations = await import(\n        /* webpackChunkName:\
+  \ \"translations-[request]\" */\n        /* webpackMode: \"lazy\" */\n        `./translations/${locale}.json`\n\
+  \      );\n\n      return translations.default;\n    }\n    ```\n\n    ## Tree Shaking\n\
+  \n    Eliminating dead code from your bundle.\n\n    ### ES Modules for Tree Shaking\n\
+  \n    ```javascript\n    // utils.js - Use named exports\n    export function usedFunction()\
+  \ {\n      return 'This will be included';\n    }\n\n    export function unusedFunction()\
+  \ {\n      return 'This will be removed';\n    }\n\n    // main.js - Import only\
+  \ what you need\n    import { usedFunction } from './utils';\n\n    console.log(usedFunction());\n\
+  \    // unusedFunction is not imported, will be tree-shaken\n    ```\n\n    ###\
+  \ Webpack Tree Shaking Configuration\n\n    ```javascript\n    // webpack.config.js\n\
+  \    module.exports = {\n      mode: 'production', // Enables tree shaking\n   \
+  \   optimization: {\n        usedExports: true, // Mark unused exports\n       \
+  \ minimize: true,    // Remove them\n        sideEffects: false // Assume no side\
+  \ effects (unless specified)\n      }\n    };\n\n    // package.json - Declare side\
+  \ effects\n    {\n      \"name\": \"my-app\",\n      \"sideEffects\": [\n      \
+  \  \"*.css\",\n        \"*.scss\",\n        \"./src/polyfills.js\"\n      ]\n  \
+  \  }\n    ```\n\n    ### Lodash Tree Shaking\n\n    ```javascript\n    // Bad: Imports\
+  \ entire lodash library (70KB)\n    import _ from 'lodash';\n    const result =\
+  \ _.debounce(fn, 300);\n\n    // Good: Import specific function (2KB)\n    import\
+  \ debounce from 'lodash/debounce';\n    const result = debounce(fn, 300);\n\n  \
+  \  // Better: Use lodash-es (ES modules version)\n    import { debounce } from 'lodash-es';\n\
+  \    const result = debounce(fn, 300);\n    ```\n\n    ## Minification and Compression\n\
+  \n    ### JavaScript Minification\n\n    ```javascript\n    // webpack.config.js\n\
+  \    const TerserPlugin = require('terser-webpack-plugin');\n\n    module.exports\
+  \ = {\n      optimization: {\n        minimize: true,\n        minimizer: [\n  \
+  \        new TerserPlugin({\n            terserOptions: {\n              compress:\
+  \ {\n                drop_console: true,    // Remove console.log\n            \
+  \    drop_debugger: true,   // Remove debugger\n                pure_funcs: ['console.info',\
+  \ 'console.debug']\n              },\n              mangle: {\n                safari10:\
+  \ true         // Fix Safari 10 bug\n              },\n              output: {\n\
+  \                comments: false,       // Remove comments\n                ascii_only:\
+  \ true       // Escape Unicode characters\n              }\n            },\n   \
+  \         parallel: true,            // Use multiple CPUs\n            extractComments:\
+  \ false     // Don't create .LICENSE files\n          })\n        ]\n      }\n \
+  \   };\n    ```\n\n    ### Gzip Compression\n\n    ```javascript\n    // webpack.config.js\n\
+  \    const CompressionPlugin = require('compression-webpack-plugin');\n\n    module.exports\
+  \ = {\n      plugins: [\n        new CompressionPlugin({\n          algorithm: 'gzip',\n\
+  \          test: /\\.(js|css|html|svg)$/,\n          threshold: 8192,        //\
+  \ Only compress files > 8KB\n          minRatio: 0.8          // Only compress if\
+  \ ratio > 80%\n        })\n      ]\n    };\n\n    // Express server serving gzipped\
+  \ files\n    const express = require('express');\n    const compression = require('compression');\n\
+  \n    const app = express();\n\n    // Compress responses\n    app.use(compression({\n\
+  \      level: 6,  // Compression level (0-9)\n      threshold: 1024  // Min size\
+  \ to compress\n    }));\n\n    app.use(express.static('dist'));\n    ```\n\n   \
+  \ ### Brotli Compression\n\n    ```javascript\n    // webpack.config.js\n    const\
+  \ CompressionPlugin = require('compression-webpack-plugin');\n\n    module.exports\
+  \ = {\n      plugins: [\n        // Gzip for older browsers\n        new CompressionPlugin({\n\
+  \          filename: '[path][base].gz',\n          algorithm: 'gzip',\n        \
+  \  test: /\\.(js|css|html|svg)$/\n        }),\n        // Brotli for modern browsers\
+  \ (better compression)\n        new CompressionPlugin({\n          filename: '[path][base].br',\n\
+  \          algorithm: 'brotliCompress',\n          test: /\\.(js|css|html|svg)$/,\n\
+  \          compressionOptions: {\n            level: 11  // Max compression\n  \
+  \        }\n        })\n      ]\n    };\n\n    // Nginx configuration\n    // nginx.conf\n\
+  \    /*\n    http {\n      gzip on;\n      gzip_types text/plain text/css application/json\
+  \ application/javascript;\n      gzip_min_length 1000;\n\n      brotli on;\n   \
+  \   brotli_types text/plain text/css application/json application/javascript;\n\
+  \      brotli_comp_level 6;\n    }\n    */\n    ```\n\n    ## CSS Optimization\n\
+  \n    ### Critical CSS\n\n    ```javascript\n    // Using critical package\n   \
+  \ const critical = require('critical');\n\n    critical.generate({\n      inline:\
+  \ true,\n      base: 'dist/',\n      src: 'index.html',\n      target: 'index.html',\n\
+  \      width: 1300,\n      height: 900,\n      dimensions: [\n        {\n      \
+  \    width: 375,\n          height: 667\n        },\n        {\n          width:\
+  \ 1920,\n          height: 1080\n        }\n      ]\n    });\n\n    // Results in:\n\
+  \    /*\n    <head>\n      <style>\n        /* Critical CSS inlined here */\n  \
+  \      .hero { ... }\n        .nav { ... }\n      </style>\n\n      <!-- Non-critical\
+  \ CSS loaded async -->\n      <link rel=\"preload\" as=\"style\" href=\"styles.css\"\
+  \n            onload=\"this.onload=null;this.rel='stylesheet'\">\n      <noscript><link\
+  \ rel=\"stylesheet\" href=\"styles.css\"></noscript>\n    </head>\n    */\n    ```\n\
+  \n    ### Removing Unused CSS\n\n    ```javascript\n    // Using PurgeCSS with webpack\n\
+  \    const PurgeCSSPlugin = require('purgecss-webpack-plugin');\n    const glob\
+  \ = require('glob-all');\n\n    module.exports = {\n      plugins: [\n        new\
+  \ PurgeCSSPlugin({\n          paths: glob.sync([\n            path.join(__dirname,\
+  \ 'src/**/*.html'),\n            path.join(__dirname, 'src/**/*.js'),\n        \
+  \    path.join(__dirname, 'src/**/*.jsx')\n          ]),\n          safelist: {\n\
+  \            standard: ['active', 'disabled'],\n            deep: [/^modal-/], \
+  \ // Keep modal-* classes\n            greedy: [/^btn-/]   // Keep btn-* and children\n\
+  \          }\n        })\n      ]\n    };\n\n    // Tailwind CSS (built-in purging)\n\
+  \    // tailwind.config.js\n    module.exports = {\n      content: [\n        './src/**/*.{js,jsx,ts,tsx,html}',\n\
+  \      ],\n      theme: {\n        extend: {}\n      }\n    };\n    ```\n\n    ###\
+  \ CSS Minification\n\n    ```javascript\n    // webpack.config.js\n    const MiniCssExtractPlugin\
+  \ = require('mini-css-extract-plugin');\n    const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');\n\
+  \n    module.exports = {\n      module: {\n        rules: [\n          {\n     \
+  \       test: /\\.css$/,\n            use: [\n              MiniCssExtractPlugin.loader,\n\
+  \              'css-loader',\n              'postcss-loader'\n            ]\n  \
+  \        }\n        ]\n      },\n      plugins: [\n        new MiniCssExtractPlugin({\n\
+  \          filename: '[name].[contenthash].css',\n          chunkFilename: '[id].[contenthash].css'\n\
+  \        })\n      ],\n      optimization: {\n        minimizer: [\n          new\
+  \ CssMinimizerPlugin({\n            minimizerOptions: {\n              preset: [\n\
+  \                'default',\n                {\n                  discardComments:\
+  \ { removeAll: true },\n                  normalizeUnicode: false\n            \
+  \    }\n              ]\n            }\n          })\n        ]\n      }\n    };\n\
+  \    ```\n\n    ## JavaScript Performance Patterns\n\n    ### Debouncing\n\n   \
+  \ ```javascript\n    // Debounce: Execute after delay with no new calls\n    function\
+  \ debounce(func, delay) {\n      let timeoutId;\n\n      return function(...args)\
+  \ {\n        clearTimeout(timeoutId);\n\n        timeoutId = setTimeout(() => {\n\
+  \          func.apply(this, args);\n        }, delay);\n      };\n    }\n\n    //\
+  \ Usage: Search input\n    const searchInput = document.querySelector('#search');\n\
+  \n    const performSearch = debounce((query) => {\n      fetch(`/api/search?q=${query}`)\n\
+  \        .then(res => res.json())\n        .then(results => displayResults(results));\n\
+  \    }, 300);\n\n    searchInput.addEventListener('input', (e) => {\n      performSearch(e.target.value);\n\
+  \    });\n    ```\n\n    ### Throttling\n\n    ```javascript\n    // Throttle: Execute\
+  \ at most once per interval\n    function throttle(func, limit) {\n      let inThrottle;\n\
+  \n      return function(...args) {\n        if (!inThrottle) {\n          func.apply(this,\
+  \ args);\n          inThrottle = true;\n\n          setTimeout(() => {\n       \
+  \     inThrottle = false;\n          }, limit);\n        }\n      };\n    }\n\n\
+  \    // Usage: Scroll event\n    const handleScroll = throttle(() => {\n      const\
+  \ scrollTop = window.pageYOffset;\n      console.log('Scroll position:', scrollTop);\n\
+  \n      // Update scroll indicator\n      updateScrollIndicator(scrollTop);\n  \
+  \  }, 100);\n\n    window.addEventListener('scroll', handleScroll);\n    ```\n\n\
+  \    ### Request Idle Callback\n\n    ```javascript\n    // Schedule non-critical\
+  \ work during idle time\n    function scheduleIdleWork(tasks) {\n      if ('requestIdleCallback'\
+  \ in window) {\n        requestIdleCallback((deadline) => {\n          while (deadline.timeRemaining()\
+  \ > 0 && tasks.length > 0) {\n            const task = tasks.shift();\n        \
+  \    task();\n          }\n\n          // Schedule remaining tasks\n          if\
+  \ (tasks.length > 0) {\n            scheduleIdleWork(tasks);\n          }\n    \
+  \    });\n      } else {\n        // Fallback for Safari\n        setTimeout(()\
+  \ => {\n          tasks.forEach(task => task());\n        }, 1);\n      }\n    }\n\
+  \n    // Usage: Analytics, prefetching\n    const idleTasks = [\n      () => sendAnalytics(),\n\
+  \      () => prefetchNextPage(),\n      () => preloadImages()\n    ];\n\n    scheduleIdleWork(idleTasks);\n\
+  \    ```\n\n    ### Web Workers\n\n    ```javascript\n    // main.js - Offload heavy\
+  \ computation to worker\n    const worker = new Worker('worker.js');\n\n    // Send\
+  \ data to worker\n    worker.postMessage({\n      type: 'PROCESS_DATA',\n      data:\
+  \ largeDataset\n    });\n\n    // Receive results\n    worker.onmessage = (e) =>\
+  \ {\n      console.log('Result:', e.data);\n      displayResults(e.data);\n    };\n\
+  \n    // Handle errors\n    worker.onerror = (error) => {\n      console.error('Worker\
+  \ error:', error);\n    };\n\n    // worker.js - Process data without blocking UI\n\
+  \    self.onmessage = (e) => {\n      const { type, data } = e.data;\n\n      if\
+  \ (type === 'PROCESS_DATA') {\n        // Heavy computation\n        const result\
+  \ = processLargeDataset(data);\n\n        // Send result back\n        self.postMessage(result);\n\
+  \      }\n    };\n\n    function processLargeDataset(data) {\n      return data.map(item\
+  \ => {\n        // CPU-intensive operation\n        return complexCalculation(item);\n\
+  \      });\n    }\n    ```\n\n    ### Virtual Scrolling\n\n    ```javascript\n \
+  \   // Only render visible items in long lists\n    class VirtualList {\n      constructor(container,\
+  \ items, itemHeight) {\n        this.container = container;\n        this.items\
+  \ = items;\n        this.itemHeight = itemHeight;\n        this.visibleItems = Math.ceil(container.clientHeight\
+  \ / itemHeight);\n        this.startIndex = 0;\n\n        this.render();\n     \
+  \   this.container.addEventListener('scroll', () => this.handleScroll());\n    \
+  \  }\n\n      handleScroll() {\n        this.startIndex = Math.floor(this.container.scrollTop\
+  \ / this.itemHeight);\n        this.render();\n      }\n\n      render() {\n   \
+  \     const endIndex = this.startIndex + this.visibleItems;\n        const visibleItems\
+  \ = this.items.slice(this.startIndex, endIndex);\n\n        this.container.innerHTML\
+  \ = `\n          <div style=\"height: ${this.items.length * this.itemHeight}px;\
+  \ position: relative;\">\n            <div style=\"transform: translateY(${this.startIndex\
+  \ * this.itemHeight}px);\">\n              ${visibleItems.map(item => `\n      \
+  \          <div style=\"height: ${this.itemHeight}px;\">${item}</div>\n        \
+  \      `).join('')}\n            </div>\n          </div>\n        `;\n      }\n\
+  \    }\n\n    // Usage\n    const items = Array.from({ length: 10000 }, (_, i) =>\
+  \ `Item ${i}`);\n    new VirtualList(document.querySelector('#list'), items, 50);\n\
+  \    ```\n\n    ## Bundle Analysis\n\n    ```javascript\n    // webpack.config.js\n\
+  \    const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;\n\
+  \n    module.exports = {\n      plugins: [\n        new BundleAnalyzerPlugin({\n\
+  \          analyzerMode: 'static',\n          openAnalyzer: false,\n          reportFilename:\
+  \ 'bundle-report.html'\n        })\n      ]\n    };\n\n    // Run analysis\n   \
+  \ // npm run build -- --analyze\n    ```\n\n    ## Best Practices Summary\n\n  \
+  \  1. **Code Splitting**: Split by routes and components, not by arbitrary chunks\n\
+  \    2. **Tree Shaking**: Use ES modules, mark side effects, audit large dependencies\n\
+  \    3. **Compression**: Enable Brotli for modern browsers, Gzip as fallback\n \
+  \   4. **CSS**: Extract and minify CSS, remove unused styles, inline critical CSS\n\
+  \    5. **JavaScript Patterns**: Debounce user input, throttle scroll/resize, use\
+  \ web workers\n    6. **Lazy Load**: Defer non-critical resources until needed\n\
+  \    7. **Monitor Bundle Size**: Set budgets and enforce them in CI/CD\n\n    Optimize\
+  \ aggressively but measure the impact. Not all optimizations provide equal value."
+exercises: []

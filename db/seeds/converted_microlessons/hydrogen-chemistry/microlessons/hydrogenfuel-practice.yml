@@ -1,0 +1,82 @@
+slug: hydrogenfuel-practice
+title: hydrogen_fuel — Practice
+difficulty: easy
+sequence_order: 1
+estimated_minutes: 2
+key_concepts:
+- hydrogen_fuel
+prerequisites: []
+content_md: '# hydrogen_fuel — Practice 🚀
+
+
+  Hydrogen fuel cells convert chemical energy directly to electrical energy through
+  electrochemical reactions. At the anode: H₂ → 2H⁺ + 2e⁻, and at the cathode: O₂
+  + 4H⁺ + 4e⁻ → 2H₂O. The overall process produces water and electrical energy with
+  high efficiency (60-80%).
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: In a hydrogen fuel cell, what type of energy is produced?
+  options:
+  - Heat energy only
+  - Electrical energy
+  - Nuclear energy
+  - Mechanical energy
+  require_pass: true
+  correct_answer: Electrical energy
+  explanation: 'Hydrogen fuel cells convert chemical energy directly to electrical
+    energy through electrochemical reactions. Process: At anode (oxidation): H₂ →
+    2H⁺ + 2e⁻, At cathode (reduction): O₂ + 4H⁺ + 4e⁻ → 2H₂O, Overall: 2H₂ + O₂ →
+    2H₂O + electrical energy. Efficiency: 60-80% (much higher than combustion engines
+    at ~25%). Advantages: (1) Clean - only byproduct is water, (2) High efficiency,
+    (3) Quiet operation, (4) No moving parts. Applications: Vehicle power, stationary
+    power generation, portable electronics. Types: PEM (Polymer Electrolyte Membrane),
+    SOFC (Solid Oxide), AFC (Alkaline).'
+- type: mcq
+  sequence_order: 2
+  question: What happens at the cathode in a hydrogen fuel cell?
+  options:
+  - H₂ is oxidized to H⁺
+  - O₂ is reduced to H₂O
+  - H₂O is decomposed to H₂ and O₂
+  - Electrons are released
+  require_pass: true
+  correct_answer: O₂ is reduced to H₂O
+  explanation: 'At the cathode (positive electrode) of a hydrogen fuel cell, oxygen
+    is reduced to water. Half-reaction: O₂ + 4H⁺ + 4e⁻ → 2H₂O. The O₂ molecules accept
+    electrons (reduction) that flow through external circuit from anode. The H⁺ ions
+    migrate through electrolyte membrane from anode to cathode. At anode (negative
+    electrode): H₂ → 2H⁺ + 2e⁻ (oxidation). The electrons flow through external circuit
+    doing electrical work, while protons migrate through membrane. Remember: OIL RIG
+    - Oxidation Is Loss (anode), Reduction Is Gain (cathode).'
+- type: mcq
+  sequence_order: 3
+  question: What is the main advantage of hydrogen fuel cells over combustion engines?
+  options:
+  - Lower cost of hydrogen fuel
+  - Higher energy efficiency (60-80% vs ~25%)
+  - Faster refueling time
+  - No need for oxygen
+  require_pass: true
+  correct_answer: Higher energy efficiency (60-80% vs ~25%)
+  explanation: 'The main advantage of hydrogen fuel cells is their much higher energy
+    efficiency (60-80%) compared to internal combustion engines (~25%). This is because
+    fuel cells directly convert chemical energy to electrical energy without intermediate
+    combustion step (avoiding Carnot efficiency limit). Other advantages: (1) Zero
+    emissions - only byproduct is pure water, (2) Quiet operation - no combustion/moving
+    pistons, (3) Scalable - can be sized for any application, (4) Quick start-up.
+    Challenges: (1) High cost of fuel cells, (2) Hydrogen storage/distribution infrastructure,
+    (3) Production of H₂ (currently mainly from fossil fuels). Future: Green hydrogen
+    from water electrolysis using renewable energy.'

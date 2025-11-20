@@ -1,0 +1,220 @@
+slug: motion-graphs-analysis
+title: "Motion Graphs and Graphical Analysis"
+difficulty: intermediate
+sequence_order: 3
+estimated_minutes: 16
+key_concepts:
+- displacement-time-graph
+- velocity-time-graph
+- acceleration-time-graph
+- area-under-curve
+- slope-interpretation
+prerequisites:
+- distance-displacement-fundamentals
+- acceleration-and-equations-of-motion
+content_md: |
+  # Motion Graphs and Graphical Analysis
+
+  ## Importance of Graphs
+
+  Graphs provide visual representation of motion, making it easier to:
+  - Understand relationships between variables
+  - Extract information (slope, area)
+  - Solve complex problems without equations
+
+  ## Displacement-Time (s-t) Graph
+
+  ### Slope = Velocity
+  ```
+  v = ds/dt = slope of s-t graph
+  ```
+
+  ### Types:
+  | Graph Shape | Motion Type | Velocity |
+  |-------------|-------------|----------|
+  | Horizontal line | At rest | v = 0 |
+  | Straight line (positive slope) | Uniform velocity | v = constant > 0 |
+  | Straight line (negative slope) | Uniform velocity | v = constant < 0 |
+  | Parabola (concave up) | Uniformly accelerated | v increasing |
+  | Parabola (concave down) | Uniformly decelerated | v decreasing |
+  | Curve | Non-uniform motion | v varying |
+
+  ### Important:
+  - Steeper slope = higher velocity
+  - Negative slope = moving backward
+  - Slope cannot be infinite (instant displacement)
+
+  ## Velocity-Time (v-t) Graph
+
+  ### Slope = Acceleration
+  ```
+  a = dv/dt = slope of v-t graph
+  ```
+
+  ### Area = Displacement
+  ```
+  s = ∫v dt = area under v-t curve
+  ```
+
+  ### Types:
+  | Graph Shape | Motion Type | Acceleration |
+  |-------------|-------------|--------------|
+  | Horizontal line | Uniform velocity | a = 0 |
+  | Straight line (positive slope) | Uniform acceleration | a = constant > 0 |
+  | Straight line (negative slope) | Uniform deceleration | a = constant < 0 |
+  | Curve | Variable acceleration | a changing |
+
+  ### Important:
+  - Area above t-axis = positive displacement
+  - Area below t-axis = negative displacement
+  - Net area = net displacement
+
+  ## Acceleration-Time (a-t) Graph
+
+  ### Area = Change in Velocity
+  ```
+  Δv = ∫a dt = area under a-t curve
+  ```
+
+  ### Types:
+  - Horizontal line: Constant acceleration
+  - Step function: Sudden change in acceleration
+  - Varying curve: Variable acceleration
+
+  ## Summary of Relationships
+
+  ```
+  s-t graph: Slope → v, cannot give area directly
+  v-t graph: Slope → a, Area → s
+  a-t graph: Area → Δv, cannot give slope meaningfully
+  ```
+
+  ## Special Cases
+
+  ### 1. Free Fall (u = 0):
+  - s-t: Parabola s = ½gt²
+  - v-t: Straight line v = gt
+  - a-t: Horizontal line a = g
+
+  ### 2. Projectile (vertical component):
+  - v-t: Straight line with negative slope (-g)
+  - Crosses zero at maximum height
+
+  ### 3. SHM:
+  - s-t: Sinusoidal curve
+  - v-t: Cosine curve
+  - a-t: Negative sine curve
+
+  ## Distance vs Displacement from Graphs
+
+  From v-t graph:
+  - **Displacement** = algebraic sum of areas (+ and -)
+  - **Distance** = sum of absolute values of areas
+
+  Example: If area above = 20 m, area below = 10 m:
+  - Displacement = 20 - 10 = 10 m
+  - Distance = 20 + 10 = 30 m
+
+  ## Average Velocity from Graph
+
+  ```
+  v_avg = Total displacement / Total time = Net area / Total time
+  ```
+
+  ## Reading Graphs
+
+  ### Questions to Ask:
+  1. What is plotted on each axis?
+  2. What does slope represent?
+  3. What does area represent?
+  4. Is the graph continuous? (sudden jumps?)
+  5. What are intercepts?
+
+  ## Common Mistakes
+
+  1. ❌ Confusing slope with value
+  2. ❌ Ignoring signs of areas
+  3. ❌ Thinking curved s-t means curved path
+  4. ❌ Forgetting units of slope and area
+  5. ❌ Mixing distance and displacement
+
+  ## Numerical Examples
+
+  **Example 1:** From v-t graph, velocity changes from 10 m/s to 30 m/s in 4 s (straight line). Find displacement and acceleration.
+
+  **Solution:**
+  ```
+  Acceleration = slope = (30-10)/4 = 5 m/s²
+
+  Displacement = area under curve (trapezoid)
+  s = ½(10+30)×4 = 80 m
+
+  OR using equation: s = ut + ½at² = 10(4) + ½(5)(16) = 80 m ✓
+  ```
+
+  **Example 2:** Object moves: 0-2s at +5 m/s, 2-5s at -3 m/s. Find displacement and distance.
+
+  **Solution:**
+  ```
+  Area (0-2s) = 5 × 2 = +10 m
+  Area (2-5s) = -3 × 3 = -9 m
+
+  Displacement = 10 - 9 = 1 m
+  Distance = 10 + 9 = 19 m
+
+  Object returned most of the way back!
+  ```
+
+  **Example 3:** s-t graph is parabola s = 3t². Find velocity at t = 2 s.
+
+  **Solution:**
+  ```
+  v = ds/dt = 6t
+  At t = 2: v = 12 m/s
+
+  This is slope of tangent to parabola at t = 2.
+  ```
+
+  ## JEE Key Points
+
+  1. **s-t slope = velocity**
+  2. **v-t slope = acceleration, area = displacement**
+  3. **a-t area = change in velocity**
+  4. **Positive area above axis, negative below**
+  5. **Distance ≠ Displacement** when motion reverses
+  6. **Tangent slope for instantaneous values**
+
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: "In a v-t graph, area under curve between t₁ and t₂ represents:"
+  options:
+  - "Average velocity"
+  - "Average acceleration"
+  - "Change in velocity"
+  - "Displacement"
+  correct_answer: "Displacement"
+  explanation: "Area under v-t curve = ∫v dt = displacement. This is fundamental! Think: velocity × time = distance. Area has units (m/s) × s = m. For non-uniform motion, area gives exact displacement that would be complex to calculate otherwise. If velocity is negative (below t-axis), area is negative (backward displacement). This graphical method is powerful: complex motion with varying velocity becomes simple area calculation. For a-t graph: area = ∫a dt = Δv. For s-t graph: slope = v, but area has no direct meaning."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: "A particle's s-t graph is a straight line making 45° angle with time axis. The particle:"
+  options:
+  - "Has zero velocity"
+  - "Has constant non-zero velocity"
+  - "Has constant acceleration"
+  - "Is accelerating"
+  correct_answer: "Has constant non-zero velocity"
+  explanation: "Straight line in s-t graph means constant slope, hence constant velocity. At 45° angle, slope = tan 45° = 1 (in appropriate units). If axes are scaled equally (same units), velocity = 1 m/s. Horizontal line would mean v = 0 (no displacement). Parabola would indicate acceleration. Curved line means changing velocity. The key insight: s-t graph shows position evolution, its derivative (slope) is velocity. Constant slope = constant velocity = uniform motion. This is first equation of motion: s = ut when a = 0."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: "In v-t graph, velocity changes from +20 m/s to -10 m/s in 6 seconds uniformly. Displacement is:"
+  options:
+  - "30 m"
+  - "60 m"
+  - "90 m"
+  - "15 m"
+  correct_answer: "30 m"
+  explanation: "This is a straight line from +20 to -10 m/s crossing zero. Area = trapezoid (but one part above, one below). Find when v = 0: Acceleration = (-10-20)/6 = -5 m/s². Time to reach 0: 20 = 5t, t = 4 s. Area (0-4s) = ½ × 20 × 4 = 40 m (triangle, positive). Area (4-6s) = ½ × 10 × 2 = 10 m (triangle, negative). Net displacement = 40 - 10 = 30 m. Distance traveled = 40 + 10 = 50 m. Object moves forward 40 m, then backward 10 m, ending 30 m from start. This demonstrates importance of algebraic addition of areas."
+  require_pass: true

@@ -1,0 +1,59 @@
+slug: sn1mechanism-practice
+title: sn1_mechanism — Practice
+difficulty: medium
+sequence_order: 14
+estimated_minutes: 2
+key_concepts:
+- sn1_mechanism
+prerequisites: []
+content_md: '# sn1_mechanism — Practice 🚀
+
+
+  SN1: (1) Carbocation intermediate ✓, (2) Racemization (not inversion) ✓, (3) First
+  order ✓, (4) Favored by polar PROTIC solvents (not aprotic) ✓.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 2
+  question: Which statements correctly describe SN1 mechanism?
+  options:
+  - Proceeds through carbocation intermediate
+  - Shows complete inversion of configuration
+  - Shows racemization due to planar carbocation intermediate
+  - Favored by polar protic solvents
+  correct_answer: Proceeds through carbocation intermediate
+  explanation: "SN1 (Substitution Nucleophilic Unimolecular) mechanism proceeds through a carbocation intermediate formed after the leaving group departs. This is the defining characteristic of SN1. The reaction shows racemization (not complete inversion) because the planar carbocation can be attacked from either side. It's favored by polar protic solvents which stabilize both the carbocation and leaving group. The reaction is first-order, depending only on substrate concentration."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: What is the rate-determining step in an SN1 reaction?
+  options:
+  - Nucleophilic attack on the substrate
+  - Formation of the carbocation intermediate
+  - Departure of the leaving group and carbocation formation
+  - Proton transfer from the product
+  correct_answer: Departure of the leaving group and carbocation formation
+  explanation: "In SN1 reactions, the rate-determining (slowest) step is the departure of the leaving group to form the carbocation intermediate. This is a unimolecular process involving only the substrate, which explains why the reaction is first-order: Rate = k[substrate]. The nucleophilic attack on the carbocation is fast and doesn't affect the overall reaction rate. Since carbocation formation is the slow step, factors that stabilize carbocations (tertiary > secondary > primary structure, polar protic solvents) speed up SN1 reactions."
+  require_pass: true
+- type: mcq
+  sequence_order: 4
+  question: Why does SN1 give racemization rather than inversion?
+  options:
+  - The nucleophile is chiral
+  - The carbocation intermediate is planar and achiral
+  - The leaving group blocks one side
+  - The reaction occurs in protic solvents
+  correct_answer: The carbocation intermediate is planar and achiral
+  explanation: "SN1 reactions produce racemization because the carbocation intermediate is planar (sp² hybridized) and achiral. The positive charge is in a p orbital perpendicular to the molecular plane, allowing the nucleophile to attack from either the front or back side with equal probability. This gives a ~50:50 mixture of enantiomers (racemic mixture) if the starting material was chiral. This contrasts with SN2, which proceeds through backside attack giving complete inversion (Walden inversion)."
+  require_pass: true

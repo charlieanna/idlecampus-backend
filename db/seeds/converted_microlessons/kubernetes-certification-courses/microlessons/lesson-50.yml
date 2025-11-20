@@ -1,0 +1,44 @@
+slug: lesson-50
+title: Lesson 50
+difficulty: easy
+sequence_order: 50
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Distributed Tracing Basics\n\n    - Trace\
+  \ context propagation\n    - OpenTelemetry instrumentation\n    - Visualizing traces\
+  \ in Jaeger/Grafana Tempo"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What is the primary purpose of distributed tracing in microservices architectures?
+  options:
+  - To monitor CPU usage across services
+  - To track a request's path through multiple services and identify performance bottlenecks
+  - To aggregate application logs
+  - To manage service deployments
+  correct_answer: To track a request's path through multiple services and identify performance bottlenecks
+  explanation: "Distributed tracing tracks requests as they flow through multiple microservices, creating a visual map of the request's journey and timing at each step. When a user request enters your system, it might touch 10+ microservices before completing. Distributed tracing assigns a trace ID to the request and propagates it through all service calls, recording spans (units of work) at each service. This allows you to see the entire request flow, identify slow services, find bottlenecks, and understand dependencies. For example, if a user reports slow checkout, tracing shows you that the payment service took 3 seconds because it waited 2.5 seconds for a fraud-check service. Tools like Jaeger, Zipkin, or Grafana Tempo visualize these traces. Distributed tracing is complementary to metrics (how many/how fast overall) and logs (what happened), providing the 'why' for specific requests."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What is trace context propagation and why is it important?
+  options:
+  - It encrypts traces for security
+  - It passes trace IDs and span IDs through service calls so the entire request can be correlated
+  - It reduces the size of trace data
+  - It automatically fixes performance issues
+  correct_answer: It passes trace IDs and span IDs through service calls so the entire request can be correlated
+  explanation: "Trace context propagation is the mechanism by which trace metadata (trace ID, parent span ID, sampling decisions) is passed from one service to another through HTTP headers, message queue properties, or gRPC metadata. When Service A calls Service B, it includes the trace context in the request headers (commonly using W3C Trace Context or OpenTelemetry formats). Service B extracts this context and uses the same trace ID for its spans, linking them to the overall trace. Without propagation, each service would create independent traces, losing the ability to see the complete request flow. Proper propagation requires application instrumentation - either manually adding headers or using auto-instrumentation libraries from OpenTelemetry. The key headers are typically 'traceparent' (contains trace ID, span ID, flags) and optionally 'tracestate' (vendor-specific data). This is fundamental to distributed tracing working across service boundaries."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: What is OpenTelemetry and how does it relate to distributed tracing?
+  options:
+  - A Kubernetes monitoring tool
+  - An observability framework providing APIs, SDKs, and tools for collecting traces, metrics, and logs
+  - A log aggregation system
+  - A service mesh
+  correct_answer: An observability framework providing APIs, SDKs, and tools for collecting traces, metrics, and logs
+  explanation: "OpenTelemetry (OTel) is an open-source observability framework that provides vendor-neutral APIs, SDKs, and instrumentation for collecting telemetry data - traces, metrics, and logs. It emerged from merging OpenTracing and OpenCensus projects. For distributed tracing specifically, OpenTelemetry provides libraries in many languages (Go, Java, Python, Node.js, etc.) that automatically instrument common frameworks (HTTP servers, database clients, message queues) to create and propagate traces. You instrument your application once with OpenTelemetry, and can send trace data to any compatible backend (Jaeger, Zipkin, Tempo, commercial vendors) without vendor lock-in. The OTel Collector can receive, process, and export telemetry data, providing a standardized pipeline. OpenTelemetry is becoming the industry standard for observability instrumentation in cloud-native applications."
+  require_pass: true

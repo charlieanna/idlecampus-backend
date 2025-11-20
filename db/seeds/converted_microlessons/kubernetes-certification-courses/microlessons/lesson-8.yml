@@ -1,0 +1,43 @@
+slug: lesson-8
+title: Lesson 8
+difficulty: easy
+sequence_order: 8
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Node Troubleshooting\n\n    - kubelet status\
+  \ and logs\n    - NotReady nodes and taints"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What is the most common reason for a Kubernetes node to enter the NotReady state?
+  options:
+  - The API server cannot communicate with the node
+  - The kubelet service is not running or unhealthy on the node
+  - The node has run out of disk space
+  - The container runtime has failed
+  correct_answer: The kubelet service is not running or unhealthy on the node
+  explanation: "The most common reason for a node to enter NotReady state is that the kubelet service is not running, has crashed, or is unhealthy. The kubelet is responsible for sending heartbeats to the API server, and when these heartbeats stop, the node is marked as NotReady. Other causes can include network connectivity issues preventing kubelet from reaching the API server, container runtime failures, or resource exhaustion (disk, memory, or PIDs). To troubleshoot, first check if the kubelet is running using 'systemctl status kubelet', then examine its logs with 'journalctl -u kubelet'. Common kubelet issues include certificate expiration, misconfiguration, container runtime socket problems, or insufficient system resources. When a node is NotReady, existing pods continue running but no new pods will be scheduled there."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: Which command shows you the kubelet logs on a systemd-based Linux system?
+  options:
+  - kubectl logs kubelet
+  - journalctl -u kubelet
+  - cat /var/log/kubelet.log
+  - systemctl logs kubelet
+  correct_answer: journalctl -u kubelet
+  explanation: "On systemd-based Linux systems, the kubelet runs as a systemd service, and its logs are accessed using 'journalctl -u kubelet'. You can add flags like '-f' to follow the logs in real-time, '-n 100' to see the last 100 lines, or '--since' to filter by time. The kubelet doesn't run as a pod (unlike control plane components in some setups), so 'kubectl logs' won't work. While some systems may write logs to /var/log/, systemd-managed services typically use journald for centralized logging. Kubelet logs are invaluable for troubleshooting node issues, pod startup failures, image pull problems, volume mount errors, and resource pressure situations. Understanding how to access and interpret kubelet logs is essential for effective Kubernetes troubleshooting."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: What happens to pods on a node when the node has a NoSchedule taint?
+  options:
+  - All existing pods are immediately evicted from the node
+  - Existing pods continue running, but new pods without matching tolerations cannot be scheduled
+  - All pods are prevented from running on the node
+  - Only system pods can run on the node
+  correct_answer: Existing pods continue running, but new pods without matching tolerations cannot be scheduled
+  explanation: "When a node has a NoSchedule taint, existing pods that are already running on the node continue to run normally. However, new pods cannot be scheduled on the node unless they have a matching toleration for that specific taint. This is useful for dedicated workloads, maintenance windows, or preventing new workloads on problematic nodes. There are three taint effects: NoSchedule (prevents new scheduling but doesn't affect existing pods), PreferNoSchedule (soft version, tries to avoid scheduling but doesn't guarantee it), and NoExecute (evicts existing pods that don't tolerate the taint and prevents new scheduling). Taints are often automatically added by Kubernetes when nodes have issues (disk pressure, memory pressure, network unavailable) or can be manually added by administrators for maintenance or workload isolation."
+  require_pass: true

@@ -1,0 +1,59 @@
+slug: balancingredox-practice
+title: balancing_redox — Practice
+difficulty: easy
+sequence_order: 12
+estimated_minutes: 2
+key_concepts:
+- balancing_redox
+prerequisites: []
+content_md: '# balancing_redox — Practice 🚀
+
+
+  In half-reaction method for acidic medium, oxygen is balanced by adding H₂O molecules,
+  and hydrogen is then balanced by adding H⁺ ions.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: 'In the half-reaction method for balancing redox equations in acidic medium, how do you balance oxygen atoms?'
+  options:
+  - Add O₂ molecules
+  - Add H₂O molecules
+  - Add OH⁻ ions
+  - Add O²⁻ ions
+  require_pass: true
+  correct_answer: Add H₂O molecules
+  explanation: 'In acidic medium, oxygen atoms are balanced by adding H₂O molecules. Steps for half-reaction method in acidic medium: (1) Write separate oxidation and reduction half-reactions, (2) Balance atoms other than O and H, (3) Balance O by adding H₂O, (4) Balance H by adding H⁺, (5) Balance charge by adding electrons, (6) Multiply half-reactions to equalize electrons, (7) Add half-reactions and cancel common terms. Example: MnO₄⁻ → Mn²⁺ (reduction in acidic medium). Step 1: Mn already balanced. Step 2: Balance O: MnO₄⁻ → Mn²⁺ + 4H₂O (4 oxygen atoms on left, so add 4 H₂O on right). Step 3: Balance H: 8H⁺ + MnO₄⁻ → Mn²⁺ + 4H₂O (8 H needed). Step 4: Balance charge: 8H⁺ + MnO₄⁻ + 5e⁻ → Mn²⁺ + 4H₂O (left: +7 charge, right: +2 charge, add 5e⁻). For basic medium, use OH⁻ and H₂O differently.'
+- type: mcq
+  sequence_order: 2
+  question: 'What is added to balance hydrogen atoms in a half-reaction in acidic medium?'
+  options:
+  - H₂ molecules
+  - H⁺ ions
+  - OH⁻ ions
+  - H₂O molecules
+  require_pass: true
+  correct_answer: H⁺ ions
+  explanation: 'In acidic medium, hydrogen atoms are balanced by adding H⁺ ions. This is step 4 in the half-reaction method. Example: Cr₂O₇²⁻ → Cr³⁺ (reduction in acidic medium). Balance Cr: Cr₂O₇²⁻ → 2Cr³⁺. Balance O: Cr₂O₇²⁻ → 2Cr³⁺ + 7H₂O (7 oxygen atoms). Balance H: 14H⁺ + Cr₂O₇²⁻ → 2Cr³⁺ + 7H₂O (14 H atoms in 7H₂O). Balance charge: 14H⁺ + Cr₂O₇²⁻ + 6e⁻ → 2Cr³⁺ + 7H₂O (left: +14-2 = +12, right: +6, add 6e⁻). Why H⁺ in acidic medium? The reaction occurs in acidic solution where H⁺ ions are abundant. For basic medium: Use OH⁻ to balance, or first balance in acidic medium, then add OH⁻ to neutralize H⁺ (converting H⁺ + OH⁻ → H₂O). Common acidic conditions: dilute H₂SO₄, dilute HCl, dilute HNO₃. The systematic use of H⁺ and H₂O ensures proper balancing of both atoms and charge.'
+- type: mcq
+  sequence_order: 3
+  question: 'In balancing redox equations, what must be equal in both half-reactions before adding them?'
+  options:
+  - Number of atoms
+  - Number of molecules
+  - Number of electrons
+  - Number of ions
+  require_pass: true
+  correct_answer: Number of electrons
+  explanation: 'The number of ELECTRONS must be equal in both half-reactions before adding them. This is crucial because electrons lost in oxidation must equal electrons gained in reduction (conservation principle). Procedure: (1) Balance each half-reaction separately including electrons, (2) Multiply half-reactions by appropriate factors to equalize electron count, (3) Add the balanced half-reactions, (4) Cancel electrons and other common terms. Example: Balance Fe²⁺ + MnO₄⁻ → Fe³⁺ + Mn²⁺ in acidic medium. Oxidation: Fe²⁺ → Fe³⁺ + e⁻. Reduction: 8H⁺ + MnO₄⁻ + 5e⁻ → Mn²⁺ + 4H₂O. Equalize electrons: Multiply oxidation by 5: 5Fe²⁺ → 5Fe³⁺ + 5e⁻. Keep reduction as is: 8H⁺ + MnO₄⁻ + 5e⁻ → Mn²⁺ + 4H₂O. Add: 5Fe²⁺ + 8H⁺ + MnO₄⁻ → 5Fe³⁺ + Mn²⁺ + 4H₂O (5e⁻ cancels). If electrons aren''t equalized, the equation won''t be properly balanced and charge won''t be conserved.'

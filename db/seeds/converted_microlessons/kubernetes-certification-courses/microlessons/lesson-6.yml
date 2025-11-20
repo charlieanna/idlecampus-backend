@@ -1,0 +1,65 @@
+slug: lesson-6
+title: Lesson 6
+difficulty: easy
+sequence_order: 6
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Kubernetes Architecture Overview\n\n  \
+  \  ## Control Plane Components\n\n    ### API Server (kube-apiserver)\n    - Central\
+  \ management entity\n    - Exposes Kubernetes API\n    - Frontend for the control\
+  \ plane\n    - All operations go through the API server\n\n    ### etcd\n    - Consistent\
+  \ and highly-available key-value store\n    - Stores all cluster data\n    - Source\
+  \ of truth for cluster state\n\n    ### Scheduler (kube-scheduler)\n    - Watches\
+  \ for newly created Pods\n    - Selects nodes for pods to run on\n    - Considers\
+  \ resource requirements, constraints, and affinity\n\n    ### Controller Manager\
+  \ (kube-controller-manager)\n    - Runs controller processes\n    - Node Controller:\
+  \ Monitors node status\n    - Replication Controller: Maintains correct number of\
+  \ pods\n    - Endpoints Controller: Populates endpoints objects\n    - Service Account\
+  \ Controller: Creates default accounts\n\n    ## Node Components\n\n    ### kubelet\n\
+  \    - Runs on each node\n    - Ensures containers are running in a Pod\n    - Communicates\
+  \ with API server\n    - Manages pod lifecycle\n\n    ### kube-proxy\n    - Network\
+  \ proxy on each node\n    - Implements Kubernetes Service concept\n    - Maintains\
+  \ network rules\n    - Enables pod-to-pod communication\n\n    ### Container Runtime\n\
+  \    - Software responsible for running containers\n    - Examples: Docker, containerd,\
+  \ CRI-O\n\n    ## Add-ons\n\n    - **DNS**: Cluster DNS server (CoreDNS)\n    -\
+  \ **Dashboard**: Web-based UI\n    - **Ingress Controller**: HTTP/HTTPS routing\n\
+  \    - **Metrics Server**: Resource usage monitoring\n\n    ## Communication Flow\n\
+  \n    1. kubectl sends request to API server\n    2. API server validates and stores\
+  \ in etcd\n    3. Controllers watch for changes\n    4. Scheduler assigns pods to\
+  \ nodes\n    5. kubelet pulls images and starts containers\n    6. kube-proxy configures\
+  \ networking"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: Which Kubernetes control plane component is responsible for storing all cluster state and configuration data?
+  options:
+  - kube-apiserver
+  - kube-scheduler
+  - etcd
+  - kube-controller-manager
+  correct_answer: etcd
+  explanation: "etcd is a consistent and highly-available distributed key-value store that serves as Kubernetes' backing store for all cluster data. It is the single source of truth for the entire cluster state, storing information about pods, services, secrets, config maps, and all other Kubernetes objects. All control plane components interact with etcd through the API server to read and write cluster state. etcd uses the Raft consensus algorithm to ensure data consistency across multiple replicas. Because etcd stores all critical cluster data, it's essential to backup etcd regularly and ensure it runs on reliable hardware with sufficient I/O performance. If etcd becomes unavailable, the cluster cannot process any state changes, though existing workloads continue running."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What is the primary responsibility of the kube-scheduler?
+  options:
+  - Managing the lifecycle of running pods
+  - Selecting which node a newly created pod should run on
+  - Maintaining network rules for pod communication
+  - Running controller processes that regulate cluster state
+  correct_answer: Selecting which node a newly created pod should run on
+  explanation: "The kube-scheduler is responsible for watching for newly created pods that have no assigned node and selecting an appropriate node for them to run on. The scheduler makes this decision based on multiple factors including resource requirements (CPU, memory requests/limits), hardware/software/policy constraints, affinity and anti-affinity specifications, data locality, inter-workload interference, and deadlines. The scheduler runs a filtering phase to find feasible nodes, then a scoring phase to rank the feasible nodes and select the best one. Importantly, the scheduler only makes the placement decision - it doesn't actually run the pods. That's the job of the kubelet on each node. The scheduler's decisions can be influenced through node selectors, taints and tolerations, and pod affinity rules."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: Which component runs on every node and is responsible for maintaining network rules that enable pod-to-pod communication?
+  options:
+  - kubelet
+  - kube-proxy
+  - container runtime
+  - CoreDNS
+  correct_answer: kube-proxy
+  explanation: "kube-proxy is a network proxy that runs on each node in the cluster and is responsible for implementing the Kubernetes Service concept. It maintains network rules on nodes that allow network communication to pods from inside or outside the cluster. These rules enable the Service abstraction to work by forwarding traffic to the appropriate backend pods. kube-proxy can operate in different modes: iptables mode (default in many setups, using iptables rules), IPVS mode (uses Linux IPVS for better performance with large clusters), or userspace mode (legacy). When a Service is created or updated, kube-proxy configures the necessary network rules to route traffic to the Service's endpoints. It's distinct from the kubelet, which manages container lifecycle, and the container runtime, which actually runs the containers."
+  require_pass: true

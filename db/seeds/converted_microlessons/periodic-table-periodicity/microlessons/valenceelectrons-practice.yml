@@ -1,0 +1,60 @@
+slug: valenceelectrons-practice
+title: valence_electrons — Practice
+difficulty: easy
+sequence_order: 9
+estimated_minutes: 2
+key_concepts:
+- valence_electrons
+prerequisites: []
+content_md: '# valence_electrons — Practice 🚀
+
+
+  Group number for p-block = 10 + valence electrons. Group 15 = 10 + 5 = 15 valence
+  electrons. Alternatively, Group 15 elements (pnictogens) have 5 valence electrons
+  (ns²np³).
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: An element is in Group 15 and Period 3. How many valence electrons does it have?
+  options:
+  - '3'
+  - '5'
+  - '7'
+  - '15'
+  correct_answer: '5'
+  explanation: "Group 15 elements (pnictogens: N, P, As, Sb, Bi) have 5 valence electrons with electronic configuration ns² np³. For p-block elements, the number of valence electrons = Group number - 10. So Group 15 = 15 - 10 = 5 valence electrons. The element in Group 15, Period 3 is phosphorus (P)."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: How many valence electrons do Group 2 elements have?
+  options:
+  - '1'
+  - '2'
+  - '4'
+  - '8'
+  correct_answer: '2'
+  explanation: "Group 2 elements (alkaline earth metals: Be, Mg, Ca, Sr, Ba, Ra) have 2 valence electrons with electronic configuration ns². These are s-block elements. They readily lose 2 electrons to form +2 cations."
+  require_pass: false
+- type: mcq
+  sequence_order: 3
+  question: Which group has 7 valence electrons?
+  options:
+  - Group 7
+  - Group 17
+  - Group 14
+  - Group 1
+  correct_answer: Group 17
+  explanation: "Group 17 (halogens: F, Cl, Br, I, At) have 7 valence electrons with configuration ns² np⁵. For p-block elements, valence electrons = Group number - 10 = 17 - 10 = 7. They need one more electron to complete their octet, making them highly reactive."
+  require_pass: false

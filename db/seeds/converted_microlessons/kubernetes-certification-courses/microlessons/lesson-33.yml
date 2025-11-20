@@ -1,0 +1,90 @@
+slug: lesson-33
+title: Lesson 33
+difficulty: easy
+sequence_order: 33
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Pod Disruption Budgets\n\n    - minAvailable\
+  \ vs maxUnavailable\n    - voluntary disruptions and drains"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What is the difference between minAvailable and maxUnavailable in PodDisruptionBudgets?
+  options:
+  - They are interchangeable and mean the same thing
+  - minAvailable specifies minimum pods that must remain running; maxUnavailable specifies
+    maximum pods that can be down simultaneously
+  - minAvailable is for StatefulSets; maxUnavailable is for Deployments
+  - maxUnavailable is deprecated
+  correct_answer: minAvailable specifies minimum pods that must remain running; maxUnavailable
+    specifies maximum pods that can be down simultaneously
+  explanation: 'PodDisruptionBudgets (PDBs) protect applications during voluntary
+    disruptions like node drains, cluster upgrades, or scaling down. They ensure availability
+    by constraining how many pods can be unavailable simultaneously. You specify constraints
+    using either minAvailable or maxUnavailable (mutually exclusive). minAvailable
+    defines the minimum number (or percentage) of pods that must remain available
+    during disruptions. For example, ''minAvailable: 3'' means at least 3 pods must
+    be running at all times. If you have 5 replicas, at most 2 can be disrupted simultaneously.
+    With ''minAvailable: 75%'' and 8 replicas, at least 6 must run, allowing 2 to
+    be disrupted. maxUnavailable defines the maximum number (or percentage) of pods
+    that can be unavailable during disruptions. For example, ''maxUnavailable: 1''
+    means at most 1 pod can be down at a time. If you have 5 replicas, you must keep
+    4 running. With ''maxUnavailable: 25%'' and 8 replicas, at most 2 can be down.
+    Choose based on your mental model - for highly available services, think minAvailable
+    (''need at least 3 running''). For fault-tolerant systems, think maxUnavailable
+    (''can lose at most 1''). The eviction API respects PDBs - ''kubectl drain'' checks
+    PDBs before evicting pods and fails if draining would violate the budget. This
+    prevents administrators from accidentally breaking service availability during
+    maintenance. PDBs apply to voluntary disruptions (drains, evictions, deletions)
+    but not involuntary ones (node crashes, OOM kills, hardware failures). Best practices:
+    use percentage for variable-sized deployments, set PDBs for all user-facing services,
+    test that PDBs actually prevent over-disruption, and ensure minAvailable is achievable
+    (not greater than replica count).'
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What happens when a drain operation would violate a PodDisruptionBudget?
+  options:
+  - The PDB is automatically ignored
+  - The drain operation waits or fails, preventing violation of the availability constraint
+  - The pods are evicted anyway
+  - PDBs don't affect drain operations
+  correct_answer: The drain operation waits or fails, preventing violation of the
+    availability constraint
+  explanation: 'When ''kubectl drain'' attempts to evict pods, it respects PodDisruptionBudgets
+    by checking whether the eviction would violate availability constraints. If evicting
+    a pod would reduce available replicas below minAvailable or increase unavailable
+    replicas above maxUnavailable, the eviction is denied and drain blocks or fails.
+    For example, if a Deployment has 3 replicas with ''minAvailable: 2'', and you
+    drain a node with 2 of those pods, the first pod can be evicted (leaving 2 running),
+    but evicting the second is denied (would leave only 1 running). The drain command
+    waits indefinitely (or until timeout) for the PDB to allow eviction - typically
+    this happens when the ReplicaSet creates a replacement pod on another node that
+    becomes ready. The workflow: 1) drain evicts first pod, 2) ReplicaSet creates
+    replacement on another node, 3) replacement becomes ready, 4) drain can now evict
+    second pod (still maintains minAvailable: 2). If no replacement can be created
+    (e.g., no resources on other nodes), drain hangs indefinitely. You can use ''--timeout''
+    to limit wait time, after which drain fails. To force drain despite PDBs, use
+    ''--disable-eviction'' (bypasses eviction API and deletes pods directly - dangerous
+    for availability). PDBs also affect: cluster autoscaler (may refuse to scale down
+    nodes if it would violate PDBs), manual pod deletion via eviction API, and any
+    tool using eviction API. They don''t affect: direct pod deletion (kubectl delete
+    pod - bypasses eviction API), node crashes (not voluntary), or pods killed by
+    kubelet (resource pressure, failed probes). Best practices: set realistic PDBs
+    that allow drain to succeed eventually, monitor drain operations, plan node maintenance
+    windows with buffer time for PDB-controlled drains, and use --force cautiously
+    only when necessary.'
+  require_pass: true
+- type: mcq
+  sequence_order: 1
+  question: What command lists all pods in all namespaces?
+  options:
+  - kubectl get pods -A
+  - kubectl list pods --all
+  - kubectl get pods --everywhere
+  - kubectl pods list -A
+  correct_answer_index: 0
+  explanation: kubectl get pods -A (or --all-namespaces) lists pods across all namespaces.
+    The -A flag is shorthand for --all-namespaces.
+  require_pass: true

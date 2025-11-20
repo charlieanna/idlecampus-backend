@@ -1,0 +1,76 @@
+slug: understanding-tlsssl
+title: Understanding TLS/SSL
+sequence_order: 3
+estimated_minutes: 2
+difficulty: easy
+content_md: "# Understanding TLS/SSL \U0001F680\n\n# Understanding TLS/SSL\n\n   \
+  \ TLS (Transport Layer Security) encrypts data in transit between clients and servers.\n\
+  \n    ## What is TLS?\n\n    **TLS** (formerly SSL) provides:\n    - **Encryption**:\
+  \ Data is encrypted in transit\n    - **Authentication**: Verify server identity\n\
+  \    - **Integrity**: Detect tampering\n\n    ## TLS Handshake Process\n\n    ```\n\
+  \    Client                                    Server\n      |                 \
+  \                        |\n      |--- ClientHello (supported ciphers) ---->|\n\
+  \      |                                         |\n      |<--- ServerHello (chosen\
+  \ cipher) --------|\n      |<--- Certificate (server's cert) --------|\n      |<---\
+  \ ServerHelloDone -------------------|\n      |                                \
+  \         |\n      |--- ClientKeyExchange ----------------->|\n      |--- ChangeCipherSpec\
+  \ ------------------>|\n      |--- Finished -------------------------->|\n     \
+  \ |                                         |\n      |<--- ChangeCipherSpec ------------------|\n\
+  \      |<--- Finished --------------------------|\n      |                     \
+  \                    |\n      |<========== Encrypted Data ===========>|\n    ```\n\
+  \n    ### Steps Explained:\n\n    1. **ClientHello**: Client sends supported TLS\
+  \ versions and cipher suites\n    2. **ServerHello**: Server chooses TLS version\
+  \ and cipher\n    3. **Certificate**: Server sends its certificate (public key)\n\
+  \    4. **Certificate Verification**: Client validates certificate\n    5. **Key\
+  \ Exchange**: Generate shared session key\n    6. **Finished**: Both confirm encryption\
+  \ is working\n    7. **Encrypted Communication**: All data now encrypted\n\n   \
+  \ ## Certificates\n\n    ### Certificate Components\n\n    - **Subject**: Who the\
+  \ certificate is issued to (domain name)\n    - **Issuer**: Who signed the certificate\
+  \ (CA)\n    - **Public Key**: Server's public key\n    - **Validity Period**: Start\
+  \ and end dates\n    - **Signature**: CA's digital signature\n\n    ### Certificate\
+  \ Types\n\n    1. **Self-Signed**: You sign your own certificate\n       - ⚠️ Browsers\
+  \ will show warnings\n       - ✅ Good for testing/development\n       - ✅ Good for\
+  \ internal services\n\n    2. **Certificate Authority (CA) Signed**: Trusted third\
+  \ party\n       - ✅ Browsers trust automatically\n       - ✅ Required for public\
+  \ websites\n       - Examples: Let's Encrypt, DigiCert, Comodo\n\n    3. **Wildcard**:\
+  \ Covers all subdomains\n       - `*.example.com` covers `api.example.com`, `www.example.com`\n\
+  \n    ## TLS Versions\n\n    - **TLS 1.3**: Current, fastest, most secure ✅\n  \
+  \  - **TLS 1.2**: Still widely used, secure ✅\n    - **TLS 1.1**: Deprecated ⚠️\n\
+  \    - **TLS 1.0**: Deprecated ⚠️\n    - **SSL 3.0**: Broken, do not use ❌\n   \
+  \ - **SSL 2.0**: Broken, do not use ❌\n\n    ## Common Ports\n\n    | Protocol |\
+  \ Port | Description |\n    |----------|------|-------------|\n    | HTTP | 80 |\
+  \ Unencrypted web traffic |\n    | HTTPS | 443 | Encrypted web traffic (TLS) |\n\
+  \    | SMTP (TLS) | 587 | Encrypted email submission |\n    | IMAP (TLS) | 993 |\
+  \ Encrypted email retrieval |\n\n    ## Certificate Authorities (CAs)\n\n    ###\
+  \ Root CA\n    Browsers and operating systems trust a set of root CAs.\n\n    ###\
+  \ Chain of Trust\n    ```\n    Root CA (trusted by browser)\n      └── Intermediate\
+  \ CA\n            └── Your Certificate\n    ```\n\n    ### Let's Encrypt\n    Free,\
+  \ automated certificate authority.\n\n    ```bash\n    # Install certbot\n    sudo\
+  \ apt install certbot\n\n    # Get certificate for domain\n    sudo certbot certonly\
+  \ --standalone -d example.com\n    ```\n\n    ## Certificate Pinning\n\n    **Hard-code**\
+  \ expected certificate or public key in application.\n    - Extra security against\
+  \ compromised CAs\n    - Used in mobile apps, critical services\n    - ⚠️ Requires\
+  \ careful key rotation"
+exercises:
+- type: mcq
+  slug: understanding-tlsssl-mcq
+  sequence_order: 1
+  question: What three security guarantees does TLS/SSL provide?
+  options:
+  - Encryption (confidentiality), authentication (identity verification), and integrity
+    (tampering detection)
+  - Speed, reliability, and backwards compatibility
+  - Compression, caching, and load balancing
+  - Port forwarding, proxying, and tunneling
+  correct_answer_index: 0
+  explanation: TLS/SSL provides three critical security guarantees - Encryption ensures
+    data cannot be read by eavesdroppers during transit, Authentication verifies you're
+    communicating with the legitimate server (via certificates), and Integrity detects
+    if data has been tampered with. Together, these protect against man-in-the-middle
+    attacks, eavesdropping, and data modification. This is why HTTPS (HTTP over TLS)
+    is essential for all web traffic.
+objectives:
+- Explain PKI/TLS
+- Harden HTTPS
+- Rotate/renew certs
+next_recommended: []

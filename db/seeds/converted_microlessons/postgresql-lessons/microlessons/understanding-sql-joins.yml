@@ -1,0 +1,38 @@
+slug: understanding-sql-joins
+title: Understanding SQL Joins
+difficulty: easy
+sequence_order: 6
+estimated_minutes: 2
+key_concepts:
+- INNER JOIN
+- LEFT JOIN
+- Table relationships
+- Join conditions
+prerequisites: []
+content_md: "# Understanding SQL Joins \U0001F680\n\n# Understanding SQL Joins\n\n\
+  \      Joins are used to combine rows from two or more tables based on a related\
+  \ column. They are fundamental to working with relational databases.\n\n      ##\
+  \ Types of Joins\n\n      ### INNER JOIN\n      Returns records that have matching\
+  \ values in both tables:\n      ```sql\n      SELECT users.name, orders.order_date\n\
+  \      FROM users\n      INNER JOIN orders ON users.id = orders.user_id;\n     \
+  \ ```\n\n      ### LEFT JOIN (LEFT OUTER JOIN)\n      Returns all records from the\
+  \ left table and matched records from the right:\n      ```sql\n      SELECT users.name,\
+  \ orders.order_date\n      FROM users\n      LEFT JOIN orders ON users.id = orders.user_id;\n\
+  \      ```\n\n      ### RIGHT JOIN\n      Returns all records from the right table\
+  \ and matched records from the left.\n\n      ### FULL OUTER JOIN\n      Returns\
+  \ all records when there's a match in either table.\n\n      ## Join Syntax\n\n\
+  \      Basic join pattern:\n      ```sql\n      SELECT columns\n      FROM table1\n\
+  \      JOIN table2 ON table1.column = table2.column;\n      ```\n\n      ## Multiple\
+  \ Joins\n\n      You can join more than two tables:\n      ```sql\n      SELECT\
+  \ u.name, o.order_date, p.product_name\n      FROM users u\n      JOIN orders o\
+  \ ON u.id = o.user_id\n      JOIN products p ON o.product_id = p.id;\n      ```\n\
+  \n      ## Table Aliases\n\n      Use aliases to make queries more readable:\n \
+  \     ```sql\n      SELECT u.name, o.total\n      FROM users u\n      JOIN orders\
+  \ o ON u.id = o.user_id;\n      ```\n\n      ## Examples\n\n      **Users with their\
+  \ orders:**\n      ```sql\n      SELECT users.name, orders.total\n      FROM users\n\
+  \      INNER JOIN orders ON users.id = orders.user_id;\n      ```\n\n      **All\
+  \ users, even without orders:**\n      ```sql\n      SELECT users.name, orders.total\n\
+  \      FROM users\n      LEFT JOIN orders ON users.id = orders.user_id;\n      ```\n\
+  \n      Now practice joining tables in the lab!\n\n## Key Points\n\n- INNER JOIN\n\
+  \n- LEFT JOIN\n\n- Table relationships"
+exercises: []

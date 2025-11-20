@@ -1,0 +1,44 @@
+slug: lesson-111
+title: Lesson 111
+difficulty: easy
+sequence_order: 111
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Debugging and Troubleshooting\n\n    -\
+  \ kubectl describe, events, and logs\n    - exec/attach and ephemeral containers\n\
+  \    - node/pod/network/storage triage"
+exercises:
+  - type: mcq
+    sequence_order: 1
+    question: "What is the primary purpose of the 'kubectl describe' command?"
+    options:
+      - "To delete a Kubernetes resource"
+      - "To view detailed information about a resource including events and status"
+      - "To edit a resource's YAML configuration"
+      - "To list all resources in a namespace"
+    correct_answer: "To view detailed information about a resource including events and status"
+    explanation: "The 'kubectl describe' command provides detailed, human-readable information about a Kubernetes resource, including its configuration, current state, events, and conditions. Unlike 'kubectl get' which shows tabular summaries, describe gives comprehensive details essential for troubleshooting. For example, 'kubectl describe pod myapp-xyz' shows the pod's spec, status, container states, resource usage, volumes, events (like 'Pulled image', 'Started container', or error messages), and conditions. The events section is particularly valuable as it shows the chronological history of what happened to the resource, helping identify issues like ImagePullBackOff, CrashLoopBackOff, or scheduling failures. For troubleshooting a failing pod, you'd typically: 1) kubectl get pods to identify the problematic pod, 2) kubectl describe pod <name> to see events and error messages, 3) kubectl logs <name> to view application logs. The describe command works for all Kubernetes resources - pods, deployments, services, nodes, etc. - and formats the output readably with labeled sections. It's often the first debugging step when something isn't working, as events frequently contain the root cause (e.g., 'Failed to pull image', 'Insufficient memory', 'Node not ready')."
+    require_pass: true
+  - type: mcq
+    sequence_order: 2
+    question: "What is an ephemeral container in Kubernetes, and when would you use one?"
+    options:
+      - "A container that automatically restarts when it fails"
+      - "A temporary debugging container that can be added to a running Pod without restarting it"
+      - "A container that stores temporary data in memory"
+      - "A container that runs only during Pod initialization"
+    correct_answer: "A temporary debugging container that can be added to a running Pod without restarting it"
+    explanation: "Ephemeral containers are temporary containers that can be added to an already running Pod for debugging purposes without restarting the Pod or modifying its spec. This is crucial when troubleshooting issues in production where you can't restart the Pod (disrupting service) or when the failing container doesn't have debugging tools installed (common with minimal/distroless images). Traditional containers are immutable after Pod creation, but ephemeral containers can be added on-demand using 'kubectl debug' command. For example, if a production pod built from a distroless image is misbehaving, you can run 'kubectl debug mypod -it --image=busybox --target=mycontainer' to attach a busybox container with debugging tools, sharing the target container's process namespace. This allows you to run commands like ps, netstat, or tcpdump to investigate issues. Ephemeral containers have limitations: they don't support resource guarantees, ports, readiness/liveness probes, and are removed when the Pod terminates (not preserved across restarts). They're perfect for: inspecting processes in minimal images, debugging network issues, examining filesystem contents, or running diagnostic tools. Use cases include investigating crashes, network connectivity problems, or mysterious application behavior in production environments where traditional debugging methods aren't available."
+    require_pass: true
+  - type: mcq
+    sequence_order: 3
+    question: "What kubectl command would you use to view recent events across all namespaces?"
+    options:
+      - "kubectl logs --all-namespaces"
+      - "kubectl get events --all-namespaces"
+      - "kubectl describe events"
+      - "kubectl watch events"
+    correct_answer: "kubectl get events --all-namespaces"
+    explanation: "The command 'kubectl get events --all-namespaces' (or shortened as 'kubectl get events -A') retrieves Kubernetes events across all namespaces in the cluster. Events are time-bound records of state changes and significant occurrences in the cluster, such as pod scheduling, image pulling, container starting/failing, volume mounting, and node conditions. They're invaluable for troubleshooting as they provide a chronological audit trail of what happened in the cluster. Events are stored for only 1 hour by default, so checking them quickly is important when investigating issues. You can filter events by various criteria: 'kubectl get events -n mynamespace' for a specific namespace, 'kubectl get events --field-selector involvedObject.name=mypod' for a specific resource, or 'kubectl get events --sort-by='.lastTimestamp'' to see most recent events first. For ongoing monitoring, use 'kubectl get events --watch' to stream events in real-time. Events show crucial information like reason (e.g., 'Failed', 'Pulled', 'Scheduled'), message (detailed description), source (component that generated it), and count (how many times it occurred). Common troubleshooting patterns include checking events when pods won't start, investigating scheduling failures, or understanding why deployments are stuck. Note that 'kubectl logs' shows container stdout/stderr output, not cluster events, serving a different debugging purpose."
+    require_pass: true

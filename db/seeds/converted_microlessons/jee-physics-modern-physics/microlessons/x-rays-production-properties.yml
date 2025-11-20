@@ -1,0 +1,230 @@
+slug: x-rays-production-properties
+title: "X-Rays: Production and Properties"
+difficulty: advanced
+sequence_order: 5
+estimated_minutes: 16
+key_concepts:
+- x-ray-production
+- continuous-spectrum
+- characteristic-spectrum
+- moseley-law
+- bragg-diffraction
+prerequisites:
+- bohr-model-hydrogen-atom
+content_md: |
+  # X-Rays: Production and Properties
+
+  ## Discovery and Nature
+
+  X-rays discovered by **Röntgen (1895)**.
+
+  ### Properties:
+  - Electromagnetic radiation (λ ~ 0.01 to 10 nm)
+  - Travel at speed of light
+  - High penetrating power
+  - Ionize gases
+  - Affect photographic plates
+  - Cause fluorescence
+
+  ## Production of X-Rays
+
+  **High-speed electrons striking metal target.**
+
+  ### Coolidge Tube:
+  1. Electrons emitted from heated cathode (thermionic emission)
+  2. Accelerated through high voltage (10-100 kV)
+  3. Strike metal target (W, Mo, Cu)
+  4. X-rays produced
+
+  ## Types of X-Ray Spectra
+
+  ### 1. Continuous (Bremsstrahlung) Spectrum:
+  - Electrons decelerated by target atoms
+  - Energy lost appears as X-ray photons
+  - Continuous range of wavelengths
+
+  ```
+  Maximum energy: E_max = eV (full conversion)
+  Minimum wavelength: λ_min = hc/(eV)
+
+  λ_min (Å) = 12400/V (V in volts)
+  ```
+
+  This is **cutoff wavelength** - no X-rays with λ < λ_min.
+
+  ### 2. Characteristic (Line) Spectrum:
+  - Incident electron knocks out inner electron
+  - Outer electron falls to fill vacancy
+  - Discrete wavelengths emitted
+
+  ```
+  Energy: E = E_upper - E_lower
+  λ = hc/(E_upper - E_lower)
+  ```
+
+  ### X-Ray Series:
+  - **K-series:** Transitions to K-shell (n=1)
+  - **L-series:** Transitions to L-shell (n=2)
+  - **M-series:** Transitions to M-shell (n=3)
+
+  K-series most energetic (shortest λ).
+
+  ## Moseley's Law (1913)
+
+  For characteristic X-rays:
+  ```
+  √f = a(Z - b)
+
+  f = frequency
+  Z = atomic number
+  a, b = constants
+  ```
+
+  ### For K_α line:
+  ```
+  √f = a(Z - 1)
+
+  b ≈ 1 (screening by 1 electron)
+  ```
+
+  ### Significance:
+  - Atomic number (not atomic weight) determines properties
+  - Predicted missing elements
+  - Foundation for modern periodic table
+
+  ## Characteristic Wavelengths
+
+  Using Bohr's model for K_α:
+  ```
+  1/λ = R(Z-1)²(1/1² - 1/2²) = 3R(Z-1)²/4
+
+  λ ∝ 1/(Z-1)²
+  ```
+
+  Higher Z → shorter wavelength.
+
+  ## Intensity and Quality
+
+  ### Intensity:
+  - Number of X-ray photons
+  - Controlled by filament current (more electrons)
+  - I ∝ (tube current) × V²
+
+  ### Quality (Penetrating Power):
+  - Energy of X-ray photons
+  - Controlled by accelerating voltage
+  - Higher V → shorter λ → more penetrating
+
+  ## Absorption of X-Rays
+
+  ```
+  I = I₀e^(-μx)
+
+  μ = absorption coefficient
+  x = thickness
+  I₀ = incident intensity
+  ```
+
+  ### Absorption Edge:
+  Sharp increase in absorption when photon energy = binding energy of shell.
+
+  ## Bragg's Law (Crystal Diffraction)
+
+  X-rays diffracted by crystal lattice:
+  ```
+  2d sin θ = nλ
+
+  d = interplanar spacing
+  θ = glancing angle
+  n = order of diffraction
+  ```
+
+  Used for:
+  - Measuring X-ray wavelengths
+  - Determining crystal structures
+
+  ## Applications
+
+  1. **Medical:** Imaging bones, detecting fractures
+  2. **Industrial:** Detecting flaws in materials
+  3. **Crystallography:** Structure determination
+  4. **Security:** Airport scanners
+  5. **Spectroscopy:** Element identification
+
+  ## Numerical Examples
+
+  **Example 1:** X-ray tube operates at 50 kV. Find minimum wavelength.
+
+  **Solution:**
+  ```
+  λ_min = 12400/V = 12400/50000 = 0.248 Å
+
+  Very short wavelength - high energy X-rays!
+  ```
+
+  **Example 2:** K_α wavelength for element with Z = 42. Compare with Z = 29.
+
+  **Solution:**
+  ```
+  λ ∝ 1/(Z-1)²
+
+  λ₄₂/λ₂₉ = (29-1)²/(42-1)² = 784/1681 ≈ 0.47
+
+  Higher Z has shorter λ (higher energy).
+  ```
+
+  **Example 3:** X-rays with λ = 1 Å diffract from crystal (d = 2 Å). Find first-order angle.
+
+  **Solution:**
+  ```
+  2d sin θ = nλ
+  2(2) sin θ = 1(1)
+  sin θ = 1/4 = 0.25
+  θ = 14.5°
+
+  At this specific angle, constructive interference occurs.
+  ```
+
+  ## JEE Key Points
+
+  1. **λ_min = hc/(eV) = 12400/V Å**
+  2. **Moseley: √f ∝ (Z-b)**
+  3. **K_α line: b ≈ 1**
+  4. **Characteristic λ ∝ 1/(Z-1)²**
+  5. **Bragg: 2d sin θ = nλ**
+  6. **Intensity ∝ current, Quality ∝ voltage**
+
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: "X-ray tube operates at 40 kV. The minimum wavelength of X-rays produced is:"
+  options:
+  - "0.31 Å"
+  - "3.1 Å"
+  - "0.031 Å"
+  - "31 Å"
+  correct_answer: "0.31 Å"
+  explanation: "λ_min = 12400/V = 12400/40000 = 0.31 Å. This is cutoff wavelength - shortest possible at this voltage. At this wavelength, entire electron kinetic energy (eV = 40 keV) converts to single photon energy. In practice, most electrons lose energy gradually, producing longer wavelengths (continuous spectrum). Only few convert all energy at once, giving minimum λ. Increasing voltage to 80 kV would halve λ_min to 0.155 Å. This formula λ_min = 12400/V (V in volts, λ in Å) is extremely useful. For 100 kV medical X-ray: λ_min = 0.124 Å."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: "If frequency of K_α line for Z=31 is f, then for Z=11 it would be approximately:"
+  options:
+  - "f/9"
+  - "9f"
+  - "f/3"
+  - "3f"
+  correct_answer: "f/9"
+  explanation: "Moseley's law: √f ∝ (Z-1). For K_α: f ∝ (Z-1)². f₃₁/f₁₁ = (31-1)²/(11-1)² = 900/100 = 9. So f₁₁ = f₃₁/9 = f/9. Higher atomic number → higher frequency (shorter wavelength). This quadratic dependence is remarkably useful. Element with Z=31 (Gallium) has K_α frequency 9 times that of Z=11 (Sodium). This law helped Moseley identify atomic number as fundamental property. He correctly predicted gaps in periodic table. K_α line is transition from L-shell to K-shell, so effective nuclear charge is (Z-1) due to screening by one K-electron."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: "In Bragg diffraction, if crystal spacing is d and X-ray wavelength is λ = d, the smallest glancing angle for diffraction is:"
+  options:
+  - "15°"
+  - "30°"
+  - "45°"
+  - "60°"
+  correct_answer: "30°"
+  explanation: "Bragg's law: 2d sin θ = nλ. For smallest angle, n = 1 (first order). Given λ = d: 2d sin θ = d. sin θ = 1/2. θ = 30°. This is glancing angle (angle from surface, not normal). Higher orders (n=2,3...) give larger angles. For n=2: sin θ = 1, θ = 90° (not practical). Bragg diffraction requires λ ≈ d (X-ray wavelength ~ atomic spacing). If λ >> d: no diffraction. If λ << d: many orders possible. This technique revolutionized crystal structure determination. Watson and Crick used it to find DNA structure. Modern synchrotron sources provide tunable X-rays for precise studies."
+  require_pass: true

@@ -1,0 +1,58 @@
+slug: cellpotential-practice
+title: cell_potential — Practice
+difficulty: easy
+sequence_order: 7
+estimated_minutes: 2
+key_concepts:
+- cell_potential
+prerequisites: []
+content_md: '# cell_potential — Practice 🚀
+
+
+  E°cell = E°cathode - E°anode = 0.34 - (-0.76) = 1.10 V
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: 'If E°(Cu²⁺/Cu) = 0.34 V and E°(Zn²⁺/Zn) = -0.76 V, what is the standard cell potential E°cell for a Zn-Cu cell?'
+  options:
+  - 1.10 V
+  - 0.42 V
+  - -0.42 V
+  - -1.10 V
+  correct_answer: 1.10 V
+  explanation: "The standard cell potential is calculated using: E°cell = E°cathode − E°anode. In a Zn-Cu cell, Cu²⁺ is reduced (cathode) and Zn is oxidized (anode) because Cu²⁺ has higher reduction potential. Therefore: E°cell = E°(Cu²⁺/Cu) − E°(Zn²⁺/Zn) = 0.34 − (−0.76) = 0.34 + 0.76 = 1.10 V. The positive value indicates this is a spontaneous reaction (galvanic cell). The cell reaction is: Zn + Cu²⁺ → Zn²⁺ + Cu."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: 'How do you determine which electrode acts as the cathode in a galvanic cell?'
+  options:
+  - The electrode with higher reduction potential
+  - The electrode with lower reduction potential
+  - The electrode with negative potential
+  - The electrode that is physically larger
+  correct_answer: The electrode with higher reduction potential
+  explanation: "In a galvanic cell, the electrode with the higher (more positive) standard reduction potential acts as the cathode where reduction occurs. The electrode with the lower (more negative) reduction potential acts as the anode where oxidation occurs. For example, between Cu²⁺/Cu (E° = +0.34 V) and Zn²⁺/Zn (E° = −0.76 V), Cu²⁺/Cu has the higher reduction potential, so Cu is the cathode and Zn is the anode. This makes sense: species that are more easily reduced (higher E°) will be reduced at the cathode."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: 'For the cell Ag⁺/Ag (E° = 0.80 V) and Fe²⁺/Fe (E° = -0.44 V), what is E°cell?'
+  options:
+  - 1.24 V
+  - 0.36 V
+  - -0.36 V
+  - -1.24 V
+  correct_answer: 1.24 V
+  explanation: "Using E°cell = E°cathode − E°anode: Ag⁺/Ag has the higher reduction potential (0.80 V), so it's the cathode. Fe²⁺/Fe has the lower reduction potential (−0.44 V), so it's the anode. E°cell = 0.80 − (−0.44) = 0.80 + 0.44 = 1.24 V. The positive E°cell indicates a spontaneous reaction. Cell reaction: 2Ag⁺ + Fe → 2Ag + Fe²⁺. Remember: Always subtract the anode potential from the cathode potential, with proper signs."
+  require_pass: true

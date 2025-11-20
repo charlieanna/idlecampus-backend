@@ -1,0 +1,44 @@
+slug: lesson-115
+title: Lesson 115
+difficulty: easy
+sequence_order: 115
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Ingress Controllers and Rules\n\n    -\
+  \ path vs host rules, pathType\n    - TLS termination\n    - common controllers\
+  \ (nginx, traefik)"
+exercises:
+  - type: mcq
+    sequence_order: 1
+    question: "What is the purpose of an Ingress resource in Kubernetes?"
+    options:
+      - "To provide a virtual IP for Services"
+      - "To manage external HTTP/HTTPS access to Services with routing rules"
+      - "To create network policies between pods"
+      - "To monitor incoming network traffic"
+    correct_answer: "To manage external HTTP/HTTPS access to Services with routing rules"
+    explanation: "An Ingress resource manages external HTTP and HTTPS access to Services within a Kubernetes cluster, providing advanced routing capabilities beyond simple port exposure. Unlike LoadBalancer Services which create one load balancer per Service (expensive in cloud environments), a single Ingress can route to multiple Services based on hostnames and URL paths. For example, you might route 'api.example.com/users' to the users-service, 'api.example.com/orders' to orders-service, and 'web.example.com' to frontend-service, all through one Ingress resource and one external load balancer. Ingress supports features like: path-based routing (route /api to one service, /web to another), host-based routing (different domains to different services), TLS termination (handle HTTPS at the edge), URL rewriting, and custom error pages. However, Ingress is just a specification - you need an Ingress Controller (like nginx-ingress, Traefik, HAProxy, or cloud-provider controllers) to implement the routing rules. The controller watches Ingress resources and configures the underlying load balancer accordingly. The pathType field controls matching behavior: 'Exact' matches the exact path, 'Prefix' matches based on URL path prefix (most common), and 'ImplementationSpecific' depends on the controller. Ingress provides a cost-effective, flexible solution for exposing multiple HTTP services externally, centralizing TLS management, and implementing sophisticated routing without multiple cloud load balancers."
+    require_pass: true
+  - type: mcq
+    sequence_order: 2
+    question: "What does TLS termination mean in the context of Kubernetes Ingress?"
+    options:
+      - "Blocking all TLS connections at the Ingress"
+      - "The Ingress decrypts HTTPS traffic and forwards unencrypted HTTP to backend Services"
+      - "Encrypting all traffic between pods"
+      - "Terminating idle TLS connections"
+    correct_answer: "The Ingress decrypts HTTPS traffic and forwards unencrypted HTTP to backend Services"
+    explanation: "TLS termination (or SSL termination) at the Ingress means the Ingress Controller handles HTTPS encryption/decryption, accepting encrypted traffic from clients and forwarding unencrypted HTTP traffic to backend Services within the cluster. This is the most common pattern because: 1) It centralizes certificate management at the Ingress rather than each Service, 2) Reduces CPU overhead on backend pods (no encryption/decryption), 3) Simplifies backend services (they only handle HTTP), and 4) Allows the Ingress to inspect HTTP content for routing decisions. To configure TLS termination, you create a Secret containing the TLS certificate and key, then reference it in the Ingress spec: 'tls: - hosts: - example.com, secretName: example-tls'. The Ingress Controller loads the certificate and serves HTTPS on port 443, forwarding decrypted traffic on HTTP port 80 to backend pods. Traffic flow: Client -> HTTPS -> Ingress (decrypts) -> HTTP -> Service -> Pods. For automation, tools like cert-manager can automatically provision and renew TLS certificates from Let's Encrypt and store them as Secrets. Alternative approaches include: TLS passthrough (Ingress forwards encrypted traffic directly to pods, which handle decryption), and end-to-end encryption (re-encrypt traffic from Ingress to pods using service mesh). For most use cases, TLS termination at Ingress provides the best balance of security, performance, and operational simplicity, securing traffic on the public internet while keeping internal cluster traffic unencrypted."
+    require_pass: true
+  - type: mcq
+    sequence_order: 3
+    question: "What is the difference between 'Prefix' and 'Exact' pathType in an Ingress rule?"
+    options:
+      - "Prefix is faster than Exact"
+      - "Prefix matches paths starting with the specified path; Exact requires an exact match"
+      - "Exact is case-sensitive while Prefix is not"
+      - "Prefix only works with wildcards"
+    correct_answer: "Prefix matches paths starting with the specified path; Exact requires an exact match"
+    explanation: "The pathType field in Ingress rules controls how path matching works when routing requests. 'Prefix' pathType matches any request where the URL path starts with the specified path, making it suitable for routing entire sections of an application. For example, a rule with path '/api' and pathType 'Prefix' matches '/api', '/api/', '/api/users', '/api/orders/123', etc. This is the most common pathType for REST APIs and applications organized by path hierarchies. 'Exact' pathType requires the URL path to match exactly, with no additional segments. A rule with path '/api' and pathType 'Exact' matches only '/api' or '/api/', but not '/api/users'. This is useful for specific endpoints like health checks or when you need strict control over routing. The third option, 'ImplementationSpecific', allows the Ingress Controller to define its own matching behavior (often similar to Prefix but with controller-specific nuances). Path matching follows longest-match-wins precedence - if multiple rules match, the one with the longest matching path is used. For example, with rules for '/api' (Prefix) and '/api/admin' (Prefix), a request to '/api/admin/users' matches the more specific '/api/admin' rule. When designing Ingress rules, use Prefix for flexible routing of path hierarchies, Exact for specific endpoints, and be aware of trailing slash behavior (controllers may normalize paths). Understanding pathType is crucial for avoiding routing conflicts and implementing secure, predictable HTTP routing."
+    require_pass: true

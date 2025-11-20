@@ -1,0 +1,59 @@
+slug: coordinationnumber-practice
+title: coordination_number — Practice
+difficulty: medium
+sequence_order: 23
+estimated_minutes: 2
+key_concepts:
+- coordination_number
+prerequisites: []
+content_md: '# coordination_number — Practice 🚀
+
+
+  FALSE. Coordination number = number of DONOR ATOMS, not number of ligands. Example:
+  [Co(en)₃]³⁺ has 3 ligands but CN = 6 (each en donates 2 atoms).
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: The coordination number depends on
+  options:
+  - the number of ligands
+  - the number of donor atoms
+  - the charge on the complex
+  - the oxidation state of the metal
+  correct_answer: the number of donor atoms
+  explanation: "Coordination number is the number of DONOR ATOMS bonded to the central metal ion, NOT the number of ligands. For example, [Co(en)₃]³⁺ has 3 ligands (en = ethylenediamine) but CN = 6 because each bidentate en ligand donates 2 atoms."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What is the coordination number in [Cu(NH₃)₄]²⁺?
+  options:
+  - '2'
+  - '4'
+  - '6'
+  - '8'
+  correct_answer: '4'
+  explanation: "In [Cu(NH₃)₄]²⁺, there are 4 NH₃ ligands, and each NH₃ is monodentate (donates 1 donor atom). Therefore, coordination number = 4 × 1 = 4. This complex has a square planar geometry."
+  require_pass: false
+- type: mcq
+  sequence_order: 3
+  question: What is the coordination number in [Fe(CN)₆]⁴⁻?
+  options:
+  - '2'
+  - '4'
+  - '6'
+  - '8'
+  correct_answer: '6'
+  explanation: "In [Fe(CN)₆]⁴⁻, there are 6 CN⁻ ligands, and each CN⁻ is monodentate (donates 1 donor atom through C). Therefore, coordination number = 6 × 1 = 6. This complex has an octahedral geometry."
+  require_pass: false

@@ -1,0 +1,154 @@
+slug: integrated-rate-laws-half-life-and-arrhenius-equation
+title: Integrated Rate Laws, Half-Life and Arrhenius Equation
+difficulty: easy
+sequence_order: 5
+estimated_minutes: 2
+key_concepts:
+- Integrated rate laws
+- Zero order kinetics
+- First order kinetics
+- Second order kinetics
+- Half-life
+- Arrhenius equation
+- Activation energy
+prerequisites: []
+content_md: "# Integrated Rate Laws, Half-Life and Arrhenius Equation \U0001F680\n\
+  \n# Integrated Rate Laws, Half-Life and Arrhenius Equation\n\n    ## Integrated\
+  \ Rate Laws\n\n    **Purpose:** Relate concentration to time\n\n    ### Zero Order\
+  \ Reaction:\n\n    **A → Products**\n\n    **Rate = k** (independent of [A])\n\n\
+  \    **Differential form:** -d[A]/dt = k\n\n    **Integrated form:** **[A] = [A]₀\
+  \ - kt**\n\n    Or: **[A]₀ - [A] = kt**\n\n    **Graph:** [A] vs t → **straight\
+  \ line**, slope = -k\n\n    **Units of k:** mol L⁻¹ s⁻¹\n\n    **Example:** Photochemical\
+  \ reactions, surface catalyzed reactions\n\n    ### First Order Reaction:\n\n  \
+  \  **A → Products**\n\n    **Rate = k[A]**\n\n    **Differential form:** -d[A]/dt\
+  \ = k[A]\n\n    **Integrated form:**\n\n    **ln[A] = ln[A]₀ - kt**\n\n    Or: **ln([A]₀/[A])\
+  \ = kt**\n\n    Or: **log([A]₀/[A]) = kt/2.303**\n\n    Or: **[A] = [A]₀e^(-kt)**\n\
+  \n    **Graph:** ln[A] vs t → **straight line**, slope = -k\n\n    **Units of k:**\
+  \ s⁻¹ or time⁻¹\n\n    **Examples:** Radioactive decay, N₂O₅ decomposition\n\n \
+  \   ### Second Order Reaction:\n\n    **Type 1: A + A → Products** (Rate = k[A]²)\n\
+  \n    **Integrated form:**\n\n    **1/[A] = 1/[A]₀ + kt**\n\n    Or: **1/[A] - 1/[A]₀\
+  \ = kt**\n\n    **Graph:** 1/[A] vs t → **straight line**, slope = k\n\n    **Type\
+  \ 2: A + B → Products** (Rate = k[A][B], if [A]₀ = [B]₀)\n\n    Same as Type 1\n\
+  \n    **Units of k:** L mol⁻¹ s⁻¹ or M⁻¹ s⁻¹\n\n    **Example:** 2HI → H₂ + I₂\n\
+  \n    ## Summary: Integrated Rate Laws\n\n    | Order | Integrated Form | Linear\
+  \ Plot | Slope | Units of k |\n    |-------|-----------------|-------------|-------|------------|\n\
+  \    | 0 | [A] = [A]₀ - kt | [A] vs t | -k | mol L⁻¹ s⁻¹ |\n    | 1 | ln[A] = ln[A]₀\
+  \ - kt | ln[A] vs t | -k | s⁻¹ |\n    | 2 | 1/[A] = 1/[A]₀ + kt | 1/[A] vs t | +k\
+  \ | L mol⁻¹ s⁻¹ |\n\n    ## Half-Life (t₁/₂)\n\n    **Definition:** Time required\
+  \ for concentration to reduce to half of initial value\n\n    **At t = t₁/₂:** [A]\
+  \ = [A]₀/2\n\n    ### Zero Order:\n\n    **[A]₀/2 = [A]₀ - kt₁/₂**\n\n    **t₁/₂\
+  \ = [A]₀/(2k)**\n\n    **t₁/₂ ∝ [A]₀** (depends on initial concentration)\n\n  \
+  \  ### First Order:\n\n    **ln([A]₀/([A]₀/2)) = kt₁/₂**\n    **ln 2 = kt₁/₂**\n\
+  \n    **t₁/₂ = 0.693/k = ln 2/k**\n\n    **t₁/₂ is constant** (independent of initial\
+  \ concentration)\n\n    This is characteristic of first order!\n\n    ### Second\
+  \ Order:\n\n    **1/([A]₀/2) = 1/[A]₀ + kt₁/₂**\n\n    **t₁/₂ = 1/(k[A]₀)**\n\n\
+  \    **t₁/₂ ∝ 1/[A]₀** (inversely proportional)\n\n    ## Comparison of Half-Lives\n\
+  \n    | Order | t₁/₂ Formula | Depends on [A]₀? |\n    |-------|--------------|------------------|\n\
+  \    | 0 | [A]₀/(2k) | Yes (∝ [A]₀) |\n    | 1 | 0.693/k | No (constant) |\n   \
+  \ | 2 | 1/(k[A]₀) | Yes (∝ 1/[A]₀) |\n\n    ## First Order Reaction Calculations\n\
+  \n    ### Important Relations:\n\n    **1. Number of half-lives:**\n\n    After\
+  \ n half-lives: **[A] = [A]₀/(2ⁿ)**\n\n    **2. Time for x% completion:**\n\n  \
+  \  If x% reacted, (100-x)% remains\n\n    **t = (2.303/k) log(100/(100-x))**\n\n\
+  \    **3. Time to reduce to 1/n of initial:**\n\n    **t = (2.303/k) log n**\n\n\
+  \    ## Solved Problems: Integrated Rate Laws\n\n    ### Problem 1: Zero order\n\
+  \n    **Q: For zero order reaction, [A]₀ = 0.8 M, k = 0.02 M/s. Find [A] after 10\
+  \ s.**\n\n    Solution:\n    [A] = [A]₀ - kt = 0.8 - 0.02 × 10\n    **[A] = 0.6\
+  \ M**\n\n    ### Problem 2: First order - find k\n\n    **Q: For first order reaction,\
+  \ 75% completed in 60 min. Find k.**\n\n    Solution:\n    - 75% completed → 25%\
+  \ remains\n    - [A]/[A]₀ = 0.25\n\n    k = (2.303/t) log([A]₀/[A])\n    k = (2.303/60)\
+  \ log(1/0.25)\n    k = (2.303/60) log 4\n    k = (2.303/60) × 0.602\n    **k = 0.0231\
+  \ min⁻¹**\n\n    ### Problem 3: First order - half-life\n\n    **Q: For first order\
+  \ reaction, k = 0.0693 min⁻¹. Find t₁/₂.**\n\n    Solution:\n    t₁/₂ = 0.693/k\
+  \ = 0.693/0.0693\n    **t₁/₂ = 10 min**\n\n    ### Problem 4: First order - after\
+  \ n half-lives\n\n    **Q: After 3 half-lives, what % of reactant remains?**\n\n\
+  \    Solution:\n    [A] = [A]₀/(2³) = [A]₀/8\n    **% remaining = 12.5%**\n    **%\
+  \ reacted = 87.5%**\n\n    ### Problem 5: Second order\n\n    **Q: For 2A → Products\
+  \ (second order), [A]₀ = 0.1 M, k = 0.5 M⁻¹s⁻¹. Find [A] after 10 s.**\n\n    Solution:\n\
+  \    1/[A] = 1/[A]₀ + kt\n    1/[A] = 1/0.1 + 0.5 × 10\n    1/[A] = 10 + 5 = 15\n\
+  \    **[A] = 1/15 = 0.067 M**\n\n    ### Problem 6: Determine order from half-life\n\
+  \n    **Q: Half-life of reaction doubles when initial concentration is halved. Find\
+  \ order.**\n\n    Solution:\n    - For zero order: t₁/₂ ∝ [A]₀ → halving [A]₀ halves\
+  \ t₁/₂ ✗\n    - For first order: t₁/₂ constant → no change ✗\n    - For second order:\
+  \ t₁/₂ ∝ 1/[A]₀ → halving [A]₀ doubles t₁/₂ ✓\n\n    **Order = 2** (second order)\n\
+  \n    ## Arrhenius Equation\n\n    **Statement:** Rate constant increases exponentially\
+  \ with temperature\n\n    **k = Ae^(-Ea/RT)**\n\n    Where:\n    - k = rate constant\n\
+  \    - A = pre-exponential factor (frequency factor)\n    - Ea = activation energy\
+  \ (J/mol)\n    - R = 8.314 J/(mol·K)\n    - T = temperature (K)\n\n    ### Logarithmic\
+  \ Form:\n\n    **ln k = ln A - Ea/(RT)**\n\n    Or: **log k = log A - Ea/(2.303RT)**\n\
+  \n    **Graph:** log k vs 1/T → straight line\n    - Slope = -Ea/(2.303R)\n    -\
+  \ Intercept = log A\n\n    ## Activation Energy (Ea)\n\n    **Definition:** Minimum\
+  \ energy required for reaction to occur\n\n    **Higher Ea** → Slower reaction\n\
+  \    **Lower Ea** → Faster reaction\n\n    ### Effect of Temperature:\n\n    At\
+  \ two different temperatures:\n\n    **ln(k₂/k₁) = (Ea/R)(1/T₁ - 1/T₂)**\n\n   \
+  \ Or: **log(k₂/k₁) = (Ea/2.303R)(T₂-T₁)/(T₁T₂)**\n\n    Or: **log(k₂/k₁) = (Ea/2.303R)(ΔT)/(T₁T₂)**\n\
+  \n    ### Determination of Ea:\n\n    **Method 1:** Plot log k vs 1/T, slope = -Ea/(2.303R)\n\
+  \n    **Method 2:** Use k at two temperatures:\n    Ea = (2.303R log(k₂/k₁))/(1/T₁\
+  \ - 1/T₂)\n\n    ## Solved Problems: Arrhenius Equation\n\n    ### Problem 1: Calculate\
+  \ Ea\n\n    **Q: Rate constant doubles when temperature increases from 300 K to\
+  \ 310 K. Calculate Ea. (R = 8.314 J/mol·K)**\n\n    Solution:\n    k₂/k₁ = 2, T₁\
+  \ = 300 K, T₂ = 310 K\n\n    log(k₂/k₁) = (Ea/2.303R)(T₂-T₁)/(T₁T₂)\n    log 2 =\
+  \ (Ea/(2.303 × 8.314)) × (10)/(300 × 310)\n    0.301 = (Ea/19.15) × (10/93,000)\n\
+  \    0.301 = Ea/(19.15 × 9,300)\n    Ea = 0.301 × 178,095\n    **Ea ≈ 53,607 J/mol\
+  \ = 53.6 kJ/mol**\n\n    ### Problem 2: Calculate k at different T\n\n    **Q: k\
+  \ = 0.01 s⁻¹ at 300 K, Ea = 50 kJ/mol. Find k at 320 K.**\n\n    Solution:\n   \
+  \ log(k₂/k₁) = (Ea/2.303R)(T₂-T₁)/(T₁T₂)\n    log(k₂/0.01) = (50,000/(2.303 × 8.314))\
+  \ × (20)/(300 × 320)\n    log(k₂/0.01) = 2612.4 × (20/96,000)\n    log(k₂/0.01)\
+  \ = 0.544\n    k₂/0.01 = 10^0.544 = 3.5\n    **k₂ = 0.035 s⁻¹**\n\n    ### Problem\
+  \ 3: Effect of catalyst\n\n    **Q: Catalyst reduces Ea from 100 kJ to 80 kJ at\
+  \ 300 K. Find ratio k_catalyzed/k_uncatalyzed.**\n\n    Solution:\n    ln(k₂/k₁)\
+  \ = (ΔEa)/(RT) = (Ea1 - Ea2)/(RT)\n    = (100,000 - 80,000)/(8.314 × 300)\n    =\
+  \ 20,000/2,494.2 = 8.02\n\n    k₂/k₁ = e^8.02 = **3,032**\n\n    Catalyst increases\
+  \ rate by ~3000 times!\n\n    ## Collision Theory\n\n    **Statement:** For reaction\
+  \ to occur:\n    1. Molecules must collide\n    2. With sufficient energy (≥ Ea)\n\
+  \    3. With proper orientation\n\n    **Rate ∝ (Collision frequency) × (Fraction\
+  \ with E ≥ Ea) × (Orientation factor)**\n\n    **Fraction with E ≥ Ea = e^(-Ea/RT)**\
+  \ (Boltzmann distribution)\n\n    This explains Arrhenius equation!\n\n    ## IIT\
+  \ JEE Key Points\n\n    1. **Zero order:** [A] = [A]₀ - kt, t₁/₂ = [A]₀/(2k)\n \
+  \   2. **First order:** ln[A] = ln[A]₀ - kt, t₁/₂ = 0.693/k\n    3. **Second order:**\
+  \ 1/[A] = 1/[A]₀ + kt, t₁/₂ = 1/(k[A]₀)\n    4. **First order t₁/₂:** Independent\
+  \ of [A]₀\n    5. **After n half-lives:** [A] = [A]₀/(2ⁿ)\n    6. **Arrhenius:**\
+  \ k = Ae^(-Ea/RT)\n    7. **log(k₂/k₁) = (Ea/2.303R)(ΔT)/(T₁T₂)**\n    8. **Higher\
+  \ Ea:** Slower reaction\n    9. **Catalyst:** Lowers Ea\n    10. **Collision theory:**\
+  \ E ≥ Ea + proper orientation\n\n    ## Quick Formulas\n\n    | Concept | Formula\
+  \ |\n    |---------|---------|\n    | Zero order | [A] = [A]₀ - kt |\n    | First\
+  \ order | ln([A]₀/[A]) = kt |\n    | Second order | 1/[A] - 1/[A]₀ = kt |\n    |\
+  \ t₁/₂ (0th order) | [A]₀/(2k) |\n    | t₁/₂ (1st order) | 0.693/k |\n    | t₁/₂\
+  \ (2nd order) | 1/(k[A]₀) |\n    | Arrhenius | ln k = ln A - Ea/RT |\n    | Ea from\
+  \ two T | (2.303R log(k₂/k₁))/(1/T₁-1/T₂) |\n\n    ## Important Constants\n\n  \
+  \  - **R** = 8.314 J/(mol·K)\n    - **ln 2** = 0.693\n    - **log 2** = 0.301\n\
+  \    - **2.303** = conversion factor (ln to log)\n\n## Key Points\n\n- Integrated\
+  \ rate laws\n\n- Zero order kinetics\n\n- First order kinetics"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: "A first-order reaction is 75% complete in 60 minutes. What is the value of the rate constant k?"
+  options:
+  - "0.0116 min⁻¹"
+  - "0.0231 min⁻¹"
+  - "0.0462 min⁻¹"
+  - "0.0693 min⁻¹"
+  correct_answer: "0.0231 min⁻¹"
+  explanation: "For a first-order reaction, we use the integrated rate law: ln([A]₀/[A]) = kt or in base-10: log([A]₀/[A]) = kt/2.303. If the reaction is 75% complete, it means 75% has reacted and 25% remains. Therefore, [A]/[A]₀ = 0.25, or equivalently [A]₀/[A] = 1/0.25 = 4. Substituting into the formula: k = (2.303/t) × log([A]₀/[A]) = (2.303/60) × log(4) = (2.303/60) × 0.602 = 0.03838 × 0.602 = 0.0231 min⁻¹. This problem demonstrates a key concept: for first-order reactions, you can easily calculate k if you know the time and extent of completion. Remember: 75% complete means [A] = 0.25[A]₀, 50% complete means [A] = 0.5[A]₀ (one half-life), 87.5% complete means 3 half-lives have passed ([A] = [A]₀/8), and so on. The first-order integrated rate law is particularly important because it applies to radioactive decay and many decomposition reactions."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: "The half-life of a reaction doubles when the initial concentration is halved. What is the order of the reaction?"
+  options:
+  - "Zero order"
+  - "First order"
+  - "Second order"
+  - "Third order"
+  correct_answer: "Second order"
+  explanation: "The relationship between half-life and initial concentration is different for each order of reaction, which provides a powerful method to determine order experimentally. For zero-order: t₁/₂ = [A]₀/(2k), so t₁/₂ ∝ [A]₀; if [A]₀ is halved, t₁/₂ is also halved (not doubled). For first-order: t₁/₂ = 0.693/k, which is independent of [A]₀; changing [A]₀ has no effect on t₁/₂. For second-order: t₁/₂ = 1/(k[A]₀), so t₁/₂ ∝ 1/[A]₀; if [A]₀ is halved, t₁/₂ doubles. This matches our condition perfectly. For third-order: t₁/₂ ∝ 1/[A]₀², so halving [A]₀ would quadruple t₁/₂. Therefore, the reaction must be second order. This is a characteristic test: first-order reactions have constant half-life, zero-order half-lives decrease with decreasing concentration, and higher-order half-lives increase with decreasing concentration. This principle is widely used in IIT JEE problems to identify reaction order without needing the full concentration-time data."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: "The rate constant of a reaction doubles when temperature increases from 300 K to 310 K. What is the approximate activation energy? (R = 8.314 J mol⁻¹ K⁻¹)"
+  options:
+  - "28.5 kJ/mol"
+  - "53.6 kJ/mol"
+  - "76.2 kJ/mol"
+  - "104.8 kJ/mol"
+  correct_answer: "53.6 kJ/mol"
+  explanation: "To find the activation energy from the effect of temperature on rate constant, we use the Arrhenius equation in its two-temperature form: log(k₂/k₁) = (Ea/2.303R) × (T₂-T₁)/(T₁T₂). Given: k₂/k₁ = 2, T₁ = 300 K, T₂ = 310 K, R = 8.314 J mol⁻¹ K⁻¹. Substituting: log(2) = (Ea/(2.303 × 8.314)) × (10)/(300 × 310). We know log(2) = 0.301. Therefore: 0.301 = (Ea/19.15) × (10/93000) = (Ea/19.15) × (1/9300). Solving: Ea = 0.301 × 19.15 × 9300 = 0.301 × 178,095 = 53,607 J/mol ≈ 53.6 kJ/mol. This activation energy is moderate - typical for many chemical reactions. Low Ea (<40 kJ/mol) means fast reactions, high Ea (>100 kJ/mol) means slow reactions. The rule of thumb that 'rate doubles for every 10°C rise' applies to reactions with Ea around 50-60 kJ/mol at room temperature. Catalysts work by lowering Ea, which exponentially increases the rate according to k = Ae^(-Ea/RT)."
+  require_pass: true

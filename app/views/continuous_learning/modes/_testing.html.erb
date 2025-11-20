@@ -1,0 +1,414 @@
+<div class="testing-content">
+  <div class="content-header">
+    <div class="mode-badge testing-badge">
+      <span class="badge-icon">🧪</span>
+      <span class="badge-text">Practice Mode</span>
+    </div>
+  </div>
+
+  <div class="challenge-box">
+    <div class="challenge-icon">💪</div>
+    <div class="challenge-text">
+      <h2 class="challenge-title">Your Challenge</h2>
+  <% if content[:type] == 'command_review' %>
+        <p class="challenge-desc"><%= content[:content][:title] %></p>
+  <% elsif content[:type] == 'quick_review' || content[:type] == 'scenario_review' %>
+        <p class="challenge-desc"><%= content[:content][:scenario_narrative] || content[:content][:title] %></p>
+  <% else %>
+        <p class="challenge-desc"><%= content[:content][:description] || content[:content][:task] || "Type the correct Docker command" %></p>
+  <% end %>
+    </div>
+  </div>
+  
+  <div class="input-section">
+    <div class="input-wrapper">
+      <span class="input-icon">$</span>
+  <input type="text"
+         class="response-input"
+         id="userResponse"
+             placeholder="<% if content[:type] == 'quick_review' || content[:type] == 'scenario_review' %>Type the command you learned...<% else %>docker ...<% end %>"
+         autocomplete="off"
+         onpaste="return false"
+         ondrop="return false"
+         >
+      <div class="input-glow"></div>
+    </div>
+    
+    <div class="input-hint">
+      Press <kbd>Enter</kbd> to submit · Type the command (copy/paste disabled)
+    </div>
+    
+    <div class="paste-disabled-message" id="pasteMessage" style="display: none; color: #ff6b6b; font-size: 0.85rem; margin-top: 8px;">
+      ⚠ Paste disabled - type the command to learn!
+    </div>
+  </div>
+  
+  <div id="feedbackArea" class="feedback-container"></div>
+  
+  <div class="actions-row">
+    <button class="submit-button" id="submitBtn" data-action="test_answer">
+      <span class="btn-icon">→</span>
+      Submit Answer
+    </button>
+    
+    <% if defined?(session) && session[:hints_used] && session[:hints_used] < 3 %>
+      <button class="hint-button" id="hintBtn" data-action="request_hint">
+        <span class="hint-icon">💡</span>
+        Get a Hint
+        <span class="hint-count">(<%= 3 - session[:hints_used] %> left)</span>
+      </button>
+    <% else %>
+      <button class="hint-button" id="hintBtn" data-action="request_hint">
+        <span class="hint-icon">💡</span>
+        Get a Hint
+      </button>
+    <% end %>
+  </div>
+  
+  <div id="hintArea" class="hint-container"></div>
+</div>
+
+<style>
+.testing-content {
+  animation: fadeInContent 0.5s ease-out;
+}
+
+.testing-badge {
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  color: white;
+  box-shadow: 0 4px 15px rgba(79, 172, 254, 0.3);
+}
+
+.challenge-box {
+  display: flex;
+  gap: 20px;
+  padding: 35px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 20px;
+  color: white;
+  margin: 30px 0;
+  box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+  animation: slideDown 0.5s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.challenge-icon {
+  font-size: 3.5rem;
+  flex-shrink: 0;
+  animation: bounce 2s infinite;
+}
+
+.challenge-text {
+  flex: 1;
+}
+
+.challenge-title {
+  font-size: 1.8rem;
+  font-weight: 800;
+  margin: 0 0 10px 0;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+}
+
+.challenge-desc {
+  font-size: 1.2rem;
+  margin: 0;
+  opacity: 0.95;
+  line-height: 1.5;
+}
+
+.input-section {
+  margin: 40px 0;
+}
+
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: #2c3e50;
+  border-radius: 15px;
+  padding: 5px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+  transition: all 0.3s ease;
+}
+
+.input-wrapper:focus-within {
+  box-shadow: 0 8px 35px rgba(102, 126, 234, 0.4);
+  transform: translateY(-2px);
+}
+
+.input-icon {
+  padding: 0 20px;
+  font-size: 1.5rem;
+  color: #00f2fe;
+  font-weight: 700;
+  font-family: 'Monaco', 'Courier New', monospace;
+}
+
+.response-input {
+  flex: 1;
+  padding: 20px 20px 20px 0;
+  font-size: 1.2rem;
+  font-family: 'Monaco', 'Courier New', monospace;
+  background: transparent;
+  border: none;
+  color: #00f2fe;
+  outline: none;
+}
+
+.response-input::placeholder {
+  color: #7f8c8d;
+}
+
+.input-glow {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+}
+
+.input-wrapper:focus-within .input-glow {
+  transform: scaleX(1);
+}
+
+.input-hint {
+  margin-top: 12px;
+  text-align: center;
+  font-size: 0.9rem;
+  color: #7f8c8d;
+}
+
+.input-hint kbd {
+  display: inline-block;
+  padding: 3px 8px;
+  background: #f0f0f0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-family: monospace;
+  font-size: 0.85rem;
+  box-shadow: 0 2px 0 #999;
+}
+
+.feedback-container {
+  min-height: 60px;
+  margin: 25px 0;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.actions-row {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.submit-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 18px 40px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: white;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+}
+
+.submit-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 35px rgba(102, 126, 234, 0.5);
+}
+
+.submit-button:active {
+  transform: translateY(-1px);
+}
+
+.hint-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 18px 30px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #667eea;
+  background: white;
+  border: 2px solid #667eea;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.hint-button:hover {
+  background: #667eea;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3);
+}
+
+.hint-icon {
+  font-size: 1.3rem;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+.hint-count {
+  font-size: 0.85rem;
+  opacity: 0.8;
+}
+
+.hint-container {
+  margin-top: 25px;
+  animation: slideDown 0.4s ease-out;
+}
+
+/* Feedback Styles */
+.feedback-message {
+  padding: 20px 25px;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  animation: bounceIn 0.5s ease-out;
+}
+
+@keyframes bounceIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.feedback-success {
+  background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+  color: white;
+  box-shadow: 0 6px 20px rgba(17, 153, 142, 0.3);
+}
+
+.feedback-error {
+  background: linear-gradient(135deg, #ee0979 0%, #ff6a00 100%);
+  color: white;
+  box-shadow: 0 6px 20px rgba(238, 9, 121, 0.3);
+}
+
+.hint-box {
+  padding: 20px 25px;
+  background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+  border-left: 5px solid #fdcb6e;
+  border-radius: 12px;
+  color: #2d3436;
+  font-size: 1rem;
+  line-height: 1.6;
+  box-shadow: 0 4px 15px rgba(253, 203, 110, 0.3);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .challenge-box {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .challenge-title {
+    font-size: 1.5rem;
+  }
+  
+  .actions-row {
+    flex-direction: column;
+  }
+  
+  .submit-button,
+  .hint-button {
+    width: 100%;
+    justify-content: center;
+  }
+}
+</style>
+
+<script>
+(function() {
+  const input = document.getElementById('userResponse');
+  const submitBtn = document.getElementById('submitBtn');
+  
+  if (input) {
+  // Allow Enter key to submit
+    input.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter' && submitBtn) {
+        submitBtn.click();
+    }
+  });
+  
+  // Block Ctrl+V and Ctrl+C
+    input.addEventListener('keydown', function(e) {
+      if ((e.ctrlKey || e.metaKey) && (e.key === 'v' || e.key === 'V' || e.key === 'c' || e.key === 'C')) {
+        e.preventDefault();
+        if ((e.ctrlKey || e.metaKey) && (e.key === 'v' || e.key === 'V')) {
+          // Show paste disabled message
+          const pasteMessage = document.getElementById('pasteMessage');
+          if (pasteMessage) {
+            pasteMessage.style.display = 'block';
+            pasteMessage.style.opacity = '1';
+            pasteMessage.style.transition = 'opacity 0.3s ease';
+            setTimeout(() => {
+              pasteMessage.style.opacity = '0.5';
+            }, 200);
+          }
+        }
+      }
+    });
+  
+  // Block paste event directly
+    input.addEventListener('paste', function(e) {
+      e.preventDefault();
+      const pasteMessage = document.getElementById('pasteMessage');
+      if (pasteMessage) {
+        pasteMessage.style.display = 'block';
+        pasteMessage.style.opacity = '1';
+        pasteMessage.style.transition = 'opacity 0.3s ease';
+        setTimeout(() => {
+          pasteMessage.style.opacity = '0.5';
+        }, 200);
+      }
+    });
+  
+  // Block cut event
+    input.addEventListener('cut', function(e) {
+      e.preventDefault();
+    });
+  
+  // Focus input immediately
+    input.focus();
+    
+    // Add typing animation
+    input.addEventListener('input', function() {
+      this.style.color = '#00f2fe';
+    });
+  }
+})();
+</script>

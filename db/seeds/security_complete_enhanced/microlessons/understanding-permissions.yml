@@ -1,0 +1,68 @@
+slug: understanding-permissions
+title: Understanding Permissions
+sequence_order: 4
+estimated_minutes: 2
+difficulty: easy
+content_md: "# Understanding Permissions \U0001F680\n\n# Understanding File Permissions\n\
+  \n    Linux uses a permission system to control access to files and directories.\n\
+  \n    ## Permission Types\n\n    Each file has three permission types:\n    - **r\
+  \ (read)**: View file contents or list directory\n    - **w (write)**: Modify file\
+  \ or directory contents\n    - **x (execute)**: Run file as program or access directory\n\
+  \n    ## Permission Groups\n\n    Permissions apply to three groups:\n    - **Owner\
+  \ (u)**: The user who owns the file\n    - **Group (g)**: Users in the file's group\n\
+  \    - **Others (o)**: Everyone else\n\n    ## Reading Permissions\n\n    ```bash\n\
+  \    ls -l file.txt\n    # -rw-r--r-- 1 user group 1234 Jan 15 10:00 file.txt\n\
+  \    #  │││ │││ │││\n    #  │││ │││ │└─ others permissions (r--)\n    #  │││ │└────\
+  \ group permissions (r--)\n    #  │└────── owner permissions (rw-)\n    #  └─────────\
+  \ file type (- = regular file, d = directory)\n    ```\n\n    ### Permission Breakdown\n\
+  \n    | Position | Meaning | Example |\n    |----------|---------|---------|\n \
+  \   | 1 | File type | `-` (file), `d` (directory), `l` (link) |\n    | 2-4 | Owner\
+  \ permissions | `rw-` (read, write, no execute) |\n    | 5-7 | Group permissions\
+  \ | `r--` (read only) |\n    | 8-10 | Other permissions | `r--` (read only) |\n\n\
+  \    ## Numeric (Octal) Permissions\n\n    Permissions can be represented as numbers:\n\
+  \    - **r (read) = 4**\n    - **w (write) = 2**\n    - **x (execute) = 1**\n\n\
+  \    Add them together for each group:\n\n    ```\n    rwx = 4 + 2 + 1 = 7\n   \
+  \ rw- = 4 + 2 + 0 = 6\n    r-- = 4 + 0 + 0 = 4\n    r-x = 4 + 0 + 1 = 5\n    ```\n\
+  \n    ### Common Permission Modes\n\n    | Octal | Symbolic | Meaning |\n    |-------|----------|---------|\n\
+  \    | 644 | rw-r--r-- | Owner read/write, others read |\n    | 755 | rwxr-xr-x\
+  \ | Owner all, others read/execute |\n    | 600 | rw------- | Owner read/write only\
+  \ |\n    | 700 | rwx------ | Owner all, no access for others |\n    | 777 | rwxrwxrwx\
+  \ | Everyone all (dangerous!) |\n\n    ## Changing Permissions with chmod\n\n  \
+  \  ### Symbolic Mode\n\n    ```bash\n    # Add execute for owner\n    chmod u+x\
+  \ script.sh\n\n    # Remove write for group\n    chmod g-w file.txt\n\n    # Set\
+  \ read for others\n    chmod o=r file.txt\n\n    # Add read for everyone\n    chmod\
+  \ a+r file.txt\n\n    # Multiple changes\n    chmod u+x,g-w,o-r file.txt\n    ```\n\
+  \n    ### Numeric Mode\n\n    ```bash\n    # Owner: rw-, Group: r--, Others: r--\
+  \ (644)\n    chmod 644 file.txt\n\n    # Owner: rwx, Group: r-x, Others: r-x (755)\n\
+  \    chmod 755 script.sh\n\n    # Owner: rwx, Group: ---, Others: --- (700)\n  \
+  \  chmod 700 private_script.sh\n\n    # Recursive chmod\n    chmod -R 755 /var/www/html/\n\
+  \    ```\n\n    ## Changing Ownership\n\n    ```bash\n    # Change owner\n    sudo\
+  \ chown newuser file.txt\n\n    # Change owner and group\n    sudo chown newuser:newgroup\
+  \ file.txt\n\n    # Change group only\n    sudo chgrp newgroup file.txt\n\n    #\
+  \ Recursive ownership change\n    sudo chown -R user:group /path/to/directory/\n\
+  \    ```\n\n    ## Best Practices\n\n    1. **Principle of Least Privilege**: Grant\
+  \ minimum permissions needed\n    2. **Avoid 777**: Never use unless absolutely\
+  \ necessary\n    3. **Scripts**: Use 755 for executable scripts\n    4. **Config\
+  \ Files**: Use 644 for readable configs, 600 for secrets\n    5. **Directories**:\
+  \ Need execute (x) permission to access contents"
+exercises:
+- type: mcq
+  slug: understanding-permissions-mcq
+  sequence_order: 1
+  question: What does the permission mode 644 mean in octal notation?
+  options:
+  - Owner can read and write, group and others can only read (rw-r--r--)
+  - Owner can read, write, and execute, group and others have no access
+  - All users can read and write but cannot execute
+  - Owner can execute, group can write, others can read
+  correct_answer_index: 0
+  explanation: In octal notation, each digit represents permissions for owner, group,
+    and others. 644 breaks down as 6(owner)=rw- (4+2), 4(group)=r-- (4), 4(others)=r--
+    (4). This is the standard permission for regular files where the owner can modify
+    the file but everyone can read it. Calculate permissions by adding r=4, w=2, x=1
+    for each group.
+objectives:
+- Define the control
+- Choose tooling
+- Integrate checks in CI/CD
+next_recommended: []

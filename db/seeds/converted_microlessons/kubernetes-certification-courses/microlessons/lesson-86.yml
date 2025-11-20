@@ -1,0 +1,43 @@
+slug: lesson-86
+title: Lesson 86
+difficulty: easy
+sequence_order: 86
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# CoreDNS and Service Discovery\n\n    -\
+  \ Server blocks and stub domains\n    - Service discovery patterns"
+exercises:
+  - type: mcq
+    sequence_order: 1
+    question: "What is the primary function of CoreDNS in a Kubernetes cluster?"
+    options:
+      - "To provide external DNS resolution for internet domains"
+      - "To provide service discovery and DNS resolution for cluster services and pods"
+      - "To manage SSL certificates for services"
+      - "To route external traffic to cluster services"
+    correct_answer: "To provide service discovery and DNS resolution for cluster services and pods"
+    explanation: "CoreDNS is the default DNS server in Kubernetes clusters and serves as the foundation for service discovery. It provides DNS-based name resolution for services and pods within the cluster, allowing applications to discover and communicate with each other using friendly DNS names instead of IP addresses. When a service is created, CoreDNS automatically creates DNS records (like my-service.my-namespace.svc.cluster.local) that resolve to the service's ClusterIP. CoreDNS also handles pod DNS records and supports various plugins for additional functionality. While it can forward external DNS queries to upstream resolvers, its primary role is internal cluster DNS resolution. This is distinct from ingress controllers that handle external traffic routing, or cert-manager that manages certificates. CoreDNS's role in service discovery makes it a critical component for microservices architectures where services need to find and communicate with each other dynamically."
+    require_pass: true
+  - type: mcq
+    sequence_order: 2
+    question: "What are server blocks in CoreDNS configuration used for?"
+    options:
+      - "To define different DNS zones with specific handling rules and plugins"
+      - "To block malicious DNS queries"
+      - "To create firewall rules for DNS traffic"
+      - "To configure pod networking policies"
+    correct_answer: "To define different DNS zones with specific handling rules and plugins"
+    explanation: "Server blocks in CoreDNS are configuration sections that define how different DNS zones should be handled. Each server block specifies a zone (like cluster.local or a custom domain) and the plugins that should process queries for that zone. This allows administrators to apply different DNS resolution logic to different domains. For example, you might have one server block for cluster.local that uses the kubernetes plugin for service discovery, another server block for a custom internal domain that uses the file plugin to serve static records, and a forward block to send external queries to upstream DNS servers. Server blocks enable flexible DNS configuration, supporting use cases like stub domains for specific subdomains, conditional forwarding, and custom DNS resolution logic. This is more sophisticated than simple DNS blocking or firewall rules; it's about defining comprehensive DNS resolution behavior for different namespaces and domains within your infrastructure."
+    require_pass: true
+  - type: mcq
+    sequence_order: 3
+    question: "In the context of Kubernetes service discovery, what pattern does the fully qualified domain name (FQDN) for a service follow?"
+    options:
+      - "service-name.cluster-name.svc.cluster.local"
+      - "service-name.namespace-name.svc.cluster.local"
+      - "namespace-name.service-name.pod.cluster.local"
+      - "service-name.pod-name.svc.cluster.local"
+    correct_answer: "service-name.namespace-name.svc.cluster.local"
+    explanation: "The standard FQDN pattern for Kubernetes services follows the format: service-name.namespace-name.svc.cluster.local. This hierarchical naming scheme enables precise service discovery across namespaces. The 'service-name' is the name defined in the Service resource, 'namespace-name' is the namespace where the service exists, 'svc' indicates it's a service (as opposed to a pod), and 'cluster.local' is the default cluster domain. For example, a service named 'database' in the 'production' namespace would be accessible at 'database.production.svc.cluster.local'. Pods within the same namespace can use the short name 'database', while pods in other namespaces must use the full FQDN or at least 'database.production'. This naming pattern is crucial for understanding how applications discover and connect to services in Kubernetes, and it's automatically configured by CoreDNS when services are created. The pattern differs from pod DNS names which follow a different format."
+    require_pass: true

@@ -1,0 +1,43 @@
+slug: lesson-95
+title: Lesson 95
+difficulty: easy
+sequence_order: 95
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Pod Disruption Budgets\n\n    - minAvailable\
+  \ vs maxUnavailable\n    - voluntary disruptions and drains"
+exercises:
+  - type: mcq
+    sequence_order: 1
+    question: "What is the primary purpose of a PodDisruptionBudget (PDB) in Kubernetes?"
+    options:
+      - "To limit the cost of running pods in the cluster"
+      - "To ensure a minimum number of pods remain available during voluntary disruptions like node drains"
+      - "To prevent pods from using too many resources"
+      - "To control network traffic to pods"
+    correct_answer: "To ensure a minimum number of pods remain available during voluntary disruptions like node drains"
+    explanation: "A PodDisruptionBudget (PDB) is a Kubernetes resource that helps maintain application availability during voluntary disruptions - planned maintenance activities like node drains, cluster upgrades, or pod evictions initiated by administrators. PDBs specify either the minimum number of pods (minAvailable) or the maximum number of pods (maxUnavailable) that can be down simultaneously during such disruptions. When you drain a node with 'kubectl drain', the eviction API respects PDBs and won't evict pods if doing so would violate the budget. For example, a PDB with minAvailable: 2 for a deployment ensures at least 2 replicas remain running during any voluntary disruption. This prevents accidentally taking down an entire application during maintenance. PDBs only apply to voluntary disruptions - they don't prevent involuntary disruptions like node failures, hardware issues, or resource-based evictions. They're essential for maintaining high availability during operational activities. Without PDBs, draining nodes could temporarily or completely disrupt applications, making them critical for production environments that require continuous availability."
+    require_pass: true
+  - type: mcq
+    sequence_order: 2
+    question: "What is the difference between minAvailable and maxUnavailable in a PodDisruptionBudget?"
+    options:
+      - "minAvailable specifies minimum pods that must be running; maxUnavailable specifies maximum pods that can be down simultaneously"
+      - "minAvailable applies to deployments; maxUnavailable applies to statefulsets"
+      - "They are the same and can be used interchangeably"
+      - "minAvailable is for memory; maxUnavailable is for CPU"
+    correct_answer: "minAvailable specifies minimum pods that must be running; maxUnavailable specifies maximum pods that can be down simultaneously"
+    explanation: "minAvailable and maxUnavailable are two different ways to express the same goal of maintaining availability, but they approach it from opposite perspectives. minAvailable specifies the minimum number (or percentage) of pods that must remain available and healthy during a disruption. For example, minAvailable: 3 means at least 3 pods must always be running. maxUnavailable specifies the maximum number (or percentage) of pods that can be unavailable simultaneously. For example, maxUnavailable: 1 means only one pod can be down at a time. You must specify one or the other, not both. The choice often depends on what's more intuitive for your use case. For a 5-replica deployment, minAvailable: 4 and maxUnavailable: 1 are equivalent. Percentages are useful for dynamic scaling scenarios - minAvailable: 50% ensures at least half the pods are always available regardless of the total replica count. The disruption controller continuously monitors the budget and prevents evictions that would violate it. Understanding this distinction helps you correctly specify availability requirements for different applications and deployment patterns."
+    require_pass: true
+  - type: mcq
+    sequence_order: 3
+    question: "Which type of disruption is NOT protected by a PodDisruptionBudget?"
+    options:
+      - "kubectl drain node"
+      - "Cluster autoscaler node removal"
+      - "Node hardware failure"
+      - "Manual pod deletion with eviction API"
+    correct_answer: "Node hardware failure"
+    explanation: "PodDisruptionBudgets only protect against voluntary disruptions - planned, administrative actions that use the Kubernetes eviction API. Examples include: node drains (kubectl drain), cluster autoscaler removing nodes, manual pod evictions, and cluster upgrades. These operations respect PDBs and will wait or fail if evicting pods would violate the budget. However, PDBs do not and cannot protect against involuntary disruptions - unexpected events like node hardware failures, network partitions, out-of-memory kills, kernel panics, or force-deleted pods (kubectl delete pod --force). When a node fails unexpectedly, pods on that node become unavailable immediately regardless of any PDBs. This is a critical distinction: PDBs help maintain availability during operational activities you control, but they don't provide protection against infrastructure failures. For comprehensive high availability, you need multiple strategies: PDBs for voluntary disruptions, sufficient replicas spread across failure domains for involuntary disruptions, proper resource requests/limits to prevent resource-based evictions, and monitoring to detect and respond to failures quickly. Understanding what PDBs can and cannot protect is essential for proper availability planning."
+    require_pass: true

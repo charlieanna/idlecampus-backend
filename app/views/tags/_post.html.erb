@@ -1,0 +1,33 @@
+<tr data-post-id="<%= post['id'] %>" data-database="<%= post['database'] %>">
+  <td>
+  <% if post['database'] == 'stackoverflow' %>
+    <%= link_to post['id'],
+        "https://stackoverflow.com/questions/#{post['id']}",
+        target: "notal", 
+        rel: "noopener noreferrer", 
+        class: "api-caller-link" %>
+  <% else %>
+    <%= link_to post['id'], 
+        "https://#{post['site']}/questions/#{post['id']}",
+        target: "notal", 
+        rel: "noopener noreferrer", 
+        class: "api-caller-link" %>
+  <% end %>
+</td>
+  <td><%= post['title'] %></td>
+  <td><%= post['score'] %></td>
+  <td>
+    <% post['tags'].each_with_index do |tag, index| %>
+      <%= link_to tag, tag_path(tag_name: tag), target: "_blank", rel: "noopener noreferrer" %>
+      <% unless index == post['tags'].length - 1 %>
+        |
+      <% end %>
+    <% end %>
+  </td>
+  <td>
+    <%= link_to post['out_degree'], rlevel_show_path(post['id'], post['database']), target: "_blank", rel: "noopener noreferrer" %>
+  </td>
+  <td>
+    <%= link_to post['in_degree'], level_show_path(post['id'], post['database']), target: "_blank", rel: "noopener noreferrer" %>
+  </td>
+</tr>

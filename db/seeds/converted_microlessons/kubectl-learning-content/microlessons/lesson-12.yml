@@ -1,0 +1,105 @@
+slug: lesson-12
+title: Lesson 12
+difficulty: easy
+sequence_order: 12
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# ConfigMaps & Secrets\n\n      Manage application\
+  \ configuration and sensitive data separately from container images.\n\n      ##\
+  \ ConfigMaps\n\n      Store non-confidential configuration data as key-value pairs.\n\
+  \n      ### Creating ConfigMaps\n\n      ```bash\n      # From literal values\n\
+  \      kubectl create configmap app-config \\\\\n        --from-literal=ENV=production\
+  \ \\\\\n        --from-literal=LOG_LEVEL=info\n\n      # From file\n      kubectl\
+  \ create configmap app-config --from-file=config.properties\n\n      # From directory\
+  \ (all files in directory)\n      kubectl create configmap app-config --from-file=./config/\n\
+  \n      # From env file\n      kubectl create configmap app-config --from-env-file=app.env\n\
+  \n      # From YAML\n      kubectl apply -f configmap.yaml\n      ```\n\n      ###\
+  \ Viewing ConfigMaps\n\n      ```bash\n      # List configmaps\n      kubectl get\
+  \ configmaps\n      kubectl get cm\n\n      # Describe configmap\n      kubectl\
+  \ describe configmap app-config\n\n      # Get configmap data\n      kubectl get\
+  \ configmap app-config -o yaml\n      kubectl get configmap app-config -o json\n\
+  \n      # Get specific key value\n      kubectl get configmap app-config -o jsonpath='{.data.ENV}'\n\
+  \      ```\n\n      ### Using ConfigMaps\n\n      **As Environment Variables:**\n\
+  \      ```bash\n      # Create pod using configmap\n      kubectl run nginx --image=nginx\
+  \ --env=\"CONFIG=$(kubectl get cm app-config -o jsonpath='{.data.ENV}')\"\n\n  \
+  \    # Or in YAML:\n      # env:\n      # - name: ENV\n      #   valueFrom:\n  \
+  \    #     configMapKeyRef:\n      #       name: app-config\n      #       key:\
+  \ ENV\n      ```\n\n      **As Volume Mounts:**\n      ```bash\n      # ConfigMap\
+  \ mounted as files in /etc/config\n      # Each key becomes a file\n      ```\n\n\
+  \      ### Updating ConfigMaps\n\n      ```bash\n      # Edit configmap\n      kubectl\
+  \ edit configmap app-config\n\n      # Update from file\n      kubectl create configmap\
+  \ app-config --from-file=config.properties --dry-run=client -o yaml | kubectl apply\
+  \ -f -\n\n      # Delete and recreate\n      kubectl delete configmap app-config\n\
+  \      kubectl create configmap app-config --from-file=config.properties\n     \
+  \ ```\n\n      ## Secrets\n\n      Store sensitive information like passwords, tokens,\
+  \ and keys.\n\n      ### Creating Secrets\n\n      ```bash\n      # Generic secret\
+  \ from literals\n      kubectl create secret generic db-secret \\\\\n        --from-literal=username=admin\
+  \ \\\\\n        --from-literal=password=secret123\n\n      # From file\n      kubectl\
+  \ create secret generic db-secret --from-file=./credentials.txt\n\n      # TLS secret\n\
+  \      kubectl create secret tls tls-secret \\\\\n        --cert=path/to/tls.crt\
+  \ \\\\\n        --key=path/to/tls.key\n\n      # Docker registry secret\n      kubectl\
+  \ create secret docker-registry regcred \\\\\n        --docker-server=myregistry.com\
+  \ \\\\\n        --docker-username=user \\\\\n        --docker-password=pass \\\\\
+  \n        --docker-email=user@example.com\n\n      # From YAML (base64 encoded values)\n\
+  \      kubectl apply -f secret.yaml\n      ```\n\n      ### Viewing Secrets\n\n\
+  \      ```bash\n      # List secrets\n      kubectl get secrets\n\n      # Describe\
+  \ secret (values hidden)\n      kubectl describe secret db-secret\n\n      # Get\
+  \ secret YAML (base64 encoded)\n      kubectl get secret db-secret -o yaml\n\n \
+  \     # Decode secret value\n      kubectl get secret db-secret -o jsonpath='{.data.password}'\
+  \ | base64 -d\n\n      # Decode all secret values\n      kubectl get secret db-secret\
+  \ -o json | jq '.data | map_values(@base64d)'\n      ```\n\n      ### Using Secrets\n\
+  \n      **As Environment Variables:**\n      ```bash\n      # env:\n      # - name:\
+  \ DB_PASSWORD\n      #   valueFrom:\n      #     secretKeyRef:\n      #       name:\
+  \ db-secret\n      #       key: password\n      ```\n\n      **As Volume Mounts:**\n\
+  \      ```bash\n      # Secret mounted as files in /etc/secrets\n      # Each key\
+  \ becomes a file with decoded value\n      ```\n\n      ### Managing Secrets\n\n\
+  \      ```bash\n      # Update secret\n      kubectl edit secret db-secret\n\n \
+  \     # Delete secret\n      kubectl delete secret db-secret\n\n      # Patch secret\
+  \ (add new key)\n      kubectl patch secret db-secret -p '{\"data\":{\"api_key\"\
+  :\"'\"$(echo -n 'newkey123' | base64)\"'\"}}'\n      ```\n\n      ## Best Practices\n\
+  \n      ```bash\n      # Create from file and delete file immediately\n      kubectl\
+  \ create secret generic db-secret --from-file=./credentials.txt && rm ./credentials.txt\n\
+  \n      # Use .gitignore for secret files\n      echo \"credentials.txt\" >> .gitignore\n\
+  \n      # View which pods use a config/secret\n      kubectl get pods -o jsonpath='{range\
+  \ .items[*]}{.metadata.name}{\"\\t\"}{.spec.volumes[*].configMap.name}{\"\\n\"}{end}'\n\
+  \      ```\n\n      ## Troubleshooting\n\n      ```bash\n      # Check if secret\
+  \ exists\n      kubectl get secret db-secret\n\n      # Verify secret is mounted\
+  \ in pod\n      kubectl exec my-pod -- ls /etc/secrets\n\n      # View secret content\
+  \ in pod\n      kubectl exec my-pod -- cat /etc/secrets/password\n\n      # Check\
+  \ environment variables in pod\n      kubectl exec my-pod -- env | grep DB_\n  \
+  \    ```\n\n      Practice configuration management in the labs!"
+exercises:
+  - type: multiple_choice_question
+    sequence_order: 1
+    question: "How are values stored in Kubernetes Secrets encoded by default?"
+    options:
+      - "AES-256 encryption"
+      - "Base64 encoding"
+      - "SHA-256 hashing"
+      - "RSA encryption"
+    correct_answer: "Base64 encoding"
+    explanation: "Kubernetes Secrets store values using base64 encoding, not encryption. This is an important security consideration - base64 is simply an encoding scheme that converts binary data to ASCII text format, not a security mechanism. Anyone with access to read secrets can easily decode them using 'base64 -d'. To actually view a secret value, you would use a command like 'kubectl get secret db-secret -o jsonpath='{.data.password}' | base64 -d'. This means that Kubernetes RBAC (Role-Based Access Control) is crucial for protecting secrets - you must carefully control who has 'get' or 'list' permissions on secrets in each namespace. For actual encryption at rest, you need to enable encryption in the etcd configuration where Kubernetes stores all cluster data, using EncryptionConfiguration resources. Some managed Kubernetes services automatically encrypt etcd, but you should verify this for your environment. Additionally, secrets are transmitted over TLS when communicating with the API server, and they're only sent to nodes that run pods requiring them, and only stored in tmpfs (memory) on those nodes, never written to disk. Despite these protections, the base64 encoding means secrets shouldn't be committed to version control, and you should use additional tools like sealed-secrets, external secret managers (HashiCorp Vault, AWS Secrets Manager), or other secret management solutions for production environments requiring stronger security."
+    require_pass: true
+  - type: multiple_choice_question
+    sequence_order: 2
+    question: "What is the main difference between ConfigMaps and Secrets in Kubernetes?"
+    options:
+      - "ConfigMaps are stored in etcd while Secrets are stored in memory only"
+      - "Secrets are base64-encoded and intended for sensitive data, while ConfigMaps store plain text configuration"
+      - "ConfigMaps can only be used as environment variables while Secrets can only be mounted as volumes"
+      - "Secrets have a size limit of 1MB while ConfigMaps have no size limit"
+    correct_answer: "Secrets are base64-encoded and intended for sensitive data, while ConfigMaps store plain text configuration"
+    explanation: "The primary difference between ConfigMaps and Secrets is their intended use and how data is stored. Secrets are designed for sensitive information like passwords, tokens, and keys, with values base64-encoded and hidden in kubectl describe output for basic obfuscation. ConfigMaps store non-confidential configuration data in plain text format. Both are stored in etcd (not just memory), and both support the same consumption methods - as environment variables, command-line arguments, or volume mounts. Both also have a 1MB size limit per resource (not unlimited for ConfigMaps). The base64 encoding in Secrets provides minimal security - it's mainly for handling binary data and preventing accidental exposure in logs or terminal output. The real security comes from RBAC policies that control access to secrets. In practice, you should use Secrets for any sensitive data (database credentials, API keys, certificates) and ConfigMaps for application configuration (feature flags, application settings, configuration files). When pods consume these resources, the data is injected the same way regardless of whether it comes from a Secret or ConfigMap. The distinction helps with organization, access control, and signaling to other users that certain data requires special handling. For production systems, consider external secret management tools that provide stronger security than native Kubernetes Secrets."
+    require_pass: true
+  - type: multiple_choice_question
+    sequence_order: 3
+    question: "When you update a ConfigMap that is mounted as a volume in a running pod, what happens to the data in the pod?"
+    options:
+      - "The pod must be restarted manually to see the updated configuration"
+      - "The configuration files are automatically updated in the pod after a brief delay"
+      - "The pod is automatically restarted with the new configuration"
+      - "The update is rejected because ConfigMaps cannot be changed once mounted"
+    correct_answer: "The configuration files are automatically updated in the pod after a brief delay"
+    explanation: "When a ConfigMap is mounted as a volume in a pod, Kubernetes automatically propagates updates to the mounted files after a brief delay (typically within a minute, controlled by the kubelet sync period). The files in the volume mount will be atomically updated to reflect the new ConfigMap data. However, this automatic update only applies to volume mounts, not to environment variables - if you use a ConfigMap via environment variables, those values are set at pod creation time and never update automatically. This behavior has important implications for application design. Applications need to be designed to detect and reload configuration file changes if they want to pick up ConfigMap updates without restart. Some applications watch for file changes (inotify), others reload on SIGHUP signals, and some periodically re-read configuration files. If your application doesn't support dynamic reloading, you'll need to restart pods manually or use a tool like Reloader that automatically restarts pods when their ConfigMaps change. The atomic update mechanism ensures you never see partially-written configuration - the kubelet uses symlinks that are atomically swapped when all new files are ready. Understanding this behavior is crucial for designing cloud-native applications that can be reconfigured without downtime."
+    require_pass: true

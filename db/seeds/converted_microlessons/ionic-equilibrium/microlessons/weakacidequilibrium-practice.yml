@@ -1,0 +1,58 @@
+slug: weakacidequilibrium-practice
+title: weak_acid_equilibrium — Practice
+difficulty: medium
+sequence_order: 8
+estimated_minutes: 2
+key_concepts:
+- weak_acid_equilibrium
+prerequisites: []
+content_md: '# weak_acid_equilibrium — Practice 🚀
+
+
+  [H⁺] = √(1.8×10⁻⁵ × 0.1) = √(1.8×10⁻⁶) = 1.34×10⁻³ M. pH = -log(1.34×10⁻³) = 2.87
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: 'Calculate the pH of 0.1 M CH₃COOH solution (Ka = 1.8 × 10⁻⁵). Use [H⁺] = √(Ka × C) for weak acids.'
+  options:
+  - 2.37
+  - 2.87
+  - 3.37
+  - 4.74
+  require_pass: true
+  correct_answer: 2.87
+  explanation: 'For weak acid with small ionization (Ka < 10⁻³, C > 0.01 M), use: [H⁺] = √(Ka × C). Given: Ka = 1.8 × 10⁻⁵, C = 0.1 M. [H⁺] = √(1.8 × 10⁻⁵ × 0.1) = √(1.8 × 10⁻⁶) = √1.8 × 10⁻³ ≈ 1.34 × 10⁻³ M. pH = -log(1.34 × 10⁻³) = -log(1.34) - log(10⁻³) = -0.127 + 3 = 2.87 (approximately). Why weak acids need this formula: CH₃COOH ⇌ H⁺ + CH₃COO⁻. Unlike strong acids, weak acids only partially ionize (~1-5%), so we can''t assume [H⁺] = C. The equilibrium expression Ka = [H⁺][CH₃COO⁻]/[CH₃COOH] with approximations gives [H⁺] = √(Ka × C). Note: If we used C directly (like strong acid), we''d get pH = 1, which is wrong. Degree of ionization = (1.34 × 10⁻³)/0.1 = 1.34% (confirms weak acid behavior).'
+- type: mcq
+  sequence_order: 2
+  question: 'For the weak acid equilibrium HA ⇌ H⁺ + A⁻, what happens to the degree of ionization when the solution is diluted?'
+  options:
+  - Increases
+  - Decreases
+  - Remains constant
+  - Becomes zero
+  require_pass: true
+  correct_answer: Increases
+  explanation: 'The degree of ionization (α) of a weak acid INCREASES upon dilution (Ostwald''s dilution law). Explanation: HA ⇌ H⁺ + A⁻, Ka = [H⁺][A⁻]/[HA]. For concentration C and degree of ionization α: Ka = Cα²/(1-α). When C decreases (dilution): To maintain constant Ka, α must increase. At infinite dilution, α approaches 1 (100% ionization). Example for CH₃COOH (Ka = 1.8 × 10⁻⁵): 1 M solution: α ≈ 0.42% (very little ionization), 0.01 M solution: α ≈ 4.2% (more ionization), 0.0001 M solution: α ≈ 42% (much more ionization). Physical reason: In dilute solution, molecules are farther apart, making it easier for ions to remain separated (Le Chatelier: dilution favors more ions). Although α increases, total [H⁺] decreases because fewer molecules are present. This is why weak acids approach strong acid behavior at extreme dilution.'
+- type: mcq
+  sequence_order: 3
+  question: 'Two weak acids HA and HB have Ka values of 1 × 10⁻⁵ and 1 × 10⁻⁷ respectively. Which is the stronger acid?'
+  options:
+  - HA
+  - HB
+  - Both equally strong
+  - Cannot be determined
+  require_pass: true
+  correct_answer: HA
+  explanation: 'HA is the stronger acid because it has the larger Ka value (1 × 10⁻⁵ > 1 × 10⁻⁷). Ka (acid dissociation constant) measures acid strength: Larger Ka → stronger acid → more ionization → lower pH. Comparison: HA: Ka = 1 × 10⁻⁵, pKa = 5 (stronger, like acetic acid), HB: Ka = 1 × 10⁻⁷, pKa = 7 (weaker, like hypochlorous acid). For 0.1 M solutions: HA gives [H⁺] = √(10⁻⁵ × 0.1) = 10⁻³ M, pH ≈ 3; HB gives [H⁺] = √(10⁻⁷ × 0.1) = 3.16 × 10⁻⁴ M, pH ≈ 3.5. HA produces more H⁺ and lower pH, confirming it''s stronger. Remember: (1) Larger Ka = stronger acid, (2) Smaller pKa = stronger acid (inverse relationship), (3) Strong acids have Ka > 1, weak acids have Ka < 1. The Ka ratio (10⁻⁵/10⁻⁷ = 100) means HA is 100 times stronger than HB.'

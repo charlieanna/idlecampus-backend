@@ -1,0 +1,62 @@
+<!-- app/views/ai/chat_form.html.erb -->
+
+<h1>Chat with AI</h1>
+
+<%= form_with url: ai_chat_path, method: :post, local: false, id: 'ai-chat-form' do |form| %>
+  <div>
+    <%= form.label :prompt, 'Your Prompt:' %><br>
+    <%= form.text_area :prompt, rows: 5, cols: 60 %>
+  </div>
+  <div>
+    <%= form.submit 'Send to AI' %>
+  </div>
+<% end %>
+
+<div id="ai-response"></div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('ai-chat-form');
+    const responseDiv = document.getElementById('ai-response');
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+
+      const formData = new FormData(form);
+      const prompt = formData.get('prompt');
+
+      if (!prompt.trim()) {
+        alert('Please enter a prompt.');
+        return;
+      }
+
+      responseDiv.innerHTML = 'Loading...';
+
+      fetch('<%= ai_chat_path %>', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-Token': getCSRFToken()
+        },
+        body: JSON.stringify({ prompt: prompt })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.response) {
+          responseDiv.innerHTML = `<strong>AI Response:</strong><br>${data.response}`;
+        } else if (data.error) {
+          responseDiv.innerHTML = `<span style="color: red;"><strong>Error:</strong> ${data.error}</span>`;
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        responseDiv.innerHTML = '<span style="color: red;">An unexpected error occurred.</span>';
+      });
+    });
+
+    function getCSRFToken() {
+      const meta = document.querySelector('meta[name="csrf-token"]');
+      return meta ? meta.getAttribute('content') : '';
+    }
+  });
+</script>

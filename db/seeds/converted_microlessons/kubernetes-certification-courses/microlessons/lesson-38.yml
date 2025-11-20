@@ -1,0 +1,44 @@
+slug: lesson-38
+title: Lesson 38
+difficulty: easy
+sequence_order: 38
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# CronJobs and Batch Processing\n\n    Schedule\
+  \ recurring tasks with CronJobs.\n    - cron schedule format\n    - history limits\
+  \ and concurrencyPolicy\n    - suspend and resume"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What does the cron schedule expression "0 3 * * 1" mean in a CronJob?
+  options:
+  - Every Monday at 3:00 AM
+  - Every hour on the 3rd day of the month
+  - Every 3 hours on Monday
+  - The 1st of every month at 3:00 AM
+  correct_answer: Every Monday at 3:00 AM
+  explanation: "The cron schedule format follows the pattern: minute hour day-of-month month day-of-week. So '0 3 * * 1' breaks down as: minute=0 (on the hour), hour=3 (3 AM), day-of-month=* (any day), month=* (any month), day-of-week=1 (Monday, where 0 or 7 is Sunday). This means the CronJob runs every Monday at 3:00 AM. Understanding cron syntax is essential for scheduling tasks correctly. Common examples include: '*/5 * * * *' (every 5 minutes), '0 0 * * *' (midnight daily), '0 2 1 * *' (2 AM on the 1st of every month). You can test cron expressions using online tools like crontab.guru before deploying CronJobs to production."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What does the concurrencyPolicy field control in a CronJob?
+  options:
+  - The number of parallel pods in each Job
+  - How the CronJob handles overlapping job executions
+  - The maximum number of CronJobs that can run simultaneously
+  - The number of worker threads in each job
+  correct_answer: How the CronJob handles overlapping job executions
+  explanation: "The concurrencyPolicy field in a CronJob spec determines how Kubernetes handles situations where a new scheduled job should start but the previous job is still running. There are three options: (1) Allow (default) - allows concurrent jobs to run, which could lead to multiple jobs running simultaneously, (2) Forbid - skips the new job if the previous one is still running, preventing overlap, and (3) Replace - cancels the currently running job and replaces it with the new one. Choose 'Forbid' when jobs shouldn't run concurrently (e.g., database backups), 'Allow' when parallel execution is safe, and 'Replace' when only the latest execution matters. This is distinct from the 'parallelism' field in the Job spec, which controls how many pods run concurrently within a single Job."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: What is the purpose of the successfulJobsHistoryLimit and failedJobsHistoryLimit fields in a CronJob?
+  options:
+  - To limit the number of pod restarts
+  - To control how many completed and failed Job objects are retained for review
+  - To set the maximum execution time for jobs
+  - To define the number of retry attempts
+  correct_answer: To control how many completed and failed Job objects are retained for review
+  explanation: "The successfulJobsHistoryLimit and failedJobsHistoryLimit fields control how many completed Job objects Kubernetes retains for historical purposes. By default, Kubernetes keeps the last 3 successful jobs and 1 failed job. This is important because Job objects (and their associated pods) accumulate over time and consume etcd storage and API resources. Keeping a history allows you to review logs and status of recent job runs for debugging and auditing. For example, setting failedJobsHistoryLimit to 5 lets you investigate the last 5 failures. Setting these limits too high can bloat your cluster state, while setting them too low might delete important debugging information. The suspend field is separate - it temporarily pauses CronJob scheduling without deleting the CronJob object."
+  require_pass: true

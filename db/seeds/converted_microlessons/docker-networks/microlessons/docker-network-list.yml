@@ -1,0 +1,84 @@
+slug: docker-network-list
+title: Docker Network List
+difficulty: easy
+sequence_order: 2
+estimated_minutes: 2
+key_concepts:
+- networking
+- docker-network
+- listing
+- inspection
+prerequisites: []
+content_md: '# Docker Network List 🚀
+
+
+  List all Docker networks on the system
+
+
+  ## Syntax/Command
+
+
+  ```bash
+
+  docker network ls
+
+  ```
+
+
+  ## Example
+
+
+  ```bash
+
+  docker network list
+
+  ```
+
+
+  ## Key Points
+
+
+  - List networks: docker network ls
+
+
+  - Filter by driver: --filter driver=<type>'
+exercises:
+- type: terminal
+  problem_statement: List all Docker networks on the system showing their names, drivers, and scopes
+  expected_output: Table displaying NETWORK ID, NAME, DRIVER, and SCOPE for all networks
+  language: bash
+  starter_code: "# List all networks\n"
+  sequence_order: 1
+  command: docker network ls
+  description: Display all available Docker networks
+  hints:
+  - 'List networks: docker network ls'
+  - 'Filter by driver: --filter driver=<type>'
+  validation:
+    must_not_include:
+    - Error
+    - 'panic:'
+  timeout_sec: 60
+  require_pass: true
+- type: sandbox
+  sequence_order: 99
+  hints:
+  - Run under CPU pressure to surface leaks or races
+  - Keep commands idempotent in CI
+  validation:
+    must_not_include:
+    - Error
+    - 'panic:'
+  timeout_sec: 60
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: Which default networks are created by Docker on installation?
+  options:
+  - bridge, host, and none
+  - Only bridge
+  - bridge, public, and private
+  - default, overlay, and nat
+  correct_answer: bridge, host, and none
+  explanation: "Docker creates three default networks on installation: 'bridge' (the default network for containers), 'host' (removes network isolation), and 'none' (disables networking). You can see these by running 'docker network ls'."
+  require_pass: true

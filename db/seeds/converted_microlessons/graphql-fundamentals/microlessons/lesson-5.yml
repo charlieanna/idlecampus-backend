@@ -1,0 +1,299 @@
+slug: lesson-5
+title: Lesson 5
+difficulty: easy
+sequence_order: 5
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Advanced GraphQL Patterns\n\n    ## Pagination\n\
+  \n    Pagination is essential for handling large datasets efficiently.\n\n    ###\
+  \ Offset-Based Pagination\n\n    **Simple but has limitations**\n\n    ```graphql\n\
+  \    type Query {\n      posts(limit: Int = 10, offset: Int = 0): [Post!]!\n   \
+  \ }\n\n    # Client query\n    query {\n      # Page 1\n      posts(limit: 10, offset:\
+  \ 0) {\n        id\n        title\n      }\n\n      # Page 2\n      posts(limit:\
+  \ 10, offset: 10) {\n        id\n        title\n      }\n    }\n    ```\n\n    **Resolver:**\n\
+  \n    ```javascript\n    const resolvers = {\n      Query: {\n        posts: async\
+  \ (parent, args, context) => {\n          const { limit, offset } = args;\n    \
+  \      return await context.db.posts\n            .limit(limit)\n            .offset(offset)\n\
+  \            .orderBy('createdAt', 'desc');\n        }\n      }\n    };\n    ```\n\
+  \n    **Problems:**\n    - ❌ Inconsistent results if data changes between pages\n\
+  \    - ❌ Can't efficiently \"jump to page X\"\n    - ❌ Performance degrades with\
+  \ large offsets\n\n    ### Cursor-Based Pagination (Relay Specification)\n\n   \
+  \ **Industry standard for GraphQL**\n\n    ```graphql\n    # Relay connection pattern\n\
+  \    type PostConnection {\n      edges: [PostEdge!]!\n      pageInfo: PageInfo!\n\
+  \      totalCount: Int!\n    }\n\n    type PostEdge {\n      cursor: String!\n \
+  \     node: Post!\n    }\n\n    type PageInfo {\n      hasNextPage: Boolean!\n \
+  \     hasPreviousPage: Boolean!\n      startCursor: String\n      endCursor: String\n\
+  \    }\n\n    type Query {\n      posts(\n        first: Int\n        after: String\n\
+  \        last: Int\n        before: String\n      ): PostConnection!\n    }\n  \
+  \  ```\n\n    **Client query:**\n\n    ```graphql\n    # Get first 10 posts\n  \
+  \  query {\n      posts(first: 10) {\n        edges {\n          cursor\n      \
+  \    node {\n            id\n            title\n            createdAt\n        \
+  \  }\n        }\n        pageInfo {\n          hasNextPage\n          endCursor\n\
+  \        }\n        totalCount\n      }\n    }\n\n    # Get next 10 posts using\
+  \ cursor\n    query {\n      posts(first: 10, after: \"Y3Vyc29yOjEw\") {\n     \
+  \   edges {\n          cursor\n          node {\n            id\n            title\n\
+  \          }\n        }\n        pageInfo {\n          hasNextPage\n          endCursor\n\
+  \        }\n      }\n    }\n    ```\n\n    **Resolver implementation:**\n\n    ```javascript\n\
+  \    const { fromGlobalId, toGlobalId } = require('graphql-relay');\n\n    const\
+  \ resolvers = {\n      Query: {\n        posts: async (parent, args, context) =>\
+  \ {\n          const { first, after, last, before } = args;\n\n          let query\
+  \ = context.db.posts.orderBy('createdAt', 'desc');\n\n          // Decode cursor\n\
+  \          if (after) {\n            const { id } = fromGlobalId(after);\n     \
+  \       query = query.where('id', '<', id);\n          }\n\n          if (before)\
+  \ {\n            const { id } = fromGlobalId(before);\n            query = query.where('id',\
+  \ '>', id);\n          }\n\n          // Fetch one extra to determine hasNextPage\n\
+  \          const limit = first || last || 10;\n          const posts = await query.limit(limit\
+  \ + 1);\n\n          const hasNextPage = posts.length > limit;\n          const\
+  \ edges = posts.slice(0, limit).map(post => ({\n            cursor: toGlobalId('Post',\
+  \ post.id),\n            node: post\n          }));\n\n          const totalCount\
+  \ = await context.db.posts.count();\n\n          return {\n            edges,\n\
+  \            pageInfo: {\n              hasNextPage,\n              hasPreviousPage:\
+  \ !!after,\n              startCursor: edges[0]?.cursor,\n              endCursor:\
+  \ edges[edges.length - 1]?.cursor\n            },\n            totalCount\n    \
+  \      };\n        }\n      }\n    };\n    ```\n\n    ## DataLoader for N+1 Problem\n\
+  \n    **The N+1 Problem:**\n\n    ```graphql\n    query {\n      posts {       \
+  \    # 1 query to get posts\n        title\n        author {        # N queries\
+  \ (one per post) - BAD!\n          name\n        }\n      }\n    }\n    ```\n\n\
+  \    **Without DataLoader:**\n\n    ```javascript\n    const resolvers = {\n   \
+  \   Post: {\n        author: async (parent, args, context) => {\n          // This\
+  \ runs for EACH post - N+1 queries!\n          return await context.db.users.findById(parent.authorId);\n\
+  \        }\n      }\n    };\n\n    // Query execution:\n    // SELECT * FROM posts;\
+  \                    -- 1 query\n    // SELECT * FROM users WHERE id = 1;      \
+  \ -- N queries\n    // SELECT * FROM users WHERE id = 2;\n    // SELECT * FROM users\
+  \ WHERE id = 3;\n    // ... (one query per post)\n    ```\n\n    ### DataLoader\
+  \ Solution\n\n    **Batches and caches requests**\n\n    ```javascript\n    const\
+  \ DataLoader = require('dataloader');\n\n    // Create DataLoader\n    const createUserLoader\
+  \ = (db) => {\n      return new DataLoader(async (userIds) => {\n        console.log('Batch\
+  \ loading users:', userIds);\n\n        // Single query for all users!\n       \
+  \ const users = await db.users.whereIn('id', userIds);\n\n        // Return users\
+  \ in same order as userIds\n        const userMap = new Map(users.map(u => [u.id,\
+  \ u]));\n        return userIds.map(id => userMap.get(id));\n      });\n    };\n\
+  \n    // Context setup\n    const server = new ApolloServer({\n      typeDefs,\n\
+  \      resolvers,\n      context: () => ({\n        db,\n        loaders: {\n  \
+  \        user: createUserLoader(db)  // New loader per request\n        }\n    \
+  \  })\n    });\n\n    // Use DataLoader in resolver\n    const resolvers = {\n \
+  \     Post: {\n        author: async (parent, args, context) => {\n          //\
+  \ DataLoader batches these calls!\n          return await context.loaders.user.load(parent.authorId);\n\
+  \        }\n      }\n    };\n\n    // Now executes as:\n    // SELECT * FROM posts;\
+  \                           -- 1 query\n    // SELECT * FROM users WHERE id IN (1,\
+  \ 2, 3, ...); -- 1 batched query\n    ```\n\n    ### DataLoader for Multiple Relations\n\
+  \n    ```javascript\n    // Create loaders for different entities\n    const createLoaders\
+  \ = (db) => ({\n      user: new DataLoader(async (ids) => {\n        const users\
+  \ = await db.users.whereIn('id', ids);\n        const userMap = new Map(users.map(u\
+  \ => [u.id, u]));\n        return ids.map(id => userMap.get(id));\n      }),\n\n\
+  \      post: new DataLoader(async (ids) => {\n        const posts = await db.posts.whereIn('id',\
+  \ ids);\n        const postMap = new Map(posts.map(p => [p.id, p]));\n        return\
+  \ ids.map(id => postMap.get(id));\n      }),\n\n      // Batch load posts by author\n\
+  \      postsByAuthor: new DataLoader(async (authorIds) => {\n        const posts\
+  \ = await db.posts.whereIn('authorId', authorIds);\n\n        // Group by authorId\n\
+  \        const postsByAuthor = new Map();\n        authorIds.forEach(id => postsByAuthor.set(id,\
+  \ []));\n        posts.forEach(post => {\n          postsByAuthor.get(post.authorId).push(post);\n\
+  \        });\n\n        return authorIds.map(id => postsByAuthor.get(id));\n   \
+  \   }),\n\n      // Batch load comments by post\n      commentsByPost: new DataLoader(async\
+  \ (postIds) => {\n        const comments = await db.comments.whereIn('postId', postIds);\n\
+  \n        const commentsByPost = new Map();\n        postIds.forEach(id => commentsByPost.set(id,\
+  \ []));\n        comments.forEach(comment => {\n          commentsByPost.get(comment.postId).push(comment);\n\
+  \        });\n\n        return postIds.map(id => commentsByPost.get(id));\n    \
+  \  })\n    });\n\n    // Use in resolvers\n    const resolvers = {\n      User:\
+  \ {\n        posts: async (parent, args, context) => {\n          return await context.loaders.postsByAuthor.load(parent.id);\n\
+  \        }\n      },\n\n      Post: {\n        author: async (parent, args, context)\
+  \ => {\n          return await context.loaders.user.load(parent.authorId);\n   \
+  \     },\n\n        comments: async (parent, args, context) => {\n          return\
+  \ await context.loaders.commentsByPost.load(parent.id);\n        }\n      },\n\n\
+  \      Comment: {\n        author: async (parent, args, context) => {\n        \
+  \  return await context.loaders.user.load(parent.authorId);\n        },\n\n    \
+  \    post: async (parent, args, context) => {\n          return await context.loaders.post.load(parent.postId);\n\
+  \        }\n      }\n    };\n    ```\n\n    ## Authentication and Authorization\n\
+  \n    ### Authentication (Who are you?)\n\n    ```javascript\n    const jwt = require('jsonwebtoken');\n\
+  \    const bcrypt = require('bcrypt');\n\n    const resolvers = {\n      Mutation:\
+  \ {\n        // Register\n        register: async (parent, args, context) => {\n\
+  \          const { input } = args;\n          const { email, password, name } =\
+  \ input;\n\n          // Check if user exists\n          const existing = await\
+  \ context.db.users.findOne({ email });\n          if (existing) {\n            throw\
+  \ new Error('User already exists');\n          }\n\n          // Hash password\n\
+  \          const hashedPassword = await bcrypt.hash(password, 10);\n\n         \
+  \ // Create user\n          const user = await context.db.users.create({\n     \
+  \       email,\n            name,\n            password: hashedPassword,\n     \
+  \       role: 'USER'\n          });\n\n          // Generate JWT token\n       \
+  \   const token = jwt.sign(\n            { userId: user.id, email: user.email },\n\
+  \            process.env.JWT_SECRET,\n            { expiresIn: '7d' }\n        \
+  \  );\n\n          return {\n            token,\n            user\n          };\n\
+  \        },\n\n        // Login\n        login: async (parent, args, context) =>\
+  \ {\n          const { email, password } = args;\n\n          // Find user\n   \
+  \       const user = await context.db.users.findOne({ email });\n          if (!user)\
+  \ {\n            throw new Error('Invalid credentials');\n          }\n\n      \
+  \    // Verify password\n          const valid = await bcrypt.compare(password,\
+  \ user.password);\n          if (!valid) {\n            throw new Error('Invalid\
+  \ credentials');\n          }\n\n          // Generate token\n          const token\
+  \ = jwt.sign(\n            { userId: user.id, email: user.email },\n           \
+  \ process.env.JWT_SECRET,\n            { expiresIn: '7d' }\n          );\n\n   \
+  \       return {\n            token,\n            user\n          };\n        }\n\
+  \      }\n    };\n\n    // Context with authentication\n    const server = new ApolloServer({\n\
+  \      typeDefs,\n      resolvers,\n      context: async ({ req }) => {\n      \
+  \  const token = req.headers.authorization?.replace('Bearer ', '');\n\n        let\
+  \ user = null;\n        if (token) {\n          try {\n            const decoded\
+  \ = jwt.verify(token, process.env.JWT_SECRET);\n            user = await db.users.findById(decoded.userId);\n\
+  \          } catch (err) {\n            // Invalid token - user remains null\n \
+  \         }\n        }\n\n        return {\n          db,\n          user,\n   \
+  \       loaders: createLoaders(db)\n        };\n      }\n    });\n    ```\n\n  \
+  \  ### Authorization (What can you do?)\n\n    **Method 1: In resolvers**\n\n  \
+  \  ```javascript\n    const resolvers = {\n      Query: {\n        me: (parent,\
+  \ args, context) => {\n          if (!context.user) {\n            throw new Error('Not\
+  \ authenticated');\n          }\n          return context.user;\n        }\n   \
+  \   },\n\n      Mutation: {\n        updatePost: async (parent, args, context) =>\
+  \ {\n          const { id, input } = args;\n\n          // Check authentication\n\
+  \          if (!context.user) {\n            throw new Error('Not authenticated');\n\
+  \          }\n\n          // Check authorization\n          const post = await context.db.posts.findById(id);\n\
+  \          if (!post) {\n            throw new Error('Post not found');\n      \
+  \    }\n\n          if (post.authorId !== context.user.id && context.user.role !==\
+  \ 'ADMIN') {\n            throw new Error('Not authorized to update this post');\n\
+  \          }\n\n          return await context.db.posts.update(id, input);\n   \
+  \     },\n\n        deleteUser: async (parent, args, context) => {\n          //\
+  \ Only admins can delete users\n          if (!context.user || context.user.role\
+  \ !== 'ADMIN') {\n            throw new Error('Not authorized');\n          }\n\n\
+  \          const { id } = args;\n          await context.db.users.delete(id);\n\
+  \          return true;\n        }\n      }\n    };\n    ```\n\n    **Method 2:\
+  \ Directive-based (cleaner)**\n\n    ```graphql\n    directive @auth on FIELD_DEFINITION\n\
+  \    directive @hasRole(role: Role!) on FIELD_DEFINITION\n\n    type Query {\n \
+  \     me: User @auth\n      adminDashboard: AdminData @hasRole(role: ADMIN)\n  \
+  \  }\n\n    type Mutation {\n      updatePost(id: ID!, input: UpdatePostInput!):\
+  \ Post! @auth\n      deleteUser(id: ID!): Boolean! @hasRole(role: ADMIN)\n    }\n\
+  \    ```\n\n    ```javascript\n    const { SchemaDirectiveVisitor } = require('apollo-server');\n\
+  \    const { defaultFieldResolver } = require('graphql');\n\n    class AuthDirective\
+  \ extends SchemaDirectiveVisitor {\n      visitFieldDefinition(field) {\n      \
+  \  const { resolve = defaultFieldResolver } = field;\n\n        field.resolve =\
+  \ async function (...args) {\n          const context = args[2];\n\n          if\
+  \ (!context.user) {\n            throw new Error('Not authenticated');\n       \
+  \   }\n\n          return resolve.apply(this, args);\n        };\n      }\n    }\n\
+  \n    class HasRoleDirective extends SchemaDirectiveVisitor {\n      visitFieldDefinition(field)\
+  \ {\n        const { resolve = defaultFieldResolver } = field;\n        const {\
+  \ role } = this.args;\n\n        field.resolve = async function (...args) {\n  \
+  \        const context = args[2];\n\n          if (!context.user) {\n          \
+  \  throw new Error('Not authenticated');\n          }\n\n          if (context.user.role\
+  \ !== role) {\n            throw new Error(\\`Requires \\${role} role\\`);\n   \
+  \       }\n\n          return resolve.apply(this, args);\n        };\n      }\n\
+  \    }\n\n    const server = new ApolloServer({\n      typeDefs,\n      resolvers,\n\
+  \      schemaDirectives: {\n        auth: AuthDirective,\n        hasRole: HasRoleDirective\n\
+  \      }\n    });\n    ```\n\n    ## Error Handling\n\n    ### Custom Error Classes\n\
+  \n    ```javascript\n    class AuthenticationError extends Error {\n      constructor(message)\
+  \ {\n        super(message);\n        this.extensions = {\n          code: 'UNAUTHENTICATED'\n\
+  \        };\n      }\n    }\n\n    class ForbiddenError extends Error {\n      constructor(message)\
+  \ {\n        super(message);\n        this.extensions = {\n          code: 'FORBIDDEN'\n\
+  \        };\n      }\n    }\n\n    class ValidationError extends Error {\n     \
+  \ constructor(message, field) {\n        super(message);\n        this.extensions\
+  \ = {\n          code: 'BAD_USER_INPUT',\n          field\n        };\n      }\n\
+  \    }\n\n    // Use in resolvers\n    const resolvers = {\n      Mutation: {\n\
+  \        createPost: async (parent, args, context) => {\n          if (!context.user)\
+  \ {\n            throw new AuthenticationError('You must be logged in');\n     \
+  \     }\n\n          const { input } = args;\n\n          if (!input.title || input.title.length\
+  \ < 3) {\n            throw new ValidationError(\n              'Title must be at\
+  \ least 3 characters',\n              'title'\n            );\n          }\n\n \
+  \         return await context.db.posts.create({\n            ...input,\n      \
+  \      authorId: context.user.id\n          });\n        }\n      }\n    };\n  \
+  \  ```\n\n    ### Error Response\n\n    ```json\n    {\n      \"errors\": [\n  \
+  \      {\n          \"message\": \"Title must be at least 3 characters\",\n    \
+  \      \"extensions\": {\n            \"code\": \"BAD_USER_INPUT\",\n          \
+  \  \"field\": \"title\"\n          },\n          \"path\": [\"createPost\"]\n  \
+  \      }\n      ],\n      \"data\": {\n        \"createPost\": null\n      }\n \
+  \   }\n    ```\n\n    ## File Uploads\n\n    ```graphql\n    scalar Upload\n\n \
+  \   type Mutation {\n      uploadAvatar(file: Upload!): User!\n      uploadPostImage(postId:\
+  \ ID!, file: Upload!): String!\n    }\n    ```\n\n    ```javascript\n    const {\
+  \ createWriteStream } = require('fs');\n    const path = require('path');\n    const\
+  \ { v4: uuid } = require('uuid');\n\n    const resolvers = {\n      Mutation: {\n\
+  \        uploadAvatar: async (parent, args, context) => {\n          if (!context.user)\
+  \ {\n            throw new AuthenticationError('Not authenticated');\n         \
+  \ }\n\n          const { file } = args;\n          const { createReadStream, filename,\
+  \ mimetype } = await file;\n\n          // Validate file type\n          if (!mimetype.startsWith('image/'))\
+  \ {\n            throw new ValidationError('File must be an image');\n         \
+  \ }\n\n          // Generate unique filename\n          const uniqueFilename = \\\
+  `\\${uuid()}\\${path.extname(filename)}\\`;\n          const filepath = path.join(__dirname,\
+  \ 'uploads', uniqueFilename);\n\n          // Save file\n          await new Promise((resolve,\
+  \ reject) => {\n            createReadStream()\n              .pipe(createWriteStream(filepath))\n\
+  \              .on('finish', resolve)\n              .on('error', reject);\n   \
+  \       });\n\n          // Update user avatar\n          const avatarUrl = \\`/uploads/\\\
+  ${uniqueFilename}\\`;\n          const user = await context.db.users.update(context.user.id,\
+  \ {\n            avatar: avatarUrl\n          });\n\n          return user;\n  \
+  \      }\n      }\n    };\n    ```\n\n    ## Subscriptions for Real-Time Data\n\n\
+  \    **WebSocket-based real-time updates**\n\n    ```graphql\n    type Subscription\
+  \ {\n      postCreated: Post!\n      commentAdded(postId: ID!): Comment!\n     \
+  \ messageReceived(chatId: ID!): Message!\n      userTyping(chatId: ID!): User!\n\
+  \    }\n    ```\n\n    ### Server Setup\n\n    ```javascript\n    const { ApolloServer\
+  \ } = require('apollo-server-express');\n    const { PubSub } = require('graphql-subscriptions');\n\
+  \    const { createServer } = require('http');\n    const express = require('express');\n\
+  \n    const pubsub = new PubSub();\n\n    const resolvers = {\n      Subscription:\
+  \ {\n        postCreated: {\n          subscribe: () => pubsub.asyncIterator(['POST_CREATED'])\n\
+  \        },\n\n        commentAdded: {\n          subscribe: (parent, args) => {\n\
+  \            const { postId } = args;\n            return pubsub.asyncIterator([\\\
+  `COMMENT_ADDED_\\${postId}\\`]);\n          }\n        }\n      },\n\n      Mutation:\
+  \ {\n        createPost: async (parent, args, context) => {\n          const { input\
+  \ } = args;\n\n          const post = await context.db.posts.create({\n        \
+  \    ...input,\n            authorId: context.user.id\n          });\n\n       \
+  \   // Publish to subscribers\n          pubsub.publish('POST_CREATED', {\n    \
+  \        postCreated: post\n          });\n\n          return post;\n        },\n\
+  \n        addComment: async (parent, args, context) => {\n          const { postId,\
+  \ text } = args;\n\n          const comment = await context.db.comments.create({\n\
+  \            postId,\n            text,\n            authorId: context.user.id\n\
+  \          });\n\n          // Publish to subscribers of this specific post\n  \
+  \        pubsub.publish(\\`COMMENT_ADDED_\\${postId}\\`, {\n            commentAdded:\
+  \ comment\n          });\n\n          return comment;\n        }\n      }\n    };\n\
+  \n    // Express app\n    const app = express();\n    const httpServer = createServer(app);\n\
+  \n    const server = new ApolloServer({\n      typeDefs,\n      resolvers,\n   \
+  \   context: ({ req, connection }) => {\n        // HTTP context\n        if (req)\
+  \ {\n          return { db, user: req.user, pubsub };\n        }\n        // WebSocket\
+  \ context\n        if (connection) {\n          return { db, user: connection.context.user,\
+  \ pubsub };\n        }\n      },\n      subscriptions: {\n        onConnect: async\
+  \ (connectionParams) => {\n          // Authenticate WebSocket connection\n    \
+  \      if (connectionParams.authToken) {\n            const user = await validateToken(connectionParams.authToken);\n\
+  \            return { user };\n          }\n          throw new Error('Missing auth\
+  \ token');\n        }\n      }\n    });\n\n    server.applyMiddleware({ app });\n\
+  \    server.installSubscriptionHandlers(httpServer);\n\n    httpServer.listen(4000,\
+  \ () => {\n      console.log(\\`Server ready at http://localhost:4000\\${server.graphqlPath}\\\
+  `);\n      console.log(\\`Subscriptions ready at ws://localhost:4000\\${server.subscriptionsPath}\\\
+  `);\n    });\n    ```\n\n    ### Client Usage\n\n    ```javascript\n    import {\
+  \ ApolloClient, InMemoryCache, split } from '@apollo/client';\n    import { WebSocketLink\
+  \ } from '@apollo/client/link/ws';\n    import { getMainDefinition } from '@apollo/client/utilities';\n\
+  \    import { HttpLink } from '@apollo/client';\n\n    // HTTP link for queries\
+  \ and mutations\n    const httpLink = new HttpLink({\n      uri: 'http://localhost:4000/graphql',\n\
+  \      headers: {\n        authorization: \\`Bearer \\${token}\\`\n      }\n   \
+  \ });\n\n    // WebSocket link for subscriptions\n    const wsLink = new WebSocketLink({\n\
+  \      uri: 'ws://localhost:4000/graphql',\n      options: {\n        reconnect:\
+  \ true,\n        connectionParams: {\n          authToken: token\n        }\n  \
+  \    }\n    });\n\n    // Split based on operation type\n    const link = split(\n\
+  \      ({ query }) => {\n        const definition = getMainDefinition(query);\n\
+  \        return (\n          definition.kind === 'OperationDefinition' &&\n    \
+  \      definition.operation === 'subscription'\n        );\n      },\n      wsLink,\n\
+  \      httpLink\n    );\n\n    const client = new ApolloClient({\n      link,\n\
+  \      cache: new InMemoryCache()\n    });\n\n    // Subscribe to new comments\n\
+  \    const subscription = gql\\`\n      subscription OnCommentAdded($postId: ID!)\
+  \ {\n        commentAdded(postId: $postId) {\n          id\n          text\n   \
+  \       author {\n            name\n            avatar\n          }\n          createdAt\n\
+  \        }\n      }\n    \\`;\n\n    client.subscribe({\n      query: subscription,\n\
+  \      variables: { postId: '123' }\n    }).subscribe({\n      next: ({ data })\
+  \ => {\n        console.log('New comment:', data.commentAdded);\n        // Update\
+  \ UI with new comment\n      },\n      error: (err) => console.error('Subscription\
+  \ error:', err)\n    });\n    ```\n\n    **Next**: We'll explore production GraphQL\
+  \ with Apollo Server, TypeScript, caching, and performance optimization."
+exercises:
+  - type: mcq
+    sequence_order: 1
+    question: "What authentication method is commonly used in GraphQL APIs?"
+    options:
+      - "Basic Authentication"
+      - "JWT tokens passed in Authorization header and validated in context"
+      - "OAuth only"
+      - "Session cookies exclusively"
+    correct_answer: "JWT tokens passed in Authorization header and validated in context"
+    explanation: "GraphQL commonly uses JWT (JSON Web Tokens) for stateless authentication. Flow: (1) Login mutation - User sends credentials, server validates, returns JWT: `mutation { login(email, password) { token user { id name } } }`, (2) Client stores token (localStorage/cookies), (3) Subsequent requests - Send token in header: `Authorization: Bearer <token>`, (4) Server validates token in context function, attaches user to context. Implementation: `context: async ({ req }) => { const token = req.headers.authorization?.replace('Bearer ', ''); const user = jwt.verify(token, SECRET); return { user, db }; }`. Resolvers access: `if (!context.user) throw new Error('Not authenticated')`. Benefits: (1) Stateless - no server sessions, (2) Works with GraphQL's single endpoint, (3) Easy to implement, (4) Supports microservices. Alternatives: Session cookies (for web apps), OAuth (third-party auth), API keys (service-to-service). Authorization (permissions) is separate - check in resolvers or use directives: `@auth`, `@hasRole(role: ADMIN)`. Common pattern: Authentication in context, authorization in resolvers/directives."
+    require_pass: true
+  - type: mcq
+    sequence_order: 2
+    question: "Why should you use custom error classes in GraphQL?"
+    options:
+      - "To make errors look prettier"
+      - "To provide structured error responses with specific codes and metadata for better client handling"
+      - "GraphQL requires custom errors"
+      - "To hide all error messages"
+    correct_answer: "To provide structured error responses with specific codes and metadata for better client handling"
+    explanation: "Custom error classes provide structured, actionable errors for clients. Without them: Generic error messages, no error codes, difficult client handling. With custom errors: `class AuthenticationError extends Error { constructor(message) { super(message); this.extensions = { code: 'UNAUTHENTICATED' }; } }`. Usage: `throw new AuthenticationError('Not logged in')`. Response: `{ errors: [{ message: 'Not logged in', extensions: { code: 'UNAUTHENTICATED' }, path: ['updatePost'] }], data: { updatePost: null } }`. Client can handle by code: `if (error.extensions.code === 'UNAUTHENTICATED') { redirectToLogin(); }`. Common error types: (1) AuthenticationError - Not logged in, (2) ForbiddenError - Insufficient permissions, (3) ValidationError - Bad input with field info, (4) NotFoundError - Resource doesn't exist, (5) RateLimitError - Too many requests. Best practices: (1) Use error codes not messages for logic, (2) Include field names for validation errors, (3) Log all errors server-side, (4) Don't expose internal errors in production (use formatError), (5) Return partial data when possible. Error extensions can include: code, field, timestamp, suggestion, documentation link. This enables robust client error handling and better UX."
+    require_pass: true

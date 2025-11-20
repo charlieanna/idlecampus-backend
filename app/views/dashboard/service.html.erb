@@ -1,0 +1,26 @@
+<div class="container">
+  <div class="row">
+    <div class="col-sm-1"></div>
+    <div class="col-sm-6">
+      <% @paginatable_array.each do |question| %>
+          <div class="well well-large">
+            <dl>
+              <%= link_to question['title'], "/post?post_id=#{question['id']}&service=#{params['service']}", target: "_blank" %>
+              <div><%= link_to "Learn More", "https://#{params['service']}.stackexchange.com/questions/#{question['id']}", target: "_blank" %></div>
+              <div>
+              <% question['tags'].each do |tag| %>
+                <%= link_to tag, "/search/#{tag}" %>,
+              <% end %>
+              </div>
+              <dt>score: <%= question['score'] %></dt>
+              <dt>inlinks: <%= question['in_degree'] %></dt>
+              <dt>outlinks: <%= question['out_degree'] %></dt>
+            </dl>
+          </div>
+      <% end %>
+      <div id="infinite-scrolling">
+        <%= paginate @paginatable_array, params: { port: 'items' } %>
+      </div>
+    </div>
+  </div>
+</div>

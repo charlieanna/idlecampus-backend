@@ -1,0 +1,80 @@
+slug: what-is-clean-code
+title: What is Clean Code?
+difficulty: easy
+sequence_order: 8
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# What is Clean Code? \U0001F680\n\n# What is Clean Code?\n\n    Clean\
+  \ code is code that is easy to understand, easy to change, and easy to maintain.\
+  \ As Robert C. Martin (Uncle Bob) famously said: \"Clean code is code that has been\
+  \ taken care of.\"\n\n    ## Why Clean Code Matters\n\n    ### Technical Debt\n\
+  \    - Poor code quality accumulates as technical debt\n    - Costs increase exponentially\
+  \ over time\n    - Slows down feature development\n    - Increases bug introduction\
+  \ rate\n\n    ### The Boy Scout Rule\n    **\"Leave the code cleaner than you found\
+  \ it.\"**\n\n    Small improvements compound over time:\n    - Rename one variable\n\
+  \    - Break up one large function\n    - Remove one piece of duplication\n\n  \
+  \  ## Characteristics of Clean Code\n\n    ### 1. Readable\n    - Code is read 10x\
+  \ more than it's written\n    - Should read like well-written prose\n    - Express\
+  \ intent clearly\n    - Minimize cognitive load\n\n    ### 2. Simple\n    - Does\
+  \ one thing well\n    - No unnecessary complexity\n    - KISS: Keep It Simple, Stupid\n\
+  \    - YAGNI: You Aren't Gonna Need It\n\n    ### 3. Tested\n    - Has comprehensive\
+  \ test coverage\n    - Tests serve as documentation\n    - Tests enable refactoring\n\
+  \n    ### 4. Expressive\n    - Self-documenting\n    - Names reveal intent\n   \
+  \ - Minimal comments needed\n    - Code explains \"what\" and \"why\"\n\n    ##\
+  \ Cost of Bad Code\n\n    ### Productivity Loss\n    ```\n    Time →\n    ↑\n  \
+  \  |     Initial\n    | ✓   velocity\n    | ✓✓\n    | ✓✓✓           Production reality\n\
+  \    | ✓✓✓✓          with bad code\n    | ✓✓✓✓✓      ↙\n    | ✓✓✓✓✓✓  ↙\n    | ✓✓✓✓✓✓↙\n\
+  \    |_____________→ Features\n    ```\n\n    ### The Grand Redesign Trap\n    -\
+  \ Teams demand rewrite\n    - New team starts from scratch\n    - Takes years to\
+  \ reach feature parity\n    - Meanwhile, original system evolves\n    - Cycle repeats\n\
+  \n    ## Clean Code Principles\n\n    ### 1. Meaningful Names\n    - Reveal intention\n\
+  \    - Avoid disinformation\n    - Make meaningful distinctions\n    - Use pronounceable\
+  \ names\n    - Use searchable names\n\n    ### 2. Functions\n    - Small (< 20 lines\
+  \ ideal)\n    - Do one thing\n    - One level of abstraction\n    - Few arguments\
+  \ (0-2 ideal)\n    - No side effects\n\n    ### 3. Comments\n    - Code should be\
+  \ self-explanatory\n    - Good code > comments\n    - Explain \"why\", not \"what\"\
+  \n    - Update or delete stale comments\n\n    ### 4. Formatting\n    - Consistent\
+  \ style\n    - Vertical openness\n    - Horizontal density\n    - Team agreement\n\
+  \n    ## The Total Cost of Owning a Mess\n\n    Studies show:\n    - 80% of software\
+  \ cost is maintenance\n    - Original authors maintain < 20% of code\n    - Comprehension\
+  \ is the biggest challenge\n    - Clean code reduces onboarding time by 50%\n\n\
+  \    ## Key Takeaways\n\n    1. **Quality is not negotiable** - It's not a luxury,\
+  \ it's essential\n    2. **Start clean** - Easier than cleaning up later\n    3.\
+  \ **Continuous improvement** - Small daily improvements compound\n    4. **Team\
+  \ effort** - Code reviews and pair programming help\n    5. **Professional responsibility**\
+  \ - Part of being a software craftsperson"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: 'According to the Boy Scout Rule for clean code, what should developers do?'
+  options:
+  - Leave the code cleaner than you found it
+  - Write perfect code the first time
+  - Only clean code during dedicated refactoring sprints
+  - Wait for code reviews to identify issues
+  correct_answer: Leave the code cleaner than you found it
+  explanation: "The Boy Scout Rule states: 'Leave the code cleaner than you found it.' This means making small, continuous improvements every time you touch code - rename one variable, break up one large function, remove one piece of duplication. These small improvements compound over time, gradually improving the codebase. You don't need to make massive changes; even tiny improvements add up. This approach prevents technical debt accumulation and maintains code quality sustainably."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: 'What percentage of software cost is typically spent on maintenance according to studies mentioned in the lesson?'
+  options:
+  - '80%'
+  - '50%'
+  - '20%'
+  - '40%'
+  correct_answer: '80%'
+  explanation: "Studies show that 80% of software cost is spent on maintenance, not initial development. This highlights why clean code is so important - code is read and modified far more than it's initially written. Since original authors maintain less than 20% of the code they write, and comprehension is the biggest challenge, writing clean, understandable code is essential for long-term productivity. Clean code can reduce onboarding time by 50% and significantly decrease maintenance costs."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: 'Which characteristic is NOT mentioned as a key attribute of clean code?'
+  options:
+  - Extensively commented
+  - Readable
+  - Simple
+  - Tested
+  correct_answer: Extensively commented
+  explanation: "Clean code should be 'self-documenting' and 'expressive' rather than extensively commented. The lesson emphasizes that 'code should be self-explanatory' and 'good code > comments.' Comments should explain 'why' not 'what,' and stale comments should be updated or deleted. The four key characteristics of clean code are: (1) Readable - reads like well-written prose, (2) Simple - does one thing well with no unnecessary complexity, (3) Tested - has comprehensive test coverage, and (4) Expressive - self-documenting with names that reveal intent. Excessive comments often indicate code that isn't expressive enough."
+  require_pass: true

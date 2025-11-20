@@ -1,0 +1,295 @@
+slug: lesson-1
+title: Lesson 1
+sequence_order: 1
+estimated_minutes: 2
+difficulty: easy
+key_concepts: []
+content_md: "# Microlesson \U0001F680\n\n# Redis Data Structures and Operations\n\n\
+  \    **Redis** (REmote DIctionary Server) is an open-source, in-memory data structure\
+  \ store used as a database, cache, and message broker.\n\n    ## Why Redis?\n\n\
+  \    ### Speed\n    - All data stored in RAM (not disk)\n    - Sub-millisecond latency\n\
+  \    - 100,000+ operations per second on commodity hardware\n\n    ### Simplicity\n\
+  \    - Simple key-value model\n    - Rich data structures\n    - Atomic operations\n\
+  \n    ### Versatility\n    - Cache\n    - Session store\n    - Message broker\n\
+  \    - Real-time analytics\n    - Leaderboards\n\n    ## Redis Architecture\n\n\
+  \    ```\n    ┌─────────────┐\n    │   Client    │\n    └──────┬──────┘\n      \
+  \     │\n           ▼\n    ┌─────────────┐\n    │ Redis Server│ ← Single-threaded\
+  \ event loop\n    │   (RAM)     │ ← All data in memory\n    └──────┬──────┘\n  \
+  \         │\n           ▼\n    ┌─────────────┐\n    │ Persistence │ ← Optional:\
+  \ RDB/AOF\n    │   (Disk)    │\n    └─────────────┘\n    ```\n\n    **Key Characteristics:**\n\
+  \    - Single-threaded (no race conditions)\n    - Non-blocking I/O\n    - Pipelining\
+  \ support\n    - Transactions with MULTI/EXEC\n\n    ## 1. Strings\n\n    **The\
+  \ simplest data type - binary safe strings up to 512MB**\n\n    ### Basic Operations\n\
+  \n    ```python\n    import redis\n\n    # Connect to Redis\n    r = redis.Redis(host='localhost',\
+  \ port=6379, db=0)\n\n    # SET and GET\n    r.set('user:1000:name', 'Alice Johnson')\n\
+  \    name = r.get('user:1000:name')  # b'Alice Johnson'\n\n    # SET with options\n\
+  \    r.set('session:abc123', 'user_data', ex=3600)  # Expires in 1 hour\n    r.set('counter',\
+  \ 0, nx=True)  # Only set if not exists\n\n    # Multiple operations\n    r.mset({'key1':\
+  \ 'value1', 'key2': 'value2', 'key3': 'value3'})\n    values = r.mget(['key1', 'key2',\
+  \ 'key3'])  # ['value1', 'value2', 'value3']\n    ```\n\n    ```javascript\n   \
+  \ // Using ioredis (Node.js)\n    const Redis = require('ioredis');\n    const redis\
+  \ = new Redis();\n\n    // SET and GET\n    await redis.set('user:1000:name', 'Alice\
+  \ Johnson');\n    const name = await redis.get('user:1000:name');  // 'Alice Johnson'\n\
+  \n    // SET with expiration\n    await redis.set('session:abc123', 'user_data',\
+  \ 'EX', 3600);\n\n    // Multiple operations\n    await redis.mset('key1', 'value1',\
+  \ 'key2', 'value2');\n    const values = await redis.mget('key1', 'key2');  // ['value1',\
+  \ 'value2']\n    ```\n\n    ### Numeric Operations\n\n    ```python\n    # Counters\n\
+  \    r.set('page:views', 0)\n    r.incr('page:views')  # 1\n    r.incr('page:views')\
+  \  # 2\n    r.incrby('page:views', 10)  # 12\n\n    # Decrement\n    r.decr('inventory:item:123')\
+  \  # Decrease by 1\n    r.decrby('inventory:item:123', 5)  # Decrease by 5\n\n \
+  \   # Atomic increment with expiration\n    r.set('rate:limit:user:1000', 0, ex=60)\n\
+  \    r.incr('rate:limit:user:1000')\n    ```\n\n    ### String Use Cases\n\n   \
+  \ 1. **Caching HTML/JSON**\n    ```python\n    import json\n\n    # Cache API response\n\
+  \    user_data = {'id': 1000, 'name': 'Alice', 'email': 'alice@example.com'}\n \
+  \   r.set('cache:user:1000', json.dumps(user_data), ex=300)  # 5 min cache\n\n \
+  \   # Retrieve from cache\n    cached = r.get('cache:user:1000')\n    if cached:\n\
+  \        user = json.loads(cached)\n    ```\n\n    2. **Distributed Locks**\n  \
+  \  ```python\n    # Acquire lock with timeout\n    lock_acquired = r.set('lock:resource:123',\
+  \ 'worker-1', nx=True, ex=10)\n    if lock_acquired:\n        try:\n           \
+  \ # Do work\n            process_resource()\n        finally:\n            r.delete('lock:resource:123')\n\
+  \    ```\n\n    3. **Counters and Metrics**\n    ```python\n    # Track API calls\n\
+  \    r.incr(f'api:calls:{date}:{endpoint}')\n\n    # Track unique visitors (simple)\n\
+  \    r.incr(f'visitors:{date}')\n    ```\n\n    ## 2. Lists\n\n    **Linked lists\
+  \ of strings, ordered by insertion. Perfect for queues and stacks.**\n\n    ###\
+  \ Basic Operations\n\n    ```python\n    # Push to list (left/right)\n    r.lpush('tasks',\
+  \ 'task1')  # Add to beginning\n    r.rpush('tasks', 'task2')  # Add to end\n  \
+  \  r.rpush('tasks', 'task3', 'task4')  # Multiple items\n\n    # Pop from list\n\
+  \    task = r.lpop('tasks')  # Remove from beginning\n    task = r.rpop('tasks')\
+  \  # Remove from end\n\n    # Blocking pop (wait for item)\n    task = r.blpop('tasks',\
+  \ timeout=5)  # Wait up to 5 seconds\n\n    # Range operations\n    r.lrange('tasks',\
+  \ 0, -1)  # Get all items\n    r.lrange('tasks', 0, 9)   # Get first 10 items\n\n\
+  \    # Length\n    count = r.llen('tasks')\n\n    # Trim (keep only range)\n   \
+  \ r.ltrim('tasks', 0, 99)  # Keep only first 100 items\n    ```\n\n    ```javascript\n\
+  \    // Node.js example\n    await redis.lpush('tasks', 'task1');\n    await redis.rpush('tasks',\
+  \ 'task2', 'task3');\n\n    const task = await redis.lpop('tasks');\n    const allTasks\
+  \ = await redis.lrange('tasks', 0, -1);\n    ```\n\n    ### List Use Cases\n\n \
+  \   1. **Message Queue**\n    ```python\n    # Producer\n    def enqueue_job(job_data):\n\
+  \        r.rpush('jobs:queue', json.dumps(job_data))\n\n    # Consumer\n    def\
+  \ process_jobs():\n        while True:\n            job = r.blpop('jobs:queue',\
+  \ timeout=1)\n            if job:\n                queue_name, job_data = job\n\
+  \                data = json.loads(job_data)\n                process(data)\n  \
+  \  ```\n\n    2. **Activity Feed**\n    ```python\n    # Add activity\n    def add_activity(user_id,\
+  \ activity):\n        r.lpush(f'feed:{user_id}', json.dumps(activity))\n       \
+  \ r.ltrim(f'feed:{user_id}', 0, 99)  # Keep only 100 activities\n\n    # Get recent\
+  \ activities\n    def get_feed(user_id, limit=20):\n        activities = r.lrange(f'feed:{user_id}',\
+  \ 0, limit - 1)\n        return [json.loads(a) for a in activities]\n    ```\n\n\
+  \    3. **Recently Viewed Items**\n    ```python\n    def add_recent_view(user_id,\
+  \ product_id):\n        key = f'recent:{user_id}'\n        r.lrem(key, 0, product_id)\
+  \  # Remove if exists\n        r.lpush(key, product_id)     # Add to front\n   \
+  \     r.ltrim(key, 0, 19)          # Keep only 20 items\n    ```\n\n    ## 3. Sets\n\
+  \n    **Unordered collections of unique strings. Fast membership testing.**\n\n\
+  \    ### Basic Operations\n\n    ```python\n    # Add members\n    r.sadd('tags:post:100',\
+  \ 'python', 'redis', 'caching')\n    r.sadd('tags:post:101', 'redis', 'database',\
+  \ 'nosql')\n\n    # Check membership\n    is_member = r.sismember('tags:post:100',\
+  \ 'python')  # True\n\n    # Get all members\n    tags = r.smembers('tags:post:100')\
+  \  # {'python', 'redis', 'caching'}\n\n    # Remove member\n    r.srem('tags:post:100',\
+  \ 'caching')\n\n    # Count members\n    count = r.scard('tags:post:100')\n\n  \
+  \  # Random member\n    random_tag = r.srandmember('tags:post:100')\n\n    # Pop\
+  \ random member\n    tag = r.spop('tags:post:100')\n    ```\n\n    ### Set Operations\n\
+  \n    ```python\n    # Union (combine sets)\n    all_tags = r.sunion('tags:post:100',\
+  \ 'tags:post:101')\n    # {'python', 'redis', 'caching', 'database', 'nosql'}\n\n\
+  \    # Intersection (common members)\n    common = r.sinter('tags:post:100', 'tags:post:101')\n\
+  \    # {'redis'}\n\n    # Difference (in first but not second)\n    unique = r.sdiff('tags:post:100',\
+  \ 'tags:post:101')\n    # {'python', 'caching'}\n\n    # Store result\n    r.sinterstore('common:tags',\
+  \ 'tags:post:100', 'tags:post:101')\n    ```\n\n    ### Set Use Cases\n\n    1.\
+  \ **Tagging System**\n    ```python\n    # Add tags to post\n    def tag_post(post_id,\
+  \ tags):\n        key = f'tags:{post_id}'\n        r.sadd(key, *tags)\n\n    # Find\
+  \ posts with specific tag\n    def add_tag_index(post_id, tag):\n        r.sadd(f'posts:tag:{tag}',\
+  \ post_id)\n\n    # Get all posts with tag\n    def posts_with_tag(tag):\n     \
+  \   return r.smembers(f'posts:tag:{tag}')\n\n    # Find posts with multiple tags\
+  \ (intersection)\n    def posts_with_all_tags(*tags):\n        keys = [f'posts:tag:{tag}'\
+  \ for tag in tags]\n        return r.sinter(*keys)\n    ```\n\n    2. **Unique Visitors**\n\
+  \    ```python\n    # Track unique visitors per day\n    def track_visitor(date,\
+  \ user_id):\n        r.sadd(f'visitors:{date}', user_id)\n\n    # Count unique visitors\n\
+  \    def count_visitors(date):\n        return r.scard(f'visitors:{date}')\n\n \
+  \   # Unique visitors across multiple days\n    def unique_visitors_range(start_date,\
+  \ end_date):\n        keys = [f'visitors:{date}' for date in date_range(start_date,\
+  \ end_date)]\n        return r.sunion(*keys)\n    ```\n\n    3. **Following/Followers**\n\
+  \    ```python\n    # User follows another user\n    def follow(user_id, target_id):\n\
+  \        r.sadd(f'following:{user_id}', target_id)\n        r.sadd(f'followers:{target_id}',\
+  \ user_id)\n\n    # Get mutual followers\n    def mutual_followers(user1, user2):\n\
+  \        return r.sinter(f'followers:{user1}', f'followers:{user2}')\n\n    # Suggest\
+  \ users to follow (friends of friends)\n    def suggest_follows(user_id):\n    \
+  \    following = r.smembers(f'following:{user_id}')\n        suggestions = set()\n\
+  \        for followed_id in following:\n            friends_of_friend = r.smembers(f'following:{followed_id}')\n\
+  \            suggestions.update(friends_of_friend)\n        suggestions.discard(user_id)\
+  \  # Remove self\n        return suggestions - following  # Remove already following\n\
+  \    ```\n\n    ## 4. Sorted Sets\n\n    **Sets ordered by score. Perfect for leaderboards\
+  \ and rankings.**\n\n    ### Basic Operations\n\n    ```python\n    # Add members\
+  \ with scores\n    r.zadd('leaderboard', {'player1': 1000, 'player2': 1500, 'player3':\
+  \ 1200})\n\n    # Add or update single member\n    r.zadd('leaderboard', {'player4':\
+  \ 1800})\n\n    # Get score\n    score = r.zscore('leaderboard', 'player1')  # 1000.0\n\
+  \n    # Increment score\n    r.zincrby('leaderboard', 100, 'player1')  # 1100.0\n\
+  \n    # Get rank (0-based, lowest score = rank 0)\n    rank = r.zrank('leaderboard',\
+  \ 'player1')\n\n    # Get reverse rank (highest score = rank 0)\n    rank = r.zrevrank('leaderboard',\
+  \ 'player4')  # 0\n\n    # Range by rank\n    top_10 = r.zrevrange('leaderboard',\
+  \ 0, 9, withscores=True)\n    # [('player4', 1800.0), ('player2', 1500.0), ...]\n\
+  \n    # Range by score\n    high_scorers = r.zrangebyscore('leaderboard', 1500,\
+  \ '+inf', withscores=True)\n\n    # Count in score range\n    count = r.zcount('leaderboard',\
+  \ 1000, 2000)\n\n    # Remove member\n    r.zrem('leaderboard', 'player1')\n   \
+  \ ```\n\n    ```javascript\n    // Node.js example\n    await redis.zadd('leaderboard',\
+  \ 1000, 'player1', 1500, 'player2');\n\n    const score = await redis.zscore('leaderboard',\
+  \ 'player1');\n    await redis.zincrby('leaderboard', 100, 'player1');\n\n    const\
+  \ top10 = await redis.zrevrange('leaderboard', 0, 9, 'WITHSCORES');\n    ```\n\n\
+  \    ### Sorted Set Use Cases\n\n    1. **Leaderboard**\n    ```python\n    # Update\
+  \ player score\n    def update_score(player_id, points):\n        r.zincrby('game:leaderboard',\
+  \ points, player_id)\n\n    # Get top players\n    def get_top_players(limit=10):\n\
+  \        return r.zrevrange('game:leaderboard', 0, limit - 1, withscores=True)\n\
+  \n    # Get player rank and score\n    def get_player_stats(player_id):\n      \
+  \  score = r.zscore('game:leaderboard', player_id)\n        rank = r.zrevrank('game:leaderboard',\
+  \ player_id)\n        return {'score': score, 'rank': rank + 1 if rank is not None\
+  \ else None}\n\n    # Get players around user\n    def get_nearby_players(player_id,\
+  \ range=5):\n        rank = r.zrevrank('game:leaderboard', player_id)\n        if\
+  \ rank is None:\n            return []\n        start = max(0, rank - range)\n \
+  \       end = rank + range\n        return r.zrevrange('game:leaderboard', start,\
+  \ end, withscores=True)\n    ```\n\n    2. **Priority Queue**\n    ```python\n \
+  \   import time\n\n    # Add task with priority (timestamp)\n    def add_task(task_id,\
+  \ priority):\n        r.zadd('tasks:priority', {task_id: priority})\n\n    # Add\
+  \ task to run at specific time\n    def schedule_task(task_id, run_at):\n      \
+  \  r.zadd('tasks:scheduled', {task_id: run_at.timestamp()})\n\n    # Get tasks ready\
+  \ to run\n    def get_ready_tasks():\n        now = time.time()\n        tasks =\
+  \ r.zrangebyscore('tasks:scheduled', 0, now)\n        if tasks:\n            r.zrem('tasks:scheduled',\
+  \ *tasks)  # Remove from queue\n        return tasks\n    ```\n\n    3. **Time-Series\
+  \ Data**\n    ```python\n    # Store metrics with timestamp\n    def record_metric(metric_name,\
+  \ value, timestamp=None):\n        if timestamp is None:\n            timestamp\
+  \ = time.time()\n        r.zadd(f'metrics:{metric_name}', {json.dumps(value): timestamp})\n\
+  \n    # Get metrics in time range\n    def get_metrics(metric_name, start_time,\
+  \ end_time):\n        data = r.zrangebyscore(f'metrics:{metric_name}', start_time,\
+  \ end_time)\n        return [json.loads(d) for d in data]\n\n    # Clean old metrics\n\
+  \    def clean_old_metrics(metric_name, days=7):\n        cutoff = time.time() -\
+  \ (days * 86400)\n        r.zremrangebyscore(f'metrics:{metric_name}', 0, cutoff)\n\
+  \    ```\n\n    ## 5. Hashes\n\n    **Field-value pairs - like a mini Redis inside\
+  \ a key. Perfect for objects.**\n\n    ### Basic Operations\n\n    ```python\n \
+  \   # Set fields\n    r.hset('user:1000', 'name', 'Alice Johnson')\n    r.hset('user:1000',\
+  \ 'email', 'alice@example.com')\n\n    # Set multiple fields\n    r.hset('user:1000',\
+  \ mapping={\n        'name': 'Alice Johnson',\n        'email': 'alice@example.com',\n\
+  \        'age': '30',\n        'city': 'San Francisco'\n    })\n\n    # Get field\n\
+  \    name = r.hget('user:1000', 'name')  # b'Alice Johnson'\n\n    # Get all fields\n\
+  \    user = r.hgetall('user:1000')\n    # {b'name': b'Alice Johnson', b'email':\
+  \ b'alice@example.com', ...}\n\n    # Get multiple fields\n    data = r.hmget('user:1000',\
+  \ ['name', 'email'])\n\n    # Check field exists\n    exists = r.hexists('user:1000',\
+  \ 'name')  # True\n\n    # Delete field\n    r.hdel('user:1000', 'age')\n\n    #\
+  \ Get all keys\n    fields = r.hkeys('user:1000')\n\n    # Get all values\n    values\
+  \ = r.hvals('user:1000')\n\n    # Count fields\n    count = r.hlen('user:1000')\n\
+  \n    # Increment field\n    r.hincrby('user:1000', 'login_count', 1)\n    ```\n\
+  \n    ### Hash Use Cases\n\n    1. **User Objects**\n    ```python\n    # Store\
+  \ user profile\n    def save_user(user_id, user_data):\n        key = f'user:{user_id}'\n\
+  \        r.hset(key, mapping=user_data)\n        r.expire(key, 3600)  # Cache for\
+  \ 1 hour\n\n    # Update specific fields\n    def update_user_email(user_id, email):\n\
+  \        r.hset(f'user:{user_id}', 'email', email)\n\n    # Get user\n    def get_user(user_id):\n\
+  \        return r.hgetall(f'user:{user_id}')\n    ```\n\n    2. **Session Storage**\n\
+  \    ```python\n    # Create session\n    def create_session(session_id, user_id,\
+  \ user_data):\n        key = f'session:{session_id}'\n        r.hset(key, mapping={\n\
+  \            'user_id': user_id,\n            'created_at': time.time(),\n     \
+  \       **user_data\n        })\n        r.expire(key, 86400)  # 24 hour session\n\
+  \n    # Update session activity\n    def touch_session(session_id):\n        key\
+  \ = f'session:{session_id}'\n        r.hset(key, 'last_activity', time.time())\n\
+  \        r.expire(key, 86400)  # Reset expiration\n\n    # Get session\n    def\
+  \ get_session(session_id):\n        return r.hgetall(f'session:{session_id}')\n\
+  \    ```\n\n    3. **Rate Limiting per User**\n    ```python\n    # Track API calls\
+  \ per endpoint\n    def track_api_call(user_id, endpoint):\n        key = f'rate:{user_id}:{int(time.time()\
+  \ / 60)}'  # Per minute\n        r.hincrby(key, endpoint, 1)\n        r.expire(key,\
+  \ 120)  # Keep for 2 minutes\n\n    # Check rate limit\n    def is_rate_limited(user_id,\
+  \ endpoint, limit=100):\n        key = f'rate:{user_id}:{int(time.time() / 60)}'\n\
+  \        count = r.hget(key, endpoint)\n        return int(count or 0) >= limit\n\
+  \    ```\n\n    ## TTL and Expiration\n\n    **Automatically expire keys after a\
+  \ specified time**\n\n    ```python\n    # Set expiration when creating key\n  \
+  \  r.set('temp:key', 'value', ex=60)  # Expires in 60 seconds\n    r.set('temp:key2',\
+  \ 'value', px=5000)  # Expires in 5000 milliseconds\n\n    # Set expiration on existing\
+  \ key\n    r.expire('mykey', 300)  # 5 minutes\n    r.expireat('mykey', 1609459200)\
+  \  # Unix timestamp\n\n    # Get TTL\n    ttl = r.ttl('mykey')  # Seconds remaining\
+  \ (-1 if no expiry, -2 if not exists)\n\n    # Remove expiration\n    r.persist('mykey')\n\
+  \n    # Set expiration on hash\n    r.hset('session:123', mapping={'user_id': '1000'})\n\
+  \    r.expire('session:123', 1800)  # 30 minutes\n    ```\n\n    **Common TTL Patterns:**\n\
+  \n    ```python\n    # Cache with automatic refresh\n    def get_cached(key, fetch_function,\
+  \ ttl=300):\n        value = r.get(key)\n        if value is None:\n           \
+  \ value = fetch_function()\n            r.set(key, value, ex=ttl)\n        return\
+  \ value\n\n    # Sliding window expiration\n    def access_resource(key):\n    \
+  \    r.expire(key, 3600)  # Reset to 1 hour on each access\n    ```\n\n    ## Pub/Sub\
+  \ Messaging\n\n    **Publish/Subscribe pattern for real-time messaging**\n\n   \
+  \ ### Basic Pub/Sub\n\n    ```python\n    # Publisher\n    def publish_message(channel,\
+  \ message):\n        r.publish(channel, message)\n\n    # Subscriber (blocking)\n\
+  \    def subscribe_to_channel(channel):\n        pubsub = r.pubsub()\n        pubsub.subscribe(channel)\n\
+  \n        for message in pubsub.listen():\n            if message['type'] == 'message':\n\
+  \                print(f\"Received: {message['data']}\")\n                process_message(message['data'])\n\
+  \    ```\n\n    ```javascript\n    // Node.js Publisher\n    await redis.publish('notifications',\
+  \ JSON.stringify({\n        type: 'new_message',\n        user_id: 1000\n    }));\n\
+  \n    // Node.js Subscriber\n    const subscriber = new Redis();\n    subscriber.subscribe('notifications',\
+  \ (err, count) => {\n        console.log(`Subscribed to ${count} channels`);\n \
+  \   });\n\n    subscriber.on('message', (channel, message) => {\n        const data\
+  \ = JSON.parse(message);\n        console.log('Received:', data);\n    });\n   \
+  \ ```\n\n    ### Pattern Subscriptions\n\n    ```python\n    # Subscribe to pattern\n\
+  \    pubsub = r.pubsub()\n    pubsub.psubscribe('user:*:notifications')\n\n    #\
+  \ Publish to specific user\n    r.publish('user:1000:notifications', 'New message')\n\
+  \    r.publish('user:2000:notifications', 'Friend request')\n    ```\n\n    ###\
+  \ Pub/Sub Use Cases\n\n    1. **Real-time Notifications**\n    ```python\n    #\
+  \ Notification service\n    def send_notification(user_id, notification):\n    \
+  \    channel = f'user:{user_id}:notifications'\n        r.publish(channel, json.dumps(notification))\n\
+  \n    # User's notification listener\n    def listen_for_notifications(user_id):\n\
+  \        pubsub = r.pubsub()\n        pubsub.subscribe(f'user:{user_id}:notifications')\n\
+  \n        for message in pubsub.listen():\n            if message['type'] == 'message':\n\
+  \                notification = json.loads(message['data'])\n                display_notification(notification)\n\
+  \    ```\n\n    2. **Chat System**\n    ```python\n    # Join chat room\n    def\
+  \ join_room(room_id):\n        pubsub = r.pubsub()\n        pubsub.subscribe(f'chat:room:{room_id}')\n\
+  \        return pubsub\n\n    # Send message to room\n    def send_message(room_id,\
+  \ user_id, message):\n        r.publish(f'chat:room:{room_id}', json.dumps({\n \
+  \           'user_id': user_id,\n            'message': message,\n            'timestamp':\
+  \ time.time()\n        }))\n    ```\n\n    3. **Cache Invalidation**\n    ```python\n\
+  \    # Publish cache invalidation event\n    def invalidate_cache(cache_key):\n\
+  \        r.publish('cache:invalidate', cache_key)\n\n    # All app servers listen\
+  \ for invalidation\n    def listen_for_invalidations():\n        pubsub = r.pubsub()\n\
+  \        pubsub.subscribe('cache:invalidate')\n\n        for message in pubsub.listen():\n\
+  \            if message['type'] == 'message':\n                cache_key = message['data']\n\
+  \                local_cache.delete(cache_key)\n    ```\n\n    ## Summary: Choosing\
+  \ the Right Data Structure\n\n    | Data Structure | Use When | Examples |\n   \
+  \ |---------------|----------|----------|\n    | **String** | Simple key-value,\
+  \ counters, locks | Cache, session tokens, rate limiting |\n    | **List** | Ordered\
+  \ collection, queue | Message queues, activity feeds, recent items |\n    | **Set**\
+  \ | Unique items, membership testing | Tags, unique visitors, relationships |\n\
+  \    | **Sorted Set** | Ranked data, time-series | Leaderboards, priority queues,\
+  \ scheduled tasks |\n    | **Hash** | Object with fields | User profiles, sessions,\
+  \ settings |\n\n    ## Next Steps\n\n    Now that you understand Redis data structures,\
+  \ you'll learn how to apply them in sophisticated caching patterns and production\
+  \ scenarios!"
+exercises:
+- type: mcq
+  slug: lesson-1-mcq-1
+  sequence_order: 1
+  question: What is the primary advantage of Redis storing data in RAM?
+  options:
+  - Sub-millisecond latency and 100,000+ operations per second
+  - Lower cost than disk storage
+  - Automatic data backup
+  - Better security
+  correct_answer_index: 0
+  explanation: Redis stores all data in RAM (not disk), which provides sub-millisecond latency and can handle 100,000+ operations per second on commodity hardware. This makes it ideal for caching, real-time analytics, and high-performance applications where speed is critical.
+- type: mcq
+  slug: lesson-1-mcq-2
+  sequence_order: 2
+  question: What does the Redis command INCR do?
+  options:
+  - Atomically increments a numeric value stored at a key by 1
+  - Increases the expiration time of a key
+  - Increments all keys in the database
+  - Inserts a new record
+  correct_answer_index: 0
+  explanation: INCR atomically increments the integer value of a key by 1. If the key does not exist, it is set to 0 before performing the operation. This is useful for counters, rate limiting, and metrics. The operation is atomic, making it safe in concurrent environments.
+- type: mcq
+  slug: lesson-1-mcq-3
+  sequence_order: 3
+  question: Why would you use Redis with an expiration time (ex parameter)?
+  options:
+  - To automatically remove data after a certain time, useful for caching and sessions
+  - To make queries run faster
+  - To compress the data
+  - To create backups
+  correct_answer_index: 0
+  explanation: Setting an expiration time (using EX or EXPIRE) automatically removes the key after the specified seconds. This is essential for caching (auto-invalidate stale data), session management (auto-logout), and rate limiting (reset counters). Redis handles cleanup automatically, preventing memory bloat.
+objectives:
+- Understand core concepts of Redis Data Structures and Operations
+- Apply learned concepts in practical scenarios
+- Identify best practices and common patterns
+- Recognize trade-offs in different approaches
+next_recommended:
+- control
+- data-structures

@@ -1,0 +1,65 @@
+slug: lesson-58
+title: Lesson 58
+difficulty: easy
+sequence_order: 58
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Environment Variables and Command Arguments\n\
+  \n    - env and envFrom with ConfigMap/Secret\n    - args and command for entrypoint\
+  \ configuration"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What is the difference between the 'command' and 'args' fields in a container
+    spec?
+  options:
+  - command is for environment variables, args is for commands
+  - command overrides the container ENTRYPOINT, args overrides CMD
+  - There is no difference
+  - command is required, args is optional
+  correct_answer: command overrides the container ENTRYPOINT, args overrides CMD
+  explanation: 'In a Kubernetes container spec, ''command'' overrides the Docker image''s
+    ENTRYPOINT, and ''args'' overrides the CMD. Understanding the mapping is crucial:
+    Docker ENTRYPOINT → K8s command, Docker CMD → K8s args. If you don''t specify
+    command in the pod spec, the image''s ENTRYPOINT is used. If you don''t specify
+    args, the image''s CMD is used. If you specify both, they work together: command
+    defines the executable, args provides arguments to it. For example, if an image
+    has ENTRYPOINT [''/app''] and CMD [''--port=8080''], you can override just args:
+    [''--port=9090''] to run ''/app --port=9090''. Or override both: command: [''/bin/sh'']
+    and args: [''-c'', ''echo hello'']. This flexibility allows customizing container
+    behavior without rebuilding images.'
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: How can you reference other environment variables when setting environment
+    variables in a container spec?
+  options:
+  - Using $(VAR_NAME) syntax
+  - Using ${VAR_NAME} syntax
+  - Environment variable references are not supported
+  - Using $VAR_NAME syntax
+  correct_answer: Using $(VAR_NAME) syntax
+  explanation: Kubernetes supports environment variable expansion using the $(VAR_NAME)
+    syntax in the 'command', 'args', and 'env' fields. For example, you can set 'MY_URL=http://$(SERVICE_NAME):$(PORT)'
+    and Kubernetes will substitute the values of SERVICE_NAME and PORT variables.
+    This is particularly useful when combining ConfigMap/Secret values with hardcoded
+    text, or when building composite values from multiple sources. The expansion happens
+    when the container starts. Note that this is Kubernetes-specific syntax - the
+    standard shell variable syntax ${VAR_NAME} or $VAR_NAME won't work for this purpose
+    (though they work in shell commands). Variable expansion also supports field references
+    like $(POD_NAME) using the downward API, allowing you to inject pod metadata as
+    environment variables.
+  require_pass: true
+- type: mcq
+  sequence_order: 1
+  question: What kubectl command checks if you can perform an action?
+  options:
+  - kubectl auth can-i create pods
+  - kubectl check permissions create pods
+  - kubectl verify action create pods
+  - kubectl test auth create pods
+  correct_answer_index: 0
+  explanation: kubectl auth can-i <action> <resource> checks if the current user has
+    permission to perform the specified action.
+  require_pass: true

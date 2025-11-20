@@ -1,0 +1,136 @@
+slug: lesson-3
+title: Lesson 3
+difficulty: easy
+sequence_order: 3
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Software Package Management and Services\n\
+  \n    ## Package Management Basics\n\n    Package managers simplify software installation,\
+  \ updates, and removal by automatically handling dependencies and configurations.\n\
+  \n    ### What is a Package?\n\n    A package is precompiled software bundled with:\n\
+  \    - Executables and binaries\n    - Configuration files\n    - Documentation\n\
+  \    - Metadata (dependencies, version, description)\n\n    ### Common Package Managers\n\
+  \n    | Distribution | Package Manager | Package Format | Example Command |\n  \
+  \  |--------------|----------------|----------------|-----------------|\n    | **Ubuntu/Debian**\
+  \ | apt, dpkg | .deb | `apt install nginx` |\n    | **RHEL/CentOS 7** | yum, rpm\
+  \ | .rpm | `yum install nginx` |\n    | **RHEL/CentOS 8+** | dnf | .rpm | `dnf install\
+  \ nginx` |\n    | **Alpine** | apk | .apk | `apk add nginx` |\n    | **Arch** |\
+  \ pacman | .pkg.tar.xz | `pacman -S nginx` |\n\n    ## APT Package Manager (Debian/Ubuntu)\n\
+  \n    **APT** (Advanced Package Tool) is the high-level package manager for Debian-based\
+  \ systems.\n\n    ### Repository Management\n\n    ```bash\n    # Update package\
+  \ index (always do this first!)\n    sudo apt update\n\n    # Upgrade all installed\
+  \ packages\n    sudo apt upgrade\n\n    # Full system upgrade (handles dependencies\
+  \ more aggressively)\n    sudo apt full-upgrade\n\n    # Remove unused dependencies\n\
+  \    sudo apt autoremove\n    ```\n\n    ### Installing Software\n\n    ```bash\n\
+  \    # Install package\n    sudo apt install nginx\n\n    # Install multiple packages\n\
+  \    sudo apt install nginx mysql-server php\n\n    # Install without prompts (-y\
+  \ = assume yes)\n    sudo apt install -y apache2\n\n    # Install specific version\n\
+  \    sudo apt install nginx=1.18.0-0ubuntu1\n    ```\n\n    ### Removing Software\n\
+  \n    ```bash\n    # Remove package (keep configuration files)\n    sudo apt remove\
+  \ nginx\n\n    # Remove package AND configuration files\n    sudo apt purge nginx\n\
+  \n    # Remove package and unused dependencies\n    sudo apt autoremove nginx\n\
+  \    ```\n\n    ### Searching and Information\n\n    ```bash\n    # Search for package\n\
+  \    apt search nginx\n    apt search web server\n\n    # Show package details\n\
+  \    apt show nginx\n\n    # List installed packages\n    apt list --installed\n\
+  \n    # Check if package is installed\n    dpkg -l | grep nginx\n    ```\n\n   \
+  \ ## YUM/DNF Package Manager (RHEL/CentOS)\n\n    ### Basic Commands\n\n    ```bash\n\
+  \    # Update package cache\n    sudo yum check-update       # CentOS 7\n    sudo\
+  \ dnf check-update       # CentOS 8+\n\n    # Install package\n    sudo yum install\
+  \ nginx      # CentOS 7\n    sudo dnf install nginx      # CentOS 8+\n\n    # Remove\
+  \ package\n    sudo yum remove nginx\n    sudo dnf remove nginx\n\n    # Update\
+  \ all packages\n    sudo yum update\n    sudo dnf upgrade\n\n    # Search for package\n\
+  \    yum search nginx\n    dnf search nginx\n\n    # Show package info\n    yum\
+  \ info nginx\n    dnf info nginx\n    ```\n\n    ## Service Management with systemd\n\
+  \n    **systemd** is the init system and service manager for most modern Linux distributions.\n\
+  \n    ### What is a Service?\n\n    A **service** (or daemon) is a background process\
+  \ that:\n    - Starts automatically at boot\n    - Runs continuously\n    - Provides\
+  \ functionality (web server, database, SSH)\n\n    Examples: `nginx`, `mysql`, `sshd`,\
+  \ `docker`\n\n    ### Service Commands\n\n    ```bash\n    # Check service status\n\
+  \    systemctl status nginx\n\n    # Start service\n    sudo systemctl start nginx\n\
+  \n    # Stop service\n    sudo systemctl stop nginx\n\n    # Restart service (stop\
+  \ then start)\n    sudo systemctl restart nginx\n\n    # Reload configuration without\
+  \ stopping\n    sudo systemctl reload nginx\n\n    # Enable service (start at boot)\n\
+  \    sudo systemctl enable nginx\n\n    # Disable service (don't start at boot)\n\
+  \    sudo systemctl disable nginx\n\n    # Enable and start in one command\n   \
+  \ sudo systemctl enable --now nginx\n\n    # Check if service is enabled\n    systemctl\
+  \ is-enabled nginx\n\n    # Check if service is active\n    systemctl is-active\
+  \ nginx\n    ```\n\n    ### Listing Services\n\n    ```bash\n    # List all services\n\
+  \    systemctl list-units --type=service\n\n    # List running services\n    systemctl\
+  \ list-units --type=service --state=running\n\n    # List failed services\n    systemctl\
+  \ list-units --type=service --state=failed\n\n    # List enabled services (start\
+  \ at boot)\n    systemctl list-unit-files --type=service --state=enabled\n    ```\n\
+  \n    ### Service Dependencies\n\n    ```bash\n    # View service dependencies\n\
+  \    systemctl list-dependencies nginx\n\n    # View what depends on this service\n\
+  \    systemctl list-dependencies --reverse nginx\n    ```\n\n    ## Viewing Logs\n\
+  \n    ### journalctl - systemd Journal\n\n    systemd captures service logs in the\
+  \ journal:\n\n    ```bash\n    # View all logs\n    journalctl\n\n    # View logs\
+  \ for specific service\n    journalctl -u nginx\n    journalctl -u apache2\n\n \
+  \   # Follow logs in real-time (like tail -f)\n    journalctl -u nginx -f\n\n  \
+  \  # View recent logs (last N lines)\n    journalctl -u nginx -n 50\n\n    # View\
+  \ logs since boot\n    journalctl -u nginx -b\n\n    # View logs from specific time\n\
+  \    journalctl -u nginx --since \"2024-11-05 10:00:00\"\n    journalctl -u nginx\
+  \ --since yesterday\n    journalctl -u nginx --since \"1 hour ago\"\n\n    # View\
+  \ logs with priority level\n    journalctl -p err         # Only errors\n    journalctl\
+  \ -p warning     # Warnings and above\n    ```\n\n    ### Traditional Log Files\n\
+  \n    Some services still write to `/var/log/`:\n\n    ```bash\n    # Web server\
+  \ logs\n    /var/log/apache2/access.log\n    /var/log/apache2/error.log\n    /var/log/nginx/access.log\n\
+  \    /var/log/nginx/error.log\n\n    # System logs\n    /var/log/syslog        \
+  \   # Ubuntu/Debian general system log\n    /var/log/messages         # RHEL/CentOS\
+  \ general system log\n    /var/log/auth.log         # Authentication logs\n    /var/log/kern.log\
+  \         # Kernel logs\n    ```\n\n    **Viewing log files:**\n    ```bash\n  \
+  \  # View entire log\n    sudo cat /var/log/syslog\n\n    # View last 20 lines\n\
+  \    sudo tail -20 /var/log/syslog\n\n    # Follow log in real-time\n    sudo tail\
+  \ -f /var/log/nginx/access.log\n\n    # Search logs\n    sudo grep \"error\" /var/log/nginx/error.log\n\
+  \    ```\n\n    ## Installing and Managing Web Server Example\n\n    ### Installing\
+  \ Apache HTTP Server\n\n    ```bash\n    # Update package index\n    sudo apt update\n\
+  \n    # Install Apache\n    sudo apt install -y apache2\n\n    # Verify installation\n\
+  \    apache2 -v\n\n    # Check service status\n    systemctl status apache2\n\n\
+  \    # Ensure it starts at boot\n    sudo systemctl enable apache2\n\n    # Test\
+  \ the web server\n    curl http://localhost\n    ```\n\n    ### Managing Apache\n\
+  \n    ```bash\n    # Stop Apache\n    sudo systemctl stop apache2\n\n    # Start\
+  \ Apache\n    sudo systemctl start apache2\n\n    # Restart Apache (configuration\
+  \ changes)\n    sudo systemctl restart apache2\n\n    # Reload Apache (graceful\
+  \ restart)\n    sudo systemctl reload apache2\n\n    # View Apache logs\n    sudo\
+  \ journalctl -u apache2 -n 50\n    sudo tail -f /var/log/apache2/access.log\n  \
+  \  ```\n\n    ### Web Server Files\n\n    | Path | Purpose |\n    |------|---------|\n\
+  \    | `/var/www/html/` | Default web root (place website files here) |\n    | `/etc/apache2/`\
+  \ | Apache configuration directory |\n    | `/etc/nginx/` | Nginx configuration\
+  \ directory |\n    | `/var/log/apache2/` | Apache logs |\n    | `/var/log/nginx/`\
+  \ | Nginx logs |\n\n    ## Introduction to Containers\n\n    ### Traditional Installation\
+  \ vs. Containers\n\n    **Traditional Installation:**\n    - Install software on\
+  \ host OS\n    - Shares system libraries\n    - May conflict with other software\n\
+  \    - Updates affect all applications\n\n    **Container Installation:**\n    -\
+  \ Isolated environment\n    - Bundles application + dependencies\n    - No conflicts\n\
+  \    - Each container independent\n\n    ### Why Containers Matter\n\n    Since\
+  \ this course prepares for Docker/Kubernetes:\n    - Docker uses Linux containers\
+  \ to isolate applications\n    - Kubernetes orchestrates containers across multiple\
+  \ machines\n    - Understanding services helps understand containerized services\n\
+  \n    ### Container Concepts\n\n    ```bash\n    # Traditional: Install on host\n\
+  \    sudo apt install nginx\n    sudo systemctl start nginx\n\n    # Container:\
+  \ Run isolated\n    docker run -d -p 80:80 nginx\n    ```\n\n    **Container benefits:**\n\
+  \    - Portable (run anywhere)\n    - Isolated (doesn't affect host)\n    - Version\
+  \ control (specific image versions)\n    - Easy rollback\n\n    ## Troubleshooting\
+  \ Services\n\n    ### Common Issues\n\n    **1. Service won't start:**\n    ```bash\n\
+  \    # Check status for error message\n    systemctl status nginx\n\n    # View\
+  \ detailed logs\n    journalctl -u nginx -n 100\n\n    # Check configuration syntax\n\
+  \    nginx -t\n    apache2ctl configtest\n    ```\n\n    **2. Port already in use:**\n\
+  \    ```bash\n    # Check what's using the port\n    sudo netstat -tulpn | grep\
+  \ :80\n    sudo ss -tulpn | grep :80\n    sudo lsof -i :80\n    ```\n\n    **3.\
+  \ Permission denied:**\n    ```bash\n    # Check file permissions\n    ls -l /var/www/html/\n\
+  \n    # Check SELinux (RHEL/CentOS)\n    getenforce\n    sudo setenforce 0    #\
+  \ Temporarily disable for testing\n    ```\n\n    **4. Service crashed:**\n    ```bash\n\
+  \    # Check if service failed\n    systemctl list-units --failed\n\n    # View\
+  \ crash logs\n    journalctl -u nginx --since \"10 minutes ago\"\n    ```\n\n  \
+  \  ## Best Practices\n\n    1. **Always update before installing**: `sudo apt update`\n\
+  \    2. **Enable important services**: `sudo systemctl enable nginx`\n    3. **Monitor\
+  \ logs**: Use `journalctl -f` or `tail -f` to watch logs\n    4. **Test after changes**:\
+  \ `nginx -t` or `apache2ctl configtest`\n    5. **Regular updates**: `sudo apt upgrade`\
+  \ for security patches\n    6. **Backup configs**: Before modifying `/etc/nginx/`\
+  \ or `/etc/apache2/`\n\n    ## Summary\n\n    In this module, you learned:\n   \
+  \ - Package managers (apt, yum/dnf) install and manage software\n    - How to install,\
+  \ remove, search, and update packages\n    - systemd manages services (start, stop,\
+  \ restart, enable/disable)\n    - View logs with journalctl and traditional log\
+  \ files\n    - Install and manage web servers like Apache\n    - Containers provide\
+  \ an alternative to direct host installation"
+exercises: []

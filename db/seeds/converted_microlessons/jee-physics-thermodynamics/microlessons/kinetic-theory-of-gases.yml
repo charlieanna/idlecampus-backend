@@ -1,0 +1,242 @@
+slug: kinetic-theory-of-gases
+title: "Kinetic Theory of Gases"
+difficulty: intermediate
+sequence_order: 4
+estimated_minutes: 18
+key_concepts:
+- ideal-gas
+- kinetic-energy
+- rms-speed
+- degrees-of-freedom
+- equipartition-theorem
+prerequisites:
+- first-law-thermodynamics
+content_md: |
+  # Kinetic Theory of Gases
+
+  ## Assumptions of Kinetic Theory
+
+  1. Gas consists of large number of tiny molecules
+  2. Molecules are in constant random motion
+  3. Collisions are perfectly elastic
+  4. No intermolecular forces (except during collision)
+  5. Volume of molecules << volume of container
+  6. Collision time << time between collisions
+
+  ## Ideal Gas Equation
+
+  ```
+  PV = nRT = NkT
+
+  n = number of moles
+  R = 8.314 J/(mol·K)
+  N = number of molecules
+  k = Boltzmann constant = R/N_A = 1.38×10⁻²³ J/K
+  ```
+
+  ## Pressure from Kinetic Theory
+
+  ```
+  P = (1/3)ρv²_rms = (1/3)(Nm/V)v²_rms
+
+  ρ = density
+  v_rms = root mean square speed
+  ```
+
+  Derivation shows pressure from molecular collisions with walls.
+
+  ## Molecular Speeds
+
+  ### RMS Speed:
+  ```
+  v_rms = √(3kT/m) = √(3RT/M)
+
+  M = molar mass (kg/mol)
+  m = molecular mass (kg)
+  ```
+
+  ### Average Speed:
+  ```
+  v_avg = √(8kT/πm) = √(8RT/πM)
+  ```
+
+  ### Most Probable Speed:
+  ```
+  v_mp = √(2kT/m) = √(2RT/M)
+  ```
+
+  ### Relation:
+  ```
+  v_mp : v_avg : v_rms = 1 : 1.128 : 1.224
+                       = √2 : √(8/π) : √3
+  ```
+
+  v_mp < v_avg < v_rms always.
+
+  ## Kinetic Energy
+
+  ### Per Molecule:
+  ```
+  KE = ½mv²_rms = (3/2)kT
+  ```
+
+  ### Per Mole:
+  ```
+  KE = (3/2)RT = (3/2)N_AkT
+  ```
+
+  **KE depends only on temperature**, not on gas type!
+
+  ## Degrees of Freedom
+
+  **Number of independent ways molecule can store energy.**
+
+  | Gas Type | Translation | Rotation | Vibration | Total (f) |
+  |----------|-------------|----------|-----------|-----------|
+  | Monoatomic | 3 | 0 | 0 | 3 |
+  | Diatomic | 3 | 2 | 0* | 5 |
+  | Polyatomic | 3 | 3 | 0* | 6 |
+
+  *Vibrations significant only at high T.
+
+  ## Equipartition of Energy
+
+  **Each degree of freedom gets (1/2)kT energy per molecule.**
+
+  ```
+  Total energy per molecule: U = (f/2)kT
+  Total energy per mole: U = (f/2)RT
+  ```
+
+  ### Examples:
+  - Monoatomic: U = (3/2)RT per mole
+  - Diatomic: U = (5/2)RT per mole
+  - Polyatomic: U = 3RT per mole
+
+  ## Specific Heat Capacities
+
+  ### At Constant Volume:
+  ```
+  C_v = dU/dT = (f/2)R
+
+  Monoatomic: C_v = (3/2)R
+  Diatomic: C_v = (5/2)R
+  ```
+
+  ### At Constant Pressure:
+  ```
+  C_p = C_v + R = ((f+2)/2)R
+
+  Monoatomic: C_p = (5/2)R
+  Diatomic: C_p = (7/2)R
+  ```
+
+  ### Ratio γ:
+  ```
+  γ = C_p/C_v = (f+2)/f
+
+  Monoatomic: γ = 5/3 ≈ 1.67
+  Diatomic: γ = 7/5 = 1.4
+  Polyatomic: γ = 8/6 ≈ 1.33
+  ```
+
+  ## Mean Free Path
+
+  **Average distance traveled between collisions:**
+
+  ```
+  λ = 1/(√2 nπd²) = kT/(√2 πd²P)
+
+  n = number density
+  d = molecular diameter
+  ```
+
+  At STP: λ ≈ 10⁻⁷ m (about 100 molecular diameters).
+
+  ## Real Gas Corrections
+
+  ### Van der Waals Equation:
+  ```
+  (P + a/V²)(V - b) = RT (per mole)
+
+  a = accounts for intermolecular attraction
+  b = accounts for molecular volume
+  ```
+
+  ## Numerical Examples
+
+  **Example 1:** RMS speed of O₂ at 300 K (M = 32 g/mol)?
+
+  **Solution:**
+  ```
+  v_rms = √(3RT/M) = √(3×8.314×300/0.032)
+  v_rms = √(7483.5/0.032) = √233859
+  v_rms ≈ 484 m/s
+
+  Faster than sound in air!
+  ```
+
+  **Example 2:** Two gases at same temperature. Mass ratio m₁/m₂ = 4. RMS speed ratio?
+
+  **Solution:**
+  ```
+  v_rms ∝ 1/√m (at same T)
+  v₁/v₂ = √(m₂/m₁) = √(1/4) = 1/2
+
+  Heavier molecule moves slower.
+  ```
+
+  **Example 3:** Calculate C_v and C_p for helium (monoatomic).
+
+  **Solution:**
+  ```
+  f = 3 (monoatomic)
+  C_v = (f/2)R = (3/2)×8.314 = 12.47 J/(mol·K)
+  C_p = C_v + R = 12.47 + 8.314 = 20.78 J/(mol·K)
+  γ = C_p/C_v = 20.78/12.47 = 1.67 = 5/3 ✓
+  ```
+
+  ## JEE Key Points
+
+  1. **PV = nRT = NkT** (ideal gas)
+  2. **v_rms = √(3RT/M)**
+  3. **KE = (3/2)kT** (per molecule)
+  4. **Energy = (f/2)RT** (per mole)
+  5. **C_v = (f/2)R, C_p = C_v + R**
+  6. **γ = (f+2)/f**
+  7. **v_mp < v_avg < v_rms**
+
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: "At same temperature, ratio of RMS speeds of hydrogen (M=2) to oxygen (M=32) is:"
+  options:
+  - "1:4"
+  - "4:1"
+  - "1:16"
+  - "16:1"
+  correct_answer: "4:1"
+  explanation: "v_rms = √(3RT/M), so v_rms ∝ 1/√M at same T. v_H₂/v_O₂ = √(M_O₂/M_H₂) = √(32/2) = √16 = 4. Hydrogen molecules move 4 times faster than oxygen at same temperature! This explains why hydrogen escapes Earth's atmosphere faster (thermal escape). Also why hydrogen leaks through tiny holes faster than heavier gases. Graham's law of diffusion follows from this: Rate ∝ 1/√M. Lighter gases diffuse faster. At same T, all gases have same average KE, but lighter ones have higher speed."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: "For a diatomic gas, C_p - C_v equals:"
+  options:
+  - "R/2"
+  - "R"
+  - "2R"
+  - "5R/2"
+  correct_answer: "R"
+  explanation: "C_p - C_v = R always (Mayer's relation)! This is universal for ideal gases, regardless of atomicity (mono, di, poly). Why? At constant V: all energy goes to internal motion. At constant P: energy goes to internal motion PLUS expansion work (PΔV = nRΔT). Extra energy = nRΔT, so C_p - C_v = R. For diatomic: C_v = 5R/2, C_p = 7R/2, difference = R ✓. For monoatomic: C_v = 3R/2, C_p = 5R/2, difference = R ✓. This relation helped establish R as universal constant. Value: R = 8.314 J/(mol·K)."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: "If temperature of gas is doubled, RMS speed of molecules:"
+  options:
+  - "Doubles"
+  - "Halves"
+  - "Increases √2 times"
+  - "Increases 4 times"
+  correct_answer: "Increases √2 times"
+  explanation: "v_rms = √(3RT/M), so v_rms ∝ √T. If T → 2T: v_rms → √2 × v_rms. Speed increases by factor √2 ≈ 1.414, not 2! This square root dependence is crucial. To double RMS speed, temperature must increase 4 times (T → 4T). Kinetic energy KE = (3/2)kT doubles when T doubles (linear). But speed = √(2KE/m) increases by √2. Common mistake: thinking speed doubles with temperature. This √T relationship appears in many kinetic theory formulas and has practical implications for gas behavior at different temperatures."
+  require_pass: true

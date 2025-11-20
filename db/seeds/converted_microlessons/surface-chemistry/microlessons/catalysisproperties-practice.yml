@@ -1,0 +1,60 @@
+slug: catalysisproperties-practice
+title: catalysis_properties — Practice
+difficulty: medium
+sequence_order: 15
+estimated_minutes: 2
+key_concepts:
+- catalysis_properties
+prerequisites: []
+content_md: '# catalysis_properties — Practice 🚀
+
+
+  Catalysts lower activation energy and speed up both forward/backward reactions equally,
+  so equilibrium position is unchanged. They do not alter ΔG or make impossible reactions
+  possible.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 2
+  question: Which statements are true about catalysts?
+  options:
+  - Catalyst lowers activation energy
+  - Catalyst does not alter equilibrium position
+  - Catalyst changes Gibbs free energy of reaction
+  - Catalyst can make thermodynamically unfavorable reactions occur
+  correct_answer: Catalyst does not alter equilibrium position
+  explanation: "Catalysts lower the activation energy (option 1 is also true) and speed up both forward and backward reactions equally, so they help reach equilibrium faster but do NOT change the equilibrium position itself. Catalysts do not alter the Gibbs free energy (ΔG) of the reaction or make thermodynamically unfavorable reactions (ΔG > 0) possible - they only affect reaction kinetics, not thermodynamics. While option 1 is correct, option 2 is the statement that addresses the common misconception about catalysts changing equilibrium."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: 'A catalyst poison is a substance that:'
+  options:
+  - Reduces or destroys the activity of a catalyst
+  - Increases catalyst activity
+  - Acts as a promoter
+  - Has no effect on the catalyst
+  correct_answer: Reduces or destroys the activity of a catalyst
+  explanation: "A catalyst poison (or inhibitor) is a substance that reduces or completely destroys the catalytic activity by blocking active sites or chemically modifying the catalyst surface. Examples: (1) Arsenic compounds poison Pt catalyst, (2) CO poisons Fe catalyst in Haber process, (3) Lead compounds poison catalytic converters in automobiles. Poisons can be temporary (reversible) or permanent (irreversible). They're opposite to promoters, which enhance catalyst activity."
+  require_pass: false
+- type: mcq
+  sequence_order: 4
+  question: 'Auto-catalysis occurs when:'
+  options:
+  - A product of the reaction acts as a catalyst
+  - Two catalysts work together
+  - Catalyst catalyzes its own formation
+  - No external catalyst is needed
+  correct_answer: A product of the reaction acts as a catalyst
+  explanation: "Auto-catalysis is a process where one of the products of the reaction acts as a catalyst for the reaction itself. The reaction starts slowly but accelerates as product accumulates. Classic example: In the oxidation of oxalic acid by acidified KMnO₄, the reaction is slow initially but speeds up as Mn²⁺ (product) is formed, which catalyzes the reaction. The rate equation shows product concentration in the rate expression. This creates a positive feedback loop."
+  require_pass: false

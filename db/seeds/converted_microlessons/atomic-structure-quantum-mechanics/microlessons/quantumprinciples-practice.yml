@@ -1,0 +1,67 @@
+slug: quantumprinciples-practice
+title: quantum_principles — Practice
+difficulty: easy
+sequence_order: 11
+estimated_minutes: 2
+key_concepts:
+- quantum_principles
+prerequisites: []
+content_md: '# quantum_principles — Practice 🚀
+
+
+  Pauli exclusion principle states that no two electrons can have the same set of
+  four quantum numbers. Therefore, maximum 2 electrons per orbital with opposite spins.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 2
+  question: 'According to Pauli exclusion principle, the maximum number of electrons
+    that can occupy a single orbital is:'
+  options:
+  - '1'
+  - '2'
+  - '4'
+  - '6'
+  require_pass: true
+  correct_answer: '2'
+  explanation: 'According to Pauli''s exclusion principle, no two electrons in an
+    atom can have the same set of all four quantum numbers (n, l, m_l, m_s). Since
+    an orbital is defined by three quantum numbers (n, l, m_l), and the fourth quantum
+    number is spin (m_s = +½ or -½), each orbital can accommodate a maximum of 2 electrons
+    with opposite spins (↑↓). For example, the 1s orbital can hold 2 electrons: (1,
+    0, 0, +½) and (1, 0, 0, -½). This principle explains: (1) Why s orbitals hold
+    2 electrons, (2) Why p orbitals (3 orbitals) hold 6 electrons total, (3) Electron
+    configurations and the periodic table structure.'
+- type: mcq
+  sequence_order: 3
+  question: 'According to Hund''s rule, how should electrons be arranged in the three 2p orbitals of nitrogen (N, Z=7) with configuration 1s² 2s² 2p³?'
+  options:
+  - All three electrons paired in one orbital
+  - Two electrons in one orbital, one in another
+  - One electron in each of the three 2p orbitals, all with parallel spins
+  - One electron in each orbital, with alternating spins
+  correct_answer: One electron in each of the three 2p orbitals, all with parallel spins
+  explanation: 'Hund''s rule of maximum multiplicity states that electrons occupy degenerate orbitals (orbitals of equal energy, like the three p orbitals) singly with parallel spins before pairing up. This minimizes electron-electron repulsion and maximizes exchange energy stabilization. For nitrogen (2p³): Correct: ↑ ↑ ↑ (one electron in each 2p orbital, all spin up). Three unpaired electrons. Incorrect: ↑↓ ↑ _ (violates Hund''s rule - pairing before filling all orbitals singly). Reasoning: (1) Electrons are negatively charged and repel each other. Spreading them out in different orbitals (different regions of space) minimizes repulsion. (2) Parallel spins (same spin quantum number) provide exchange energy stabilization - a quantum mechanical effect that lowers energy. (3) Only after all degenerate orbitals have one electron each do electrons start pairing with opposite spins. Examples: Carbon (2p²): ↑ ↑ _ (2 unpaired). Nitrogen (2p³): ↑ ↑ ↑ (3 unpaired, maximum for p). Oxygen (2p⁴): ↑↓ ↑ ↑ (2 unpaired). Fluorine (2p⁵): ↑↓ ↑↓ ↑ (1 unpaired). Neon (2p⁶): ↑↓ ↑↓ ↑↓ (0 unpaired, diamagnetic). This explains why nitrogen has 3 unpaired electrons and is paramagnetic.'
+  require_pass: true
+- type: mcq
+  sequence_order: 4
+  question: 'Which principle or rule explains why the 4s orbital is filled before the 3d orbital in most atoms?'
+  options:
+  - Pauli exclusion principle
+  - Hund''s rule
+  - Aufbau principle
+  - Heisenberg uncertainty principle
+  correct_answer: Aufbau principle
+  explanation: 'The Aufbau principle (German: "building up") states that electrons occupy orbitals in order of increasing energy, filling lower energy orbitals before higher energy ones. For most atoms, the energy order is: 1s < 2s < 2p < 3s < 3p < 4s < 3d < 4p < 5s < 4d < 5p < 6s < 4f < 5d < 6p < 7s < 5f < 6d... Key observations: (1) The 4s orbital has lower energy than 3d in neutral atoms (due to shielding and penetration effects), so it fills first. (2) This gives configurations like K (19): [Ar] 4s¹ (not [Ar] 3d¹), Ca (20): [Ar] 4s² (not [Ar] 3d²). (3) After Ca, the 3d orbitals start filling: Sc (21): [Ar] 3d¹ 4s², Ti (22): [Ar] 3d² 4s², etc. (4) IMPORTANT: For cations, the energy order reverses - 3d becomes lower than 4s, so 4s electrons are removed first. Example: Fe²⁺ is [Ar] 3d⁶ (not [Ar] 3d⁴ 4s²). Mnemonic for filling order: Use the diagonal rule (also called Madelung''s rule): Follow diagonals in the pattern 1s → 2s → 2p → 3s → 3p → 4s → 3d → 4p → 5s... The other principles: Pauli exclusion limits electrons per orbital to 2. Hund''s rule governs filling degenerate orbitals. Heisenberg uncertainty relates position and momentum.'
+  require_pass: true

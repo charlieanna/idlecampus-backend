@@ -1,0 +1,78 @@
+slug: lesson-106
+title: Lesson 106
+difficulty: easy
+sequence_order: 106
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Building Cloud-Native Applications\n\n\
+  \    Design 12-factor applications for Kubernetes:\n    - Config via environment\n\
+  \    - Stateless processes\n    - Disposability\n    - Dev/prod parity\n    - Logs\
+  \ as event streams"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: According to the 12-factor app methodology, how should application configuration
+    be managed?
+  options:
+  - Hardcoded in the application binary
+  - Stored in version control with the code
+  - Provided via environment variables
+  - Written to a configuration file on the filesystem
+  correct_answer: Provided via environment variables
+  explanation: 'The 12-factor methodology emphasizes storing configuration in environment
+    variables to achieve strict separation between config and code. Configuration
+    includes anything that varies between deployments (staging, production, developer
+    environments) such as database URLs, credentials, and feature flags. Environment
+    variables are language and OS-agnostic, easy to change without redeploying code,
+    and prevent accidental commits of secrets to version control. In Kubernetes, this
+    is implemented using ConfigMaps and Secrets that inject values as environment
+    variables into Pods. For example, instead of hardcoding ''DATABASE_URL=postgres://prod-db:5432'',
+    you define it in a ConfigMap and reference it: ''env: - name: DATABASE_URL, valueFrom:
+    configMapKeyRef: name: app-config, key: db-url''. This enables the same container
+    image to run in any environment by simply changing the configuration. Benefits
+    include: simplified deployments (no code changes for config), better security
+    (secrets separated from code), and easier environment parity. Best practices:
+    never commit secrets to repos, use descriptive variable names, document all required
+    variables, and validate configuration at startup.'
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What does 'stateless processes' mean in cloud-native application design?
+  options:
+  - The application doesn't process any state data
+  - Session state is never persisted anywhere
+  - Process memory is not shared; any needed state is stored in backing services like
+    databases
+  - The application has no database connections
+  correct_answer: Process memory is not shared; any needed state is stored in backing
+    services like databases
+  explanation: Stateless processes mean that application instances don't rely on in-memory
+    state or local filesystem for persisting data between requests. Each request contains
+    all necessary information, and any data that must persist is stored in stateful
+    backing services like databases, caches, or object storage. This is crucial for
+    cloud-native apps because it enables horizontal scaling and resilience. For example,
+    user session data should be stored in Redis or a database rather than in-memory,
+    so any Pod can handle any request without needing sticky sessions. If a Pod crashes,
+    requests are seamlessly routed to healthy Pods without data loss. In Kubernetes,
+    this allows deployments to scale from 1 to 100 replicas instantly, perform rolling
+    updates without session disruption, and spread load across multiple nodes. Stateless
+    design doesn't mean avoiding state entirely - it means externalizing it. An e-commerce
+    app might store shopping cart data in Redis, order history in PostgreSQL, and
+    uploaded images in S3. This architecture provides better fault tolerance, easier
+    debugging (no hidden state in process memory), and simplified deployment strategies.
+    Use shared caches, databases, and message queues to maintain consistency across
+    stateless instances.
+  require_pass: true
+- type: mcq
+  sequence_order: 1
+  question: What kubectl command checks if you can perform an action?
+  options:
+  - kubectl auth can-i create pods
+  - kubectl check permissions create pods
+  - kubectl verify action create pods
+  - kubectl test auth create pods
+  correct_answer_index: 0
+  explanation: kubectl auth can-i <action> <resource> checks if the current user has
+    permission to perform the specified action.
+  require_pass: true

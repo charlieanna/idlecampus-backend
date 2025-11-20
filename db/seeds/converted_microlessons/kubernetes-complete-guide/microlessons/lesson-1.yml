@@ -1,0 +1,99 @@
+slug: lesson-1
+title: Lesson 1
+difficulty: easy
+sequence_order: 1
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Security & Operations\n\n    Master security\
+  \ best practices and operational procedures for production Kubernetes clusters.\n\
+  \n    ## Role-Based Access Control (RBAC)\n\n    Control who can access what resources:\n\
+  \n    **Roles & ClusterRoles:**\n    - **Role**: Namespace-scoped permissions\n\
+  \    - **ClusterRole**: Cluster-wide permissions\n\n    **RoleBindings & ClusterRoleBindings:**\n\
+  \    - Grant permissions to users/groups/service accounts\n    - Bind roles to subjects\n\
+  \n    **Example:**\n    ```yaml\n    apiVersion: rbac.authorization.k8s.io/v1\n\
+  \    kind: Role\n    metadata:\n      name: pod-reader\n    rules:\n    - apiGroups:\
+  \ [\"\"]\n      resources: [\"pods\"]\n      verbs: [\"get\", \"list\"]\n    ```\n\
+  \n    ## Security Contexts\n\n    Define privilege and access control for pods/containers:\n\
+  \n    **Pod Security Context:**\n    ```yaml\n    securityContext:\n      runAsNonRoot:\
+  \ true\n      runAsUser: 1000\n      fsGroup: 2000\n    ```\n\n    **Container Security\
+  \ Context:**\n    ```yaml\n    securityContext:\n      allowPrivilegeEscalation:\
+  \ false\n      readOnlyRootFilesystem: true\n      capabilities:\n        drop:\n\
+  \        - ALL\n    ```\n\n    ## Pod Security Standards\n\n    - **Privileged**:\
+  \ Unrestricted\n    - **Baseline**: Minimal restrictions\n    - **Restricted**:\
+  \ Heavily restricted (production recommended)\n\n    ## Admission Controllers\n\n\
+  \    Intercept and validate/mutate requests:\n    - **PodSecurityPolicy** (deprecated)\n\
+  \    - **PodSecurity admission** (replacement)\n    - **ResourceQuota**: Limit resource\
+  \ usage\n    - **LimitRanger**: Set default limits\n    - **MutatingWebhook**: Modify\
+  \ objects\n    - **ValidatingWebhook**: Validate objects\n\n    ## Network Security\n\
+  \n    **Network Policies:**\n    - Default deny all traffic\n    - Explicitly allow\
+  \ required connections\n    - Namespace isolation\n\n    **TLS/SSL:**\n    - Encrypt\
+  \ traffic between services\n    - Use cert-manager for certificate management\n\
+  \    - Rotate certificates regularly\n\n    ## Cluster Maintenance\n\n    **Node\
+  \ Maintenance:**\n    ```bash\n    # Drain node (evict pods)\n    kubectl drain\
+  \ node-name --ignore-daemonsets\n\n    # Mark node unschedulable\n    kubectl cordon\
+  \ node-name\n\n    # Mark node schedulable\n    kubectl uncordon node-name\n   \
+  \ ```\n\n    **Backup & Disaster Recovery:**\n    - Backup etcd regularly\n    -\
+  \ Store backups securely off-cluster\n    - Test restore procedures\n    - Document\
+  \ recovery steps\n\n    **Etcd Backup:**\n    ```bash\n    # Backup etcd\n    ETCDCTL_API=3\
+  \ etcdctl snapshot save backup.db \\\n      --endpoints=https://127.0.0.1:2379 \\\
+  \n      --cacert=/etc/kubernetes/pki/etcd/ca.crt \\\n      --cert=/etc/kubernetes/pki/etcd/server.crt\
+  \ \\\n      --key=/etc/kubernetes/pki/etcd/server.key\n\n    # Verify backup\n \
+  \   ETCDCTL_API=3 etcdctl snapshot status backup.db\n    ```\n\n    **Upgrade Strategies:**\n\
+  \    - Review release notes\n    - Test in staging first\n    - Upgrade control\
+  \ plane first\n    - Then upgrade worker nodes\n    - Use rolling updates for nodes\n\
+  \n    ## Security Best Practices\n\n    1. **Least Privilege Principle**\n     \
+  \  - Minimal RBAC permissions\n       - Non-root containers\n       - Read-only\
+  \ filesystems\n\n    2. **Image Security**\n       - Scan images for vulnerabilities\n\
+  \       - Use trusted registries\n       - Implement image pull policies\n     \
+  \  - Verify image signatures\n\n    3. **Secrets Management**\n       - Encrypt\
+  \ secrets at rest\n       - Use external secret managers (Vault)\n       - Rotate\
+  \ secrets regularly\n       - Limit secret access with RBAC\n\n    4. **Audit Logging**\n\
+  \       - Enable audit logs\n       - Monitor suspicious activities\n       - Implement\
+  \ alerting\n       - Regular security reviews\n\n    5. **Resource Limits**\n  \
+  \     - Set requests and limits\n       - Prevent resource exhaustion\n       -\
+  \ Use ResourceQuotas\n       - Implement LimitRanges\n\n    Master security and\
+  \ operations in the final labs!"
+exercises:
+- type: code
+  sequence_order: 1
+  hints:
+  - Set pod-level runAsNonRoot/user/fsGroup
+  - Disable privilege escalation and set readOnlyRootFilesystem at container
+  require_pass: true
+- type: code
+  sequence_order: 2
+  hints:
+  - Bind Role to subject in same namespace
+  - verbs should include get/list for pods
+  require_pass: true
+- type: terminal
+  sequence_order: 1
+  command: kubectl drain node-name --ignore-daemonsets
+  description: 'Practice the command: kubectl drain node-name --ignore-daemonsets'
+  hints:
+  - 'Try: kubectl drain node-name --ignore-daemonsets'
+  - Use kubectl --help if you need help
+  timeout_sec: 60
+  require_pass: true
+- type: terminal
+  sequence_order: 2
+  command: kubectl cordon node-name
+  description: 'Practice the command: kubectl cordon node-name'
+  hints:
+  - 'Try: kubectl cordon node-name'
+  - Use kubectl --help if you need help
+  timeout_sec: 60
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: What command lists all pods in all namespaces?
+  options:
+  - kubectl get pods -A
+  - kubectl list pods --all
+  - kubectl get pods --everywhere
+  - kubectl pods list -A
+  correct_answer_index: 0
+  explanation: kubectl get pods -A (or --all-namespaces) lists pods across all namespaces.
+    The -A flag is shorthand for --all-namespaces.
+  require_pass: true

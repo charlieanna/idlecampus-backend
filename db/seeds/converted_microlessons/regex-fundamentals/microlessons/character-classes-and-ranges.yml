@@ -1,0 +1,111 @@
+slug: character-classes-and-ranges
+title: Character Classes and Ranges
+difficulty: easy
+sequence_order: 5
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Character Classes and Ranges \U0001F680\n\n# Character Classes and\
+  \ Ranges\n\n    Character classes are fundamental building blocks of regex patterns.\
+  \ They allow you to match any one character from a set of characters.\n\n    ##\
+  \ Basic Character Classes\n\n    ### Square Bracket Notation\n\n    ```python\n\
+  \    [abc]      # Matches 'a', 'b', or 'c'\n    [0123456789]  # Matches any single\
+  \ digit\n    ```\n\n    ### Ranges\n\n    ```python\n    [a-z]      # Matches any\
+  \ lowercase letter\n    [A-Z]      # Matches any uppercase letter\n    [0-9]   \
+  \   # Matches any digit\n    [a-zA-Z]   # Matches any letter (upper or lower)\n\
+  \    [a-zA-Z0-9]  # Matches any alphanumeric character\n    ```\n\n    ### Combining\
+  \ Multiple Ranges\n\n    ```python\n    [a-zA-Z0-9_]  # Letters, digits, underscore\n\
+  \    [a-fA-F0-9]   # Hexadecimal characters\n    [0-9a-f]      # Same as above (order\
+  \ doesn't matter)\n    ```\n\n    ## Negated Character Classes\n\n    Use `^` at\
+  \ the start to negate (match anything NOT in the class):\n\n    ```python\n    [^0-9]\
+  \     # Any character EXCEPT digits\n    [^aeiou]   # Any character EXCEPT vowels\n\
+  \    [^a-z]     # Any character EXCEPT lowercase letters\n    [^\\\\s]      # Any\
+  \ non-whitespace character\n    ```\n\n    ### Examples\n\n    ```python\n    import\
+  \ re\n\n    # Match consonants\n    text = \"Hello World\"\n    pattern = \"[^aeiouAEIOU\
+  \ ]\"\n    matches = re.findall(pattern, text)\n    print(matches)  # ['H', 'l',\
+  \ 'l', 'W', 'r', 'l', 'd']\n\n    # Match non-digit characters\n    text = \"Order\
+  \ #12345\"\n    pattern = \"[^0-9]+\"\n    matches = re.findall(pattern, text)\n\
+  \    print(matches)  # ['Order #']\n    ```\n\n    ## Predefined Character Classes\n\
+  \n    ### Digit Classes\n\n    ```python\n    \\\\d    # Digit: [0-9]\n    \\\\\
+  D    # Non-digit: [^0-9]\n    ```\n\n    **Examples:**\n    ```python\n    # Extract\
+  \ all digits\n    text = \"Room 123, Floor 4\"\n    pattern = r\"\\\\d+\"\n    re.findall(pattern,\
+  \ text)  # ['123', '4']\n\n    # Extract non-digits\n    pattern = r\"\\\\D+\"\n\
+  \    re.findall(pattern, text)  # ['Room ', ', Floor ']\n    ```\n\n    ### Word\
+  \ Character Classes\n\n    ```python\n    \\\\w    # Word character: [a-zA-Z0-9_]\n\
+  \    \\\\W    # Non-word character: [^a-zA-Z0-9_]\n    ```\n\n    **Examples:**\n\
+  \    ```python\n    # Match valid identifiers\n    text = \"var_name = 123\"\n \
+  \   pattern = r\"\\\\w+\"\n    re.findall(pattern, text)  # ['var_name', '123']\n\
+  \n    # Match separators\n    pattern = r\"\\\\W+\"\n    re.findall(pattern, text)\
+  \  # [' = ']\n    ```\n\n    ### Whitespace Classes\n\n    ```python\n    \\\\s\
+  \    # Whitespace: [ \\\\t\\\\n\\\\r\\\\f\\\\v]\n    \\\\S    # Non-whitespace:\
+  \ [^ \\\\t\\\\n\\\\r\\\\f\\\\v]\n    ```\n\n    **Examples:**\n    ```python\n \
+  \   # Split on whitespace\n    text = \"Hello\\\\tWorld\\\\nPython\"\n    pattern\
+  \ = r\"\\\\s+\"\n    re.split(pattern, text)  # ['Hello', 'World', 'Python']\n\n\
+  \    # Extract non-whitespace sequences\n    pattern = r\"\\\\S+\"\n    re.findall(pattern,\
+  \ text)  # ['Hello', 'World', 'Python']\n    ```\n\n    ## Special Cases Inside\
+  \ Character Classes\n\n    ### Literal Special Characters\n\n    Most special characters\
+  \ lose their special meaning inside `[]`:\n\n    ```python\n    [.]      # Matches\
+  \ literal '.' (not any character!)\n    [*]      # Matches literal '*'\n    [+]\
+  \      # Matches literal '+'\n    [?]      # Matches literal '?'\n    [(]      #\
+  \ Matches literal '('\n    [)]      # Matches literal ')'\n    ```\n\n    ### Characters\
+  \ That Still Need Escaping\n\n    ```python\n    [\\\\[]     # Matches literal '['\n\
+  \    [\\\\]]     # Matches literal ']'\n    [\\\\\\\\\\\\\\\\]     # Matches literal\
+  \ '\\\\\\\\\\\\\\\\'\n    [\\\\^]     # Matches literal '^' (only at start of class)\n\
+  \    [-]      # Matches literal '-' (at start or end)\n    [a-z\\\\-]  # Matches\
+  \ lowercase letters OR hyphen\n    ```\n\n    ## Practical Patterns\n\n    ### Matching\
+  \ Specific Character Sets\n\n    ```python\n    # Hexadecimal digits\n    pattern\
+  \ = r\"[0-9A-Fa-f]+\"\n    text = \"Color: #FF5733\"\n    re.findall(pattern, text)\
+  \  # ['FF5733']\n\n    # Binary digits\n    pattern = r\"[01]+\"\n    text = \"\
+  Binary: 101010\"\n    re.findall(pattern, text)  # ['101010']\n\n    # Vowels (case\
+  \ insensitive)\n    pattern = r\"[aeiouAEIOU]\"\n    text = \"Hello World\"\n  \
+  \  re.findall(pattern, text)  # ['e', 'o', 'o']\n    ```\n\n    ### Password Validation\n\
+  \n    ```python\n    # At least one uppercase, lowercase, digit, special char\n\
+  \    has_upper = r\"[A-Z]\"\n    has_lower = r\"[a-z]\"\n    has_digit = r\"[0-9]\"\
+  \n    has_special = r\"[!@#$%^&*()]\"\n\n    password = \"MyP@ss123\"\n    is_valid\
+  \ = (\n        re.search(has_upper, password) and\n        re.search(has_lower,\
+  \ password) and\n        re.search(has_digit, password) and\n        re.search(has_special,\
+  \ password)\n    )\n    ```\n\n    ### File Extension Matching\n\n    ```python\n\
+  \    # Image files\n    pattern = r\"\\\\.(jpg|jpeg|png|gif|bmp)$\"\n\n    # Archive\
+  \ files\n    pattern = r\"\\\\.(zip|rar|7z|tar|gz)$\"\n\n    # Source code files\n\
+  \    pattern = r\"\\\\.(py|js|java|cpp|c|rb)$\"\n    ```\n\n    ## POSIX Character\
+  \ Classes\n\n    Some regex engines support POSIX classes (not Python by default):\n\
+  \n    | Class | Meaning | Equivalent |\n    |-------|---------|------------|\n \
+  \   | `[:alnum:]` | Alphanumeric | `[a-zA-Z0-9]` |\n    | `[:alpha:]` | Alphabetic\
+  \ | `[a-zA-Z]` |\n    | `[:digit:]` | Digits | `[0-9]` |\n    | `[:lower:]` | Lowercase\
+  \ | `[a-z]` |\n    | `[:upper:]` | Uppercase | `[A-Z]` |\n    | `[:space:]` | Whitespace\
+  \ | `[ \\\\t\\\\n\\\\r\\\\f\\\\v]` |\n    | `[:punct:]` | Punctuation | Various\
+  \ |\n\n    ## Unicode Character Classes (Python)\n\n    Python's `re` module supports\
+  \ Unicode categories:\n\n    ```python\n    # Match any Unicode letter\n    pattern\
+  \ = r\"\\\\p{L}+\"  # Note: Not supported in standard re\n    # Use: [\\\\w] or\
+  \ third-party library like 'regex'\n\n    # With 'regex' module\n    import regex\n\
+  \    pattern = r\"\\\\p{L}+\"  # Matches: letters from any language\n    pattern\
+  \ = r\"\\\\p{N}+\"  # Matches: numbers from any script\n    pattern = r\"\\\\p{Sc}\"\
+  \  # Matches: currency symbols ($, €, ¥)\n    ```\n\n    ## Common Use Cases\n\n\
+  \    ### Extract Email Local Part\n\n    ```python\n    # Characters allowed before\
+  \ @\n    pattern = r\"[a-zA-Z0-9._%+-]+@\"\n    email = \"user.name+tag@example.com\"\
+  \n    match = re.search(pattern, email)\n    print(match.group())  # 'user.name+tag@'\n\
+  \    ```\n\n    ### Match Valid Variable Names\n\n    ```python\n    # Start with\
+  \ letter/underscore, followed by word chars\n    pattern = r\"\\\\b[a-zA-Z_]\\\\\
+  w*\\\\b\"\n    code = \"var_name = value123\"\n    matches = re.findall(pattern,\
+  \ code)\n    print(matches)  # ['var_name', 'value123']\n    ```\n\n    ### Clean\
+  \ Non-Alphanumeric Characters\n\n    ```python\n    # Keep only letters, digits,\
+  \ and spaces\n    pattern = r\"[^a-zA-Z0-9 ]\"\n    text = \"Hello, World! #2024\"\
+  \n    clean = re.sub(pattern, \"\", text)\n    print(clean)  # \"Hello World 2024\"\
+  \n    ```\n\n    ### Extract Price Values\n\n    ```python\n    # Match currency\
+  \ symbol + digits\n    pattern = r\"[$€£¥][0-9,]+(\\\\.[0-9]{2})?\"\n    text =\
+  \ \"Prices: $19.99, €25.50, £15\"\n    matches = re.findall(pattern, text)\n   \
+  \ print(matches)  # ['.99', '.50', '']\n    ```\n\n    ## Performance Tips\n\n \
+  \   ### Use Specific Classes\n    ```python\n    # ✅ More efficient\n    pattern\
+  \ = r\"[0-9]+\"\n\n    # ❌ Less efficient\n    pattern = r\"[0123456789]+\"\n\n\
+  \    # ✅ Best\n    pattern = r\"\\\\d+\"\n    ```\n\n    ### Order Matters for Readability\n\
+  \    ```python\n    # ✅ Clear intent\n    pattern = r\"[a-zA-Z0-9_-]\"\n\n    #\
+  \ ❌ Harder to read\n    pattern = r\"[_a-z-A-Z0-9]\"\n    ```\n\n    ### Avoid Unnecessary\
+  \ Negation\n    ```python\n    # ❌ Inefficient\n    pattern = r\"[^a][^b][^c]\"\n\
+  \n    # ✅ Better\n    pattern = r\"[^abc]{3}\"\n    ```\n\n    ## Key Takeaways\n\
+  \n    1. **Character classes** - Match one character from a set\n    2. **Ranges**\
+  \ - Use `-` for consecutive characters: `[a-z]`\n    3. **Negation** - Use `^` at\
+  \ start: `[^0-9]`\n    4. **Predefined classes** - `\\\\d \\\\w \\\\s` are your\
+  \ friends\n    5. **Special chars** - Most lose meaning inside `[]`\n    6. **Combine\
+  \ freely** - `[a-zA-Z0-9_-]` is valid\n    7. **Be specific** - More specific =\
+  \ better performance\n    8. **Test your patterns** - Always verify with real data"
+exercises: []

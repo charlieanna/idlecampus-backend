@@ -1,0 +1,86 @@
+slug: lesson-28
+title: Lesson 28
+difficulty: easy
+sequence_order: 28
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# IPv6 and Dual-Stack\n\n    - Dual-stack\
+  \ service/pod CIDRs\n    - Caveats and controller support"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What is dual-stack networking in Kubernetes?
+  options:
+  - Running two separate Kubernetes clusters
+  - Assigning both IPv4 and IPv6 addresses to pods and services simultaneously
+  - Using two different CNI plugins
+  - Having two network interfaces per pod
+  correct_answer: Assigning both IPv4 and IPv6 addresses to pods and services simultaneously
+  explanation: 'Dual-stack networking in Kubernetes enables pods and services to have
+    both IPv4 and IPv6 addresses simultaneously, allowing communication over either
+    protocol. This supports gradual migration from IPv4 to IPv6, mixed infrastructure
+    environments, and IPv6-only services while maintaining IPv4 compatibility. When
+    dual-stack is enabled, each pod gets two IP addresses (one IPv4, one IPv6), and
+    services get both address families unless specified otherwise. Configuration requires:
+    cluster configured with dual-stack (--service-cluster-ip-range and --cluster-cidr
+    with both IPv4 and IPv6 CIDRs), CNI plugin supporting dual-stack (Calico, Cilium,
+    Flannel with recent versions), and pods/services can specify IP family preferences.
+    For example, cluster CIDRs might be ''--pod-network-cidr=10.244.0.0/16,fd00::/64''
+    and ''--service-cidr=10.96.0.0/12,fd01::/112''. Services can specify ''ipFamilyPolicy:
+    PreferDualStack'' (default if dual-stack enabled), ''RequireDualStack'' (fail
+    if cluster doesn''t support it), or ''SingleStack'' (use single family only).
+    The ''ipFamilies'' field specifies preference order: ''[IPv4, IPv6]'' or ''[IPv6,
+    IPv4]''. DNS returns both A (IPv4) and AAAA (IPv6) records for dual-stack services.
+    Use cases: ISPs and cloud providers transitioning to IPv6, enterprises with mixed
+    IPv4/IPv6 infrastructure, IoT deployments requiring IPv6, and IPv6-only environments
+    that need to communicate with legacy IPv4 systems. Dual-stack is GA since Kubernetes
+    v1.23. Challenges: increased complexity in network policies (must consider both
+    address families), larger routing tables, and not all applications handle dual-stack
+    gracefully.'
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What are key considerations when implementing dual-stack in Kubernetes?
+  options:
+  - Only IPv6 needs to be configured; IPv4 is automatic
+  - CNI plugin must support dual-stack, and network policies must account for both
+    address families
+  - Dual-stack only works with cloud providers
+  - Services cannot use dual-stack, only pods
+  correct_answer: CNI plugin must support dual-stack, and network policies must account
+    for both address families
+  explanation: 'Implementing dual-stack requires careful consideration of multiple
+    components. The CNI plugin must support dual-stack - check plugin documentation
+    as support varies. Popular plugins like Calico, Cilium, and recent Flannel versions
+    support it, but older or simpler plugins may not. Network policies must explicitly
+    handle both IPv4 and IPv6 - an IP block allowing 10.0.0.0/8 won''t allow corresponding
+    IPv6 traffic. You need separate rules: ''ipBlock: cidr: 10.0.0.0/8'' and ''ipBlock:
+    cidr: fd00::/64''. Applications must handle dual-stack properly - some legacy
+    apps may only bind to IPv4 or IPv6, causing failures. Test thoroughly. LoadBalancer
+    services in cloud environments may have limitations - some cloud providers only
+    support IPv4 external IPs even in dual-stack clusters, requiring separate services
+    for each address family. DNS resolution becomes more complex - clients must handle
+    both A and AAAA records, with preference order affecting which protocol is used.
+    External connectivity requires ISP/network support for IPv6 - many on-premises
+    networks aren''t IPv6-ready. Monitoring and logging tools must display both IPv4
+    and IPv6 addresses. IPv6 addresses are longer and less human-readable (e.g., ''fd00::42''
+    vs ''10.0.0.42''), complicating troubleshooting. Performance considerations: IPv6
+    can have different latency/routing characteristics than IPv4 in some networks.
+    Best practices: start with single-stack, migrate to dual-stack gradually, test
+    application compatibility thoroughly, use ''PreferDualStack'' initially, monitor
+    both address families separately, and ensure all networking components (CNI, kube-proxy,
+    cloud controllers) support dual-stack before enabling cluster-wide.'
+  require_pass: true
+- type: mcq
+  sequence_order: 1
+  question: What command lists all pods in all namespaces?
+  options:
+  - kubectl get pods -A
+  - kubectl list pods --all
+  - kubectl get pods --everywhere
+  - kubectl pods list -A
+  correct_answer_index: 0
+  explanation: kubectl get pods -A (or --all-namespaces) lists pods across all namespaces.
+    The -A flag is shorthand for --all-namespaces.
+  require_pass: true

@@ -1,0 +1,67 @@
+slug: rateconstant-practice
+title: rate_constant — Practice
+difficulty: easy
+sequence_order: 8
+estimated_minutes: 2
+key_concepts:
+- rate_constant
+prerequisites: []
+content_md: '# rate_constant — Practice 🚀
+
+
+  For first order: Rate = k[A], so k = Rate/[A] = (mol L⁻¹ s⁻¹)/(mol L⁻¹) = s⁻¹
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 2
+  question: 'For a first order reaction, units of rate constant k are:'
+  options:
+  - s⁻¹
+  - mol L⁻¹ s⁻¹
+  - L mol⁻¹ s⁻¹
+  - L² mol⁻² s⁻¹
+  require_pass: true
+  correct_answer: s⁻¹
+  explanation: 'For a first-order reaction, the units of rate constant k are s⁻¹ (reciprocal
+    seconds) or time⁻¹. Derivation: For first order, Rate = k[A]¹. Therefore k = Rate/[A].
+    Units: k = (mol L⁻¹ s⁻¹)/(mol L⁻¹) = s⁻¹. The concentration units cancel out,
+    leaving only time⁻¹. This makes sense physically - for first-order reactions,
+    the half-life t₁/₂ = 0.693/k is constant, so k must have units of time⁻¹. **Units
+    for different orders**: Zero order: k has units mol L⁻¹ s⁻¹ (same as rate), First
+    order: k has units s⁻¹, Second order: k has units L mol⁻¹ s⁻¹, Third order: k
+    has units L² mol⁻² s⁻¹. General formula: units of k = (concentration)^(1-n) ×
+    time⁻¹, where n is the order. The dimension of k ensures that Rate = k[A]ⁿ always
+    has units of concentration/time.'
+- type: mcq
+  sequence_order: 3
+  question: 'For a zero-order reaction, the units of the rate constant k are:'
+  options:
+  - s⁻¹
+  - mol L⁻¹ s⁻¹
+  - L mol⁻¹ s⁻¹
+  - dimensionless
+  correct_answer: mol L⁻¹ s⁻¹
+  explanation: 'For a zero-order reaction, the rate is independent of concentration: Rate = k[A]⁰ = k × 1 = k. Since the rate has units of concentration/time (mol L⁻¹ s⁻¹), and Rate = k for zero-order, the rate constant k must have the same units as rate: mol L⁻¹ s⁻¹ (or M/s). Dimensional analysis: Rate = k, so [k] = [Rate] = mol L⁻¹ s⁻¹. Physical interpretation: In a zero-order reaction, the rate is constant regardless of concentration. This typically occurs when: (1) The reaction is surface-catalyzed and the surface is saturated with reactant, (2) Enzyme kinetics at high substrate concentration (enzyme is saturated), (3) Photochemical reactions where light intensity is limiting. Example: Decomposition of H₂ on a hot metal surface follows zero-order when the surface is fully covered. If k = 0.01 mol L⁻¹ s⁻¹, then the concentration decreases by 0.01 M every second, regardless of how much reactant is present (until it runs out). Integrated rate law: [A] = [A]₀ - kt (linear decrease with time).'
+  require_pass: true
+- type: mcq
+  sequence_order: 4
+  question: 'A reaction has rate law: Rate = k[A][B]². What are the units of the rate constant k?'
+  options:
+  - s⁻¹
+  - L mol⁻¹ s⁻¹
+  - L² mol⁻² s⁻¹
+  - L³ mol⁻³ s⁻¹
+  correct_answer: L² mol⁻² s⁻¹
+  explanation: 'For Rate = k[A][B]², the overall order is 1 + 2 = 3 (third order). The units of k must be such that when multiplied by [A][B]², we get units of rate (mol L⁻¹ s⁻¹). Dimensional analysis: Rate = k × [A] × [B]². Units: mol L⁻¹ s⁻¹ = [k] × (mol L⁻¹) × (mol L⁻¹)². Solving for [k]: [k] = (mol L⁻¹ s⁻¹) / (mol L⁻¹)³ = (mol L⁻¹ s⁻¹) × (L³/mol³) = L² mol⁻² s⁻¹. General formula: For an nth-order reaction, k has units (concentration)^(1-n) × (time)^(-1) = (mol L⁻¹)^(1-n) × s⁻¹ = L^(n-1) mol^(1-n) s⁻¹. Verification for n=3: L^(3-1) mol^(1-3) s⁻¹ = L² mol⁻² s⁻¹ ✓. Summary of units: Zero order (n=0): L⁰ mol s⁻¹ = mol L⁻¹ s⁻¹. First order (n=1): L⁰ mol⁰ s⁻¹ = s⁻¹. Second order (n=2): L¹ mol⁻¹ s⁻¹ = L mol⁻¹ s⁻¹. Third order (n=3): L² mol⁻² s⁻¹. The pattern: as order increases, k gains more L/mol units.'
+  require_pass: true

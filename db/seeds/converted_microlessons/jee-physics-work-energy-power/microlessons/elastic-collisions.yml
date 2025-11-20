@@ -1,0 +1,204 @@
+slug: elastic-collisions
+title: "Elastic Collisions and Energy Conservation"
+difficulty: advanced
+sequence_order: 8
+estimated_minutes: 18
+key_concepts:
+- elastic-collision
+- momentum-conservation
+- kinetic-energy-conservation
+- coefficient-restitution
+- head-on-collision
+prerequisites:
+- conservation-mechanical-energy
+- kinetic-energy-theorem
+content_md: |
+  # Elastic Collisions and Energy Conservation
+
+  ## Types of Collisions
+
+  ### 1. Elastic Collision:
+  - **Both momentum and KE conserved**
+  - No energy loss (deformation recovers)
+  - e = 1 (coefficient of restitution)
+  - Example: Billiard balls, atomic collisions
+
+  ### 2. Inelastic Collision:
+  - **Momentum conserved, KE not conserved**
+  - Energy lost to heat, sound, deformation
+  - 0 < e < 1
+  - Example: Car crash
+
+  ### 3. Perfectly Inelastic:
+  - **Bodies stick together after collision**
+  - Maximum KE loss
+  - e = 0
+  - Example: Bullet hitting block
+
+  ## Elastic Collision (1D)
+
+  ### Conservation Laws:
+  ```
+  Momentum: m₁u₁ + m₂u₂ = m₁v₁ + m₂v₂
+  KE: ½m₁u₁² + ½m₂u₂² = ½m₁v₁² + ½m₂v₂²
+  ```
+
+  ### Final Velocities:
+  ```
+  v₁ = ((m₁-m₂)u₁ + 2m₂u₂)/(m₁+m₂)
+
+  v₂ = ((m₂-m₁)u₂ + 2m₁u₁)/(m₁+m₂)
+  ```
+
+  ## Special Cases
+
+  ### Case 1: Equal Masses (m₁ = m₂)
+  ```
+  v₁ = u₂, v₂ = u₁
+
+  Velocities exchange!
+  ```
+
+  ### Case 2: Target at Rest (u₂ = 0)
+  ```
+  v₁ = ((m₁-m₂)/(m₁+m₂))u₁
+  v₂ = (2m₁/(m₁+m₂))u₁
+  ```
+
+  ### Case 3: Heavy Projectile (m₁ >> m₂, u₂ = 0)
+  ```
+  v₁ ≈ u₁ (unchanged)
+  v₂ ≈ 2u₁ (twice projectile speed)
+  ```
+
+  ### Case 4: Light Projectile (m₁ << m₂, u₂ = 0)
+  ```
+  v₁ ≈ -u₁ (bounces back)
+  v₂ ≈ 0 (target barely moves)
+  ```
+
+  ## Coefficient of Restitution (e)
+
+  ```
+  e = (v₂ - v₁)/(u₁ - u₂) = Relative velocity of separation / Relative velocity of approach
+
+  e = 1: Elastic
+  0 < e < 1: Inelastic
+  e = 0: Perfectly inelastic
+  ```
+
+  ## Energy Transfer
+
+  **Fraction of KE transferred (u₂ = 0):**
+  ```
+  f = KE_transferred/KE_initial = 4m₁m₂/(m₁+m₂)²
+  ```
+
+  **Maximum transfer when m₁ = m₂:**
+  ```
+  f_max = 1 (100% transfer)
+  ```
+
+  ## Center of Mass Frame
+
+  In CM frame:
+  - Total momentum = 0
+  - Both bodies approach and recede with same speed
+  - Analysis often simpler
+
+  ```
+  v_CM = (m₁u₁ + m₂u₂)/(m₁+m₂)
+  ```
+
+  ## Oblique Collision (2D)
+
+  For elastic collision:
+  - Momentum conserved in each direction
+  - KE conserved
+  - Angle between velocities = 90° (equal masses)
+
+  ## Numerical Examples
+
+  **Example 1:** Mass 2 kg moving at 6 m/s collides elastically with 4 kg at rest. Find final velocities.
+
+  **Solution:**
+  ```
+  v₁ = (m₁-m₂)u₁/(m₁+m₂) = (2-4)×6/(2+4) = -12/6 = -2 m/s
+  v₂ = 2m₁u₁/(m₁+m₂) = 2×2×6/6 = 4 m/s
+
+  2 kg bounces back at 2 m/s, 4 kg moves at 4 m/s
+  ```
+
+  **Example 2:** Two equal masses collide head-on: u₁ = 5 m/s, u₂ = -3 m/s. Find final velocities.
+
+  **Solution:**
+  ```
+  For equal masses: v₁ = u₂ = -3 m/s, v₂ = u₁ = 5 m/s
+
+  They exchange velocities!
+  ```
+
+  **Example 3:** Ball dropped from 10 m bounces back to 6.4 m. Find e.
+
+  **Solution:**
+  ```
+  u = √(2×10×10) = √200 m/s (speed before impact)
+  v = √(2×10×6.4) = √128 m/s (speed after impact)
+
+  e = v/u = √(128/200) = √0.64 = 0.8
+
+  80% of velocity retained
+  ```
+
+  ## JEE Key Points
+
+  1. **Elastic: Both p and KE conserved**
+  2. **e determines collision type**
+  3. **Equal masses exchange velocities**
+  4. **Max energy transfer when m₁ = m₂**
+  5. **Heavy hits light: v ≈ 2u**
+  6. **Light hits heavy: bounces back**
+  7. **CM frame simplifies problems**
+
+  ## Common Mistakes
+
+  1. ❌ Forgetting to check momentum direction
+  2. ❌ Assuming KE conserved for all collisions
+  3. ❌ Wrong sign for velocities
+  4. ❌ Not using e relation when needed
+  5. ❌ Confusing elastic with inelastic
+
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: "In elastic collision, if m₁ = 2m₂ and m₂ is at rest, fraction of KE transferred to m₂ is:"
+  options:
+  - "1/9"
+  - "8/9"
+  - "4/9"
+  - "2/3"
+  correct_answer: "8/9"
+  explanation: "Fraction transferred f = 4m₁m₂/(m₁+m₂)² = 4(2m)(m)/(2m+m)² = 8m²/9m² = 8/9. So 88.9% of KE is transferred! The projectile retains only 1/9 of original KE. For maximum transfer, masses should be equal (f = 1). Here lighter target receives more energy. This is why neutrons (mass ≈ proton mass) are excellent moderators in nuclear reactors - single collision with hydrogen can transfer nearly all kinetic energy."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: "A ball moving at 10 m/s collides with identical stationary ball. After elastic collision, they move at:"
+  options:
+  - "Both at 5 m/s in same direction"
+  - "First stops, second moves at 10 m/s"
+  - "Both at 10 m/s in opposite directions"
+  - "First at -10 m/s, second at 10 m/s"
+  correct_answer: "First stops, second moves at 10 m/s"
+  explanation: "For equal masses in elastic collision: v₁ = u₂ = 0, v₂ = u₁ = 10 m/s. Velocities exchange completely! First ball stops, second moves with original velocity. This is famously demonstrated in Newton's cradle (desktop toy with hanging balls). Momentum: m(10) = m(0) + m(10) ✓. KE: ½m(100) = 0 + ½m(100) ✓. Both conserved. This perfect transfer only occurs with equal masses."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: "Coefficient of restitution for perfectly elastic collision is:"
+  options:
+  - "0"
+  - "0.5"
+  - "1"
+  - "Infinity"
+  correct_answer: "1"
+  explanation: "e = (velocity of separation)/(velocity of approach). For perfectly elastic: relative velocity reverses exactly. If approach at 10 m/s, separate at 10 m/s, so e = 10/10 = 1. For perfectly inelastic: bodies stick together (velocity of separation = 0), so e = 0. Real collisions have 0 < e < 1. e is intrinsic property of materials: steel on steel ≈ 0.95, rubber ≈ 0.8, clay ≈ 0.1. Higher e means more 'bouncy' collision, less energy loss."
+  require_pass: true

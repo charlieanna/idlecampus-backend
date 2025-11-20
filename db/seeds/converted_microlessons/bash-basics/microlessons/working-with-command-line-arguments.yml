@@ -1,0 +1,343 @@
+slug: working-with-command-line-arguments
+title: Working with Command-Line Arguments
+difficulty: easy
+sequence_order: 3
+estimated_minutes: 12
+key_concepts:
+  - Positional parameters
+  - Special variables
+  - Argument parsing
+  - Script parameters
+  - Argument count
+prerequisites:
+  - variables-and-data-types
+content_md: |
+  # Working with Command-Line Arguments
+
+  ## Introduction
+
+  Command-line arguments allow users to pass data to your scripts when they run them. This makes scripts flexible and reusable for different inputs.
+
+  ## Positional Parameters
+
+  Arguments passed to a script are accessible through special variables:
+
+  ```bash
+  # script.sh
+  echo "Script name: $0"
+  echo "First argument: $1"
+  echo "Second argument: $2"
+  echo "Third argument: $3"
+  ```
+
+  Running `./script.sh hello world test` outputs:
+  ```
+  Script name: ./script.sh
+  First argument: hello
+  Second argument: world
+  Third argument: test
+  ```
+
+  ## Special Variables
+
+  Bash provides several special variables for working with arguments:
+
+  | Variable | Description |
+  |----------|-------------|
+  | `$0` | Script name |
+  | `$1` to `$9` | Arguments 1-9 |
+  | `$#` | Number of arguments |
+  | `$@` | All arguments as separate words |
+  | `$*` | All arguments as single string |
+  | `$?` | Exit status of last command |
+
+  ## Counting Arguments
+
+  Use `$#` to check how many arguments were passed:
+
+  ```bash
+  #!/bin/bash
+
+  if [ $# -eq 0 ]; then
+      echo "No arguments provided"
+      exit 1
+  fi
+
+  echo "You passed $# arguments"
+  ```
+
+  ## Accessing All Arguments
+
+  Use `$@` to iterate over all arguments:
+
+  ```bash
+  #!/bin/bash
+
+  echo "Processing all arguments:"
+  for arg in "$@"; do
+      echo "- $arg"
+  done
+  ```
+
+  **Important:** Always quote `"$@"` to preserve arguments with spaces.
+
+  ## Practical Example: File Processor
+
+  ```bash
+  #!/bin/bash
+  # process_files.sh
+
+  if [ $# -lt 2 ]; then
+      echo "Usage: $0 <operation> <file1> [file2...]"
+      exit 1
+  fi
+
+  operation=$1
+  shift  # Remove first argument, shift remaining
+
+  echo "Operation: $operation"
+  echo "Files to process:"
+  for file in "$@"; do
+      echo "  - $file"
+  done
+  ```
+
+  ## The shift Command
+
+  `shift` moves positional parameters down by one:
+
+  ```bash
+  # Before shift: $1=apple, $2=banana, $3=cherry
+  shift
+  # After shift: $1=banana, $2=cherry
+  ```
+
+  Useful for processing options before remaining arguments.
+
+  ## Default Values
+
+  Provide defaults for missing arguments:
+
+  ```bash
+  filename=${1:-"default.txt"}
+  port=${2:-8080}
+
+  echo "File: $filename"
+  echo "Port: $port"
+  ```
+
+  ## Checking Argument Existence
+
+  ```bash
+  if [ -z "$1" ]; then
+      echo "Error: First argument is required"
+      exit 1
+  fi
+  ```
+
+  ## Best Practices
+
+  1. Always validate the number of arguments
+  2. Provide usage messages for incorrect usage
+  3. Quote `"$@"` to handle spaces in arguments
+  4. Use meaningful variable names instead of `$1`, `$2`
+  5. Document expected arguments in comments
+
+exercises:
+  - type: terminal
+    slug: bash-args-basic-script
+    sequence_order: 1
+    description: Create a script that uses positional parameters
+    command: |
+      cat > greet.sh << 'EOF'
+      #!/bin/bash
+      echo "Script name: $0"
+      echo "Hello, $1!"
+      echo "You are from $2"
+      EOF
+      chmod +x greet.sh && bash greet.sh Alice "New York"
+    validation:
+      must_include:
+        - "Script name:"
+        - "Hello, Alice!"
+        - "You are from New York"
+      must_not_include:
+        - Error
+    hints:
+      - $0 is the script name
+      - $1 is the first argument
+      - $2 is the second argument
+      - Arguments with spaces must be quoted
+    timeout_sec: 60
+    require_pass: true
+
+  - type: terminal
+    slug: bash-args-count
+    sequence_order: 2
+    description: Create a script that counts and validates arguments
+    command: |
+      cat > check_args.sh << 'EOF'
+      #!/bin/bash
+      echo "Number of arguments: $#"
+      if [ $# -eq 0 ]; then
+        echo "No arguments provided"
+      else
+        echo "Arguments received"
+      fi
+      EOF
+      chmod +x check_args.sh && bash check_args.sh apple banana cherry
+    validation:
+      must_include:
+        - "Number of arguments: 3"
+        - "Arguments received"
+      must_not_include:
+        - "No arguments provided"
+        - Error
+    hints:
+      - $# contains the count of arguments
+      - Use [ $# -eq 0 ] to check for no arguments
+      - if/else controls the flow based on conditions
+    timeout_sec: 60
+    require_pass: true
+
+  - type: terminal
+    slug: bash-args-iterate
+    sequence_order: 3
+    description: Iterate over all arguments using $@
+    command: |
+      cat > list_args.sh << 'EOF'
+      #!/bin/bash
+      echo "Processing $# arguments:"
+      for arg in "$@"; do
+        echo "- $arg"
+      done
+      EOF
+      chmod +x list_args.sh && bash list_args.sh apple banana "grape fruit"
+    validation:
+      must_include:
+        - "Processing 3 arguments:"
+        - "- apple"
+        - "- banana"
+        - "- grape fruit"
+      must_not_include:
+        - Error
+    hints:
+      - "$@" expands to all arguments as separate words
+      - Always quote "$@" to preserve spaces in arguments
+      - for loops iterate over each item
+    timeout_sec: 60
+    require_pass: true
+
+  - type: terminal
+    slug: bash-args-shift
+    sequence_order: 4
+    description: Use shift to process arguments
+    command: |
+      cat > shift_demo.sh << 'EOF'
+      #!/bin/bash
+      echo "Before shift: $1 $2 $3"
+      shift
+      echo "After shift: $1 $2"
+      shift
+      echo "After 2nd shift: $1"
+      EOF
+      chmod +x shift_demo.sh && bash shift_demo.sh first second third
+    validation:
+      must_include:
+        - "Before shift: first second third"
+        - "After shift: second third"
+        - "After 2nd shift: third"
+      must_not_include:
+        - Error
+    hints:
+      - shift removes $1 and moves all other arguments down
+      - After shift, $2 becomes $1, $3 becomes $2, etc.
+      - Useful for processing options before remaining arguments
+    timeout_sec: 60
+    require_pass: true
+
+  - type: terminal
+    slug: bash-args-defaults
+    sequence_order: 5
+    description: Provide default values for missing arguments
+    command: |
+      cat > defaults.sh << 'EOF'
+      #!/bin/bash
+      name=${1:-"Guest"}
+      age=${2:-"unknown"}
+      echo "Name: $name, Age: $age"
+      EOF
+      chmod +x defaults.sh && bash defaults.sh && echo "---" && bash defaults.sh Bob 25
+    validation:
+      must_include:
+        - "Name: Guest, Age: unknown"
+        - "Name: Bob, Age: 25"
+      must_not_include:
+        - Error
+    hints:
+      - ${var:-default} provides a default if var is unset or empty
+      - First run has no arguments, uses defaults
+      - Second run provides arguments, uses them instead
+    timeout_sec: 60
+    require_pass: true
+
+  - type: mcq
+    slug: bash-args-mcq-1
+    question: "Which variable contains the number of arguments passed to a script?"
+    options:
+      - "$0"
+      - "$#"
+      - "$@"
+      - "$?"
+    correct_answer: "$#"
+    explanation: "$# contains the count of positional parameters (arguments) passed to the script."
+    sequence_order: 6
+    require_pass: true
+
+  - type: mcq
+    slug: bash-args-mcq-2
+    question: "If you run './script.sh apple banana cherry', what is the value of $2?"
+    options:
+      - apple
+      - banana
+      - cherry
+      - ./script.sh
+    correct_answer: "banana"
+    explanation: "$2 represents the second positional parameter, which is 'banana'. $0 is the script name, $1 is 'apple', and $3 is 'cherry'."
+    sequence_order: 7
+    require_pass: true
+
+  - type: mcq
+    slug: bash-args-mcq-3
+    question: "What does the 'shift' command do?"
+    options:
+      - "Shifts all arguments to the left, removing $1"
+      - "Shifts all arguments to the right"
+      - "Sorts the arguments"
+      - "Counts the arguments"
+    correct_answer: "Shifts all arguments to the left, removing $1"
+    explanation: "shift moves all positional parameters down by one position, effectively removing $1. After shift, $2 becomes $1, $3 becomes $2, and so on."
+    sequence_order: 8
+    require_pass: true
+
+  - type: reflection
+    slug: bash-args-reflect
+    sequence_order: 9
+    prompt: |
+      Why is it important to validate command-line arguments in scripts?
+      What could go wrong if you don't check whether required arguments were provided?
+      Give an example of a script that would benefit from argument validation.
+
+  - type: checkpoint
+    slug: bash-args-checkpoint
+    sequence_order: 10
+    prompt: |
+      Write a bash script called backup.sh that:
+      1. Takes two required arguments: source_dir and backup_dir
+      2. Checks that both arguments are provided (exit with error if not)
+      3. Checks that source_dir exists (use [ -d "$source_dir" ])
+      4. Creates backup_dir if it doesn't exist
+      5. Copies all files from source_dir to backup_dir
+      6. Prints a success message with the count of files copied
+
+      Include proper error handling and usage messages.

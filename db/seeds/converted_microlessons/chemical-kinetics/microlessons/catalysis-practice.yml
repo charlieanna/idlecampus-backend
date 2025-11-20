@@ -1,0 +1,59 @@
+slug: catalysis-practice
+title: catalysis — Practice
+difficulty: easy
+sequence_order: 16
+estimated_minutes: 2
+key_concepts:
+- catalysis
+prerequisites: []
+content_md: '# catalysis — Practice 🚀
+
+
+  Enzyme catalysis is homogeneous (both enzyme and substrate in aqueous solution,
+  same phase).
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: 'A catalyst increases the rate of a chemical reaction by:'
+  options:
+  - Increasing the activation energy
+  - Decreasing the activation energy
+  - Increasing the enthalpy change
+  - Decreasing the enthalpy change
+  correct_answer: Decreasing the activation energy
+  explanation: 'A catalyst increases the rate of reaction by providing an alternative reaction pathway with lower activation energy (Ea). This means more molecules have sufficient energy to overcome the energy barrier at a given temperature, leading to more successful collisions per unit time. Key points: (1) A catalyst lowers Ea but does NOT change the enthalpy change (ΔH) of the reaction - the overall energy difference between reactants and products remains the same. (2) A catalyst does not shift the equilibrium position; it only helps the system reach equilibrium faster. (3) The catalyst is not consumed in the reaction and can be recovered unchanged at the end. (4) Both forward and reverse reactions are accelerated equally. Example: In the Haber process (N₂ + 3H₂ → 2NH₃), iron catalyst lowers Ea from ~300 kJ/mol to ~150 kJ/mol, dramatically increasing the reaction rate at 400-500°C.'
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: 'Which of the following is an example of heterogeneous catalysis?'
+  options:
+  - Enzyme-catalyzed hydrolysis of ester in aqueous solution
+  - Acid-catalyzed hydrolysis of ester in aqueous solution
+  - Decomposition of H₂O₂ catalyzed by platinum surface
+  - Oxidation of SO₂ to SO₃ using NO as catalyst in gas phase
+  correct_answer: Decomposition of H₂O₂ catalyzed by platinum surface
+  explanation: 'Heterogeneous catalysis occurs when the catalyst is in a different phase from the reactants. In this case, platinum (solid) catalyzes the decomposition of H₂O₂ (liquid/aqueous). The reaction occurs at the surface of the solid catalyst through adsorption of reactant molecules. Characteristics of heterogeneous catalysis: (1) Catalyst and reactants are in different phases (usually solid catalyst with liquid/gas reactants). (2) Reaction occurs at the catalyst surface. (3) Mechanism involves: adsorption of reactants → surface reaction → desorption of products. (4) Surface area is important - finely divided catalysts are more effective. Examples: Contact process (SO₂ → SO₃ using V₂O₅), Haber process (N₂ + H₂ → NH₃ using Fe), catalytic converters (Pt, Pd, Rh). Homogeneous catalysis: catalyst and reactants in same phase, like enzyme catalysis (both in aqueous solution) or acid catalysis in solution.'
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: 'Enzyme catalysis is best described as:'
+  options:
+  - Heterogeneous catalysis with high specificity
+  - Homogeneous catalysis with high specificity
+  - Heterogeneous catalysis with low specificity
+  - Homogeneous catalysis with low specificity
+  correct_answer: Homogeneous catalysis with high specificity
+  explanation: 'Enzyme catalysis is homogeneous catalysis because both the enzyme (catalyst) and substrate (reactant) are typically dissolved in aqueous solution, meaning they are in the same phase. Key features of enzyme catalysis: (1) HOMOGENEOUS: Enzyme and substrate are both in aqueous solution (same phase). (2) HIGH SPECIFICITY: Enzymes exhibit remarkable substrate specificity due to the "lock-and-key" or "induced-fit" model - the active site has a specific 3D structure that fits only certain substrate molecules. (3) Extremely efficient: Enzymes can increase reaction rates by factors of 10⁶ to 10¹⁷. (4) Mild conditions: Operate at physiological temperature (~37°C) and pH (~7). (5) Regulation: Enzyme activity can be regulated by inhibitors, activators, and allosteric effects. Example: Urease catalyzes hydrolysis of urea (NH₂)₂CO + H₂O → 2NH₃ + CO₂. Both urease enzyme and urea substrate are dissolved in aqueous solution, making it homogeneous. Urease is highly specific for urea and does not catalyze similar compounds.'
+  require_pass: true

@@ -1,0 +1,607 @@
+slug: git-remote-collaboration
+title: Remote Repositories and Collaboration
+difficulty: easy
+sequence_order: 4
+estimated_minutes: 20
+key_concepts:
+  - Remote repositories
+  - Git clone
+  - Git fetch
+  - Git pull
+  - Git push
+  - Tracking branches
+  - Collaboration workflows
+prerequisites:
+  - lesson-1
+  - git-branching-strategies
+  - git-merging-conflict-resolution
+content_md: |
+  # Remote Repositories and Collaboration
+
+  Remote repositories enable team collaboration. Master remote operations to work effectively with others.
+
+  ## Understanding Remotes
+
+  **Remote**: A version of your repository hosted elsewhere (GitHub, GitLab, Bitbucket, private server)
+
+  **Origin**: Default name for the remote you cloned from
+
+  ```
+  Your Computer (Local)  ←→  GitHub/GitLab (Remote)
+      Local Repository  ←→  Remote Repository (origin)
+  ```
+
+  ## Viewing Remotes
+
+  ```bash
+  # List remotes
+  git remote
+  # Output: origin
+
+  # List remotes with URLs
+  git remote -v
+  # Output:
+  # origin  https://github.com/user/repo.git (fetch)
+  # origin  https://github.com/user/repo.git (push)
+
+  # Show detailed remote info
+  git remote show origin
+  ```
+
+  ## Adding and Removing Remotes
+
+  ### Add Remote
+
+  ```bash
+  # Add new remote
+  git remote add upstream https://github.com/original/repo.git
+
+  # Verify
+  git remote -v
+  # origin    https://github.com/yourfork/repo.git (fetch)
+  # origin    https://github.com/yourfork/repo.git (push)
+  # upstream  https://github.com/original/repo.git (fetch)
+  # upstream  https://github.com/original/repo.git (push)
+  ```
+
+  ### Remove Remote
+
+  ```bash
+  # Remove remote
+  git remote remove upstream
+
+  # Or use rm
+  git remote rm upstream
+  ```
+
+  ### Rename Remote
+
+  ```bash
+  # Rename remote
+  git remote rename origin github
+  ```
+
+  ## Cloning Repositories
+
+  **Clone**: Download complete repository from remote to local machine
+
+  ```bash
+  # Clone repository
+  git clone https://github.com/user/repo.git
+
+  # Clone into specific directory
+  git clone https://github.com/user/repo.git my-project
+
+  # Clone specific branch
+  git clone -b develop https://github.com/user/repo.git
+
+  # Clone with shallow history (faster, less storage)
+  git clone --depth 1 https://github.com/user/repo.git
+  ```
+
+  **What cloning does:**
+  1. Creates directory with repository name
+  2. Downloads all files, commits, and branches
+  3. Sets up `origin` remote automatically
+  4. Checks out default branch (usually `main` or `master`)
+
+  ## Fetching Changes
+
+  **Fetch**: Download changes from remote WITHOUT merging
+
+  ```bash
+  # Fetch from origin (all branches)
+  git fetch origin
+
+  # Fetch specific branch
+  git fetch origin main
+
+  # Fetch from all remotes
+  git fetch --all
+
+  # See what was fetched
+  git log origin/main
+  ```
+
+  **What fetch does:**
+  - Downloads new commits from remote
+  - Updates remote-tracking branches (origin/main, origin/develop)
+  - Does NOT modify your working directory
+  - Safe operation, won't break your code
+
+  **When to use fetch:**
+  - Check what teammates have pushed
+  - Review changes before merging
+  - Update remote-tracking branches
+
+  ## Pulling Changes
+
+  **Pull**: Fetch + Merge in one command
+
+  ```bash
+  # Pull from current branch's remote
+  git pull
+
+  # Equivalent to:
+  git fetch origin
+  git merge origin/main
+
+  # Pull from specific remote and branch
+  git pull origin main
+
+  # Pull with rebase instead of merge
+  git pull --rebase origin main
+  ```
+
+  **Pull workflow:**
+  ```
+  Remote: A---B---C---D
+  Local:  A---B---E---F
+
+  After git pull:
+  Local:  A---B---C---D---M (merge commit)
+                    \   /
+                     E-F
+  ```
+
+  **Common use cases:**
+
+  ```bash
+  # Morning: Update your main branch
+  git checkout main
+  git pull origin main
+
+  # Before starting work: Get latest changes
+  git checkout feature/my-feature
+  git pull origin feature/my-feature
+
+  # Update feature branch with main's changes
+  git checkout feature/my-feature
+  git pull origin main
+  ```
+
+  ## Pushing Changes
+
+  **Push**: Upload local commits to remote
+
+  ```bash
+  # Push current branch to origin
+  git push
+
+  # Push and set upstream tracking
+  git push -u origin feature/new-feature
+  # -u = --set-upstream (only needed once per branch)
+
+  # Push specific branch
+  git push origin main
+
+  # Push all branches
+  git push --all origin
+
+  # Push tags
+  git push --tags
+  ```
+
+  ### First-Time Push
+
+  ```bash
+  # Create new local branch
+  git checkout -b feature/login
+
+  # Make changes and commit
+  git add .
+  git commit -m "Add login feature"
+
+  # Push and set upstream (first time)
+  git push -u origin feature/login
+  # Now branch is tracked, future pushes can use: git push
+  ```
+
+  ### Force Push (Dangerous!)
+
+  ```bash
+  # Force push (overwrites remote)
+  git push --force origin main
+  # ⚠️ DANGEROUS: Use only when you know what you're doing
+
+  # Safer force push (won't overwrite others' work)
+  git push --force-with-lease origin main
+  ```
+
+  **When force push is acceptable:**
+  - Your own feature branch (no one else working on it)
+  - After interactive rebase on feature branch
+  - Fixing sensitive data leak (as last resort)
+
+  **Never force push to:**
+  - `main` or `master` branch
+  - Shared branches (multiple people working)
+  - Public branches in open-source projects
+
+  ## Tracking Branches
+
+  **Tracking branch**: Local branch connected to remote branch
+
+  ```bash
+  # Create tracking branch from remote
+  git checkout -b feature origin/feature
+
+  # Shortcut (Git figures out remote)
+  git checkout feature
+  # If 'feature' doesn't exist locally but exists as origin/feature,
+  # Git creates local branch tracking origin/feature
+
+  # Set upstream for existing branch
+  git branch --set-upstream-to=origin/main main
+  # Or shorter:
+  git branch -u origin/main main
+
+  # See tracking relationships
+  git branch -vv
+  # Output:
+  # * main    abc123 [origin/main: ahead 2, behind 1] Latest commit
+  #   feature def456 [origin/feature] Feature work
+  ```
+
+  **Understanding ahead/behind:**
+  - **Ahead 2**: You have 2 local commits not pushed to remote
+  - **Behind 1**: Remote has 1 commit you don't have locally
+  - **Solution**: `git pull` (fetch + merge) to sync
+
+  ## Common Collaboration Workflows
+
+  ### Workflow 1: Sync with Main Branch
+
+  ```bash
+  # Update local main
+  git checkout main
+  git pull origin main
+
+  # Update feature branch with main's latest
+  git checkout feature/my-feature
+  git merge main
+  # Or: git rebase main (advanced)
+
+  # Continue working
+  git add .
+  git commit -m "Updated with latest main"
+  git push origin feature/my-feature
+  ```
+
+  ### Workflow 2: Collaborative Feature Branch
+
+  ```bash
+  # Teammate 1: Create and push feature branch
+  git checkout -b feature/api-refactor
+  git push -u origin feature/api-refactor
+
+  # Make changes
+  git add .
+  git commit -m "Refactor user API"
+  git push
+
+  # Teammate 2: Work on same feature branch
+  git fetch origin
+  git checkout feature/api-refactor
+  git pull origin feature/api-refactor  # Get teammate 1's work
+
+  # Make changes
+  git add .
+  git commit -m "Add validation to user API"
+  git push
+
+  # Teammate 1: Get teammate 2's changes
+  git pull origin feature/api-refactor
+  ```
+
+  ### Workflow 3: Fork and Pull Request
+
+  ```bash
+  # 1. Fork repository on GitHub (creates yourname/repo)
+
+  # 2. Clone your fork
+  git clone https://github.com/yourname/repo.git
+  cd repo
+
+  # 3. Add upstream remote (original repo)
+  git remote add upstream https://github.com/original/repo.git
+
+  # 4. Create feature branch
+  git checkout -b feature/fix-bug
+
+  # 5. Make changes and commit
+  git add .
+  git commit -m "Fix authentication bug"
+
+  # 6. Push to your fork
+  git push origin feature/fix-bug
+
+  # 7. Create Pull Request on GitHub (yourname/repo → original/repo)
+
+  # 8. Keep fork synced with upstream
+  git fetch upstream
+  git checkout main
+  git merge upstream/main
+  git push origin main
+  ```
+
+  ### Workflow 4: Handling Push Rejection
+
+  ```bash
+  # You try to push
+  git push origin main
+  # Error: Updates were rejected because remote contains work that you do not have
+
+  # Solution 1: Pull then push
+  git pull origin main  # Fetch + merge
+  git push origin main
+
+  # Solution 2: Pull with rebase (cleaner history)
+  git pull --rebase origin main
+  git push origin main
+  ```
+
+  ## Real-World Scenarios
+
+  ### Scenario 1: Working from Multiple Computers
+
+  ```bash
+  # Work computer (Monday):
+  git commit -m "Start feature"
+  git push origin feature/dashboard
+
+  # Home computer (Monday evening):
+  git pull origin feature/dashboard
+  git commit -m "Continue feature"
+  git push origin feature/dashboard
+
+  # Work computer (Tuesday morning):
+  git pull origin feature/dashboard  # Get Monday evening work
+  ```
+
+  ### Scenario 2: Reviewing Teammate's Branch
+
+  ```bash
+  # Fetch all branches
+  git fetch origin
+
+  # Check out teammate's branch
+  git checkout teammate-feature
+  # Or: git checkout -b teammate-feature origin/teammate-feature
+
+  # Test their code
+  npm install
+  npm test
+
+  # Provide feedback or merge
+  ```
+
+  ### Scenario 3: Syncing Long-Running Feature Branch
+
+  ```bash
+  # Your feature branch is 2 weeks old
+  # Main branch has moved ahead significantly
+
+  # Option A: Merge main into feature
+  git checkout feature/long-project
+  git fetch origin
+  git merge origin/main
+  # Resolve conflicts
+  git push origin feature/long-project
+
+  # Option B: Rebase feature on main (advanced)
+  git checkout feature/long-project
+  git fetch origin
+  git rebase origin/main
+  # Resolve conflicts
+  git push --force-with-lease origin feature/long-project
+  ```
+
+  ### Scenario 4: Accidental Commit to Wrong Branch
+
+  ```bash
+  # You're on main, should be on feature branch
+  git status
+  # On branch main
+
+  # Don't push! First move commits to feature branch
+
+  # Create feature branch with current commits
+  git branch feature/accidental-commit
+
+  # Reset main to origin
+  git fetch origin
+  git reset --hard origin/main
+
+  # Switch to feature branch
+  git checkout feature/accidental-commit
+  git push -u origin feature/accidental-commit
+  ```
+
+  ## Best Practices
+
+  ### Before Pushing
+
+  1. **Pull first**: Always pull before pushing
+     ```bash
+     git pull origin main
+     git push origin main
+     ```
+
+  2. **Review your changes**
+     ```bash
+     git diff origin/main main
+     git log origin/main..main
+     ```
+
+  3. **Run tests**
+     ```bash
+     npm test  # or your test command
+     ```
+
+  ### Communication
+
+  1. **Coordinate on shared branches**: Tell team when pushing to shared feature branches
+  2. **Use descriptive branch names**: `feature/user-auth` not `my-branch`
+  3. **Keep branches short-lived**: Merge within days, not weeks
+  4. **Delete merged branches**: Clean up after merging
+
+  ### Branch Protection
+
+  Modern platforms (GitHub, GitLab) offer branch protection:
+  - Require pull request reviews before merging
+  - Require status checks (CI tests pass)
+  - Prevent force pushes to main
+  - Require signed commits
+
+  ## Useful Commands
+
+  ```bash
+  # See what you would push
+  git log origin/main..main
+
+  # See what you would pull
+  git log main..origin/main
+
+  # View remote branches
+  git branch -r
+
+  # View all branches (local + remote)
+  git branch -a
+
+  # Delete remote branch
+  git push origin --delete feature/old-branch
+
+  # Prune deleted remote branches
+  git fetch --prune
+  # Or: git remote prune origin
+
+  # Change remote URL
+  git remote set-url origin https://new-url.git
+  ```
+
+  ## Troubleshooting
+
+  ### "Your branch is behind origin/main"
+
+  ```bash
+  # Solution: Pull
+  git pull origin main
+  ```
+
+  ### "Your branch is ahead of origin/main"
+
+  ```bash
+  # Solution: Push
+  git push origin main
+  ```
+
+  ### "Updates were rejected"
+
+  ```bash
+  # Someone pushed while you were working
+  # Solution: Pull (merge) then push
+  git pull origin main
+  git push origin main
+  ```
+
+  ### "fatal: refusing to merge unrelated histories"
+
+  ```bash
+  # Two repositories with no common ancestor
+  # Solution: Allow unrelated histories (rare)
+  git pull origin main --allow-unrelated-histories
+  ```
+
+  ### Authentication Issues
+
+  ```bash
+  # HTTPS: Use personal access token (not password)
+  # GitHub → Settings → Developer Settings → Personal Access Tokens
+
+  # SSH: Set up SSH keys
+  ssh-keygen -t ed25519 -C "your_email@example.com"
+  # Add public key to GitHub/GitLab
+
+  # Test SSH connection
+  ssh -T git@github.com
+  ```
+
+  ## Common Mistakes to Avoid
+
+  ❌ **Forgetting to pull before pushing**
+  ✅ Always pull first: `git pull && git push`
+
+  ❌ **Force pushing to shared/main branches**
+  ✅ Only force push to your own feature branches
+
+  ❌ **Not setting upstream on new branches**
+  ✅ Use `git push -u origin branch-name` first time
+
+  ❌ **Pulling without committing local changes**
+  ✅ Commit or stash before pulling
+
+  ❌ **Using `git pull` in dirty working directory**
+  ✅ Commit or stash changes first
+
+  ❌ **Pushing secrets/credentials**
+  ✅ Use .gitignore, environment variables, secrets management
+
+  **Next**: Learn GitHub/GitLab workflows and pull requests!
+
+exercises:
+  - type: mcq
+    sequence_order: 1
+    question: "What is the difference between 'git fetch' and 'git pull'?"
+    options:
+      - "They are exactly the same command"
+      - "git fetch downloads changes but doesn't merge; git pull downloads and merges (fetch + merge) in one command"
+      - "git fetch is for GitHub, git pull is for GitLab"
+      - "git fetch is faster than git pull"
+    correct_answer: "git fetch downloads changes but doesn't merge; git pull downloads and merges (fetch + merge) in one command"
+    explanation: "Understanding fetch vs pull is crucial for safe collaboration workflows. git fetch (Safe, Non-Destructive): (1) What it does: Downloads commits, files, and refs from remote repository. Updates remote-tracking branches (origin/main, origin/feature). Does NOT change your working directory or current branch. Does NOT merge anything. (2) After fetching: Remote changes are in origin/main, your branch (main) unchanged. (3) Commands: git fetch origin (fetch all branches from origin). git fetch origin main (fetch only main branch). git fetch --all (fetch from all remotes). (4) Use cases: Check what teammates pushed: git fetch && git log origin/main. Review changes before merging: git fetch && git diff main origin/main. Update remote-tracking branches without affecting work. (5) After fetch, manually merge: git fetch origin, git merge origin/main (now you control when merge happens). git pull (Convenient, but Potentially Disruptive): (1) What it does: Fetch + Merge in one command. Downloads changes from remote AND immediately merges into current branch. Equivalent to: git fetch origin && git merge origin/main. (2) Commands: git pull (pull from tracked remote). git pull origin main (pull from specific branch). git pull --rebase (fetch + rebase instead of merge). (3) Use cases: Quick sync when you trust remote changes. Updating branch when you have no local changes. Morning routine: git checkout main && git pull. (4) Risks: Can create merge conflicts immediately. If you have uncommitted changes, may fail or create messy merge. Less control over when merge happens. Real-world examples: Safe workflow (fetch first): git fetch origin, git log origin/main (review), git diff main origin/main (inspect), git merge origin/main (merge when ready). Quick workflow (pull): git pull origin main (if you trust remote). Best practices: (1) Use fetch when: Working on important features. Want to review changes first. Have uncommitted work. (2) Use pull when: Quickly syncing main branch. No local changes. Trust team's commits. (3) Never pull into dirty working directory: git status (check clean), git pull (if clean), or git stash && git pull && git stash pop (if dirty). Pull with rebase: git pull --rebase creates linear history instead of merge commits. Cleaner history, but rewrites commits (use carefully)."
+    require_pass: true
+
+  - type: mcq
+    sequence_order: 2
+    question: "When should you use 'git push -u origin branch-name' vs. just 'git push'?"
+    options:
+      - "Always use -u flag for every push"
+      - "Use -u flag only the first time pushing a new branch to set up tracking; subsequent pushes can use just 'git push'"
+      - "-u flag is only for main branch"
+      - "There is no difference between the two commands"
+    correct_answer: "Use -u flag only the first time pushing a new branch to set up tracking; subsequent pushes can use just 'git push'"
+    explanation: "Understanding the -u (--set-upstream) flag is essential for efficient Git workflows. The -u Flag Explained: (1) Full name: --set-upstream (2) Purpose: Sets up tracking relationship between local branch and remote branch. (3) Effect: Tells Git: 'This local branch corresponds to that remote branch'. (4) Only needed once per branch: First push to new branch. After that, Git remembers the relationship. First-Time Push Workflow: Create new local branch: git checkout -b feature/new-login. Make changes and commit: git add . && git commit -m 'Add login'. Push with -u flag (FIRST TIME): git push -u origin feature/new-login. (This creates remote branch origin/feature/new-login and sets up tracking). Subsequent pushes (no -u needed): git push (Git knows to push to origin/feature/new-login). What Happens Without -u: Without tracking relationship: git push alone fails. Error: 'The current branch feature/new-login has no upstream branch'. Must specify full command every time: git push origin feature/new-login (tedious). With -u (Tracking Set Up): Git remembers relationship. Commands become simpler: git push (pushes to tracked remote), git pull (pulls from tracked remote), git status (shows ahead/behind status). Example: 'Your branch is ahead of origin/feature/new-login by 2 commits'. Checking Tracking Status: See tracking relationships: git branch -vv. Output example: main abc123 [origin/main] Latest commit, feature/new-login def456 [origin/feature/new-login: ahead 2] Feature work, local-only ghi789 Not tracking any remote. Setting Upstream Later: If you forgot -u initially: git branch --set-upstream-to=origin/feature/new-login, or: git branch -u origin/feature/new-login. Common Scenarios: (1) New feature branch: git checkout -b feature/dashboard, git commit -m 'Add dashboard', git push -u origin feature/dashboard (FIRST TIME - use -u), git commit -m 'Update dashboard', git push (subsequent - no -u needed). (2) Existing branch: git checkout main, git pull, git push (no -u, main already tracking origin/main). (3) Cloned repository: All branches from clone already track remote, never need -u for existing branches. Best Practices: (1) Always use -u on first push of new branch: git push -u origin new-branch. (2) Never needed for subsequent pushes: git push. (3) Check tracking status: git branch -vv. (4) CI/CD scripts: Use full command for clarity: git push origin $BRANCH_NAME. Edge Case - Pushing to Different Remote: git push -u upstream feature/my-work (sets tracking to upstream instead of origin). Now git push goes to upstream, not origin."
+    require_pass: true
+
+  - type: mcq
+    sequence_order: 3
+    question: "You try 'git push origin main' but get 'Updates were rejected because the remote contains work that you do not have'. What should you do?"
+    options:
+      - "Use git push --force to override the remote"
+      - "Delete your local changes and re-clone the repository"
+      - "First git pull origin main to fetch and merge remote changes, then git push origin main"
+      - "Create a new branch and push that instead"
+    correct_answer: "First git pull origin main to fetch and merge remote changes, then git push origin main"
+    explanation: "This is one of the most common Git collaboration scenarios, and handling it correctly is critical. The Problem: Error message: 'Updates were rejected because the remote contains work that you do not have locally'. What happened: You have local commits. Teammate pushed commits to remote while you were working. Remote branch (origin/main) is now ahead of your local. Git prevents push to avoid losing teammate's work. Visual: Your local: A---B---C (your commit). Remote: A---B---D (teammate's commit). Can't push because histories diverged. The Solution: Step 1 - Pull remote changes: git pull origin main (fetches remote commits and merges). Git performs fetch: downloads commit D. Git performs merge: creates merge commit M combining C and D. Result: A---B---C---M (your local), D/ (teammate's commit merged). Step 2 - Push merged changes: git push origin main (now succeeds). Why This Works: Pull syncs your local with remote (fetch + merge). After pull, your branch contains all commits (yours + teammate's). Now push succeeds because you have everything. Detailed Workflow: You: git commit -m 'Add feature X', git push origin main. Error: 'Updates were rejected'. Analysis: git fetch origin (download remote commits), git log main..origin/main (see teammate's commits). You: 'Ah, someone pushed commit D'. Solution: git pull origin main (merge teammate's work). If conflicts: resolve, git add, git commit. git push origin main (SUCCESS). Alternative Solution - Rebase: Instead of merge, use rebase for linear history: git pull --rebase origin main (replay your commits on top of remote). If conflicts: resolve, git add, git rebase --continue. git push origin main. Result (rebase): A---B---D---C' (your commit replayed after teammate's). Cleaner linear history, no merge commit. When to Use Which: Use pull (merge): Default, safe, preserves complete history. Shared branches (main, develop). When multiple people work on same branch. Use pull --rebase: Feature branches for cleaner history. When you want linear history. Before merging feature to main. What NOT to Do: ❌ git push --force origin main: Deletes teammate's commits! Never force push to shared branches. Only acceptable for YOUR feature branches. ❌ Ignore the error: Push will fail. Remote remains out of sync. Team can't access your work. ❌ Delete and re-clone: Loses your local commits (unless pushed elsewhere). Unnecessary, pull solves the problem. Real-World Example: Team of 5 developers: Developer A pushes at 9:00 AM. Developer B pushes at 9:30 AM (works fine, pulled A's changes). You try to push at 10:00 AM (you have A's changes but not B's). Error: 'Updates were rejected'. Solution: git pull origin main (get B's changes), git push origin main (success). Prevention: Pull frequently: Before starting work: git pull. Before committing: git pull. Before pushing: git pull. Small, frequent commits: Easier to merge. Less time for divergence. Communicate: 'Pushing to main now' in team chat. Use feature branches instead of all working on main."
+    require_pass: true

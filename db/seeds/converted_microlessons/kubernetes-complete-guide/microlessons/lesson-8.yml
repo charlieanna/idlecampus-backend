@@ -1,0 +1,148 @@
+slug: lesson-8
+title: Lesson 8
+difficulty: easy
+sequence_order: 8
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Observability\n\n    Learn to monitor,\
+  \ log, and debug applications running in Kubernetes clusters.\n\n    ## Health Checks\n\
+  \n    **Liveness Probes**\n    - Is container alive?\n    - Kubelet restarts failed\
+  \ containers\n    - Use for detecting deadlocks\n\n    **Readiness Probes**\n  \
+  \  - Is container ready to serve traffic?\n    - Removes pod from service endpoints\
+  \ if fails\n    - Use during startup or temporary unavailability\n\n    **Startup\
+  \ Probes**\n    - Has application started?\n    - Useful for slow-starting applications\n\
+  \    - Prevents liveness probe from interfering\n\n    **Probe Types:**\n    - **HTTP\
+  \ GET**: Check HTTP endpoint\n    - **TCP Socket**: Check TCP connection\n    -\
+  \ **Exec**: Execute command in container\n\n    ## Logging\n\n    **Container Logs:**\n\
+  \    ```bash\n    # View logs\n    kubectl logs pod-name\n\n    # Follow logs\n\
+  \    kubectl logs -f pod-name\n\n    # Previous container logs\n    kubectl logs\
+  \ pod-name --previous\n\n    # Specific container in pod\n    kubectl logs pod-name\
+  \ -c container-name\n\n    # All pods with label\n    kubectl logs -l app=nginx\n\
+  \    ```\n\n    **Logging Architecture:**\n    - **Node-level**: Log files on nodes\n\
+  \    - **Cluster-level**: Centralized logging (ELK, Splunk, Loki)\n    - **Application-level**:\
+  \ Direct to logging service\n\n    ## Monitoring\n\n    **Metrics Server:**\n  \
+  \  - Resource usage metrics\n    - `kubectl top nodes/pods`\n    - Horizontal Pod\
+  \ Autoscaler input\n\n    **Prometheus Stack:**\n    - Metrics collection\n    -\
+  \ Alerting rules\n    - Grafana dashboards\n    - Custom metrics\n\n    ## Debugging\n\
+  \n    **Describe Resources:**\n    ```bash\n    # Pod details and events\n    kubectl\
+  \ describe pod pod-name\n\n    # Node details\n    kubectl describe node node-name\n\
+  \    ```\n\n    **Execute Commands:**\n    ```bash\n    # Interactive shell\n  \
+  \  kubectl exec -it pod-name -- /bin/bash\n\n    # Run command\n    kubectl exec\
+  \ pod-name -- ls /app\n    ```\n\n    **Port Forwarding:**\n    ```bash\n    # Forward\
+  \ local port to pod\n    kubectl port-forward pod-name 8080:80\n\n    # Forward\
+  \ to service\n    kubectl port-forward service/my-service 8080:80\n    ```\n\n \
+  \   **Copy Files:**\n    ```bash\n    # From pod to local\n    kubectl cp pod-name:/path/to/file\
+  \ ./local-file\n\n    # From local to pod\n    kubectl cp ./local-file pod-name:/path/to/file\n\
+  \    ```\n\n    ## Common Issues\n\n    **CrashLoopBackOff:**\n    - Application\
+  \ exits immediately\n    - Check logs: `kubectl logs pod-name --previous`\n    -\
+  \ Review resource limits\n    - Verify liveness probe configuration\n\n    **ImagePullBackOff:**\n\
+  \    - Cannot pull container image\n    - Check image name and tag\n    - Verify\
+  \ registry credentials\n    - Check imagePullSecrets\n\n    **Pending Pods:**\n\
+  \    - Insufficient resources\n    - Node selector not matching\n    - PVC not bound\n\
+  \    - Check events: `kubectl describe pod`\n\n    Master debugging in the practical\
+  \ labs!"
+exercises:
+- type: multiple_choice_question
+  sequence_order: 1
+  question: What is the key difference between liveness probes and readiness probes
+    in Kubernetes?
+  options:
+  - Liveness probes check if a container should be restarted, while readiness probes
+    check if a pod should receive traffic
+  - Liveness probes are faster than readiness probes
+  - Readiness probes restart containers while liveness probes don't
+  - Liveness probes only work with HTTP while readiness probes work with TCP
+  correct_answer: Liveness probes check if a container should be restarted, while
+    readiness probes check if a pod should receive traffic
+  explanation: 'Liveness probes determine if a container is alive and should continue
+    running - if a liveness probe fails, Kubernetes kills and restarts the container.
+    They''re used to detect deadlocks or hangs where an application is running but
+    not functioning correctly. Readiness probes determine if a container is ready
+    to serve traffic - if a readiness probe fails, the pod is temporarily removed
+    from service endpoints but the container continues running. Readiness probes are
+    essential during startup (when an application needs time to initialize) or temporary
+    unavailability (like database connection loss). For example, a web application
+    might fail readiness checks during startup while loading data, or temporarily
+    when its database is unavailable, but these aren''t reasons to restart the container.
+    Both probe types support the same mechanisms: HTTP GET requests, TCP socket connections,
+    or command execution. The timing and purpose differ - liveness probes should be
+    conservative to avoid unnecessary restarts, while readiness probes can be more
+    aggressive since they only affect traffic routing. Understanding this distinction
+    prevents issues like restart loops from overly aggressive liveness probes or traffic
+    sent to not-ready pods from missing readiness probes.'
+  require_pass: true
+- type: multiple_choice_question
+  sequence_order: 2
+  question: When troubleshooting a pod in CrashLoopBackOff state, which command provides
+    the most useful information about why the container failed?
+  options:
+  - kubectl get pod pod-name
+  - kubectl logs pod-name --previous
+  - kubectl top pod pod-name
+  - kubectl port-forward pod-name 8080:80
+  correct_answer: kubectl logs pod-name --previous
+  explanation: The command 'kubectl logs pod-name --previous' retrieves logs from
+    the previous (terminated) container instance, which is crucial for diagnosing
+    CrashLoopBackOff issues. When a container crashes, Kubernetes automatically restarts
+    it, and the current instance may not contain the error messages that caused the
+    crash. The --previous flag shows logs from the failed container, revealing the
+    actual errors like missing environment variables, configuration issues, or application
+    crashes. CrashLoopBackOff means the container is repeatedly crashing and Kubernetes
+    is backing off on restart attempts with increasing delays. 'kubectl get pod' only
+    shows current status, 'kubectl top' shows resource usage (useful but not for crash
+    diagnosis), and 'kubectl port-forward' is for accessing running containers, not
+    diagnosing crashes. After checking previous logs, also run 'kubectl describe pod
+    pod-name' to see events and check for resource limit issues, failed liveness probes,
+    or missing dependencies. Common CrashLoopBackOff causes include application startup
+    failures, incorrect commands, missing configuration, or insufficient resources.
+    Understanding how to diagnose crashes quickly is essential for maintaining application
+    reliability in Kubernetes.
+  require_pass: true
+- type: terminal
+  sequence_order: 1
+  command: kubectl logs pod-name
+  description: 'Practice the command: kubectl logs pod-name'
+  hints:
+  - 'Try: kubectl logs pod-name'
+  - Use kubectl --help if you need help
+  timeout_sec: 60
+  require_pass: true
+- type: terminal
+  sequence_order: 2
+  command: kubectl logs -f pod-name
+  description: 'Practice the command: kubectl logs -f pod-name'
+  hints:
+  - 'Try: kubectl logs -f pod-name'
+  - Use kubectl --help if you need help
+  timeout_sec: 60
+  require_pass: true
+- type: terminal
+  sequence_order: 3
+  command: kubectl logs pod-name --previous
+  description: 'Practice the command: kubectl logs pod-name --previous'
+  hints:
+  - 'Try: kubectl logs pod-name --previous'
+  - Use kubectl --help if you need help
+  timeout_sec: 60
+  require_pass: true
+- type: mcq
+  sequence_order: 4
+  question: What command lists all pods in all namespaces?
+  options: &id001
+  - kubectl get pods -A
+  - kubectl list pods --all
+  - kubectl get pods --everywhere
+  - kubectl pods list -A
+  correct_answer_index: 0
+  explanation: kubectl get pods -A (or --all-namespaces) lists pods across all namespaces.
+    The -A flag is shorthand for --all-namespaces.
+  require_pass: true
+- type: mcq
+  sequence_order: 5
+  question: What command lists all pods in all namespaces?
+  options: *id001
+  correct_answer_index: 0
+  explanation: kubectl get pods -A (or --all-namespaces) lists pods across all namespaces.
+    The -A flag is shorthand for --all-namespaces.
+  require_pass: true

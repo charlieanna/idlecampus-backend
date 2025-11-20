@@ -1,0 +1,69 @@
+slug: buffercapacity-practice
+title: buffer_capacity — Practice
+difficulty: hard
+sequence_order: 1
+estimated_minutes: 2
+key_concepts:
+- buffer_capacity
+prerequisites: []
+content_md: '# buffer_capacity — Practice 🚀
+
+
+  Good buffer has: (1) equal [acid]:[salt] ratio for max capacity, (2) high concentrations
+  for capacity, (3) operates in pH = pKa ± 1 range. Strong acid/base cannot form buffers.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: 'A good buffer solution should have:'
+  options:
+  - Equal concentrations of weak acid and salt, high total concentration, pH in range
+    pKa ± 1
+  - Strong acid and strong base in equal amounts
+  - Very dilute weak acid and salt
+  - Operating at pH = pKa + 3
+  require_pass: true
+  correct_answer: Equal concentrations of weak acid and salt, high total concentration,
+    pH in range pKa ± 1
+  explanation: 'A good buffer solution requires ALL three characteristics: (1) **Equal
+    [acid]:[salt] ratio** - Maximum buffer capacity occurs when [HA] = [A⁻], because
+    Henderson-Hasselbalch equation pH = pKa + log([A⁻]/[HA]) gives pH = pKa when ratio
+    is 1:1, (2) **High total concentrations** - More concentrated buffers can neutralize
+    more added acid/base before pH changes significantly, (3) **Operating pH in range
+    pKa ± 1** - Buffers work effectively only within ~1 pH unit of the pKa value.
+    Note: Strong acid/base combinations CANNOT form buffers because they completely
+    dissociate and lack the equilibrium needed for buffering. Common buffers: acetic
+    acid/acetate (pH ~4.7), NH₃/NH₄⁺ (pH ~9.3).'
+- type: mcq
+  sequence_order: 2
+  question: 'Which buffer has the HIGHEST buffer capacity: (A) 0.01 M CH₃COOH + 0.01 M CH₃COONa, (B) 0.1 M CH₃COOH + 0.1 M CH₃COONa, or (C) 1 M CH₃COOH + 1 M CH₃COONa?'
+  options:
+  - Buffer A
+  - Buffer B
+  - Buffer C
+  - All have equal capacity
+  require_pass: true
+  correct_answer: Buffer C
+  explanation: 'Buffer C (1 M each) has the highest buffer capacity because buffer capacity is directly proportional to concentration. All three buffers have the same pH (pH = pKa = 4.74 since [acid] = [salt]), but differ in capacity to resist pH change. Buffer capacity (β) ∝ total concentration when ratio is 1:1. Quantitative comparison: If 0.01 mol HCl is added to 1 L of each: Buffer A (0.01 M): Buffer exhausted, pH drops dramatically; Buffer B (0.1 M): pH changes by ~0.8 units; Buffer C (1 M): pH changes by only ~0.086 units. The higher concentration buffer can neutralize more added acid/base before significant pH change. Mathematical basis: β = 2.303 × C × Ka × [H⁺]/(Ka + [H⁺])², where C is total concentration. At pH = pKa, buffer capacity is maximum and directly proportional to C. Practical applications: Blood buffers use relatively high concentrations (0.024 M bicarbonate) to maintain pH 7.4 despite metabolic acid production.'
+- type: mcq
+  sequence_order: 3
+  question: 'At what ratio of [A⁻]/[HA] does a buffer have MAXIMUM capacity to resist pH changes?'
+  options:
+  - 10:1
+  - 5:1
+  - 1:1
+  - 1:10
+  require_pass: true
+  correct_answer: 1:1
+  explanation: 'Maximum buffer capacity occurs at ratio [A⁻]/[HA] = 1:1, meaning pH = pKa. Mathematical proof: Buffer capacity β = 2.303 × C × Ka × [H⁺]/(Ka + [H⁺])². This is maximum when [H⁺] = Ka (i.e., pH = pKa), which corresponds to [A⁻] = [HA]. Physical reason: At 1:1 ratio, the buffer has equal amounts of: (1) Weak acid (HA) to neutralize added base (OH⁻), (2) Conjugate base (A⁻) to neutralize added acid (H⁺). This balanced state provides optimal resistance to pH change in both directions. When ratio deviates from 1:1: At 10:1 (pH = pKa + 1): Buffer can handle much base but limited acid; At 1:10 (pH = pKa - 1): Buffer can handle much acid but limited base. Effective buffer range: 0.1 < [A⁻]/[HA] < 10, or pKa - 1 < pH < pKa + 1. Outside this range, buffer capacity drops significantly. This is why we choose buffers with pKa close to desired pH (ideally pKa = target pH).'

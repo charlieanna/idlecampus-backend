@@ -1,0 +1,106 @@
+slug: lesson-15
+title: Lesson 15
+sequence_order: 15
+estimated_minutes: 2
+difficulty: easy
+content_md: "# Microlesson \U0001F680\n\n# Monitoring & Debugging\n\n      Monitor\
+  \ applications and troubleshoot issues in Kubernetes clusters.\n\n      ## Pod Debugging\n\
+  \n      ### Viewing Pod Status\n\n      ```bash\n      # List pods with status\n\
+  \      kubectl get pods\n\n      # Watch pods in real-time\n      kubectl get pods\
+  \ --watch\n\n      # Get pod with detailed status\n      kubectl get pod my-pod\
+  \ -o wide\n\n      # Describe pod (shows events)\n      kubectl describe pod my-pod\n\
+  \n      # Get pod YAML\n      kubectl get pod my-pod -o yaml\n      ```\n\n    \
+  \  ### Viewing Logs\n\n      ```bash\n      # View pod logs\n      kubectl logs\
+  \ my-pod\n\n      # Follow logs (tail -f)\n      kubectl logs -f my-pod\n\n    \
+  \  # Logs from previous container instance\n      kubectl logs my-pod --previous\n\
+  \n      # Logs from specific container in pod\n      kubectl logs my-pod -c container-name\n\
+  \n      # Logs with timestamps\n      kubectl logs my-pod --timestamps\n\n     \
+  \ # Last N lines\n      kubectl logs my-pod --tail=50\n\n      # Logs since timestamp\n\
+  \      kubectl logs my-pod --since-time=2024-01-01T00:00:00Z\n\n      # Logs since\
+  \ duration\n      kubectl logs my-pod --since=1h\n\n      # Logs from all pods with\
+  \ label\n      kubectl logs -l app=nginx\n\n      # Stream logs from all containers\
+  \ in pod\n      kubectl logs my-pod --all-containers=true --follow\n      ```\n\n\
+  \      ### Execute Commands\n\n      ```bash\n      # Open interactive shell\n \
+  \     kubectl exec -it my-pod -- /bin/bash\n      kubectl exec -it my-pod -- /bin/sh\n\
+  \n      # Run single command\n      kubectl exec my-pod -- ls /app\n      kubectl\
+  \ exec my-pod -- cat /etc/config/app.conf\n\n      # Execute in specific container\n\
+  \      kubectl exec -it my-pod -c container-name -- bash\n\n      # Run command\
+  \ with environment variables\n      kubectl exec my-pod -- env\n      ```\n\n  \
+  \    ### Port Forwarding\n\n      ```bash\n      # Forward local port to pod\n \
+  \     kubectl port-forward my-pod 8080:80\n\n      # Forward to service\n      kubectl\
+  \ port-forward service/my-service 8080:80\n\n      # Forward to deployment\n   \
+  \   kubectl port-forward deployment/nginx 8080:80\n\n      # Listen on all interfaces\n\
+  \      kubectl port-forward --address 0.0.0.0 pod/my-pod 8080:80\n\n      # Multiple\
+  \ ports\n      kubectl port-forward my-pod 8080:80 8443:443\n      ```\n\n     \
+  \ ### Copy Files\n\n      ```bash\n      # Copy from pod to local\n      kubectl\
+  \ cp my-pod:/path/to/file ./local-file\n\n      # Copy from local to pod\n     \
+  \ kubectl cp ./local-file my-pod:/path/to/file\n\n      # Copy from specific container\n\
+  \      kubectl cp my-pod:/file ./file -c container-name\n\n      # Copy directory\n\
+  \      kubectl cp my-pod:/app/config ./config-backup\n      ```\n\n      ## Events\n\
+  \n      ### Viewing Events\n\n      ```bash\n      # View all events\n      kubectl\
+  \ get events\n\n      # Events sorted by timestamp\n      kubectl get events --sort-by='.metadata.creationTimestamp'\n\
+  \n      # Events in specific namespace\n      kubectl get events -n kube-system\n\
+  \n      # Watch events in real-time\n      kubectl get events --watch\n\n      #\
+  \ Events for specific resource\n      kubectl get events --field-selector involvedObject.name=my-pod\n\
+  \n      # Events for specific type\n      kubectl get events --field-selector type=Warning\n\
+  \n      # Filter by reason\n      kubectl get events --field-selector reason=Failed\n\
+  \      ```\n\n      ## Resource Metrics\n\n      ### Metrics Server Commands\n\n\
+  \      ```bash\n      # Node resource usage\n      kubectl top nodes\n\n      #\
+  \ Node usage with labels\n      kubectl top nodes --show-labels\n\n      # Pod resource\
+  \ usage\n      kubectl top pods\n\n      # Pods in all namespaces\n      kubectl\
+  \ top pods -A\n\n      # Pods in specific namespace\n      kubectl top pods -n production\n\
+  \n      # Sort by CPU\n      kubectl top pods --sort-by=cpu\n\n      # Sort by memory\n\
+  \      kubectl top pods --sort-by=memory\n\n      # Container-level metrics\n  \
+  \    kubectl top pod my-pod --containers\n      ```\n\n      ## Common Issues &\
+  \ Solutions\n\n      ### CrashLoopBackOff\n\n      ```bash\n      # View previous\
+  \ container logs\n      kubectl logs my-pod --previous\n\n      # Describe pod (check\
+  \ events)\n      kubectl describe pod my-pod\n\n      # Check resource limits\n\
+  \      kubectl get pod my-pod -o jsonpath='{.spec.containers[*].resources}'\n\n\
+  \      # Check liveness/readiness probes\n      kubectl get pod my-pod -o jsonpath='{.spec.containers[*].livenessProbe}'\n\
+  \      ```\n\n      ### ImagePullBackOff\n\n      ```bash\n      # Check events\n\
+  \      kubectl describe pod my-pod\n\n      # Verify image name\n      kubectl get\
+  \ pod my-pod -o jsonpath='{.spec.containers[*].image}'\n\n      # Check image pull\
+  \ secrets\n      kubectl get pod my-pod -o jsonpath='{.spec.imagePullSecrets}'\n\
+  \n      # Test image pull manually\n      docker pull <image-name>\n      ```\n\n\
+  \      ### Pending Pods\n\n      ```bash\n      # Check events (insufficient resources,\
+  \ taints, etc.)\n      kubectl describe pod my-pod\n\n      # Check node resources\n\
+  \      kubectl top nodes\n      kubectl describe nodes\n\n      # Check pod resource\
+  \ requests\n      kubectl get pod my-pod -o jsonpath='{.spec.containers[*].resources.requests}'\n\
+  \n      # Check PVC binding\n      kubectl get pvc\n\n      # Check node selectors/affinity\n\
+  \      kubectl get pod my-pod -o jsonpath='{.spec.nodeSelector}'\n      ```\n\n\
+  \      ### Troubleshooting Network\n\n      ```bash\n      # Check service endpoints\n\
+  \      kubectl get endpoints my-service\n\n      # Test DNS resolution\n      kubectl\
+  \ run debug --image=nicolaka/netshoot -it --rm -- bash\n      nslookup my-service\n\
+  \n      # Test connectivity\n      kubectl run debug --image=curlimages/curl -it\
+  \ --rm -- curl http://my-service\n\n      # Check network policies\n      kubectl\
+  \ get networkpolicies\n      kubectl describe networkpolicy my-policy\n      ```\n\
+  \n      ## Advanced Debugging\n\n      ### Debug Container (Ephemeral)\n\n     \
+  \ ```bash\n      # Add debug container to running pod\n      kubectl debug my-pod\
+  \ -it --image=busybox --target=my-container\n\n      # Create debug pod as copy\n\
+  \      kubectl debug my-pod -it --copy-to=my-pod-debug --container=debugger --image=busybox\n\
+  \n      # Debug node by creating pod on node\n      kubectl debug node/my-node -it\
+  \ --image=busybox\n      ```\n\n      ### Cluster Info\n\n      ```bash\n      #\
+  \ Cluster information\n      kubectl cluster-info\n\n      # Cluster info dump\n\
+  \      kubectl cluster-info dump\n\n      # API versions\n      kubectl api-versions\n\
+  \n      # API resources\n      kubectl api-resources\n\n      # Component status\n\
+  \      kubectl get componentstatuses\n      kubectl get cs\n      ```\n\n      Master\
+  \ debugging in the hands-on labs!"
+exercises:
+- type: mcq
+  slug: lesson-15-mcq
+  sequence_order: 1
+  question: What role does CoreDNS play in Kubernetes?
+  options:
+  - Provides DNS-based service discovery for pods and services within the cluster
+  - Manages container images
+  - Handles authentication
+  - Monitors cluster health
+  correct_answer_index: 0
+  explanation: CoreDNS is the default DNS server in Kubernetes. It provides service
+    discovery by resolving service names to cluster IPs, supports stub domains, and
+    manages DNS search paths. Services get DNS names like service-name.namespace.svc.cluster.local.
+objectives:
+- Understand the fundamental concepts and mechanisms of lesson 15
+- Apply chemical principles to solve related problems
+- Identify key reactions, equations, and chemical behaviors
+next_recommended: []

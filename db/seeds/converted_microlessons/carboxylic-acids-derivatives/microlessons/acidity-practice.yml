@@ -1,0 +1,59 @@
+slug: acidity-practice
+title: acidity — Practice
+difficulty: easy
+sequence_order: 6
+estimated_minutes: 2
+key_concepts:
+- acidity
+prerequisites: []
+content_md: '# acidity — Practice 🚀
+
+
+  CH₃COO⁻ is resonance-stabilized (2 equivalent structures). C₂H₅O⁻ has no resonance.
+  pKa: CH₃COOH (4.8) < C₂H₅OH (16).
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 2
+  question: Why is acetic acid more acidic than ethanol?
+  options:
+  - Resonance stabilization of acetate ion
+  - Ethanol forms H-bonds
+  - Acetic acid has higher MW
+  - Ethanol is basic
+  correct_answer: Resonance stabilization of acetate ion
+  explanation: "Acetic acid (CH₃COOH, pKa = 4.8) is much more acidic than ethanol (C₂H₅OH, pKa = 16) because the acetate ion (CH₃COO⁻) is stabilized by resonance - the negative charge is delocalized over two equivalent oxygen atoms. In contrast, the ethoxide ion (C₂H₅O⁻) has no resonance stabilization and the negative charge is localized on one oxygen, making it less stable and ethanol less willing to donate its proton. Both can form H-bonds, molecular weight is irrelevant to acidity, and ethanol is not basic - it's a very weak acid."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: Which carboxylic acid is MOST acidic?
+  options:
+  - CH₃COOH (acetic acid)
+  - ClCH₂COOH (chloroacetic acid)
+  - Cl₂CHCOOH (dichloroacetic acid)
+  - Cl₃CCOOH (trichloroacetic acid)
+  correct_answer: Cl₃CCOOH (trichloroacetic acid)
+  explanation: "Trichloroacetic acid (Cl₃CCOOH, pKa = 0.7) is the most acidic because the three electron-withdrawing chlorine atoms stabilize the conjugate base through the inductive effect. Chlorine atoms pull electron density away from the carboxylate group, dispersing the negative charge and stabilizing the anion. The acidity order is: Cl₃CCOOH (pKa 0.7) > Cl₂CHCOOH (pKa 1.3) > ClCH₂COOH (pKa 2.9) > CH₃COOH (pKa 4.8). More chlorine atoms = stronger acid. The inductive effect decreases with distance, so substituents closer to the carboxyl group have greater effect."
+  require_pass: true
+- type: mcq
+  sequence_order: 4
+  question: Why do carboxylic acids form dimers in non-polar solvents?
+  options:
+  - To increase molecular weight
+  - To form strong hydrogen bonds between two molecules
+  - To increase solubility
+  - To undergo esterification
+  correct_answer: To form strong hydrogen bonds between two molecules
+  explanation: "Carboxylic acids form dimers in non-polar solvents through strong hydrogen bonding between two molecules. Each molecule acts as both hydrogen bond donor (through O-H) and acceptor (through C=O), creating a cyclic dimer with two hydrogen bonds. This dimeric structure is very stable with a hydrogen bond energy of ~30 kJ/mol per bond. In the dimer: R-COOH···HOOC-R, the two carboxyl groups are held together in a planar eight-membered ring. This dimerization explains why carboxylic acids have higher boiling points than expected and appear to have double their molecular weight in vapor phase."
+  require_pass: true

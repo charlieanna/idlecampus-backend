@@ -1,0 +1,84 @@
+slug: docker-network-inspect
+title: Docker Network Inspect
+difficulty: medium
+sequence_order: 3
+estimated_minutes: 2
+key_concepts:
+- networking
+- docker-network
+- inspection
+- debugging
+prerequisites: []
+content_md: '# Docker Network Inspect 🚀
+
+
+  View detailed network configuration and connected containers
+
+
+  ## Syntax/Command
+
+
+  ```bash
+
+  docker network inspect my-network
+
+  ```
+
+
+  ## Example
+
+
+  ```bash
+
+  docker network inspect --format="{{.IPAM.Config}}" my-network
+
+  ```
+
+
+  ## Key Points
+
+
+  - Inspect network: docker network inspect <name>
+
+
+  - Format output: --format="{{.Field}}"'
+exercises:
+- type: terminal
+  problem_statement: Inspect the network named 'my-network' to view its detailed configuration including subnet, gateway, and connected containers
+  expected_output: JSON output with network details including IPAM config, driver, and attached containers
+  language: bash
+  starter_code: "# Inspect network details\n"
+  sequence_order: 1
+  command: docker network inspect my-network
+  description: View network configuration and connected containers
+  hints:
+  - 'Inspect network: docker network inspect <name>'
+  - 'Format output: --format="{{.Field}}"'
+  validation:
+    must_not_include:
+    - Error
+    - 'panic:'
+  timeout_sec: 60
+  require_pass: true
+- type: sandbox
+  sequence_order: 99
+  hints:
+  - Run under CPU pressure to surface leaks or races
+  - Keep commands idempotent in CI
+  validation:
+    must_not_include:
+    - Error
+    - 'panic:'
+  timeout_sec: 60
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What information does docker network inspect provide?
+  options:
+  - Comprehensive network details including configuration, subnet, gateway, driver, and all connected containers
+  - Only the names of containers connected to the network
+  - Only the IP addresses assigned to containers
+  - Only the network driver type
+  correct_answer: Comprehensive network details including configuration, subnet, gateway, driver, and all connected containers
+  explanation: "docker network inspect provides detailed JSON output showing the complete network configuration: driver type, IPAM settings (subnet, gateway, IP range), network options, labels, and all containers connected to the network with their IP addresses and MAC addresses. It's essential for debugging network issues."
+  require_pass: true

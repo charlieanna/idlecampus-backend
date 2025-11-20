@@ -1,0 +1,58 @@
+slug: molefraction-practice
+title: mole_fraction — Practice
+difficulty: easy
+sequence_order: 9
+estimated_minutes: 2
+key_concepts:
+- mole_fraction
+prerequisites: []
+content_md: '# mole_fraction — Practice 🚀
+
+
+  Total moles = 5. X_ethanol = 1/5 = 0.2
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: A solution contains 1 mol ethanol and 4 mol water. What is the mole fraction of ethanol?
+  options:
+  - '0.2'
+  - '0.5'
+  - '0.8'
+  - '0.25'
+  correct_answer: '0.2'
+  explanation: "Mole fraction of ethanol = moles of ethanol / total moles. Total moles = 1 + 4 = 5. X_ethanol = 1/5 = 0.2. Mole fraction is a dimensionless quantity (no units) and the sum of mole fractions of all components equals 1. Here, X_ethanol + X_water = 0.2 + 0.8 = 1. Mole fraction is temperature-independent and is used in Raoult's law and other solution property calculations."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: 'The sum of mole fractions of all components in a solution is:'
+  options:
+  - '1'
+  - '0'
+  - '100'
+  - Depends on concentration
+  correct_answer: '1'
+  explanation: "By definition, the sum of mole fractions of all components in a solution always equals 1 (or 100%). This is because X_i = n_i / n_total, and Σ X_i = (n_1 + n_2 + ... + n_k) / n_total = n_total / n_total = 1. For a two-component solution: X_A + X_B = 1, so X_B = 1 - X_A. This property makes mole fraction convenient for calculations and it's independent of temperature, pressure, and the amount of solution."
+  require_pass: false
+- type: mcq
+  sequence_order: 3
+  question: 'Mole fraction is preferred over molarity for Raoult\'s law because:'
+  options:
+  - Mole fraction is temperature-independent
+  - Mole fraction is easier to measure
+  - Molarity gives more accurate results
+  - Mole fraction depends on volume
+  correct_answer: Mole fraction is temperature-independent
+  explanation: "Mole fraction is temperature-independent because it's a ratio of moles (which don't change with temperature). Molarity depends on volume, which expands or contracts with temperature. Raoult's law (P = X × P°) relates vapor pressure to composition, and since vapor pressure itself is temperature-dependent, using a temperature-independent concentration unit (mole fraction) avoids complications. This makes mole fraction ideal for thermodynamic calculations involving vapor-liquid equilibria."
+  require_pass: false

@@ -1,0 +1,139 @@
+slug: lesson-2
+title: Lesson 2
+difficulty: easy
+sequence_order: 2
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# CAP Theorem and Consistency\n\n    The\
+  \ **CAP theorem** states that a distributed system can only guarantee **two out\
+  \ of three** properties:\n\n    ## The Three Properties\n\n    ### C = Consistency\n\
+  \    **All nodes see the same data at the same time**\n\n    ```\n    User writes:\
+  \ balance = $100\n    User reads from ANY node: balance = $100\n    ```\n\n    Every\
+  \ read receives the most recent write.\n\n    ### A = Availability\n    **Every\
+  \ request receives a response (success or failure)**\n\n    ```\n    User makes\
+  \ request → Always gets a response\n    (Even if some nodes are down)\n    ```\n\
+  \n    System continues to operate despite failures.\n\n    ### P = Partition Tolerance\n\
+  \    **System continues despite network partitions**\n\n    ```\n    Network split:\
+  \ [Node1, Node2] | [Node3, Node4]\n    System still operates on both sides\n   \
+  \ ```\n\n    System handles arbitrary network failures.\n\n    ## Why You Can't\
+  \ Have All Three\n\n    **During a network partition, you must choose:**\n\n   \
+  \ ### CP (Consistency + Partition Tolerance)\n    **Sacrifice Availability**\n\n\
+  \    ```\n    Network partition detected\n    → Reject writes until partition heals\n\
+  \    → Ensures all nodes have consistent data\n    → But some requests fail (unavailable)\n\
+  \    ```\n\n    **Examples:** Banking systems, inventory management\n\n    ### AP\
+  \ (Availability + Partition Tolerance)\n    **Sacrifice Consistency**\n\n    ```\n\
+  \    Network partition detected\n    → Accept writes on both sides\n    → All requests\
+  \ succeed (available)\n    → But data may diverge (inconsistent)\n    → Reconcile\
+  \ conflicts later\n    ```\n\n    **Examples:** Social media feeds, DNS, shopping\
+  \ carts\n\n    ### CA (Consistency + Availability)\n    **Not possible in distributed\
+  \ systems!**\n\n    Network partitions will happen, so you must be partition tolerant.\n\
+  \n    ## Real-World Systems\n\n    ### CP Systems\n\n    **MongoDB (with default\
+  \ settings)**\n    ```javascript\n    // Write with majority concern\n    db.users.insert(\n\
+  \      { name: \"Alice\", balance: 100 },\n      { writeConcern: { w: \"majority\"\
+  \ } }\n    );\n    // Blocks until majority of replicas confirm\n    // If partition:\
+  \ write fails (CP)\n    ```\n\n    **HBase, Redis Cluster**\n\n    **When to use:**\n\
+  \    - Financial transactions\n    - Inventory management\n    - Ticket booking\n\
+  \    - Seat reservations\n\n    ### AP Systems\n\n    **Cassandra**\n    ```sql\n\
+  \    -- Write with eventual consistency\n    INSERT INTO users (id, name, balance)\n\
+  \    VALUES (1, 'Alice', 100);\n    -- Returns immediately, replicates async\n \
+  \   -- If partition: writes succeed on available nodes (AP)\n    ```\n\n    **DynamoDB,\
+  \ Riak, CouchDB**\n\n    **When to use:**\n    - Social media feeds\n    - Analytics\n\
+  \    - Logging\n    - Shopping carts\n    - DNS\n\n    ## Consistency Models\n\n\
+  \    ### 1. Strong Consistency\n    **All nodes show same data at same time**\n\n\
+  \    ```python\n    # Write\n    db.write('key', 'value1')\n\n    # Immediate read\
+  \ from ANY node\n    db.read('key')  # Always returns 'value1'\n    ```\n\n    ✅\
+  \ Simple to reason about\n    ❌ Higher latency, lower availability\n\n    ### 2.\
+  \ Eventual Consistency\n    **All nodes will eventually have same data**\n\n   \
+  \ ```python\n    # Write to Node1\n    node1.write('key', 'value1')\n\n    # Read\
+  \ from Node2 (immediately)\n    node2.read('key')  # Might return old value or 'value1'\n\
+  \n    # Read from Node2 (after propagation)\n    time.sleep(0.1)\n    node2.read('key')\
+  \  # Returns 'value1'\n    ```\n\n    ✅ Lower latency, higher availability\n   \
+  \ ❌ Temporary inconsistencies\n\n    **Real example: Facebook**\n    ```\n    User\
+  \ posts status update\n    → Writes to primary datacenter\n    → Eventually propagates\
+  \ to global replicas\n    → Different users might see update at different times\n\
+  \    ```\n\n    ### 3. Causal Consistency\n    **Causally related operations are\
+  \ seen in order**\n\n    ```python\n    # User A posts comment\n    post_comment(\"\
+  Great post!\")  # Event 1\n\n    # User B replies to comment\n    reply_comment(\"\
+  Thanks!\")     # Event 2 (depends on Event 1)\n\n    # All users see Event 1 before\
+  \ Event 2\n    # But unrelated events may appear in any order\n    ```\n\n    ###\
+  \ 4. Read-After-Write Consistency\n    **User sees their own writes immediately**\n\
+  \n    ```python\n    # User updates profile\n    user.update(name=\"Alice\")\n\n\
+  \    # User immediately views profile\n    user.get()  # Guaranteed to see \"Alice\"\
+  \n\n    # Other users may see old value temporarily\n    ```\n\n    ## Quorum Reads\
+  \ and Writes\n\n    **Ensure consistency by reading/writing to majority of nodes**\n\
+  \n    ### Configuration\n\n    ```\n    N = Total replicas (e.g., 5)\n    W = Write\
+  \ quorum (e.g., 3)\n    R = Read quorum (e.g., 3)\n    ```\n\n    **Strong consistency\
+  \ when: W + R > N**\n\n    ```\n    N = 5 replicas\n    W = 3 (write to 3 nodes)\n\
+  \    R = 3 (read from 3 nodes)\n    W + R = 6 > N = 5 ✓\n\n    Guaranteed to read\
+  \ at least one node with latest write!\n    ```\n\n    ### Example: Cassandra\n\n\
+  \    ```sql\n    -- Write with quorum\n    INSERT INTO users (id, name) VALUES (1,\
+  \ 'Alice')\n    USING CONSISTENCY QUORUM;\n\n    -- Read with quorum\n    SELECT\
+  \ * FROM users WHERE id = 1\n    USING CONSISTENCY QUORUM;\n    ```\n\n    **Tradeoffs:**\n\
+  \n    | Configuration | Consistency | Availability | Latency |\n    |--------------|-------------|--------------|---------|\n\
+  \    | W=1, R=1 | Weak | High | Low |\n    | W=QUORUM, R=QUORUM | Strong | Medium\
+  \ | Medium |\n    | W=ALL, R=1 | Strong reads | Low writes | High writes |\n\n \
+  \   ## Conflict Resolution\n\n    ### Last Write Wins (LWW)\n\n    ```python\n \
+  \   # Conflict: Two writes to same key\n    Node1: write('user:1:name', 'Alice',\
+  \ timestamp=100)\n    Node2: write('user:1:name', 'Alicia', timestamp=101)\n\n \
+  \   # Resolution: Keep latest timestamp\n    Final value: 'Alicia' (timestamp 101)\n\
+  \    ```\n\n    ❌ **Problem:** Clock skew can cause issues\n    ✅ **Simple and predictable**\n\
+  \n    ### Vector Clocks\n\n    ```python\n    # Track causality with vector clocks\n\
+  \    Version 1: {server1: 1, server2: 0} → name=\"Alice\"\n    Version 2: {server1:\
+  \ 1, server2: 1} → name=\"Alicia\"\n\n    # Version 2 happened after Version 1 (causally)\n\
+  \    # Keep Version 2\n    ```\n\n    ### Application-Level Resolution\n\n    ```python\n\
+  \    # Shopping cart example\n    User adds from Node1: cart = [item1, item2]\n\
+  \    User adds from Node2: cart = [item3]\n\n    # Conflict!\n    # Resolution:\
+  \ Merge carts\n    Final cart = [item1, item2, item3]\n    ```\n\n    ## ACID vs\
+  \ BASE\n\n    ### ACID (Traditional Databases)\n\n    - **Atomicity**: All or nothing\n\
+  \    - **Consistency**: Valid state always\n    - **Isolation**: Transactions don't\
+  \ interfere\n    - **Durability**: Committed data persists\n\n    ```sql\n    BEGIN\
+  \ TRANSACTION;\n    UPDATE accounts SET balance = balance - 100 WHERE id = 1;\n\
+  \    UPDATE accounts SET balance = balance + 100 WHERE id = 2;\n    COMMIT;  --\
+  \ Both updates or neither\n    ```\n\n    ### BASE (Distributed Systems)\n\n   \
+  \ - **Basically Available**: System available most of the time\n    - **Soft state**:\
+  \ State may change over time (eventual consistency)\n    - **Eventually consistent**:\
+  \ Will become consistent given enough time\n\n    ```python\n    # BASE example:\
+  \ Shopping cart\n    add_to_cart(user_id, item)  # Succeeds immediately\n    # Cart\
+  \ replicated eventually to all nodes\n    # Conflicts merged later\n    ```\n\n\
+  \    ## Practical Decisions\n\n    ### E-commerce System\n\n    **Product Catalog\
+  \ (AP)**\n    ```\n    - Eventual consistency OK\n    - Availability critical (can't\
+  \ lose sales)\n    - Temporary stale data acceptable\n    → Use Cassandra or DynamoDB\n\
+  \    ```\n\n    **Inventory (CP)**\n    ```\n    - Strong consistency required\n\
+  \    - Can't oversell items\n    - Brief unavailability acceptable\n    → Use relational\
+  \ DB with proper locking\n    ```\n\n    **Shopping Cart (AP)**\n    ```\n    -\
+  \ Eventual consistency OK\n    - Must remain available\n    - Merge conflicts (combine\
+  \ items)\n    → Use DynamoDB or Cassandra\n    ```\n\n    **Orders/Payments (CP)**\n\
+  \    ```\n    - Strong consistency critical\n    - No duplicate charges\n    - ACID\
+  \ transactions needed\n    → Use PostgreSQL or MySQL\n    ```\n\n    ## Best Practices\n\
+  \n    1. **Choose based on business requirements**\n       - Critical data = CP\
+  \ (consistency)\n       - User-facing = AP (availability)\n\n    2. **Hybrid approach**\n\
+  \       - Different subsystems can make different tradeoffs\n       - Use both CP\
+  \ and AP systems\n\n    3. **Design for partition tolerance**\n       - Network\
+  \ failures will happen\n       - Plan for split-brain scenarios\n\n    4. **Monitor\
+  \ and measure**\n       - Track consistency lag\n       - Measure availability SLAs\n\
+  \n    **Next**: We'll explore load balancing strategies and patterns."
+exercises: []
+exercises:
+  - type: mcq
+    sequence_order: 1
+    question: "What is the difference between vertical scaling and horizontal scaling?"
+    options:
+      - "They are the same thing"
+      - "Vertical scaling adds more power to existing machines; horizontal scaling adds more machines"
+      - "Vertical scaling is always better"
+      - "Horizontal scaling is only for databases"
+    correct_answer: "Vertical scaling adds more power to existing machines; horizontal scaling adds more machines"
+    explanation: "Vertical scaling (scale up) means adding more resources (CPU, RAM, storage) to an existing machine. Horizontal scaling (scale out) means adding more machines to your pool of resources. Vertical scaling: easier to implement, but has hardware limits and single point of failure. Horizontal scaling: harder to implement (need load balancers, distributed systems), but provides better fault tolerance and theoretically unlimited scaling. Most modern systems use horizontal scaling because it's more cost-effective and resilient. Example: Instagram handles billions of requests through horizontal scaling with thousands of servers, not one super-powerful machine."
+    require_pass: true
+  - type: mcq
+    sequence_order: 2
+    question: "What is a load balancer and why is it important in system design?"
+    options:
+      - "A tool to balance your database tables"
+      - "A component that distributes incoming network traffic across multiple servers"
+      - "A testing framework"
+      - "A data compression algorithm"
+    correct_answer: "A component that distributes incoming network traffic across multiple servers"
+    explanation: "A load balancer distributes incoming requests across multiple servers to ensure no single server becomes overwhelmed. Benefits: improved availability (if one server fails, others handle requests), better performance (requests distributed evenly), and easier scaling (add/remove servers dynamically). Common algorithms: Round Robin (sequential distribution), Least Connections (send to server with fewest active connections), IP Hash (same client always goes to same server). Load balancers can operate at different layers: Layer 4 (transport layer, fast but less intelligent) or Layer 7 (application layer, can route based on content). Examples: AWS ELB, NGINX, HAProxy."
+    require_pass: true

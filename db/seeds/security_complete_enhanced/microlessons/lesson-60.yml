@@ -1,0 +1,29 @@
+slug: lesson-60
+title: Lesson 60
+sequence_order: 60
+estimated_minutes: 2
+difficulty: easy
+content_md: "# Microlesson \U0001F680\n\n# Security Contexts and Pod Security\n\n\
+  \    - runAsUser, fsGroup, readOnlyRootFilesystem\n    - Capabilities and privilege\
+  \ escalation\n    - Overview of Pod Security standards"
+exercises:
+- type: mcq
+  slug: lesson-60-mcq
+  sequence_order: 1
+  question: What is the main focus of this lesson on Lesson 60?
+  options:
+  - Understanding core concepts and practical applications related to Lesson 60
+  - Only theoretical knowledge without application
+  - Memorizing definitions without context
+  - Learning unrelated peripheral topics
+  correct_answer_index: 0
+  explanation: This lesson on Lesson 60 aims to build both conceptual understanding
+    and practical knowledge. Effective learning combines theory with application,
+    allowing you to not only understand concepts but also apply them in real-world
+    contexts. This integrated approach is more valuable than rote memorization or
+    purely theoretical study.
+objectives:
+- Apply least privilege
+- Design policies
+- Harden auth & keys
+next_recommended: []

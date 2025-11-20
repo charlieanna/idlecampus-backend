@@ -1,0 +1,260 @@
+slug: lesson-3
+title: Lesson 3
+difficulty: easy
+sequence_order: 3
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# TDD and Testing Best Practices\n\n    **Test-Driven\
+  \ Development (TDD)** is a software development approach where you write tests before\
+  \ writing the implementation code.\n\n    ## The Red-Green-Refactor Cycle\n\n  \
+  \  ```\n    \U0001F534 RED      →    \U0001F7E2 GREEN    →    \U0001F535 REFACTOR\n\
+  \    Write failing   Make it pass    Improve code\n       test                 \
+  \          quality\n         ↑                               ↓\n         └───────────────────────────────┘\n\
+  \    ```\n\n    ### Step 1: Red - Write a Failing Test\n\n    **Write the smallest\
+  \ test that fails**\n\n    ```javascript\n    // calculator.test.js\n    const Calculator\
+  \ = require('./calculator');\n\n    describe('Calculator', () => {\n      test('adds\
+  \ two numbers', () => {\n        const calc = new Calculator();\n        expect(calc.add(2,\
+  \ 3)).toBe(5);\n      });\n    });\n\n    // Running this test fails because Calculator\
+  \ doesn't exist yet\n    // ❌ ReferenceError: Calculator is not defined\n    ```\n\
+  \n    ### Step 2: Green - Make It Pass\n\n    **Write the minimal code to make the\
+  \ test pass**\n\n    ```javascript\n    // calculator.js\n    class Calculator {\n\
+  \      add(a, b) {\n        return a + b;\n      }\n    }\n\n    module.exports\
+  \ = Calculator;\n\n    // Now the test passes\n    // ✅ Calculator › adds two numbers\
+  \ (3ms)\n    ```\n\n    ### Step 3: Refactor - Improve the Code\n\n    **Improve\
+  \ code quality while keeping tests green**\n\n    ```javascript\n    // No refactoring\
+  \ needed yet (code is simple)\n    // But let's add more functionality...\n\n  \
+  \  test('subtracts two numbers', () => {\n      const calc = new Calculator();\n\
+  \      expect(calc.subtract(5, 3)).toBe(2);\n    });\n\n    // ❌ Test fails - subtract\
+  \ method doesn't exist\n\n    // Add subtract method\n    class Calculator {\n \
+  \     add(a, b) {\n        return a + b;\n      }\n\n      subtract(a, b) {\n  \
+  \      return a - b;\n      }\n    }\n\n    // ✅ Tests pass\n    ```\n\n    ## TDD\
+  \ Example: Building a Shopping Cart\n\n    ### Iteration 1: Add Items\n\n    ```javascript\n\
+  \    // ❌ RED: Write failing test\n    describe('ShoppingCart', () => {\n      test('starts\
+  \ empty', () => {\n        const cart = new ShoppingCart();\n        expect(cart.items).toEqual([]);\n\
+  \      });\n    });\n\n    // \U0001F7E2 GREEN: Minimal implementation\n    class\
+  \ ShoppingCart {\n      constructor() {\n        this.items = [];\n      }\n   \
+  \ }\n\n    // ✅ Test passes\n\n    // ❌ RED: Add another test\n    test('adds item\
+  \ to cart', () => {\n      const cart = new ShoppingCart();\n      cart.addItem({\
+  \ id: 1, name: 'Book', price: 10 });\n      expect(cart.items).toHaveLength(1);\n\
+  \    });\n\n    // \U0001F7E2 GREEN: Implement addItem\n    class ShoppingCart {\n\
+  \      constructor() {\n        this.items = [];\n      }\n\n      addItem(item)\
+  \ {\n        this.items.push(item);\n      }\n    }\n\n    // ✅ Test passes\n  \
+  \  ```\n\n    ### Iteration 2: Calculate Total\n\n    ```javascript\n    // ❌ RED:\
+  \ Test total calculation\n    test('calculates total price', () => {\n      const\
+  \ cart = new ShoppingCart();\n      cart.addItem({ id: 1, name: 'Book', price: 10\
+  \ });\n      cart.addItem({ id: 2, name: 'Pen', price: 5 });\n      expect(cart.total()).toBe(15);\n\
+  \    });\n\n    // \U0001F7E2 GREEN: Implement total\n    class ShoppingCart {\n\
+  \      constructor() {\n        this.items = [];\n      }\n\n      addItem(item)\
+  \ {\n        this.items.push(item);\n      }\n\n      total() {\n        return\
+  \ this.items.reduce((sum, item) => sum + item.price, 0);\n      }\n    }\n\n   \
+  \ // ✅ Test passes\n\n    // \U0001F535 REFACTOR: Add input validation\n    addItem(item)\
+  \ {\n      if (!item || typeof item.price !== 'number') {\n        throw new Error('Invalid\
+  \ item');\n      }\n      this.items.push(item);\n    }\n\n    // Add test for validation\n\
+  \    test('throws error for invalid item', () => {\n      const cart = new ShoppingCart();\n\
+  \      expect(() => cart.addItem(null)).toThrow('Invalid item');\n    });\n\n  \
+  \  // ✅ All tests still pass\n    ```\n\n    ### Iteration 3: Remove Items\n\n \
+  \   ```javascript\n    // ❌ RED: Test removing items\n    test('removes item by\
+  \ id', () => {\n      const cart = new ShoppingCart();\n      cart.addItem({ id:\
+  \ 1, name: 'Book', price: 10 });\n      cart.addItem({ id: 2, name: 'Pen', price:\
+  \ 5 });\n\n      cart.removeItem(1);\n\n      expect(cart.items).toHaveLength(1);\n\
+  \      expect(cart.items[0].id).toBe(2);\n    });\n\n    // \U0001F7E2 GREEN: Implement\
+  \ removeItem\n    class ShoppingCart {\n      // ... previous methods ...\n\n  \
+  \    removeItem(itemId) {\n        this.items = this.items.filter(item => item.id\
+  \ !== itemId);\n      }\n    }\n\n    // ✅ Test passes\n    ```\n\n    ## Benefits\
+  \ of TDD\n\n    ✅ **Better Design**\n    - Forces you to think about interfaces\
+  \ first\n    - Encourages modular, testable code\n    - YAGNI (You Aren't Gonna\
+  \ Need It) - only build what's needed\n\n    ✅ **Documentation**\n    - Tests serve\
+  \ as executable documentation\n    - Shows how to use your code\n\n    ✅ **Confidence**\n\
+  \    - Safe refactoring (tests catch regressions)\n    - Less debugging time\n \
+  \   - Faster feature development (in long run)\n\n    ✅ **Fewer Bugs**\n    - Bugs\
+  \ caught early (cheap to fix)\n    - Edge cases considered upfront\n\n    ## Test\
+  \ Coverage\n\n    **Test coverage measures how much of your code is executed by\
+  \ tests**\n\n    ### Coverage Metrics\n\n    ```javascript\n    // Example function\n\
+  \    function calculateDiscount(price, userType) {\n      if (price < 0) {\n   \
+  \     throw new Error('Invalid price');\n      }\n\n      if (userType === 'VIP')\
+  \ {\n        return price * 0.8; // 20% discount\n      } else if (userType ===\
+  \ 'regular') {\n        return price * 0.95; // 5% discount\n      } else {\n  \
+  \      return price; // No discount\n      }\n    }\n    ```\n\n    **Coverage types:**\n\
+  \n    1. **Line Coverage**: % of lines executed\n    ```javascript\n    // Test\
+  \ 1: covers lines 2-3\n    test('throws error for negative price', () => {\n   \
+  \   expect(() => calculateDiscount(-10, 'regular')).toThrow();\n    });\n\n    //\
+  \ Test 2: covers lines 6-7\n    test('applies VIP discount', () => {\n      expect(calculateDiscount(100,\
+  \ 'VIP')).toBe(80);\n    });\n\n    // Line coverage: 6/11 lines = 55%\n    ```\n\
+  \n    2. **Branch Coverage**: % of decision branches taken\n    ```javascript\n\
+  \    // Need tests for all branches:\n    // - price < 0 (true)\n    // - userType\
+  \ === 'VIP' (true)\n    // - userType === 'regular' (true)\n    // - else branch\
+  \ (default)\n\n    test('handles unknown user type', () => {\n      expect(calculateDiscount(100,\
+  \ 'guest')).toBe(100);\n    });\n\n    // Branch coverage: 4/4 branches = 100%\n\
+  \    ```\n\n    3. **Function Coverage**: % of functions called\n\n    4. **Statement\
+  \ Coverage**: % of statements executed\n\n    ### Measuring Coverage\n\n    **Jest\
+  \ (JavaScript):**\n    ```bash\n    npm test -- --coverage\n\n    # Output:\n  \
+  \  -------------------|---------|----------|---------|---------|\n    File     \
+  \          | % Stmts | % Branch | % Funcs | % Lines |\n    -------------------|---------|----------|---------|---------|\n\
+  \    calculator.js      |     100 |      100 |     100 |     100 |\n    shopping-cart.js\
+  \   |    87.5 |       75 |     100 |    87.5 |\n    -------------------|---------|----------|---------|---------|\n\
+  \    ```\n\n    **Pytest (Python):**\n    ```bash\n    pytest --cov=src --cov-report=html\n\
+  \n    # Generates HTML report showing uncovered lines\n    ```\n\n    ### What Coverage\
+  \ to Aim For?\n\n    **General guidelines:**\n    - **80-90% coverage**: Good target\
+  \ for most projects\n    - **100% coverage**: Rarely worth the effort\n    - **<\
+  \ 70% coverage**: Probably insufficient\n\n    **Focus on:**\n    ✅ Business logic\
+  \ (critical code)\n    ✅ Complex algorithms\n    ✅ Error handling\n    ✅ Edge cases\n\
+  \n    **Don't obsess over:**\n    ❌ Trivial getters/setters\n    ❌ Third-party library\
+  \ wrappers\n    ❌ Generated code\n    ❌ Configuration files\n\n    ```javascript\n\
+  \    // ❌ Don't waste time testing this\n    class User {\n      getName() {\n \
+  \       return this.name;\n      }\n\n      setName(name) {\n        this.name =\
+  \ name;\n      }\n    }\n\n    // ✅ Focus on this instead\n    class PaymentProcessor\
+  \ {\n      processPayment(amount, card) {\n        // Complex business logic\n \
+  \       // Multiple edge cases\n        // Needs thorough testing!\n      }\n  \
+  \  }\n    ```\n\n    ## Testing Anti-Patterns\n\n    ### 1. Testing Implementation\
+  \ Details\n\n    ```javascript\n    // ❌ BAD: Testing internal implementation\n\
+  \    test('uses array to store items', () => {\n      const cart = new ShoppingCart();\n\
+  \      expect(Array.isArray(cart.items)).toBe(true);\n    });\n\n    // ✅ GOOD:\
+  \ Testing behavior\n    test('stores added items', () => {\n      const cart = new\
+  \ ShoppingCart();\n      cart.addItem({ id: 1, name: 'Book', price: 10 });\n   \
+  \   expect(cart.getItems()).toContainEqual({ id: 1, name: 'Book', price: 10 });\n\
+  \    });\n    ```\n\n    ### 2. Fragile Tests (Change Detector Tests)\n\n    ```javascript\n\
+  \    // ❌ BAD: Breaks on any implementation change\n    test('cart total calculation',\
+  \ () => {\n      const cart = new ShoppingCart();\n      cart.addItem({ id: 1, name:\
+  \ 'Book', price: 10 });\n\n      // Testing internal implementation\n      expect(cart._calculateSubtotal()).toBe(10);\n\
+  \      expect(cart._calculateTax()).toBe(0.8);\n      expect(cart._applyDiscounts()).toBe(0);\n\
+  \      expect(cart.total()).toBe(10.8);\n    });\n\n    // ✅ GOOD: Tests public\
+  \ interface only\n    test('cart calculates total correctly', () => {\n      const\
+  \ cart = new ShoppingCart();\n      cart.addItem({ id: 1, name: 'Book', price: 10\
+  \ });\n      expect(cart.total()).toBe(10.8);\n    });\n    ```\n\n    ### 3. Interdependent\
+  \ Tests\n\n    ```javascript\n    // ❌ BAD: Tests depend on each other\n    describe('User\
+  \ registration', () => {\n      let userId;\n\n      test('creates user', () =>\
+  \ {\n        userId = createUser({ name: 'Alice' });\n        expect(userId).toBeDefined();\n\
+  \      });\n\n      test('retrieves user', () => {\n        const user = getUser(userId);\
+  \ // Depends on previous test!\n        expect(user.name).toBe('Alice');\n     \
+  \ });\n    });\n\n    // ✅ GOOD: Independent tests\n    describe('User registration',\
+  \ () => {\n      test('creates user', () => {\n        const userId = createUser({\
+  \ name: 'Alice' });\n        expect(userId).toBeDefined();\n      });\n\n      test('retrieves\
+  \ user', () => {\n        const userId = createUser({ name: 'Bob' });\n        const\
+  \ user = getUser(userId);\n        expect(user.name).toBe('Bob');\n      });\n \
+  \   });\n    ```\n\n    ### 4. Excessive Mocking\n\n    ```javascript\n    // ❌\
+  \ BAD: Mocking everything\n    test('processes order', () => {\n      const mockInventory\
+  \ = jest.fn().mockReturnValue(true);\n      const mockPayment = jest.fn().mockReturnValue({\
+  \ success: true });\n      const mockShipping = jest.fn().mockReturnValue({ trackingId:\
+  \ '123' });\n      const mockEmail = jest.fn();\n      const mockDatabase = jest.fn();\n\
+  \n      processOrder(mockInventory, mockPayment, mockShipping, mockEmail, mockDatabase);\n\
+  \n      // Test verifies nothing about actual behavior!\n    });\n\n    // ✅ GOOD:\
+  \ Mock only external dependencies\n    test('processes order', () => {\n      const\
+  \ mockPaymentGateway = {\n        charge: jest.fn().mockResolvedValue({ success:\
+  \ true })\n      };\n\n      const result = processOrder({\n        items: [{ id:\
+  \ 1, price: 10 }],\n        paymentGateway: mockPaymentGateway\n      });\n\n  \
+  \    expect(result.success).toBe(true);\n      expect(mockPaymentGateway.charge).toHaveBeenCalledWith(10);\n\
+  \    });\n    ```\n\n    ### 5. Slow Tests\n\n    ```python\n    # ❌ BAD: Slow,\
+  \ unnecessary sleep\n    def test_async_operation():\n        start_operation()\n\
+  \        time.sleep(5)  # Wait for operation to complete\n        assert operation_completed()\n\
+  \n    # ✅ GOOD: Wait for condition\n    def test_async_operation():\n        start_operation()\n\
+  \        wait_until(lambda: operation_completed(), timeout=5)\n        assert operation_completed()\n\
+  \    ```\n\n    ## CI/CD Integration\n\n    ### GitHub Actions Example\n\n    ```yaml\n\
+  \    # .github/workflows/test.yml\n    name: Run Tests\n\n    on:\n      push:\n\
+  \        branches: [ main, develop ]\n      pull_request:\n        branches: [ main\
+  \ ]\n\n    jobs:\n      test:\n        runs-on: ubuntu-latest\n\n        services:\n\
+  \          postgres:\n            image: postgres:15\n            env:\n       \
+  \       POSTGRES_PASSWORD: test\n            options: >-\n              --health-cmd\
+  \ pg_isready\n              --health-interval 10s\n              --health-timeout\
+  \ 5s\n              --health-retries 5\n\n        steps:\n          - uses: actions/checkout@v3\n\
+  \n          - name: Setup Node.js\n            uses: actions/setup-node@v3\n   \
+  \         with:\n              node-version: '18'\n              cache: 'npm'\n\n\
+  \          - name: Install dependencies\n            run: npm ci\n\n          -\
+  \ name: Run linter\n            run: npm run lint\n\n          - name: Run unit\
+  \ tests\n            run: npm test -- --coverage\n\n          - name: Run integration\
+  \ tests\n            run: npm run test:integration\n            env:\n         \
+  \     DATABASE_URL: postgres://postgres:test@localhost:5432/testdb\n\n         \
+  \ - name: Upload coverage\n            uses: codecov/codecov-action@v3\n       \
+  \     with:\n              files: ./coverage/coverage-final.json\n\n          -\
+  \ name: Run E2E tests\n            run: npm run test:e2e\n\n          - name: Archive\
+  \ test results\n            if: failure()\n            uses: actions/upload-artifact@v3\n\
+  \            with:\n              name: test-results\n              path: |\n  \
+  \              coverage/\n                test-results/\n    ```\n\n    ### GitLab\
+  \ CI Example\n\n    ```yaml\n    # .gitlab-ci.yml\n    stages:\n      - lint\n \
+  \     - test\n      - build\n\n    variables:\n      POSTGRES_DB: testdb\n     \
+  \ POSTGRES_USER: postgres\n      POSTGRES_PASSWORD: test\n\n    lint:\n      stage:\
+  \ lint\n      image: node:18\n      script:\n        - npm ci\n        - npm run\
+  \ lint\n\n    unit-tests:\n      stage: test\n      image: node:18\n      script:\n\
+  \        - npm ci\n        - npm test -- --coverage\n      coverage: '/Lines\\s*:\\\
+  s*(\\d+\\.\\d+)%/'\n      artifacts:\n        reports:\n          coverage_report:\n\
+  \            coverage_format: cobertura\n            path: coverage/cobertura-coverage.xml\n\
+  \n    integration-tests:\n      stage: test\n      image: node:18\n      services:\n\
+  \        - postgres:15\n      variables:\n        DATABASE_URL: postgres://postgres:test@postgres:5432/testdb\n\
+  \      script:\n        - npm ci\n        - npm run test:integration\n\n    e2e-tests:\n\
+  \      stage: test\n      image: cypress/browsers:node18.12.0-chrome107\n      script:\n\
+  \        - npm ci\n        - npm run test:e2e\n      artifacts:\n        when: on_failure\n\
+  \        paths:\n          - cypress/screenshots\n          - cypress/videos\n \
+  \   ```\n\n    ### Jenkins Pipeline Example\n\n    ```groovy\n    // Jenkinsfile\n\
+  \    pipeline {\n      agent any\n\n      stages {\n        stage('Install') {\n\
+  \          steps {\n            sh 'npm ci'\n          }\n        }\n\n        stage('Lint')\
+  \ {\n          steps {\n            sh 'npm run lint'\n          }\n        }\n\n\
+  \        stage('Unit Tests') {\n          steps {\n            sh 'npm test -- --coverage'\n\
+  \          }\n          post {\n            always {\n              publishHTML([\n\
+  \                reportDir: 'coverage',\n                reportFiles: 'index.html',\n\
+  \                reportName: 'Coverage Report'\n              ])\n            }\n\
+  \          }\n        }\n\n        stage('Integration Tests') {\n          steps\
+  \ {\n            sh 'docker-compose up -d postgres'\n            sh 'npm run test:integration'\n\
+  \          }\n          post {\n            always {\n              sh 'docker-compose\
+  \ down'\n            }\n          }\n        }\n\n        stage('E2E Tests') {\n\
+  \          steps {\n            sh 'npm run test:e2e'\n          }\n        }\n\
+  \      }\n\n      post {\n        always {\n          junit 'test-results/**/*.xml'\n\
+  \        }\n        success {\n          echo 'All tests passed!'\n        }\n \
+  \       failure {\n          echo 'Tests failed!'\n          mail to: 'team@example.com',\n\
+  \               subject: \"Build Failed: ${env.JOB_NAME} - ${env.BUILD_NUMBER}\"\
+  ,\n               body: \"Check console output at ${env.BUILD_URL}\"\n        }\n\
+  \      }\n    }\n    ```\n\n    ## Testing Best Practices Summary\n\n    ### Do:\n\
+  \    ✅ Write tests first (TDD)\n    ✅ Test behavior, not implementation\n    ✅ Keep\
+  \ tests independent\n    ✅ Use descriptive test names\n    ✅ Follow AAA pattern\n\
+  \    ✅ Aim for 80-90% coverage\n    ✅ Mock external dependencies\n    ✅ Run tests\
+  \ in CI/CD\n    ✅ Keep tests fast\n    ✅ Treat test code like production code\n\n\
+  \    ### Don't:\n    ❌ Test private methods directly\n    ❌ Write interdependent\
+  \ tests\n    ❌ Mock everything\n    ❌ Obsess over 100% coverage\n    ❌ Write slow\
+  \ tests\n    ❌ Skip edge cases\n    ❌ Test third-party libraries\n    ❌ Ignore flaky\
+  \ tests\n    ❌ Write tests after implementation (unless legacy code)\n\n    ## Real-World\
+  \ Example: Testing Checklist\n\n    **Before pushing code:**\n    ```bash\n    #\
+  \ 1. Run tests locally\n    npm test\n\n    # 2. Check coverage\n    npm test --\
+  \ --coverage\n\n    # 3. Run linter\n    npm run lint\n\n    # 4. Run integration\
+  \ tests\n    npm run test:integration\n\n    # 5. Run E2E tests (critical paths)\n\
+  \    npm run test:e2e\n\n    # 6. Push code\n    git push\n\n    # CI will run all\
+  \ tests again and block merge if any fail\n    ```\n\n    **Continuous improvement:**\n\
+  \    - Monitor test execution time (keep under 10 minutes)\n    - Track flaky tests\
+  \ and fix them\n    - Update tests when requirements change\n    - Refactor tests\
+  \ to reduce duplication\n    - Add tests for every bug fix\n\n    **Next steps:**\
+  \ Apply these principles to your own projects. Start with TDD for new features,\
+  \ and gradually add tests to existing code."
+exercises:
+  - type: mcq
+    sequence_order: 1
+    question: "In the TDD Red-Green-Refactor cycle, why is it important to write the minimal code to make the test pass rather than implementing the complete solution immediately?"
+    options:
+      - "To save time"
+      - "To ensure you're driven by tests and avoid over-engineering features that aren't needed"
+      - "To make the code shorter"
+      - "Because complex code is bad"
+    correct_answer: "To ensure you're driven by tests and avoid over-engineering features that aren't needed"
+    explanation: "Writing minimal code to pass tests enforces discipline and prevents over-engineering. It ensures you only build what's actually required by the tests, following YAGNI (You Aren't Gonna Need It). If you implement a complete solution immediately, you might add features or complexity not covered by tests, reducing test effectiveness and potentially introducing untested bugs. The minimal approach also makes it easier to track exactly what code is needed for each requirement. Example: if your test only checks addition, don't implement multiplication yet. This iterative approach builds confidence that every line of code is justified by a test. The Refactor step is where you improve code quality while maintaining the same behavior verified by tests. This cycle of small increments makes it easier to identify which change caused a failure and ensures your test suite actually validates all your code."
+    require_pass: true
+
+  - type: mcq
+    sequence_order: 2
+    question: "What is wrong with testing implementation details instead of behavior?"
+    options:
+      - "Implementation tests are slower"
+      - "Tests become fragile and break when refactoring internal code even though external behavior hasn't changed"
+      - "Implementation tests require more setup"
+      - "Implementation details can't be tested"
+    correct_answer: "Tests become fragile and break when refactoring internal code even though external behavior hasn't changed"
+    explanation: "Testing implementation details creates brittle tests that break during refactoring even when public behavior is unchanged. For example, testing that a shopping cart uses an array internally (expect(Array.isArray(cart.items)).toBe(true)) fails if you change to a Map for better performance, even though the cart still works correctly. This defeats a key benefit of testing - enabling safe refactoring. Good tests verify behavior through the public API: can I add items? Is the total calculated correctly? How the class accomplishes this internally is irrelevant. Implementation tests also couple tests to code structure, making both harder to change. When you refactor, you want tests to confirm behavior is preserved, not to fight against you. Test the what (outcomes), not the how (implementation). This principle extends to avoiding tests of private methods - test them indirectly through public methods that use them."
+    require_pass: true
+
+  - type: mcq
+    sequence_order: 3
+    question: "Why is excessive mocking considered an anti-pattern in testing?"
+    options:
+      - "Mocks make tests run slower"
+      - "Too many mocks mean you're not testing real integration and behavior, just that mocks are called correctly"
+      - "Mocks are difficult to set up"
+      - "Mocks don't work with async code"
+    correct_answer: "Too many mocks mean you're not testing real integration and behavior, just that mocks are called correctly"
+    explanation: "Excessive mocking replaces so much real code that tests verify mock interactions rather than actual behavior. If you mock the inventory system, payment gateway, shipping service, email service, and database, your test only proves you called mocks correctly - it doesn't verify the system actually works. Tests become tightly coupled to implementation details rather than verifying business logic. Balance is key: mock external dependencies (third-party APIs, databases, file systems) that are slow, unreliable, or unavailable in test environments, but don't mock your own application logic. For example, mock the payment gateway API but not your PaymentProcessor class that uses it. Use real objects for fast, deterministic components. This approach catches integration bugs while keeping tests fast and maintainable. Over-mocking also makes refactoring harder since you must update mocks when changing how components interact, even if external behavior is unchanged."
+    require_pass: true

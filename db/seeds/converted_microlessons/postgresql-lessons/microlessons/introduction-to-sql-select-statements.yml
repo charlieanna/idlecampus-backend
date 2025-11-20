@@ -1,0 +1,35 @@
+slug: introduction-to-sql-select-statements
+title: Introduction to SQL SELECT Statements
+difficulty: easy
+sequence_order: 4
+estimated_minutes: 2
+key_concepts:
+- SELECT statement
+- WHERE clause
+- Filtering data
+- SQL operators
+prerequisites: []
+content_md: "# Introduction to SQL SELECT Statements \U0001F680\n\n# Introduction\
+  \ to SQL SELECT Statements\n\n      SQL (Structured Query Language) is the standard\
+  \ language for interacting with relational databases. The most fundamental SQL operation\
+  \ is the **SELECT** statement, which allows you to retrieve data from database tables.\n\
+  \n      ## Basic SELECT Syntax\n\n      The simplest form of a SELECT statement\
+  \ is:\n\n      ```sql\n      SELECT column1, column2, ...\n      FROM table_name;\n\
+  \      ```\n\n      To select all columns from a table:\n\n      ```sql\n      SELECT\
+  \ * FROM table_name;\n      ```\n\n      ## The WHERE Clause\n\n      The WHERE\
+  \ clause is used to filter records based on specific conditions:\n\n      ```sql\n\
+  \      SELECT * FROM users\n      WHERE age > 25;\n      ```\n\n      ### Common\
+  \ WHERE Operators\n\n      - `=` : Equal to\n      - `>` : Greater than\n      -\
+  \ `<` : Less than\n      - `>=` : Greater than or equal to\n      - `<=` : Less\
+  \ than or equal to\n      - `!=` or `<>` : Not equal to\n      - `LIKE` : Pattern\
+  \ matching\n      - `IN` : Match any value in a list\n      - `BETWEEN` : Within\
+  \ a range\n\n      ## Examples\n\n      **Select specific columns:**\n      ```sql\n\
+  \      SELECT name, email FROM users;\n      ```\n\n      **Filter by condition:**\n\
+  \      ```sql\n      SELECT name, city FROM users\n      WHERE city = 'New York';\n\
+  \      ```\n\n      **Multiple conditions:**\n      ```sql\n      SELECT * FROM\
+  \ users\n      WHERE age > 30 AND city = 'Boston';\n      ```\n\n      ## Practice\
+  \ Time!\n\n      Now you're ready to practice SELECT statements with the hands-on\
+  \ lab. You'll work with a real users table and write queries to retrieve specific\
+  \ data.\n\n## Key Points\n\n- SELECT statement\n\n- WHERE clause\n\n- Filtering\
+  \ data"
+exercises: []

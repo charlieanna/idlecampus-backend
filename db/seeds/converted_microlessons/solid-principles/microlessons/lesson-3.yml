@@ -1,0 +1,244 @@
+slug: lesson-3
+title: Lesson 3
+difficulty: easy
+sequence_order: 3
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Structural Patterns\n\n    **Structural\
+  \ patterns** explain how to assemble objects and classes into larger structures\
+  \ while keeping these structures flexible and efficient.\n\n    ---\n\n    ## 1.\
+  \ Adapter Pattern\n\n    **Convert the interface of a class into another interface\
+  \ clients expect.**\n\n    Also known as: Wrapper\n\n    ### Use Cases\n    - Integrating\
+  \ third-party libraries\n    - Legacy code integration\n    - API compatibility\
+  \ layers\n    - Payment gateway integration\n\n    ### ❌ BEFORE (Incompatible Interfaces)\n\
+  \n    ```python\n    # Old payment system\n    class OldPaymentSystem:\n       \
+  \ def process_old_payment(self, amount):\n            print(f\"Processing payment\
+  \ via old system: ${amount}\")\n\n    # New payment system with different interface\n\
+  \    class NewPaymentSystem:\n        def make_payment(self, payment_info):\n  \
+  \          print(f\"Processing payment via new system: ${payment_info['amount']}\"\
+  )\n\n    # Client code expects this interface\n    def checkout(payment_processor):\n\
+  \        payment_processor.pay(100)  # Error! Neither system has pay() method\n\n\
+  \    # Problem: Can't use old or new system without changing client code\n    ```\n\
+  \n    ### ✅ AFTER (Good - Adapter Pattern)\n\n    ```python\n    from abc import\
+  \ ABC, abstractmethod\n\n    # Target interface (what client expects)\n    class\
+  \ PaymentProcessor(ABC):\n        @abstractmethod\n        def pay(self, amount):\n\
+  \            pass\n\n    # Adaptee 1: Old system\n    class OldPaymentSystem:\n\
+  \        def process_old_payment(self, amount):\n            print(f\"Processing\
+  \ via old system: ${amount}\")\n\n    # Adapter 1: Wraps old system\n    class OldPaymentAdapter(PaymentProcessor):\n\
+  \        def __init__(self):\n            self.old_system = OldPaymentSystem()\n\
+  \n        def pay(self, amount):\n            self.old_system.process_old_payment(amount)\n\
+  \n    # Adaptee 2: New system\n    class NewPaymentSystem:\n        def make_payment(self,\
+  \ payment_info):\n            print(f\"Processing via new system: ${payment_info['amount']}\"\
+  )\n\n    # Adapter 2: Wraps new system\n    class NewPaymentAdapter(PaymentProcessor):\n\
+  \        def __init__(self):\n            self.new_system = NewPaymentSystem()\n\
+  \n        def pay(self, amount):\n            payment_info = {'amount': amount,\
+  \ 'currency': 'USD'}\n            self.new_system.make_payment(payment_info)\n\n\
+  \    # Client code works with any adapter\n    def checkout(payment_processor: PaymentProcessor,\
+  \ amount):\n        payment_processor.pay(amount)\n\n    # Usage:\n    checkout(OldPaymentAdapter(),\
+  \ 100)  # Works!\n    checkout(NewPaymentAdapter(), 200)  # Works!\n    ```\n\n\
+  \    ### Real-World Example: Data Format Adapter\n\n    ```python\n    # JSON API\n\
+  \    class JSONDataProvider:\n        def get_json_data(self):\n            return\
+  \ '{\"name\": \"Alice\", \"age\": 30}'\n\n    # XML API\n    class XMLDataProvider:\n\
+  \        def get_xml_data(self):\n            return '<person><name>Bob</name><age>25</age></person>'\n\
+  \n    # Target interface\n    class DataProvider(ABC):\n        @abstractmethod\n\
+  \        def get_data(self):\n            pass\n\n    # Adapters\n    class JSONAdapter(DataProvider):\n\
+  \        def __init__(self, json_provider):\n            self.provider = json_provider\n\
+  \n        def get_data(self):\n            import json\n            json_str = self.provider.get_json_data()\n\
+  \            return json.loads(json_str)\n\n    class XMLAdapter(DataProvider):\n\
+  \        def __init__(self, xml_provider):\n            self.provider = xml_provider\n\
+  \n        def get_data(self):\n            import xml.etree.ElementTree as ET\n\
+  \            xml_str = self.provider.get_xml_data()\n            root = ET.fromstring(xml_str)\n\
+  \            return {\n                'name': root.find('name').text,\n       \
+  \         'age': int(root.find('age').text)\n            }\n\n    # Usage:\n   \
+  \ providers = [\n        JSONAdapter(JSONDataProvider()),\n        XMLAdapter(XMLDataProvider())\n\
+  \    ]\n\n    for provider in providers:\n        data = provider.get_data()\n \
+  \       print(f\"Name: {data['name']}, Age: {data['age']}\")\n    ```\n\n    ---\n\
+  \n    ## 2. Decorator Pattern\n\n    **Attach additional responsibilities to an\
+  \ object dynamically.**\n\n    ### Use Cases\n    - Adding features to objects without\
+  \ inheritance\n    - Coffee shop ordering (size, milk, sugar, whipped cream)\n \
+  \   - Text formatting (bold, italic, underline)\n    - Middleware/interceptors\n\
+  \    - Logging, caching, validation\n\n    ### ❌ BEFORE (Bad - Inheritance Explosion)\n\
+  \n    ```python\n    # Base coffee\n    class Coffee:\n        def cost(self):\n\
+  \            return 5\n\n    # Problem: Need class for every combination!\n    class\
+  \ CoffeeWithMilk(Coffee):\n        def cost(self):\n            return 5 + 1\n\n\
+  \    class CoffeeWithSugar(Coffee):\n        def cost(self):\n            return\
+  \ 5 + 0.5\n\n    class CoffeeWithMilkAndSugar(Coffee):\n        def cost(self):\n\
+  \            return 5 + 1 + 0.5\n\n    class CoffeeWithMilkSugarAndWhippedCream(Coffee):\n\
+  \        def cost(self):\n            return 5 + 1 + 0.5 + 2\n\n    # 3 toppings\
+  \ = 8 classes, 4 toppings = 16 classes, 5 = 32, etc.\n    # Combinatorial explosion!\n\
+  \    ```\n\n    ### ✅ AFTER (Good - Decorator Pattern)\n\n    ```python\n    from\
+  \ abc import ABC, abstractmethod\n\n    # Component interface\n    class Coffee(ABC):\n\
+  \        @abstractmethod\n        def cost(self):\n            pass\n\n        @abstractmethod\n\
+  \        def description(self):\n            pass\n\n    # Concrete component\n\
+  \    class SimpleCoffee(Coffee):\n        def cost(self):\n            return 5\n\
+  \n        def description(self):\n            return \"Simple coffee\"\n\n    #\
+  \ Base decorator\n    class CoffeeDecorator(Coffee):\n        def __init__(self,\
+  \ coffee: Coffee):\n            self._coffee = coffee\n\n        def cost(self):\n\
+  \            return self._coffee.cost()\n\n        def description(self):\n    \
+  \        return self._coffee.description()\n\n    # Concrete decorators\n    class\
+  \ MilkDecorator(CoffeeDecorator):\n        def cost(self):\n            return self._coffee.cost()\
+  \ + 1\n\n        def description(self):\n            return self._coffee.description()\
+  \ + \", milk\"\n\n    class SugarDecorator(CoffeeDecorator):\n        def cost(self):\n\
+  \            return self._coffee.cost() + 0.5\n\n        def description(self):\n\
+  \            return self._coffee.description() + \", sugar\"\n\n    class WhippedCreamDecorator(CoffeeDecorator):\n\
+  \        def cost(self):\n            return self._coffee.cost() + 2\n\n       \
+  \ def description(self):\n            return self._coffee.description() + \", whipped\
+  \ cream\"\n\n    # Usage: Compose decorators dynamically!\n    coffee = SimpleCoffee()\n\
+  \    print(f\"{coffee.description()}: ${coffee.cost()}\")\n    # \"Simple coffee:\
+  \ $5\"\n\n    coffee = MilkDecorator(SimpleCoffee())\n    print(f\"{coffee.description()}:\
+  \ ${coffee.cost()}\")\n    # \"Simple coffee, milk: $6\"\n\n    coffee = WhippedCreamDecorator(SugarDecorator(MilkDecorator(SimpleCoffee())))\n\
+  \    print(f\"{coffee.description()}: ${coffee.cost()}\")\n    # \"Simple coffee,\
+  \ milk, sugar, whipped cream: $8.5\"\n    ```\n\n    ### Python Decorator Functions\n\
+  \n    ```python\n    # Function decorator for logging\n    def log_execution(func):\n\
+  \        def wrapper(*args, **kwargs):\n            print(f\"Executing {func.__name__}\"\
+  )\n            result = func(*args, **kwargs)\n            print(f\"Finished {func.__name__}\"\
+  )\n            return result\n        return wrapper\n\n    # Decorator for timing\n\
+  \    import time\n    def measure_time(func):\n        def wrapper(*args, **kwargs):\n\
+  \            start = time.time()\n            result = func(*args, **kwargs)\n \
+  \           end = time.time()\n            print(f\"{func.__name__} took {end -\
+  \ start:.2f}s\")\n            return result\n        return wrapper\n\n    # Usage:\n\
+  \    @log_execution\n    @measure_time\n    def process_data(data):\n        time.sleep(1)\n\
+  \        return f\"Processed {len(data)} items\"\n\n    result = process_data([1,\
+  \ 2, 3])\n    # Output:\n    # Executing process_data\n    # process_data took 1.00s\n\
+  \    # Finished process_data\n    ```\n\n    ---\n\n    ## 3. Proxy Pattern\n\n\
+  \    **Provide a surrogate or placeholder for another object to control access to\
+  \ it.**\n\n    ### Types of Proxies\n    - **Virtual Proxy**: Lazy initialization\
+  \ (load heavy object on demand)\n    - **Protection Proxy**: Access control (authentication/authorization)\n\
+  \    - **Remote Proxy**: Represent object in different address space\n    - **Caching\
+  \ Proxy**: Cache results of expensive operations\n\n    ### ✅ Virtual Proxy (Lazy\
+  \ Loading)\n\n    ```python\n    from abc import ABC, abstractmethod\n\n    class\
+  \ Image(ABC):\n        @abstractmethod\n        def display(self):\n           \
+  \ pass\n\n    # Real object (heavy)\n    class RealImage(Image):\n        def __init__(self,\
+  \ filename):\n            self.filename = filename\n            self._load_from_disk()\n\
+  \n        def _load_from_disk(self):\n            print(f\"Loading image from disk:\
+  \ {self.filename}\")\n            # Expensive operation\n\n        def display(self):\n\
+  \            print(f\"Displaying image: {self.filename}\")\n\n    # Proxy (lazy\
+  \ loading)\n    class ImageProxy(Image):\n        def __init__(self, filename):\n\
+  \            self.filename = filename\n            self._real_image = None\n\n \
+  \       def display(self):\n            if self._real_image is None:\n         \
+  \       self._real_image = RealImage(self.filename)\n            self._real_image.display()\n\
+  \n    # Usage:\n    image1 = ImageProxy(\"photo1.jpg\")  # Not loaded yet\n    image2\
+  \ = ImageProxy(\"photo2.jpg\")  # Not loaded yet\n\n    image1.display()  # Loads\
+  \ and displays\n    # Loading image from disk: photo1.jpg\n    # Displaying image:\
+  \ photo1.jpg\n\n    image1.display()  # Already loaded, just displays\n    # Displaying\
+  \ image: photo1.jpg\n    ```\n\n    ### Protection Proxy (Access Control)\n\n  \
+  \  ```python\n    class Document:\n        def __init__(self, content):\n      \
+  \      self.content = content\n\n        def read(self):\n            return self.content\n\
+  \n        def write(self, content):\n            self.content = content\n\n    class\
+  \ ProtectedDocument:\n        def __init__(self, document, user_role):\n       \
+  \     self.document = document\n            self.user_role = user_role\n\n     \
+  \   def read(self):\n            return self.document.read()\n\n        def write(self,\
+  \ content):\n            if self.user_role == 'admin':\n                self.document.write(content)\n\
+  \                print(\"Document updated\")\n            else:\n              \
+  \  raise PermissionError(\"Only admins can write\")\n\n    # Usage:\n    doc = Document(\"\
+  Secret data\")\n\n    admin_doc = ProtectedDocument(doc, 'admin')\n    admin_doc.write(\"\
+  New data\")  # Works\n\n    user_doc = ProtectedDocument(doc, 'user')\n    print(user_doc.read())\
+  \  # Works\n    # user_doc.write(\"Hack\")  # PermissionError!\n    ```\n\n    ###\
+  \ Caching Proxy\n\n    ```python\n    class DatabaseQuery:\n        def execute(self,\
+  \ query):\n            print(f\"Executing expensive query: {query}\")\n        \
+  \    # Simulate expensive database query\n            import time\n            time.sleep(1)\n\
+  \            return f\"Results for: {query}\"\n\n    class CachedDatabaseQuery:\n\
+  \        def __init__(self):\n            self.db = DatabaseQuery()\n          \
+  \  self.cache = {}\n\n        def execute(self, query):\n            if query in\
+  \ self.cache:\n                print(f\"Returning cached result for: {query}\")\n\
+  \                return self.cache[query]\n\n            result = self.db.execute(query)\n\
+  \            self.cache[query] = result\n            return result\n\n    # Usage:\n\
+  \    db = CachedDatabaseQuery()\n\n    db.execute(\"SELECT * FROM users\")\n   \
+  \ # Executing expensive query: SELECT * FROM users\n    # (waits 1 second)\n\n \
+  \   db.execute(\"SELECT * FROM users\")\n    # Returning cached result for: SELECT\
+  \ * FROM users\n    # (instant!)\n    ```\n\n    ---\n\n    ## 4. Facade Pattern\n\
+  \n    **Provide a unified interface to a set of interfaces in a subsystem.**\n\n\
+  \    ### Use Cases\n    - Simplifying complex libraries\n    - Home theater systems\
+  \ (TV, sound, lights, DVD)\n    - Computer startup (CPU, memory, hard drive)\n \
+  \   - API wrappers\n\n    ### ❌ BEFORE (Complex Subsystem)\n\n    ```python\n  \
+  \  # Client must interact with many subsystems\n    tv = TV()\n    tv.turn_on()\n\
+  \    tv.set_input(\"HDMI1\")\n\n    sound_system = SoundSystem()\n    sound_system.turn_on()\n\
+  \    sound_system.set_volume(20)\n    sound_system.set_mode(\"surround\")\n\n  \
+  \  dvd_player = DVDPlayer()\n    dvd_player.turn_on()\n    dvd_player.load_disc()\n\
+  \n    lights = Lights()\n    lights.dim(10)\n\n    # Too complex! Many steps to\
+  \ watch a movie\n    ```\n\n    ### ✅ AFTER (Good - Facade Pattern)\n\n    ```python\n\
+  \    # Subsystems\n    class TV:\n        def turn_on(self):\n            print(\"\
+  TV on\")\n\n        def turn_off(self):\n            print(\"TV off\")\n\n     \
+  \   def set_input(self, input_source):\n            print(f\"TV input: {input_source}\"\
+  )\n\n    class SoundSystem:\n        def turn_on(self):\n            print(\"Sound\
+  \ system on\")\n\n        def turn_off(self):\n            print(\"Sound system\
+  \ off\")\n\n        def set_volume(self, level):\n            print(f\"Volume: {level}\"\
+  )\n\n        def set_mode(self, mode):\n            print(f\"Sound mode: {mode}\"\
+  )\n\n    class DVDPlayer:\n        def turn_on(self):\n            print(\"DVD player\
+  \ on\")\n\n        def turn_off(self):\n            print(\"DVD player off\")\n\n\
+  \        def load_disc(self):\n            print(\"Loading disc\")\n\n    class\
+  \ Lights:\n        def dim(self, level):\n            print(f\"Lights dimmed to\
+  \ {level}%\")\n\n        def brighten(self):\n            print(\"Lights brightened\"\
+  )\n\n    # Facade\n    class HomeTheaterFacade:\n        def __init__(self):\n \
+  \           self.tv = TV()\n            self.sound = SoundSystem()\n           \
+  \ self.dvd = DVDPlayer()\n            self.lights = Lights()\n\n        def watch_movie(self):\n\
+  \            print(\"Get ready to watch a movie...\")\n            self.lights.dim(10)\n\
+  \            self.tv.turn_on()\n            self.tv.set_input(\"HDMI1\")\n     \
+  \       self.sound.turn_on()\n            self.sound.set_volume(20)\n          \
+  \  self.sound.set_mode(\"surround\")\n            self.dvd.turn_on()\n         \
+  \   self.dvd.load_disc()\n            print(\"Movie ready!\")\n\n        def end_movie(self):\n\
+  \            print(\"Shutting down theater...\")\n            self.dvd.turn_off()\n\
+  \            self.sound.turn_off()\n            self.tv.turn_off()\n           \
+  \ self.lights.brighten()\n            print(\"Theater shut down\")\n\n    # Usage:\
+  \ Simple!\n    theater = HomeTheaterFacade()\n    theater.watch_movie()\n    # ...watch\
+  \ movie...\n    theater.end_movie()\n    ```\n\n    ---\n\n    ## 5. Composite Pattern\n\
+  \n    **Compose objects into tree structures to represent part-whole hierarchies.**\n\
+  \n    ### Use Cases\n    - File system (files and directories)\n    - UI component\
+  \ trees\n    - Organization hierarchies\n    - Menu systems\n\n    ### ✅ Composite\
+  \ Pattern\n\n    ```python\n    from abc import ABC, abstractmethod\n\n    # Component\n\
+  \    class FileSystemItem(ABC):\n        def __init__(self, name):\n           \
+  \ self.name = name\n\n        @abstractmethod\n        def get_size(self):\n   \
+  \         pass\n\n        @abstractmethod\n        def display(self, indent=0):\n\
+  \            pass\n\n    # Leaf\n    class File(FileSystemItem):\n        def __init__(self,\
+  \ name, size):\n            super().__init__(name)\n            self.size = size\n\
+  \n        def get_size(self):\n            return self.size\n\n        def display(self,\
+  \ indent=0):\n            print(\"  \" * indent + f\"File: {self.name} ({self.size}KB)\"\
+  )\n\n    # Composite\n    class Directory(FileSystemItem):\n        def __init__(self,\
+  \ name):\n            super().__init__(name)\n            self.children = []\n\n\
+  \        def add(self, item):\n            self.children.append(item)\n\n      \
+  \  def remove(self, item):\n            self.children.remove(item)\n\n        def\
+  \ get_size(self):\n            return sum(child.get_size() for child in self.children)\n\
+  \n        def display(self, indent=0):\n            print(\"  \" * indent + f\"\
+  Directory: {self.name}/\")\n            for child in self.children:\n          \
+  \      child.display(indent + 1)\n\n    # Usage:\n    root = Directory(\"root\"\
+  )\n\n    home = Directory(\"home\")\n    home.add(File(\"photo.jpg\", 2048))\n \
+  \   home.add(File(\"document.txt\", 10))\n\n    work = Directory(\"work\")\n   \
+  \ work.add(File(\"report.pdf\", 500))\n    work.add(File(\"data.csv\", 1000))\n\n\
+  \    root.add(home)\n    root.add(work)\n    root.add(File(\"readme.txt\", 5))\n\
+  \n    # Display tree\n    root.display()\n    # Directory: root/\n    #   Directory:\
+  \ home/\n    #     File: photo.jpg (2048KB)\n    #     File: document.txt (10KB)\n\
+  \    #   Directory: work/\n    #     File: report.pdf (500KB)\n    #     File: data.csv\
+  \ (1000KB)\n    #   File: readme.txt (5KB)\n\n    print(f\"Total size: {root.get_size()}KB\"\
+  )\n    # Total size: 3563KB\n    ```\n\n    ---\n\n    ## Pattern Comparison\n\n\
+  \    | Pattern | Purpose | Example |\n    |---------|---------|---------|\n    |\
+  \ **Adapter** | Make incompatible interfaces work together | Payment gateway wrapper\
+  \ |\n    | **Decorator** | Add responsibilities dynamically | Coffee with toppings\
+  \ |\n    | **Proxy** | Control access to object | Image lazy loading |\n    | **Facade**\
+  \ | Simplify complex subsystem | Home theater remote |\n    | **Composite** | Tree\
+  \ structures | File system |\n\n    **Next**: We'll explore behavioral patterns\
+  \ that define communication between objects."
+exercises: []
+exercises:
+  - type: mcq
+    sequence_order: 1
+    question: "What is the main purpose of the Adapter pattern?"
+    options:
+      - "To create new objects"
+      - "To convert the interface of a class into another interface that clients expect"
+      - "To delete objects"
+      - "To make code run faster"
+    correct_answer: "To convert the interface of a class into another interface that clients expect"
+    explanation: "The Adapter pattern (also called Wrapper) allows incompatible interfaces to work together. It's like a power adapter that lets you plug a US device into a European outlet. Common scenarios: integrating third-party libraries with different interfaces, working with legacy code, or making incompatible classes collaborate. For example, if you have a Rectangle class with width/height but need to use it where a Square interface (with only size) is expected, an adapter bridges the gap. The pattern promotes the Single Responsibility Principle by separating interface conversion from business logic."
+    require_pass: true
+  - type: mcq
+    sequence_order: 2
+    question: "What does the Composite pattern allow you to do?"
+    options:
+      - "Treat individual objects and compositions of objects uniformly"
+      - "Create singleton instances"
+      - "Improve performance"
+      - "Encrypt data"
+    correct_answer: "Treat individual objects and compositions of objects uniformly"
+    explanation: "The Composite pattern lets you compose objects into tree structures to represent part-whole hierarchies, and treat individual objects and compositions uniformly. Classic example: a file system where both files and folders implement the same interface—you can get the size of a file or a folder (which recursively gets sizes of all contained items) using the same method. This pattern is perfect for tree structures, hierarchical data, and when you want clients to ignore the difference between compositions and individual objects. GUI frameworks use this extensively (components can contain other components)."
+    require_pass: true

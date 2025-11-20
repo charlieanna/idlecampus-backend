@@ -1,0 +1,76 @@
+slug: reducingpower-practice
+title: reducing_power — Practice
+difficulty: medium
+sequence_order: 8
+estimated_minutes: 2
+key_concepts:
+- reducing_power
+prerequisites: []
+content_md: '# reducing_power — Practice 🚀
+
+
+  In aqueous solution: Li > Na > K > Cs. Lithium is the strongest reducer due to high
+  hydration enthalpy that compensates for its high ionization energy.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: short_answer
+  sequence_order: 1
+  hints:
+  - Re-read the question carefully.
+  - Recall the relevant formula or rule.
+  - Review the explanation once you answer.
+  question: 'Arrange the following alkali metals in order of DECREASING reducing power
+    in aqueous solution: Li, Na, K, Cs'
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: Which alkali metal is the strongest reducing agent in aqueous solution?
+  options:
+  - Lithium
+  - Sodium
+  - Potassium
+  - Cesium
+  require_pass: true
+  correct_answer: Lithium
+  explanation: 'Lithium is the strongest reducing agent among alkali metals in aqueous
+    solution, despite having the highest ionization energy. The reducing power order
+    in aqueous solution is: Li > Na > K > Rb > Cs. This trend seems counterintuitive
+    but is explained by: (1) Hydration enthalpy - Li⁺ has the smallest size and highest
+    charge density, so it has the highest hydration enthalpy (-520 kJ/mol). The large
+    energy released during hydration more than compensates for the high ionization
+    energy. (2) Standard electrode potential: Li⁺/Li has E° = -3.04 V (most negative),
+    making Li the strongest reducer. The overall process is: M(s) → M⁺(g) → M⁺(aq).
+    For Li, the second step (hydration) releases so much energy that the overall
+    process is most favorable. In gaseous state or non-aqueous media, the order reverses.'
+- type: mcq
+  sequence_order: 3
+  question: Why is the reducing power trend different in aqueous solution versus gaseous
+    state?
+  options:
+  - Ionization energy changes in solution
+  - Hydration enthalpy plays a major role in solution
+  - Temperature effects are different
+  - Pressure affects the metal differently
+  require_pass: true
+  correct_answer: Hydration enthalpy plays a major role in solution
+  explanation: 'In aqueous solution, hydration enthalpy plays a crucial role in determining
+    reducing power, which is not present in gaseous state. Reducing power depends
+    on: (1) Gaseous state: M(s) → M⁺(g) + e⁻. Here, only ionization energy matters.
+    Cs has the lowest IE, so Cs > Rb > K > Na > Li (Cs is strongest). (2) Aqueous
+    solution: M(s) → M⁺(aq) + e⁻. This involves two steps: M(s) → M⁺(g) + e⁻ (ionization),
+    then M⁺(g) → M⁺(aq) (hydration). The hydration step releases energy (hydration
+    enthalpy), and this energy is inversely proportional to ionic size. Li⁺ (smallest)
+    has the highest hydration enthalpy (-520 kJ/mol), which more than compensates
+    for its high ionization energy. Therefore, Li becomes the strongest reducer in
+    aqueous solution: Li > Na > K > Rb > Cs. This reversal is unique to aqueous media.'

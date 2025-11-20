@@ -1,0 +1,154 @@
+---
+slug: dp-1d-dp
+title: 1D Dynamic Programming
+sequence_order: 65
+estimated_minutes: 15
+difficulty: medium
+key_concepts:
+- 1D Dynamic Programming
+- Simple Recurrence
+content_md: |
+  # 1D Dynamic Programming
+
+  DP problems with single-dimensional state space
+
+  ---
+
+  ## 1D Dynamic Programming
+
+  Problems where optimal solution depends on solutions to subproblems with single parameter.
+
+  **Approach:**
+  1. Define state: dp[i] = optimal value for subproblem ending at i
+  2. Find recurrence relation
+  3. Identify base cases
+  4. Determine computation order
+  5. Return final answer
+
+  **Common Problems:**
+  - Fibonacci
+  - Climbing stairs
+  - House robber
+  - Maximum subarray
+  - Coin change
+
+
+  ---
+
+  ## Common Patterns
+
+  ### Pattern 1: Simple Recurrence
+  ```python
+  def climb_stairs(n):
+      if n <= 2:
+          return n
+
+      dp = [0] * (n + 1)
+      dp[1], dp[2] = 1, 2
+
+      for i in range(3, n + 1):
+          dp[i] = dp[i-1] + dp[i-2]
+
+      return dp[n]
+  ```
+
+  ### Pattern 2: Choice at Each Step
+  ```python
+  def house_robber(nums):
+      if not nums:
+          return 0
+      if len(nums) == 1:
+          return nums[0]
+
+      dp = [0] * len(nums)
+      dp[0] = nums[0]
+      dp[1] = max(nums[0], nums[1])
+
+      for i in range(2, len(nums)):
+          # Choose: rob current + skip previous, or skip current
+          dp[i] = max(nums[i] + dp[i-2], dp[i-1])
+
+      return dp[-1]
+  ```
+
+  ### Pattern 3: Space Optimization
+  ```python
+  def fib_optimized(n):
+      if n <= 1:
+          return n
+
+      prev2, prev1 = 0, 1
+
+      for i in range(2, n + 1):
+          curr = prev1 + prev2
+          prev2, prev1 = prev1, curr
+
+      return prev1
+  ```
+
+
+  ---
+
+  ## When to Use This Technique
+
+  Use 1D DP when problem has optimal substructure with single parameter, overlapping subproblems, and each state depends on previous states.
+
+  ---
+
+  ## Common Pitfalls to Avoid
+
+  - Not identifying base cases correctly
+  - Wrong computation order
+  - Not considering all transitions
+  - Off-by-one errors in indexing
+
+  ---
+
+  ## Practice Problems
+
+  Start with these problems to master this concept:
+
+  ### 1. Climbing Stairs [Easy]
+
+  Count ways to climb n stairs (1 or 2 steps at a time).
+
+  **Complexity:** Time O(O(n)), Space O(O(1))
+
+
+  ### 2. 1D DP Problem 3 [Easy]
+
+  DP problem: 1d-dp.
+
+  **Complexity:** Time O(O(n^2)), Space O(O(n))
+
+
+  ### 3. 1D DP Problem 5 [Easy]
+
+  DP problem: 1d-dp.
+
+  **Complexity:** Time O(O(n^2)), Space O(O(n))
+
+
+  ### 4. 1D DP Problem 20 [Easy]
+
+  DP problem: 1d-dp.
+
+  **Complexity:** Time O(O(n^2)), Space O(O(n))
+
+
+  ### 5. 1D DP Problem 23 [Easy]
+
+  DP problem: 1d-dp.
+
+  **Complexity:** Time O(O(n^2)), Space O(O(n))
+
+
+
+  ---
+
+  ## Key Takeaways
+
+  - 1D Dynamic Programming is essential for dp problems with single-dimensional state space
+  - Time complexity improvements can be significant with this technique
+  - Practice problems in order of difficulty to build intuition
+  - Focus on recognizing patterns in problem statements

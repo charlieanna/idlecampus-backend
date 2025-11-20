@@ -1,0 +1,23 @@
+course:
+  slug: jee-physics-electrostatics
+  title: "JEE Physics: Electrostatics"
+  description: "Coulomb's law, electric fields, Gauss's law, capacitors, and electrostatic potential for IIT JEE"
+  estimated_hours: 16
+  level: advanced
+modules:
+- slug: electric-field-potential
+  title: Electric Field and Potential
+  lessons:
+  - coulombs-law-superposition
+  - electric-field-point-charges
+  - electric-field-continuous-distributions
+  - electric-potential-work-done
+  - equipotential-surfaces
+- slug: gauss-law-capacitors
+  title: Gauss's Law and Capacitors
+  lessons:
+  - gauss-law-applications
+  - electric-dipole-field-potential
+  - capacitance-parallel-plate
+  - capacitor-combinations-series-parallel
+  - energy-stored-capacitors-dielectrics

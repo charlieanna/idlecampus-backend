@@ -1,0 +1,233 @@
+slug: torque-and-equilibrium
+title: "Torque and Rotational Equilibrium"
+difficulty: intermediate
+sequence_order: 1
+estimated_minutes: 16
+key_concepts:
+- torque
+- moment-of-force
+- rotational-equilibrium
+- couple
+- center-of-gravity
+prerequisites: []
+content_md: |
+  # Torque and Rotational Equilibrium
+
+  ## Definition of Torque
+
+  **Torque (τ)** is the rotational equivalent of force - it causes angular acceleration.
+
+  ```
+  τ = r × F
+
+  Magnitude: τ = rF sin θ = r⊥F = rF⊥
+  Direction: Perpendicular to plane of r and F (right-hand rule)
+
+  Unit: N·m (NOT Joule, though dimensionally same)
+  ```
+
+  ### Components:
+  - **r** = position vector from axis to point of application
+  - **F** = applied force
+  - **θ** = angle between r and F
+  - **r⊥** = perpendicular distance (moment arm)
+
+  ## Moment Arm Concept
+
+  ```
+  τ = F × (perpendicular distance from axis)
+    = F × d
+
+  where d = r sin θ = moment arm
+  ```
+
+  **Key insight:** Same force creates more torque when applied farther from axis.
+
+  ## Sign Convention
+
+  - **Counterclockwise (CCW):** Positive torque
+  - **Clockwise (CW):** Negative torque
+  - Right-hand rule: Curl fingers in rotation direction, thumb gives torque direction
+
+  ## Couple
+
+  **Two equal and opposite forces** with different lines of action.
+
+  ```
+  Torque of couple = F × d
+
+  d = perpendicular distance between force lines
+  ```
+
+  ### Properties:
+  - **Net force = 0** (no translation)
+  - **Net torque ≠ 0** (causes rotation)
+  - **Torque is same** about any point
+  - Example: Turning steering wheel, opening jar lid
+
+  ## Rotational Equilibrium
+
+  ### Conditions:
+  ```
+  1. ΣF = 0 (translational equilibrium)
+  2. Στ = 0 (rotational equilibrium)
+  ```
+
+  Both conditions must be satisfied for complete equilibrium.
+
+  ### For Coplanar Forces:
+  ```
+  ΣF_x = 0
+  ΣF_y = 0
+  Στ_z = 0 (about any axis perpendicular to plane)
+  ```
+
+  ## Center of Gravity
+
+  Point where entire weight can be considered to act.
+
+  ```
+  x_cg = Σm_i x_i / Σm_i
+  y_cg = Σm_i y_i / Σm_i
+  ```
+
+  For uniform gravitational field: **CG = Center of Mass**
+
+  ### Properties:
+  - Object balances when supported at CG
+  - Stable if CG is low
+  - Topples if vertical line through CG falls outside base
+
+  ## Parallel Forces and CG
+
+  For two parallel forces F₁ and F₂:
+  ```
+  Resultant R = F₁ + F₂ (same direction)
+  or R = F₁ - F₂ (opposite direction)
+
+  Position: R acts at point dividing line internally
+  F₁ × d₁ = F₂ × d₂ (taking moments)
+  ```
+
+  ## Ladder Problems
+
+  Classic equilibrium problem:
+
+  ```
+  Ladder of length L leaning against smooth wall at angle θ.
+  Forces: Weight W (at center), Normal N₁ (ground), N₂ (wall), Friction f (ground)
+
+  ΣF_x = 0: N₂ = f
+  ΣF_y = 0: N₁ = W
+  Στ = 0 (about base): N₂(L sin θ) = W(L/2 cos θ)
+
+  Solution: N₂ = W cot θ/2
+  ```
+
+  ## Principle of Moments
+
+  ```
+  Clockwise moments = Anticlockwise moments
+
+  Or: Σ(F_i × d_i) = 0
+  ```
+
+  **Lever principle:**
+  ```
+  F₁ × d₁ = F₂ × d₂
+
+  Mechanical advantage = d₁/d₂
+  ```
+
+  ## Types of Levers
+
+  1. **Class I:** Fulcrum between effort and load (seesaw)
+  2. **Class II:** Load between fulcrum and effort (wheelbarrow)
+  3. **Class III:** Effort between fulcrum and load (fishing rod)
+
+  ## Numerical Examples
+
+  **Example 1:** Force of 10 N applied at end of 0.5 m wrench at 60° to handle. Find torque.
+
+  **Solution:**
+  ```
+  τ = rF sin θ = 0.5 × 10 × sin 60°
+  τ = 5 × (√3/2) = 2.5√3 ≈ 4.33 N·m
+
+  Maximum would be 5 N·m at θ = 90°
+  ```
+
+  **Example 2:** Uniform rod of length 2 m and weight 100 N. Horizontal forces: 20 N right at top, 20 N left at bottom. Find net torque about center.
+
+  **Solution:**
+  ```
+  These forces form a couple!
+  d = 2 m (perpendicular distance)
+  τ = F × d = 20 × 2 = 40 N·m (CW)
+
+  Weight at center creates no torque about center.
+  Net torque = 40 N·m
+  ```
+
+  **Example 3:** Seesaw: Child of 30 kg sits 2 m from fulcrum. Where should 40 kg child sit for balance?
+
+  **Solution:**
+  ```
+  Principle of moments:
+  m₁g × d₁ = m₂g × d₂
+  30 × 10 × 2 = 40 × 10 × d₂
+  d₂ = 600/400 = 1.5 m
+
+  Heavier child sits closer to fulcrum.
+  ```
+
+  ## Common Mistakes
+
+  1. ❌ Using force × distance without sin θ
+  2. ❌ Forgetting perpendicular component
+  3. ❌ Wrong direction of torque
+  4. ❌ Not choosing proper axis for moment calculation
+
+  ## JEE Key Points
+
+  1. **τ = rF sin θ** (vector product magnitude)
+  2. **Moment arm** is perpendicular distance
+  3. **Couple:** F × d, independent of pivot
+  4. **Equilibrium:** ΣF = 0 AND Στ = 0
+  5. **Principle of moments:** CW = ACW
+  6. **CG:** Point where weight effectively acts
+
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: "A couple produces torque of 20 N·m. If forces are 5 N each, perpendicular distance between them is:"
+  options:
+  - "2 m"
+  - "4 m"
+  - "10 m"
+  - "25 m"
+  correct_answer: "4 m"
+  explanation: "For a couple: τ = F × d, where d is perpendicular distance between force lines. Given τ = 20 N·m and F = 5 N: d = τ/F = 20/5 = 4 m. Key property of couple: torque is same about ANY point (unlike single force where torque depends on distance from axis). This makes couples useful in mechanical systems where pure rotation without translation is needed. The distance between forces determines the turning effect. Common examples: steering wheel (hands apply equal opposite forces), bottle cap (fingers push opposite directions)."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: "For a body in complete equilibrium:"
+  options:
+  - "Only ΣF = 0"
+  - "Only Στ = 0"
+  - "Both ΣF = 0 and Στ = 0"
+  - "Neither condition needed"
+  correct_answer: "Both ΣF = 0 and Στ = 0"
+  explanation: "Complete equilibrium requires BOTH: (1) ΣF = 0 for translational equilibrium (no linear acceleration), and (2) Στ = 0 for rotational equilibrium (no angular acceleration). Example: Book on table - weight balanced by normal force (ΣF = 0), and torques cancel (Στ = 0). Counter-example: Rotating wheel at constant ω - may have Στ = 0 but not static. A falling rod may have ΣF ≠ 0 even if Στ = 0. For rigid body problems, these two conditions give equations to solve for unknowns. In 2D: 3 equations (ΣFₓ, ΣFᵧ, Στ), so can solve for 3 unknowns."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: "A uniform rod of weight W is hinged at one end and held horizontal by string at other end making 60° with rod. Tension in string is:"
+  options:
+  - "W/√3"
+  - "W√3"
+  - "W"
+  - "W/2"
+  correct_answer: "W/√3"
+  explanation: "Taking moments about hinge: Weight W acts at center (L/2 from hinge). Tension T acts at end (L from hinge) at 60° to rod. Perpendicular distance for T = L sin 60° = L√3/2. Moment equation: T(L√3/2) = W(L/2). So T = W/√3 ≈ 0.577W. Alternatively: T × moment arm = W × L/2. Moment arm = L sin 60° = L√3/2. This problem is classic for JEE. Note: Taking moments about hinge eliminates hinge forces from equation! If asked for hinge force, use ΣF = 0. Horizontal: H = T cos 60° = W/(2√3). Vertical: V = W - T sin 60° = W/2."
+  require_pass: true

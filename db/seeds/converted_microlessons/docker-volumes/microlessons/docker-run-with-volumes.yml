@@ -1,0 +1,73 @@
+slug: docker-run-with-volumes
+title: Docker Run with Volumes
+difficulty: medium
+sequence_order: 6
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: '# Docker Run with Volumes 🚀
+
+
+  Mount volumes to containers for persistent data
+
+
+  ## Syntax/Command
+
+
+  ```bash
+
+  docker run -v my-volume:/data nginx
+
+  ```
+
+
+  ## Example
+
+
+  ```bash
+
+  docker run -v my-volume:/app/data:ro nginx
+
+  ```
+
+
+  ## Key Points
+
+
+  - Mount volume: -v <volume>:<container-path>
+
+
+  - Read-only: -v <volume>:<path>:ro
+
+
+  - New syntax: --mount source=<vol>,target=<path>'
+exercises:
+- type: terminal
+  problem_statement: Run an nginx container with the named volume 'my-volume' mounted to /data inside the container for persistent storage
+  expected_output: Container starts successfully with volume mounted
+  language: bash
+  starter_code: "# Run container with volume mount\n"
+  sequence_order: 1
+  command: docker run -v my-volume:/data nginx
+  description: Mount a volume to a container for data persistence
+  hints:
+  - 'Mount volume: -v <volume>:<container-path>'
+  - 'Read-only: -v <volume>:<path>:ro'
+  - 'New syntax: --mount source=<vol>,target=<path>'
+  validation:
+    must_not_include:
+    - Error
+    - 'panic:'
+  timeout_sec: 60
+  require_pass: true
+- type: sandbox
+  sequence_order: 99
+  hints:
+  - Run under CPU pressure to surface leaks or races
+  - Keep commands idempotent in CI
+  validation:
+    must_not_include:
+    - Error
+    - 'panic:'
+  timeout_sec: 60
+  require_pass: true

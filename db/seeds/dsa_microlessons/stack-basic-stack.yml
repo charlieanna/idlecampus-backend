@@ -1,0 +1,173 @@
+---
+slug: stack-basic-stack
+title: Stack Basics
+sequence_order: 17
+estimated_minutes: 15
+difficulty: medium
+key_concepts:
+- Stack Basics
+- Array-based Stack
+content_md: |
+  # Stack Basics
+
+  LIFO data structure with push, pop, and peek operations
+
+  ---
+
+  ## Stack Data Structure
+
+  A stack is a LIFO (Last-In-First-Out) data structure where elements are added and removed from the same end (top).
+
+  **Core Operations:**
+  - **Push:** Add element to top - O(1)
+  - **Pop:** Remove element from top - O(1)
+  - **Peek/Top:** View top element - O(1)
+  - **isEmpty:** Check if empty - O(1)
+
+  **Implementations:**
+  - Array-based: Fixed or dynamic size
+  - Linked list-based: Dynamic size
+
+  **Applications:**
+  - Function call stack
+  - Undo/redo operations
+  - Expression evaluation
+  - Backtracking
+  - Browser history
+
+
+  ---
+
+  ## Common Patterns
+
+  ### Pattern 1: Array-based Stack
+  ```python
+  class Stack:
+      def __init__(self):
+          self.items = []
+
+      def push(self, item):
+          self.items.append(item)
+
+      def pop(self):
+          if not self.is_empty():
+              return self.items.pop()
+          return None
+
+      def peek(self):
+          if not self.is_empty():
+              return self.items[-1]
+          return None
+
+      def is_empty(self):
+          return len(self.items) == 0
+
+      def size(self):
+          return len(self.items)
+  ```
+
+  ### Pattern 2: Valid Parentheses
+  ```python
+  def is_valid_parentheses(s):
+      stack = []
+      pairs = {'(': ')', '[': ']', '{': '}'}
+
+      for char in s:
+          if char in pairs:  # Opening bracket
+              stack.append(char)
+          else:  # Closing bracket
+              if not stack or pairs[stack.pop()] != char:
+                  return False
+
+      return len(stack) == 0
+  ```
+
+  ### Pattern 3: Min Stack (O(1) min operation)
+  ```python
+  class MinStack:
+      def __init__(self):
+          self.stack = []
+          self.min_stack = []
+
+      def push(self, val):
+          self.stack.append(val)
+          if not self.min_stack or val <= self.min_stack[-1]:
+              self.min_stack.append(val)
+
+      def pop(self):
+          if self.stack:
+              val = self.stack.pop()
+              if val == self.min_stack[-1]:
+                  self.min_stack.pop()
+              return val
+
+      def get_min(self):
+          return self.min_stack[-1] if self.min_stack else None
+  ```
+
+
+  ---
+
+  ## When to Use This Technique
+
+  Use stacks for: nested structures, parsing/evaluation, undo operations, DFS traversal, backtracking, or any LIFO access pattern.
+
+  ---
+
+  ## Common Pitfalls to Avoid
+
+  - Not checking if stack is empty before pop/peek
+  - Stack overflow with limited memory
+  - Using stack when queue is needed (FIFO vs LIFO)
+  - Not handling edge cases (empty stack operations)
+
+  ---
+
+  ## Practice Problems
+
+  Start with these problems to master this concept:
+
+  ### 1. Basic Stack 5 [Easy]
+
+  Stack problem: basic-stack.
+
+  **Complexity:** Time O(O(n)), Space O(O(n))
+
+
+  ### 2. Basic Stack 6 [Easy]
+
+  Stack problem: basic-stack.
+
+  **Complexity:** Time O(O(n)), Space O(O(n))
+
+
+  ### 3. Basic Stack 8 [Easy]
+
+  Stack problem: basic-stack.
+
+  **Complexity:** Time O(O(n)), Space O(O(n))
+
+
+  ### 4. Basic Stack 31 [Easy]
+
+  Stack problem: basic-stack.
+
+  **Complexity:** Time O(O(n)), Space O(O(n))
+
+
+  ### 5. Basic Stack 32 [Easy]
+
+  Stack problem: basic-stack.
+
+  **Complexity:** Time O(O(n)), Space O(O(n))
+
+
+
+  ---
+
+  ## Key Takeaways
+
+  - Stack Basics is essential for lifo data structure with push, pop, and peek operations
+  - Time complexity improvements can be significant with this technique
+  - Practice problems in order of difficulty to build intuition
+  - Focus on recognizing patterns in problem statements

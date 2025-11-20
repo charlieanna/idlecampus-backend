@@ -1,0 +1,159 @@
+---
+slug: graph-dfs
+title: Depth First Search (DFS)
+sequence_order: 37
+estimated_minutes: 15
+difficulty: medium
+key_concepts:
+- Depth First Search (DFS)
+- Recursive DFS
+content_md: |
+  # Depth First Search (DFS)
+
+  Graph traversal algorithm that explores as far as possible along each branch
+
+  ---
+
+  ## DFS Algorithm
+
+  DFS explores a graph by going as deep as possible along each branch before backtracking.
+
+  **Characteristics:**
+  - Uses stack (implicit via recursion or explicit)
+  - Explores deeply before broadly
+  - Memory efficient for deep graphs
+
+  **Applications:**
+  - Path finding
+  - Cycle detection
+  - Topological sorting
+  - Connected components
+  - Maze solving
+
+  **Complexity:**
+  - Time: O(V + E)
+  - Space: O(V) for recursion stack
+
+
+  ---
+
+  ## Common Patterns
+
+  ### Pattern 1: Recursive DFS
+  ```python
+  def dfs_recursive(graph, node, visited):
+      visited.add(node)
+      process(node)
+
+      for neighbor in graph[node]:
+          if neighbor not in visited:
+              dfs_recursive(graph, neighbor, visited)
+  ```
+
+  ### Pattern 2: Iterative DFS with Stack
+  ```python
+  def dfs_iterative(graph, start):
+      visited = set()
+      stack = [start]
+
+      while stack:
+          node = stack.pop()
+
+          if node in visited:
+              continue
+
+          visited.add(node)
+          process(node)
+
+          for neighbor in graph[node]:
+              if neighbor not in visited:
+                  stack.append(neighbor)
+  ```
+
+  ### Pattern 3: Detect Cycle in Directed Graph
+  ```python
+  def has_cycle(graph):
+      WHITE, GRAY, BLACK = 0, 1, 2
+      color = {node: WHITE for node in graph}
+
+      def dfs(node):
+          color[node] = GRAY
+
+          for neighbor in graph[node]:
+              if color[neighbor] == GRAY:
+                  return True  # Back edge = cycle
+              if color[neighbor] == WHITE and dfs(neighbor):
+                  return True
+
+          color[node] = BLACK
+          return False
+
+      return any(dfs(node) for node in graph if color[node] == WHITE)
+  ```
+
+
+  ---
+
+  ## When to Use This Technique
+
+  Use DFS for path finding, topological sort, detecting cycles, finding strongly connected components, or exploring all paths.
+
+  ---
+
+  ## Common Pitfalls to Avoid
+
+  - Stack overflow with deep recursion
+  - Not marking nodes as visited (infinite loops)
+  - Confusing DFS with BFS applications
+  - Not handling disconnected components
+
+  ---
+
+  ## Practice Problems
+
+  Start with these problems to master this concept:
+
+  ### 1. Dfs 1 [Easy]
+
+  Graph problem: dfs.
+
+  **Complexity:** Time O(O(V+E)), Space O(O(V))
+
+
+  ### 2. Dfs 2 [Easy]
+
+  Graph problem: dfs.
+
+  **Complexity:** Time O(O(V+E)), Space O(O(V))
+
+
+  ### 3. Dfs 3 [Easy]
+
+  Graph problem: dfs.
+
+  **Complexity:** Time O(O(V+E)), Space O(O(V))
+
+
+  ### 4. Dfs 5 [Easy]
+
+  Graph problem: dfs.
+
+  **Complexity:** Time O(O(V+E)), Space O(O(V))
+
+
+  ### 5. Dfs 7 [Easy]
+
+  Graph problem: dfs.
+
+  **Complexity:** Time O(O(V+E)), Space O(O(V))
+
+
+
+  ---
+
+  ## Key Takeaways
+
+  - Depth First Search (DFS) is essential for graph traversal algorithm that explores as far as possible along each branch
+  - Time complexity improvements can be significant with this technique
+  - Practice problems in order of difficulty to build intuition
+  - Focus on recognizing patterns in problem statements

@@ -1,0 +1,157 @@
+slug: lesson-2
+title: Lesson 2
+difficulty: easy
+sequence_order: 2
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Navigating the Filesystem and Managing\
+  \ Files\n\n    ## Linux Filesystem Hierarchy Standard (FHS)\n\n    Linux organizes\
+  \ files in a single inverted tree structure starting at the root directory `/`.\
+  \ Understanding this structure helps you navigate and find things quickly.\n\n \
+  \   ### Important Directories\n\n    | Directory | Purpose | Examples |\n    |-----------|---------|----------|\n\
+  \    | `/` | Root of filesystem | All other directories branch from here |\n   \
+  \ | `/home` | User home directories | `/home/alice`, `/home/bob` |\n    | `/etc`\
+  \ | System configuration files | `/etc/passwd`, `/etc/network/interfaces` |\n  \
+  \  | `/var` | Variable data (logs, databases) | `/var/log`, `/var/www` |\n    |\
+  \ `/usr` | User programs and data | `/usr/bin`, `/usr/local` |\n    | `/bin` | Essential\
+  \ user binaries | `ls`, `cp`, `mv`, `cat` |\n    | `/sbin` | System administration\
+  \ binaries | `ifconfig`, `reboot`, `fdisk` |\n    | `/tmp` | Temporary files (cleared\
+  \ on reboot) | Session files, temp downloads |\n    | `/dev` | Device files | `/dev/sda`\
+  \ (hard drive), `/dev/tty` (terminal) |\n    | `/proc` | Process and kernel info\
+  \ (virtual) | `/proc/cpuinfo`, `/proc/meminfo` |\n    | `/boot` | Boot loader files,\
+  \ kernel | `/boot/vmlinuz`, `/boot/grub` |\n    | `/lib` | Shared libraries | System\
+  \ libraries needed by binaries |\n    | `/opt` | Optional software packages | Third-party\
+  \ applications |\n    | `/root` | Root user home directory | Not in `/home` for\
+  \ security |\n\n    ### Path Types\n\n    **Absolute Path**: Starts from root `/`\n\
+  \    ```bash\n    /home/user/documents/report.txt\n    /etc/nginx/nginx.conf\n \
+  \   ```\n\n    **Relative Path**: Relative to current directory\n    ```bash\n \
+  \   documents/report.txt    # Relative to current location\n    ../other_user/file.txt\
+  \  # Go up one level, then down\n    ./script.sh             # Current directory\n\
+  \    ```\n\n    **Special Path Shortcuts**\n    - `.` = Current directory\n    -\
+  \ `..` = Parent directory\n    - `~` = Home directory\n    - `-` = Previous directory\n\
+  \n    ```bash\n    cd ~        # Go to home directory\n    cd ..       # Go up one\
+  \ level\n    cd -        # Return to previous directory\n    cd ~/docs   # Go to\
+  \ docs in home directory\n    ```\n\n    ## File Types in Linux\n\n    Linux has\
+  \ several file types:\n\n    | Symbol | Type | Description |\n    |--------|------|-------------|\n\
+  \    | `-` | Regular file | Text, binary, executable |\n    | `d` | Directory |\
+  \ Container for files |\n    | `l` | Symbolic link | Pointer to another file |\n\
+  \    | `b` | Block device | Hard drives, USB drives |\n    | `c` | Character device\
+  \ | Terminals, serial ports |\n    | `p` | Named pipe | Inter-process communication\
+  \ |\n    | `s` | Socket | Network communication |\n\n    View file type with `ls\
+  \ -l`:\n    ```bash\n    $ ls -l\n    drwxr-xr-x  2 user group 4096 Nov  5 10:00\
+  \ mydir\n    -rw-r--r--  1 user group  100 Nov  5 10:00 file.txt\n    lrwxrwxrwx\
+  \  1 user group    8 Nov  5 10:00 link -> file.txt\n    ```\n\n    ## Managing Files\
+  \ and Directories\n\n    ### Creating Directories\n\n    ```bash\n    mkdir mydir\
+  \                    # Create directory\n    mkdir -p path/to/nested/dir    # Create\
+  \ nested directories\n    mkdir dir1 dir2 dir3           # Create multiple directories\n\
+  \    ```\n\n    ### Creating Files\n\n    ```bash\n    touch newfile.txt       \
+  \       # Create empty file or update timestamp\n    touch file1.txt file2.txt \
+  \     # Create multiple files\n    ```\n\n    ### Copying Files\n\n    ```bash\n\
+  \    cp source.txt dest.txt         # Copy file\n    cp -r dir1/ dir2/         \
+  \     # Copy directory recursively\n    cp -v file.txt backup.txt      # Verbose\
+  \ output\n    cp -i file.txt existing.txt    # Interactive (prompt before overwrite)\n\
+  \    ```\n\n    ### Moving and Renaming\n\n    ```bash\n    mv oldname.txt newname.txt\
+  \     # Rename file\n    mv file.txt /home/user/        # Move file\n    mv dir1/\
+  \ dir2/                 # Move/rename directory\n    mv -i file.txt existing.txt\
+  \    # Interactive mode\n    ```\n\n    ### Deleting Files and Directories\n\n \
+  \   ```bash\n    rm file.txt                    # Delete file\n    rm -i file.txt\
+  \                 # Interactive (prompt before delete)\n    rm -f file.txt     \
+  \            # Force delete (no prompt)\n    rm -r dir/                     # Delete\
+  \ directory recursively\n    rm -rf dir/                    # Force recursive delete\
+  \ (DANGEROUS!)\n    rmdir emptydir/                # Delete empty directory only\n\
+  \    ```\n\n    ⚠️ **Warning**: `rm` is permanent! There is no recycle bin. Use\
+  \ `-i` for safety.\n\n    ### Wildcards (Globbing)\n\n    Match multiple files with\
+  \ patterns:\n\n    ```bash\n    *                # Matches any characters\n    ?\
+  \                # Matches single character\n    [abc]            # Matches a, b,\
+  \ or c\n    [0-9]            # Matches any digit\n    [!abc]           # Matches\
+  \ anything except a, b, c\n\n    # Examples\n    ls *.txt         # All .txt files\n\
+  \    ls file?.txt     # file1.txt, fileA.txt\n    ls [A-Z]*.txt    # Files starting\
+  \ with uppercase\n    rm temp*         # Delete all files starting with \"temp\"\
+  \n    ```\n\n    ## Viewing File Contents\n\n    ### cat - Concatenate and Display\n\
+  \n    ```bash\n    cat file.txt                   # Display entire file\n    cat\
+  \ file1.txt file2.txt        # Display multiple files\n    cat file1.txt file2.txt\
+  \ > combined.txt  # Combine files\n    ```\n\n    ### head - View Beginning\n\n\
+  \    ```bash\n    head file.txt                  # First 10 lines\n    head -n 5\
+  \ file.txt             # First 5 lines\n    head -20 file.txt              # First\
+  \ 20 lines\n    ```\n\n    ### tail - View End\n\n    ```bash\n    tail file.txt\
+  \                  # Last 10 lines\n    tail -n 20 file.txt            # Last 20\
+  \ lines\n    tail -f /var/log/syslog        # Follow log file (watch new lines)\n\
+  \    ```\n\n    ### less - Paged Viewing\n\n    ```bash\n    less file.txt     \
+  \             # View file page by page\n    # Space: next page\n    # b: previous\
+  \ page\n    # /pattern: search\n    # q: quit\n    ```\n\n    ### grep - Search\
+  \ Text\n\n    ```bash\n    grep \"pattern\" file.txt        # Search for pattern\n\
+  \    grep -i \"pattern\" file.txt     # Case-insensitive search\n    grep -r \"\
+  pattern\" dir/         # Recursive search in directory\n    grep -n \"pattern\"\
+  \ file.txt     # Show line numbers\n    grep -v \"pattern\" file.txt     # Invert\
+  \ match (lines NOT matching)\n    grep \"root\" /etc/passwd        # Find all users\
+  \ with \"root\"\n    ```\n\n    ## Archiving and Compression\n\n    ### tar - Tape\
+  \ Archive\n\n    Create archives (bundles of files):\n\n    ```bash\n    # Create\
+  \ archive\n    tar -cvf archive.tar files/    # Create tar archive\n    tar -czvf\
+  \ archive.tar.gz files/  # Create + compress with gzip\n    tar -cjvf archive.tar.bz2\
+  \ files/ # Create + compress with bzip2\n\n    # Extract archive\n    tar -xvf archive.tar\
+  \           # Extract tar\n    tar -xzvf archive.tar.gz       # Extract gzip compressed\n\
+  \    tar -xjvf archive.tar.bz2      # Extract bzip2 compressed\n\n    # List contents\n\
+  \    tar -tvf archive.tar           # List contents without extracting\n    ```\n\
+  \n    **tar options:**\n    - `c`: Create archive\n    - `x`: Extract archive\n\
+  \    - `v`: Verbose (show files)\n    - `f`: File (specify filename)\n    - `z`:\
+  \ gzip compression\n    - `j`: bzip2 compression\n\n    ### gzip - Compress Files\n\
+  \n    ```bash\n    gzip file.txt                  # Compress (creates file.txt.gz,\
+  \ removes original)\n    gzip -k file.txt               # Keep original file\n \
+  \   gunzip file.txt.gz             # Decompress\n    gzip -d file.txt.gz       \
+  \     # Decompress (same as gunzip)\n    ```\n\n    ### zip/unzip - Zip Archives\n\
+  \n    ```bash\n    zip archive.zip file1.txt file2.txt  # Create zip\n    zip -r\
+  \ archive.zip directory/        # Zip directory recursively\n    unzip archive.zip\
+  \                    # Extract zip\n    unzip -l archive.zip                 # List\
+  \ contents\n    ```\n\n    ## File Metadata\n\n    ### Checking File Information\n\
+  \n    ```bash\n    file filename                  # Determine file type\n    stat\
+  \ filename                  # Detailed file statistics\n    du -h file.txt     \
+  \            # Disk usage (human-readable)\n    du -sh directory/              #\
+  \ Total size of directory\n    df -h                          # Disk space of filesystems\n\
+  \    ```\n\n    ### Finding Files\n\n    ```bash\n    find /path -name \"filename\"\
+  \    # Find by name\n    find /home -name \"*.txt\"       # Find all .txt files\n\
+  \    find /var -type f -size +100M  # Find files larger than 100MB\n    find /tmp\
+  \ -mtime -7            # Files modified in last 7 days\n    ```\n\n    ## Summary\n\
+  \n    In this module, you learned:\n    - Linux filesystem hierarchy and important\
+  \ directories (/etc, /home, /var, etc.)\n    - How to create, copy, move, and delete\
+  \ files and directories\n    - Viewing file contents with cat, head, tail, less\n\
+  \    - Searching text with grep\n    - Creating archives and compressing files with\
+  \ tar, gzip, zip\n    - Understanding file types and metadata"
+exercises:
+- type: terminal
+  sequence_order: 1
+  command: pwd
+  description: Display the current working directory path
+  hints:
+  - 'Show current directory: pwd'
+  - 'Change directory: cd /path/to/dir'
+  - 'List directory contents: ls'
+  validation:
+    must_not_include:
+    - Error
+  timeout_sec: 30
+  require_pass: true
+- type: terminal
+  sequence_order: 2
+  command: mkdir test_dir && cd test_dir && touch file.txt
+  description: Create a directory named 'test_dir', navigate into it, and create an empty file 'file.txt'
+  hints:
+  - 'Create directory: mkdir dirname'
+  - 'Create empty file: touch filename'
+  - 'Chain commands: cmd1 && cmd2 && cmd3'
+  validation:
+    must_not_include:
+    - Error
+  timeout_sec: 30
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: What is the correct command to create a compressed tar archive of a directory named 'project'?
+  options:
+  - tar -czf project.tar.gz project
+  - tar -xzf project.tar.gz
+  - gzip project
+  - zip project.tar.gz project
+  correct_answer: tar -czf project.tar.gz project
+  explanation: "The tar command with flags -czf creates a compressed archive. -c means 'create archive', -z means 'compress with gzip', -f means 'file name follows'. So 'tar -czf project.tar.gz project' creates a gzipped tar archive. The -x flag is for extracting, not creating. The gzip command alone cannot archive directories, only compress single files. The zip command has different syntax."
+  require_pass: true

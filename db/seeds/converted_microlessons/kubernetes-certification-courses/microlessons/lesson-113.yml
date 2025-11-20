@@ -1,0 +1,44 @@
+slug: lesson-113
+title: Lesson 113
+difficulty: easy
+sequence_order: 113
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Service Types and Endpoints\n\n    - ClusterIP,\
+  \ NodePort, LoadBalancer\n    - headless services and Endpoints/EndpointSlice\n\
+  \    - Session affinity and externalTrafficPolicy"
+exercises:
+  - type: mcq
+    sequence_order: 1
+    question: "What is the default Service type in Kubernetes if not specified?"
+    options:
+      - "NodePort"
+      - "LoadBalancer"
+      - "ClusterIP"
+      - "ExternalName"
+    correct_answer: "ClusterIP"
+    explanation: "ClusterIP is the default Service type in Kubernetes, creating an internal virtual IP address accessible only within the cluster. This IP is stable and used for pod-to-pod communication within the cluster. When you create a Service without specifying a type, Kubernetes automatically assigns it ClusterIP. For example, a Service for a database would typically use ClusterIP as it only needs to be accessed by application pods within the cluster, not from outside. The ClusterIP is registered in the cluster's DNS (CoreDNS), allowing pods to reach the Service using DNS names like 'myservice.mynamespace.svc.cluster.local' or just 'myservice' within the same namespace. Kubernetes implements ClusterIP using iptables or IPVS rules on each node to load balance traffic to the Service's endpoints (backing pods). The other Service types build on ClusterIP: NodePort adds a port on every node (30000-32767) forwarding to the ClusterIP, making the service accessible from outside the cluster via <NodeIP>:<NodePort>. LoadBalancer extends NodePort by provisioning an external load balancer from a cloud provider (AWS ELB, GCP LB) that routes to the NodePort. ExternalName creates a CNAME DNS record pointing to an external service, without any proxying. Choose ClusterIP for internal services, NodePort for development/testing external access, and LoadBalancer for production external services. Understanding these types is crucial for designing service exposure strategies."
+    require_pass: true
+  - type: mcq
+    sequence_order: 2
+    question: "What is a headless Service in Kubernetes, and when would you use one?"
+    options:
+      - "A Service without any selector to match pods"
+      - "A Service with ClusterIP set to 'None', returning individual Pod IPs instead of a virtual IP"
+      - "A Service that has been deleted"
+      - "A Service that doesn't have any endpoints"
+    correct_answer: "A Service with ClusterIP set to 'None', returning individual Pod IPs instead of a virtual IP"
+    explanation: "A headless Service is created by setting 'clusterIP: None' in the Service spec. Unlike regular Services that provide a single virtual IP for load balancing, headless Services return the individual IP addresses of all backing pods when queried via DNS. This is essential for stateful applications that need to address specific pod instances rather than being load balanced across all pods. For example, in a StatefulSet running a database cluster (like MongoDB or Cassandra), each pod needs a stable network identity and direct addressing. When you perform a DNS lookup on a headless Service, instead of getting one ClusterIP, you get an A record for each pod (e.g., 'pod-0.myservice.default.svc.cluster.local' -> 10.1.2.3, 'pod-1.myservice.default.svc.cluster.local' -> 10.1.2.4). This enables clients to: choose which pod to connect to, implement custom load balancing logic, perform direct peer-to-peer communication, or use client-side discovery. StatefulSets automatically create headless Services to provide stable DNS names for each pod following the pattern '<pod-name>.<service-name>'. Use cases include: stateful databases needing member discovery, leader election scenarios, peer-to-peer applications, and any case where you need to address individual pods rather than the Service as a whole. The Service still provides endpoint management and discovery, just without the virtual IP layer."
+    require_pass: true
+  - type: mcq
+    sequence_order: 3
+    question: "What does the 'externalTrafficPolicy: Local' setting do on a Service?"
+    options:
+      - "Routes all traffic through a load balancer"
+      - "Directs traffic only to pods running on the same node that received the traffic, preserving client source IP"
+      - "Prevents external traffic from reaching the Service"
+      - "Enables traffic from external networks only"
+    correct_answer: "Directs traffic only to pods running on the same node that received the traffic, preserving client source IP"
+    explanation: "The 'externalTrafficPolicy: Local' setting on a NodePort or LoadBalancer Service changes how external traffic is routed to pods. With the default 'Cluster' policy, traffic arriving at any node is distributed across all pods cluster-wide, potentially forwarding to pods on other nodes (causing extra network hops and SNAT that masks the client's source IP). With 'Local' policy, traffic is only routed to pods on the same node that received it, providing two key benefits: 1) Preserves the client's source IP address (visible to the application), which is crucial for logging, security policies, or geolocation, and 2) Eliminates extra network hops, reducing latency. However, this has trade-offs: if a node has no pods for the Service, it drops traffic (potentially causing uneven load distribution), and external load balancers must implement health checks per node, only sending traffic to nodes with healthy pods. For example, in a 3-node cluster with 2 pods on node-1 and 1 pod on node-2, with 'Local' policy, traffic to node-1 goes only to its 2 pods, and traffic to node-3 (which has no pods) is dropped or not routed by the load balancer. Use 'Local' when you need: source IP preservation for security/logging, lower latency (avoiding inter-node forwarding), or better network efficiency. Use the default 'Cluster' when you need: even load distribution, failover across all pods regardless of node placement, or when source IP isn't important."
+    require_pass: true

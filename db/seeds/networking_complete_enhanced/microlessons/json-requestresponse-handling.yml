@@ -1,0 +1,131 @@
+slug: json-requestresponse-handling
+title: JSON Request/Response Handling
+sequence_order: 3
+estimated_minutes: 2
+difficulty: easy
+content_md: "# JSON Request/Response Handling \U0001F680\n\n# JSON Request/Response\
+  \ Handling\n\n    Modern REST APIs communicate using JSON. Go's `encoding/json`\
+  \ package makes it easy to work with JSON data.\n\n    ## Structs for JSON Data\n\
+  \n    Define structs to represent your API data:\n\n    ```go\n    type User struct\
+  \ {\n        ID        int       `json:\"id\"`\n        Name      string    `json:\"\
+  name\"`\n        Email     string    `json:\"email\"`\n        CreatedAt time.Time\
+  \ `json:\"created_at\"`\n    }\n\n    type Task struct {\n        ID          int\
+  \    `json:\"id\"`\n        Title       string `json:\"title\"`\n        Description\
+  \ string `json:\"description\"`\n        Completed   bool   `json:\"completed\"\
+  `\n    }\n    ```\n\n    **Struct tags:**\n    - `json:\"field_name\"` - Specify\
+  \ JSON field name (snake_case)\n    - `json:\"field,omitempty\"` - Omit field if\
+  \ empty/zero value\n    - `json:\"-\"` - Never include this field in JSON\n\n  \
+  \  ## Sending JSON Responses\n\n    ### Method 1: Using json.Marshal\n\n    ```go\n\
+  \    func getUserHandler(w http.ResponseWriter, r *http.Request) {\n        user\
+  \ := User{\n            ID:    1,\n            Name:  \"John Doe\",\n          \
+  \  Email: \"john@example.com\",\n            CreatedAt: time.Now(),\n        }\n\
+  \n        // Set content type\n        w.Header().Set(\"Content-Type\", \"application/json\"\
+  )\n\n        // Marshal to JSON\n        jsonData, err := json.Marshal(user)\n \
+  \       if err != nil {\n            w.WriteHeader(http.StatusInternalServerError)\n\
+  \            fmt.Fprintf(w, `{\"error\": \"Failed to marshal JSON\"}`)\n       \
+  \     return\n        }\n\n        w.WriteHeader(http.StatusOK)\n        w.Write(jsonData)\n\
+  \    }\n    ```\n\n    ### Method 2: Using json.NewEncoder (Recommended)\n\n   \
+  \ ```go\n    func getUserHandler(w http.ResponseWriter, r *http.Request) {\n   \
+  \     user := User{\n            ID:    1,\n            Name:  \"John Doe\",\n \
+  \           Email: \"john@example.com\",\n            CreatedAt: time.Now(),\n \
+  \       }\n\n        w.Header().Set(\"Content-Type\", \"application/json\")\n  \
+  \      w.WriteHeader(http.StatusOK)\n\n        // Encode directly to response writer\n\
+  \        json.NewEncoder(w).Encode(user)\n    }\n    ```\n\n    ## Sending JSON\
+  \ Arrays\n\n    ```go\n    func listUsersHandler(w http.ResponseWriter, r *http.Request)\
+  \ {\n        users := []User{\n            {ID: 1, Name: \"Alice\", Email: \"alice@example.com\"\
+  },\n            {ID: 2, Name: \"Bob\", Email: \"bob@example.com\"},\n          \
+  \  {ID: 3, Name: \"Carol\", Email: \"carol@example.com\"},\n        }\n\n      \
+  \  w.Header().Set(\"Content-Type\", \"application/json\")\n        json.NewEncoder(w).Encode(users)\n\
+  \    }\n    ```\n\n    ## Reading JSON Request Bodies\n\n    ```go\n    type CreateUserRequest\
+  \ struct {\n        Name  string `json:\"name\"`\n        Email string `json:\"\
+  email\"`\n    }\n\n    func createUserHandler(w http.ResponseWriter, r *http.Request)\
+  \ {\n        // Only accept POST\n        if r.Method != http.MethodPost {\n   \
+  \         w.WriteHeader(http.StatusMethodNotAllowed)\n            return\n     \
+  \   }\n\n        var req CreateUserRequest\n\n        // Decode JSON body\n    \
+  \    err := json.NewDecoder(r.Body).Decode(&req)\n        if err != nil {\n    \
+  \        w.WriteHeader(http.StatusBadRequest)\n            json.NewEncoder(w).Encode(map[string]string{\n\
+  \                \"error\": \"Invalid JSON\",\n            })\n            return\n\
+  \        }\n        defer r.Body.Close()\n\n        // Validate input\n        if\
+  \ req.Name == \"\" || req.Email == \"\" {\n            w.WriteHeader(http.StatusBadRequest)\n\
+  \            json.NewEncoder(w).Encode(map[string]string{\n                \"error\"\
+  : \"Name and email are required\",\n            })\n            return\n       \
+  \ }\n\n        // Create user (simplified)\n        user := User{\n            ID:\
+  \    123,\n            Name:  req.Name,\n            Email: req.Email,\n       \
+  \     CreatedAt: time.Now(),\n        }\n\n        w.Header().Set(\"Content-Type\"\
+  , \"application/json\")\n        w.WriteHeader(http.StatusCreated)\n        json.NewEncoder(w).Encode(user)\n\
+  \    }\n    ```\n\n    ## Parsing URL Path Parameters\n\n    Extract IDs from URLs\
+  \ like `/api/users/123`:\n\n    ```go\n    func getUserByIDHandler(w http.ResponseWriter,\
+  \ r *http.Request) {\n        // Extract ID from path\n        // For path: /api/users/123\n\
+  \        path := r.URL.Path\n        parts := strings.Split(path, \"/\")\n\n   \
+  \     if len(parts) < 4 {\n            w.WriteHeader(http.StatusBadRequest)\n  \
+  \          return\n        }\n\n        idStr := parts[3] // \"123\"\n        id,\
+  \ err := strconv.Atoi(idStr)\n        if err != nil {\n            w.WriteHeader(http.StatusBadRequest)\n\
+  \            json.NewEncoder(w).Encode(map[string]string{\n                \"error\"\
+  : \"Invalid user ID\",\n            })\n            return\n        }\n\n      \
+  \  // Fetch user by ID (simplified)\n        user := User{ID: id, Name: \"John\"\
+  , Email: \"john@example.com\"}\n\n        w.Header().Set(\"Content-Type\", \"application/json\"\
+  )\n        json.NewEncoder(w).Encode(user)\n    }\n    ```\n\n    ## Parsing Query\
+  \ Parameters\n\n    Handle URLs like `/api/users?role=admin&page=2`:\n\n    ```go\n\
+  \    func searchUsersHandler(w http.ResponseWriter, r *http.Request) {\n       \
+  \ // Get query parameters\n        query := r.URL.Query()\n\n        role := query.Get(\"\
+  role\")      // \"admin\"\n        pageStr := query.Get(\"page\")   // \"2\"\n\n\
+  \        page := 1\n        if pageStr != \"\" {\n            p, err := strconv.Atoi(pageStr)\n\
+  \            if err == nil {\n                page = p\n            }\n        }\n\
+  \n        // Use parameters in logic\n        fmt.Printf(\"Searching users: role=%s,\
+  \ page=%d\\\\n\", role, page)\n\n        // Return filtered results\n        users\
+  \ := []User{\n            {ID: 1, Name: \"Admin User\", Email: \"admin@example.com\"\
+  },\n        }\n\n        w.Header().Set(\"Content-Type\", \"application/json\")\n\
+  \        json.NewEncoder(w).Encode(users)\n    }\n    ```\n\n    ## Error Response\
+  \ Format\n\n    Consistent error responses improve API usability:\n\n    ```go\n\
+  \    type ErrorResponse struct {\n        Error   string `json:\"error\"`\n    \
+  \    Message string `json:\"message,omitempty\"`\n        Code    int    `json:\"\
+  code\"`\n    }\n\n    func sendError(w http.ResponseWriter, statusCode int, message\
+  \ string) {\n        w.Header().Set(\"Content-Type\", \"application/json\")\n  \
+  \      w.WriteHeader(statusCode)\n\n        errorResp := ErrorResponse{\n      \
+  \      Error:   http.StatusText(statusCode),\n            Message: message,\n  \
+  \          Code:    statusCode,\n        }\n\n        json.NewEncoder(w).Encode(errorResp)\n\
+  \    }\n\n    // Usage\n    func handler(w http.ResponseWriter, r *http.Request)\
+  \ {\n        if someError {\n            sendError(w, http.StatusBadRequest, \"\
+  Invalid input data\")\n            return\n        }\n    }\n    ```\n\n    ## Complete\
+  \ REST Endpoint Example\n\n    ```go\n    type Book struct {\n        ID     int\
+  \    `json:\"id\"`\n        Title  string `json:\"title\"`\n        Author string\
+  \ `json:\"author\"`\n        ISBN   string `json:\"isbn\"`\n    }\n\n    var books\
+  \ = []Book{\n        {ID: 1, Title: \"Learning Go\", Author: \"Jon Bodner\", ISBN:\
+  \ \"978-1492077213\"},\n    }\n    var nextID = 2\n\n    func booksHandler(w http.ResponseWriter,\
+  \ r *http.Request) {\n        switch r.Method {\n        case http.MethodGet:\n\
+  \            // List all books\n            w.Header().Set(\"Content-Type\", \"\
+  application/json\")\n            json.NewEncoder(w).Encode(books)\n\n        case\
+  \ http.MethodPost:\n            // Create new book\n            var book Book\n\
+  \            if err := json.NewDecoder(r.Body).Decode(&book); err != nil {\n   \
+  \             sendError(w, http.StatusBadRequest, \"Invalid JSON\")\n          \
+  \      return\n            }\n\n            book.ID = nextID\n            nextID++\n\
+  \            books = append(books, book)\n\n            w.Header().Set(\"Content-Type\"\
+  , \"application/json\")\n            w.WriteHeader(http.StatusCreated)\n       \
+  \     json.NewEncoder(w).Encode(book)\n\n        default:\n            sendError(w,\
+  \ http.StatusMethodNotAllowed, \"Method not allowed\")\n        }\n    }\n    ```\n\
+  \n    ## Best Practices\n\n    1. **Always set Content-Type** - `application/json`\
+  \ for JSON responses\n    2. **Use struct tags** - Control JSON field names and\
+  \ behavior\n    3. **Validate input** - Check for required fields and valid data\n\
+  \    4. **Consistent error format** - Standard error response structure\n    5.\
+  \ **Use json.NewEncoder** - More efficient than Marshal for responses\n    6. **Close\
+  \ request body** - `defer r.Body.Close()`\n    7. **Handle edge cases** - Empty\
+  \ arrays, null values, missing fields"
+exercises:
+- type: mcq
+  slug: json-requestresponse-handling-mcq
+  sequence_order: 1
+  question: Which Go function is used to convert a struct to JSON?
+  options:
+  - json.Marshal()
+  - json.Encode()
+  - json.Stringify()
+  - json.Parse()
+  correct_answer_index: 0
+  explanation: json.Marshal() converts a Go value (typically a struct) into JSON bytes.
+    json.Unmarshal() does the reverse - converting JSON bytes into a Go value. Note
+    that struct fields must be exported (capitalized) to be included in JSON output.
+objectives:
+- Understand the fundamental concepts and mechanisms of json requestresponse handling
+- Apply chemical principles to solve related problems
+- Identify key reactions, equations, and chemical behaviors
+next_recommended: []

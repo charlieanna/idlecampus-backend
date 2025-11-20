@@ -1,0 +1,60 @@
+slug: stereochemistry-practice
+title: stereochemistry — Practice
+difficulty: medium
+sequence_order: 15
+estimated_minutes: 2
+key_concepts:
+- stereochemistry
+prerequisites: []
+content_md: '# stereochemistry — Practice 🚀
+
+
+  SN2 shows Walden inversion - complete inversion of configuration. (R) → (S) or (S)
+  → (R). This is due to backside attack by nucleophile.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 2
+  question: What is the stereochemical outcome of SN2 reaction on an optically active
+    alkyl halide?
+  options:
+  - Retention of configuration
+  - Racemization
+  - Inversion of configuration
+  - No change in stereochemistry
+  correct_answer: Inversion of configuration
+  explanation: "SN2 (Substitution Nucleophilic Bimolecular) reactions proceed through a backside attack mechanism, where the nucleophile approaches from the opposite side of the leaving group. This causes Walden inversion - a complete inversion of stereochemical configuration. If you start with (R), you get (S), and vice versa. This is NOT racemization (which gives a 50:50 mixture) or retention - it's specifically inversion due to the backside attack geometry."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: What stereochemical outcome occurs in an SN1 reaction on a chiral center?
+  options:
+  - Complete inversion of configuration
+  - Complete retention of configuration
+  - Racemization (mixture of both enantiomers)
+  - No change in optical activity
+  correct_answer: Racemization (mixture of both enantiomers)
+  explanation: "SN1 reactions on chiral centers produce racemization - typically a ~50:50 mixture of both enantiomers (though often with slight preference for inversion). This occurs because the carbocation intermediate is planar (sp² hybridized) and achiral. The nucleophile can attack from either face with approximately equal probability, giving both (R) and (S) products. Complete inversion (100%) is characteristic of SN2, not SN1. Complete retention would require attack from the same side as the leaving group, which doesn't typically occur."
+  require_pass: true
+- type: mcq
+  sequence_order: 4
+  question: Why is backside attack necessary in SN2 mechanism?
+  options:
+  - To maximize electrostatic attraction
+  - To form the transition state with proper orbital overlap
+  - To avoid the leaving group
+  - To increase reaction temperature
+  correct_answer: To form the transition state with proper orbital overlap
+  explanation: "Backside attack in SN2 is necessary for proper orbital overlap in the transition state. The nucleophile's filled orbital must overlap with the antibonding σ* orbital of the C-X bond, which has maximum amplitude on the side opposite to the leaving group. This creates a linear Nu···C···X arrangement (180° bond angle) in the transition state, with the carbon temporarily pentacoordinate and undergoing inversion like an umbrella flipping inside-out. This geometry leads to the characteristic Walden inversion of stereochemistry."
+  require_pass: true

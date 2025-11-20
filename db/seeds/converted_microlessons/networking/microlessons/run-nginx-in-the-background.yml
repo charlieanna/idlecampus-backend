@@ -1,0 +1,322 @@
+slug: run-nginx-in-the-background
+title: Run Nginx in the Background
+difficulty: easy
+sequence_order: 3
+estimated_minutes: 2
+key_concepts:
+- detached-mode
+- docker-run
+prerequisites: []
+content_md: '# Run Nginx in the Background 🚀
+
+
+  ## What is Detached Mode?
+
+  Detached mode (using the `-d` flag) runs containers in the background, freeing up your terminal for other commands. This is the standard way to run long-running services like web servers, databases, and application servers.
+
+
+  ## Why Use Detached Mode?
+
+  - **Terminal Freedom**: Your terminal isn''t blocked by container output
+
+  - **Service Mode**: Perfect for long-running services that should run continuously
+
+  - **Production Ready**: How containers run in production environments
+
+  - **Multiple Containers**: Easily run many containers without multiple terminal windows
+
+  - **Background Processing**: Container keeps running even after you close the terminal session
+
+
+  ## Detached vs Foreground Mode
+
+
+  **Foreground Mode (Default)**
+
+  ```bash
+
+  docker run nginx:alpine
+
+  ```
+
+  - Attaches to container''s stdout/stderr
+
+  - Blocks your terminal
+
+  - Shows all container output in real-time
+
+  - Container stops when you press Ctrl+C
+
+  - Good for: debugging, one-off commands, interactive sessions
+
+
+  **Detached Mode (-d flag)**
+
+  ```bash
+
+  docker run -d nginx:alpine
+
+  ```
+
+  - Runs container in background
+
+  - Returns container ID immediately
+
+  - Terminal is free for other commands
+
+  - Container keeps running independently
+
+  - Good for: services, daemons, production workloads
+
+
+  ## How It Works
+
+
+  ```
+
+  docker run -d nginx:alpine
+
+         │
+
+         ├─ Creates container from nginx:alpine image
+
+         ├─ Starts container in background
+
+         ├─ Prints container ID (e.g., abc123def456...)
+
+         └─ Returns terminal prompt immediately
+
+  ```
+
+
+  ## Viewing Output from Detached Containers
+
+
+  Even though the container runs in the background, you can still see its output:
+
+
+  ### View Logs
+
+  ```bash
+
+  # Show all logs
+
+  docker logs <container-id>
+
+
+  # Follow logs in real-time (like tail -f)
+
+  docker logs -f <container-id>
+
+
+  # Show last 100 lines
+
+  docker logs --tail 100 <container-id>
+
+  ```
+
+
+  ### Attach to Running Container
+
+  ```bash
+
+  # Reattach to container''s output
+
+  docker attach <container-id>
+
+
+  # Detach again: Ctrl+P then Ctrl+Q
+
+  ```
+
+
+  ## Common Patterns
+
+
+  ### 1. Run Service with Name
+
+  ```bash
+
+  docker run -d --name web-server nginx:alpine
+
+  ```
+
+  Give container a memorable name instead of random ID.
+
+
+  ### 2. Run with Port Mapping
+
+  ```bash
+
+  docker run -d -p 8080:80 nginx:alpine
+
+  ```
+
+  Expose service on host port 8080.
+
+
+  ### 3. Run and Remove on Stop
+
+  ```bash
+
+  docker run -d --rm nginx:alpine
+
+  ```
+
+  Automatically remove container when it stops.
+
+
+  ### 4. Complete Production Example
+
+  ```bash
+
+  docker run -d \
+
+    --name production-web \
+
+    --restart unless-stopped \
+
+    -p 80:80 \
+
+    -v /var/www:/usr/share/nginx/html:ro \
+
+    nginx:alpine
+
+  ```
+
+
+  ## Checking Container Status
+
+
+  After running in detached mode:
+
+
+  ```bash
+
+  # List running containers
+
+  docker ps
+
+
+  # Check specific container
+
+  docker ps --filter "name=web-server"
+
+
+  # See resource usage
+
+  docker stats
+
+
+  # Inspect detailed info
+
+  docker inspect <container-id>
+
+  ```
+
+
+  ## Stopping Detached Containers
+
+
+  ```bash
+
+  # Graceful stop
+
+  docker stop <container-id>
+
+
+  # Forceful stop
+
+  docker kill <container-id>
+
+
+  # Stop and remove
+
+  docker rm -f <container-id>
+
+  ```
+
+
+  ## Pro Tips
+
+
+  1. **Always use -d for services**: Web servers, databases, and APIs should run detached
+
+
+  2. **Combine with --restart**: Ensure containers restart after crashes
+
+     ```bash
+
+     docker run -d --restart=always nginx:alpine
+
+     ```
+
+
+  3. **Use --name for easy management**: Easier than remembering container IDs
+
+     ```bash
+
+     docker logs web-server    # Better than docker logs abc123
+
+     ```
+
+
+  4. **Monitor with docker stats**: Watch resource usage in real-time
+
+     ```bash
+
+     docker stats --no-stream
+
+     ```
+
+
+  ## Syntax/Command
+
+
+  ```bash
+
+  docker run -d nginx:alpine
+
+  ```
+
+
+  ## Key Points
+
+
+  - `-d` flag runs containers in detached mode (background)
+
+  - Container keeps running after terminal closes
+
+  - Use `docker logs` to view output from detached containers
+
+  - Use `docker ps` to see running detached containers
+
+  - Essential for production services and long-running processes'
+exercises:
+- type: terminal
+  problem_statement: Run an nginx container using the alpine variant in detached mode so it runs in the background without blocking your terminal
+  expected_output: Container ID printed to stdout, container running in background
+  language: bash
+  starter_code: "# Run nginx in detached mode\n"
+  sequence_order: 1
+  command: docker run -d nginx:alpine
+  description: 'Practice the command: docker run -d nginx:alpine'
+  hints:
+  - Use the -d flag for detached mode
+  validation:
+    must_not_include:
+    - Error
+    - 'panic:'
+  timeout_sec: 60
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What does -d do?
+  options:
+  - Runs in detached mode
+  - Deletes the container
+  - Downloads image only
+  - Debug mode
+  correct_answer: Runs in detached mode
+  explanation: "The -d flag runs the container in detached mode (background), freeing up your terminal. The container runs in the background and prints only the container ID. Without -d, the container runs in the foreground and attaches to your terminal, showing all output and blocking your prompt. To delete a container, use 'docker rm', not -d."
+  require_pass: true

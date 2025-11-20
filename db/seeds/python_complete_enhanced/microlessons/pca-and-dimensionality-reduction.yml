@@ -1,0 +1,238 @@
+slug: pca-and-dimensionality-reduction
+title: PCA and Dimensionality Reduction
+sequence_order: 8
+estimated_minutes: 2
+difficulty: easy
+key_concepts: []
+content_md: "# PCA and Dimensionality Reduction \U0001F680\n\n# PCA and Dimensionality\
+  \ Reduction\n\n    Principal Component Analysis (PCA) is a powerful technique for\
+  \ reducing the number of features while preserving most of the variance in your\
+  \ data.\n\n    ## The Curse of Dimensionality\n\n    ### Problems with High Dimensions\n\
+  \n    1. **Increased computation time**\n    2. **More data needed** to avoid overfitting\n\
+  \    3. **Visualization difficulties**\n    4. **Feature redundancy** (correlated\
+  \ features)\n\n    ### Example\n    ```\n    100 features × 10,000 samples = 1,000,000\
+  \ data points\n    Reduced to 10 features = 100,000 data points (10x reduction)\n\
+  \    ```\n\n    ## What is PCA?\n\n    **Goal:** Find new axes (principal components)\
+  \ that capture maximum variance\n\n    ### Key Ideas\n\n    1. **Find directions\
+  \ of maximum variance**\n    2. **Project data onto these directions**\n    3. **Keep\
+  \ top K components**\n    4. **Reduce dimensionality**\n\n    ### Principal Components\n\
+  \n    - **PC1:** Direction of maximum variance\n    - **PC2:** Direction of 2nd\
+  \ maximum variance (perpendicular to PC1)\n    - **PC3:** Direction of 3rd maximum\
+  \ variance (perpendicular to PC1 & PC2)\n    - And so on...\n\n    ## Python Implementation\n\
+  \n    ### Basic Example\n\n    ```python\n    import numpy as np\n    import pandas\
+  \ as pd\n    from sklearn.decomposition import PCA\n    from sklearn.preprocessing\
+  \ import StandardScaler\n    import matplotlib.pyplot as plt\n\n    # Generate sample\
+  \ data\n    from sklearn.datasets import load_iris\n    iris = load_iris()\n   \
+  \ X = iris.data  # 4 features\n    y = iris.target\n\n    # IMPORTANT: Scale data\
+  \ before PCA\n    scaler = StandardScaler()\n    X_scaled = scaler.fit_transform(X)\n\
+  \n    # Apply PCA to reduce from 4D to 2D\n    pca = PCA(n_components=2)\n    X_pca\
+  \ = pca.fit_transform(X_scaled)\n\n    print(f\"Original shape: {X.shape}\")\n \
+  \   print(f\"Transformed shape: {X_pca.shape}\")\n\n    # Explained variance\n \
+  \   print(f\"\\\\nExplained variance ratio: {pca.explained_variance_ratio_}\")\n\
+  \    print(f\"Total variance explained: {pca.explained_variance_ratio_.sum():.4f}\"\
+  )\n\n    # Visualize\n    plt.figure(figsize=(10, 6))\n    scatter = plt.scatter(X_pca[:,\
+  \ 0], X_pca[:, 1], c=y, cmap='viridis', edgecolor='k')\n    plt.xlabel(f'PC1 ({pca.explained_variance_ratio_[0]:.2%}\
+  \ variance)')\n    plt.ylabel(f'PC2 ({pca.explained_variance_ratio_[1]:.2%} variance)')\n\
+  \    plt.title('PCA: Iris Dataset')\n    plt.colorbar(scatter, label='Species')\n\
+  \    plt.show()\n    ```\n\n    ## Choosing Number of Components\n\n    ### 1. Explained\
+  \ Variance\n\n    ```python\n    # Fit PCA with all components\n    pca_full = PCA()\n\
+  \    pca_full.fit(X_scaled)\n\n    # Plot cumulative explained variance\n    cumsum\
+  \ = np.cumsum(pca_full.explained_variance_ratio_)\n\n    plt.figure(figsize=(10,\
+  \ 6))\n    plt.plot(range(1, len(cumsum) + 1), cumsum, 'bo-')\n    plt.xlabel('Number\
+  \ of Components')\n    plt.ylabel('Cumulative Explained Variance')\n    plt.title('Explained\
+  \ Variance vs Components')\n    plt.axhline(y=0.95, color='r', linestyle='--', label='95%\
+  \ threshold')\n    plt.legend()\n    plt.grid(True)\n    plt.show()\n\n    # Find\
+  \ number of components for 95% variance\n    n_components_95 = np.argmax(cumsum\
+  \ >= 0.95) + 1\n    print(f\"Components needed for 95% variance: {n_components_95}\"\
+  )\n    ```\n\n    ### 2. Scree Plot\n\n    ```python\n    plt.figure(figsize=(10,\
+  \ 6))\n    plt.bar(range(1, len(pca_full.explained_variance_ratio_) + 1),\n    \
+  \        pca_full.explained_variance_ratio_)\n    plt.xlabel('Principal Component')\n\
+  \    plt.ylabel('Explained Variance Ratio')\n    plt.title('Scree Plot')\n    plt.show()\n\
+  \    ```\n\n    **How to interpret:**\n    - Look for \"elbow\" where variance drops\
+  \ significantly\n    - Keep components before the elbow\n\n    ### 3. Set Variance\
+  \ Threshold\n\n    ```python\n    # Keep 95% of variance automatically\n    pca\
+  \ = PCA(n_components=0.95)\n    X_pca = pca.fit_transform(X_scaled)\n\n    print(f\"\
+  Number of components kept: {pca.n_components_}\")\n    print(f\"Total variance retained:\
+  \ {pca.explained_variance_ratio_.sum():.4f}\")\n    ```\n\n    ## Understanding\
+  \ Components\n\n    ### Component Loadings\n\n    Show how original features contribute\
+  \ to each component\n\n    ```python\n    # Get component loadings\n    components_df\
+  \ = pd.DataFrame(\n        pca.components_,\n        columns=iris.feature_names,\n\
+  \        index=[f'PC{i+1}' for i in range(pca.n_components_)]\n    )\n\n    print(\"\
+  Component Loadings:\")\n    print(components_df)\n\n    # Visualize loadings\n \
+  \   plt.figure(figsize=(10, 6))\n    sns.heatmap(components_df, annot=True, cmap='coolwarm',\
+  \ center=0)\n    plt.title('PCA Component Loadings')\n    plt.show()\n    ```\n\n\
+  \    **Interpretation:**\n    - Large positive value: Feature increases with component\n\
+  \    - Large negative value: Feature decreases with component\n    - Near zero:\
+  \ Feature doesn't affect component\n\n    ## Real-World Example: Dimensionality\
+  \ Reduction for ML\n\n    ```python\n    import pandas as pd\n    from sklearn.decomposition\
+  \ import PCA\n    from sklearn.preprocessing import StandardScaler\n    from sklearn.ensemble\
+  \ import RandomForestClassifier\n    from sklearn.model_selection import train_test_split,\
+  \ cross_val_score\n    import time\n\n    # Load high-dimensional dataset\n    from\
+  \ sklearn.datasets import load_digits\n    digits = load_digits()\n    X = digits.data\
+  \  # 64 features (8x8 images)\n    y = digits.target\n\n    # Split data\n    X_train,\
+  \ X_test, y_train, y_test = train_test_split(\n        X, y, test_size=0.2, random_state=42\n\
+  \    )\n\n    # Scale data\n    scaler = StandardScaler()\n    X_train_scaled =\
+  \ scaler.fit_transform(X_train)\n    X_test_scaled = scaler.transform(X_test)\n\n\
+  \    # === Without PCA ===\n    print(\"=\" * 50)\n    print(\"WITHOUT PCA (64 features)\"\
+  )\n    print(\"=\" * 50)\n\n    start = time.time()\n    rf_full = RandomForestClassifier(n_estimators=100,\
+  \ random_state=42)\n    rf_full.fit(X_train_scaled, y_train)\n    time_full = time.time()\
+  \ - start\n\n    score_full = rf_full.score(X_test_scaled, y_test)\n    cv_scores_full\
+  \ = cross_val_score(rf_full, X_train_scaled, y_train, cv=5)\n\n    print(f\"Training\
+  \ time: {time_full:.2f}s\")\n    print(f\"Test accuracy: {score_full:.4f}\")\n \
+  \   print(f\"CV accuracy: {cv_scores_full.mean():.4f} (+/- {cv_scores_full.std()*2:.4f})\"\
+  )\n\n    # === With PCA ===\n    print(\"\\\\n\" + \"=\" * 50)\n    print(\"WITH\
+  \ PCA (Reduced to 95% variance)\")\n    print(\"=\" * 50)\n\n    # Apply PCA\n \
+  \   pca = PCA(n_components=0.95)\n    X_train_pca = pca.fit_transform(X_train_scaled)\n\
+  \    X_test_pca = pca.transform(X_test_scaled)\n\n    print(f\"Reduced from {X_train_scaled.shape[1]}\
+  \ to {X_train_pca.shape[1]} features\")\n    print(f\"Variance retained: {pca.explained_variance_ratio_.sum():.4f}\"\
+  )\n\n    start = time.time()\n    rf_pca = RandomForestClassifier(n_estimators=100,\
+  \ random_state=42)\n    rf_pca.fit(X_train_pca, y_train)\n    time_pca = time.time()\
+  \ - start\n\n    score_pca = rf_pca.score(X_test_pca, y_test)\n    cv_scores_pca\
+  \ = cross_val_score(rf_pca, X_train_pca, y_train, cv=5)\n\n    print(f\"Training\
+  \ time: {time_pca:.2f}s ({time_full/time_pca:.1f}x speedup)\")\n    print(f\"Test\
+  \ accuracy: {score_pca:.4f}\")\n    print(f\"CV accuracy: {cv_scores_pca.mean():.4f}\
+  \ (+/- {cv_scores_pca.std()*2:.4f})\")\n\n    # Summary\n    print(\"\\\\n\" + \"\
+  =\" * 50)\n    print(\"SUMMARY\")\n    print(\"=\" * 50)\n    print(f\"Feature reduction:\
+  \ {X.shape[1]} → {X_train_pca.shape[1]} \"\n          f\"({X_train_pca.shape[1]/X.shape[1]:.1%})\"\
+  )\n    print(f\"Speed improvement: {time_full/time_pca:.1f}x faster\")\n    print(f\"\
+  Accuracy change: {score_pca - score_full:+.4f}\")\n    ```\n\n    ## PCA for Visualization\n\
+  \n    ### Visualize High-Dimensional Data in 2D/3D\n\n    ```python\n    from sklearn.datasets\
+  \ import load_wine\n    import matplotlib.pyplot as plt\n    from mpl_toolkits.mplot3d\
+  \ import Axes3D\n\n    # Load dataset (13 features)\n    wine = load_wine()\n  \
+  \  X = wine.data\n    y = wine.target\n\n    # Scale\n    scaler = StandardScaler()\n\
+  \    X_scaled = scaler.fit_transform(X)\n\n    # PCA to 2D\n    pca_2d = PCA(n_components=2)\n\
+  \    X_2d = pca_2d.fit_transform(X_scaled)\n\n    # PCA to 3D\n    pca_3d = PCA(n_components=3)\n\
+  \    X_3d = pca_3d.fit_transform(X_scaled)\n\n    # Plot 2D\n    plt.figure(figsize=(14,\
+  \ 6))\n\n    plt.subplot(1, 2, 1)\n    for i, target_name in enumerate(wine.target_names):\n\
+  \        plt.scatter(X_2d[y==i, 0], X_2d[y==i, 1], label=target_name, alpha=0.8)\n\
+  \    plt.xlabel(f'PC1 ({pca_2d.explained_variance_ratio_[0]:.2%})')\n    plt.ylabel(f'PC2\
+  \ ({pca_2d.explained_variance_ratio_[1]:.2%})')\n    plt.title(f'PCA 2D (Total:\
+  \ {pca_2d.explained_variance_ratio_.sum():.2%} variance)')\n    plt.legend()\n \
+  \   plt.grid(True)\n\n    # Plot 3D\n    ax = plt.subplot(1, 2, 2, projection='3d')\n\
+  \    for i, target_name in enumerate(wine.target_names):\n        ax.scatter(X_3d[y==i,\
+  \ 0], X_3d[y==i, 1], X_3d[y==i, 2], label=target_name, alpha=0.8)\n    ax.set_xlabel(f'PC1\
+  \ ({pca_3d.explained_variance_ratio_[0]:.2%})')\n    ax.set_ylabel(f'PC2 ({pca_3d.explained_variance_ratio_[1]:.2%})')\n\
+  \    ax.set_zlabel(f'PC3 ({pca_3d.explained_variance_ratio_[2]:.2%})')\n    ax.set_title(f'PCA\
+  \ 3D (Total: {pca_3d.explained_variance_ratio_.sum():.2%} variance)')\n    ax.legend()\n\
+  \n    plt.tight_layout()\n    plt.show()\n    ```\n\n    ## Inverse Transform\n\n\
+  \    Reconstruct original data from reduced dimensions\n\n    ```python\n    # Original\
+  \ data\n    X_original = X_scaled\n\n    # Apply PCA\n    pca = PCA(n_components=2)\n\
+  \    X_reduced = pca.fit_transform(X_original)\n\n    # Reconstruct\n    X_reconstructed\
+  \ = pca.inverse_transform(X_reduced)\n\n    # Calculate reconstruction error\n \
+  \   reconstruction_error = np.mean((X_original - X_reconstructed) ** 2)\n    print(f\"\
+  Reconstruction error: {reconstruction_error:.6f}\")\n\n    # Visualize (for images)\n\
+  \    # Original vs reconstructed\n    ```\n\n    ## Other Dimensionality Reduction\
+  \ Techniques\n\n    ### 1. t-SNE (t-Distributed Stochastic Neighbor Embedding)\n\
+  \n    Better for visualization, preserves local structure\n\n    ```python\n   \
+  \ from sklearn.manifold import TSNE\n\n    tsne = TSNE(n_components=2, random_state=42)\n\
+  \    X_tsne = tsne.fit_transform(X_scaled)\n\n    plt.scatter(X_tsne[:, 0], X_tsne[:,\
+  \ 1], c=y, cmap='viridis')\n    plt.title('t-SNE Visualization')\n    plt.colorbar()\n\
+  \    plt.show()\n    ```\n\n    **PCA vs t-SNE:**\n    - **PCA:** Linear, fast,\
+  \ preserves global structure\n    - **t-SNE:** Non-linear, slower, preserves local\
+  \ structure, better for visualization\n\n    ### 2. Truncated SVD (for sparse data)\n\
+  \n    ```python\n    from sklearn.decomposition import TruncatedSVD\n\n    # Works\
+  \ with sparse matrices (e.g., text data)\n    svd = TruncatedSVD(n_components=50)\n\
+  \    X_reduced = svd.fit_transform(X_sparse)\n    ```\n\n    ### 3. UMAP (Uniform\
+  \ Manifold Approximation and Projection)\n\n    ```python\n    import umap\n\n \
+  \   reducer = umap.UMAP(n_components=2, random_state=42)\n    X_umap = reducer.fit_transform(X_scaled)\n\
+  \n    plt.scatter(X_umap[:, 0], X_umap[:, 1], c=y, cmap='viridis')\n    plt.title('UMAP\
+  \ Visualization')\n    plt.show()\n    ```\n\n    ## Advantages\n\n    ✅ Reduces\
+  \ dimensionality while preserving variance\n    ✅ Removes correlated features\n\
+  \    ✅ Speeds up training\n    ✅ Reduces overfitting\n    ✅ Enables visualization\
+  \ of high-D data\n    ✅ Removes noise\n\n    ## Disadvantages\n\n    ❌ Components\
+  \ are not interpretable\n    ❌ Requires feature scaling\n    ❌ Linear method (may\
+  \ miss non-linear patterns)\n    ❌ Sensitive to outliers\n    ❌ Can't apply to new\
+  \ data without retraining\n\n    ## When to Use PCA\n\n    ### ✅ Good Fit\n    -\
+  \ High-dimensional data (many features)\n    - Correlated features\n    - Need faster\
+  \ training\n    - Visualization needed\n    - Reduce overfitting\n\n    ### ❌ Not\
+  \ Good Fit\n    - Features already independent\n    - Need interpretability\n  \
+  \  - Non-linear relationships\n    - Very few features\n\n    ## Best Practices\n\
+  \n    1. **Always scale data first** (PCA is sensitive to scale)\n    2. **Choose\
+  \ components** based on explained variance (e.g., 95%)\n    3. **Check cumulative\
+  \ variance** to understand information loss\n    4. **Use for preprocessing** before\
+  \ ML algorithms\n    5. **Consider t-SNE/UMAP** for visualization only\n    6. **Save\
+  \ scaler and PCA** for transforming new data\n    7. **Interpret components** via\
+  \ loadings if needed\n\n    ## Key Takeaways\n\n    1. **PCA reduces dimensions**\
+  \ while preserving variance\n    2. **Principal components** are uncorrelated\n\
+  \    3. **Always scale** before PCA\n    4. **Choose components** based on variance\
+  \ threshold\n    5. **Speeds up ML** and reduces overfitting\n    6. **Great for\
+  \ visualization** of high-D data\n    7. **Linear method** - may miss non-linear\
+  \ patterns\n    8. **Components not interpretable** like original features\n\n \
+  \   ## Next Steps\n\n    - Practice with high-dimensional datasets\n    - Experiment\
+  \ with different variance thresholds\n    - Compare PCA vs t-SNE for visualization\n\
+  \    - Apply PCA before ML models\n    - Learn about kernel PCA for non-linear patterns"
+exercises:
+- type: mcq
+  slug: pca-and-dimensionality-reduction-mcq-1
+  sequence_order: 1
+  question: What is the primary goal of PCA (Principal Component Analysis)?
+  options:
+  - Find new axes that capture maximum variance while reducing dimensionality
+  - Remove all outliers from the dataset
+  - Convert categorical features to numerical ones
+  - Increase the number of features for better accuracy
+  correct_answer_index: 0
+  explanation: PCA finds principal components (new axes) that capture the directions
+    of maximum variance in the data. By projecting data onto the top K components,
+    we reduce dimensionality while preserving most of the information (variance) in
+    the original dataset.
+- type: mcq
+  slug: pca-and-dimensionality-reduction-mcq-2
+  sequence_order: 2
+  question: Why is it critical to scale your features before applying PCA?
+  options:
+  - PCA is sensitive to feature scales; unscaled features with larger ranges will
+    dominate the principal components
+  - Scaling makes PCA run faster
+  - PCA cannot mathematically work without scaled features
+  - Scaling is optional and doesn't affect results
+  correct_answer_index: 0
+  explanation: PCA finds directions of maximum variance, and variance is scale-dependent.
+    If one feature ranges from 0-1000 and another from 0-1, the first will dominate
+    the variance calculation. StandardScaler ensures all features contribute proportionally
+    to finding principal components.
+- type: mcq
+  slug: pca-and-dimensionality-reduction-mcq-3
+  sequence_order: 3
+  question: If PCA shows that the first 3 components explain 95% of variance in your
+    50-feature dataset, what does this tell you?
+  options:
+  - Most information in the data can be captured by just 3 dimensions; the other 47
+    features are largely redundant
+  - You should always use exactly 3 features
+  - The dataset has errors and needs cleaning
+  - PCA failed to work properly
+  correct_answer_index: 0
+  explanation: When a small number of components capture most variance, it indicates
+    high correlation/redundancy among original features. You can reduce from 50 to
+    3 dimensions while retaining 95% of the information, dramatically simplifying
+    the problem and speeding up training with minimal information loss.
+- type: terminal
+  slug: pca-and-dimensionality-reduction-term
+  sequence_order: 4
+  description: Test PCA dimensionality reduction
+  command: 'python - << "PY" from sklearn.decomposition import PCA from sklearn.preprocessing
+    import StandardScaler from sklearn.datasets import load_iris iris = load_iris()
+    X = iris.data scaler = StandardScaler() X_scaled = scaler.fit_transform(X) pca
+    = PCA(n_components=2) X_pca = pca.fit_transform(X_scaled) print(f"Original shape:
+    {X.shape}") print(f"Reduced shape: {X_pca.shape}") print(f"Explained variance:
+    {pca.explained_variance_ratio_}") print(f"Total variance retained: {pca.explained_variance_ratio_.sum():.2%}")
+    PY'
+  validation:
+    must_not_include:
+    - Traceback
+    - SyntaxError
+  hints:
+  - If `python` is not available, try `python3`.
+  - Make sure scikit-learn is installed.
+objectives:
+- Understand the curse of dimensionality and why dimensionality reduction matters
+- Apply PCA to reduce features while preserving variance
+- Always scale features before PCA to prevent scale-dependent results
+- Choose appropriate number of components using explained variance ratio
+- Interpret principal components and their loadings
+- Use PCA for visualization (2D/3D) of high-dimensional data
+- Distinguish between PCA (linear) and t-SNE/UMAP (non-linear) for different use cases
+next_recommended:
+- control
+- data-structures

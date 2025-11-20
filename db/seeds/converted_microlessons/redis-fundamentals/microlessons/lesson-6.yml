@@ -1,0 +1,269 @@
+slug: lesson-6
+title: Lesson 6
+difficulty: easy
+sequence_order: 6
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Production Redis Patterns\n\n    Running\
+  \ Redis in production requires understanding high availability, persistence, optimization,\
+  \ and monitoring.\n\n    ## High Availability Options\n\n    ### 1. Redis Sentinel\n\
+  \n    **Automatic failover and monitoring for master-replica setups**\n\n    ```\n\
+  \    ┌────────────┐         ┌────────────┐         ┌────────────┐\n    │ Sentinel\
+  \ 1 │         │ Sentinel 2 │         │ Sentinel 3 │\n    └─────┬──────┘        \
+  \ └─────┬──────┘         └─────┬──────┘\n          │                      │    \
+  \                  │\n          └──────────────┬───────┴──────────────────────┘\n\
+  \                         │ Monitor & Vote\n                         ▼\n       \
+  \       ┌──────────────────┐\n              │   Master Redis   │\n             \
+  \ └────────┬─────────┘\n                       │ Replicate\n           ┌───────────┼───────────┐\n\
+  \           ▼           ▼           ▼\n    ┌──────────┐ ┌──────────┐ ┌──────────┐\n\
+  \    │ Replica 1│ │ Replica 2│ │ Replica 3│\n    └──────────┘ └──────────┘ └──────────┘\n\
+  \    ```\n\n    **Configuration (redis.conf for replica):**\n\n    ```conf\n   \
+  \ # Replica configuration\n    replicaof <master-ip> <master-port>\n    masterauth\
+  \ <password>\n    replica-read-only yes\n    ```\n\n    **Sentinel configuration\
+  \ (sentinel.conf):**\n\n    ```conf\n    # Monitor master\n    sentinel monitor\
+  \ mymaster 127.0.0.1 6379 2\n    sentinel auth-pass mymaster yourpassword\n    sentinel\
+  \ down-after-milliseconds mymaster 5000\n    sentinel parallel-syncs mymaster 1\n\
+  \    sentinel failover-timeout mymaster 10000\n    ```\n\n    **Connecting with\
+  \ Sentinel (Python):**\n\n    ```python\n    from redis.sentinel import Sentinel\n\
+  \n    # Sentinel configuration\n    sentinel = Sentinel([\n        ('localhost',\
+  \ 26379),\n        ('localhost', 26380),\n        ('localhost', 26381)\n    ], socket_timeout=0.1)\n\
+  \n    # Get master connection (for writes)\n    master = sentinel.master_for('mymaster',\
+  \ socket_timeout=0.1)\n    master.set('key', 'value')\n\n    # Get replica connection\
+  \ (for reads)\n    replica = sentinel.slave_for('mymaster', socket_timeout=0.1)\n\
+  \    value = replica.get('key')\n\n    # Automatic failover handling\n    def safe_write(key,\
+  \ value):\n        try:\n            master = sentinel.master_for('mymaster', socket_timeout=0.1)\n\
+  \            master.set(key, value)\n            return True\n        except Exception\
+  \ as e:\n            print(f'Write failed: {e}')\n            return False\n   \
+  \ ```\n\n    **Connecting with Sentinel (Node.js):**\n\n    ```javascript\n    const\
+  \ Redis = require('ioredis');\n\n    // Sentinel configuration\n    const redis\
+  \ = new Redis({\n        sentinels: [\n            { host: 'localhost', port: 26379\
+  \ },\n            { host: 'localhost', port: 26380 },\n            { host: 'localhost',\
+  \ port: 26381 }\n        ],\n        name: 'mymaster',\n        password: 'yourpassword'\n\
+  \    });\n\n    // Automatic failover is handled automatically\n    await redis.set('key',\
+  \ 'value');\n    ```\n\n    **When to use Sentinel:**\n    - Simple master-replica\
+  \ setup\n    - Automatic failover needed\n    - Up to a few hundred GB of data\n\
+  \n    ### 2. Redis Cluster\n\n    **Distributed Redis with automatic sharding and\
+  \ failover**\n\n    ```\n    Cluster with 3 master nodes, each with 1 replica:\n\
+  \n    Master 1        Master 2        Master 3\n    (0-5460)       (5461-10922)\
+  \    (10923-16383)\n        │               │               │\n        ▼       \
+  \        ▼               ▼\n    Replica 1       Replica 2       Replica 3\n\n  \
+  \  Data automatically sharded across masters by hash slot\n    ```\n\n    **Cluster\
+  \ configuration (redis.conf):**\n\n    ```conf\n    # Enable cluster\n    cluster-enabled\
+  \ yes\n    cluster-config-file nodes.conf\n    cluster-node-timeout 5000\n    appendonly\
+  \ yes\n    ```\n\n    **Creating a cluster:**\n\n    ```bash\n    # Start 6 Redis\
+  \ instances (3 masters, 3 replicas)\n    redis-server --port 7000 --cluster-enabled\
+  \ yes --cluster-config-file nodes-7000.conf\n    redis-server --port 7001 --cluster-enabled\
+  \ yes --cluster-config-file nodes-7001.conf\n    # ... repeat for ports 7002-7005\n\
+  \n    # Create cluster\n    redis-cli --cluster create \\\\\n      127.0.0.1:7000\
+  \ 127.0.0.1:7001 127.0.0.1:7002 \\\\\n      127.0.0.1:7003 127.0.0.1:7004 127.0.0.1:7005\
+  \ \\\\\n      --cluster-replicas 1\n    ```\n\n    **Connecting to cluster (Python):**\n\
+  \n    ```python\n    from redis.cluster import RedisCluster\n\n    # Cluster connection\n\
+  \    rc = RedisCluster(\n        startup_nodes=[\n            {\"host\": \"127.0.0.1\"\
+  , \"port\": \"7000\"},\n            {\"host\": \"127.0.0.1\", \"port\": \"7001\"\
+  },\n            {\"host\": \"127.0.0.1\", \"port\": \"7002\"}\n        ],\n    \
+  \    decode_responses=True\n    )\n\n    # Works transparently - client handles\
+  \ routing\n    rc.set('key', 'value')\n    value = rc.get('key')\n\n    # Multi-key\
+  \ operations require same hash slot\n    # Use hash tags to ensure same slot\n \
+  \   rc.set('{user:1000}:name', 'Alice')\n    rc.set('{user:1000}:email', 'alice@example.com')\n\
+  \n    # These will be on same node due to {user:1000} hash tag\n    pipe = rc.pipeline()\n\
+  \    pipe.get('{user:1000}:name')\n    pipe.get('{user:1000}:email')\n    results\
+  \ = pipe.execute()\n    ```\n\n    **Connecting to cluster (Node.js):**\n\n    ```javascript\n\
+  \    const Redis = require('ioredis');\n\n    const cluster = new Redis.Cluster([\n\
+  \        { port: 7000, host: '127.0.0.1' },\n        { port: 7001, host: '127.0.0.1'\
+  \ },\n        { port: 7002, host: '127.0.0.1' }\n    ]);\n\n    // Automatic routing\n\
+  \    await cluster.set('key', 'value');\n\n    // Hash tags for multi-key operations\n\
+  \    await cluster.set('{user:1000}:name', 'Alice');\n    await cluster.set('{user:1000}:email',\
+  \ 'alice@example.com');\n    ```\n\n    **When to use Cluster:**\n    - Need to\
+  \ scale beyond single server\n    - Horizontal scaling required\n    - Multi-TB\
+  \ datasets\n    - High write throughput\n\n    ## Persistence\n\n    **Redis offers\
+  \ two persistence mechanisms**\n\n    ### 1. RDB (Redis Database Backup)\n\n   \
+  \ **Point-in-time snapshots**\n\n    ```conf\n    # Save snapshot if:\n    # - At\
+  \ least 1 key changed in 900 seconds (15 min)\n    # - At least 10 keys changed\
+  \ in 300 seconds (5 min)\n    # - At least 10000 keys changed in 60 seconds (1 min)\n\
+  \    save 900 1\n    save 300 10\n    save 60 10000\n\n    # Snapshot file\n   \
+  \ dbfilename dump.rdb\n    dir /var/lib/redis\n\n    # Compression\n    rdbcompression\
+  \ yes\n\n    # Checksum\n    rdbchecksum yes\n\n    # Stop writes if save fails\n\
+  \    stop-writes-on-bgsave-error yes\n    ```\n\n    **Manual snapshots:**\n\n \
+  \   ```bash\n    # Blocking save\n    redis-cli SAVE\n\n    # Background save\n\
+  \    redis-cli BGSAVE\n\n    # Check last save time\n    redis-cli LASTSAVE\n  \
+  \  ```\n\n    **Pros:**\n    - Compact single file\n    - Fast restart\n    - Good\
+  \ for backups\n    - Minimal performance impact\n\n    **Cons:**\n    - Can lose\
+  \ data since last snapshot\n    - Fork can be slow for large datasets\n    - Not\
+  \ for strict durability\n\n    ### 2. AOF (Append-Only File)\n\n    **Logs every\
+  \ write operation**\n\n    ```conf\n    # Enable AOF\n    appendonly yes\n    appendfilename\
+  \ \"appendonly.aof\"\n\n    # Fsync policy\n    appendfsync everysec  # Options:\
+  \ always, everysec, no\n\n    # Auto rewrite\n    auto-aof-rewrite-percentage 100\n\
+  \    auto-aof-rewrite-min-size 64mb\n\n    # Load AOF on startup\n    aof-load-truncated\
+  \ yes\n    ```\n\n    **AOF fsync policies:**\n\n    1. **always** - Fsync after\
+  \ every write\n       - Most durable\n       - Slowest (1000x slower than everysec)\n\
+  \n    2. **everysec** - Fsync every second (default)\n       - Good balance\n  \
+  \     - May lose 1 second of data\n\n    3. **no** - Let OS decide when to fsync\n\
+  \       - Fastest\n       - Can lose significant data\n\n    **Manual AOF operations:**\n\
+  \n    ```bash\n    # Trigger rewrite\n    redis-cli BGREWRITEAOF\n\n    # Check\
+  \ AOF status\n    redis-cli INFO persistence\n    ```\n\n    **Pros:**\n    - More\
+  \ durable (less data loss)\n    - Append-only (less corruption)\n    - Auto-rewrite\
+  \ when too large\n\n    **Cons:**\n    - Larger files than RDB\n    - Slower restart\n\
+  \    - Potentially slower writes\n\n    ### Hybrid Persistence (RDB + AOF)\n\n \
+  \   **Best of both worlds**\n\n    ```conf\n    # Enable both\n    save 900 1\n\
+  \    save 300 10\n    save 60 10000\n    appendonly yes\n    appendfsync everysec\n\
+  \n    # Use RDB format in AOF rewrites (faster)\n    aof-use-rdb-preamble yes\n\
+  \    ```\n\n    ## Memory Optimization\n\n    ### 1. Eviction Policies\n\n    **What\
+  \ to do when max memory is reached**\n\n    ```conf\n    # Set max memory\n    maxmemory\
+  \ 2gb\n\n    # Eviction policy\n    maxmemory-policy allkeys-lru\n    ```\n\n  \
+  \  **Available policies:**\n\n    - **noeviction** - Return errors when memory full\
+  \ (default)\n    - **allkeys-lru** - Evict least recently used keys\n    - **allkeys-lfu**\
+  \ - Evict least frequently used keys\n    - **volatile-lru** - Evict LRU keys with\
+  \ TTL\n    - **volatile-lfu** - Evict LFU keys with TTL\n    - **volatile-ttl**\
+  \ - Evict keys with shortest TTL\n    - **volatile-random** - Random eviction of\
+  \ keys with TTL\n    - **allkeys-random** - Random eviction of any keys\n\n    **Choosing\
+  \ a policy:**\n\n    ```python\n    # For cache (OK to lose any data)\n    # maxmemory-policy\
+  \ allkeys-lru\n\n    # For cache with explicit TTLs\n    # maxmemory-policy volatile-lru\n\
+  \n    # For session storage (never evict)\n    # maxmemory-policy noeviction\n \
+  \   ```\n\n    ### 2. Memory Usage Analysis\n\n    ```bash\n    # Check memory usage\n\
+  \    redis-cli INFO memory\n\n    # Memory usage by key\n    redis-cli --bigkeys\n\
+  \n    # Detailed memory analysis\n    redis-cli --memkeys\n\n    # Memory usage\
+  \ of specific key\n    redis-cli MEMORY USAGE key\n\n    # Sample memory usage\n\
+  \    redis-cli --memkeys --memkeys-samples 10000\n    ```\n\n    **Optimizing memory:**\n\
+  \n    ```python\n    # Use hashes for small objects (< 512 fields)\n    # More memory\
+  \ efficient than separate keys\n\n    # Instead of:\n    r.set('user:1000:name',\
+  \ 'Alice')\n    r.set('user:1000:email', 'alice@example.com')\n    r.set('user:1000:age',\
+  \ '30')\n\n    # Use:\n    r.hset('user:1000', mapping={\n        'name': 'Alice',\n\
+  \        'email': 'alice@example.com',\n        'age': '30'\n    })\n\n    # Compress\
+  \ large values\n    import zlib\n    import json\n\n    data = {'large': 'object'\
+  \ * 1000}\n    compressed = zlib.compress(json.dumps(data).encode())\n    r.set('key',\
+  \ compressed)\n\n    # Decompress\n    compressed_data = r.get('key')\n    data\
+  \ = json.loads(zlib.decompress(compressed_data))\n    ```\n\n    ### 3. Data Structure\
+  \ Tuning\n\n    ```conf\n    # Hash optimization\n    hash-max-ziplist-entries 512\n\
+  \    hash-max-ziplist-value 64\n\n    # List optimization\n    list-max-ziplist-size\
+  \ -2\n    list-compress-depth 0\n\n    # Set optimization\n    set-max-intset-entries\
+  \ 512\n\n    # Sorted set optimization\n    zset-max-ziplist-entries 128\n    zset-max-ziplist-value\
+  \ 64\n    ```\n\n    ## Connection Pooling\n\n    **Reuse connections for better\
+  \ performance**\n\n    **Python connection pool:**\n\n    ```python\n    import\
+  \ redis\n\n    # Create pool\n    pool = redis.ConnectionPool(\n        host='localhost',\n\
+  \        port=6379,\n        db=0,\n        max_connections=50,\n        decode_responses=True\n\
+  \    )\n\n    # Get connection from pool\n    r = redis.Redis(connection_pool=pool)\n\
+  \n    # Use normally\n    r.set('key', 'value')\n\n    # Connection automatically\
+  \ returned to pool\n\n    # For multiple Redis instances\n    class RedisPool:\n\
+  \        def __init__(self):\n            self.pools = {}\n\n        def get_connection(self,\
+  \ host='localhost', port=6379, db=0):\n            key = f'{host}:{port}:{db}'\n\
+  \n            if key not in self.pools:\n                self.pools[key] = redis.ConnectionPool(\n\
+  \                    host=host,\n                    port=port,\n              \
+  \      db=db,\n                    max_connections=50\n                )\n\n   \
+  \         return redis.Redis(connection_pool=self.pools[key])\n\n    redis_pool\
+  \ = RedisPool()\n    r1 = redis_pool.get_connection('localhost', 6379, 0)\n    r2\
+  \ = redis_pool.get_connection('localhost', 6379, 1)\n    ```\n\n    **Node.js connection\
+  \ pool:**\n\n    ```javascript\n    const Redis = require('ioredis');\n\n    //\
+  \ ioredis has built-in connection pooling\n    const redis = new Redis({\n     \
+  \   host: 'localhost',\n        port: 6379,\n        // Connection pool settings\n\
+  \        maxRetriesPerRequest: 3,\n        enableReadyCheck: true,\n        enableOfflineQueue:\
+  \ true,\n\n        // Reconnection strategy\n        retryStrategy(times) {\n  \
+  \          const delay = Math.min(times * 50, 2000);\n            return delay;\n\
+  \        }\n    });\n\n    // For multiple connections\n    class RedisPool {\n\
+  \        constructor() {\n            this.connections = new Map();\n        }\n\
+  \n        getConnection(host = 'localhost', port = 6379, db = 0) {\n           \
+  \ const key = \\`\\${host}:\\${port}:\\${db}\\`;\n\n            if (!this.connections.has(key))\
+  \ {\n                this.connections.set(key, new Redis({\n                   \
+  \ host,\n                    port,\n                    db\n                }));\n\
+  \            }\n\n            return this.connections.get(key);\n        }\n   \
+  \ }\n    ```\n\n    ## Monitoring and Debugging\n\n    ### 1. INFO Command\n\n \
+  \   ```bash\n    # All info\n    redis-cli INFO\n\n    # Specific sections\n   \
+  \ redis-cli INFO server\n    redis-cli INFO memory\n    redis-cli INFO stats\n \
+  \   redis-cli INFO replication\n    redis-cli INFO cpu\n    redis-cli INFO persistence\n\
+  \    redis-cli INFO keyspace\n    ```\n\n    ### 2. Monitoring Commands\n\n    ```bash\n\
+  \    # Monitor all commands in real-time\n    redis-cli MONITOR\n\n    # Slow query\
+  \ log\n    redis-cli SLOWLOG GET 10\n\n    # Configure slow log\n    CONFIG SET\
+  \ slowlog-log-slower-than 10000  # 10ms\n    CONFIG SET slowlog-max-len 128\n\n\
+  \    # Client list\n    redis-cli CLIENT LIST\n\n    # Kill client\n    redis-cli\
+  \ CLIENT KILL <ip:port>\n\n    # Current operations\n    redis-cli CLIENT GETNAME\n\
+  \    ```\n\n    ### 3. Performance Testing\n\n    ```bash\n    # Benchmark\n   \
+  \ redis-benchmark -h localhost -p 6379 -c 50 -n 100000\n\n    # Specific commands\n\
+  \    redis-benchmark -t set,get -n 100000 -q\n\n    # With pipelining\n    redis-benchmark\
+  \ -t set,get -n 100000 -P 16 -q\n    ```\n\n    ### 4. Debugging in Code\n\n   \
+  \ ```python\n    import redis\n    import time\n\n    class RedisDebugger:\n   \
+  \     def __init__(self, redis_client):\n            self.r = redis_client\n\n \
+  \       def timed_operation(self, operation_name, func):\n            \"\"\"Time\
+  \ an operation\"\"\"\n            start = time.time()\n            result = func()\n\
+  \            elapsed = (time.time() - start) * 1000  # ms\n\n            if elapsed\
+  \ > 10:  # Log slow operations\n                print(f'SLOW: {operation_name} took\
+  \ {elapsed:.2f}ms')\n\n            return result\n\n        def check_key_size(self,\
+  \ key):\n            \"\"\"Check memory usage of key\"\"\"\n            memory_bytes\
+  \ = self.r.memory_usage(key)\n            key_type = self.r.type(key)\n\n      \
+  \      if key_type == 'string':\n                length = self.r.strlen(key)\n \
+  \           elif key_type == 'list':\n                length = self.r.llen(key)\n\
+  \            elif key_type == 'set':\n                length = self.r.scard(key)\n\
+  \            elif key_type == 'zset':\n                length = self.r.zcard(key)\n\
+  \            elif key_type == 'hash':\n                length = self.r.hlen(key)\n\
+  \            else:\n                length = None\n\n            return {\n    \
+  \            'type': key_type,\n                'memory': memory_bytes,\n      \
+  \          'length': length\n            }\n\n        def find_large_keys(self,\
+  \ pattern='*', sample_size=1000):\n            \"\"\"Find large keys\"\"\"\n   \
+  \         large_keys = []\n\n            for key in self.r.scan_iter(match=pattern,\
+  \ count=100):\n                size_info = self.check_key_size(key)\n          \
+  \      if size_info['memory'] and size_info['memory'] > 1024 * 1024:  # 1MB\n  \
+  \                  large_keys.append((key, size_info))\n\n                if len(large_keys)\
+  \ >= sample_size:\n                    break\n\n            return sorted(large_keys,\
+  \ key=lambda x: x[1]['memory'], reverse=True)\n\n    # Usage\n    debugger = RedisDebugger(r)\n\
+  \n    # Time operation\n    result = debugger.timed_operation(\n        'get_user',\n\
+  \        lambda: r.hgetall('user:1000')\n    )\n\n    # Check key size\n    info\
+  \ = debugger.check_key_size('user:1000')\n    print(f\"Memory: {info['memory']}\
+  \ bytes, Length: {info['length']}\")\n\n    # Find large keys\n    large = debugger.find_large_keys()\n\
+  \    for key, info in large[:10]:\n        print(f\"{key}: {info['memory']} bytes\"\
+  )\n    ```\n\n    ## Common Pitfalls\n\n    ### 1. KEYS Command in Production\n\n\
+  \    ```python\n    # ❌ NEVER in production - blocks server\n    keys = r.keys('user:*')\n\
+  \n    # ✅ Use SCAN instead\n    def scan_keys(pattern):\n        keys = []\n   \
+  \     cursor = 0\n        while True:\n            cursor, batch = r.scan(cursor,\
+  \ match=pattern, count=100)\n            keys.extend(batch)\n            if cursor\
+  \ == 0:\n                break\n        return keys\n\n    keys = scan_keys('user:*')\n\
+  \    ```\n\n    ### 2. Large Collections\n\n    ```python\n    # ❌ Don't store millions\
+  \ of items in one key\n    for i in range(1000000):\n        r.sadd('all_users',\
+  \ i)  # Huge memory, slow operations\n\n    # ✅ Shard across multiple keys\n   \
+  \ def get_shard_key(user_id, num_shards=100):\n        shard = user_id % num_shards\n\
+  \        return f'users:shard:{shard}'\n\n    def add_user(user_id):\n        r.sadd(get_shard_key(user_id),\
+  \ user_id)\n    ```\n\n    ### 3. Missing Expiration\n\n    ```python\n    # ❌ No\
+  \ expiration - memory leak\n    r.set('temp:data', value)\n\n    # ✅ Always set\
+  \ expiration for temporary data\n    r.set('temp:data', value, ex=3600)\n\n    #\
+  \ ✅ Set default TTL for keys\n    def safe_set(key, value, ttl=3600):\n        r.set(key,\
+  \ value, ex=ttl)\n    ```\n\n    ### 4. Pipeline vs Transaction\n\n    ```python\n\
+  \    # Pipeline - faster, not atomic\n    pipe = r.pipeline(transaction=False)\n\
+  \    pipe.set('key1', 'value1')\n    pipe.set('key2', 'value2')\n    pipe.execute()\n\
+  \n    # Transaction - atomic, slower\n    pipe = r.pipeline(transaction=True)\n\
+  \    pipe.multi()\n    pipe.set('key1', 'value1')\n    pipe.set('key2', 'value2')\n\
+  \    pipe.execute()\n\n    # Watch for concurrent modifications\n    with r.pipeline()\
+  \ as pipe:\n        while True:\n            try:\n                pipe.watch('balance')\n\
+  \                balance = int(pipe.get('balance') or 0)\n\n                if balance\
+  \ >= 100:\n                    pipe.multi()\n                    pipe.decrby('balance',\
+  \ 100)\n                    pipe.execute()\n                    break\n        \
+  \        else:\n                    pipe.unwatch()\n                    raise ValueError('Insufficient\
+  \ balance')\n            except redis.WatchError:\n                continue  # Retry\n\
+  \    ```\n\n    ### 5. Connection Leaks\n\n    ```python\n    # ❌ Creating new connections\n\
+  \    def get_user(user_id):\n        r = redis.Redis()  # New connection each time!\n\
+  \        return r.hgetall(f'user:{user_id}')\n\n    # ✅ Reuse connection pool\n\
+  \    pool = redis.ConnectionPool()\n\n    def get_user(user_id):\n        r = redis.Redis(connection_pool=pool)\n\
+  \        return r.hgetall(f'user:{user_id}')\n    ```\n\n    ## Production Checklist\n\
+  \n    - [ ] **High Availability**: Sentinel or Cluster configured\n    - [ ] **Persistence**:\
+  \ RDB and/or AOF enabled\n    - [ ] **Memory**: maxmemory and eviction policy set\n\
+  \    - [ ] **Security**: requirepass and bind configured\n    - [ ] **Connection\
+  \ Pool**: Using connection pooling\n    - [ ] **Monitoring**: INFO, SLOWLOG monitoring\n\
+  \    - [ ] **Backups**: Regular RDB backups to S3/similar\n    - [ ] **TTLs**: All\
+  \ temporary keys have expiration\n    - [ ] **Testing**: Load tested for expected\
+  \ traffic\n    - [ ] **Documentation**: Runbooks for common issues\n\n    ## Recommended\
+  \ Configuration\n\n    ```conf\n    # redis.conf for production\n\n    # Network\n\
+  \    bind 127.0.0.1\n    port 6379\n    protected-mode yes\n    tcp-backlog 511\n\
+  \    timeout 0\n    tcp-keepalive 300\n\n    # Security\n    requirepass yourSecurePasswordHere\n\
+  \n    # Memory\n    maxmemory 2gb\n    maxmemory-policy allkeys-lru\n\n    # Persistence\n\
+  \    save 900 1\n    save 300 10\n    save 60 10000\n    appendonly yes\n    appendfsync\
+  \ everysec\n    aof-use-rdb-preamble yes\n\n    # Replication (for replicas)\n \
+  \   # replicaof <master-ip> 6379\n    # masterauth <master-password>\n\n    # Logging\n\
+  \    loglevel notice\n    logfile /var/log/redis/redis.log\n\n    # Slow log\n \
+  \   slowlog-log-slower-than 10000\n    slowlog-max-len 128\n\n    # Client output\
+  \ buffer limits\n    client-output-buffer-limit normal 0 0 0\n    client-output-buffer-limit\
+  \ replica 256mb 64mb 60\n    client-output-buffer-limit pubsub 32mb 8mb 60\n   \
+  \ ```\n\n    ## Summary\n\n    **Redis in production requires:**\n\n    1. **High\
+  \ Availability** - Sentinel or Cluster\n    2. **Persistence** - RDB and/or AOF\n\
+  \    3. **Memory Management** - Eviction policies and monitoring\n    4. **Connection\
+  \ Pooling** - Efficient resource usage\n    5. **Monitoring** - INFO, SLOWLOG, metrics\n\
+  \    6. **Best Practices** - Avoid KEYS, use SCAN, set TTLs\n\n    Congratulations!\
+  \ You now have the knowledge to build high-performance, production-ready systems\
+  \ with Redis!"
+exercises: []

@@ -1,0 +1,59 @@
+slug: vanthofffactor-practice
+title: vant_hoff_factor — Practice
+difficulty: medium
+sequence_order: 17
+estimated_minutes: 2
+key_concepts:
+- vant_hoff_factor
+prerequisites: []
+content_md: '# vant_hoff_factor — Practice 🚀
+
+
+  i < 1 indicates association. Acetic acid forms dimers through hydrogen bonding:
+  2CH₃COOH ⇌ (CH₃COOH)₂
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: 'Acetic acid in benzene shows van\'t Hoff factor i < 1 due to:'
+  options:
+  - Association (dimerization)
+  - Dissociation
+  - Normal behavior
+  - Complete ionization
+  correct_answer: Association (dimerization)
+  explanation: "When i < 1, it indicates association of solute molecules. Acetic acid (CH₃COOH) forms dimers in benzene through hydrogen bonding: 2CH₃COOH ⇌ (CH₃COOH)₂. This reduces the number of particles in solution. For example, if 2 molecules associate into 1 dimer, i = actual particles / expected particles = 1/2 = 0.5. Association is common in non-polar solvents where hydrogen bonding can occur. In contrast, i > 1 indicates dissociation (like NaCl → Na⁺ + Cl⁻, i ≈ 2)."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: 'The van\'t Hoff factor (i) for a strong electrolyte AB₂ (completely dissociated) is:'
+  options:
+  - '3'
+  - '2'
+  - '1'
+  - '4'
+  correct_answer: '3'
+  explanation: "For a strong electrolyte that completely dissociates, i equals the number of ions formed per formula unit. AB₂ dissociates as: AB₂ → A²⁺ + 2B⁻, producing 3 ions (1 A²⁺ + 2 B⁻). Therefore, i = 3. Examples: CaCl₂ gives Ca²⁺ + 2Cl⁻ (i = 3), AlCl₃ gives Al³⁺ + 3Cl⁻ (i = 4), NaCl gives Na⁺ + Cl⁻ (i = 2). For complete dissociation, colligative properties are multiplied by i: ΔTf = i × Kf × m."
+  require_pass: false
+- type: mcq
+  sequence_order: 3
+  question: 'For weak electrolytes, the van\'t Hoff factor i is:'
+  options:
+  - Between 1 and the maximum number of ions possible
+  - Always equal to 1
+  - Always equal to the number of ions
+  - Greater than the number of ions
+  correct_answer: Between 1 and the maximum number of ions possible
+  explanation: "Weak electrolytes partially dissociate, so i lies between 1 (no dissociation) and the maximum number of ions (complete dissociation). For example, weak acid HA partially dissociates: HA ⇌ H⁺ + A⁻. If α is degree of dissociation, i = 1 + α (1 molecule gives 1-α undissociated + 2α ions). For acetic acid with 5% dissociation: i = 1 + 0.05 = 1.05. The value depends on concentration and strength of the electrolyte."
+  require_pass: false

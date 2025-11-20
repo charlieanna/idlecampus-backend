@@ -1,0 +1,51 @@
+slug: firstorderkinetics-practice
+title: first_order_kinetics — Practice
+difficulty: medium
+sequence_order: 13
+estimated_minutes: 2
+key_concepts:
+- first_order_kinetics
+prerequisites: []
+content_md: '# first_order_kinetics — Practice 🚀
+
+
+  [A] = [A]₀/(2ⁿ) = [A]₀/8 = 0.125[A]₀. Percentage = 12.5%
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: 'Which of the following is the correct integrated rate law for a first-order reaction?'
+  options:
+  - '[A] = [A]₀ - kt'
+  - ln[A] = ln[A]₀ - kt
+  - 1/[A] = 1/[A]₀ + kt
+  - '[A]² = [A]₀² - kt'
+  correct_answer: ln[A] = ln[A]₀ - kt
+  explanation: 'The integrated rate law for a first-order reaction is ln[A] = ln[A]₀ - kt, which can also be written as [A] = [A]₀e^(-kt). Derivation: Starting with the differential rate law for first-order: -d[A]/dt = k[A]. Separating variables: d[A]/[A] = -k dt. Integrating both sides from [A]₀ at t=0 to [A] at time t: ∫d[A]/[A] = -k∫dt → ln[A] - ln[A]₀ = -kt → ln[A] = ln[A]₀ - kt. Rearranging: ln([A]/[A]₀) = -kt, or [A] = [A]₀e^(-kt). Key features: (1) Plotting ln[A] vs t gives a straight line with slope = -k and intercept = ln[A]₀. (2) This linear relationship is the diagnostic test for first-order kinetics. (3) From this equation, half-life can be derived: when [A] = [A]₀/2, ln(1/2) = -kt₁/₂, so t₁/₂ = ln(2)/k = 0.693/k. Other options: [A] = [A]₀ - kt is zero-order, 1/[A] = 1/[A]₀ + kt is second-order. Example: Decomposition of N₂O₅ follows first-order kinetics, so plotting ln[N₂O₅] vs time gives a straight line.'
+  require_pass: true
+- type: short_answer
+  sequence_order: 2
+  question: For first order reaction, what percentage remains after 3 half-lives?
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: 'A first-order reaction has a rate constant of 0.0231 s⁻¹. What is the time required for the concentration to decrease to 25% of its initial value?'
+  options:
+  - 30 seconds
+  - 60 seconds
+  - 90 seconds
+  - 120 seconds
+  correct_answer: 60 seconds
+  explanation: 'For a first-order reaction, we use ln[A] = ln[A]₀ - kt. When [A] = 0.25[A]₀ (25% remaining): ln(0.25[A]₀) = ln[A]₀ - kt → ln(0.25) = -kt → ln(1/4) = -kt → -ln(4) = -kt → t = ln(4)/k. Calculating: ln(4) = ln(2²) = 2ln(2) = 2 × 0.693 = 1.386. Therefore: t = 1.386/0.0231 = 60 seconds. Alternative approach using half-lives: 25% = (1/2)² means 2 half-lives. t₁/₂ = 0.693/k = 0.693/0.0231 = 30 seconds. Two half-lives = 2 × 30 = 60 seconds. General pattern for first-order: To reach 50% (1/2): 1 half-life. To reach 25% (1/4): 2 half-lives. To reach 12.5% (1/8): 3 half-lives. To reach any fraction f: t = ln([A]₀/[A])/k = ln(1/f)/k. For example, to reach 10% (f=0.1): t = ln(10)/k = 2.303/k. This is approximately 3.32 half-lives since ln(10)/ln(2) = 2.303/0.693 = 3.32.'
+  require_pass: true

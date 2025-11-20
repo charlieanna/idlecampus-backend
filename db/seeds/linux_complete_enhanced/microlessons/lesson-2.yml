@@ -1,0 +1,498 @@
+slug: lesson-2
+title: Lesson 2
+sequence_order: 2
+estimated_minutes: 2
+difficulty: easy
+key_concepts: []
+content_md: "# Microlesson \U0001F680\n\n# Building CI/CD Pipelines\n\n    Let's build\
+  \ complete, production-ready CI/CD pipelines with the most popular platforms.\n\n\
+  \    ## GitHub Actions Complete Workflow\n\n    ### Full-Stack Application Pipeline\n\
+  \n    ```yaml\n    # .github/workflows/main.yml\n    name: CI/CD Pipeline\n\n  \
+  \  on:\n      push:\n        branches: [main, develop]\n      pull_request:\n  \
+  \      branches: [main]\n\n    env:\n      NODE_VERSION: '18'\n      DOCKER_IMAGE:\
+  \ myapp\n      REGISTRY: ghcr.io\n\n    jobs:\n      # ========================================\n\
+  \      # STAGE 1: Code Quality\n      # ========================================\n\
+  \      lint:\n        name: Lint Code\n        runs-on: ubuntu-latest\n        steps:\n\
+  \          - name: Checkout code\n            uses: actions/checkout@v3\n\n    \
+  \      - name: Setup Node.js\n            uses: actions/setup-node@v3\n        \
+  \    with:\n              node-version: ${{ env.NODE_VERSION }}\n              cache:\
+  \ 'npm'\n\n          - name: Install dependencies\n            run: npm ci\n\n \
+  \         - name: Run ESLint\n            run: npm run lint\n\n          - name:\
+  \ Check code formatting\n            run: npm run format:check\n\n      # ========================================\n\
+  \      # STAGE 2: Build Application\n      # ========================================\n\
+  \      build:\n        name: Build Application\n        runs-on: ubuntu-latest\n\
+  \        needs: lint\n        steps:\n          - name: Checkout code\n        \
+  \    uses: actions/checkout@v3\n\n          - name: Setup Node.js\n            uses:\
+  \ actions/setup-node@v3\n            with:\n              node-version: ${{ env.NODE_VERSION\
+  \ }}\n              cache: 'npm'\n\n          - name: Install dependencies\n   \
+  \         run: npm ci\n\n          - name: Build application\n            run: npm\
+  \ run build\n            env:\n              NODE_ENV: production\n\n          -\
+  \ name: Upload build artifacts\n            uses: actions/upload-artifact@v3\n \
+  \           with:\n              name: build-artifacts\n              path: |\n\
+  \                dist/\n                package.json\n                package-lock.json\n\
+  \              retention-days: 7\n\n      # ========================================\n\
+  \      # STAGE 3: Unit Tests\n      # ========================================\n\
+  \      test-unit:\n        name: Unit Tests\n        runs-on: ubuntu-latest\n  \
+  \      needs: build\n        steps:\n          - name: Checkout code\n         \
+  \   uses: actions/checkout@v3\n\n          - name: Setup Node.js\n            uses:\
+  \ actions/setup-node@v3\n            with:\n              node-version: ${{ env.NODE_VERSION\
+  \ }}\n              cache: 'npm'\n\n          - name: Install dependencies\n   \
+  \         run: npm ci\n\n          - name: Run unit tests\n            run: npm\
+  \ run test:unit -- --coverage\n\n          - name: Upload coverage reports\n   \
+  \         uses: codecov/codecov-action@v3\n            with:\n              files:\
+  \ ./coverage/coverage-final.json\n              flags: unittests\n             \
+  \ name: codecov-unit\n\n      # ========================================\n     \
+  \ # STAGE 4: Integration Tests\n      # ========================================\n\
+  \      test-integration:\n        name: Integration Tests\n        runs-on: ubuntu-latest\n\
+  \        needs: build\n        services:\n          postgres:\n            image:\
+  \ postgres:15\n            env:\n              POSTGRES_PASSWORD: postgres\n   \
+  \           POSTGRES_DB: testdb\n            options: >-\n              --health-cmd\
+  \ pg_isready\n              --health-interval 10s\n              --health-timeout\
+  \ 5s\n              --health-retries 5\n            ports:\n              - 5432:5432\n\
+  \n          redis:\n            image: redis:7\n            options: >-\n      \
+  \        --health-cmd \"redis-cli ping\"\n              --health-interval 10s\n\
+  \              --health-timeout 5s\n              --health-retries 5\n         \
+  \   ports:\n              - 6379:6379\n\n        steps:\n          - name: Checkout\
+  \ code\n            uses: actions/checkout@v3\n\n          - name: Setup Node.js\n\
+  \            uses: actions/setup-node@v3\n            with:\n              node-version:\
+  \ ${{ env.NODE_VERSION }}\n              cache: 'npm'\n\n          - name: Install\
+  \ dependencies\n            run: npm ci\n\n          - name: Run database migrations\n\
+  \            run: npm run db:migrate\n            env:\n              DATABASE_URL:\
+  \ postgresql://postgres:postgres@localhost:5432/testdb\n\n          - name: Run\
+  \ integration tests\n            run: npm run test:integration\n            env:\n\
+  \              DATABASE_URL: postgresql://postgres:postgres@localhost:5432/testdb\n\
+  \              REDIS_URL: redis://localhost:6379\n\n      # ========================================\n\
+  \      # STAGE 5: E2E Tests\n      # ========================================\n\
+  \      test-e2e:\n        name: E2E Tests\n        runs-on: ubuntu-latest\n    \
+  \    needs: build\n        steps:\n          - name: Checkout code\n           \
+  \ uses: actions/checkout@v3\n\n          - name: Setup Node.js\n            uses:\
+  \ actions/setup-node@v3\n            with:\n              node-version: ${{ env.NODE_VERSION\
+  \ }}\n              cache: 'npm'\n\n          - name: Install dependencies\n   \
+  \         run: npm ci\n\n          - name: Install Playwright browsers\n       \
+  \     run: npx playwright install --with-deps\n\n          - name: Download build\
+  \ artifacts\n            uses: actions/download-artifact@v3\n            with:\n\
+  \              name: build-artifacts\n\n          - name: Start application\n  \
+  \          run: |\n              npm start &\n              npx wait-on http://localhost:3000\
+  \ -t 30000\n\n          - name: Run E2E tests\n            run: npm run test:e2e\n\
+  \n          - name: Upload test results\n            if: always()\n            uses:\
+  \ actions/upload-artifact@v3\n            with:\n              name: playwright-report\n\
+  \              path: playwright-report/\n              retention-days: 7\n\n   \
+  \   # ========================================\n      # STAGE 6: Security Scanning\n\
+  \      # ========================================\n      security:\n        name:\
+  \ Security Scan\n        runs-on: ubuntu-latest\n        steps:\n          - name:\
+  \ Checkout code\n            uses: actions/checkout@v3\n\n          - name: Run\
+  \ npm audit\n            run: npm audit --audit-level=moderate\n            continue-on-error:\
+  \ true\n\n          - name: Run Snyk security scan\n            uses: snyk/actions/node@master\n\
+  \            env:\n              SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}\n       \
+  \     with:\n              args: --severity-threshold=high\n\n          - name:\
+  \ Run Trivy vulnerability scanner\n            uses: aquasecurity/trivy-action@master\n\
+  \            with:\n              scan-type: 'fs'\n              scan-ref: '.'\n\
+  \              format: 'sarif'\n              output: 'trivy-results.sarif'\n\n\
+  \          - name: Upload Trivy results to GitHub Security\n            uses: github/codeql-action/upload-sarif@v2\n\
+  \            with:\n              sarif_file: 'trivy-results.sarif'\n\n      # ========================================\n\
+  \      # STAGE 7: Build Docker Image\n      # ========================================\n\
+  \      docker:\n        name: Build Docker Image\n        runs-on: ubuntu-latest\n\
+  \        needs: [test-unit, test-integration, test-e2e]\n        if: github.event_name\
+  \ == 'push'\n        permissions:\n          contents: read\n          packages:\
+  \ write\n        steps:\n          - name: Checkout code\n            uses: actions/checkout@v3\n\
+  \n          - name: Set up Docker Buildx\n            uses: docker/setup-buildx-action@v2\n\
+  \n          - name: Log in to GitHub Container Registry\n            uses: docker/login-action@v2\n\
+  \            with:\n              registry: ${{ env.REGISTRY }}\n              username:\
+  \ ${{ github.actor }}\n              password: ${{ secrets.GITHUB_TOKEN }}\n\n \
+  \         - name: Extract metadata\n            id: meta\n            uses: docker/metadata-action@v4\n\
+  \            with:\n              images: ${{ env.REGISTRY }}/${{ github.repository\
+  \ }}/${{ env.DOCKER_IMAGE }}\n              tags: |\n                type=ref,event=branch\n\
+  \                type=sha,prefix={{branch}}-\n                type=semver,pattern={{version}}\n\
+  \                type=semver,pattern={{major}}.{{minor}}\n\n          - name: Build\
+  \ and push Docker image\n            uses: docker/build-push-action@v4\n       \
+  \     with:\n              context: .\n              push: true\n              tags:\
+  \ ${{ steps.meta.outputs.tags }}\n              labels: ${{ steps.meta.outputs.labels\
+  \ }}\n              cache-from: type=gha\n              cache-to: type=gha,mode=max\n\
+  \n      # ========================================\n      # STAGE 8: Deploy to Staging\n\
+  \      # ========================================\n      deploy-staging:\n     \
+  \   name: Deploy to Staging\n        runs-on: ubuntu-latest\n        needs: docker\n\
+  \        if: github.ref == 'refs/heads/develop'\n        environment:\n        \
+  \  name: staging\n          url: https://staging.myapp.com\n        steps:\n   \
+  \       - name: Checkout code\n            uses: actions/checkout@v3\n\n       \
+  \   - name: Configure AWS credentials\n            uses: aws-actions/configure-aws-credentials@v2\n\
+  \            with:\n              aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID\
+  \ }}\n              aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}\n\
+  \              aws-region: us-east-1\n\n          - name: Deploy to ECS\n      \
+  \      run: |\n              # Update ECS task definition\n              aws ecs\
+  \ update-service \\\\\n                --cluster staging-cluster \\\\\n        \
+  \        --service myapp-service \\\\\n                --force-new-deployment\n\n\
+  \          - name: Wait for deployment\n            run: |\n              aws ecs\
+  \ wait services-stable \\\\\n                --cluster staging-cluster \\\\\n  \
+  \              --services myapp-service\n\n          - name: Run smoke tests\n \
+  \           run: |\n              curl -f https://staging.myapp.com/health || exit\
+  \ 1\n\n      # ========================================\n      # STAGE 9: Deploy\
+  \ to Production\n      # ========================================\n      deploy-production:\n\
+  \        name: Deploy to Production\n        runs-on: ubuntu-latest\n        needs:\
+  \ docker\n        if: github.ref == 'refs/heads/main'\n        environment:\n  \
+  \        name: production\n          url: https://myapp.com\n        steps:\n  \
+  \        - name: Checkout code\n            uses: actions/checkout@v3\n\n      \
+  \    - name: Configure AWS credentials\n            uses: aws-actions/configure-aws-credentials@v2\n\
+  \            with:\n              aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID\
+  \ }}\n              aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}\n\
+  \              aws-region: us-east-1\n\n          - name: Deploy to ECS\n      \
+  \      run: |\n              aws ecs update-service \\\\\n                --cluster\
+  \ production-cluster \\\\\n                --service myapp-service \\\\\n      \
+  \          --force-new-deployment\n\n          - name: Wait for deployment\n   \
+  \         run: |\n              aws ecs wait services-stable \\\\\n            \
+  \    --cluster production-cluster \\\\\n                --services myapp-service\n\
+  \n          - name: Run smoke tests\n            run: |\n              curl -f https://myapp.com/health\
+  \ || exit 1\n\n          - name: Notify Slack\n            uses: slackapi/slack-github-action@v1\n\
+  \            with:\n              payload: |\n                {\n              \
+  \    \"text\": \"\U0001F680 Production deployment successful!\",\n             \
+  \     \"blocks\": [\n                    {\n                      \"type\": \"section\"\
+  ,\n                      \"text\": {\n                        \"type\": \"mrkdwn\"\
+  ,\n                        \"text\": \"*Production Deployment*\\\\n✅ Successfully\
+  \ deployed to production\\\\n*Commit:* ${{ github.sha }}\\\\n*Author:* ${{ github.actor\
+  \ }}\"\n                      }\n                    }\n                  ]\n  \
+  \              }\n            env:\n              SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL\
+  \ }}\n    ```\n\n    ## GitLab CI/CD Pipeline\n\n    ### Complete .gitlab-ci.yml\n\
+  \n    ```yaml\n    # .gitlab-ci.yml\n    image: node:18\n\n    variables:\n    \
+  \  DOCKER_IMAGE: registry.gitlab.com/$CI_PROJECT_PATH\n      POSTGRES_DB: testdb\n\
+  \      POSTGRES_USER: postgres\n      POSTGRES_PASSWORD: postgres\n\n    stages:\n\
+  \      - lint\n      - build\n      - test\n      - security\n      - package\n\
+  \      - deploy\n\n    # ========================================\n    # Cache configuration\n\
+  \    # ========================================\n    .node_cache:\n      cache:\n\
+  \        key:\n          files:\n            - package-lock.json\n        paths:\n\
+  \          - node_modules/\n          - .npm/\n\n    # ========================================\n\
+  \    # STAGE: Lint\n    # ========================================\n    lint:code:\n\
+  \      stage: lint\n      extends: .node_cache\n      script:\n        - npm ci\n\
+  \        - npm run lint\n        - npm run format:check\n      rules:\n        -\
+  \ if: $CI_PIPELINE_SOURCE == \"merge_request_event\"\n        - if: $CI_COMMIT_BRANCH\
+  \ == $CI_DEFAULT_BRANCH\n\n    # ========================================\n    #\
+  \ STAGE: Build\n    # ========================================\n    build:app:\n\
+  \      stage: build\n      extends: .node_cache\n      script:\n        - npm ci\n\
+  \        - npm run build\n      artifacts:\n        paths:\n          - dist/\n\
+  \        expire_in: 1 week\n      rules:\n        - if: $CI_PIPELINE_SOURCE == \"\
+  merge_request_event\"\n        - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH\n\n\
+  \    # ========================================\n    # STAGE: Test\n    # ========================================\n\
+  \    test:unit:\n      stage: test\n      extends: .node_cache\n      script:\n\
+  \        - npm ci\n        - npm run test:unit -- --coverage\n      coverage: '/Statements\\\
+  \\s+:\\\\s+(\\\\d+\\\\.\\\\d+)%/'\n      artifacts:\n        reports:\n        \
+  \  coverage_report:\n            coverage_format: cobertura\n            path: coverage/cobertura-coverage.xml\n\
+  \        paths:\n          - coverage/\n        expire_in: 1 week\n\n    test:integration:\n\
+  \      stage: test\n      extends: .node_cache\n      services:\n        - postgres:15\n\
+  \        - redis:7\n      variables:\n        DATABASE_URL: postgresql://postgres:postgres@postgres:5432/testdb\n\
+  \        REDIS_URL: redis://redis:6379\n      script:\n        - npm ci\n      \
+  \  - npm run db:migrate\n        - npm run test:integration\n      artifacts:\n\
+  \        reports:\n          junit: junit.xml\n\n    test:e2e:\n      stage: test\n\
+  \      extends: .node_cache\n      services:\n        - postgres:15\n      variables:\n\
+  \        DATABASE_URL: postgresql://postgres:postgres@postgres:5432/testdb\n   \
+  \   before_script:\n        - apt-get update\n        - apt-get install -y chromium\n\
+  \      script:\n        - npm ci\n        - npx playwright install\n        - npm\
+  \ run build\n        - npm start &\n        - npx wait-on http://localhost:3000\
+  \ -t 30000\n        - npm run test:e2e\n      artifacts:\n        when: always\n\
+  \        paths:\n          - playwright-report/\n        expire_in: 1 week\n\n \
+  \   # ========================================\n    # STAGE: Security\n    # ========================================\n\
+  \    security:npm-audit:\n      stage: security\n      script:\n        - npm audit\
+  \ --audit-level=moderate\n      allow_failure: true\n\n    security:sast:\n    \
+  \  stage: security\n      image: returntocorp/semgrep\n      script:\n        -\
+  \ semgrep --config=auto --json --output=semgrep-report.json\n      artifacts:\n\
+  \        reports:\n          sast: semgrep-report.json\n      allow_failure: true\n\
+  \n    security:dependency-scan:\n      stage: security\n      image: aquasec/trivy:latest\n\
+  \      script:\n        - trivy fs --format json --output trivy-report.json .\n\
+  \      artifacts:\n        paths:\n          - trivy-report.json\n      allow_failure:\
+  \ true\n\n    # ========================================\n    # STAGE: Package\n\
+  \    # ========================================\n    package:docker:\n      stage:\
+  \ package\n      image: docker:24\n      services:\n        - docker:24-dind\n \
+  \     variables:\n        DOCKER_TLS_CERTDIR: \"/certs\"\n      before_script:\n\
+  \        - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY\n\
+  \      script:\n        # Build image\n        - docker build -t $DOCKER_IMAGE:$CI_COMMIT_SHA\
+  \ .\n        - docker tag $DOCKER_IMAGE:$CI_COMMIT_SHA $DOCKER_IMAGE:latest\n\n\
+  \        # Push to registry\n        - docker push $DOCKER_IMAGE:$CI_COMMIT_SHA\n\
+  \        - docker push $DOCKER_IMAGE:latest\n      only:\n        - main\n     \
+  \   - develop\n\n    # ========================================\n    # STAGE: Deploy\
+  \ to Staging\n    # ========================================\n    deploy:staging:\n\
+  \      stage: deploy\n      image: alpine:latest\n      environment:\n        name:\
+  \ staging\n        url: https://staging.myapp.com\n      before_script:\n      \
+  \  - apk add --no-cache curl\n      script:\n        - echo \"Deploying to staging...\"\
+  \n        # Trigger deployment (example with Kubernetes)\n        - |\n        \
+  \  curl -X POST \\\\\n            -H \"Authorization: Bearer $KUBE_TOKEN\" \\\\\n\
+  \            -H \"Content-Type: application/json\" \\\\\n            -d '{\"image\"\
+  :\"'$DOCKER_IMAGE:$CI_COMMIT_SHA'\"}' \\\\\n            https://k8s-api.staging.myapp.com/deploy\n\
+  \n        # Wait for deployment\n        - sleep 30\n\n        # Smoke test\n  \
+  \      - curl -f https://staging.myapp.com/health || exit 1\n      only:\n     \
+  \   - develop\n\n    # ========================================\n    # STAGE: Deploy\
+  \ to Production\n    # ========================================\n    deploy:production:\n\
+  \      stage: deploy\n      image: alpine:latest\n      environment:\n        name:\
+  \ production\n        url: https://myapp.com\n      before_script:\n        - apk\
+  \ add --no-cache curl\n      script:\n        - echo \"Deploying to production...\"\
+  \n        - |\n          curl -X POST \\\\\n            -H \"Authorization: Bearer\
+  \ $KUBE_TOKEN\" \\\\\n            -H \"Content-Type: application/json\" \\\\\n \
+  \           -d '{\"image\":\"'$DOCKER_IMAGE:$CI_COMMIT_SHA'\"}' \\\\\n         \
+  \   https://k8s-api.production.myapp.com/deploy\n\n        # Wait for deployment\n\
+  \        - sleep 60\n\n        # Smoke test\n        - curl -f https://myapp.com/health\
+  \ || exit 1\n      only:\n        - main\n      when: manual  # Require manual approval\n\
+  \    ```\n\n    ## Jenkins Pipeline as Code\n\n    ### Jenkinsfile (Declarative\
+  \ Pipeline)\n\n    ```groovy\n    // Jenkinsfile\n    pipeline {\n        agent\
+  \ any\n\n        environment {\n            NODE_VERSION = '18'\n            DOCKER_IMAGE\
+  \ = 'myapp'\n            DOCKER_REGISTRY = 'docker.io'\n            DOCKER_CREDENTIALS_ID\
+  \ = 'dockerhub-credentials'\n            AWS_CREDENTIALS_ID = 'aws-credentials'\n\
+  \            SLACK_CHANNEL = '#deployments'\n        }\n\n        options {\n  \
+  \          buildDiscarder(logRotator(numToKeepStr: '10'))\n            timeout(time:\
+  \ 30, unit: 'MINUTES')\n            timestamps()\n        }\n\n        stages {\n\
+  \            // ========================================\n            // STAGE 1:\
+  \ Checkout\n            // ========================================\n          \
+  \  stage('Checkout') {\n                steps {\n                    checkout scm\n\
+  \                    script {\n                        env.GIT_COMMIT_SHORT = sh(\n\
+  \                            returnStdout: true,\n                            script:\
+  \ 'git rev-parse --short HEAD'\n                        ).trim()\n             \
+  \       }\n                }\n            }\n\n            // ========================================\n\
+  \            // STAGE 2: Install Dependencies\n            // ========================================\n\
+  \            stage('Install Dependencies') {\n                steps {\n        \
+  \            nodejs(nodeJSInstallationName: \"Node ${NODE_VERSION}\") {\n      \
+  \                  sh 'npm ci'\n                    }\n                }\n     \
+  \       }\n\n            // ========================================\n         \
+  \   // STAGE 3: Code Quality\n            // ========================================\n\
+  \            stage('Code Quality') {\n                parallel {\n             \
+  \       stage('Lint') {\n                        steps {\n                     \
+  \       nodejs(nodeJSInstallationName: \"Node ${NODE_VERSION}\") {\n           \
+  \                     sh 'npm run lint'\n                            }\n       \
+  \                 }\n                    }\n\n                    stage('Format\
+  \ Check') {\n                        steps {\n                            nodejs(nodeJSInstallationName:\
+  \ \"Node ${NODE_VERSION}\") {\n                                sh 'npm run format:check'\n\
+  \                            }\n                        }\n                    }\n\
+  \                }\n            }\n\n            // ========================================\n\
+  \            // STAGE 4: Build\n            // ========================================\n\
+  \            stage('Build') {\n                steps {\n                    nodejs(nodeJSInstallationName:\
+  \ \"Node ${NODE_VERSION}\") {\n                        sh 'npm run build'\n    \
+  \                }\n\n                    // Archive build artifacts\n         \
+  \           archiveArtifacts artifacts: 'dist/**/*', fingerprint: true\n       \
+  \         }\n            }\n\n            // ========================================\n\
+  \            // STAGE 5: Test\n            // ========================================\n\
+  \            stage('Test') {\n                parallel {\n                    stage('Unit\
+  \ Tests') {\n                        steps {\n                            nodejs(nodeJSInstallationName:\
+  \ \"Node ${NODE_VERSION}\") {\n                                sh 'npm run test:unit\
+  \ -- --coverage'\n                            }\n\n                            //\
+  \ Publish test results\n                            junit 'junit.xml'\n\n      \
+  \                      // Publish coverage\n                            publishHTML([\n\
+  \                                reportDir: 'coverage/lcov-report',\n          \
+  \                      reportFiles: 'index.html',\n                            \
+  \    reportName: 'Coverage Report'\n                            ])\n           \
+  \             }\n                    }\n\n                    stage('Integration\
+  \ Tests') {\n                        steps {\n                            script\
+  \ {\n                                docker.image('postgres:15').withRun('-e POSTGRES_PASSWORD=postgres')\
+  \ { db ->\n                                    docker.image('redis:7').withRun()\
+  \ { redis ->\n                                        nodejs(nodeJSInstallationName:\
+  \ \"Node ${NODE_VERSION}\") {\n                                            sh '''\n\
+  \                                                export DATABASE_URL=postgresql://postgres:postgres@localhost:5432/testdb\n\
+  \                                                export REDIS_URL=redis://localhost:6379\n\
+  \                                                npm run db:migrate\n          \
+  \                                      npm run test:integration\n              \
+  \                              '''\n                                        }\n\
+  \                                    }\n                                }\n    \
+  \                        }\n                        }\n                    }\n \
+  \               }\n            }\n\n            // ========================================\n\
+  \            // STAGE 6: Security Scanning\n            // ========================================\n\
+  \            stage('Security Scan') {\n                parallel {\n            \
+  \        stage('NPM Audit') {\n                        steps {\n               \
+  \             script {\n                                try {\n                \
+  \                    sh 'npm audit --audit-level=moderate'\n                   \
+  \             } catch (Exception e) {\n                                    echo\
+  \ \"NPM audit found vulnerabilities: ${e.message}\"\n                          \
+  \          currentBuild.result = 'UNSTABLE'\n                                }\n\
+  \                            }\n                        }\n                    }\n\
+  \n                    stage('Trivy Scan') {\n                        steps {\n \
+  \                           sh '''\n                                docker run --rm\
+  \ -v $(pwd):/workspace \\\\\n                                    aquasec/trivy:latest\
+  \ fs \\\\\n                                    --format json \\\\\n            \
+  \                        --output trivy-report.json \\\\\n                     \
+  \               /workspace\n                            '''\n\n                \
+  \            archiveArtifacts artifacts: 'trivy-report.json'\n                 \
+  \       }\n                    }\n\n                    stage('SonarQube') {\n \
+  \                       steps {\n                            script {\n        \
+  \                        def scannerHome = tool 'SonarQube Scanner'\n          \
+  \                      withSonarQubeEnv('SonarQube') {\n                       \
+  \             sh \"\"\"\n                                        ${scannerHome}/bin/sonar-scanner\
+  \ \\\\\n                                            -Dsonar.projectKey=myapp \\\\\
+  \n                                            -Dsonar.sources=src \\\\\n       \
+  \                                     -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info\n\
+  \                                    \"\"\"\n                                }\n\
+  \                            }\n                        }\n                    }\n\
+  \                }\n            }\n\n            // ========================================\n\
+  \            // STAGE 7: Build Docker Image\n            // ========================================\n\
+  \            stage('Build Docker Image') {\n                when {\n           \
+  \         branch 'main'\n                }\n                steps {\n          \
+  \          script {\n                        docker.withRegistry(\"https://${DOCKER_REGISTRY}\"\
+  , DOCKER_CREDENTIALS_ID) {\n                            def customImage = docker.build(\"\
+  ${DOCKER_IMAGE}:${env.GIT_COMMIT_SHORT}\")\n                            customImage.push()\n\
+  \                            customImage.push('latest')\n                      \
+  \  }\n                    }\n                }\n            }\n\n            //\
+  \ ========================================\n            // STAGE 8: Deploy to Staging\n\
+  \            // ========================================\n            stage('Deploy\
+  \ to Staging') {\n                when {\n                    branch 'develop'\n\
+  \                }\n                environment {\n                    ENVIRONMENT\
+  \ = 'staging'\n                }\n                steps {\n                    script\
+  \ {\n                        withAWS(credentials: AWS_CREDENTIALS_ID, region: 'us-east-1')\
+  \ {\n                            sh '''\n                                aws ecs\
+  \ update-service \\\\\n                                    --cluster staging-cluster\
+  \ \\\\\n                                    --service myapp-service \\\\\n     \
+  \                               --force-new-deployment\n\n                     \
+  \           aws ecs wait services-stable \\\\\n                                \
+  \    --cluster staging-cluster \\\\\n                                    --services\
+  \ myapp-service\n                            '''\n                        }\n  \
+  \                  }\n\n                    // Smoke test\n                    sh\
+  \ 'curl -f https://staging.myapp.com/health'\n                }\n            }\n\
+  \n            // ========================================\n            // STAGE\
+  \ 9: Deploy to Production\n            // ========================================\n\
+  \            stage('Deploy to Production') {\n                when {\n         \
+  \           branch 'main'\n                }\n                environment {\n  \
+  \                  ENVIRONMENT = 'production'\n                }\n             \
+  \   steps {\n                    // Require manual approval\n                  \
+  \  input message: 'Deploy to production?', ok: 'Deploy'\n\n                    script\
+  \ {\n                        withAWS(credentials: AWS_CREDENTIALS_ID, region: 'us-east-1')\
+  \ {\n                            sh '''\n                                aws ecs\
+  \ update-service \\\\\n                                    --cluster production-cluster\
+  \ \\\\\n                                    --service myapp-service \\\\\n     \
+  \                               --force-new-deployment\n\n                     \
+  \           aws ecs wait services-stable \\\\\n                                \
+  \    --cluster production-cluster \\\\\n                                    --services\
+  \ myapp-service\n                            '''\n                        }\n  \
+  \                  }\n\n                    // Smoke test\n                    sh\
+  \ 'curl -f https://myapp.com/health'\n                }\n            }\n       \
+  \ }\n\n        // ========================================\n        // Post-build\
+  \ Actions\n        // ========================================\n        post {\n\
+  \            success {\n                slackSend(\n                    channel:\
+  \ env.SLACK_CHANNEL,\n                    color: 'good',\n                    message:\
+  \ \"✅ Build SUCCESS: ${env.JOB_NAME} #${env.BUILD_NUMBER}\\\\n<${env.BUILD_URL}|View\
+  \ Build>\"\n                )\n            }\n\n            failure {\n        \
+  \        slackSend(\n                    channel: env.SLACK_CHANNEL,\n         \
+  \           color: 'danger',\n                    message: \"❌ Build FAILED: ${env.JOB_NAME}\
+  \ #${env.BUILD_NUMBER}\\\\n<${env.BUILD_URL}|View Build>\"\n                )\n\
+  \            }\n\n            always {\n                // Clean up workspace\n\
+  \                cleanWs()\n            }\n        }\n    }\n    ```\n\n    ## Docker\
+  \ Build and Push Examples\n\n    ### Multi-stage Dockerfile\n\n    ```dockerfile\n\
+  \    # Dockerfile\n    # ========================================\n    # Stage 1:\
+  \ Build\n    # ========================================\n    FROM node:18-alpine\
+  \ AS builder\n\n    WORKDIR /app\n\n    # Copy dependency files\n    COPY package*.json\
+  \ ./\n\n    # Install dependencies\n    RUN npm ci --only=production\n\n    # Copy\
+  \ source code\n    COPY . .\n\n    # Build application\n    RUN npm run build\n\n\
+  \    # ========================================\n    # Stage 2: Production\n   \
+  \ # ========================================\n    FROM node:18-alpine\n\n    # Add\
+  \ security updates\n    RUN apk --no-cache upgrade\n\n    # Create app user\n  \
+  \  RUN addgroup -g 1001 -S nodejs && \\\\\n        adduser -S nodejs -u 1001\n\n\
+  \    WORKDIR /app\n\n    # Copy built application from builder\n    COPY --from=builder\
+  \ --chown=nodejs:nodejs /app/dist ./dist\n    COPY --from=builder --chown=nodejs:nodejs\
+  \ /app/node_modules ./node_modules\n    COPY --from=builder --chown=nodejs:nodejs\
+  \ /app/package.json ./\n\n    # Switch to non-root user\n    USER nodejs\n\n   \
+  \ # Expose port\n    EXPOSE 3000\n\n    # Health check\n    HEALTHCHECK --interval=30s\
+  \ --timeout=3s --start-period=40s --retries=3 \\\\\n      CMD node -e \"require('http').get('http://localhost:3000/health',\
+  \ (r) => process.exit(r.statusCode === 200 ? 0 : 1))\"\n\n    # Start application\n\
+  \    CMD [\"node\", \"dist/index.js\"]\n    ```\n\n    ### GitHub Actions Docker\
+  \ Build\n\n    ```yaml\n    # Build and push with caching\n    - name: Build and\
+  \ push Docker image\n      uses: docker/build-push-action@v4\n      with:\n    \
+  \    context: .\n        file: ./Dockerfile\n        push: true\n        tags: |\n\
+  \          ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}\n       \
+  \   ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest\n        cache-from: type=gha\n\
+  \        cache-to: type=gha,mode=max\n        build-args: |\n          BUILD_DATE=${{\
+  \ steps.date.outputs.date }}\n          VERSION=${{ github.sha }}\n    ```\n\n \
+  \   ## Complete Testing Pipeline\n\n    ### Test Configuration\n\n    ```yaml\n\
+  \    # Run all test types\n    test:\n      strategy:\n        matrix:\n       \
+  \   test-type: [unit, integration, e2e]\n      runs-on: ubuntu-latest\n      steps:\n\
+  \        - uses: actions/checkout@v3\n\n        - name: Setup Node.js\n        \
+  \  uses: actions/setup-node@v3\n          with:\n            node-version: '18'\n\
+  \n        - name: Install dependencies\n          run: npm ci\n\n        - name:\
+  \ Run ${{ matrix.test-type }} tests\n          run: npm run test:${{ matrix.test-type\
+  \ }}\n    ```\n\n    ### Code Coverage\n\n    ```yaml\n    - name: Run tests with\
+  \ coverage\n      run: npm run test:coverage\n\n    - name: Upload coverage to Codecov\n\
+  \      uses: codecov/codecov-action@v3\n      with:\n        files: ./coverage/coverage-final.json\n\
+  \        flags: ${{ matrix.test-type }}\n        fail_ci_if_error: true\n\n    -\
+  \ name: Check coverage threshold\n      run: |\n        COVERAGE=$(cat coverage/coverage-summary.json\
+  \ | jq '.total.lines.pct')\n        if (( $(echo \"$COVERAGE < 80\" | bc -l) ));\
+  \ then\n          echo \"Coverage $COVERAGE% is below threshold 80%\"\n        \
+  \  exit 1\n        fi\n    ```\n\n    ## Code Quality Checks\n\n    ### ESLint +\
+  \ Prettier\n\n    ```yaml\n    quality:\n      runs-on: ubuntu-latest\n      steps:\n\
+  \        - uses: actions/checkout@v3\n\n        - name: Setup Node.js\n        \
+  \  uses: actions/setup-node@v3\n          with:\n            node-version: '18'\n\
+  \n        - name: Install dependencies\n          run: npm ci\n\n        # Linting\n\
+  \        - name: Run ESLint\n          run: npm run lint\n\n        # Format checking\n\
+  \        - name: Check formatting\n          run: npm run format:check\n\n     \
+  \   # Type checking (TypeScript)\n        - name: Type check\n          run: npm\
+  \ run type-check\n    ```\n\n    ### SonarCloud Integration\n\n    ```yaml\n   \
+  \ - name: SonarCloud Scan\n      uses: SonarSource/sonarcloud-github-action@master\n\
+  \      env:\n        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}\n        SONAR_TOKEN:\
+  \ ${{ secrets.SONAR_TOKEN }}\n      with:\n        args: >\n          -Dsonar.projectKey=myproject\n\
+  \          -Dsonar.organization=myorg\n          -Dsonar.sources=src\n         \
+  \ -Dsonar.tests=tests\n          -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info\n\
+  \          -Dsonar.coverage.exclusions=**/*.test.js,**/*.spec.js\n    ```\n\n  \
+  \  ## Summary\n\n    **Complete CI/CD Pipeline includes:**\n\n    1. **Code Quality**\
+  \ - Linting, formatting, type checking\n    2. **Build** - Compile and package application\n\
+  \    3. **Test** - Unit, integration, E2E tests\n    4. **Security** - Vulnerability\
+  \ scanning, SAST/DAST\n    5. **Package** - Docker image build and push\n    6.\
+  \ **Deploy** - Automated deployment to environments\n    7. **Monitor** - Health\
+  \ checks, notifications\n\n    **Key Principles:**\n    - Fail fast (run quick checks\
+  \ first)\n    - Parallel execution (speed up pipeline)\n    - Caching (reuse dependencies)\n\
+  \    - Artifacts (share build outputs)\n    - Secrets management (never hardcode\
+  \ credentials)\n\n    **Next:** We'll explore advanced deployment strategies like\
+  \ blue-green, canary, and rolling updates."
+exercises:
+- type: terminal
+  slug: lesson-2-term
+  sequence_order: 1
+  description: Create a GitHub Actions workflow directory structure
+  command: mkdir -p .github/workflows && echo "name: CI" > .github/workflows/ci.yml && cat .github/workflows/ci.yml
+  validation:
+    must_not_include:
+    - No such file
+    - Permission denied
+    - command not found
+  hints:
+  - GitHub Actions workflows are stored in .github/workflows/
+  - Each workflow file should have a descriptive name like ci.yml or deploy.yml
+  timeout_sec: 60
+  require_pass: true
+- type: mcq
+  slug: lesson-2-mcq
+  sequence_order: 2
+  question: In a CI/CD pipeline, what is the purpose of the "build" stage?
+  options:
+  - Compile code and create deployment artifacts
+  - Deploy the application to production
+  - Run security scans only
+  - Create documentation
+  correct_answer_index: 0
+  explanation: The build stage compiles/packages the application and creates artifacts (like JARs, Docker images, or compiled binaries) that will be deployed later
+  require_pass: true
+- type: mcq
+  slug: lesson-2-mcq-2
+  sequence_order: 3
+  question: Why should you run fast tests (like linting) before slow tests (like integration tests) in a CI pipeline?
+  options:
+  - To fail fast and save time by catching obvious errors early
+  - Because slow tests are less important
+  - To reduce server costs only
+  - Fast tests are more accurate
+  correct_answer_index: 0
+  explanation: Running fast tests first provides quick feedback and prevents wasting time on slow tests if there are obvious errors like linting failures
+  require_pass: true
+- type: mcq
+  slug: lesson-2-mcq-3
+  sequence_order: 4
+  question: What is an artifact in CI/CD context?
+  options:
+  - The build output that gets deployed (JAR, Docker image, compiled binary, etc.)
+  - A bug in the code
+  - A configuration file
+  - A test report only
+  correct_answer_index: 0
+  explanation: Artifacts are the deployable outputs from the build process, such as compiled binaries, Docker images, or packaged applications
+  require_pass: true
+- type: reflection
+  slug: lesson-2-reflect
+  sequence_order: 5
+  prompt: In a real CI/CD pipeline, what strategies would you use to keep build times under 10 minutes? Consider caching, parallelization, and test optimization.
+- type: checkpoint
+  slug: lesson-2-checkpoint
+  sequence_order: 6
+  prompt: Describe the key stages of a CI/CD pipeline (lint, build, test, deploy) and explain why the order matters.
+objectives:
+- Understand the stages of a CI/CD pipeline
+- Learn artifact management and versioning
+- Apply best practices for fast feedback and pipeline optimization
+next_recommended:
+- lesson-3
+- lesson-1

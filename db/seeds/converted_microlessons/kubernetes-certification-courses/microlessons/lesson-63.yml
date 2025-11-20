@@ -1,0 +1,67 @@
+slug: lesson-63
+title: Lesson 63
+difficulty: easy
+sequence_order: 63
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Node Maintenance Procedures\n\n    - cordon/drain/uncordon\n\
+  \    - DaemonSets behavior and PDBs impact"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What is the purpose of the 'kubectl drain' command?
+  options:
+  - To delete all pods on a node
+  - To safely evict pods from a node in preparation for maintenance, respecting pod
+    disruption budgets
+  - To remove a node from the cluster permanently
+  - To empty etcd data
+  correct_answer: To safely evict pods from a node in preparation for maintenance,
+    respecting pod disruption budgets
+  explanation: The 'kubectl drain' command safely evicts all pods from a node, making
+    it ready for maintenance (like OS upgrades or hardware repairs). It first cordons
+    the node (marks it unschedulable), then gracefully deletes pods, respecting their
+    termination grace periods and pod disruption budgets (PDBs). Kubernetes reschedules
+    the evicted pods on other nodes. Drain won't evict pods that aren't managed by
+    a controller (unless you use --force), and it won't evict DaemonSet pods (unless
+    you use --ignore-daemonsets). This ensures applications maintain availability
+    during node maintenance. After maintenance, use 'kubectl uncordon' to make the
+    node schedulable again. The drain process is safer than directly deleting pods
+    or shutting down nodes, as it works with Kubernetes' scheduling and high-availability
+    mechanisms. It's essential for zero-downtime cluster maintenance.
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What does the 'kubectl cordon' command do?
+  options:
+  - It removes all pods from a node
+  - It marks a node as unschedulable, preventing new pods from being scheduled
+  - It restarts all pods on a node
+  - It deletes a node
+  correct_answer: It marks a node as unschedulable, preventing new pods from being
+    scheduled
+  explanation: The 'kubectl cordon' command marks a node as unschedulable by setting
+    the node's 'Unschedulable' taint. This prevents the scheduler from placing new
+    pods on the node, but doesn't affect existing pods running on it. Cordoning is
+    useful when you want to prevent new workloads on a node before performing maintenance,
+    investigating issues, or gradually reducing node capacity. Existing pods continue
+    running normally. To reverse this, use 'kubectl uncordon' to remove the unschedulable
+    mark. Cordon is often the first step before draining - you cordon to stop new
+    pods, then drain to evict existing pods. You might cordon without draining if
+    you want to investigate issues on a node while keeping current workloads running,
+    or when gradually decommissioning nodes by letting pods naturally terminate rather
+    than forcing eviction.
+  require_pass: true
+- type: mcq
+  sequence_order: 1
+  question: What kubectl command checks if you can perform an action?
+  options:
+  - kubectl auth can-i create pods
+  - kubectl check permissions create pods
+  - kubectl verify action create pods
+  - kubectl test auth create pods
+  correct_answer_index: 0
+  explanation: kubectl auth can-i <action> <resource> checks if the current user has
+    permission to perform the specified action.
+  require_pass: true

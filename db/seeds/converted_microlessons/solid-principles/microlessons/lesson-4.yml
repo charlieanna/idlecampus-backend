@@ -1,0 +1,345 @@
+slug: lesson-4
+title: Lesson 4
+difficulty: easy
+sequence_order: 4
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Behavioral Patterns\n\n    **Behavioral\
+  \ patterns** are concerned with algorithms and the assignment of responsibilities\
+  \ between objects.\n\n    ---\n\n    ## 1. Observer Pattern\n\n    **Define a one-to-many\
+  \ dependency so that when one object changes state, all its dependents are notified\
+  \ automatically.**\n\n    Also known as: Publish-Subscribe, Event-Listener\n\n \
+  \   ### Use Cases\n    - Event handling systems\n    - Stock price updates\n   \
+  \ - News notifications\n    - Model-View-Controller (MVC)\n    - Real-time dashboards\n\
+  \n    ### ❌ BEFORE (Bad - Tight Coupling)\n\n    ```python\n    class WeatherStation:\n\
+  \        def __init__(self):\n            self.temperature = 0\n            self.display1\
+  \ = Display1()\n            self.display2 = Display2()\n            self.logger\
+  \ = Logger()\n\n        def set_temperature(self, temp):\n            self.temperature\
+  \ = temp\n            # Must know about all displays and update each\n         \
+  \   self.display1.update(temp)\n            self.display2.update(temp)\n       \
+  \     self.logger.log(temp)\n\n    # Problem: WeatherStation tightly coupled to\
+  \ all displays\n    # Adding new display requires modifying WeatherStation\n   \
+  \ ```\n\n    ### ✅ AFTER (Good - Observer Pattern)\n\n    ```python\n    from abc\
+  \ import ABC, abstractmethod\n\n    # Observer interface\n    class Observer(ABC):\n\
+  \        @abstractmethod\n        def update(self, temperature):\n            pass\n\
+  \n    # Subject (Observable)\n    class WeatherStation:\n        def __init__(self):\n\
+  \            self._observers = []\n            self._temperature = 0\n\n       \
+  \ def attach(self, observer: Observer):\n            self._observers.append(observer)\n\
+  \n        def detach(self, observer: Observer):\n            self._observers.remove(observer)\n\
+  \n        def notify(self):\n            for observer in self._observers:\n    \
+  \            observer.update(self._temperature)\n\n        def set_temperature(self,\
+  \ temp):\n            print(f\"WeatherStation: Temperature changed to {temp}°C\"\
+  )\n            self._temperature = temp\n            self.notify()\n\n    # Concrete\
+  \ observers\n    class PhoneDisplay(Observer):\n        def update(self, temperature):\n\
+  \            print(f\"Phone Display: {temperature}°C\")\n\n    class WindowDisplay(Observer):\n\
+  \        def update(self, temperature):\n            print(f\"Window Display: {temperature}°C\"\
+  )\n\n    class Logger(Observer):\n        def update(self, temperature):\n     \
+  \       print(f\"Logger: Recording temperature {temperature}°C\")\n\n    # Usage:\n\
+  \    weather = WeatherStation()\n\n    phone = PhoneDisplay()\n    window = WindowDisplay()\n\
+  \    logger = Logger()\n\n    weather.attach(phone)\n    weather.attach(window)\n\
+  \    weather.attach(logger)\n\n    weather.set_temperature(25)\n    # WeatherStation:\
+  \ Temperature changed to 25°C\n    # Phone Display: 25°C\n    # Window Display:\
+  \ 25°C\n    # Logger: Recording temperature 25°C\n\n    weather.detach(window)\n\
+  \    weather.set_temperature(30)\n    # WeatherStation: Temperature changed to 30°C\n\
+  \    # Phone Display: 30°C\n    # Logger: Recording temperature 30°C\n    ```\n\n\
+  \    ### Real-World Example: Stock Market\n\n    ```python\n    class Stock:\n \
+  \       def __init__(self, symbol, price):\n            self.symbol = symbol\n \
+  \           self._price = price\n            self._observers = []\n\n        def\
+  \ attach(self, observer):\n            self._observers.append(observer)\n\n    \
+  \    def detach(self, observer):\n            self._observers.remove(observer)\n\
+  \n        def notify(self):\n            for observer in self._observers:\n    \
+  \            observer.update(self)\n\n        @property\n        def price(self):\n\
+  \            return self._price\n\n        @price.setter\n        def price(self,\
+  \ value):\n            self._price = value\n            self.notify()\n\n    class\
+  \ Investor(Observer):\n        def __init__(self, name):\n            self.name\
+  \ = name\n\n        def update(self, stock):\n            print(f\"{self.name}:\
+  \ {stock.symbol} is now ${stock.price}\")\n            if stock.price > 150:\n \
+  \               print(f\"{self.name}: Selling {stock.symbol}!\")\n            elif\
+  \ stock.price < 100:\n                print(f\"{self.name}: Buying {stock.symbol}!\"\
+  )\n\n    # Usage:\n    google = Stock(\"GOOGL\", 120)\n\n    investor1 = Investor(\"\
+  Alice\")\n    investor2 = Investor(\"Bob\")\n\n    google.attach(investor1)\n  \
+  \  google.attach(investor2)\n\n    google.price = 95  # Both investors notified\n\
+  \    google.price = 155  # Both investors notified\n    ```\n\n    ---\n\n    ##\
+  \ 2. Strategy Pattern\n\n    **Define a family of algorithms, encapsulate each one,\
+  \ and make them interchangeable.**\n\n    ### Use Cases\n    - Payment methods\n\
+  \    - Sorting algorithms\n    - Compression algorithms\n    - Validation strategies\n\
+  \    - Route navigation\n\n    ### ❌ BEFORE (Bad - Conditional Logic)\n\n    ```python\n\
+  \    class PaymentProcessor:\n        def process_payment(self, amount, method):\n\
+  \            if method == 'credit_card':\n                print(f\"Processing ${amount}\
+  \ via credit card\")\n                # Credit card logic\n            elif method\
+  \ == 'paypal':\n                print(f\"Processing ${amount} via PayPal\")\n  \
+  \              # PayPal logic\n            elif method == 'bitcoin':\n         \
+  \       print(f\"Processing ${amount} via Bitcoin\")\n                # Bitcoin\
+  \ logic\n            elif method == 'bank_transfer':\n                print(f\"\
+  Processing ${amount} via bank transfer\")\n                # Bank transfer logic\n\
+  \n    # Problem: Must modify class to add new payment methods\n    # Violates Open/Closed\
+  \ Principle\n    ```\n\n    ### ✅ AFTER (Good - Strategy Pattern)\n\n    ```python\n\
+  \    from abc import ABC, abstractmethod\n\n    # Strategy interface\n    class\
+  \ PaymentStrategy(ABC):\n        @abstractmethod\n        def pay(self, amount):\n\
+  \            pass\n\n    # Concrete strategies\n    class CreditCardPayment(PaymentStrategy):\n\
+  \        def __init__(self, card_number, cvv):\n            self.card_number = card_number\n\
+  \            self.cvv = cvv\n\n        def pay(self, amount):\n            print(f\"\
+  Paid ${amount} using credit card {self.card_number[-4:]}\")\n\n    class PayPalPayment(PaymentStrategy):\n\
+  \        def __init__(self, email):\n            self.email = email\n\n        def\
+  \ pay(self, amount):\n            print(f\"Paid ${amount} using PayPal account {self.email}\"\
+  )\n\n    class BitcoinPayment(PaymentStrategy):\n        def __init__(self, wallet_address):\n\
+  \            self.wallet_address = wallet_address\n\n        def pay(self, amount):\n\
+  \            print(f\"Paid ${amount} using Bitcoin wallet {self.wallet_address}\"\
+  )\n\n    # Context\n    class ShoppingCart:\n        def __init__(self):\n     \
+  \       self.items = []\n            self.total = 0\n\n        def add_item(self,\
+  \ item, price):\n            self.items.append(item)\n            self.total +=\
+  \ price\n\n        def checkout(self, payment_strategy: PaymentStrategy):\n    \
+  \        payment_strategy.pay(self.total)\n            print(\"Payment successful!\"\
+  )\n\n    # Usage:\n    cart = ShoppingCart()\n    cart.add_item(\"Laptop\", 1000)\n\
+  \    cart.add_item(\"Mouse\", 50)\n\n    # Pay with credit card\n    cart.checkout(CreditCardPayment(\"\
+  1234-5678-9012-3456\", \"123\"))\n\n    # Or pay with PayPal\n    cart.checkout(PayPalPayment(\"\
+  user@example.com\"))\n\n    # Or pay with Bitcoin\n    cart.checkout(BitcoinPayment(\"\
+  1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa\"))\n    ```\n\n    ### Real-World Example: Sorting\
+  \ Strategies\n\n    ```python\n    class SortStrategy(ABC):\n        @abstractmethod\n\
+  \        def sort(self, data):\n            pass\n\n    class QuickSort(SortStrategy):\n\
+  \        def sort(self, data):\n            print(\"Sorting using QuickSort\")\n\
+  \            return sorted(data)  # Simplified\n\n    class MergeSort(SortStrategy):\n\
+  \        def sort(self, data):\n            print(\"Sorting using MergeSort\")\n\
+  \            return sorted(data)  # Simplified\n\n    class BubbleSort(SortStrategy):\n\
+  \        def sort(self, data):\n            print(\"Sorting using BubbleSort\")\n\
+  \            return sorted(data)  # Simplified\n\n    class DataProcessor:\n   \
+  \     def __init__(self, strategy: SortStrategy):\n            self.strategy = strategy\n\
+  \n        def set_strategy(self, strategy: SortStrategy):\n            self.strategy\
+  \ = strategy\n\n        def process(self, data):\n            return self.strategy.sort(data)\n\
+  \n    # Usage:\n    data = [5, 2, 8, 1, 9]\n\n    processor = DataProcessor(QuickSort())\n\
+  \    result = processor.process(data)\n\n    # Switch strategy at runtime\n    processor.set_strategy(MergeSort())\n\
+  \    result = processor.process(data)\n    ```\n\n    ---\n\n    ## 3. Command Pattern\n\
+  \n    **Encapsulate a request as an object, thereby letting you parameterize clients\
+  \ with different requests, queue requests, and support undoable operations.**\n\n\
+  \    ### Use Cases\n    - Undo/Redo functionality\n    - Transaction systems\n \
+  \   - Job queues\n    - Menu actions\n    - Macro recording\n\n    ### ✅ Command\
+  \ Pattern\n\n    ```python\n    from abc import ABC, abstractmethod\n\n    # Receiver\n\
+  \    class Light:\n        def turn_on(self):\n            print(\"Light is ON\"\
+  )\n\n        def turn_off(self):\n            print(\"Light is OFF\")\n\n    # Command\
+  \ interface\n    class Command(ABC):\n        @abstractmethod\n        def execute(self):\n\
+  \            pass\n\n        @abstractmethod\n        def undo(self):\n        \
+  \    pass\n\n    # Concrete commands\n    class LightOnCommand(Command):\n     \
+  \   def __init__(self, light: Light):\n            self.light = light\n\n      \
+  \  def execute(self):\n            self.light.turn_on()\n\n        def undo(self):\n\
+  \            self.light.turn_off()\n\n    class LightOffCommand(Command):\n    \
+  \    def __init__(self, light: Light):\n            self.light = light\n\n     \
+  \   def execute(self):\n            self.light.turn_off()\n\n        def undo(self):\n\
+  \            self.light.turn_on()\n\n    # Invoker\n    class RemoteControl:\n \
+  \       def __init__(self):\n            self.history = []\n\n        def execute_command(self,\
+  \ command: Command):\n            command.execute()\n            self.history.append(command)\n\
+  \n        def undo_last(self):\n            if self.history:\n                command\
+  \ = self.history.pop()\n                command.undo()\n\n    # Usage:\n    light\
+  \ = Light()\n    remote = RemoteControl()\n\n    on_command = LightOnCommand(light)\n\
+  \    off_command = LightOffCommand(light)\n\n    remote.execute_command(on_command)\
+  \   # Light is ON\n    remote.execute_command(off_command)  # Light is OFF\n   \
+  \ remote.undo_last()                   # Light is ON\n    remote.undo_last()   \
+  \                # Light is OFF\n    ```\n\n    ### Real-World Example: Text Editor\n\
+  \n    ```python\n    class TextEditor:\n        def __init__(self):\n          \
+  \  self.text = \"\"\n\n        def insert(self, text, position):\n            self.text\
+  \ = self.text[:position] + text + self.text[position:]\n\n        def delete(self,\
+  \ position, length):\n            deleted = self.text[position:position + length]\n\
+  \            self.text = self.text[:position] + self.text[position + length:]\n\
+  \            return deleted\n\n        def get_text(self):\n            return self.text\n\
+  \n    class InsertCommand(Command):\n        def __init__(self, editor, text, position):\n\
+  \            self.editor = editor\n            self.text = text\n            self.position\
+  \ = position\n\n        def execute(self):\n            self.editor.insert(self.text,\
+  \ self.position)\n\n        def undo(self):\n            self.editor.delete(self.position,\
+  \ len(self.text))\n\n    class DeleteCommand(Command):\n        def __init__(self,\
+  \ editor, position, length):\n            self.editor = editor\n            self.position\
+  \ = position\n            self.length = length\n            self.deleted_text =\
+  \ \"\"\n\n        def execute(self):\n            self.deleted_text = self.editor.delete(self.position,\
+  \ self.length)\n\n        def undo(self):\n            self.editor.insert(self.deleted_text,\
+  \ self.position)\n\n    # Usage:\n    editor = TextEditor()\n    history = []\n\n\
+  \    # Type \"Hello\"\n    cmd1 = InsertCommand(editor, \"Hello\", 0)\n    cmd1.execute()\n\
+  \    history.append(cmd1)\n    print(editor.get_text())  # \"Hello\"\n\n    # Type\
+  \ \" World\"\n    cmd2 = InsertCommand(editor, \" World\", 5)\n    cmd2.execute()\n\
+  \    history.append(cmd2)\n    print(editor.get_text())  # \"Hello World\"\n\n \
+  \   # Undo last action\n    history.pop().undo()\n    print(editor.get_text()) \
+  \ # \"Hello\"\n\n    # Undo again\n    history.pop().undo()\n    print(editor.get_text())\
+  \  # \"\"\n    ```\n\n    ---\n\n    ## 4. State Pattern\n\n    **Allow an object\
+  \ to alter its behavior when its internal state changes.**\n\n    ### Use Cases\n\
+  \    - TCP connections (listen, established, closed)\n    - Vending machines\n \
+  \   - Document workflow (draft, review, published)\n    - Player states in games\n\
+  \n    ### ❌ BEFORE (Bad - Conditional State Logic)\n\n    ```python\n    class VendingMachine:\n\
+  \        def __init__(self):\n            self.state = \"no_coin\"\n\n        def\
+  \ insert_coin(self):\n            if self.state == \"no_coin\":\n              \
+  \  print(\"Coin inserted\")\n                self.state = \"has_coin\"\n       \
+  \     elif self.state == \"has_coin\":\n                print(\"Already have a coin\"\
+  )\n\n        def eject_coin(self):\n            if self.state == \"has_coin\":\n\
+  \                print(\"Coin ejected\")\n                self.state = \"no_coin\"\
+  \n            elif self.state == \"no_coin\":\n                print(\"No coin to\
+  \ eject\")\n\n        def dispense(self):\n            if self.state == \"has_coin\"\
+  :\n                print(\"Dispensing product\")\n                self.state = \"\
+  no_coin\"\n            elif self.state == \"no_coin\":\n                print(\"\
+  Insert coin first\")\n\n    # Problem: Complex conditionals grow with each state\n\
+  \    ```\n\n    ### ✅ AFTER (Good - State Pattern)\n\n    ```python\n    from abc\
+  \ import ABC, abstractmethod\n\n    # State interface\n    class State(ABC):\n \
+  \       @abstractmethod\n        def insert_coin(self, machine):\n            pass\n\
+  \n        @abstractmethod\n        def eject_coin(self, machine):\n            pass\n\
+  \n        @abstractmethod\n        def dispense(self, machine):\n            pass\n\
+  \n    # Concrete states\n    class NoCoinState(State):\n        def insert_coin(self,\
+  \ machine):\n            print(\"Coin inserted\")\n            machine.state = HasCoinState()\n\
+  \n        def eject_coin(self, machine):\n            print(\"No coin to eject\"\
+  )\n\n        def dispense(self, machine):\n            print(\"Insert coin first\"\
+  )\n\n    class HasCoinState(State):\n        def insert_coin(self, machine):\n \
+  \           print(\"Already have a coin\")\n\n        def eject_coin(self, machine):\n\
+  \            print(\"Coin ejected\")\n            machine.state = NoCoinState()\n\
+  \n        def dispense(self, machine):\n            print(\"Dispensing product\"\
+  )\n            machine.state = NoCoinState()\n\n    # Context\n    class VendingMachine:\n\
+  \        def __init__(self):\n            self.state = NoCoinState()\n\n       \
+  \ def insert_coin(self):\n            self.state.insert_coin(self)\n\n        def\
+  \ eject_coin(self):\n            self.state.eject_coin(self)\n\n        def dispense(self):\n\
+  \            self.state.dispense(self)\n\n    # Usage:\n    machine = VendingMachine()\n\
+  \    machine.insert_coin()  # Coin inserted\n    machine.dispense()     # Dispensing\
+  \ product\n    machine.dispense()     # Insert coin first\n    machine.insert_coin()\
+  \  # Coin inserted\n    machine.eject_coin()   # Coin ejected\n    ```\n\n    ---\n\
+  \n    ## 5. Template Method Pattern\n\n    **Define the skeleton of an algorithm,\
+  \ deferring some steps to subclasses.**\n\n    ### Use Cases\n    - Data processing\
+  \ pipelines\n    - Game AI\n    - Web frameworks (request handling)\n    - Testing\
+  \ frameworks\n\n    ### ✅ Template Method Pattern\n\n    ```python\n    from abc\
+  \ import ABC, abstractmethod\n\n    class DataProcessor(ABC):\n        # Template\
+  \ method\n        def process(self):\n            self.load_data()\n           \
+  \ self.parse_data()\n            self.analyze_data()\n            self.send_report()\n\
+  \n        @abstractmethod\n        def load_data(self):\n            pass\n\n  \
+  \      @abstractmethod\n        def parse_data(self):\n            pass\n\n    \
+  \    def analyze_data(self):\n            # Default implementation (can be overridden)\n\
+  \            print(\"Analyzing data using default algorithm\")\n\n        def send_report(self):\n\
+  \            # Common implementation\n            print(\"Sending report via email\"\
+  )\n\n    class CSVDataProcessor(DataProcessor):\n        def load_data(self):\n\
+  \            print(\"Loading data from CSV file\")\n\n        def parse_data(self):\n\
+  \            print(\"Parsing CSV data\")\n\n    class XMLDataProcessor(DataProcessor):\n\
+  \        def load_data(self):\n            print(\"Loading data from XML file\"\
+  )\n\n        def parse_data(self):\n            print(\"Parsing XML data\")\n\n\
+  \        def analyze_data(self):\n            # Override default\n            print(\"\
+  Analyzing data using XML-specific algorithm\")\n\n    # Usage:\n    csv_processor\
+  \ = CSVDataProcessor()\n    csv_processor.process()\n    # Loading data from CSV\
+  \ file\n    # Parsing CSV data\n    # Analyzing data using default algorithm\n \
+  \   # Sending report via email\n\n    xml_processor = XMLDataProcessor()\n    xml_processor.process()\n\
+  \    # Loading data from XML file\n    # Parsing XML data\n    # Analyzing data\
+  \ using XML-specific algorithm\n    # Sending report via email\n    ```\n\n    ---\n\
+  \n    ## Pattern Comparison\n\n    | Pattern | Purpose | Example |\n    |---------|---------|---------|\n\
+  \    | **Observer** | One-to-many notification | Weather station updates |\n   \
+  \ | **Strategy** | Interchangeable algorithms | Payment methods |\n    | **Command**\
+  \ | Encapsulate requests | Undo/Redo |\n    | **State** | Object behavior changes\
+  \ with state | Vending machine |\n    | **Template Method** | Algorithm skeleton\
+  \ with customizable steps | Data processing pipeline |\n\n    ---\n\n    ## Real-World\
+  \ Combined Example: E-Commerce Order System\n\n    ```python\n    # Observer: Notify\
+  \ stakeholders of order status\n    class OrderObserver(ABC):\n        @abstractmethod\n\
+  \        def update(self, order):\n            pass\n\n    class EmailNotifier(OrderObserver):\n\
+  \        def update(self, order):\n            print(f\"Email: Order {order.id}\
+  \ status: {order.status}\")\n\n    class SMSNotifier(OrderObserver):\n        def\
+  \ update(self, order):\n            print(f\"SMS: Order {order.id} status: {order.status}\"\
+  )\n\n    # State: Order lifecycle\n    class OrderState(ABC):\n        @abstractmethod\n\
+  \        def process(self, order):\n            pass\n\n    class PendingState(OrderState):\n\
+  \        def process(self, order):\n            print(\"Processing payment...\"\
+  )\n            order.state = ProcessingState()\n\n    class ProcessingState(OrderState):\n\
+  \        def process(self, order):\n            print(\"Shipping order...\")\n \
+  \           order.state = ShippedState()\n\n    class ShippedState(OrderState):\n\
+  \        def process(self, order):\n            print(\"Order already shipped\"\
+  )\n\n    # Strategy: Payment method\n    class PaymentStrategy(ABC):\n        @abstractmethod\n\
+  \        def pay(self, amount):\n            pass\n\n    # Command: Order actions\n\
+  \    class OrderCommand(ABC):\n        @abstractmethod\n        def execute(self):\n\
+  \            pass\n\n    class PlaceOrderCommand(OrderCommand):\n        def __init__(self,\
+  \ order):\n            self.order = order\n\n        def execute(self):\n      \
+  \      self.order.place()\n\n    # Order class combines patterns\n    class Order:\n\
+  \        def __init__(self, order_id):\n            self.id = order_id\n       \
+  \     self.status = \"pending\"\n            self.state = PendingState()\n     \
+  \       self._observers = []\n\n        def attach(self, observer):\n          \
+  \  self._observers.append(observer)\n\n        def notify(self):\n            for\
+  \ observer in self._observers:\n                observer.update(self)\n\n      \
+  \  def place(self):\n            self.status = \"placed\"\n            self.notify()\n\
+  \n        def process_next(self):\n            self.state.process(self)\n      \
+  \      self.notify()\n    ```\n\n    **Congratulations!** You've learned the essential\
+  \ design patterns for writing maintainable, flexible code."
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What problem does the Observer pattern solve?
+  options:
+  - Sorting large datasets efficiently
+  - Eliminating tight coupling when one object needs to notify multiple other objects
+    of state changes
+  - Creating objects without specifying their exact classes
+  - Encapsulating algorithms
+  correct_answer: Eliminating tight coupling when one object needs to notify multiple
+    other objects of state changes
+  explanation: 'The Observer pattern (aka Publish-Subscribe) solves the problem of
+    one-to-many dependency where changes to one object (Subject) need to notify multiple
+    dependent objects (Observers) without creating tight coupling. Problem without
+    Observer: WeatherStation class must know about ALL displays (PhoneDisplay, WindowDisplay,
+    Logger). Adding new display requires modifying WeatherStation (violates Open/Closed
+    Principle). Tight coupling - WeatherStation depends on concrete display classes.
+    Solution with Observer: Subject (WeatherStation) maintains list of observers,
+    provides attach/detach methods. Observer interface: all observers implement update(data).
+    When state changes, Subject calls notify() which loops through observers calling
+    update(). Decoupling achieved - Subject knows about Observer interface, not concrete
+    classes. Real-world applications: (1) Event systems - DOM events (addEventListener),
+    Node.js EventEmitter, (2) Model-View-Controller - Model notifies Views of changes,
+    (3) Stock market - Stock price changes notify all investors, (4) Social media
+    - User posts notify all followers. Benefits: (1) Loose coupling - Subject and
+    observers are independent, (2) Dynamic relationships - Add/remove observers at
+    runtime, (3) Broadcast - Single notification reaches all observers. Implementation:
+    Subject has attach(observer), detach(observer), notify(). Observers implement
+    update(subject). When Subject state changes, calls notify() which calls observer.update()
+    for each observer.'
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What problem does the Strategy pattern solve?
+  options:
+  - Managing object lifecycles
+  - Eliminating conditional logic by encapsulating algorithms as interchangeable objects
+  - Creating complex objects step by step
+  - Notifying multiple objects of state changes
+  correct_answer: Eliminating conditional logic by encapsulating algorithms as interchangeable
+    objects
+  explanation: 'The Strategy pattern encapsulates a family of algorithms, making them
+    interchangeable without modifying the context that uses them. This eliminates
+    complex conditional logic and adheres to Open/Closed Principle. Problem without
+    Strategy: PaymentProcessor with if/elif chains for different payment methods.
+    if method == "credit_card": credit_card_logic() elif method == "paypal": paypal_logic().
+    Must modify class to add new payment method (violates Open/Closed). Complex conditional
+    logic grows unmanageable. Solution with Strategy: Strategy interface defines pay(amount).
+    Concrete strategies (CreditCardPayment, PayPalPayment, BitcoinPayment) implement
+    the interface. Context (ShoppingCart) has a strategy and delegates to it: checkout(strategy)
+    calls strategy.pay(). Adding new payment method: Create new strategy class (no
+    modification to existing code). Real-world applications: (1) Payment processing
+    - Multiple payment methods, (2) Sorting algorithms - QuickSort, MergeSort, BubbleSort
+    interchangeable, (3) Compression - ZIP, GZIP, BZIP2 algorithms, (4) Validation
+    - Different validation rules for forms, (5) Navigation - Car, bike, walking routes.
+    Benefits: (1) Open/Closed - Add strategies without modifying context, (2) Single
+    Responsibility - Each strategy encapsulates one algorithm, (3) Runtime flexibility
+    - Switch strategies at runtime. When to use: Multiple algorithms for same task,
+    Conditional logic based on type, Need to switch algorithms dynamically.'
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: How do Observer and Strategy patterns differ in their intent?
+  options:
+  - They are the same pattern with different names
+  - Observer handles one-to-many communication (subject notifies observers), Strategy
+    handles behavior selection (context delegates to strategy)
+  - Observer is for algorithms, Strategy is for events
+  - Observer is faster than Strategy
+  correct_answer: Observer handles one-to-many communication (subject notifies observers),
+    Strategy handles behavior selection (context delegates to strategy)
+  explanation: 'Observer and Strategy are fundamentally different behavioral patterns
+    with distinct purposes and structures. Observer Pattern - Intent: Define one-to-many
+    dependency between objects. Structure: Subject maintains list of observers, notifies
+    all when state changes. Communication: Push-based - Subject broadcasts to all
+    observers. Use case: Event handling, notifications, MVC. Example: WeatherStation
+    notifies multiple displays of temperature changes. Key method: notify() broadcasts
+    to all observers. Strategy Pattern - Intent: Define family of interchangeable
+    algorithms. Structure: Context has one strategy, delegates behavior to it. Communication:
+    Pull-based - Context explicitly calls strategy method. Use case: Algorithm selection,
+    encapsulating behavior variants. Example: ShoppingCart uses one payment strategy
+    (credit card OR PayPal OR Bitcoin). Key method: context calls strategy method
+    directly. Key differences: (1) Relationship: Observer is one-to-many (subject
+    → multiple observers), Strategy is one-to-one (context → single strategy), (2)
+    Purpose: Observer for notifications/events, Strategy for behavior selection, (3)
+    Communication: Observer broadcasts, Strategy delegates, (4) Runtime: Observer
+    manages multiple observers dynamically, Strategy swaps one algorithm for another.
+    Can combine: Payment strategy selection (Strategy) triggers notification to audit
+    system (Observer).'
+  require_pass: true

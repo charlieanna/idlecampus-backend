@@ -1,0 +1,58 @@
+slug: kohlrauschslaw-practice
+title: kohlrauschs_law — Practice
+difficulty: easy
+sequence_order: 15
+estimated_minutes: 2
+key_concepts:
+- kohlrauschs_law
+prerequisites: []
+content_md: '# kohlrauschs_law — Practice 🚀
+
+
+  Kohlrausch\
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: "Kohlrausch's law is primarily used to calculate molar conductivity at infinite dilution for which type of electrolyte?"
+  options:
+  - Weak electrolytes
+  - Strong electrolytes
+  - Non-electrolytes
+  - Inert gases
+  require_pass: true
+  correct_answer: Weak electrolytes
+  explanation: 'Kohlrausch''s law of independent migration of ions is used to calculate molar conductivity at infinite dilution (Λ°_m) for weak electrolytes. For weak electrolytes like CH₃COOH, direct measurement of Λ°_m is impossible because they never fully dissociate even at extreme dilution. The law states: Λ°_m = λ°_+ + λ°_-, where λ° values are limiting molar conductivities of individual ions. Example: For CH₃COOH, we can calculate Λ°_m(CH₃COOH) = Λ°_m(HCl) + Λ°_m(CH₃COONa) - Λ°_m(NaCl), using values from strong electrolytes which CAN be measured directly. This calculated Λ°_m is then used to find degree of dissociation α = Λ_m/Λ°_m and dissociation constant Ka for weak acids. Strong electrolytes don''t need this law as their Λ°_m can be measured directly by extrapolation.'
+- type: mcq
+  sequence_order: 2
+  question: "According to Kohlrausch's law of independent migration of ions, what does Λ°m equal?"
+  options:
+  - λ°+ + λ°−
+  - λ°+ − λ°−
+  - λ°+ × λ°−
+  - λ°+ / λ°−
+  correct_answer: λ°+ + λ°−
+  explanation: "Kohlrausch's law states that at infinite dilution, the limiting molar conductivity (Λ°m) of an electrolyte is the sum of the individual ionic conductivities: Λ°m = λ°+ + λ°−, where λ°+ is the limiting molar conductivity of the cation and λ°− is that of the anion. Each ion migrates independently and contributes to the total conductivity. This law allows us to calculate Λ°m for any electrolyte if we know the individual ionic conductivities."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: "Which equation correctly uses Kohlrausch's law to find Λ°m(CH₃COOH)?"
+  options:
+  - Λ°m(HCl) + Λ°m(CH₃COONa) − Λ°m(NaCl)
+  - Λ°m(HCl) − Λ°m(CH₃COONa) + Λ°m(NaCl)
+  - Λ°m(HCl) × Λ°m(CH₃COONa) / Λ°m(NaCl)
+  - Λ°m(CH₃COONa) − Λ°m(HCl)
+  correct_answer: Λ°m(HCl) + Λ°m(CH₃COONa) − Λ°m(NaCl)
+  explanation: "To find Λ°m(CH₃COOH) using Kohlrausch's law, we use: Λ°m(CH₃COOH) = Λ°m(HCl) + Λ°m(CH₃COONa) − Λ°m(NaCl). Breaking it down by ions: Λ°m(HCl) gives λ°(H⁺) + λ°(Cl⁻), Λ°m(CH₃COONa) gives λ°(CH₃COO⁻) + λ°(Na⁺), Λ°m(NaCl) gives λ°(Na⁺) + λ°(Cl⁻). When we add the first two and subtract the third, Na⁺ and Cl⁻ cancel out, leaving: λ°(H⁺) + λ°(CH₃COO⁻) = Λ°m(CH₃COOH). This is useful because HCl, CH₃COONa, and NaCl are all strong electrolytes whose Λ°m values can be measured directly."
+  require_pass: true

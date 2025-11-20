@@ -1,0 +1,87 @@
+slug: lesson-21
+title: Lesson 21
+difficulty: easy
+sequence_order: 21
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Volume Snapshots and Cloning\n\n    - Snapshot\
+  \ CRDs and classes\n    - Clone from PVC"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What is a VolumeSnapshot in Kubernetes?
+  options:
+  - A backup of the entire cluster
+  - A point-in-time copy of a PersistentVolume's data, created via CSI drivers
+  - A screenshot of pod logs
+  - A performance metric snapshot
+  correct_answer: A point-in-time copy of a PersistentVolume's data, created via CSI
+    drivers
+  explanation: 'VolumeSnapshot is a Kubernetes resource that represents a point-in-time
+    copy of a volume''s data, similar to VM snapshots or storage snapshots. It''s
+    implemented through CSI (Container Storage Interface) drivers, which handle the
+    actual snapshot creation in the underlying storage system. VolumeSnapshots enable:
+    backup and restore workflows (take snapshot before risky operations, restore if
+    needed), cloning volumes (create new PVC from snapshot), and disaster recovery.
+    The snapshot process uses three CRDs: VolumeSnapshot (user-created resource requesting
+    a snapshot of a PVC), VolumeSnapshotClass (defines snapshot parameters and CSI
+    driver, similar to StorageClass), and VolumeSnapshotContent (the actual snapshot,
+    bound to VolumeSnapshot, similar to PV/PVC relationship). To create a snapshot:
+    1) Ensure CSI driver supports snapshots, 2) Create VolumeSnapshotClass if needed,
+    3) Create VolumeSnapshot referencing the PVC. For example: ''apiVersion: snapshot.storage.k8s.io/v1,
+    kind: VolumeSnapshot, metadata: name: my-snapshot, spec: volumeSnapshotClassName:
+    csi-snapclass, source: persistentVolumeClaimName: my-pvc''. To restore from a
+    snapshot, create a new PVC with ''dataSource: name: my-snapshot, kind: VolumeSnapshot''.
+    This is particularly useful for: database backups before schema changes, creating
+    test environments from production data (clone snapshot to dev namespace), and
+    disaster recovery scenarios. Not all storage systems support snapshots - check
+    CSI driver documentation. Popular drivers supporting snapshots include AWS EBS
+    CSI, GCP PD CSI, Azure Disk CSI, Ceph CSI, and Longhorn. Snapshot support is in
+    GA since Kubernetes v1.20. Best practices: automate regular snapshots for critical
+    data, test snapshot restore procedures, understand snapshot limitations (not atomic
+    across multiple volumes), and consider storage costs.'
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: How do you create a new PVC from an existing PVC (cloning) in Kubernetes?
+  options:
+  - Using kubectl copy command
+  - Creating a PVC with dataSource referencing the source PVC
+  - Copying the YAML and applying it again
+  - Cloning is not supported
+  correct_answer: Creating a PVC with dataSource referencing the source PVC
+  explanation: 'Volume cloning allows you to create a new PVC with data copied from
+    an existing PVC, similar to cloning a VM disk. This is done using the ''dataSource''
+    field in the PVC spec, which can reference either an existing PVC (for cloning)
+    or a VolumeSnapshot (for snapshot restore). To clone a PVC, create a new PVC with:
+    ''spec: dataSource: name: source-pvc, kind: PersistentVolumeClaim, storageClassName:
+    <same-or-compatible-class>, accessModes: [ReadWriteOnce], resources: requests:
+    storage: <size>''. The CSI driver handles copying data from the source PVC to
+    the new PV. For example, to clone a database PVC for testing: create a new PVC
+    referencing the production PVC, the clone is created in the same namespace with
+    copied data, mount it in a test pod without affecting production. Cloning use
+    cases include: creating test/dev environments from production data, rapid deployment
+    of pre-populated volumes (e.g., application code, datasets), and scaling stateful
+    applications with identical initial state. Important considerations: cloning is
+    done by the CSI driver (ensure it supports cloning - most modern drivers do like
+    AWS EBS CSI, GCP PD CSI, Azure Disk CSI), the source and destination must use
+    the same StorageClass (or compatible ones), both PVCs must be in the same namespace,
+    and the clone is created at the time of PVC creation (not dynamically updated).
+    Cloning is synchronous - the PVC remains Pending until cloning completes. For
+    large volumes, this can take time. The feature is GA since Kubernetes v1.18. Cloning
+    is more efficient than snapshot-restore for same-namespace copies as it''s typically
+    a storage-level operation (copy-on-write or block-level copy).'
+  require_pass: true
+- type: mcq
+  sequence_order: 1
+  question: What kubectl command checks if you can perform an action?
+  options:
+  - kubectl auth can-i create pods
+  - kubectl check permissions create pods
+  - kubectl verify action create pods
+  - kubectl test auth create pods
+  correct_answer_index: 0
+  explanation: kubectl auth can-i <action> <resource> checks if the current user has
+    permission to perform the specified action.
+  require_pass: true

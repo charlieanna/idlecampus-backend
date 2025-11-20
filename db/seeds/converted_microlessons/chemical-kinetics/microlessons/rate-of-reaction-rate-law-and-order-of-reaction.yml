@@ -1,0 +1,157 @@
+slug: rate-of-reaction-rate-law-and-order-of-reaction
+title: Rate of Reaction, Rate Law and Order of Reaction
+difficulty: easy
+sequence_order: 18
+estimated_minutes: 2
+key_concepts:
+- Rate of reaction
+- Rate law
+- Order of reaction
+- Molecularity
+- Rate constant
+- Factors affecting rate
+prerequisites: []
+content_md: "# Rate of Reaction, Rate Law and Order of Reaction \U0001F680\n\n# Rate\
+  \ of Reaction, Rate Law and Order of Reaction\n\n    ## Rate of Reaction\n\n   \
+  \ **Definition:** Change in concentration of reactant or product per unit time\n\
+  \n    For: **aA + bB → cC + dD**\n\n    **Rate = -1/a × d[A]/dt = -1/b × d[B]/dt\
+  \ = 1/c × d[C]/dt = 1/d × d[D]/dt**\n\n    ### Units: mol L⁻¹ s⁻¹ or M/s\n\n   \
+  \ **Negative sign:** For reactants (concentration decreases)\n    **Positive sign:**\
+  \ For products (concentration increases)\n\n    ### Example:\n\n    For: **2N₂O₅\
+  \ → 4NO₂ + O₂**\n\n    **Rate = -1/2 × d[N₂O₅]/dt = 1/4 × d[NO₂]/dt = d[O₂]/dt**\n\
+  \n    If d[N₂O₅]/dt = -0.004 M/s:\n    - Rate = -1/2 × (-0.004) = **0.002 M/s**\n\
+  \n    ## Average vs Instantaneous Rate\n\n    ### Average Rate:\n\n    **r_avg =\
+  \ Δ[A]/Δt**\n\n    Over a time interval\n\n    ### Instantaneous Rate:\n\n    **r_inst\
+  \ = d[A]/dt**\n\n    At a specific instant (slope of tangent on concentration-time\
+  \ curve)\n\n    **Note:** Rate generally **decreases with time** (as reactant is\
+  \ consumed)\n\n    ## Factors Affecting Rate of Reaction\n\n    1. **Concentration:**\
+  \ Higher concentration → faster rate\n    2. **Temperature:** Higher temperature\
+  \ → faster rate\n    3. **Catalyst:** Speeds up reaction\n    4. **Surface area:**\
+  \ Larger surface → faster (for solids)\n    5. **Nature of reactants:** Some react\
+  \ faster than others\n    6. **Presence of light:** Photochemical reactions\n\n\
+  \    ## Rate Law\n\n    **Definition:** Expression relating rate to concentrations\
+  \ of reactants\n\n    For: **aA + bB → Products**\n\n    **Rate = k[A]ˣ[B]ʸ**\n\n\
+  \    Where:\n    - k = rate constant (specific rate constant)\n    - x, y = order\
+  \ with respect to A, B (NOT necessarily a, b)\n    - x + y = overall order\n\n \
+  \   **Important:** Rate law is determined **experimentally**, not from stoichiometry\n\
+  \n    ### Example:\n\n    **2NO + O₂ → 2NO₂**\n\n    Experimental rate law: **Rate\
+  \ = k[NO]²[O₂]**\n\n    - Order w.r.t. NO = 2\n    - Order w.r.t. O₂ = 1\n    -\
+  \ Overall order = 2 + 1 = 3\n\n    ## Order of Reaction\n\n    **Definition:** Sum\
+  \ of powers of concentration terms in rate law\n\n    **Overall order = x + y +\
+  \ z + ...**\n\n    ### Types:\n\n    **Zero order (n = 0):** Rate = k (independent\
+  \ of concentration)\n    **First order (n = 1):** Rate = k[A]\n    **Second order\
+  \ (n = 2):** Rate = k[A]² or k[A][B]\n    **Third order (n = 3):** Rate = k[A]²[B]\
+  \ etc.\n    **Fractional order:** Rate = k[A]³/² etc.\n\n    ### Examples:\n\n \
+  \   **1. H₂ + Cl₂ → 2HCl** (in presence of light)\n    Rate = k[H₂][Cl₂]¹/²\n  \
+  \  Order = 1 + 1/2 = **3/2** (fractional)\n\n    **2. NH₄NO₂ → N₂ + 2H₂O**\n   \
+  \ Rate = k[NH₄NO₂]\n    Order = **1** (first order)\n\n    **3. 2N₂O₅ → 4NO₂ + O₂**\n\
+  \    Rate = k[N₂O₅]\n    Order = **1** (not 2!)\n\n    ## Rate Constant (k)\n\n\
+  \    **From rate law:** Rate = k[A]ˣ[B]ʸ\n\n    **k = Rate / ([A]ˣ[B]ʸ)**\n\n  \
+  \  ### Units of k:\n\n    Depend on overall order (n):\n\n    **Zero order:** k\
+  \ has units = mol L⁻¹ s⁻¹ (same as rate)\n    **First order:** k has units = s⁻¹\
+  \ or time⁻¹\n    **Second order:** k has units = L mol⁻¹ s⁻¹ or M⁻¹ s⁻¹\n    **nth\
+  \ order:** k has units = (mol L⁻¹)¹⁻ⁿ s⁻¹\n\n    ### Properties of k:\n\n    1.\
+  \ **Specific for each reaction** at given temperature\n    2. **Independent of concentration**\n\
+  \    3. **Increases with temperature**\n    4. **Depends on temperature and catalyst**\n\
+  \n    ## Molecularity\n\n    **Definition:** Number of molecules/atoms/ions that\
+  \ participate in an elementary step\n\n    **Elementary reaction:** Single-step\
+  \ reaction\n\n    ### Types:\n\n    **Unimolecular:** One molecule\n    - Example:\
+  \ N₂O₅ → NO₂ + NO₃ (molecularity = 1)\n\n    **Bimolecular:** Two molecules\n  \
+  \  - Example: 2HI → H₂ + I₂ (molecularity = 2)\n    - Example: H₂ + I₂ → 2HI (molecularity\
+  \ = 2)\n\n    **Trimolecular:** Three molecules\n    - Example: 2NO + O₂ → 2NO₂\
+  \ (molecularity = 3)\n\n    **Note:** Molecularity > 3 is very rare (improbable\
+  \ simultaneous collision)\n\n    ## Order vs Molecularity\n\n    | Property | Order\
+  \ | Molecularity |\n    |----------|-------|--------------|\n    | Definition |\
+  \ Sum of powers in rate law | Molecules in elementary step |\n    | Determination\
+  \ | Experimental | Theoretical (from mechanism) |\n    | Value | 0, 1, 2, 3, fractional\
+  \ | 1, 2, 3 (always integer) |\n    | Applicable to | Any reaction | Only elementary\
+  \ reactions |\n    | Example | Can be 1.5 | Cannot be 1.5 |\n\n    **For elementary\
+  \ reactions:** Order = Molecularity\n    **For complex reactions:** Order ≠ Molecularity\
+  \ (usually)\n\n    ## Methods to Determine Order\n\n    ### 1. Initial Rate Method:\n\
+  \n    Vary concentration of one reactant, keep others constant, measure initial\
+  \ rate\n\n    **Example:**\n\n    | Experiment | [A] | [B] | Initial Rate |\n  \
+  \  |------------|-----|-----|--------------|\n    | 1 | 0.1 | 0.1 | 0.005 |\n  \
+  \  | 2 | 0.2 | 0.1 | 0.020 |\n    | 3 | 0.1 | 0.2 | 0.010 |\n\n    **Comparing 1\
+  \ and 2:** [A] doubles, rate quadruples → order w.r.t. A = 2\n    **Comparing 1\
+  \ and 3:** [B] doubles, rate doubles → order w.r.t. B = 1\n\n    **Rate law:** Rate\
+  \ = k[A]²[B]\n    **Overall order:** 2 + 1 = 3\n\n    ### 2. Integrated Rate Law\
+  \ Method:\n\n    Try different integrated rate equations and see which gives straight\
+  \ line\n\n    ### 3. Half-life Method:\n\n    For nth order: t₁/₂ ∝ [A₀]¹⁻ⁿ\n\n\
+  \    Plot log t₁/₂ vs log [A₀], slope = 1 - n\n\n    ## Pseudo Order Reactions\n\
+  \n    **Definition:** Reactions that appear to be of lower order due to excess of\
+  \ one reactant\n\n    **Example:** Hydrolysis of ester\n\n    **CH₃COOC₂H₅ + H₂O\
+  \ → CH₃COOH + C₂H₅OH**\n\n    Actual order: 2 (depends on both)\n    With large\
+  \ excess of H₂O: **Pseudo first order**\n\n    **Rate = k[CH₃COOC₂H₅][H₂O] ≈ k'[CH₃COOC₂H₅]**\n\
+  \n    where k' = k[H₂O] (constant)\n\n    **Other example:** Inversion of cane sugar\
+  \ in presence of excess water\n\n    ## Solved Problems\n\n    ### Problem 1: Calculate\
+  \ rate\n\n    **Q: For 2N₂O₅ → 4NO₂ + O₂, if d[N₂O₅]/dt = -0.006 M/s, find rate\
+  \ of formation of NO₂.**\n\n    Solution:\n    - Rate = -1/2 × d[N₂O₅]/dt = 1/4\
+  \ × d[NO₂]/dt\n    - d[NO₂]/dt = -4/2 × d[N₂O₅]/dt\n    - d[NO₂]/dt = -2 × (-0.006)\n\
+  \    - **d[NO₂]/dt = 0.012 M/s**\n\n    ### Problem 2: Determine order\n\n    **Q:\
+  \ For A → Products, doubling [A] doubles rate. Find order.**\n\n    Solution:\n\
+  \    - Rate₁ = k[A]ⁿ\n    - Rate₂ = k[2A]ⁿ = k × 2ⁿ[A]ⁿ\n    - Given: Rate₂ = 2\
+  \ × Rate₁\n    - 2ⁿ = 2\n    - **n = 1** (first order)\n\n    ### Problem 3: Units\
+  \ of k\n\n    **Q: For rate = k[A]²[B], find units of k if rate is in M/s.**\n\n\
+  \    Solution:\n    - Order = 2 + 1 = 3\n    - k = Rate/[A]²[B] = (M/s)/(M²·M) =\
+  \ (M/s)/M³\n    - **Units: M⁻² s⁻¹** or **L² mol⁻² s⁻¹**\n\n    ### Problem 4: Initial\
+  \ rate method\n\n    **Q: From data below, find order w.r.t. A and B:**\n\n    |\
+  \ [A] | [B] | Rate |\n    |-----|-----|------|\n    | 0.1 | 0.1 | 0.004 |\n    |\
+  \ 0.2 | 0.1 | 0.016 |\n    | 0.1 | 0.2 | 0.004 |\n\n    Solution:\n    - Exp 1 to\
+  \ 2: [A] × 2, rate × 4 → 2ⁿ = 4 → n = 2\n    - Exp 1 to 3: [B] × 2, rate × 1 → 2ᵐ\
+  \ = 1 → m = 0\n    - **Order w.r.t. A = 2, w.r.t. B = 0**\n    - **Rate = k[A]²**\n\
+  \n    ### Problem 5: Calculate k\n\n    **Q: For first order reaction, rate = 0.01\
+  \ M/s when [A] = 0.5 M. Find k.**\n\n    Solution:\n    - Rate = k[A]\n    - 0.01\
+  \ = k × 0.5\n    - k = 0.01/0.5\n    - **k = 0.02 s⁻¹**\n\n    ## Temperature Dependence\n\
+  \n    **Rate increases with temperature** (approximately doubles for every 10°C\
+  \ rise)\n\n    **Reason:**\n    1. More molecules have sufficient energy (activation\
+  \ energy)\n    2. Frequency of collisions increases\n\n    **Quantitative:** Arrhenius\
+  \ equation (discussed in next lesson)\n\n    ## IIT JEE Key Points\n\n    1. **Rate\
+  \ = -1/a × d[A]/dt** (with stoichiometric coefficient)\n    2. **Rate law:** Rate\
+  \ = k[A]ˣ[B]ʸ (experimental)\n    3. **Order:** Sum of powers (x + y)\n    4. **Molecularity:**\
+  \ Molecules in elementary step\n    5. **Order ≠ Molecularity** (except elementary\
+  \ reactions)\n    6. **Units of k:** Depend on overall order\n    7. **Zero order:**\
+  \ Rate = k\n    8. **First order:** Rate = k[A], units of k = s⁻¹\n    9. **Second\
+  \ order:** Rate = k[A]² or k[A][B]\n    10. **Pseudo order:** Excess reagent makes\
+  \ it lower order\n\n    ## Quick Reference\n\n    | Order | Rate Law | Units of\
+  \ k | Example |\n    |-------|----------|------------|---------|\n    | 0 | Rate\
+  \ = k | mol L⁻¹ s⁻¹ | Photochemical |\n    | 1 | Rate = k[A] | s⁻¹ | Radioactive\
+  \ decay |\n    | 2 | Rate = k[A]² | L mol⁻¹ s⁻¹ | 2HI → H₂+I₂ |\n    | 3 | Rate\
+  \ = k[A]²[B] | L² mol⁻² s⁻¹ | 2NO+O₂ |\n\n    ## Summary Formulas\n\n    | Concept\
+  \ | Formula |\n    |---------|---------|\n    | Rate | -1/a(d[A]/dt) = 1/c(d[C]/dt)\
+  \ |\n    | Rate law | k[A]ˣ[B]ʸ |\n    | Overall order | x + y |\n    | k (first\
+  \ order) | s⁻¹ |\n    | k (second order) | L mol⁻¹ s⁻¹ |\n\n## Key Points\n\n- Rate\
+  \ of reaction\n\n- Rate law\n\n- Order of reaction"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: "For the reaction 2N₂O₅ → 4NO₂ + O₂, the rate of decomposition of N₂O₅ is found to be 0.008 mol L⁻¹ s⁻¹. What is the rate of formation of NO₂?"
+  options:
+  - "0.004 mol L⁻¹ s⁻¹"
+  - "0.008 mol L⁻¹ s⁻¹"
+  - "0.016 mol L⁻¹ s⁻¹"
+  - "0.032 mol L⁻¹ s⁻¹"
+  correct_answer: "0.016 mol L⁻¹ s⁻¹"
+  explanation: "For any chemical reaction, the rate must be expressed consistently by dividing the rate of change of each species by its stoichiometric coefficient. For 2N₂O₅ → 4NO₂ + O₂: Rate = -(1/2) × d[N₂O₅]/dt = (1/4) × d[NO₂]/dt = d[O₂]/dt. We're given that the rate of decomposition of N₂O₅ is d[N₂O₅]/dt = -0.008 mol L⁻¹ s⁻¹ (negative because N₂O₅ is decreasing). The overall rate of reaction is: Rate = -(1/2) × (-0.008) = 0.004 mol L⁻¹ s⁻¹. Now, to find the rate of formation of NO₂: 0.004 = (1/4) × d[NO₂]/dt. Therefore, d[NO₂]/dt = 4 × 0.004 = 0.016 mol L⁻¹ s⁻¹. This makes sense stoichiometrically: for every 2 moles of N₂O₅ that decompose, 4 moles of NO₂ are formed, which is twice as much. The key concept is that the stoichiometric coefficient determines the relationship between different species' rates. This is a common IIT JEE question type that tests understanding of how to relate rates of different species in a reaction."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: "For a reaction A + B → Products, the following data were obtained. What is the rate law for this reaction?\n\nExp 1: [A]=0.1M, [B]=0.1M, Rate=0.004 M/s\nExp 2: [A]=0.2M, [B]=0.1M, Rate=0.016 M/s\nExp 3: [A]=0.1M, [B]=0.2M, Rate=0.004 M/s"
+  options:
+  - "Rate = k[A][B]"
+  - "Rate = k[A]²"
+  - "Rate = k[A][B]²"
+  - "Rate = k[A]²[B]"
+  correct_answer: "Rate = k[A]²"
+  explanation: "To determine the rate law, we use the initial rate method by comparing experiments where only one concentration changes. Comparing Experiments 1 and 2 (where [B] is constant at 0.1 M): When [A] doubles from 0.1 to 0.2 M, the rate changes from 0.004 to 0.016 M/s, which is a 4-fold increase. If Rate = k[A]ˣ[B]ʸ, then (0.016/0.004) = (0.2/0.1)ˣ, so 4 = 2ˣ, giving x = 2. Comparing Experiments 1 and 3 (where [A] is constant at 0.1 M): When [B] doubles from 0.1 to 0.2 M, the rate remains 0.004 M/s (no change). This means (0.004/0.004) = (0.2/0.1)ʸ, so 1 = 2ʸ, giving y = 0. Therefore, the rate law is Rate = k[A]²[B]⁰ = k[A]². The reaction is second order with respect to A and zero order with respect to B, making it second order overall. This demonstrates an important principle: the order of reaction must be determined experimentally and cannot be predicted from stoichiometry alone. The fact that B appears in the balanced equation but not in the rate law (y=0) shows it might be involved in a slow step that doesn't depend on [B]."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: "What are the units of the rate constant for a reaction with the rate law: Rate = k[A]²[B]?"
+  options:
+  - "s⁻¹"
+  - "M⁻¹ s⁻¹"
+  - "M⁻² s⁻¹"
+  - "M s⁻¹"
+  correct_answer: "M⁻² s⁻¹"
+  explanation: "The units of the rate constant k depend on the overall order of the reaction. For Rate = k[A]²[B], the overall order is 2 + 1 = 3 (third order). To find units of k, we rearrange: k = Rate/([A]²[B]). Rate always has units of concentration/time = M s⁻¹ (or mol L⁻¹ s⁻¹). [A]² has units of M², and [B] has units of M. Therefore: k = (M s⁻¹)/(M² × M) = (M s⁻¹)/M³ = M⁻² s⁻¹ (or L² mol⁻² s⁻¹). The general formula for units of k is: (concentration)^(1-n) × time⁻¹, where n is the overall order. For zero order (n=0): k has units M s⁻¹; for first order (n=1): k has units s⁻¹; for second order (n=2): k has units M⁻¹ s⁻¹; for third order (n=3): k has units M⁻² s⁻¹. This dimensional analysis is crucial for checking if your rate law and calculations are correct, and it's a common IIT JEE question that tests understanding of the relationship between rate, concentration, and rate constant."
+  require_pass: true

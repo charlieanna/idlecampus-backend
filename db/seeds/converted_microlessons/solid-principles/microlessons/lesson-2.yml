@@ -1,0 +1,255 @@
+slug: lesson-2
+title: Lesson 2
+difficulty: easy
+sequence_order: 2
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Creational Design Patterns\n\n    **Creational\
+  \ patterns** provide ways to create objects while hiding the creation logic, making\
+  \ the system more flexible and reusable.\n\n    ---\n\n    ## 1. Singleton Pattern\n\
+  \n    **Ensure a class has only ONE instance and provide a global point of access\
+  \ to it.**\n\n    ### Use Cases\n    - Database connections\n    - Configuration\
+  \ managers\n    - Logger instances\n    - Thread pools\n    - Cache managers\n\n\
+  \    ### ❌ BEFORE (Bad - Multiple Instances)\n\n    ```python\n    class Database:\n\
+  \        def __init__(self):\n            print(\"Creating new database connection\"\
+  )\n            self.connection = self._connect()\n\n        def _connect(self):\n\
+  \            return \"Connected to database\"\n\n    # Problem: Multiple instances\
+  \ created!\n    db1 = Database()  # \"Creating new database connection\"\n    db2\
+  \ = Database()  # \"Creating new database connection\"\n    db3 = Database()  #\
+  \ \"Creating new database connection\"\n\n    print(db1 is db2)  # False - different\
+  \ instances\n    # Wastes resources, inconsistent state\n    ```\n\n    ### ✅ AFTER\
+  \ (Good - Singleton)\n\n    ```python\n    class Database:\n        _instance =\
+  \ None\n\n        def __new__(cls):\n            if cls._instance is None:\n   \
+  \             print(\"Creating single database connection\")\n                cls._instance\
+  \ = super().__new__(cls)\n                cls._instance.connection = \"Connected\
+  \ to database\"\n            return cls._instance\n\n    # Only one instance created!\n\
+  \    db1 = Database()  # \"Creating single database connection\"\n    db2 = Database()\
+  \  # Returns existing instance\n    db3 = Database()  # Returns existing instance\n\
+  \n    print(db1 is db2)  # True - same instance\n    print(db2 is db3)  # True -\
+  \ same instance\n    ```\n\n    ### Thread-Safe Singleton (Python)\n\n    ```python\n\
+  \    import threading\n\n    class ThreadSafeSingleton:\n        _instance = None\n\
+  \        _lock = threading.Lock()\n\n        def __new__(cls):\n            if cls._instance\
+  \ is None:\n                with cls._lock:\n                    # Double-checked\
+  \ locking\n                    if cls._instance is None:\n                     \
+  \   cls._instance = super().__new__(cls)\n            return cls._instance\n\n \
+  \   # Or use decorator:\n    def singleton(cls):\n        instances = {}\n     \
+  \   lock = threading.Lock()\n\n        def get_instance(*args, **kwargs):\n    \
+  \        if cls not in instances:\n                with lock:\n                \
+  \    if cls not in instances:\n                        instances[cls] = cls(*args,\
+  \ **kwargs)\n            return instances[cls]\n\n        return get_instance\n\n\
+  \    @singleton\n    class Logger:\n        def __init__(self):\n            self.logs\
+  \ = []\n\n        def log(self, message):\n            self.logs.append(message)\n\
+  \    ```\n\n    ### Thread-Safe Singleton (JavaScript)\n\n    ```javascript\n  \
+  \  class Database {\n      constructor() {\n        if (Database.instance) {\n \
+  \         return Database.instance;\n        }\n        this.connection = 'Connected\
+  \ to database';\n        Database.instance = this;\n      }\n\n      query(sql)\
+  \ {\n        console.log(`Executing: ${sql}`);\n      }\n    }\n\n    // Usage:\n\
+  \    const db1 = new Database();\n    const db2 = new Database();\n    console.log(db1\
+  \ === db2); // true\n    ```\n\n    ### ⚠️ Singleton Drawbacks\n\n    - Hard to\
+  \ test (global state)\n    - Violates Single Responsibility (manages instance +\
+  \ business logic)\n    - Hidden dependencies\n    - Can cause issues in multi-threaded\
+  \ environments\n\n    **Better alternative:** Dependency Injection\n\n    ---\n\n\
+  \    ## 2. Factory Pattern\n\n    **Define an interface for creating objects, but\
+  \ let subclasses decide which class to instantiate.**\n\n    ### Use Cases\n   \
+  \ - Creating different types of UI elements\n    - Database connection factories\n\
+  \    - Document creators (PDF, Word, Excel)\n    - Vehicle manufacturing\n\n   \
+  \ ### ❌ BEFORE (Bad - Tight Coupling)\n\n    ```python\n    class CarShowroom:\n\
+  \        def order_vehicle(self, vehicle_type):\n            if vehicle_type ==\
+  \ 'sedan':\n                vehicle = Sedan()\n            elif vehicle_type ==\
+  \ 'suv':\n                vehicle = SUV()\n            elif vehicle_type == 'truck':\n\
+  \                vehicle = Truck()\n            else:\n                raise ValueError(\"\
+  Unknown vehicle type\")\n\n            vehicle.assemble()\n            vehicle.test()\n\
+  \            return vehicle\n\n    # Problem: Must modify code to add new vehicle\
+  \ types\n    ```\n\n    ### ✅ AFTER (Good - Factory Pattern)\n\n    ```python\n\
+  \    from abc import ABC, abstractmethod\n\n    # Product interface\n    class Vehicle(ABC):\n\
+  \        @abstractmethod\n        def assemble(self):\n            pass\n\n    \
+  \    @abstractmethod\n        def test(self):\n            pass\n\n    # Concrete\
+  \ products\n    class Sedan(Vehicle):\n        def assemble(self):\n           \
+  \ print(\"Assembling sedan\")\n\n        def test(self):\n            print(\"Testing\
+  \ sedan\")\n\n    class SUV(Vehicle):\n        def assemble(self):\n           \
+  \ print(\"Assembling SUV\")\n\n        def test(self):\n            print(\"Testing\
+  \ SUV\")\n\n    class Truck(Vehicle):\n        def assemble(self):\n           \
+  \ print(\"Assembling truck\")\n\n        def test(self):\n            print(\"Testing\
+  \ truck\")\n\n    # Factory\n    class VehicleFactory:\n        @staticmethod\n\
+  \        def create_vehicle(vehicle_type):\n            vehicles = {\n         \
+  \       'sedan': Sedan,\n                'suv': SUV,\n                'truck': Truck\n\
+  \            }\n\n            vehicle_class = vehicles.get(vehicle_type.lower())\n\
+  \            if vehicle_class:\n                return vehicle_class()\n       \
+  \     raise ValueError(f\"Unknown vehicle type: {vehicle_type}\")\n\n    # Usage:\n\
+  \    factory = VehicleFactory()\n    sedan = factory.create_vehicle('sedan')\n \
+  \   sedan.assemble()\n    sedan.test()\n\n    suv = factory.create_vehicle('suv')\n\
+  \    suv.assemble()\n    suv.test()\n    ```\n\n    ### Real-World Example: Notification\
+  \ System\n\n    ```python\n    class Notification(ABC):\n        @abstractmethod\n\
+  \        def send(self, message):\n            pass\n\n    class EmailNotification(Notification):\n\
+  \        def send(self, message):\n            print(f\"Sending email: {message}\"\
+  )\n\n    class SMSNotification(Notification):\n        def send(self, message):\n\
+  \            print(f\"Sending SMS: {message}\")\n\n    class PushNotification(Notification):\n\
+  \        def send(self, message):\n            print(f\"Sending push notification:\
+  \ {message}\")\n\n    class NotificationFactory:\n        @staticmethod\n      \
+  \  def create(notification_type):\n            types = {\n                'email':\
+  \ EmailNotification,\n                'sms': SMSNotification,\n                'push':\
+  \ PushNotification\n            }\n            return types[notification_type]()\n\
+  \n    # Usage:\n    notif = NotificationFactory.create('email')\n    notif.send(\"\
+  Welcome to our service!\")\n    ```\n\n    ---\n\n    ## 3. Abstract Factory Pattern\n\
+  \n    **Provide an interface for creating families of related objects without specifying\
+  \ their concrete classes.**\n\n    ### Use Cases\n    - UI toolkits (Windows, Mac,\
+  \ Linux themes)\n    - Cross-platform applications\n    - Database drivers\n   \
+  \ - Product families (furniture sets)\n\n    ### ✅ Abstract Factory Example\n\n\
+  \    ```python\n    from abc import ABC, abstractmethod\n\n    # Abstract products\n\
+  \    class Button(ABC):\n        @abstractmethod\n        def render(self):\n  \
+  \          pass\n\n    class Checkbox(ABC):\n        @abstractmethod\n        def\
+  \ render(self):\n            pass\n\n    # Concrete products - Windows\n    class\
+  \ WindowsButton(Button):\n        def render(self):\n            return \"Rendering\
+  \ Windows button\"\n\n    class WindowsCheckbox(Checkbox):\n        def render(self):\n\
+  \            return \"Rendering Windows checkbox\"\n\n    # Concrete products -\
+  \ Mac\n    class MacButton(Button):\n        def render(self):\n            return\
+  \ \"Rendering Mac button\"\n\n    class MacCheckbox(Checkbox):\n        def render(self):\n\
+  \            return \"Rendering Mac checkbox\"\n\n    # Abstract factory\n    class\
+  \ GUIFactory(ABC):\n        @abstractmethod\n        def create_button(self) ->\
+  \ Button:\n            pass\n\n        @abstractmethod\n        def create_checkbox(self)\
+  \ -> Checkbox:\n            pass\n\n    # Concrete factories\n    class WindowsFactory(GUIFactory):\n\
+  \        def create_button(self):\n            return WindowsButton()\n\n      \
+  \  def create_checkbox(self):\n            return WindowsCheckbox()\n\n    class\
+  \ MacFactory(GUIFactory):\n        def create_button(self):\n            return\
+  \ MacButton()\n\n        def create_checkbox(self):\n            return MacCheckbox()\n\
+  \n    # Client code\n    class Application:\n        def __init__(self, factory:\
+  \ GUIFactory):\n            self.factory = factory\n\n        def render_ui(self):\n\
+  \            button = self.factory.create_button()\n            checkbox = self.factory.create_checkbox()\n\
+  \            print(button.render())\n            print(checkbox.render())\n\n  \
+  \  # Usage:\n    import platform\n\n    if platform.system() == 'Windows':\n   \
+  \     factory = WindowsFactory()\n    else:\n        factory = MacFactory()\n\n\
+  \    app = Application(factory)\n    app.render_ui()\n    ```\n\n    ---\n\n   \
+  \ ## 4. Builder Pattern\n\n    **Separate the construction of a complex object from\
+  \ its representation.**\n\n    ### Use Cases\n    - Building complex objects with\
+  \ many optional parameters\n    - SQL query builders\n    - HTTP request builders\n\
+  \    - Meal/menu builders\n\n    ### ❌ BEFORE (Bad - Constructor with Too Many Parameters)\n\
+  \n    ```python\n    class Computer:\n        def __init__(self, cpu, ram, storage,\
+  \ gpu, wifi, bluetooth,\n                     usb_ports, display_size, os, keyboard_backlight,\n\
+  \                     touchscreen, webcam):\n            self.cpu = cpu\n      \
+  \      self.ram = ram\n            self.storage = storage\n            self.gpu\
+  \ = gpu\n            self.wifi = wifi\n            self.bluetooth = bluetooth\n\
+  \            self.usb_ports = usb_ports\n            self.display_size = display_size\n\
+  \            self.os = os\n            self.keyboard_backlight = keyboard_backlight\n\
+  \            self.touchscreen = touchscreen\n            self.webcam = webcam\n\n\
+  \    # Problem: Hard to remember parameter order\n    computer = Computer('Intel\
+  \ i7', '16GB', '512GB SSD', 'NVIDIA RTX',\n                       True, True, 4,\
+  \ 15.6, 'Windows', True, False, True)\n    # What does 'True, True, 4, 15.6' mean?\
+  \ Unclear!\n    ```\n\n    ### ✅ AFTER (Good - Builder Pattern)\n\n    ```python\n\
+  \    class Computer:\n        def __init__(self):\n            self.cpu = None\n\
+  \            self.ram = None\n            self.storage = None\n            self.gpu\
+  \ = None\n            self.wifi = False\n            self.bluetooth = False\n  \
+  \          self.usb_ports = 0\n            self.display_size = 0\n            self.os\
+  \ = None\n            self.keyboard_backlight = False\n            self.touchscreen\
+  \ = False\n            self.webcam = False\n\n        def __str__(self):\n     \
+  \       return f\"Computer({self.cpu}, {self.ram}, {self.storage})\"\n\n    class\
+  \ ComputerBuilder:\n        def __init__(self):\n            self.computer = Computer()\n\
+  \n        def set_cpu(self, cpu):\n            self.computer.cpu = cpu\n       \
+  \     return self  # Return self for method chaining\n\n        def set_ram(self,\
+  \ ram):\n            self.computer.ram = ram\n            return self\n\n      \
+  \  def set_storage(self, storage):\n            self.computer.storage = storage\n\
+  \            return self\n\n        def set_gpu(self, gpu):\n            self.computer.gpu\
+  \ = gpu\n            return self\n\n        def enable_wifi(self):\n           \
+  \ self.computer.wifi = True\n            return self\n\n        def enable_bluetooth(self):\n\
+  \            self.computer.bluetooth = True\n            return self\n\n       \
+  \ def set_usb_ports(self, count):\n            self.computer.usb_ports = count\n\
+  \            return self\n\n        def set_display_size(self, size):\n        \
+  \    self.computer.display_size = size\n            return self\n\n        def set_os(self,\
+  \ os):\n            self.computer.os = os\n            return self\n\n        def\
+  \ enable_keyboard_backlight(self):\n            self.computer.keyboard_backlight\
+  \ = True\n            return self\n\n        def enable_touchscreen(self):\n   \
+  \         self.computer.touchscreen = True\n            return self\n\n        def\
+  \ enable_webcam(self):\n            self.computer.webcam = True\n            return\
+  \ self\n\n        def build(self):\n            return self.computer\n\n    # Usage:\
+  \ Clear and readable!\n    computer = (ComputerBuilder()\n                .set_cpu('Intel\
+  \ i7')\n                .set_ram('16GB')\n                .set_storage('512GB SSD')\n\
+  \                .set_gpu('NVIDIA RTX')\n                .enable_wifi()\n      \
+  \          .enable_bluetooth()\n                .set_usb_ports(4)\n            \
+  \    .set_display_size(15.6)\n                .set_os('Windows')\n             \
+  \   .enable_keyboard_backlight()\n                .enable_webcam()\n           \
+  \     .build())\n\n    print(computer)\n    ```\n\n    ### Builder with Director\
+  \ (Preset Configurations)\n\n    ```python\n    class ComputerDirector:\n      \
+  \  def __init__(self, builder):\n            self.builder = builder\n\n        def\
+  \ build_gaming_computer(self):\n            return (self.builder\n             \
+  \       .set_cpu('Intel i9')\n                    .set_ram('32GB')\n           \
+  \         .set_storage('1TB NVMe SSD')\n                    .set_gpu('NVIDIA RTX\
+  \ 4090')\n                    .enable_wifi()\n                    .enable_bluetooth()\n\
+  \                    .set_usb_ports(8)\n                    .enable_keyboard_backlight()\n\
+  \                    .build())\n\n        def build_office_computer(self):\n   \
+  \         return (self.builder\n                    .set_cpu('Intel i5')\n     \
+  \               .set_ram('8GB')\n                    .set_storage('256GB SSD')\n\
+  \                    .enable_wifi()\n                    .set_usb_ports(4)\n   \
+  \                 .enable_webcam()\n                    .build())\n\n    # Usage:\n\
+  \    director = ComputerDirector(ComputerBuilder())\n    gaming_pc = director.build_gaming_computer()\n\
+  \    office_pc = director.build_office_computer()\n    ```\n\n    ---\n\n    ##\
+  \ 5. Prototype Pattern\n\n    **Create new objects by copying existing objects (prototypes).**\n\
+  \n    ### Use Cases\n    - Cloning complex objects\n    - Avoiding expensive initialization\n\
+  \    - When object creation is costly\n    - Creating variations of objects\n\n\
+  \    ### ✅ Prototype Pattern\n\n    ```python\n    import copy\n\n    class Prototype:\n\
+  \        def clone(self):\n            return copy.deepcopy(self)\n\n    class Shape(Prototype):\n\
+  \        def __init__(self, x, y, color):\n            self.x = x\n            self.y\
+  \ = y\n            self.color = color\n\n        def __str__(self):\n          \
+  \  return f\"{self.__class__.__name__}(x={self.x}, y={self.y}, color={self.color})\"\
+  \n\n    class Circle(Shape):\n        def __init__(self, x, y, color, radius):\n\
+  \            super().__init__(x, y, color)\n            self.radius = radius\n\n\
+  \        def __str__(self):\n            return f\"Circle(x={self.x}, y={self.y},\
+  \ color={self.color}, radius={self.radius})\"\n\n    class Rectangle(Shape):\n \
+  \       def __init__(self, x, y, color, width, height):\n            super().__init__(x,\
+  \ y, color)\n            self.width = width\n            self.height = height\n\n\
+  \    # Usage:\n    # Create original\n    original_circle = Circle(10, 20, 'red',\
+  \ 5)\n    print(f\"Original: {original_circle}\")\n\n    # Clone and modify\n  \
+  \  cloned_circle = original_circle.clone()\n    cloned_circle.x = 30\n    cloned_circle.color\
+  \ = 'blue'\n    print(f\"Clone: {cloned_circle}\")\n    print(f\"Original unchanged:\
+  \ {original_circle}\")\n    ```\n\n    ### Real-World Example: Document Templates\n\
+  \n    ```python\n    import copy\n\n    class Document:\n        def __init__(self,\
+  \ title, content, formatting):\n            self.title = title\n            self.content\
+  \ = content\n            self.formatting = formatting\n            # Assume expensive\
+  \ initialization\n            print(f\"Creating document: {title}\")\n\n       \
+  \ def clone(self):\n            print(f\"Cloning document: {self.title}\")\n   \
+  \         return copy.deepcopy(self)\n\n    # Create template (expensive)\n    template\
+  \ = Document(\n        \"Report Template\",\n        \"Executive Summary\\\\n\\\\\
+  nDetails\\\\n\\\\nConclusion\",\n        {\"font\": \"Arial\", \"size\": 12, \"\
+  margins\": [1, 1, 1, 1]}\n    )\n\n    # Clone for specific reports (cheap)\n  \
+  \  q1_report = template.clone()\n    q1_report.title = \"Q1 Report\"\n    q1_report.content\
+  \ = \"Q1 Sales: $1M\"\n\n    q2_report = template.clone()\n    q2_report.title =\
+  \ \"Q2 Report\"\n    q2_report.content = \"Q2 Sales: $1.2M\"\n    ```\n\n    ---\n\
+  \n    ## When to Use Each Pattern\n\n    | Pattern | Use When |\n    |---------|----------|\n\
+  \    | **Singleton** | Need exactly one instance (config, connection pool) |\n \
+  \   | **Factory** | Creating objects without exposing creation logic |\n    | **Abstract\
+  \ Factory** | Need to create families of related objects |\n    | **Builder** |\
+  \ Creating complex objects with many optional parameters |\n    | **Prototype**\
+  \ | Cloning is cheaper than creating from scratch |\n\n    ## Comparison Example\n\
+  \n    ```python\n    # Singleton: One database connection for entire app\n    db\
+  \ = Database.get_instance()\n\n    # Factory: Create different notification types\n\
+  \    notif = NotificationFactory.create('email')\n\n    # Abstract Factory: Create\
+  \ related UI components\n    factory = WindowsFactory()\n    button = factory.create_button()\n\
+  \    checkbox = factory.create_checkbox()\n\n    # Builder: Build complex object\
+  \ step by step\n    computer = ComputerBuilder().set_cpu('i7').set_ram('16GB').build()\n\
+  \n    # Prototype: Clone existing object\n    new_doc = template.clone()\n    ```\n\
+  \n    **Next**: We'll explore structural patterns that help organize relationships\
+  \ between objects."
+exercises: []
+# For lesson-2.yml (Creational Patterns - Singleton, Factory)
+exercises:
+  - type: mcq
+    sequence_order: 1
+    question: "What is the main purpose of the Singleton pattern?"
+    options:
+      - "To create multiple instances of a class"
+      - "To ensure a class has only one instance and provide a global access point to it"
+      - "To hide implementation details"
+      - "To allow inheritance"
+    correct_answer: "To ensure a class has only one instance and provide a global access point to it"
+    explanation: "The Singleton pattern ensures a class has exactly one instance throughout the application and provides a global point of access to it. Common use cases include database connections, logging, and configuration managers where having multiple instances would cause problems or waste resources. Implementation typically uses a private constructor and a static method to return the single instance. However, be cautious: Singletons can make testing difficult and create hidden dependencies. In modern applications, dependency injection is often preferred over Singletons for better testability and flexibility."
+    require_pass: true
+  - type: mcq
+    sequence_order: 2
+    question: "What problem does the Factory pattern solve?"
+    options:
+      - "It makes classes faster"
+      - "It encapsulates object creation, allowing subclasses to decide which class to instantiate"
+      - "It prevents inheritance"
+      - "It automatically saves objects to a database"
+    correct_answer: "It encapsulates object creation, allowing subclasses to decide which class to instantiate"
+    explanation: "The Factory pattern provides an interface for creating objects but lets subclasses decide which class to instantiate. This is useful when you don't know exactly which objects you'll need to create until runtime. For example, a document editor might use a factory to create different document types (PDF, Word, Text) based on user input. Benefits include: loose coupling between client code and concrete classes, easier to extend with new types, and centralized object creation logic. The Factory pattern follows the Open/Closed Principle—open for extension (new product types) but closed for modification (existing factory interface stays the same)."
+    require_pass: true

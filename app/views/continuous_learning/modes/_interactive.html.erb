@@ -1,0 +1,440 @@
+<div class="interactive-micro">
+  <!-- Content panel (terminal is now persistent on right side of entire page) -->
+  <div class="interactive-content-panel">
+      <div class="content-header">
+        <div class="mode-badge interactive-badge">
+          <span class="badge-icon">⚡</span>
+          <span class="badge-text">Interactive Learning</span>
+        </div>
+      </div>
+
+      <% if content[:metadata][:is_review] %>
+        <div class="review-alert">
+          <div class="review-icon">🔄</div>
+          <div class="review-content">
+            <strong>REVIEW MODE</strong>
+            <% if content[:metadata][:review_reason] == 'decay' %>
+              <p>Testing retention: Your mastery dropped to <%= content[:metadata][:retention_level] %>%. Let's boost it back up!</p>
+            <% elsif content[:metadata][:review_reason] == 'stealth' %>
+              <p>Quick knowledge check: Reinforcing this command you learned earlier.</p>
+            <% elsif content[:metadata][:review_reason] == 'low_mastery' %>
+              <p>Strengthening weak area: Current mastery is <%= content[:metadata][:previous_score] %>%. Let's improve it!</p>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+
+      <h2 class="content-title"><%= content[:content][:title] %></h2>
+  <%# Command chip (if available) %>
+  <% begin %>
+    <% primary_cmd = content[:content][:expected_command].presence || content[:content][:examples]&.first || content.dig(:metadata, :canonical_command) %>
+    <% if primary_cmd.present? %>
+      <div class="command-chip" title="Command to learn"><span class="chip-icon">⚡</span><code><%= primary_cmd %></code></div>
+    <% end %>
+  <% rescue %>
+  <% end %>
+
+  <%# Concept primer for very first unit (hello-world / first container) %>
+  <% primer_needed = (content.dig(:metadata, :chapter).to_s == 'running-first-container') ||
+                     content.dig(:content, :title).to_s.downcase.include?('first container') ||
+                     Array(content.dig(:content, :examples)).join(' ').include?('hello-world') %>
+  <% if primer_needed %>
+    <div class="primer-box">
+      <div class="primer-title">Quick Primer</div>
+      <p><strong>Image:</strong> A read‑only package (template) that contains everything needed to run software: code, runtime, and dependencies.</p>
+      <p><strong>Container:</strong> A running instance of an image — lightweight, isolated, and fast to start/stop.</p>
+      <p><strong>Docker Hub (registry):</strong> A library on the internet where images are stored and downloaded from.</p>
+      <p><strong>hello‑world:</strong> A tiny image that prints a confirmation message so you can verify Docker is working.</p>
+      <p><strong>docker run:</strong> If the image isn’t local, Docker downloads it, creates a container from it, then starts the default command inside.</p>
+    </div>
+  <% end %>
+  
+  <!-- Explanation Section -->
+  <div class="explanation-box">
+    <div class="explanation-header">
+      <span class="explanation-icon">📖</span>
+      <h3 class="explanation-title">Understanding the Command</h3>
+    </div>
+    <div class="explanation-content">
+      <%= render_formatted_explanation(content[:content][:explanation]) %>
+    </div>
+  </div>
+  
+  <!-- Examples (clean chips with quick copy) -->
+  <% if content[:content][:examples].present? %>
+    <div class="examples-chips">
+      <div class="chips-header">
+        <span class="chips-icon">💡</span>
+        <span class="chips-title">Examples</span>
+      </div>
+      <div class="chips-row">
+        <% content[:content][:examples].each do |example| %>
+          <button type="button" class="example-chip" onclick="navigator.clipboard.writeText('<%= j example %>'); this.classList.add('copied'); setTimeout(()=>this.classList.remove('copied'),900);" aria-label="Copy example: <%= example %>">
+            <span class="chip-code"><code><%= example %></code></span>
+            <span class="chip-copy" aria-hidden="true">⧉</span>
+          </button>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+
+  <!-- Task Section -->
+  <div class="task-instruction-box">
+    <div class="task-label">📝 Your Task</div>
+    <div class="task-text"><%= content[:content][:task] %></div>
+    <div class="task-hint">Type the command in the terminal on the right →</div>
+  </div>
+
+  </div>
+  <!-- End of content panel -->
+</div>
+
+<style>
+/* Content panel (terminal is now persistent on right side of page) */
+.interactive-content-panel {
+  padding: 0;
+}
+
+/* Task hint */
+.task-hint {
+  font-size: 0.9rem;
+  color: #667eea;
+  font-weight: 600;
+  margin-top: 10px;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+/* Explanation area */
+.explanation-box {
+  padding: 0;
+  background: #ffffff;
+  border-radius: 12px;
+  margin-bottom: 24px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+  overflow: hidden;
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Explanation paragraphs */
+.explanation-paragraph {
+  font-size: 1.02rem;
+  line-height: 1.6;
+  color: #374151;
+  margin: 0 0 10px 0;
+  padding: 0 22px;
+  letter-spacing: 0.2px;
+}
+
+.explanation-paragraph:first-child {
+  padding-top: 16px;
+}
+
+.explanation-paragraph:last-child {
+  padding-bottom: 16px;
+  margin-bottom: 0;
+}
+
+/* Section Icons */
+.section-icon { display: inline-block; font-size: 1.1rem; margin-right: 8px; vertical-align: middle; filter: none; }
+
+@keyframes iconPop {
+  0% {
+    transform: scale(0) rotate(-180deg);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.2) rotate(10deg);
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+}
+
+/* Strong text within explanation */
+.explanation-box strong { display: inline-block; font-weight: 700; color: #374151; font-size: 1.02rem; letter-spacing: 0.2px; margin-bottom: 6px; position: relative; }
+
+/* Code Tag Styling */
+.explanation-box code {
+  background: #f3f4f6;
+  color: #111827;
+  padding: 3px 6px;
+  border-radius: 4px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Courier New";
+  font-size: 0.9rem;
+  border: 1px solid #e5e7eb;
+}
+
+/* Header Styling */
+.explanation-box h3 {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 20px 22px 12px 22px;
+  padding: 12px 16px;
+  border-top: 3px solid #e0e7ff;
+  background: linear-gradient(to right, #f8fafc 0%, #ffffff 100%);
+  border-radius: 8px 8px 0 0;
+  letter-spacing: -0.01em;
+}
+
+.explanation-box h3:first-child {
+  margin-top: 0;
+  border-top: none;
+  padding-top: 12px;
+}
+
+.explanation-box h4 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 16px 22px 10px 22px;
+  padding: 10px 16px;
+  border-left: 4px solid #cbd5e1;
+  background: #f8fafc;
+  border-radius: 4px;
+}
+
+/* Formatted Lists */
+.formatted-list {
+  margin: 20px 0;
+  padding: 25px 30px;
+  background: #fafbfc;
+  border-radius: 12px;
+  border: 1px solid #e8e8e8;
+  list-style: none;
+}
+
+.formatted-list.numbered-list {
+  counter-reset: item;
+  padding-left: 30px;
+}
+
+/* Numbered List Items */
+.numbered-item {
+  counter-increment: item;
+  position: relative;
+  padding: 12px 12px 12px 45px;
+  margin-bottom: 10px;
+  background: white;
+  border-radius: 8px;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #2c3e50;
+  border-left: 3px solid #667eea;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+  transition: all 0.3s ease;
+}
+
+.numbered-item:hover {
+  transform: translateX(4px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+}
+
+.numbered-item::before {
+  content: counter(item);
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 26px;
+  height: 26px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.85rem;
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+}
+
+.numbered-item:last-child {
+  margin-bottom: 0;
+}
+
+/* Bullet List Items */
+.bullet-item {
+  position: relative;
+  padding: 8px 0 8px 18px;
+  margin-bottom: 10px;
+  background: transparent;
+  border-radius: 0;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #1f2937;
+  border-left: none;
+  box-shadow: none;
+  transition: none;
+}
+
+.bullet-item:hover {
+  transform: translateX(4px);
+  box-shadow: 0 4px 12px rgba(79, 172, 254, 0.15);
+}
+
+.bullet-item::before { content: none; display: none; }
+
+.bullet-item:last-child {
+  margin-bottom: 0;
+}
+
+/* Title + command chip */
+.content-title { font-size: 1.7rem; font-weight: 700; color: #111827; margin: 18px 0 8px; line-height: 1.25; text-align: left; }
+.command-chip { display: inline-flex; align-items: center; gap: 8px; padding: 6px 10px; background: #f3f4f6; border: 1px solid #e5e7eb; border-radius: 8px; margin: 4px 0 16px; color: #111827; }
+.command-chip .chip-icon { font-size: 0.95rem; }
+.command-chip code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Courier New"; font-size: 0.92rem; }
+/* Explanation headings */
+.explanation-headline { font-size: 1.4rem; font-weight: 800; color: #0f172a; margin: 14px 0 8px; padding: 0 22px; }
+.explanation-head { font-size: 1.2rem; font-weight: 800; color: #0f172a; margin: 12px 0 6px; padding: 0 22px; }
+.explanation-subhead { font-size: 1.05rem; font-weight: 800; color: #111827; margin: 10px 0 6px; padding: 0 22px; }
+
+/* Examples chips */
+.examples-chips { margin: 12px 0 18px; }
+.chips-header { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; color: #111827; font-weight: 700; }
+.chips-icon { font-size: 1.1rem; }
+.chips-title { font-size: 1.05rem; }
+.chips-row { display: flex; flex-wrap: wrap; gap: 8px; }
+.example-chip { display: inline-flex; align-items: center; gap: 8px; padding: 8px 10px; background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; cursor: pointer; transition: background .15s ease, transform .05s ease; }
+.example-chip:hover { background: #f3f4f6; }
+.example-chip:active { transform: translateY(1px); }
+.example-chip .chip-code code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Courier New"; font-size: 0.9rem; color: #111827; }
+.example-chip .chip-copy { font-size: 0.9rem; color: #6b7280; }
+.example-chip.copied { outline: 2px solid #a7f3d0; background: #ecfdf5; }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .explanation-paragraph { font-size: 1rem; padding: 0 16px; }
+  .explanation-paragraph:first-child { padding-top: 18px; }
+  .explanation-paragraph:last-child { padding-bottom: 18px; }
+}
+
+/* Animation for list items */
+.numbered-item,
+.bullet-item {
+  animation: slideInLeft 0.3s ease-out both;
+}
+
+.numbered-item:nth-child(1),
+.bullet-item:nth-child(1) { animation-delay: 0.05s; }
+.numbered-item:nth-child(2),
+.bullet-item:nth-child(2) { animation-delay: 0.1s; }
+.numbered-item:nth-child(3),
+.bullet-item:nth-child(3) { animation-delay: 0.15s; }
+.numbered-item:nth-child(4),
+.bullet-item:nth-child(4) { animation-delay: 0.2s; }
+.numbered-item:nth-child(5),
+.bullet-item:nth-child(5) { animation-delay: 0.25s; }
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+</style>
+<style>
+.explanation-point { font-size: 1.02rem; line-height: 1.5; color: #1f2937; margin: 0 0 8px 0; padding: 0 22px; }
+.explanation-point .point-index { font-weight: 700; color: #111827; margin-right: 6px; }
+.explanation-story { font-size: 1.02rem; line-height: 1.6; color: #1f2937; margin: 0 0 10px 0; padding: 0 22px; }
+
+/* Concept primer */
+.primer-box {
+  margin: 12px 0 18px;
+  padding: 14px 16px;
+  background: #f8fafc;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+}
+.primer-title {
+  font-weight: 800;
+  color: #0f172a;
+  margin-bottom: 8px;
+  font-size: 0.95rem;
+  letter-spacing: 0.2px;
+}
+.primer-box p { margin: 6px 0; color: #334155; font-size: 0.98rem; line-height: 1.6; padding: 0; }
+
+/* Fenced code block */
+pre.code-block {
+  background: #f8fafc;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin: 12px 22px;
+  overflow-x: auto;
+  color: #111827;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Courier New", monospace;
+  font-size: 0.95rem;
+}
+pre.code-block code { background: transparent; border: none; padding: 0; }
+</style>
+
+<script>
+(function() {
+  const input = document.getElementById('terminalDirectInput');
+  const pasteMessage = document.getElementById('pasteMessage');
+  if (input) {
+    // Block Ctrl+V and Ctrl+C
+    input.addEventListener('keydown', function(e) {
+      if ((e.ctrlKey || e.metaKey) && (e.key === 'v' || e.key === 'V' || e.key === 'c' || e.key === 'C')) {
+        e.preventDefault();
+        if ((e.ctrlKey || e.metaKey) && (e.key === 'v' || e.key === 'V')) {
+          // Show paste disabled message
+          if (pasteMessage) {
+            pasteMessage.style.display = 'block';
+            pasteMessage.style.opacity = '1';
+            pasteMessage.style.transition = 'opacity 0.3s ease';
+            setTimeout(() => {
+              pasteMessage.style.opacity = '0.5';
+            }, 200);
+          }
+        }
+      }
+    });
+    
+    // Block paste event directly
+    input.addEventListener('paste', function(e) {
+      e.preventDefault();
+      if (pasteMessage) {
+        pasteMessage.style.display = 'block';
+        pasteMessage.style.opacity = '1';
+        pasteMessage.style.transition = 'opacity 0.3s ease';
+        setTimeout(() => {
+          pasteMessage.style.opacity = '0.5';
+        }, 200);
+      }
+    });
+    
+    // Block cut event
+    input.addEventListener('cut', function(e) {
+      e.preventDefault();
+    });
+  }
+})();
+</script>

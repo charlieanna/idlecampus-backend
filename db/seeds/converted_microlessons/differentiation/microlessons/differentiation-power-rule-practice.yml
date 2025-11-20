@@ -1,0 +1,80 @@
+slug: differentiation-power-rule-practice
+title: differentiation-power-rule — Practice
+difficulty: medium
+sequence_order: 37
+estimated_minutes: 2
+key_concepts:
+- differentiation-power-rule
+prerequisites: []
+content_md: '# differentiation-power-rule — Practice 🚀
+
+
+  Solution involves chain rule and product rule
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: 'Find the derivative of f(x) = x⁵ using the power rule.'
+  options:
+  - 5x⁴
+  - x⁴
+  - 5x⁶
+  - 4x⁴
+  require_pass: true
+  correct_answer: 5x⁴
+  explanation: 'The **power rule** states: If f(x) = xⁿ, then f''(x) = nxⁿ⁻¹. For
+    f(x) = x⁵: Apply the power rule with n = 5, f''(x) = 5x⁵⁻¹ = 5x⁴. **Power rule
+    examples**: d/dx(x³) = 3x², d/dx(x¹⁰) = 10x⁹, d/dx(x) = 1x⁰ = 1, d/dx(x⁰) =
+    d/dx(1) = 0 (constant rule). **For negative/fractional powers**: d/dx(x⁻²) =
+    -2x⁻³ = -2/x³, d/dx(x^(1/2)) = (1/2)x^(-1/2) = 1/(2√x). **Constant multiple
+    rule**: d/dx(cf(x)) = c·f''(x). Example: d/dx(3x⁵) = 3·5x⁴ = 15x⁴. **Sum rule**:
+    d/dx(f + g) = f'' + g''. Example: d/dx(x⁵ + x³) = 5x⁴ + 3x². The power rule
+    is fundamental for differentiation and works for all real exponents.'
+- type: mcq
+  sequence_order: 2
+  question: 'What is the derivative of f(x) = 3x⁴ - 2x² + 5?'
+  options:
+  - 12x³ - 4x
+  - 12x³ - 2x
+  - 3x³ - 2x
+  - 12x⁴ - 4x²
+  require_pass: true
+  correct_answer: 12x³ - 4x
+  explanation: 'Apply the power rule term by term, using the sum/difference rule
+    and constant multiple rule: f(x) = 3x⁴ - 2x² + 5. d/dx(3x⁴) = 3·4x³ = 12x³ (power
+    rule + constant multiple rule), d/dx(-2x²) = -2·2x = -4x (power rule + constant
+    multiple rule), d/dx(5) = 0 (constant rule). Therefore, f''(x) = 12x³ - 4x +
+    0 = 12x³ - 4x. **Key rules used**: **Power rule**: d/dx(xⁿ) = nxⁿ⁻¹, **Constant
+    multiple rule**: d/dx(cf) = c·f'', **Sum/difference rule**: d/dx(f ± g) = f''
+    ± g'', **Constant rule**: d/dx(c) = 0. These rules allow us to differentiate
+    any polynomial quickly and efficiently.'
+- type: mcq
+  sequence_order: 3
+  question: 'Find the derivative of y = (2x + 1)(x² - 3) using the product rule.'
+  options:
+  - 6x² + 2x - 6
+  - 4x² + 2x - 6
+  - 6x² - 6
+  - 2x² + 2x - 3
+  require_pass: true
+  correct_answer: 6x² + 2x - 6
+  explanation: 'The **product rule** states: If y = u·v, then dy/dx = u''v + uv''.
+    Let u = 2x + 1 and v = x² - 3. Then u'' = 2 and v'' = 2x. Applying the product
+    rule: dy/dx = u''v + uv'' = (2)(x² - 3) + (2x + 1)(2x) = 2x² - 6 + 4x² + 2x
+    = 6x² + 2x - 6. **Alternative method**: Expand first, then differentiate: y
+    = (2x + 1)(x² - 3) = 2x³ + x² - 6x - 3. dy/dx = 6x² + 2x - 6 ✓ (same answer).
+    **When to use product rule**: When you have a product of functions that are difficult
+    to expand, or when expanding would be tedious. **Chain rule**: For composite
+    functions f(g(x)), use d/dx[f(g(x))] = f''(g(x))·g''(x). **Quotient rule**: For
+    y = u/v, dy/dx = (u''v - uv'')/v². These derivative rules are essential for calculus.'

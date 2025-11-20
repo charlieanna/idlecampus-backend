@@ -1,0 +1,242 @@
+slug: circular-motion-centripetal-force
+title: "Circular Motion and Centripetal Force"
+difficulty: intermediate
+sequence_order: 4
+estimated_minutes: 17
+key_concepts:
+- circular-motion
+- centripetal-force
+- centrifugal-force
+- banking-of-roads
+- vertical-circular-motion
+prerequisites:
+- newtons-second-law-force-momentum
+- free-body-diagrams
+content_md: |
+  # Circular Motion and Centripetal Force
+
+  ## Uniform Circular Motion
+
+  **Motion in a circle with constant speed.**
+
+  ### Parameters:
+  ```
+  Angular displacement: θ (radians)
+  Angular velocity: ω = dθ/dt (rad/s)
+  Time period: T = 2π/ω
+  Frequency: f = 1/T = ω/(2π)
+  Linear velocity: v = rω
+  ```
+
+  ## Centripetal Acceleration
+
+  **Direction:** Always towards center of circle.
+
+  ```
+  a_c = v²/r = rω² = vω
+
+  Magnitude constant, direction continuously changes
+  ```
+
+  ### Important:
+  - Speed is constant but velocity changes (direction changes)
+  - Acceleration exists even with constant speed
+  - Acceleration perpendicular to velocity
+
+  ## Centripetal Force
+
+  **Force required to maintain circular motion:**
+
+  ```
+  F_c = ma_c = mv²/r = mrω² = mvω
+
+  Direction: Always radially inward (towards center)
+  ```
+
+  ### Sources:
+  - Tension (stone on string)
+  - Friction (car on road)
+  - Gravity (satellite)
+  - Normal force (wall of death)
+  - Combination of forces
+
+  ## Non-Uniform Circular Motion
+
+  When speed changes along circle:
+  ```
+  Tangential acceleration: a_t = dv/dt
+  Centripetal acceleration: a_c = v²/r (radial)
+
+  Total: a = √(a_t² + a_c²)
+  ```
+
+  ## Vertical Circular Motion
+
+  ### Critical Points:
+
+  **At Highest Point:**
+  ```
+  mg + T = mv²/r (both forces towards center)
+  T_top = mv²/r - mg
+
+  Minimum speed (T = 0): v_min = √(gr)
+  ```
+
+  **At Lowest Point:**
+  ```
+  T - mg = mv²/r (T towards center, mg away)
+  T_bottom = mv²/r + mg
+
+  Maximum tension at bottom!
+  ```
+
+  ### Minimum Speed at Bottom (for complete loop):
+  ```
+  v_bottom = √(5gr)
+
+  Using energy conservation from top to bottom.
+  ```
+
+  ## Motion on Banked Road
+
+  ### Without Friction:
+  ```
+  tan θ = v²/(rg)
+
+  θ = banking angle
+  v = optimum speed
+  r = radius of curve
+  ```
+
+  At this speed, no friction needed.
+
+  ### With Friction:
+  ```
+  Maximum speed: v_max = √(rg(μ + tan θ)/(1 - μ tan θ))
+  Minimum speed: v_min = √(rg(tan θ - μ)/(1 + μ tan θ))
+  ```
+
+  ## Conical Pendulum
+
+  Bob revolves in horizontal circle:
+  ```
+  T cos θ = mg (vertical balance)
+  T sin θ = mv²/r = mrω² (centripetal)
+
+  tan θ = v²/(rg) = rω²/g
+
+  Time period: T = 2π√(L cos θ/g)
+  ```
+
+  ## Centrifugal Force (Pseudo Force)
+
+  In rotating frame of reference:
+  ```
+  F_cf = mrω² = mv²/r
+
+  Direction: Radially outward (away from center)
+  ```
+
+  ### Important:
+  - Not a real force (pseudo/fictitious)
+  - Appears only in rotating (non-inertial) frame
+  - Magnitude equals centripetal force
+
+  ## Applications
+
+  ### 1. Car on Curved Road:
+  ```
+  Friction provides centripetal force
+  f = mv²/r ≤ μmg
+  v_max = √(μgr)
+  ```
+
+  ### 2. Cyclist Leaning:
+  ```
+  tan θ = v²/(rg)
+  θ = angle of lean from vertical
+  ```
+
+  ### 3. Aircraft Banking:
+  ```
+  tan θ = v²/(rg)
+  Lift provides centripetal component
+  ```
+
+  ## Numerical Examples
+
+  **Example 1:** Stone of 0.5 kg on 1 m string rotated at 2 rev/s. Find tension.
+
+  **Solution:**
+  ```
+  ω = 2 × 2π = 4π rad/s
+  T = mrω² = 0.5 × 1 × (4π)²
+  T = 0.5 × 16π² ≈ 0.5 × 158 ≈ 79 N
+
+  Much larger than weight (5 N)!
+  ```
+
+  **Example 2:** Car on banked road at angle 30°. Find speed for no friction (r = 100 m).
+
+  **Solution:**
+  ```
+  tan θ = v²/(rg)
+  tan 30° = v²/(100 × 10)
+  1/√3 = v²/1000
+  v² = 1000/√3 ≈ 577
+  v ≈ 24 m/s ≈ 86 km/h
+  ```
+
+  **Example 3:** Minimum speed at top of vertical loop of radius 10 m?
+
+  **Solution:**
+  ```
+  v_min = √(gr) = √(10 × 10) = 10 m/s
+
+  Below this speed, object falls off at top.
+  At bottom: v = √(5gr) = √500 ≈ 22.4 m/s needed.
+  ```
+
+  ## JEE Key Points
+
+  1. **F_c = mv²/r** (towards center)
+  2. **Centripetal is not a force type** - it's the net radial force
+  3. **v_min at top** = √(gr)
+  4. **Banking:** tan θ = v²/(rg)
+  5. **T_bottom > T_top** in vertical circle
+  6. **Centrifugal is pseudo force** (non-inertial frame)
+
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: "A particle moves in circle of radius r with constant speed v. In half revolution, magnitude of average velocity is:"
+  options:
+  - "v"
+  - "2v/π"
+  - "πv/2"
+  - "0"
+  correct_answer: "2v/π"
+  explanation: "Distance covered in half revolution = πr (half circumference). Time taken = πr/v. Displacement = 2r (diameter, straight line). Average velocity = Displacement/Time = 2r/(πr/v) = 2v/π. Note: Average SPEED = Distance/Time = πr/(πr/v) = v (equals instantaneous speed). Average velocity < average speed always in curved motion. For full revolution: displacement = 0, so average velocity = 0, but average speed = v. This distinction between velocity (vector) and speed (scalar) is crucial for circular motion problems."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: "A stone tied to string is whirled in vertical circle. At which point is tension maximum?"
+  options:
+  - "Highest point"
+  - "Lowest point"
+  - "Horizontal position"
+  - "Same at all points"
+  correct_answer: "Lowest point"
+  explanation: "At bottom: T - mg = mv²/r, so T = mv²/r + mg. At top: T + mg = mv²/r, so T = mv²/r - mg. At bottom, tension supports weight PLUS provides centripetal force. At top, weight helps provide centripetal force, reducing T. Also, speed is maximum at bottom (energy conservation), making v²/r term largest. If v_bottom = √(5gr) (minimum for complete circle), then T_bottom = 6mg while T_top = 0. Ratio is 6:0! String most likely to break at bottom. This is why circus performers feel heaviest at bottom of loop."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: "A car travels on banked road with banking angle θ = 45°. For motion without friction, speed must be:"
+  options:
+  - "√(rg)"
+  - "√(2rg)"
+  - "√(rg/2)"
+  - "rg"
+  correct_answer: "√(rg)"
+  explanation: "For no friction: tan θ = v²/(rg). At θ = 45°: tan 45° = 1 = v²/(rg). Therefore v² = rg, v = √(rg). At this optimal speed, horizontal component of normal force exactly provides required centripetal force. Below this speed, car slides down; above, slides up (friction needed). Example: r = 100 m, g = 10 m/s². v = √1000 ≈ 31.6 m/s ≈ 114 km/h. Race tracks are banked to allow high speeds safely. Banking reduces reliance on friction, important for wet conditions. Steeper banking allows higher optimal speed."
+  require_pass: true

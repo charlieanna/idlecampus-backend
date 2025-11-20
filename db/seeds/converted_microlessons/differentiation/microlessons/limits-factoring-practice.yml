@@ -1,0 +1,82 @@
+slug: limits-factoring-practice
+title: limits-factoring — Practice
+difficulty: medium
+sequence_order: 3
+estimated_minutes: 2
+key_concepts:
+- limits-factoring
+prerequisites: []
+content_md: '# limits-factoring — Practice 🚀
+
+
+  Apply L''Hôpital''s rule or algebraic manipulation
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: 'Evaluate: lim (x→2) [(x² - 4)/(x - 2)]'
+  options:
+  - '0'
+  - '4'
+  - '2'
+  - Undefined
+  require_pass: true
+  correct_answer: '4'
+  explanation: 'This is a 0/0 indeterminate form. Direct substitution gives (4-4)/(2-2)
+    = 0/0. **Factor the numerator**: x² - 4 = (x + 2)(x - 2). lim (x→2) [(x² - 4)/(x
+    - 2)] = lim (x→2) [(x + 2)(x - 2)/(x - 2)]. **Cancel common factor** (x - 2):
+    = lim (x→2) (x + 2). **Substitute x = 2**: = 2 + 2 = 4. **Common limit techniques**:
+    **Factoring**: Factor and cancel common terms (as above). **Rationalization**:
+    Multiply by conjugate for √ expressions. **L''Hôpital''s Rule**: For 0/0 or
+    ∞/∞, take derivatives: lim f(x)/g(x) = lim f''(x)/g''(x). **Algebraic manipulation**:
+    Simplify complex fractions. For this problem using L''Hôpital: lim (x²-4)/(x-2)
+    = lim 2x/1 = 4 ✓. Both methods give the same answer.'
+- type: mcq
+  sequence_order: 2
+  question: 'Evaluate: lim (x→0) [sin(3x)/x]'
+  options:
+  - '0'
+  - '1'
+  - '3'
+  - Does not exist
+  require_pass: true
+  correct_answer: '3'
+  explanation: 'This uses the fundamental trigonometric limit: lim (θ→0) [sin(θ)/θ]
+    = 1. **Method 1 - Algebraic manipulation**: lim (x→0) [sin(3x)/x] = lim (x→0)
+    [sin(3x)/(3x) · 3] = 3 · lim (x→0) [sin(3x)/(3x)]. Let u = 3x, as x→0, u→0:
+    = 3 · lim (u→0) [sin(u)/u] = 3 · 1 = 3. **Method 2 - L''Hôpital''s Rule**: lim
+    (x→0) [sin(3x)/x] = lim (x→0) [3cos(3x)/1] = 3cos(0) = 3·1 = 3. **Important trigonometric
+    limits**: lim (θ→0) [sin(θ)/θ] = 1, lim (θ→0) [(1-cos(θ))/θ] = 0, lim (θ→0)
+    [tan(θ)/θ] = 1. **General form**: lim (x→0) [sin(ax)/x] = a, lim (x→0) [sin(ax)/sin(bx)]
+    = a/b. These limits are fundamental for derivatives of trigonometric functions.'
+- type: mcq
+  sequence_order: 3
+  question: 'Evaluate: lim (x→∞) [(3x² + 2x - 1)/(x² - 5)]'
+  options:
+  - '0'
+  - '3'
+  - '∞'
+  - '-1/5'
+  require_pass: true
+  correct_answer: '3'
+  explanation: 'For limits at infinity with polynomials, divide by the highest power
+    of x in the denominator. **Divide numerator and denominator by x²**: lim (x→∞)
+    [(3x² + 2x - 1)/(x² - 5)] = lim (x→∞) [(3 + 2/x - 1/x²)/(1 - 5/x²)]. **As x→∞**:
+    2/x → 0, 1/x² → 0, 5/x² → 0. **Therefore**: = (3 + 0 - 0)/(1 - 0) = 3/1 = 3.
+    **General rule for polynomial limits at infinity**: If degree of numerator =
+    degree of denominator, limit = ratio of leading coefficients. If degree of numerator
+    < degree of denominator, limit = 0. If degree of numerator > degree of denominator,
+    limit = ±∞. **Example**: lim (x→∞) (5x³ + 2)/(2x³ - 7) = 5/2 (same degree),
+    lim (x→∞) (x + 1)/(x² + 1) = 0 (numerator lower degree), lim (x→∞) (x³)/(x +
+    1) = ∞ (numerator higher degree).'

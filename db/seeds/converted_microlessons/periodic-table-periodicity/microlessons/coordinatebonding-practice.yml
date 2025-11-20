@@ -1,0 +1,60 @@
+slug: coordinatebonding-practice
+title: coordinate_bonding — Practice
+difficulty: hard
+sequence_order: 13
+estimated_minutes: 2
+key_concepts:
+- coordinate_bonding
+prerequisites: []
+content_md: '# coordinate_bonding — Practice 🚀
+
+
+  Coordinate bonds form when one atom donates both electrons. NH₄⁺ has N→H⁺ coordinate
+  bond. Metal complexes like [Cu(NH₃)₄]²⁺ have NH₃→Cu²⁺ coordinate bonds. H₂O and
+  CH₄ have only normal covalent bonds.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: Which of the following contain coordinate bonds?
+  options:
+  - NH₄⁺ and [Cu(NH₃)₄]²⁺
+  - H₂O and CH₄
+  - NaCl and KBr
+  - O₂ and N₂
+  correct_answer: NH₄⁺ and [Cu(NH₃)₄]²⁺
+  explanation: "Coordinate bonds form when one atom donates both electrons. NH₄⁺ has an N→H⁺ coordinate bond where nitrogen donates its lone pair to H⁺. Metal complexes like [Cu(NH₃)₄]²⁺ have NH₃→Cu²⁺ coordinate bonds. H₂O and CH₄ have only normal covalent bonds where each atom contributes one electron."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: In a coordinate bond, the electron pair is donated by
+  options:
+  - one atom donates both electrons
+  - each atom donates one electron
+  - the metal ion
+  - the anion
+  correct_answer: one atom donates both electrons
+  explanation: "In a coordinate (dative) bond, both electrons in the bonding pair come from one atom (the donor). This is different from a normal covalent bond where each atom contributes one electron. The donor must have a lone pair of electrons. Once formed, a coordinate bond is identical to a covalent bond."
+  require_pass: false
+- type: mcq
+  sequence_order: 3
+  question: Which molecule can act as a donor in coordinate bonding?
+  options:
+  - NH₃ (has lone pair on N)
+  - CH₄ (no lone pairs)
+  - BF₃ (electron deficient)
+  - H₂ (no lone pairs)
+  correct_answer: NH₃ (has lone pair on N)
+  explanation: "NH₃ can act as a donor because nitrogen has a lone pair of electrons that can be donated to form a coordinate bond. CH₄ and H₂ have no lone pairs. BF₃ is electron deficient (only 6 electrons around B) and acts as an electron acceptor, not donor."
+  require_pass: false

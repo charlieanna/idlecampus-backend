@@ -1,0 +1,131 @@
+slug: lesson-5
+title: Lesson 5
+difficulty: easy
+sequence_order: 5
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Capacity Estimation Techniques\n\n    Learn\
+  \ to estimate system capacity needs systematically.\n\n    ## The 5-Step Framework\n\
+  \n    ### 1. Understand Requirements\n    - What features does the system need?\n\
+  \    - Who are the users?\n    - What's the scale?\n\n    ### 2. Make Assumptions\n\
+  \    - Daily/Monthly active users (DAU/MAU)\n    - User behavior patterns\n    -\
+  \ Data sizes\n    - Growth rate\n\n    ### 3. Calculate Traffic\n    - QPS (Queries\
+  \ Per Second)\n    - Peak QPS (usually 2-3x average)\n    - Read vs Write ratio\n\
+  \n    ### 4. Estimate Storage\n    - Data size per record\n    - Total records over\
+  \ time\n    - Replication factor\n    - Retention policy\n\n    ### 5. Calculate\
+  \ Bandwidth\n    - Data transferred per request\n    - Total requests per second\n\
+  \    - Network capacity needed\n\n    ## Example: URL Shortener (like bit.ly)\n\n\
+  \    ### Requirements\n    - Shorten URLs\n    - Redirect to original URLs\n   \
+  \ - Analytics (optional)\n\n    ### Assumptions\n    ```\n    - 100M URLs shortened\
+  \ per month\n    - Read:Write ratio = 100:1\n    - URL storage: 500 bytes average\n\
+  \    - Cache 20% of hot URLs\n    - Keep data for 5 years\n    ```\n\n    ### Traffic\
+  \ Estimation\n\n    **Write QPS**:\n    ```\n    100M URLs/month\n    = 100M / (30\
+  \ days × 24 hours × 3600 seconds)\n    = 100M / 2.592M seconds\n    ≈ 40 writes/second\n\
+  \n    Peak: 40 × 3 = 120 writes/second\n    ```\n\n    **Read QPS**:\n    ```\n\
+  \    Read:Write = 100:1\n    = 40 × 100\n    = 4,000 reads/second\n\n    Peak: 4,000\
+  \ × 3 = 12,000 reads/second\n    ```\n\n    ### Storage Estimation\n\n    **5-year\
+  \ storage**:\n    ```\n    URLs per 5 years:\n    100M URLs/month × 12 months ×\
+  \ 5 years = 6B URLs\n\n    Storage needed:\n    6B URLs × 500 bytes = 3 TB\n\n \
+  \   With metadata + replication (3x):\n    3 TB × 3 = 9 TB\n    ```\n\n    ### Bandwidth\
+  \ Estimation\n\n    **Write bandwidth**:\n    ```\n    40 writes/sec × 500 bytes\
+  \ = 20 KB/s\n    ```\n\n    **Read bandwidth**:\n    ```\n    4,000 reads/sec ×\
+  \ 500 bytes = 2 MB/s\n    ```\n\n    ### Memory (Cache) Estimation\n\n    **Cache\
+  \ 20% of hot URLs for a day**:\n    ```\n    Read requests per day:\n    4,000 req/s\
+  \ × 86,400 seconds = 345.6M requests\n\n    Cache 20%:\n    345.6M × 0.2 = 69M requests\n\
+  \n    Assuming 1 unique URL per 10 requests:\n    69M / 10 = 6.9M unique URLs\n\n\
+  \    Memory needed:\n    6.9M × 500 bytes ≈ 3.5 GB\n    ```\n\n    ## Example: Twitter-like\
+  \ Service\n\n    ### Assumptions\n    ```\n    - 200M DAU (Daily Active Users)\n\
+  \    - Each user views 100 tweets/day\n    - Each user posts 2 tweets/day\n    -\
+  \ 10% of tweets have images\n    - Average tweet: 300 bytes\n    - Average image:\
+  \ 200 KB\n    - Retention: 5 years\n    ```\n\n    ### Traffic Estimation\n\n  \
+  \  **Read QPS**:\n    ```\n    Daily reads: 200M users × 100 tweets = 20B tweets/day\n\
+  \    Read QPS: 20B / 86,400 seconds ≈ 230,000 req/s\n    Peak: 230K × 3 ≈ 700,000\
+  \ req/s\n    ```\n\n    **Write QPS**:\n    ```\n    Daily writes: 200M users ×\
+  \ 2 tweets = 400M tweets/day\n    Write QPS: 400M / 86,400 ≈ 4,600 tweets/s\n  \
+  \  Peak: 4.6K × 3 ≈ 14,000 tweets/s\n    ```\n\n    ### Storage Estimation\n\n \
+  \   **Text storage (5 years)**:\n    ```\n    Tweets per 5 years:\n    400M tweets/day\
+  \ × 365 days × 5 years = 730B tweets\n\n    Storage:\n    730B × 300 bytes = 219\
+  \ TB\n\n    With replication (3x): 657 TB\n    ```\n\n    **Image storage**:\n \
+  \   ```\n    Images per 5 years:\n    730B tweets × 10% with images = 73B images\n\
+  \n    Storage:\n    73B × 200 KB = 14.6 PB\n\n    With replication (3x): 43.8 PB\n\
+  \    ```\n\n    **Total**: ~44 PB (mostly images!)\n\n    ### Bandwidth Estimation\n\
+  \n    **Read bandwidth**:\n    ```\n    Text: 230K req/s × 300 bytes = 69 MB/s\n\
+  \    Images (10%): 23K req/s × 200 KB = 4.6 GB/s\n    Total: ~4.7 GB/s\n    ```\n\
+  \n    ## Common Patterns\n\n    ### Pattern 1: Social Media\n    - High read:write\
+  \ ratio (100:1 or more)\n    - Heavy caching needed\n    - Media storage dominates\n\
+  \n    ### Pattern 2: Messaging\n    - Balanced read:write\n    - Low latency critical\n\
+  \    - Retention policies important\n\n    ### Pattern 3: Video Streaming\n    -\
+  \ Very high bandwidth\n    - CDN essential\n    - Storage grows rapidly\n\n    ###\
+  \ Pattern 4: Analytics\n    - Write-heavy initially\n    - Batch processing\n  \
+  \  - Aggregated queries\n\n    ## Tips & Tricks\n\n    1. **Use daily/monthly instead\
+  \ of yearly**: Easier to reason about\n    2. **Peak vs Average**: Plan for 2-3x\
+  \ average load\n    3. **Growth**: Add 20-30% yearly growth buffer\n    4. **80/20\
+  \ rule**: 20% of data gets 80% of traffic\n    5. **Round aggressively**: 2.7M →\
+  \ 3M is fine\n\n    ## Red Flags\n\n    - Storage growing faster than budget\n \
+  \   - Bandwidth exceeding network capacity\n    - QPS requiring thousands of servers\n\
+  \    - Memory cache larger than available RAM\n\n    **Practice**: Try the System\
+  \ Design estimation labs!"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: When estimating QPS (Queries Per Second) for a system with 100M requests
+    per month, what calculation gives you the average QPS?
+  options:
+  - 100M / (30 × 24 × 60)
+  - 100M / (30 × 24 × 3600)
+  - 100M / (365 × 24 × 3600)
+  - 100M / 86400
+  correct_answer: 100M / (30 × 24 × 3600)
+  explanation: 'QPS (Queries Per Second) is calculated by dividing total monthly requests
+    by the number of seconds in a month. There are 30 days in a month (approximation),
+    24 hours per day, and 3600 seconds per hour. So: 100M / (30 × 24 × 3600) = 100M
+    / 2,592,000 seconds ≈ 38-40 requests/second. This calculation converts monthly
+    traffic to per-second metrics, which is essential for capacity planning. The other
+    options either use minutes instead of seconds, use yearly calculations, or use
+    daily seconds which would give incorrect results. Peak QPS is typically calculated
+    as 2-3x the average QPS to account for traffic spikes during high-usage periods.'
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: In the URL shortener example, why is the storage estimation multiplied
+    by 3 for the final result (3TB × 3 = 9TB)?
+  options:
+  - To account for database indexes only
+  - To account for replication factor, metadata, and redundancy
+  - To account for compression overhead
+  - To estimate cache memory requirements
+  correct_answer: To account for replication factor, metadata, and redundancy
+  explanation: 'The 3x multiplier in storage estimation accounts for the replication
+    factor and additional metadata overhead. In distributed systems, data is typically
+    replicated across multiple servers (often 3 replicas) for fault tolerance and
+    high availability. If the primary server fails, replicas ensure data is not lost.
+    Additionally, databases store metadata (indexes, timestamps, user IDs, etc.) alongside
+    the actual URL data. The raw calculation gives 3TB for just the URL strings (6
+    billion URLs × 500 bytes), but the total system storage must account for: (1)
+    replication across multiple servers (3x), (2) database indexes for fast lookups,
+    (3) metadata fields, and (4) some buffer for growth. This is a common pattern
+    in system design - always multiply raw storage by 2-3x for realistic estimates.'
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: What does the 80/20 rule mean in the context of capacity estimation, and
+    how does it affect cache design?
+  options:
+  - 80% of requests come from 20% of users, so cache user data
+  - 80% of data should be cached to serve 20% of requests
+  - 20% of data (hot data) receives 80% of traffic, so cache that 20%
+  - 80% of storage should be allocated to cache, 20% to permanent storage
+  correct_answer: 20% of data (hot data) receives 80% of traffic, so cache that 20%
+  explanation: 'The 80/20 rule (Pareto Principle) in capacity estimation states that
+    approximately 20% of your data accounts for 80% of your traffic. This means a
+    small subset of "hot" or frequently accessed data receives the majority of requests.
+    For example, in a URL shortener, popular URLs (like viral links) get accessed
+    repeatedly, while most URLs are accessed rarely. This principle is critical for
+    cache design: instead of trying to cache everything (expensive and inefficient),
+    you cache only the top 20% most frequently accessed items. In the URL shortener
+    example, caching 20% of daily requests (69M out of 345M) provides most of the
+    performance benefit while using only ~3.5GB of memory. This optimization strategy
+    maximizes cache hit rates while minimizing memory costs, making systems both fast
+    and cost-effective.'
+  require_pass: true

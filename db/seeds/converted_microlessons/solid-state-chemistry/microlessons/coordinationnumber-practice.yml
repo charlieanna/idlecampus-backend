@@ -1,0 +1,59 @@
+slug: coordinationnumber-practice
+title: coordination_number — Practice
+difficulty: easy
+sequence_order: 8
+estimated_minutes: 2
+key_concepts:
+- coordination_number
+prerequisites: []
+content_md: '# coordination_number — Practice 🚀
+
+
+  In BCC, each atom at corner is surrounded by 8 nearest neighbors (one at center
+  + 7 at other corners diagonally). CN = 8.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What is the coordination number in BCC structure?
+  options:
+  - '6'
+  - '8'
+  - '12'
+  - '4'
+  correct_answer: '8'
+  explanation: "In body-centered cubic (BCC) structure, each atom at the corner is surrounded by 8 nearest neighbors - one at the body center and 7 other corner atoms located diagonally. Therefore, the coordination number is 8. This is different from FCC (12) and simple cubic (6)."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What is the coordination number in FCC (face-centered cubic) structure?
+  options:
+  - '8'
+  - '12'
+  - '6'
+  - '4'
+  correct_answer: '12'
+  explanation: "In FCC structure, each atom is surrounded by 12 nearest neighbors - 4 in the same layer, 4 in the layer above, and 4 in the layer below. This gives the maximum coordination number among cubic structures and is also characteristic of closest packing."
+  require_pass: false
+- type: mcq
+  sequence_order: 3
+  question: Which structure has a coordination number of 6?
+  options:
+  - Simple cubic
+  - BCC
+  - FCC
+  - Hexagonal
+  correct_answer: Simple cubic
+  explanation: "Simple cubic structure has a coordination number of 6, where each atom is surrounded by 6 nearest neighbors (one on each face). This is the lowest coordination number among the three cubic structures: simple cubic (6), BCC (8), and FCC (12)."
+  require_pass: false

@@ -1,0 +1,59 @@
+slug: crystaldefects-practice
+title: crystal_defects — Practice
+difficulty: medium
+sequence_order: 10
+estimated_minutes: 2
+key_concepts:
+- crystal_defects
+prerequisites: []
+content_md: '# crystal_defects — Practice 🚀
+
+
+  Schottky defect involves missing ions from lattice, which decreases mass while volume
+  remains same, hence density decreases. Frenkel involves displacement, not removal.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: Which defect decreases the density of a crystal?
+  options:
+  - Schottky defect
+  - Frenkel defect
+  - Interstitial defect
+  - F-center
+  correct_answer: Schottky defect
+  explanation: "Schottky defect decreases the density of a crystal because it involves the complete removal of cation-anion pairs from the crystal lattice, leaving vacancies. This decreases the mass while the volume remains essentially the same, thus reducing density (ρ = m/V). In contrast, Frenkel defect involves displacement of ions to interstitial sites without removal, so mass and volume remain constant, keeping density unchanged."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: Frenkel defect is shown by
+  options:
+  - AgBr
+  - NaCl
+  - KCl
+  - CsCl
+  correct_answer: AgBr
+  explanation: "Frenkel defect is shown by AgBr, AgCl, and ZnS. This defect occurs when a small cation is displaced from its lattice site to an interstitial site. It requires a large difference in size between cation and anion, and small cations that can fit into interstitial sites. AgBr satisfies these conditions with small Ag⁺ ions."
+  require_pass: false
+- type: mcq
+  sequence_order: 3
+  question: What is an F-center in a crystal?
+  options:
+  - Anionic vacancy with trapped electron
+  - Cationic vacancy with trapped hole
+  - Displaced cation in interstitial site
+  - Missing cation-anion pair
+  correct_answer: Anionic vacancy with trapped electron
+  explanation: "An F-center (from German 'Farbzentrum' meaning color center) is an anionic vacancy that has trapped an electron. This defect imparts color to crystals. For example, NaCl crystals with F-centers appear yellow, and KCl appears violet. The trapped electron can absorb visible light, causing the coloration."
+  require_pass: false

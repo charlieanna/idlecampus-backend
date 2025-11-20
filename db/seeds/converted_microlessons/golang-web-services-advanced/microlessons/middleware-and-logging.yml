@@ -1,0 +1,195 @@
+slug: middleware-and-logging
+title: Middleware and Logging
+difficulty: easy
+sequence_order: 2
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Middleware and Logging \U0001F680\n\n# Middleware and Logging\n\n \
+  \   Middleware is code that runs before or after your handlers, perfect for cross-cutting\
+  \ concerns like logging, authentication, and CORS.\n\n    ## What is Middleware?\n\
+  \n    Middleware wraps around HTTP handlers to add functionality:\n\n    ```\n \
+  \   Request → Middleware 1 → Middleware 2 → Handler → Response\n              (logging)\
+  \      (auth)          (business logic)\n    ```\n\n    ## Basic Middleware Pattern\n\
+  \n    ```go\n    func loggingMiddleware(next http.HandlerFunc) http.HandlerFunc\
+  \ {\n        return func(w http.ResponseWriter, r *http.Request) {\n           \
+  \ // Code before handler\n            log.Printf(\"%s %s\", r.Method, r.URL.Path)\n\
+  \n            // Call next handler\n            next(w, r)\n\n            // Code\
+  \ after handler\n            log.Println(\"Request completed\")\n        }\n   \
+  \ }\n\n    // Usage\n    http.HandleFunc(\"/api/users\", loggingMiddleware(usersHandler))\n\
+  \    ```\n\n    ## Logging Middleware\n\n    Log every request with timing information:\n\
+  \n    ```go\n    func loggingMiddleware(next http.HandlerFunc) http.HandlerFunc\
+  \ {\n        return func(w http.ResponseWriter, r *http.Request) {\n           \
+  \ start := time.Now()\n\n            // Log request\n            log.Printf(\"Started\
+  \ %s %s\", r.Method, r.URL.Path)\n\n            // Call handler\n            next(w,\
+  \ r)\n\n            // Log completion with duration\n            duration := time.Since(start)\n\
+  \            log.Printf(\"Completed %s %s in %v\", r.Method, r.URL.Path, duration)\n\
+  \        }\n    }\n    ```\n\n    ## Response Status Capture\n\n    Capture response\
+  \ status codes for logging:\n\n    ```go\n    type responseWriter struct {\n   \
+  \     http.ResponseWriter\n        status int\n    }\n\n    func (rw *responseWriter)\
+  \ WriteHeader(code int) {\n        rw.status = code\n        rw.ResponseWriter.WriteHeader(code)\n\
+  \    }\n\n    func loggingMiddleware(next http.HandlerFunc) http.HandlerFunc {\n\
+  \        return func(w http.ResponseWriter, r *http.Request) {\n            start\
+  \ := time.Now()\n\n            // Wrap response writer\n            wrapped := &responseWriter{\n\
+  \                ResponseWriter: w,\n                status:         http.StatusOK,\
+  \ // default\n            }\n\n            next(wrapped, r)\n\n            duration\
+  \ := time.Since(start)\n            log.Printf(\"%s %s - %d (%v)\",\n          \
+  \      r.Method,\n                r.URL.Path,\n                wrapped.status,\n\
+  \                duration,\n            )\n        }\n    }\n    ```\n\n    ## Authentication\
+  \ Middleware\n\n    ```go\n    func authMiddleware(next http.HandlerFunc) http.HandlerFunc\
+  \ {\n        return func(w http.ResponseWriter, r *http.Request) {\n           \
+  \ // Get API key from header\n            apiKey := r.Header.Get(\"X-API-Key\")\n\
+  \n            if apiKey == \"\" {\n                http.Error(w, \"Missing API key\"\
+  , http.StatusUnauthorized)\n                return\n            }\n\n          \
+  \  // Validate API key\n            if !isValidAPIKey(apiKey) {\n              \
+  \  http.Error(w, \"Invalid API key\", http.StatusUnauthorized)\n               \
+  \ return\n            }\n\n            // Authentication successful, continue\n\
+  \            next(w, r)\n        }\n    }\n\n    func isValidAPIKey(key string)\
+  \ bool {\n        // In production, check against database\n        validKeys :=\
+  \ map[string]bool{\n            \"secret-key-123\": true,\n            \"api-key-456\"\
+  :    true,\n        }\n        return validKeys[key]\n    }\n\n    // Usage\n  \
+  \  http.HandleFunc(\"/api/protected\",\n        authMiddleware(loggingMiddleware(protectedHandler)))\n\
+  \    ```\n\n    ## CORS Middleware\n\n    Enable Cross-Origin Resource Sharing:\n\
+  \n    ```go\n    func corsMiddleware(next http.HandlerFunc) http.HandlerFunc {\n\
+  \        return func(w http.ResponseWriter, r *http.Request) {\n            // Set\
+  \ CORS headers\n            w.Header().Set(\"Access-Control-Allow-Origin\", \"*\"\
+  )\n            w.Header().Set(\"Access-Control-Allow-Methods\",\n              \
+  \  \"GET, POST, PUT, DELETE, OPTIONS\")\n            w.Header().Set(\"Access-Control-Allow-Headers\"\
+  ,\n                \"Content-Type, Authorization\")\n\n            // Handle preflight\
+  \ request\n            if r.Method == \"OPTIONS\" {\n                w.WriteHeader(http.StatusOK)\n\
+  \                return\n            }\n\n            next(w, r)\n        }\n  \
+  \  }\n    ```\n\n    ## Chaining Multiple Middleware\n\n    ```go\n    func chain(handler\
+  \ http.HandlerFunc, middlewares ...func(http.HandlerFunc) http.HandlerFunc) http.HandlerFunc\
+  \ {\n        for i := len(middlewares) - 1; i >= 0; i-- {\n            handler =\
+  \ middlewares[i](handler)\n        }\n        return handler\n    }\n\n    // Usage\n\
+  \    http.HandleFunc(\"/api/users\",\n        chain(usersHandler,\n            loggingMiddleware,\n\
+  \            authMiddleware,\n            corsMiddleware,\n        ),\n    )\n \
+  \   ```\n\n    ## Middleware with http.Handler Interface\n\n    For more flexibility,\
+  \ use the http.Handler interface:\n\n    ```go\n    func loggingMiddleware(next\
+  \ http.Handler) http.Handler {\n        return http.HandlerFunc(func(w http.ResponseWriter,\
+  \ r *http.Request) {\n            start := time.Now()\n            log.Printf(\"\
+  %s %s\", r.Method, r.URL.Path)\n\n            next.ServeHTTP(w, r)\n\n         \
+  \   log.Printf(\"Completed in %v\", time.Since(start))\n        })\n    }\n\n  \
+  \  // Usage with mux\n    mux := http.NewServeMux()\n    mux.HandleFunc(\"/api/users\"\
+  , usersHandler)\n\n    // Wrap entire mux with middleware\n    http.ListenAndServe(\"\
+  :8080\", loggingMiddleware(mux))\n    ```\n\n    ## Structured Logging\n\n    Use\
+  \ structured logging for better log analysis:\n\n    ```go\n    import \"log/slog\"\
+  \n\n    func loggingMiddleware(next http.HandlerFunc) http.HandlerFunc {\n     \
+  \   return func(w http.ResponseWriter, r *http.Request) {\n            start :=\
+  \ time.Now()\n\n            wrapped := &responseWriter{ResponseWriter: w, status:\
+  \ 200}\n            next(wrapped, r)\n\n            slog.Info(\"request\",\n   \
+  \             \"method\", r.Method,\n                \"path\", r.URL.Path,\n   \
+  \             \"status\", wrapped.status,\n                \"duration_ms\", time.Since(start).Milliseconds(),\n\
+  \                \"user_agent\", r.UserAgent(),\n            )\n        }\n    }\n\
+  \    ```\n\n    ## Recovery Middleware\n\n    Catch panics to prevent server crashes:\n\
+  \n    ```go\n    func recoveryMiddleware(next http.HandlerFunc) http.HandlerFunc\
+  \ {\n        return func(w http.ResponseWriter, r *http.Request) {\n           \
+  \ defer func() {\n                if err := recover(); err != nil {\n          \
+  \          log.Printf(\"PANIC: %v\", err)\n\n                    // Return 500 error\n\
+  \                    http.Error(w,\n                        \"Internal Server Error\"\
+  ,\n                        http.StatusInternalServerError,\n                   \
+  \ )\n                }\n            }()\n\n            next(w, r)\n        }\n \
+  \   }\n    ```\n\n    ## Complete Server with Middleware\n\n    ```go\n    package\
+  \ main\n\n    import (\n        \"log\"\n        \"net/http\"\n        \"time\"\n\
+  \    )\n\n    func main() {\n        mux := http.NewServeMux()\n\n        // Register\
+  \ handlers with middleware\n        mux.HandleFunc(\"/api/users\",\n           \
+  \ chain(usersHandler,\n                recoveryMiddleware,\n                loggingMiddleware,\n\
+  \                corsMiddleware,\n            ),\n        )\n\n        mux.HandleFunc(\"\
+  /api/protected\",\n            chain(protectedHandler,\n                recoveryMiddleware,\n\
+  \                loggingMiddleware,\n                authMiddleware,\n         \
+  \   ),\n        )\n\n        log.Println(\"Server starting on :8080...\")\n    \
+  \    log.Fatal(http.ListenAndServe(\":8080\", mux))\n    }\n\n    func usersHandler(w\
+  \ http.ResponseWriter, r *http.Request) {\n        w.Header().Set(\"Content-Type\"\
+  , \"application/json\")\n        w.Write([]byte(`{\"message\": \"Users endpoint\"\
+  }`))\n    }\n\n    func protectedHandler(w http.ResponseWriter, r *http.Request)\
+  \ {\n        w.Header().Set(\"Content-Type\", \"application/json\")\n        w.Write([]byte(`{\"\
+  message\": \"Protected data\"}`))\n    }\n    ```\n\n    ## Best Practices\n\n \
+  \   1. **Order matters** - Recovery should be first, logging second\n    2. **Keep\
+  \ middleware focused** - Each does one thing well\n    3. **Make middleware reusable**\
+  \ - Don't hard-code values\n    4. **Log important events** - Requests, errors,\
+  \ slow operations\n    5. **Use structured logging** - Better for analysis and monitoring\n\
+  \    6. **Handle panics** - Recovery middleware prevents crashes\n    7. **Document\
+  \ middleware chain** - Make it clear what runs when"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What is the purpose of wrapping http.ResponseWriter in middleware, and
+    how does it enable capturing the HTTP status code?
+  options:
+  - To prevent the response from being sent to the client
+  - To create a custom type that records the status code when WriteHeader is called,
+    since the standard ResponseWriter doesn't expose it
+  - To compress the response data automatically
+  - To cache all responses for better performance
+  correct_answer: To create a custom type that records the status code when WriteHeader
+    is called, since the standard ResponseWriter doesn't expose it
+  explanation: 'The standard http.ResponseWriter interface doesn''t provide a way
+    to read back the status code after it''s written - it only lets you write it with
+    WriteHeader(code). To log the status code in middleware, you need to wrap ResponseWriter
+    with a custom type that embeds http.ResponseWriter and adds a status field. The
+    custom type implements WriteHeader(code) by saving the code to its status field
+    before calling the underlying ResponseWriter.WriteHeader(code). This interception
+    pattern allows middleware to observe the status without changing handler behavior.
+    The wrapping looks like: type responseWriter struct { http.ResponseWriter; status
+    int }. When the handler calls w.WriteHeader(404), it actually calls your wrapper''s
+    method which records 404 and then passes it through. This is a common Go pattern
+    for augmenting interfaces - embedding the original and selectively overriding
+    methods. It''s crucial for structured logging where you want to log method, path,
+    status, and duration together after the request completes.'
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: Why is the order of middleware important, and what is the recommended
+    order for recovery, logging, and authentication middleware?
+  options:
+  - Order doesn't matter - middleware runs in parallel
+  - Recovery should be first (outermost) to catch panics from all subsequent middleware,
+    logging second to record all requests, authentication last (innermost)
+  - Authentication should be first to block unauthorized requests immediately
+  - Logging should be first so it runs fastest
+  correct_answer: Recovery should be first (outermost) to catch panics from all subsequent
+    middleware, logging second to record all requests, authentication last (innermost)
+  explanation: 'Middleware order is critical because they form a nested chain where
+    outer middleware wraps inner middleware. The execution flow is: Request → Middleware1
+    → Middleware2 → Handler → Middleware2 cleanup → Middleware1 cleanup → Response.
+    Recovery middleware should be outermost (first in chain) so its defer/recover
+    catches panics from all subsequent middleware and handlers - if it were later,
+    a panic in earlier middleware would crash the server. Logging middleware should
+    be second so it records all requests, including those that fail authentication
+    or panic. This gives complete visibility into traffic. Authentication middleware
+    should be inner (closer to handler) because there''s no need to authenticate if
+    the request is malformed or causes a panic. The pattern is: chain(handler, recovery,
+    logging, cors, auth) which executes as: recovery → logging → cors → auth → handler.
+    Common mistake: putting auth first means failed auth doesn''t get logged. Best
+    practice from the lesson: "Order matters - Recovery should be first, logging second".
+    This creates robust APIs where panics are caught, all traffic is logged, and expensive
+    operations like auth happen only when needed.'
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: What is the difference between using http.HandlerFunc vs http.Handler
+    for middleware, and when would you use each?
+  options:
+  - http.HandlerFunc is for GET requests; http.Handler is for POST requests
+  - http.HandlerFunc is a function type for simple handlers; http.Handler is an interface
+    providing flexibility to wrap entire routers/muxes
+  - http.Handler is deprecated in modern Go
+  - They are exactly the same - just different names for the same thing
+  correct_answer: http.HandlerFunc is a function type for simple handlers; http.Handler
+    is an interface providing flexibility to wrap entire routers/muxes
+  explanation: 'Go provides two ways to write handlers: http.HandlerFunc (a function
+    type) and http.Handler (an interface with ServeHTTP method). For middleware, this
+    creates two patterns. The HandlerFunc approach: func middleware(next http.HandlerFunc)
+    http.HandlerFunc returns a function. This works for wrapping individual route
+    handlers: http.HandleFunc("/api/users", loggingMiddleware(usersHandler)). It''s
+    simple and type-safe for functions. The Handler interface approach: func middleware(next
+    http.Handler) http.Handler returns anything implementing ServeHTTP. This is more
+    flexible because you can wrap entire routers: http.ListenAndServe(":8080", loggingMiddleware(mux)).
+    You can pass a ServeMux, a third-party router, or any custom handler. The conversion
+    between them is easy: http.HandlerFunc(f) adapts a function to the Handler interface.
+    The lesson shows both: HandlerFunc for wrapping individual handlers with chain(),
+    and Handler for wrapping the entire mux at the server level. Use HandlerFunc when
+    working with http.HandleFunc and simple routes. Use Handler when wrapping routers,
+    working with third-party middleware libraries (which expect Handler), or building
+    reusable middleware packages.'
+  require_pass: true

@@ -1,0 +1,14 @@
+course:
+  slug: docker-compose
+  title: Docker Compose
+  description: ''
+  estimated_hours: null
+  level: null
+modules:
+- slug: default
+  title: Default Module
+  lessons:
+  - docker-compose-up-start-multi-container-applications
+  - docker-compose-down-stop-and-remove-stack
+  - docker-compose-build-build-or-rebuild-service-images
+  - docker-compose-logs-view-service-output

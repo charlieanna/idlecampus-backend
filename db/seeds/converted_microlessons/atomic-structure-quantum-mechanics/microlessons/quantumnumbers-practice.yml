@@ -1,0 +1,51 @@
+slug: quantumnumbers-practice
+title: quantum_numbers — Practice
+difficulty: medium
+sequence_order: 9
+estimated_minutes: 2
+key_concepts:
+- quantum_numbers
+prerequisites: []
+content_md: '# quantum_numbers — Practice 🚀
+
+
+  n=3 has: 3s (1 orbital) + 3p (3 orbitals) + 3d (5 orbitals) = 9 orbitals total
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: 'For the n=3 shell, what are the possible values of the azimuthal quantum number (l)?'
+  options:
+  - '0, 1, 2'
+  - '0, 1, 2, 3'
+  - '1, 2, 3'
+  - '-3 to +3'
+  correct_answer: '0, 1, 2'
+  explanation: 'The azimuthal quantum number (l), also called the orbital angular momentum quantum number, determines the shape of the orbital (subshell). For a given principal quantum number n, l can take integer values from 0 to (n-1). For n=3: l = 0, 1, 2 (three possible values). Subshell designations: l=0 corresponds to s subshell (3s), l=1 corresponds to p subshell (3p), l=2 corresponds to d subshell (3d). So the n=3 shell contains 3s, 3p, and 3d subshells. Number of orbitals per subshell: For each l value, the magnetic quantum number m_l ranges from -l to +l, giving (2l+1) orbitals. 3s (l=0): 1 orbital (m_l=0). 3p (l=1): 3 orbitals (m_l=-1, 0, +1). 3d (l=2): 5 orbitals (m_l=-2, -1, 0, +1, +2). Total orbitals in n=3 shell: 1+3+5 = 9 orbitals. General pattern: n=1 has l=0 (1s only). n=2 has l=0,1 (2s, 2p). n=3 has l=0,1,2 (3s, 3p, 3d). n=4 has l=0,1,2,3 (4s, 4p, 4d, 4f). Maximum electrons: Each orbital holds 2 electrons (spin up and down), so n=3 can hold 2×9 = 18 electrons maximum.'
+  require_pass: true
+- type: short_answer
+  sequence_order: 2
+  question: How many orbitals are present in the n=3 shell?
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: 'Which of the following sets of quantum numbers (n, l, m_l, m_s) is NOT allowed for an electron in an atom?'
+  options:
+  - (3, 2, -1, +1/2)
+  - (4, 3, -2, -1/2)
+  - (2, 1, +1, +1/2)
+  - (3, 3, 0, -1/2)
+  correct_answer: (3, 3, 0, -1/2)
+  explanation: 'The set (3, 3, 0, -1/2) is NOT allowed because l cannot equal n; l must be less than n. Rules for quantum numbers: (1) Principal quantum number n: Positive integer (1, 2, 3, 4...). Determines shell and energy level. (2) Azimuthal quantum number l: Integer from 0 to (n-1). Determines subshell shape. l=0(s), 1(p), 2(d), 3(f). (3) Magnetic quantum number m_l: Integer from -l to +l, including 0. Determines orbital orientation. Total (2l+1) values. (4) Spin quantum number m_s: Either +1/2 or -1/2. Determines electron spin. Check each option: (3, 2, -1, +1/2): n=3, l=2 (valid, l<n). m_l=-1 (valid, within -2 to +2). m_s=+1/2 (valid). This represents a 3d orbital. ✓ (4, 3, -2, -1/2): n=4, l=3 (valid, l<n). m_l=-2 (valid, within -3 to +3). m_s=-1/2 (valid). This represents a 4f orbital. ✓ (2, 1, +1, +1/2): n=2, l=1 (valid, l<n). m_l=+1 (valid, within -1 to +1). m_s=+1/2 (valid). This represents a 2p orbital. ✓ (3, 3, 0, -1/2): n=3, l=3 (INVALID, l must be ≤ n-1, so l ≤ 2 for n=3). For n=3, maximum l=2 (3d). There is no 3f orbital. ✗'
+  require_pass: true

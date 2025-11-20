@@ -1,0 +1,99 @@
+slug: gaseous-state-gas-laws
+title: Gaseous State & Gas Laws
+difficulty: easy
+sequence_order: 16
+estimated_minutes: 2
+key_concepts:
+- Gas laws
+- Ideal gas equation
+- Boyles law
+- Charles law
+- Avogadros law
+- Gas density
+prerequisites: []
+content_md: "# Gaseous State & Gas Laws \U0001F680\n\n# Gaseous State & Gas Laws\n\
+  \n    ## Characteristics of Gases\n\n    1. **No definite shape or volume** (take\
+  \ shape and volume of container)\n    2. **Highly compressible** (large intermolecular\
+  \ spaces)\n    3. **Low density** (molecules far apart)\n    4. **Complete miscibility**\
+  \ (gases mix in all proportions)\n    5. **Exert pressure** (due to molecular collisions)\n\
+  \n    ## Gas Laws\n\n    ### 1. Boyle's Law (P-V Relationship)\n\n    **Statement:**\
+  \ At constant temperature, volume of a gas is inversely proportional to pressure\n\
+  \n    **Mathematical Form:**\n    - **V ∝ 1/P** (at constant T and n)\n    - **PV\
+  \ = constant**\n    - **P₁V₁ = P₂V₂**\n\n    **Graph:** Rectangular hyperbola (PV\
+  \ vs P is horizontal line)\n\n    ### Example:\n    A gas occupies 5 L at 2 atm.\
+  \ What volume at 5 atm (constant T)?\n\n    - P₁V₁ = P₂V₂\n    - 2 × 5 = 5 × V₂\n\
+  \    - V₂ = **2 L**\n\n    ### 2. Charles's Law (V-T Relationship)\n\n    **Statement:**\
+  \ At constant pressure, volume of a gas is directly proportional to absolute temperature\n\
+  \n    **Mathematical Form:**\n    - **V ∝ T** (at constant P and n)\n    - **V/T\
+  \ = constant**\n    - **V₁/T₁ = V₂/T₂**\n\n    **Important:** Temperature must be\
+  \ in **Kelvin**\n    - **T(K) = T(°C) + 273**\n\n    **Graph:** Straight line passing\
+  \ through origin (at 0 K, V = 0)\n\n    ### Example:\n    A gas at 300 K occupies\
+  \ 4 L. What volume at 450 K (constant P)?\n\n    - V₁/T₁ = V₂/T₂\n    - 4/300 =\
+  \ V₂/450\n    - V₂ = **6 L**\n\n    ### 3. Gay-Lussac's Law (P-T Relationship)\n\
+  \n    **Statement:** At constant volume, pressure is directly proportional to absolute\
+  \ temperature\n\n    **Mathematical Form:**\n    - **P ∝ T** (at constant V and\
+  \ n)\n    - **P/T = constant**\n    - **P₁/T₁ = P₂/T₂**\n\n    ### 4. Avogadro's\
+  \ Law (V-n Relationship)\n\n    **Statement:** At constant temperature and pressure,\
+  \ volume is directly proportional to number of moles\n\n    **Mathematical Form:**\n\
+  \    - **V ∝ n** (at constant T and P)\n    - **V/n = constant**\n    - **V₁/n₁\
+  \ = V₂/n₂**\n\n    **Consequence:** Equal volumes of all gases at same T and P contain\
+  \ equal number of molecules\n\n    ## Combined Gas Law\n\n    Combining Boyle's,\
+  \ Charles's, and Gay-Lussac's:\n\n    **P₁V₁/T₁ = P₂V₂/T₂**\n\n    (when amount\
+  \ of gas is constant)\n\n    ## Ideal Gas Equation\n\n    Combining all gas laws:\n\
+  \n    **PV = nRT**\n\n    Where:\n    - P = pressure\n    - V = volume\n    - n\
+  \ = number of moles\n    - R = universal gas constant\n    - T = absolute temperature\
+  \ (K)\n\n    ### Values of R:\n\n    | Units | Value |\n    |-------|-------|\n\
+  \    | L·atm·mol⁻¹·K⁻¹ | 0.0821 |\n    | J·mol⁻¹·K⁻¹ | 8.314 |\n    | cal·mol⁻¹·K⁻¹\
+  \ | 1.987 |\n    | erg·mol⁻¹·K⁻¹ | 8.314 × 10⁷ |\n\n    ### Alternate Forms:\n\n\
+  \    **1. Using mass:**\n    - PV = (w/M)RT\n    - Where w = mass, M = molar mass\n\
+  \n    **2. Using density:**\n    - PM = dRT\n    - Where d = density (mass/volume)\n\
+  \n    **3. For standard conditions (STP):**\n    - T = 273 K, P = 1 atm\n    - Molar\
+  \ volume = 22.4 L\n\n    ## Dalton's Law of Partial Pressures\n\n    **Statement:**\
+  \ Total pressure of a mixture equals sum of partial pressures\n\n    **P_total =\
+  \ P₁ + P₂ + P₃ + ...**\n\n    **Partial pressure:**\n    - **Pᵢ = Xᵢ × P_total**\n\
+  \    - Where Xᵢ = mole fraction = nᵢ/n_total\n\n    ### Example:\n    A mixture\
+  \ contains 2 mol N₂ and 3 mol O₂ at 5 atm total pressure. Find partial pressures.\n\
+  \n    - X_N₂ = 2/5 = 0.4\n    - X_O₂ = 3/5 = 0.6\n    - P_N₂ = 0.4 × 5 = **2 atm**\n\
+  \    - P_O₂ = 0.6 × 5 = **3 atm**\n\n    ## Graham's Law of Diffusion/Effusion\n\
+  \n    **Statement:** Rate of diffusion is inversely proportional to square root\
+  \ of molar mass\n\n    **r₁/r₂ = √(M₂/M₁) = √(d₂/d₁)**\n\n    Where:\n    - r =\
+  \ rate of diffusion/effusion\n    - M = molar mass\n    - d = density\n\n    ###\
+  \ Example:\n    Compare rates of diffusion of H₂ (M=2) and O₂ (M=32).\n\n    - r_H₂/r_O₂\
+  \ = √(32/2) = √16 = **4**\n    - H₂ diffuses 4 times faster than O₂\n\n    ## Solved\
+  \ IIT JEE Problems\n\n    ### Problem 1: Ideal gas equation\n\n    **Q: Calculate\
+  \ the volume occupied by 8.8 g of CO₂ at 31.1°C and 1 atm. (R = 0.0821 L·atm·mol⁻¹·K⁻¹)**\n\
+  \n    Solution:\n    - Molar mass of CO₂ = 44 g/mol\n    - n = 8.8/44 = 0.2 mol\n\
+  \    - T = 31.1 + 273 = 304.1 K\n    - PV = nRT\n    - V = nRT/P = (0.2 × 0.0821\
+  \ × 304.1)/1\n    - V = **5.0 L**\n\n    ### Problem 2: Gas density\n\n    **Q:\
+  \ Calculate the density of NH₃ gas at 30°C and 5 atm.**\n\n    Solution:\n    -\
+  \ PM = dRT\n    - d = PM/RT\n    - M = 17 g/mol, T = 303 K\n    - d = (5 × 17)/(0.0821\
+  \ × 303)\n    - d = **3.42 g/L**\n\n    ### Problem 3: Combined gas law\n\n    **Q:\
+  \ A gas occupies 2 L at 27°C and 2 atm. What volume at 127°C and 4 atm?**\n\n  \
+  \  Solution:\n    - P₁V₁/T₁ = P₂V₂/T₂\n    - T₁ = 300 K, T₂ = 400 K\n    - (2 ×\
+  \ 2)/300 = (4 × V₂)/400\n    - V₂ = **1.33 L**\n\n    ### Problem 4: Partial pressure\n\
+  \n    **Q: A vessel contains 0.5 mol H₂, 1 mol He, and 1.5 mol Ne at 10 atm. Find\
+  \ pressure of He.**\n\n    Solution:\n    - Total moles = 0.5 + 1 + 1.5 = 3 mol\n\
+  \    - X_He = 1/3\n    - P_He = (1/3) × 10 = **3.33 atm**\n\n    ### Problem 5:\
+  \ Graham's law\n\n    **Q: A gas diffuses 4 times faster than O₂. Find its molar\
+  \ mass.**\n\n    Solution:\n    - r_gas/r_O₂ = √(M_O₂/M_gas) = 4\n    - √(32/M)\
+  \ = 4\n    - 32/M = 16\n    - M = **2 g/mol** (Hydrogen)\n\n    ## STP vs SATP\n\
+  \n    ### STP (Standard Temperature and Pressure):\n    - T = 273 K (0°C)\n    -\
+  \ P = 1 atm (101.325 kPa)\n    - Molar volume = 22.4 L\n\n    ### SATP (Standard\
+  \ Ambient Temperature and Pressure):\n    - T = 298 K (25°C)\n    - P = 1 bar (100\
+  \ kPa)\n    - Molar volume = 24.8 L\n\n    ## Ideal Gas Assumptions\n\n    1. Gas\
+  \ molecules have **negligible volume** (point masses)\n    2. **No intermolecular\
+  \ forces** (elastic collisions)\n    3. Molecules move in **random motion**\n  \
+  \  4. Collisions are **perfectly elastic** (no energy loss)\n    5. **Average kinetic\
+  \ energy ∝ T**\n\n    ## IIT JEE Key Points\n\n    1. **Boyle's Law:** P₁V₁ = P₂V₂\
+  \ (constant T)\n    2. **Charles's Law:** V₁/T₁ = V₂/T₂ (constant P)\n    3. **Combined:**\
+  \ P₁V₁/T₁ = P₂V₂/T₂\n    4. **Ideal gas:** PV = nRT\n    5. **Density form:** PM\
+  \ = dRT\n    6. **R = 0.0821** L·atm·mol⁻¹·K⁻¹\n    7. **STP:** 1 mol = 22.4 L\n\
+  \    8. **Dalton:** P_total = ΣPᵢ\n    9. **Partial pressure:** Pᵢ = Xᵢ × P_total\n\
+  \    10. **Graham:** r₁/r₂ = √(M₂/M₁)\n\n    ## Quick Formulas\n\n    | Law | Formula\
+  \ | Variables |\n    |-----|---------|-----------|\n    | Boyle | P₁V₁ = P₂V₂ |\
+  \ T, n constant |\n    | Charles | V₁/T₁ = V₂/T₂ | P, n constant |\n    | Gay-Lussac\
+  \ | P₁/T₁ = P₂/T₂ | V, n constant |\n    | Avogadro | V₁/n₁ = V₂/n₂ | T, P constant\
+  \ |\n    | Ideal gas | PV = nRT | - |\n    | Dalton | P_t = ΣPᵢ | Mixtures |\n \
+  \   | Graham | r∝1/√M | Diffusion |\n\n## Key Points\n\n- Gas laws\n\n- Ideal gas\
+  \ equation\n\n- Boyles law"
+exercises: []

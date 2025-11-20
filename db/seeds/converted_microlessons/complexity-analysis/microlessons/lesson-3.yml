@@ -1,0 +1,86 @@
+slug: lesson-3
+title: Lesson 3
+difficulty: easy
+sequence_order: 3
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Stacks and Queues\n\n    ## Stack (LIFO\
+  \ - Last In, First Out)\n\n    **Like a stack of plates - add/remove from top**\n\
+  \n    ```python\n    class Stack:\n        def __init__(self):\n            self.items\
+  \ = []\n\n        def push(self, item):\n            self.items.append(item)  #\
+  \ O(1)\n\n        def pop(self):\n            if not self.is_empty():\n        \
+  \        return self.items.pop()  # O(1)\n            return None\n\n        def\
+  \ peek(self):\n            if not self.is_empty():\n                return self.items[-1]\
+  \  # O(1)\n            return None\n\n        def is_empty(self):\n            return\
+  \ len(self.items) == 0\n\n        def size(self):\n            return len(self.items)\n\
+  \n    # All operations: O(1)\n    ```\n\n    ### Common Stack Problems\n\n    **Valid\
+  \ Parentheses**\n\n    ```python\n    def is_valid(s):\n        stack = []\n   \
+  \     mapping = {')': '(', '}': '{', ']': '['}\n\n        for char in s:\n     \
+  \       if char in mapping:\n                top = stack.pop() if stack else '#'\n\
+  \                if mapping[char] != top:\n                    return False\n  \
+  \          else:\n                stack.append(char)\n\n        return len(stack)\
+  \ == 0\n\n    # Time: O(n), Space: O(n)\n    # Example: \"({[]})\" → True\n    #\
+  \          \"({[})\" → False\n    ```\n\n    **Evaluate Reverse Polish Notation**\n\
+  \n    ```python\n    def eval_rpn(tokens):\n        stack = []\n        operators\
+  \ = {'+', '-', '*', '/'}\n\n        for token in tokens:\n            if token in\
+  \ operators:\n                b = stack.pop()\n                a = stack.pop()\n\
+  \n                if token == '+': result = a + b\n                elif token ==\
+  \ '-': result = a - b\n                elif token == '*': result = a * b\n     \
+  \           else: result = int(a / b)\n\n                stack.append(result)\n\
+  \            else:\n                stack.append(int(token))\n\n        return stack[0]\n\
+  \n    # Example: [\"2\", \"1\", \"+\", \"3\", \"*\"] → ((2 + 1) * 3) = 9\n    ```\n\
+  \n    ## Queue (FIFO - First In, First Out)\n\n    **Like a line of people - add\
+  \ to back, remove from front**\n\n    ```python\n    from collections import deque\n\
+  \n    class Queue:\n        def __init__(self):\n            self.items = deque()\n\
+  \n        def enqueue(self, item):\n            self.items.append(item)  # O(1)\n\
+  \n        def dequeue(self):\n            if not self.is_empty():\n            \
+  \    return self.items.popleft()  # O(1)\n            return None\n\n        def\
+  \ front(self):\n            if not self.is_empty():\n                return self.items[0]\
+  \  # O(1)\n            return None\n\n        def is_empty(self):\n            return\
+  \ len(self.items) == 0\n\n        def size(self):\n            return len(self.items)\n\
+  \n    # All operations: O(1)\n    ```\n\n    ### Common Queue Problems\n\n    **Implement\
+  \ Stack using Queues**\n\n    ```python\n    from collections import deque\n\n \
+  \   class MyStack:\n        def __init__(self):\n            self.q = deque()\n\n\
+  \        def push(self, x):\n            self.q.append(x)\n            # Rotate\
+  \ to make last element first\n            for _ in range(len(self.q) - 1):\n   \
+  \             self.q.append(self.q.popleft())\n\n        def pop(self):\n      \
+  \      return self.q.popleft()\n\n        def top(self):\n            return self.q[0]\n\
+  \    ```\n\n    **Sliding Window Maximum**\n\n    ```python\n    from collections\
+  \ import deque\n\n    def max_sliding_window(nums, k):\n        result = []\n  \
+  \      dq = deque()  # stores indices\n\n        for i, num in enumerate(nums):\n\
+  \            # Remove indices outside window\n            while dq and dq[0] < i\
+  \ - k + 1:\n                dq.popleft()\n\n            # Remove smaller elements\n\
+  \            while dq and nums[dq[-1]] < num:\n                dq.pop()\n\n    \
+  \        dq.append(i)\n\n            # Add to result after first window\n      \
+  \      if i >= k - 1:\n                result.append(nums[dq[0]])\n\n        return\
+  \ result\n\n    # Time: O(n), Space: O(k)\n    # Example: nums = [1,3,-1,-3,5,3,6,7],\
+  \ k = 3\n    # Output: [3,3,5,5,6,7]\n    ```\n\n    ## Real-World Applications\n\
+  \n    ### Stack\n    - **Browser history** (back button)\n    - **Undo/Redo** functionality\n\
+  \    - **Function call stack**\n    - **Expression evaluation**\n    - **Backtracking\
+  \ algorithms**\n\n    ### Queue\n    - **Task scheduling**\n    - **Breadth-First\
+  \ Search (BFS)**\n    - **Print spooler**\n    - **Request handling** in web servers\n\
+  \    - **Message queues** (RabbitMQ, Kafka)\n\n    **Next**: Trees and Graphs!"
+exercises:
+  - type: mcq
+    sequence_order: 1
+    question: "What is the fundamental difference between a stack and a queue?"
+    options:
+      - "Stacks can only store integers, queues can store any data type"
+      - "Stacks are LIFO (Last In First Out), queues are FIFO (First In First Out)"
+      - "Stacks use arrays, queues use linked lists"
+      - "Stacks are faster than queues for all operations"
+    correct_answer: "Stacks are LIFO (Last In First Out), queues are FIFO (First In First Out)"
+    explanation: "The fundamental difference is the order of element removal. Stacks follow LIFO (Last In, First Out)—like a stack of plates, you add and remove from the top. The most recently added element is removed first. Queues follow FIFO (First In, First Out)—like a line of people, you add to the back and remove from the front. The oldest element is removed first. For example, if we add 1,2,3 to a stack and pop, we get 3,2,1. With a queue, dequeue gives 1,2,3. This ordering difference affects their applications: stacks are used for undo/redo, function call stacks, and backtracking; queues are used for task scheduling, BFS, and request handling. Both can store any data type (not just integers), can be implemented with arrays or linked lists (implementation is flexible), and have O(1) time for basic operations (both are equally fast). The defining characteristic is the access pattern: LIFO vs FIFO."
+    require_pass: true
+  - type: mcq
+    sequence_order: 2
+    question: "Why is the valid parentheses problem well-suited for a stack data structure?"
+    options:
+      - "Stacks are the only data structure that can store characters"
+      - "The most recent opening bracket must match the next closing bracket (LIFO pattern)"
+      - "Stacks make the algorithm faster than O(n)"
+      - "Parentheses can only be validated using stacks"
+    correct_answer: "The most recent opening bracket must match the next closing bracket (LIFO pattern)"
+    explanation: "The valid parentheses problem perfectly demonstrates LIFO (Last In, First Out) behavior. When we encounter a closing bracket, it must match the most recently opened (unmatched) bracket—exactly the stack's LIFO property. For example, in '({[]})': we push '(' then '{' then '['. When we see ']', it must match '[' (the last pushed). After popping '[', we see '}' which must match '{' (now the top). This nesting structure is inherently stack-based. Without a stack, we'd need complex logic to track nested brackets. The algorithm is O(n) regardless of data structure (must scan all characters)—stacks don't make it faster, they make it simpler and more elegant. Other data structures could theoretically work (you could use an array and manual index tracking), but stack's built-in LIFO makes the solution natural and clean. Stacks can store any data type, and the elegance comes from the problem's structure matching the data structure's behavior."
+    require_pass: true

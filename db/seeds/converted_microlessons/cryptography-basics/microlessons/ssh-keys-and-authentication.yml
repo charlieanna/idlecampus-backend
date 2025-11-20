@@ -1,0 +1,102 @@
+slug: ssh-keys-and-authentication
+title: SSH Keys and Authentication
+difficulty: easy
+sequence_order: 12
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# SSH Keys and Authentication \U0001F680\n\n# SSH Keys and Authentication\n\
+  \n    SSH (Secure Shell) provides secure remote access using cryptographic keys.\n\
+  \n    ## SSH Key Pairs\n\n    ### Public Key\n    - Can be shared freely\n    -\
+  \ Stored on servers you want to access\n    - Located in `~/.ssh/authorized_keys`\
+  \ on server\n\n    ### Private Key\n    - **NEVER share this**\n    - Stays on your\
+  \ local machine only\n    - Located in `~/.ssh/id_rsa` or `~/.ssh/id_ed25519`\n\
+  \    - Permissions must be 600 (read/write for owner only)\n\n    ## Generating\
+  \ SSH Keys\n\n    ### RSA Keys (Traditional)\n    ```bash\n    # Generate 4096-bit\
+  \ RSA key\n    ssh-keygen -t rsa -b 4096 -C \"your_email@example.com\"\n\n    #\
+  \ Specify custom filename\n    ssh-keygen -t rsa -b 4096 -f ~/.ssh/id_rsa_work\n\
+  \    ```\n\n    ### Ed25519 Keys (Modern, Recommended)\n    ```bash\n    # Generate\
+  \ Ed25519 key (faster, more secure)\n    ssh-keygen -t ed25519 -C \"your_email@example.com\"\
+  \n\n    # With passphrase for extra security\n    ssh-keygen -t ed25519 -C \"your_email@example.com\"\
+  \ -f ~/.ssh/id_ed25519_secure\n    ```\n\n    ### Key Fingerprints\n    ```bash\n\
+  \    # View key fingerprint\n    ssh-keygen -lf ~/.ssh/id_ed25519.pub\n\n    # View\
+  \ in different format\n    ssh-keygen -lf ~/.ssh/id_ed25519.pub -E sha256\n    ssh-keygen\
+  \ -lf ~/.ssh/id_ed25519.pub -E md5\n    ```\n\n    ## Setting Up Key-Based Authentication\n\
+  \n    ### 1. Copy Public Key to Server\n    ```bash\n    # Using ssh-copy-id (easiest)\n\
+  \    ssh-copy-id user@server.com\n\n    # Using specific key\n    ssh-copy-id -i\
+  \ ~/.ssh/id_ed25519.pub user@server.com\n\n    # Manual method\n    cat ~/.ssh/id_ed25519.pub\
+  \ | ssh user@server.com \"mkdir -p ~/.ssh && cat >> ~/.ssh/authorized_keys\"\n \
+  \   ```\n\n    ### 2. Connect Using Key\n    ```bash\n    # Connect (uses default\
+  \ key)\n    ssh user@server.com\n\n    # Use specific key\n    ssh -i ~/.ssh/id_ed25519_work\
+  \ user@server.com\n    ```\n\n    ## SSH Configuration\n\n    ### ~/.ssh/config\
+  \ File\n    ```\n    # Personal server\n    Host myserver\n        HostName server.example.com\n\
+  \        User john\n        IdentityFile ~/.ssh/id_ed25519\n        Port 22\n\n\
+  \    # Work server\n    Host work\n        HostName gitlab.company.com\n       \
+  \ User john.doe\n        IdentityFile ~/.ssh/id_ed25519_work\n        Port 2222\n\
+  \n    # GitHub\n    Host github.com\n        HostName github.com\n        User git\n\
+  \        IdentityFile ~/.ssh/id_ed25519_github\n    ```\n\n    Now you can use shortcuts:\n\
+  \    ```bash\n    ssh myserver\n    ssh work\n    git clone git@github.com:user/repo.git\n\
+  \    ```\n\n    ## SSH Agent\n\n    Holds decrypted private keys in memory.\n\n\
+  \    ```bash\n    # Start SSH agent\n    eval \"$(ssh-agent -s)\"\n\n    # Add key\
+  \ to agent\n    ssh-add ~/.ssh/id_ed25519\n\n    # Add with timeout (1 hour)\n \
+  \   ssh-add -t 3600 ~/.ssh/id_ed25519\n\n    # List keys in agent\n    ssh-add -l\n\
+  \n    # Remove all keys from agent\n    ssh-add -D\n    ```\n\n    ## File Permissions\n\
+  \n    **Critical for security!**\n\n    ```bash\n    # SSH directory\n    chmod\
+  \ 700 ~/.ssh\n\n    # Private keys\n    chmod 600 ~/.ssh/id_ed25519\n    chmod 600\
+  \ ~/.ssh/id_rsa\n\n    # Public keys\n    chmod 644 ~/.ssh/id_ed25519.pub\n\n  \
+  \  # authorized_keys (on server)\n    chmod 600 ~/.ssh/authorized_keys\n\n    #\
+  \ config file\n    chmod 600 ~/.ssh/config\n    ```\n\n    ## SSH Security Best\
+  \ Practices\n\n    ### 1. Disable Password Authentication\n    Edit `/etc/ssh/sshd_config`\
+  \ on server:\n    ```\n    PasswordAuthentication no\n    PubkeyAuthentication yes\n\
+  \    ```\n\n    ### 2. Disable Root Login\n    ```\n    PermitRootLogin no\n   \
+  \ ```\n\n    ### 3. Use Custom Port\n    ```\n    Port 2222\n    ```\n\n    ###\
+  \ 4. Use Strong Keys\n    - Prefer Ed25519\n    - Minimum RSA 4096-bit\n    - Use\
+  \ passphrases on private keys\n\n    ### 5. Limit User Access\n    ```\n    AllowUsers\
+  \ john jane\n    DenyUsers baduser\n    ```\n\n    ### 6. Enable Two-Factor Authentication\n\
+  \    ```\n    AuthenticationMethods publickey,keyboard-interactive\n    ```\n\n\
+  \    ## Advanced SSH\n\n    ### Port Forwarding (Tunneling)\n    ```bash\n    #\
+  \ Local port forwarding\n    ssh -L 8080:localhost:80 user@server.com\n\n    # Remote\
+  \ port forwarding\n    ssh -R 9090:localhost:3000 user@server.com\n\n    # Dynamic\
+  \ port forwarding (SOCKS proxy)\n    ssh -D 1080 user@server.com\n    ```\n\n  \
+  \  ### Jump Hosts (ProxyJump)\n    ```bash\n    # Connect through bastion\n    ssh\
+  \ -J bastion.example.com target.internal\n\n    # In config:\n    Host target\n\
+  \        HostName target.internal\n        ProxyJump bastion.example.com\n    ```\n\
+  \n    ### Keep Alive\n    ```bash\n    # In ~/.ssh/config\n    Host *\n        ServerAliveInterval\
+  \ 60\n        ServerAliveCountMax 3\n    ```\n\n    ### Execute Commands\n    ```bash\n\
+  \    # Run single command\n    ssh user@server.com \"ls -la /var/log\"\n\n    #\
+  \ Run multiple commands\n    ssh user@server.com \"cd /app && ./deploy.sh && systemctl\
+  \ restart app\"\n    ```"
+exercises:
+  - type: multiple_choice_question
+    sequence_order: 1
+    question: "Why is Ed25519 preferred over RSA for SSH keys?"
+    options:
+      - "Ed25519 keys are larger and more secure"
+      - "Ed25519 is faster, more secure, and uses smaller keys than RSA"
+      - "Ed25519 is compatible with more systems"
+      - "Ed25519 keys don't require passphrases"
+    correct_answer: "Ed25519 is faster, more secure, and uses smaller keys than RSA"
+    explanation: "Ed25519 is a modern elliptic curve signature scheme that offers several advantages over traditional RSA keys. First, Ed25519 provides equivalent or better security with much smaller key sizes (256 bits for Ed25519 versus 2048-4096 bits for RSA), making keys easier to manage and faster to process. Second, Ed25519 operations are significantly faster than RSA for both signing and verification, improving SSH connection times. Third, the algorithm is designed to be resistant to timing attacks and doesn't rely on random number generation quality as heavily as RSA, reducing implementation vulnerabilities. Fourth, Ed25519 has a simpler, more modern design based on elliptic curve cryptography. The main limitation is that very old systems might not support Ed25519, but modern systems (OpenSSH 6.5+, released in 2014) all support it. Ed25519 keys still benefit from passphrase protection just like RSA keys. GitHub, GitLab, and major cloud providers all support and recommend Ed25519 keys. When generating new SSH keys, use 'ssh-keygen -t ed25519' unless you specifically need RSA for legacy system compatibility."
+    require_pass: true
+  - type: multiple_choice_question
+    sequence_order: 2
+    question: "What are the correct file permissions for an SSH private key?"
+    options:
+      - "777 (read, write, execute for everyone)"
+      - "644 (read/write for owner, read for others)"
+      - "600 (read/write for owner only)"
+      - "755 (read/write/execute for owner, read/execute for others)"
+    correct_answer: "600 (read/write for owner only)"
+    explanation: "SSH private keys must have permissions of 600, meaning only the file owner can read and write the file, with no permissions granted to group or others. This is a critical security requirement because private keys are the cryptographic equivalent of your identity and password. If other users on the system can read your private key, they can impersonate you and access any systems that trust your key. SSH clients like OpenSSH actively enforce this requirement and will refuse to use a private key with overly permissive permissions, displaying an error like 'UNPROTECTED PRIVATE KEY FILE! Permissions 0644 are too open.' The permission 600 is calculated as: owner read (4) + write (2) = 6, group permissions (0), others permissions (0). You set this with 'chmod 600 ~/.ssh/id_ed25519'. The ~/.ssh directory itself should be 700, and public keys (.pub files) can be 644 since they're meant to be shared. The authorized_keys file on servers should be 600. These strict permissions are fundamental to SSH security and prevent accidental exposure of private keys to other users, malware, or compromised accounts on shared systems."
+    require_pass: true
+  - type: multiple_choice_question
+    sequence_order: 3
+    question: "What is the purpose of the SSH config file (~/.ssh/config)?"
+    options:
+      - "To store SSH private keys"
+      - "To define connection shortcuts with specific settings for different hosts"
+      - "To list authorized users who can connect"
+      - "To configure the SSH server daemon"
+    correct_answer: "To define connection shortcuts with specific settings for different hosts"
+    explanation: "The ~/.ssh/config file is a client-side configuration file that allows you to define convenient aliases and specific settings for different SSH connections. Instead of typing 'ssh -i ~/.ssh/work_key -p 2222 john@gitlab.company.com' every time, you can create a Host entry with all these parameters and simply type 'ssh work'. Each Host block can specify the hostname, username, port, identity file (private key), and various other SSH options. This is especially useful when you manage connections to multiple servers with different keys (personal servers, work servers, GitHub, GitLab, AWS, etc.). You can also set global defaults using 'Host *' that apply to all connections unless overridden. The file supports advanced features like ProxyJump for bastion hosts, LocalForward for port forwarding, and ServerAliveInterval for keeping connections active. The config file should have 600 permissions for security. This file doesn't store private keys (those are separate files), doesn't control who can connect to your machine (that's /etc/ssh/sshd_config and authorized_keys), and only affects your outgoing SSH client connections."
+    require_pass: true

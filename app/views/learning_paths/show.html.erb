@@ -1,0 +1,247 @@
+<div class="container mt-4">
+  <div class="row mb-4">
+    <div class="col-12">
+      <%= link_to "← Back to Learning Paths", learning_paths_path, class: "btn btn-link p-0 mb-3" %>
+
+      <div class="d-flex justify-content-between align-items-start mb-4">
+        <div>
+          <h1 class="display-4">Learning Path: <%= @tag.capitalize %></h1>
+          <p class="lead text-muted">
+            <i class="fas fa-book"></i> <%= @learning_path['total_posts'] %> total posts •
+            <i class="fas fa-globe"></i> Site: <%= @site.capitalize %> •
+            <i class="fas fa-layer-group"></i> Level: <%= @level.capitalize %>
+          </p>
+        </div>
+
+        <div class="btn-group" role="group">
+          <% ['beginner', 'intermediate', 'advanced'].each do |level| %>
+            <%= link_to level.capitalize,
+                learning_path_path(tag: @tag, site: @site, level: level),
+                class: "btn #{@level == level ? 'btn-primary' : 'btn-outline-secondary'}" %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <% if @learning_path['prerequisite_tags'].present? && @learning_path['prerequisite_tags'].any? %>
+    <div class="row mb-4">
+      <div class="col-12">
+        <div class="alert alert-warning d-flex align-items-start">
+          <i class="fas fa-exclamation-triangle me-3 mt-1"></i>
+          <div>
+            <strong>Recommended Prerequisites:</strong> Consider learning these related topics first:
+            <% @learning_path['prerequisite_tags'].each do |prereq_tag| %>
+              <%= link_to prereq_tag, learning_path_path(tag: prereq_tag, site: @site), class: "badge bg-warning text-dark ms-2 text-decoration-none" %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <!-- Prerequisites Section -->
+  <% if @learning_path['learning_sequence']['prerequisites'].any? %>
+    <div class="row mb-5">
+      <div class="col-12">
+        <div class="card border-success">
+          <div class="card-header bg-success text-white">
+            <h4 class="mb-0">
+              <i class="fas fa-book-reader"></i> Prerequisites
+              <span class="badge bg-white text-success float-end"><%= @learning_path['learning_sequence']['prerequisites'].length %> concepts</span>
+            </h4>
+          </div>
+          <div class="card-body">
+            <p class="text-muted mb-4">Start here - these are foundational concepts with minimal dependencies</p>
+
+            <div class="list-group">
+              <% @learning_path['learning_sequence']['prerequisites'].each_with_index do |post, index| %>
+                <div class="list-group-item hover-shadow mb-2 border rounded">
+                  <div class="d-flex justify-content-between align-items-start">
+                    <div class="flex-grow-1">
+                      <div class="d-flex align-items-center mb-2">
+                        <span class="badge bg-success me-2"><%= index + 1 %></span>
+                        <h5 class="mb-0">
+                          <%= link_to post_path(id: post['id'], site: @site),
+                              class: "text-decoration-none text-dark" do %>
+                            <%= post['title'] %>
+                            <i class="fas fa-arrow-right small ms-1"></i>
+                          <% end %>
+                        </h5>
+                      </div>
+                      <p class="text-muted small mb-0"><%= post['reason'] %></p>
+                    </div>
+                    <span class="badge bg-success-subtle text-success">Foundation</span>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <!-- Core Concepts Section -->
+  <% if @learning_path['learning_sequence']['core_concepts'].any? %>
+    <div class="row mb-5">
+      <div class="col-12">
+        <div class="card border-primary">
+          <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">
+              <i class="fas fa-bullseye"></i> Core Concepts
+              <span class="badge bg-white text-primary float-end"><%= @learning_path['learning_sequence']['core_concepts'].length %> concepts</span>
+            </h4>
+          </div>
+          <div class="card-body">
+            <p class="text-muted mb-4">Essential topics to build your understanding</p>
+
+            <div class="list-group">
+              <% @learning_path['learning_sequence']['core_concepts'].each_with_index do |post, index| %>
+                <div class="list-group-item hover-shadow mb-2 border rounded">
+                  <div class="d-flex justify-content-between align-items-start">
+                    <div class="flex-grow-1">
+                      <div class="d-flex align-items-center mb-2">
+                        <span class="badge bg-primary me-2"><%= index + 1 %></span>
+                        <h5 class="mb-0">
+                          <%= link_to post_path(id: post['id'], site: @site),
+                              class: "text-decoration-none text-dark" do %>
+                            <%= post['title'] %>
+                            <i class="fas fa-arrow-right small ms-1"></i>
+                          <% end %>
+                        </h5>
+                      </div>
+                      <p class="text-muted small mb-0">
+                        <%= post['reason'] %>
+                        <% if post['authority'] && post['authority'] > 1 %>
+                          <span class="badge bg-info ms-2">Authority: <%= post['authority'] %></span>
+                        <% end %>
+                      </p>
+                    </div>
+                    <span class="badge bg-primary-subtle text-primary">Core</span>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <!-- Advanced Topics Section -->
+  <% if @learning_path['learning_sequence']['advanced_topics'].any? %>
+    <div class="row mb-5">
+      <div class="col-12">
+        <div class="card border-danger">
+          <div class="card-header bg-danger text-white">
+            <h4 class="mb-0">
+              <i class="fas fa-rocket"></i> Advanced Topics
+              <span class="badge bg-white text-danger float-end"><%= @learning_path['learning_sequence']['advanced_topics'].length %> concepts</span>
+            </h4>
+          </div>
+          <div class="card-body">
+            <p class="text-muted mb-4">Complex concepts for deeper understanding</p>
+
+            <div class="list-group">
+              <% @learning_path['learning_sequence']['advanced_topics'].each_with_index do |post, index| %>
+                <div class="list-group-item hover-shadow mb-2 border rounded">
+                  <div class="d-flex justify-content-between align-items-start">
+                    <div class="flex-grow-1">
+                      <div class="d-flex align-items-center mb-2">
+                        <span class="badge bg-danger me-2"><%= index + 1 %></span>
+                        <h5 class="mb-0">
+                          <%= link_to post_path(id: post['id'], site: @site),
+                              class: "text-decoration-none text-dark" do %>
+                            <%= post['title'] %>
+                            <i class="fas fa-arrow-right small ms-1"></i>
+                          <% end %>
+                        </h5>
+                      </div>
+                      <p class="text-muted small mb-0">
+                        <%= post['reason'] %>
+                        <% if post['complexity'] && post['complexity'] > 5 %>
+                          <span class="badge bg-warning text-dark ms-2">Complexity: <%= post['complexity'] %></span>
+                        <% end %>
+                      </p>
+                    </div>
+                    <span class="badge bg-danger-subtle text-danger">Advanced</span>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <!-- Summary Stats -->
+  <div class="row mb-5">
+    <div class="col-12">
+      <div class="card bg-light">
+        <div class="card-body">
+          <h4 class="card-title mb-4">Learning Path Summary</h4>
+          <div class="row text-center">
+            <div class="col-md-4">
+              <div class="p-3">
+                <i class="fas fa-book fa-3x text-success mb-2"></i>
+                <h2 class="text-success"><%= @learning_path['summary']['prerequisites_count'] %></h2>
+                <p class="text-muted">Prerequisites</p>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="p-3">
+                <i class="fas fa-bullseye fa-3x text-primary mb-2"></i>
+                <h2 class="text-primary"><%= @learning_path['summary']['core_concepts_count'] %></h2>
+                <p class="text-muted">Core Concepts</p>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="p-3">
+                <i class="fas fa-rocket fa-3x text-danger mb-2"></i>
+                <h2 class="text-danger"><%= @learning_path['summary']['advanced_topics_count'] %></h2>
+                <p class="text-muted">Advanced Topics</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="progress mt-4" style="height: 30px;">
+            <% prereq_pct = (@learning_path['summary']['prerequisites_count'].to_f / @learning_path['total_posts'] * 100).round %>
+            <% core_pct = (@learning_path['summary']['core_concepts_count'].to_f / @learning_path['total_posts'] * 100).round %>
+            <% adv_pct = (@learning_path['summary']['advanced_topics_count'].to_f / @learning_path['total_posts'] * 100).round %>
+
+            <div class="progress-bar bg-success" role="progressbar" style="width: <%= prereq_pct %>%">
+              <%= prereq_pct %>%
+            </div>
+            <div class="progress-bar bg-primary" role="progressbar" style="width: <%= core_pct %>%">
+              <%= core_pct %>%
+            </div>
+            <div class="progress-bar bg-danger" role="progressbar" style="width: <%= adv_pct %>%">
+              <%= adv_pct %>%
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .hover-shadow {
+    transition: all 0.3s ease;
+  }
+  .hover-shadow:hover {
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transform: translateY(-2px);
+  }
+  .list-group-item {
+    border: 1px solid #dee2e6;
+  }
+  .list-group-item:hover {
+    background-color: #f8f9fa;
+  }
+  .badge {
+    font-weight: normal;
+  }
+</style>

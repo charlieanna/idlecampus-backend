@@ -1,0 +1,66 @@
+slug: lesson-61
+title: Lesson 61
+difficulty: easy
+sequence_order: 61
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Service Accounts and RBAC for Apps\n\n\
+  \    - Default service account behavior\n    - Binding Roles to service accounts\n\
+  \    - Token/ProjectedVolume considerations"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What service account does a pod use if no service account is specified?
+  options:
+  - No service account
+  - The cluster-admin service account
+  - The default service account in the pod's namespace
+  - A randomly generated service account
+  correct_answer: The default service account in the pod's namespace
+  explanation: 'If you don''t specify a serviceAccountName in a pod spec, Kubernetes
+    automatically assigns the ''default'' service account from the pod''s namespace.
+    Every namespace has a default service account created automatically. This service
+    account has minimal permissions by default (in many setups, it can''t even list
+    or read most resources). The service account token is automatically mounted at
+    /var/run/secrets/kubernetes.io/serviceaccount/token, allowing the pod to authenticate
+    to the Kubernetes API. For applications that don''t need API access, you can disable
+    token mounting with automountServiceAccountToken: false. For applications that
+    do need API access, create a dedicated service account with specific RBAC permissions
+    rather than using the default. This follows the principle of least privilege -
+    give each application only the permissions it needs.'
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: How do you grant a service account permissions to access Kubernetes resources?
+  options:
+  - By adding the service account to a Group
+  - By creating a RoleBinding or ClusterRoleBinding that binds a Role/ClusterRole
+    to the service account
+  - By modifying the service account's manifest
+  - Permissions are granted automatically
+  correct_answer: By creating a RoleBinding or ClusterRoleBinding that binds a Role/ClusterRole
+    to the service account
+  explanation: 'To grant a service account permissions, you create a RoleBinding (namespace-scoped)
+    or ClusterRoleBinding (cluster-wide) that binds a Role or ClusterRole to the service
+    account. For example, to allow service account ''app-sa'' to list pods in the
+    ''production'' namespace, you''d create a Role with ''get/list'' verbs on ''pods'',
+    then a RoleBinding connecting that Role to ''app-sa''. The binding''s subjects
+    field references the service account: ''kind: ServiceAccount, name: app-sa, namespace:
+    production''. ClusterRoleBindings grant cluster-wide permissions. This RBAC model
+    provides fine-grained control over what each application can do via the Kubernetes
+    API. Service accounts themselves don''t have permissions - they''re just identities.
+    Permissions come from the Role/ClusterRole they''re bound to via bindings.'
+  require_pass: true
+- type: mcq
+  sequence_order: 1
+  question: What is the default service type in Kubernetes?
+  options:
+  - ClusterIP
+  - NodePort
+  - LoadBalancer
+  - ExternalName
+  correct_answer_index: 0
+  explanation: ClusterIP is the default service type. It exposes the service on an
+    internal cluster IP, making it only reachable within the cluster.
+  require_pass: true

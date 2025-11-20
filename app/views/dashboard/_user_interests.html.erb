@@ -1,0 +1,18 @@
+<div class="mt-4">
+  <h4>Your Interests Based on Tags</h4>
+  <table border="1">
+    <thead>
+    <tr>
+      <th>Tag</th>
+      <th>Score</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% @tag_weights[site_name].sort_by { |_, weight| -weight }.each do |tag, weight| %>
+      <tr>
+      <td><%= link_to tag, {controller: 'tags', action: 'show', site_name: site_name, tag_name: tag}, target: "_blank" %></td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+</div>

@@ -1,0 +1,159 @@
+---
+slug: array-two-pointers
+title: Two Pointers
+sequence_order: 4
+estimated_minutes: 15
+difficulty: medium
+key_concepts:
+- Two Pointers
+- Opposite Direction
+content_md: |
+  # Two Pointers
+
+  Using two pointers moving toward each other or in same direction to solve array problems efficiently
+
+  ---
+
+  ## Two Pointers Technique
+
+  Two pointers is an algorithmic pattern where we use two indices to traverse data structures, typically arrays or linked lists.
+
+  **Types:**
+
+  ### 1. Opposite Direction (Converging)
+  Pointers start at both ends and move toward each other.
+  - **Use cases:** Palindrome check, pair sum problems, reversing
+
+  ### 2. Same Direction (Chasing)
+  Both pointers move in the same direction at different speeds.
+  - **Use cases:** Removing duplicates, partitioning, fast-slow pointer
+
+  ### 3. Sliding Window (Special Case)
+  Left and right pointers define a window that slides/expands.
+
+  **Time Complexity:** Usually O(n) - each pointer traverses once
+
+
+  ---
+
+  ## Common Patterns
+
+  ### Pattern 1: Opposite Direction
+  ```python
+  def two_sum_sorted(arr, target):
+      left, right = 0, len(arr) - 1
+
+      while left < right:
+          current_sum = arr[left] + arr[right]
+
+          if current_sum == target:
+              return [left, right]
+          elif current_sum < target:
+              left += 1  # Need larger sum
+          else:
+              right -= 1  # Need smaller sum
+
+      return []
+  ```
+
+  ### Pattern 2: Same Direction (Remove Duplicates)
+  ```python
+  def remove_duplicates(arr):
+      if not arr:
+          return 0
+
+      write_ptr = 1  # Where to write next unique element
+
+      for read_ptr in range(1, len(arr)):
+          if arr[read_ptr] != arr[read_ptr - 1]:
+              arr[write_ptr] = arr[read_ptr]
+              write_ptr += 1
+
+      return write_ptr  # New length
+  ```
+
+  ### Pattern 3: Partition (Dutch National Flag)
+  ```python
+  def partition(arr, pivot):
+      left, right = 0, len(arr) - 1
+      i = 0
+
+      while i <= right:
+          if arr[i] < pivot:
+              arr[i], arr[left] = arr[left], arr[i]
+              left += 1
+              i += 1
+          elif arr[i] > pivot:
+              arr[i], arr[right] = arr[right], arr[i]
+              right -= 1
+          else:
+              i += 1
+  ```
+
+
+  ---
+
+  ## When to Use This Technique
+
+  Use two pointers for sorted arrays, palindrome problems, pair/triplet sums, partitioning, or when you need to optimize from O(n²) to O(n).
+
+  ---
+
+  ## Common Pitfalls to Avoid
+
+  - Not handling edge cases (empty, single element)
+  - Off-by-one errors in pointer boundaries
+  - Infinite loops from not moving pointers
+  - Using two pointers on unsorted data (when sorting is required)
+  - Forgetting to check left < right condition
+
+  ---
+
+  ## Practice Problems
+
+  Start with these problems to master this concept:
+
+  ### 1. Remove Duplicates from Sorted Array [Easy]
+
+  Remove duplicates in-place from sorted array.
+
+  **Complexity:** Time O(O(n)), Space O(O(1))
+
+
+  ### 2. Two Pointers Problem 2 [Easy]
+
+  Two pointers problem variant 2.
+
+  **Complexity:** Time O(O(n)), Space O(O(1))
+
+
+  ### 3. Two Pointers Problem 5 [Easy]
+
+  Two pointers problem variant 5.
+
+  **Complexity:** Time O(O(n)), Space O(O(1))
+
+
+  ### 4. Two Pointers Problem 6 [Easy]
+
+  Two pointers problem variant 6.
+
+  **Complexity:** Time O(O(n)), Space O(O(1))
+
+
+  ### 5. Two Pointers Problem 10 [Easy]
+
+  Two pointers problem variant 10.
+
+  **Complexity:** Time O(O(n)), Space O(O(1))
+
+
+
+  ---
+
+  ## Key Takeaways
+
+  - Two Pointers is essential for using two pointers moving toward each other or in same direction to solve array problems efficiently
+  - Time complexity improvements can be significant with this technique
+  - Practice problems in order of difficulty to build intuition
+  - Focus on recognizing patterns in problem statements

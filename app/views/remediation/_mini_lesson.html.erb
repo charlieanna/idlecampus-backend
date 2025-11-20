@@ -1,0 +1,36 @@
+<div class="mini-lesson">
+  <h6 class="fw-bold"><%= mini_lesson[:title] %></h6>
+  <p><%= mini_lesson[:summary] || mini_lesson[:content] %></p>
+  
+  <% if mini_lesson[:key_concepts]&.any? %>
+    <div class="mt-3">
+      <strong>Key Concepts:</strong>
+      <% mini_lesson[:key_concepts].each do |concept| %>
+        <div class="key-point">
+          <i class="fas fa-check-circle text-success"></i> <%= concept %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+  
+  <% if mini_lesson[:common_commands]&.any? %>
+    <div class="mt-3">
+      <strong>Common Commands:</strong>
+      <% mini_lesson[:common_commands].each do |cmd| %>
+        <div class="command-example"><%= cmd %></div>
+      <% end %>
+    </div>
+  <% end %>
+  
+  <% if mini_lesson[:visual_example] %>
+    <div class="mt-3 p-3 bg-light border-start border-primary border-3">
+      <strong><i class="fas fa-eye"></i> Visual:</strong> <%= mini_lesson[:visual_example] %>
+    </div>
+  <% end %>
+  
+  <% if mini_lesson[:question_context] %>
+    <div class="mt-3 p-2 bg-info bg-opacity-10 border-start border-info border-3">
+      <small><%= mini_lesson[:question_context] %></small>
+    </div>
+  <% end %>
+</div>

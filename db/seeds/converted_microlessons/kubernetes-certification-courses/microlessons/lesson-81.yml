@@ -1,0 +1,66 @@
+slug: lesson-81
+title: Lesson 81
+difficulty: easy
+sequence_order: 81
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# StorageClasses and Provisioners\n\n   \
+  \ - parameters and reclaimPolicy\n    - default class and topology"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What is the purpose of a StorageClass in Kubernetes?
+  options:
+  - To classify storage by performance tier
+  - To define how to dynamically provision PersistentVolumes with specific parameters
+  - To limit storage usage per namespace
+  - To backup volumes automatically
+  correct_answer: To define how to dynamically provision PersistentVolumes with specific
+    parameters
+  explanation: A StorageClass defines how to dynamically provision PersistentVolumes,
+    specifying the provisioner (e.g., kubernetes.io/aws-ebs, kubernetes.io/gce-pd)
+    and parameters like disk type, IOPS, replication settings, or filesystem type.
+    When you create a PVC referencing a StorageClass, the storage provisioner automatically
+    creates a PV with the specified characteristics. This eliminates manual PV creation.
+    For example, you might have StorageClasses for 'fast-ssd' (using premium SSDs)
+    and 'slow-hdd' (using standard HDDs), allowing users to request appropriate storage
+    for their needs. The default StorageClass is used when no specific class is requested.
+    Parameters are provisioner-specific - AWS EBS supports 'type' (gp2, io1, etc.),
+    GCE PD supports 'type' (pd-standard, pd-ssd), enabling fine-grained control over
+    provisioned storage characteristics.
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: How do you designate a StorageClass as the default for a cluster?
+  options:
+  - By naming it 'default'
+  - By setting the annotation storageclass.kubernetes.io/is-default-class to true
+  - By creating it in the kube-system namespace
+  - By setting default: true in the spec
+  correct_answer: By setting the annotation storageclass.kubernetes.io/is-default-class
+    to true
+  explanation: 'To make a StorageClass the default for the cluster, add the annotation
+    ''storageclass.kubernetes.io/is-default-class: "true"'' to its metadata. When
+    a PVC doesn''t specify a storageClassName, Kubernetes uses the default StorageClass
+    to provision the volume. Only one StorageClass should be marked as default at
+    a time (though Kubernetes doesn''t enforce this - if multiple exist, the behavior
+    is undefined). The default StorageClass simplifies user experience - users don''t
+    need to know about storage implementation details. In managed Kubernetes services
+    (EKS, GKE, AKS), a default StorageClass is typically pre-configured. You can change
+    the default by removing the annotation from one StorageClass and adding it to
+    another. PVCs can always override the default by explicitly specifying a different
+    storageClassName.'
+  require_pass: true
+- type: mcq
+  sequence_order: 1
+  question: What kubectl command checks if you can perform an action?
+  options:
+  - kubectl auth can-i create pods
+  - kubectl check permissions create pods
+  - kubectl verify action create pods
+  - kubectl test auth create pods
+  correct_answer_index: 0
+  explanation: kubectl auth can-i <action> <resource> checks if the current user has
+    permission to perform the specified action.
+  require_pass: true

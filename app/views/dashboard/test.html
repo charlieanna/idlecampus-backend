@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linked List Challenge</title>
+    <!-- Include the Ace Editor library via CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js"></script>
+    <style>
+        /* Set a fixed height for the code editor */
+        #editor {
+            height: 300px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Linked List Challenge</h1>
+    <p>Write a Python function to reverse a linked list. Enter your solution below:</p>
+    <!-- Create a div element to hold the code editor -->
+    <div id="editor"></div>
+    
+    <!-- Button to check the answer -->
+    <button id="checkButton">Check Answer</button>
+    
+    <!-- Output area to display the result -->
+    <div id="output"></div>
+    
+    <script>
+        // Initialize Ace Editor
+        var editor = ace.edit("editor");
+        
+        // Set the programming language mode (e.g., "python")
+        editor.session.setMode("ace/mode/python");
+        
+        // Example: Set initial code content
+        editor.setValue("def reverse_linked_list(head):\n    # Your code here\n    pass");
+        
+        // Button click event handler to check the answer
+        var checkButton = document.getElementById("checkButton");
+        checkButton.addEventListener("click", function () {
+            // Get the user's code
+            var userCode = editor.getValue();
+            
+            // Define a linked list test case (you can change this)
+            class ListNode {
+                constructor(value, next = null) {
+                    this.value = value;
+                    this.next = next;
+                }
+            }
+            var head = new ListNode(1, new ListNode(2, new ListNode(3, new ListNode(4, new ListNode(5)))));
+            
+            // Execute the user's code
+            try {
+                eval(userCode); // This executes the user's code in the global scope
+                
+                // Call the user-defined function to reverse the linked list
+                var result = reverse_linked_list(head);
+                
+                // Display the result in the output area
+                document.getElementById("output").textContent = "Reversed Linked List: " + JSON.stringify(result);
+            } catch (error) {
+                // Handle any errors in the user's code
+                document.getElementById("output").textContent = "Error: " + error.message;
+            }
+        });
+    </script>
+</body>
+</html>

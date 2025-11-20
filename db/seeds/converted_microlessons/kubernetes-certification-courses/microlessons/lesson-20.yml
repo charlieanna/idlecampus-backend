@@ -1,0 +1,493 @@
+slug: lesson-20
+title: Container Storage Interface (CSI) Drivers
+difficulty: medium
+sequence_order: 20
+estimated_minutes: 12
+key_concepts:
+  - CSI architecture
+  - CSI sidecars
+  - Driver deployment
+  - Volume lifecycle
+  - Storage provisioning
+prerequisites: []
+content_md: |
+  # Container Storage Interface (CSI) Drivers
+
+  ## Introduction
+
+  The Container Storage Interface (CSI) is a standard for exposing storage systems to containerized workloads in Kubernetes. CSI drivers enable storage vendors to develop plugins without modifying Kubernetes core code.
+
+  ## What is CSI?
+
+  **CSI provides:**
+  - Standard interface between Kubernetes and storage providers
+  - Out-of-tree volume plugins (not in Kubernetes core)
+  - Support for vendor-specific features
+  - Easier development and maintenance
+
+  **Benefits:**
+  - No need to modify Kubernetes source code
+  - Storage vendors control their own drivers
+  - Faster release cycles
+  - Better feature support
+
+  ## CSI Architecture
+
+  ### Components
+
+  **1. CSI Controller** (runs on control plane)
+  - CreateVolume, DeleteVolume
+  - ControllerPublishVolume, ControllerUnpublishVolume
+  - Snapshot operations
+  - Volume expansion
+
+  **2. CSI Node** (runs on every worker node)
+  - NodeStageVolume, NodeUnstageVolume
+  - NodePublishVolume, NodeUnpublishVolume
+  - Volume mounting to pods
+
+  **3. CSI Driver Identity**
+  - GetPluginInfo, GetPluginCapabilities
+  - Probe (health check)
+
+  ### Communication
+
+  ```
+  Kubernetes API → CSI Sidecars → CSI Driver → Storage Backend
+  ```
+
+  ## CSI Sidecars
+
+  Sidecars are helper containers that simplify CSI driver development.
+
+  ### 1. external-provisioner
+
+  **Purpose:** Watches for PVCs and calls CreateVolume/DeleteVolume
+
+  ```yaml
+  - name: csi-provisioner
+    image: registry.k8s.io/sig-storage/csi-provisioner:v3.5.0
+    args:
+      - "--csi-address=/csi/csi.sock"
+      - "--v=5"
+    volumeMounts:
+      - name: socket-dir
+        mountPath: /csi
+  ```
+
+  **Watches:** PersistentVolumeClaims
+  **Creates:** PersistentVolumes
+  **Calls:** CreateVolume, DeleteVolume RPCs
+
+  ### 2. external-attacher
+
+  **Purpose:** Watches for VolumeAttachment objects
+
+  ```yaml
+  - name: csi-attacher
+    image: registry.k8s.io/sig-storage/csi-attacher:v4.3.0
+    args:
+      - "--csi-address=/csi/csi.sock"
+      - "--v=5"
+    volumeMounts:
+      - name: socket-dir
+        mountPath: /csi
+  ```
+
+  **Watches:** VolumeAttachment
+  **Calls:** ControllerPublishVolume, ControllerUnpublishVolume
+
+  ### 3. external-snapshotter
+
+  **Purpose:** Manages volume snapshots
+
+  ```yaml
+  - name: csi-snapshotter
+    image: registry.k8s.io/sig-storage/csi-snapshotter:v6.2.0
+    args:
+      - "--csi-address=/csi/csi.sock"
+      - "--v=5"
+    volumeMounts:
+      - name: socket-dir
+        mountPath: /csi
+  ```
+
+  **Watches:** VolumeSnapshot, VolumeSnapshotContent
+  **Calls:** CreateSnapshot, DeleteSnapshot
+
+  ### 4. external-resizer
+
+  **Purpose:** Enables volume expansion
+
+  ```yaml
+  - name: csi-resizer
+    image: registry.k8s.io/sig-storage/csi-resizer:v1.8.0
+    args:
+      - "--csi-address=/csi/csi.sock"
+      - "--v=5"
+    volumeMounts:
+      - name: socket-dir
+        mountPath: /csi
+  ```
+
+  **Watches:** PVC size changes
+  **Calls:** ControllerExpandVolume
+
+  ### 5. node-driver-registrar
+
+  **Purpose:** Registers CSI driver with kubelet
+
+  ```yaml
+  - name: node-driver-registrar
+    image: registry.k8s.io/sig-storage/csi-node-driver-registrar:v2.8.0
+    args:
+      - "--csi-address=/csi/csi.sock"
+      - "--kubelet-registration-path=/var/lib/kubelet/plugins/csi.example.com/csi.sock"
+    volumeMounts:
+      - name: socket-dir
+        mountPath: /csi
+      - name: registration-dir
+        mountPath: /registration
+  ```
+
+  **Registers:** Driver with kubelet plugin registry
+
+  ### 6. livenessprobe
+
+  **Purpose:** Health monitoring
+
+  ```yaml
+  - name: livenessprobe
+    image: registry.k8s.io/sig-storage/livenessprobe:v2.10.0
+    args:
+      - "--csi-address=/csi/csi.sock"
+      - "--health-port=9808"
+    volumeMounts:
+      - name: socket-dir
+        mountPath: /csi
+  ```
+
+  **Probes:** CSI driver health
+
+  ## Deployment Models
+
+  ### Model 1: Controller + Node DaemonSet
+
+  **Most common deployment:**
+
+  **Controller Deployment:**
+  ```yaml
+  apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: csi-controller
+    namespace: kube-system
+  spec:
+    replicas: 2  # HA
+    selector:
+      matchLabels:
+        app: csi-controller
+    template:
+      metadata:
+        labels:
+          app: csi-controller
+      spec:
+        serviceAccountName: csi-controller-sa
+        containers:
+          # CSI Driver
+          - name: csi-driver
+            image: my-csi-driver:v1.0.0
+            args:
+              - "--endpoint=/csi/csi.sock"
+              - "--mode=controller"
+            volumeMounts:
+              - name: socket-dir
+                mountPath: /csi
+
+          # Sidecars
+          - name: csi-provisioner
+            image: registry.k8s.io/sig-storage/csi-provisioner:v3.5.0
+            args:
+              - "--csi-address=/csi/csi.sock"
+            volumeMounts:
+              - name: socket-dir
+                mountPath: /csi
+
+          - name: csi-attacher
+            image: registry.k8s.io/sig-storage/csi-attacher:v4.3.0
+            args:
+              - "--csi-address=/csi/csi.sock"
+            volumeMounts:
+              - name: socket-dir
+                mountPath: /csi
+
+          - name: csi-resizer
+            image: registry.k8s.io/sig-storage/csi-resizer:v1.8.0
+            args:
+              - "--csi-address=/csi/csi.sock"
+            volumeMounts:
+              - name: socket-dir
+                mountPath: /csi
+
+          - name: livenessprobe
+            image: registry.k8s.io/sig-storage/livenessprobe:v2.10.0
+            args:
+              - "--csi-address=/csi/csi.sock"
+            volumeMounts:
+              - name: socket-dir
+                mountPath: /csi
+
+        volumes:
+          - name: socket-dir
+            emptyDir: {}
+  ```
+
+  **Node DaemonSet:**
+  ```yaml
+  apiVersion: apps/v1
+  kind: DaemonSet
+  metadata:
+    name: csi-node
+    namespace: kube-system
+  spec:
+    selector:
+      matchLabels:
+        app: csi-node
+    template:
+      metadata:
+        labels:
+          app: csi-node
+      spec:
+        serviceAccountName: csi-node-sa
+        hostNetwork: true
+        containers:
+          # CSI Driver
+          - name: csi-driver
+            image: my-csi-driver:v1.0.0
+            args:
+              - "--endpoint=/csi/csi.sock"
+              - "--mode=node"
+            securityContext:
+              privileged: true
+            volumeMounts:
+              - name: socket-dir
+                mountPath: /csi
+              - name: mountpoint-dir
+                mountPath: /var/lib/kubelet/pods
+                mountPropagation: Bidirectional
+              - name: plugin-dir
+                mountPath: /var/lib/kubelet/plugins
+                mountPropagation: Bidirectional
+              - name: device-dir
+                mountPath: /dev
+
+          # Sidecar
+          - name: node-driver-registrar
+            image: registry.k8s.io/sig-storage/csi-node-driver-registrar:v2.8.0
+            args:
+              - "--csi-address=/csi/csi.sock"
+              - "--kubelet-registration-path=/var/lib/kubelet/plugins/csi.example.com/csi.sock"
+            volumeMounts:
+              - name: socket-dir
+                mountPath: /csi
+              - name: registration-dir
+                mountPath: /registration
+
+          - name: livenessprobe
+            image: registry.k8s.io/sig-storage/livenessprobe:v2.10.0
+            args:
+              - "--csi-address=/csi/csi.sock"
+            volumeMounts:
+              - name: socket-dir
+                mountPath: /csi
+
+        volumes:
+          - name: socket-dir
+            hostPath:
+              path: /var/lib/kubelet/plugins/csi.example.com
+              type: DirectoryOrCreate
+          - name: registration-dir
+            hostPath:
+              path: /var/lib/kubelet/plugins_registry
+              type: Directory
+          - name: mountpoint-dir
+            hostPath:
+              path: /var/lib/kubelet/pods
+              type: Directory
+          - name: plugin-dir
+            hostPath:
+              path: /var/lib/kubelet/plugins
+              type: Directory
+          - name: device-dir
+            hostPath:
+              path: /dev
+              type: Directory
+  ```
+
+  ### Model 2: All-in-One Pod
+
+  **Single pod per node (less common):**
+  - Controller + Node in one DaemonSet
+  - Simpler deployment
+  - Higher resource usage per node
+
+  ## CSI Driver Registration
+
+  ### CSIDriver Object
+
+  ```yaml
+  apiVersion: storage.k8s.io/v1
+  kind: CSIDriver
+  metadata:
+    name: csi.example.com
+  spec:
+    # Attach not required (e.g., for NFS)
+    attachRequired: true
+
+    # Support volume ownership and permission changes
+    fsGroupPolicy: File
+
+    # Modes: Persistent, Ephemeral
+    volumeLifecycleModes:
+      - Persistent
+      - Ephemeral
+
+    # Store pod info in VolumeAttachment
+    storageCapacity: true
+
+    # Require pod info for NodePublishVolume
+    requiresRepublish: false
+  ```
+
+  ## Volume Lifecycle
+
+  ### Dynamic Provisioning Flow
+
+  1. **User creates PVC**
+     ```bash
+     kubectl apply -f pvc.yaml
+     ```
+
+  2. **Provisioner sidecar sees PVC**
+     - Calls CSI driver CreateVolume RPC
+
+  3. **CSI driver creates volume on storage backend**
+     - Returns volume ID
+
+  4. **Provisioner creates PV**
+     - Binds PV to PVC
+
+  5. **User creates Pod using PVC**
+     ```bash
+     kubectl apply -f pod.yaml
+     ```
+
+  6. **Attacher sidecar creates VolumeAttachment**
+     - Calls ControllerPublishVolume RPC
+
+  7. **CSI driver attaches volume to node**
+
+  8. **Kubelet calls CSI Node plugin**
+     - NodeStageVolume (format/mount to staging path)
+     - NodePublishVolume (bind mount to pod)
+
+  9. **Pod starts using volume**
+
+  ## Debugging CSI Drivers
+
+  ### Check CSI Pods
+
+  ```bash
+  # Controller pods
+  kubectl get pods -n kube-system -l app=csi-controller
+
+  # Node pods
+  kubectl get pods -n kube-system -l app=csi-node
+
+  # Check logs
+  kubectl logs -n kube-system <csi-controller-pod> -c csi-driver
+  kubectl logs -n kube-system <csi-node-pod> -c csi-driver
+  ```
+
+  ### Check CSIDriver Object
+
+  ```bash
+  kubectl get csidriver
+  kubectl describe csidriver csi.example.com
+  ```
+
+  ### Check VolumeAttachments
+
+  ```bash
+  kubectl get volumeattachment
+  kubectl describe volumeattachment <name>
+  ```
+
+  ### Sidecar Logs
+
+  ```bash
+  # Provisioner logs
+  kubectl logs -n kube-system <controller-pod> -c csi-provisioner
+
+  # Attacher logs
+  kubectl logs -n kube-system <controller-pod> -c csi-attacher
+
+  # Node registrar logs
+  kubectl logs -n kube-system <node-pod> -c node-driver-registrar
+  ```
+
+  ## Common CSI Drivers
+
+  - **AWS EBS CSI** - Amazon Elastic Block Store
+  - **GCE PD CSI** - Google Persistent Disk
+  - **Azure Disk CSI** - Azure Managed Disks
+  - **Ceph CSI** - Ceph RBD and CephFS
+  - **NFS CSI** - Network File System
+  - **Longhorn** - Cloud-native distributed storage
+
+  ## Best Practices
+
+  1. **Use CSIDriver object** - Define driver capabilities
+  2. **Deploy in HA** - Multiple controller replicas
+  3. **Resource limits** - Set for sidecars and driver
+  4. **Monitor health** - Use livenessprobe
+  5. **RBAC** - Least privilege for service accounts
+  6. **Namespace isolation** - Deploy in kube-system
+  7. **Version compatibility** - Match sidecar and K8s versions
+
+  ## Key Takeaways
+
+  1. **CSI standardizes** storage plugin development
+  2. **Sidecars** handle Kubernetes API interactions
+  3. **Controller + Node** is the standard deployment model
+  4. **Volume lifecycle** involves multiple RPC calls
+  5. **CSIDriver object** defines driver capabilities
+
+exercises:
+  - type: mcq
+    question: "Which CSI sidecar watches for PersistentVolumeClaims and calls CreateVolume on the driver?"
+    options:
+      - "external-attacher"
+      - "external-provisioner"
+      - "external-snapshotter"
+      - "node-driver-registrar"
+    correct_answer: "external-provisioner"
+    explanation: "The external-provisioner sidecar watches for PVCs and calls the CSI driver's CreateVolume RPC to provision new volumes."
+    sequence_order: 1
+
+  - type: mcq
+    question: "What is the typical deployment pattern for CSI drivers in Kubernetes?"
+    options:
+      - "Single pod on control plane"
+      - "Controller Deployment + Node DaemonSet"
+      - "Only DaemonSet on all nodes"
+      - "StatefulSet with 3 replicas"
+    correct_answer: "Controller Deployment + Node DaemonSet"
+    explanation: "CSI drivers typically use a Controller Deployment (for volume operations) and a Node DaemonSet (for mounting on each node)."
+    sequence_order: 2
+
+  - type: short_answer
+    question: "What Kubernetes object is created to trigger the CSI driver to attach a volume to a node?"
+    expected_answer: "VolumeAttachment"
+    explanation: "The VolumeAttachment object is created by the external-attacher, which triggers the CSI driver's ControllerPublishVolume RPC to attach the volume to a node."
+    sequence_order: 3

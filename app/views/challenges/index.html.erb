@@ -1,0 +1,34 @@
+<h1>Challenges</h1>
+
+<% @challenges.each do |challenge| %>
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title"><%= challenge.title %></h5>
+      <p class="card-text"><%= challenge.description %></p>
+      <p class="card-text"><strong>Tags:</strong>
+      <% challenge.tags.each do |tag| %>
+        <span class="badge badge-secondary"><%= tag.name %></span>
+      <% end %>
+    </div>
+  </div>
+<% end %>
+
+
+<h1>Leaderboard</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Challenge</th>
+      <th>Score</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @challenges.each do |challenge| %>
+      <tr>
+        <td><%= challenge.title %></td>
+        <td><%= challenge.score %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

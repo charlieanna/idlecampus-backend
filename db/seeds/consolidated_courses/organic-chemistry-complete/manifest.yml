@@ -1,0 +1,291 @@
+---
+course:
+  slug: organic-chemistry-complete
+  title: Organic Chemistry - JEE/NEET Complete
+  description: Comprehensive organic chemistry from stereochemistry to reaction mechanisms.
+    Master aromatic chemistry, functional groups, and named reactions for JEE/NEET
+    success.
+  estimated_hours: 25
+  level: intermediate-to-advanced
+  prerequisites:
+  - Basic organic chemistry concepts
+  - Understanding of chemical bonding
+  learning_outcomes:
+  - Master stereochemistry and optical isomerism
+  - Understand reaction mechanisms (SN1, SN2, E1, E2, EAS)
+  - Analyze functional group chemistry
+  - Apply name reactions in synthesis
+  - Solve structural elucidation problems
+  tags:
+  - chemistry
+  - organic-chemistry
+  - JEE
+  - NEET
+  - stereochemistry
+  - mechanisms
+  - functional-groups
+  exam_prep:
+  - JEE Advanced
+  - JEE Main
+  - NEET
+  related_courses:
+  - physical-chemistry-complete
+  - inorganic-chemistry-complete
+  recommended_next: physical-chemistry-complete
+modules:
+- slug: stereochemistry
+  title: Stereochemistry
+  description: Chirality, optical isomerism, conformations, and enantiomers
+  order: 1
+  estimated_hours: 4
+  lessons:
+  - what-is-the-approximate-energy-in-kjmol-of-the-gauche-conformation-of-butane-relative-to-the-anti-conformation
+  - optical-isomerism-chirality-enantiomers-and-optical-activity
+  - geometrical-isomerism-and-conformational-analysis
+  - introduction-to-isomerism-structural-vs-stereoisomerism
+  - optical-isomerism-chirality-enantiomers-and-optical-activity
+  - geometrical-isomerism-and-conformational-analysis
+  - how-many-chain-isomers-structural-isomers-does-pentane-ch-have
+  - which-of-the-following-pairs-are-functional-group-isomers
+  - what-is-the-key-difference-between-configurational-and-conformational-isomers
+  - which-type-of-isomerism-is-exhibited-by-1-chloropropane-and-2-chloropropane
+  - which-of-the-following-compounds-can-show-keto-enol-tautomerism
+  - stereoisomers-have-the-same-connectivity-of-atoms-but-differ-in-their-spatial-arrangement
+  - which-of-the-following-is-the-correct-definition-of-chirality
+  - how-many-chiral-centers-are-present-in-the-molecule-ch-chbr-chcl-cooh
+  - which-properties-are-identical-for-a-pair-of-enantiomers
+  - a-solution-containing-20-g-of-a-compound-dissolved-in-50-ml-of-solvent-shows-a-rotation-of-30-in-a-polarimeter-tube-of-length-2-dm-calculate-the-specific-rotation-in-degreesmlgdm
+  - what-is-a-racemic-mixture
+  - which-statement-about-meso-compounds-is-correct
+  - how-many-stereoisomers-are-possible-for-a-compound-with-3-different-chiral-centers-assuming-no-meso-forms
+  - in-the-cahn-ingold-prelog-rs-system-which-of-the-following-groups-has-the-highest-priority
+  - the-sign-of-optical-rotation-or-dl-directly-indicates-whether-a-molecule-has-r-or-s-configuration
+  - which-of-the-following-conditions-are-required-for-geometrical-isomerism-in-alkenes
+  - which-of-the-following-compounds-can-show-geometrical-isomerism
+  - in-the-e-z-nomenclature-system-what-does-z-stand-for
+  - why-is-trans-2-butene-more-stable-than-cis-2-butene
+  - in-a-newman-projection-of-ethane-which-conformation-has-the-lowest-energy
+  - what-is-the-approximate-energy-difference-in-kjmol-between-the-staggered-and-eclipsed-conformations-of-ethane
+  - for-butane-ch-ch-ch-ch-looking-down-the-c2-c3-bond-which-conformation-is-the-most-stable
+  - what-is-the-primary-cause-of-torsional-strain
+  - conformational-isomers-can-be-easily-isolated-and-stored-separately-at-room-temperature
+  - introduction-to-isomerism-structural-vs-stereoisomerism
+- slug: aromatic-chemistry
+  title: Aromatic Chemistry
+  description: Benzene, EAS reactions, directing effects, and aromaticity
+  order: 2
+  estimated_hours: 5
+  lessons:
+  - all-meta-directing-groups-are-deactivating
+  - electrophilic-aromatic-substitution-mechanisms-and-reactions
+  - directing-effects-orthopara-and-meta-directors-reactivity-patterns
+  - introduction-to-aromaticity-benzene-structure-and-huckel
+  - electrophilic-aromatic-substitution-mechanisms-and-reactions
+  - directing-effects-orthopara-and-meta-directors-reactivity-patterns
+  - what-is-the-resonance-energy-of-benzene-in-kjmol
+  - which-of-the-following-criteria-must-be-satisfied-for-a-compound-to-be-aromatic
+  - according-to-huckel
+  - how-many-electrons-does-naphthalene-two-fused-benzene-rings-have
+  - cyclobutadiene-ch-is-classified-as
+  - why-is-cyclopentadienyl-anion-ch-exceptionally-stable
+  - cyclooctatetraene-ch-is-nonaromatic-rather-than-antiaromatic-because
+  - how-many-electrons-does-pyrrole-chn-contain-in-its-aromatic-system
+  - in-pyridine-chn-the-nitrogen-lone-pair-is
+  - antiaromatic-compounds-are-less-stable-than-their-corresponding-nonaromatic-compounds
+  - why-does-benzene-undergo-substitution-reactions-rather-than-addition-reactions
+  - what-is-the-electrophile-in-the-nitration-of-benzene
+  - which-step-is-the-rate-determining-step-in-electrophilic-aromatic-substitution
+  - which-of-the-following-are-limitations-of-friedel-crafts-alkylation
+  - when-n-propyl-chloride-reacts-with-benzene-in-the-presence-of-alcl-what-is-the-major-product
+  - why-is-friedel-crafts-acylation-preferred-over-alkylation-for-introducing-alkyl-groups
+  - which-catalyst-is-commonly-used-for-halogenation-of-benzene
+  - friedel-crafts-reactions-work-efficiently-on-nitrobenzene
+  - sulfonation-of-benzene-is-unique-among-eas-reactions-because-it-is
+  - which-of-the-following-substituents-are-orthopara-directors
+  - which-group-is-a-meta-director-and-strongly-deactivating
+  - arrange-the-following-compounds-in-order-of-increasing-reactivity-toward-electrophilic-aromatic-substitution-1-benzene-2-toluene-3-nitrobenzene
+  - why-are-halogens-f-cl-br-i-orthopara-directors-but-deactivating
+  - what-is-the-major-product-when-toluene-undergoes-nitration
+  - why-does-the-nh-group-direct-electrophiles-to-ortho-and-para-positions
+  - when-nitrobenzene-undergoes-bromination-what-is-the-major-product
+  - in-a-disubstituted-benzene-with-one-activating-and-one-deactivating-group-which-group-controls-the-orientation
+  - which-of-the-following-is-the-most-activating-group
+  - introduction-to-aromaticity-benzene-structure-and-huckel
+- slug: haloalkanes-haloarenes
+  title: Haloalkanes & Haloarenes
+  description: SN1, SN2, E1, E2 mechanisms, and nucleophilic substitution
+  order: 3
+  estimated_hours: 2
+  lessons:
+  - e1vse2-practice
+  - nucleophilic-substitution-sn1-and-sn2-mechanisms
+  - elimination-reactions-e1-e2-and-haloarenes
+  - haloalkanes-classification-nomenclature-and-preparation
+  - nucleophilic-substitution-sn1-and-sn2-mechanisms
+  - elimination-reactions-e1-e2-and-haloarenes
+  - classification-practice
+  - physicalproperties-practice
+  - preparationmethods-practice
+  - classification-practice
+  - halogenation-practice
+  - preparationmethods-practice
+  - sn2reactivity-practice
+  - sn1mechanism-practice
+  - stereochemistry-practice
+  - carbocationstability-practice
+  - nucleophilicity-practice
+  - williamsonsynthesis-practice
+- slug: alcohols-phenols-ethers
+  title: Alcohols, Phenols & Ethers
+  description: Preparation, reactions, and acidity of oxygen-containing compounds
+  order: 4
+  estimated_hours: 2
+  lessons:
+  - phenoltests-practice
+  - phenols-acidity-preparation-and-reactions
+  - ethers-nomenclature-williamson-synthesis-and-reactions
+  - alcohols-classification-nomenclature-and-preparation
+  - phenols-acidity-preparation-and-reactions
+  - ethers-nomenclature-williamson-synthesis-and-reactions
+  - classification-practice
+  - physicalproperties-practice
+  - acidity-practice
+  - preparation-practice
+  - preparation-practice
+  - oxidation-practice
+  - phenolacidity-practice
+  - phenolacidity-practice
+  - phenolreactions-practice
+  - ethersynthesis-practice
+- slug: carbonyl-compounds
+  title: Aldehydes & Ketones
+  description: Nucleophilic addition reactions and Grignard reactions
+  order: 5
+  estimated_hours: 2
+  lessons:
+  - grignardreactions-practice
+  - nucleophilic-addition-reactions-and-important-reactions
+  - aldehydes-and-ketones-structure-nomenclature-and-preparation
+  - nucleophilic-addition-reactions-and-important-reactions
+  - preparation-practice
+  - reactivity-practice
+  - tests-practice
+  - preparation-practice
+  - preparation-practice
+  - structure-practice
+  - aldolcondensation-practice
+  - cannizzaroreaction-practice
+  - reduction-practice
+  - iodoformtest-practice
+  - aldolcondensation-practice
+  - aldehydes-and-ketones-structure-nomenclature-and-preparation
+- slug: carboxylic-acids
+  title: Carboxylic Acids & Derivatives
+  description: Acidity, ester reactions, and comparative reactivity
+  order: 6
+  estimated_hours: 2
+  lessons:
+  - esterreactions-practice
+  - acid-derivatives-comparative-reactivity
+  - carboxylic-acids-structure-acidity-and-reactions
+  - acid-derivatives-comparative-reactivity
+  - acidity-practice
+  - acidity-practice
+  - reactions-practice
+  - reactions-practice
+  - reactions-practice
+  - reactivity-practice
+  - amides-practice
+  - esters-practice
+  - estersynthesis-practice
+  - carboxylic-acids-structure-acidity-and-reactions
+- slug: nitrogen-compounds
+  title: Amines & Nitrogen Compounds
+  description: Basicity, diazonium salts, and coupling reactions
+  order: 7
+  estimated_hours: 2
+  lessons:
+  - coupling-practice
+  - diazonium-salts-preparation-and-reactions
+  - amines-classification-basicity-and-preparation
+  - diazonium-salts-preparation-and-reactions
+  - basicity-practice
+  - basicity-practice
+  - preparation-practice
+  - tests-practice
+  - tests-practice
+  - preparation-practice
+  - sandmeyer-practice
+  - balzschiemann-practice
+  - importance-practice
+  - amines-classification-basicity-and-preparation
+- slug: biomolecules
+  title: Biomolecules
+  description: Carbohydrates, proteins, vitamins, and nucleic acids
+  order: 8
+  estimated_hours: 2
+  lessons:
+  - vitamins-practice
+  - proteins-amino-acids-enzymes-vitamins-and-nucleic-acids
+  - carbohydrates-structure-and-classification
+  - proteins-amino-acids-enzymes-vitamins-and-nucleic-acids
+  - disaccharides-practice
+  - monosaccharides-practice
+  - reducingsugars-practice
+  - polysaccharides-practice
+  - polysaccharides-practice
+  - proteins-practice
+  - enzymes-practice
+  - vitamins-practice
+  - nucleicacids-practice
+  - carbohydrates-structure-and-classification
+- slug: polymers
+  title: Polymers
+  description: Addition/condensation polymerization and synthetic polymers
+  order: 9
+  estimated_hours: 2
+  lessons:
+  - polymeruses-practice
+  - important-synthetic-polymers-and-applications
+  - polymers-classification-and-polymerization
+  - important-synthetic-polymers-and-applications
+  - classification-practice
+  - classification-practice
+  - condensationpolymers-practice
+  - polymeruses-practice
+  - biodegradable-practice
+  - classification-practice
+  - rubber-practice
+  - syntheticrubber-practice
+  - thermosetting-practice
+  - biodegradable-practice
+  - polymers-classification-and-polymerization
+- slug: practical-organic
+  title: Practical Organic Chemistry
+  description: Lab techniques, purification, and functional group detection
+  order: 10
+  estimated_hours: 3
+  lessons:
+  - both-aldehydes-and-ketones-give-a-positive-24-dnp-test
+  - qualitative-analysis-detection-tests-for-elements-and-functional-groups
+  - basic-laboratory-techniques-purification-and-separation-methods
+  - qualitative-analysis-detection-tests-for-elements-and-functional-groups
+  - which-purification-technique-is-based-on-differences-in-boiling-points-of-liquids
+  - steam-distillation-is-particularly-useful-for
+  - which-of-the-following-compounds-can-be-purified-by-sublimation
+  - in-a-tlc-experiment-a-compound-travels-36-cm-and-the-solvent-front-travels-90-cm-calculate-the-rf-value
+  - in-tlc-a-compound-with-high-rf-value-indicates-that-it-is
+  - which-reagent-can-be-used-to-distinguish-between-benzoic-acid-and-phenol-using-extraction
+  - which-drying-agent-should-not-be-used-for-drying-alcohols
+  - a-pure-organic-compound-typically-shows
+  - fractional-distillation-is-more-efficient-than-simple-distillation-for-separating-liquids-with-close-boiling-points
+  - in-lassaigne
+  - which-test-gives-a-silver-mirror-with-aldehydes
+  - the-lucas-test-is-used-to-distinguish-between
+  - which-of-the-following-compounds-will-give-a-positive-iodoform-test
+  - phenol-reacts-with-neutral-fecl-to-give
+  - which-test-can-distinguish-between-a-carboxylic-acid-and-a-phenol
+  - in-hinsberg
+  - the-carbylamine-test-is-specific-for
+  - fehling
+  - basic-laboratory-techniques-purification-and-separation-methods

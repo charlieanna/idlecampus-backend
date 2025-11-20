@@ -1,0 +1,84 @@
+slug: docker-container-logs-view-container-output
+title: 'Docker Container Logs: View Container Output'
+difficulty: easy
+sequence_order: 18
+estimated_minutes: 2
+key_concepts:
+- containers
+- docker-logs
+- debugging
+- monitoring
+prerequisites: []
+content_md: '# Docker Container Logs: View Container Output 🚀
+
+
+  Display stdout and stderr output from containers for debugging and monitoring.
+
+
+  ## Syntax/Command
+
+
+  ```bash
+
+  docker container logs my-container
+
+  ```
+
+
+  ## Example
+
+
+  ```bash
+
+  docker container logs -f container
+
+  ```
+
+
+  ## Key Points
+
+
+  - View logs: docker container logs <name>
+
+
+  - Follow: docker container logs -f <name>'
+exercises:
+- type: terminal
+  problem_statement: View the logs from a container named 'my-container'
+  expected_output: Container stdout and stderr output
+  language: bash
+  starter_code: "# View container logs\n"
+  sequence_order: 1
+  command: docker container logs my-container
+  description: View and follow container logs to identify errors
+  hints:
+  - 'View logs: docker container logs <name>'
+  - 'Follow: docker container logs -f <name>'
+  validation:
+    must_not_include:
+    - Error
+    - 'panic:'
+  timeout_sec: 60
+  require_pass: true
+- type: sandbox
+  sequence_order: 99
+  hints:
+  - Run under CPU pressure to surface leaks or races
+  - Keep commands idempotent in CI
+  validation:
+    must_not_include:
+    - Error
+    - 'panic:'
+  timeout_sec: 60
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: Which flag makes docker logs follow new output?
+  options:
+  - -f flag to follow log output in real-time
+  - -t flag to show timestamps
+  - -a flag to show all logs
+  - -n flag to limit number of lines
+  correct_answer: -f flag to follow log output in real-time
+  explanation: "The -f (--follow) flag streams new log output in real-time, similar to 'tail -f'. This is useful for monitoring container behavior and debugging issues as they occur."
+  require_pass: true

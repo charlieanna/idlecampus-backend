@@ -1,0 +1,124 @@
+slug: lesson-6
+title: Lesson 6
+difficulty: easy
+sequence_order: 6
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# X.509 Certificates and PKI\n\n    **X.509\
+  \ certificates** bind public keys to identities and are the foundation of TLS authentication.\n\
+  \n    ## What is a Certificate?\n\n    A certificate contains:\n    - **Subject**:\
+  \ Who the certificate is for (domain name, organization)\n    - **Issuer**: Who\
+  \ signed it (Certificate Authority)\n    - **Public Key**: For encryption/verification\n\
+  \    - **Validity Period**: Not before / not after dates\n    - **Signature**: Issuer's\
+  \ digital signature\n    - **Extensions**: Additional information (SANs, key usage,\
+  \ etc.)\n\n    ### Certificate Example (OpenSSL output)\n    ```\n    Certificate:\n\
+  \        Version: 3\n        Serial Number: 0x1a2b3c4d5e6f\n        Signature Algorithm:\
+  \ sha256WithRSAEncryption\n        Issuer: C=US, O=Let's Encrypt, CN=R3\n      \
+  \  Validity:\n            Not Before: Jan 1 00:00:00 2024 GMT\n            Not After\
+  \ : Apr 1 00:00:00 2024 GMT\n        Subject: CN=example.com\n        Subject Public\
+  \ Key Info:\n            Public Key Algorithm: rsaEncryption\n            RSA Public-Key:\
+  \ (2048 bit)\n        X509v3 extensions:\n            X509v3 Subject Alternative\
+  \ Name:\n                DNS:example.com, DNS:www.example.com\n            X509v3\
+  \ Key Usage: critical\n                Digital Signature, Key Encipherment\n   \
+  \ ```\n\n    ## PKI (Public Key Infrastructure)\n\n    The trust system for certificates:\n\
+  \n    ```\n    Root CA (trusted by OS/browser)\n        ↓ signs\n    Intermediate\
+  \ CA\n        ↓ signs\n    Server Certificate (example.com)\n    ```\n\n    ###\
+  \ Trust Chain Verification\n\n    1. Browser checks server certificate\n    2. Verifies\
+  \ it's signed by intermediate CA\n    3. Verifies intermediate is signed by root\
+  \ CA\n    4. Root CA is in browser's trust store\n    5. If chain is valid → connection\
+  \ proceeds\n\n    ## Certificate Types\n\n    ### 1. Domain Validated (DV)\n   \
+  \ - Only proves domain ownership\n    - Automated validation\n    - Free (Let's\
+  \ Encrypt)\n    - Fast issuance (minutes)\n\n    ### 2. Organization Validated (OV)\n\
+  \    - Proves organization identity\n    - Manual verification required\n    - Shows\
+  \ organization name\n    - Takes days\n\n    ### 3. Extended Validation (EV)\n \
+  \   - Highest validation level\n    - Extensive vetting process\n    - ~~Shows green\
+  \ bar~~ (removed in modern browsers)\n    - Takes weeks\n    - Expensive\n\n   \
+  \ **Recommendation**: Use DV for most sites (Let's Encrypt is perfect)\n\n    ##\
+  \ Generating Certificates\n\n    ### Self-Signed Certificate (Development Only)\n\
+  \    ```bash\n    # Generate private key\n    openssl genrsa -out server.key 2048\n\
+  \n    # Generate certificate signing request (CSR)\n    openssl req -new -key server.key\
+  \ -out server.csr \\\n      -subj \"/CN=localhost\"\n\n    # Self-sign (NOT for\
+  \ production)\n    openssl x509 -req -days 365 -in server.csr \\\n      -signkey\
+  \ server.key -out server.crt\n    ```\n\n    ### Production Certificate with Let's\
+  \ Encrypt\n    ```bash\n    # Install certbot\n    sudo apt-get install certbot\n\
+  \n    # Get certificate (automatic)\n    sudo certbot certonly --standalone -d example.com\
+  \ -d www.example.com\n\n    # Certificates saved to:\n    # /etc/letsencrypt/live/example.com/fullchain.pem\n\
+  \    # /etc/letsencrypt/live/example.com/privkey.pem\n\n    # Auto-renew (Let's\
+  \ Encrypt certs expire in 90 days)\n    sudo certbot renew\n    ```\n\n    ### Manual\
+  \ CSR for Commercial CA\n    ```bash\n    # 1. Generate private key (keep this secret!)\n\
+  \    openssl genrsa -out example.com.key 2048\n\n    # 2. Generate CSR\n    openssl\
+  \ req -new -key example.com.key -out example.com.csr \\\n      -subj \"/C=US/ST=California/L=San\
+  \ Francisco/O=Example Inc/CN=example.com\"\n\n    # 3. Submit CSR to CA (DigiCert,\
+  \ GlobalSign, etc.)\n    # 4. Complete validation process\n    # 5. Download signed\
+  \ certificate\n    ```\n\n    ## Certificate Formats\n\n    ### PEM (Privacy Enhanced\
+  \ Mail)\n    ```\n    -----BEGIN CERTIFICATE-----\n    MIIDXTCCAkWgAwIBAgIJAKL...\n\
+  \    ...\n    -----END CERTIFICATE-----\n    ```\n    - Base64 encoded\n    - Most\
+  \ common\n    - Used by nginx, Apache\n\n    ### DER (Distinguished Encoding Rules)\n\
+  \    - Binary format\n    - Common in Java\n\n    ### P12/PFX (PKCS#12)\n    - Bundle:\
+  \ certificate + private key\n    - Password protected\n    - Common in Windows\n\
+  \n    ### Converting Formats\n    ```bash\n    # PEM to DER\n    openssl x509 -in\
+  \ cert.pem -outform DER -out cert.der\n\n    # DER to PEM\n    openssl x509 -in\
+  \ cert.der -inform DER -out cert.pem\n\n    # Create P12 bundle\n    openssl pkcs12\
+  \ -export -in cert.pem -inkey key.pem -out cert.p12\n    ```\n\n    ## Subject Alternative\
+  \ Names (SAN)\n\n    **Modern way to specify multiple domains:**\n\n    ```\n  \
+  \  X509v3 Subject Alternative Name:\n        DNS:example.com\n        DNS:www.example.com\n\
+  \        DNS:api.example.com\n        DNS:*.example.com (wildcard)\n        IP Address:192.0.2.1\n\
+  \    ```\n\n    ### Generating Certificate with SANs\n    ```bash\n    # Create\
+  \ config file\n    cat > san.cnf <<EOF\n    [req]\n    distinguished_name = req_distinguished_name\n\
+  \    req_extensions = v3_req\n\n    [req_distinguished_name]\n    CN = example.com\n\
+  \n    [v3_req]\n    subjectAltName = @alt_names\n\n    [alt_names]\n    DNS.1 =\
+  \ example.com\n    DNS.2 = www.example.com\n    DNS.3 = *.api.example.com\n    EOF\n\
+  \n    # Generate with SANs\n    openssl req -new -key server.key -out server.csr\
+  \ -config san.cnf\n    ```\n\n    ## Certificate Validation\n\n    ### What Browsers\
+  \ Check:\n\n    1. **Signature**: Certificate is signed by trusted CA\n    2. **Validity\
+  \ Period**: Current time is within not-before/not-after\n    3. **Hostname**: Domain\
+  \ matches CN or SAN\n    4. **Revocation**: Certificate not revoked (CRL/OCSP)\n\
+  \    5. **Chain**: Complete chain to trusted root\n\n    ### Common Certificate\
+  \ Errors:\n\n    **ERR_CERT_AUTHORITY_INVALID**\n    - Certificate not signed by\
+  \ trusted CA\n    - Self-signed certificate\n    - Incomplete chain\n\n    **ERR_CERT_DATE_INVALID**\n\
+  \    - Certificate expired or not yet valid\n    - Check system clock\n\n    **ERR_CERT_COMMON_NAME_INVALID**\n\
+  \    - Domain name doesn't match certificate\n    - Missing from SAN\n\n    ## Certificate\
+  \ Revocation\n\n    ### CRL (Certificate Revocation List)\n    - Published by CA\n\
+  \    - List of revoked certificates\n    - Client downloads and checks\n    - Can\
+  \ be large and slow\n\n    ### OCSP (Online Certificate Status Protocol)\n    -\
+  \ Real-time check with CA\n    - Query: \"Is cert X revoked?\"\n    - Response:\
+  \ Good / Revoked / Unknown\n\n    ### OCSP Stapling\n    - Server gets OCSP response\
+  \ from CA\n    - Includes it in TLS handshake\n    - Faster, more private\n\n  \
+  \  ```nginx\n    # Enable OCSP stapling in nginx\n    ssl_stapling on;\n    ssl_stapling_verify\
+  \ on;\n    ssl_trusted_certificate /path/to/chain.pem;\n    ```\n\n    ## Certificate\
+  \ Pinning\n\n    **Hard-code which certificates/keys are valid:**\n\n    ```javascript\n\
+  \    // HTTP Public Key Pinning (HPKP) - Deprecated!\n    // Use Certificate Transparency\
+  \ instead\n\n    // Pin in mobile app\n    const pins = [\n      'sha256/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=',\n\
+  \      'sha256/BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB='\n    ];\n    ```\n\n\
+  \    **Warning**: Pinning is risky! If pin is lost, app breaks.\n\n    ## Best Practices\n\
+  \n    1. **Use Let's Encrypt** for free automated certificates\n    2. **Automate\
+  \ renewal** (90-day expiry!)\n    3. **Include full chain** in server configuration\n\
+  \    4. **Enable OCSP stapling** for faster validation\n    5. **Monitor expiration**\
+  \ with alerting\n    6. **Use wildcard certs carefully** (wider attack surface)\n\
+  \    7. **Rotate keys** when certificate is compromised\n    8. **Test configuration**\
+  \ with SSL Labs\n\n    **Next**: We'll explore HTTPS implementation and securing\
+  \ web applications."
+exercises:
+  - type: multiple_choice_question
+    sequence_order: 1
+    question: "What is the difference between CRL and OCSP for certificate revocation?"
+    options:
+      - "CRL is faster than OCSP"
+      - "CRL is a downloadable list of revoked certificates while OCSP provides real-time status checks"
+      - "CRL is more secure than OCSP"
+      - "OCSP works offline while CRL requires internet"
+    correct_answer: "CRL is a downloadable list of revoked certificates while OCSP provides real-time status checks"
+    explanation: "CRL (Certificate Revocation List) and OCSP (Online Certificate Status Protocol) are two methods for checking if a certificate has been revoked, but they work differently. A CRL is a signed list of revoked certificate serial numbers published periodically by the Certificate Authority. Clients download the entire CRL and check if the certificate they're validating appears on it. CRLs can become large (megabytes for large CAs), require bandwidth to download, and have a freshness problem - they're only updated periodically, so recently revoked certificates might not appear immediately. OCSP takes a different approach: it's a real-time protocol where the client asks the CA 'Is certificate X revoked?' and receives a signed response: Good, Revoked, or Unknown. OCSP is more efficient for checking individual certificates and provides more current information. However, standard OCSP has privacy concerns (the CA knows which sites you're visiting) and adds latency to connections. OCSP Stapling solves both problems by having the server fetch the OCSP response from the CA and include it in the TLS handshake, providing freshness without the client contacting the CA directly. Modern browsers use a combination of these methods with various fallback strategies."
+    require_pass: true
+  - type: multiple_choice_question
+    sequence_order: 2
+    question: "Why is certificate pinning considered risky?"
+    options:
+      - "It makes certificates expire faster"
+      - "If the pinned certificate or key is lost or rotated, applications will break and cannot connect"
+      - "It weakens encryption"
+      - "It makes connections slower"
+    correct_answer: "If the pinned certificate or key is lost or rotated, applications will break and cannot connect"
+    explanation: "Certificate pinning is a security technique where an application hard-codes which specific certificates or public keys it will accept for a particular domain, providing defense against compromised Certificate Authorities. While this adds security, it's risky because it creates operational fragility. If the pinned certificate expires, is revoked, or needs to be rotated due to key compromise, and the application hasn't been updated with the new pin, all instances of that application will fail to connect. For mobile apps, this is particularly dangerous because users may not immediately update their apps, potentially leaving millions of users unable to use the service. Organizations that use pinning must maintain careful key management processes, typically including backup pins for future certificates, monitoring pin expiration, and having emergency update mechanisms. The HPKP (HTTP Public Key Pinning) header mechanism for websites was deprecated because misconfigurations led to sites becoming permanently inaccessible. Modern recommendations suggest using Certificate Transparency and proper PKI practices rather than pinning, or if pinning is necessary, using it only in specialized applications like mobile apps with controlled update mechanisms, always including backup pins, and having a plan for pin rotation."
+    require_pass: true

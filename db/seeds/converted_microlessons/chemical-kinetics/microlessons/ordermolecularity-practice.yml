@@ -1,0 +1,53 @@
+slug: ordermolecularity-practice
+title: order_molecularity — Practice
+difficulty: easy
+sequence_order: 17
+estimated_minutes: 2
+key_concepts:
+- order_molecularity
+prerequisites: []
+content_md: '# order_molecularity — Practice 🚀
+
+
+  TRUE. Order is determined experimentally and can be 0, 1, 2, 1.5, etc. Molecularity
+  is number of molecules in elementary step and must be integer (1, 2, or 3).
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: 'Which of the following statements correctly distinguishes between order and molecularity?'
+  options:
+  - Both order and molecularity are always whole numbers
+  - Order is determined from stoichiometry; molecularity is determined experimentally
+  - Order can be fractional or zero; molecularity must be a positive integer (1, 2, or 3)
+  - Order and molecularity are always equal for any reaction
+  correct_answer: Order can be fractional or zero; molecularity must be a positive integer (1, 2, or 3)
+  explanation: 'Order and molecularity are fundamentally different concepts in chemical kinetics. ORDER OF REACTION: (1) Determined EXPERIMENTALLY from rate law. (2) Can be zero, fractional, or integer (0, 0.5, 1, 1.5, 2, 3, etc.). (3) Applies to overall reaction and individual reactants. (4) May not relate to stoichiometric coefficients. Example: For H₂ + Br₂ → 2HBr, order with respect to Br₂ is 0.5 (fractional). MOLECULARITY: (1) Determined from reaction MECHANISM (number of molecules in an elementary step). (2) Must be a POSITIVE INTEGER: unimolecular (1), bimolecular (2), or termolecular (3). (3) Applies ONLY to elementary reactions, not overall reactions. (4) Termolecular (3) is rare due to low probability of three molecules colliding simultaneously. (5) Molecularity > 3 is virtually impossible. Example: For elementary reaction 2NO + O₂ → 2NO₂, molecularity = 3 (three molecules participate). KEY DISTINCTION: For ELEMENTARY reactions only, order equals molecularity. For complex (multi-step) reactions, order ≠ molecularity of overall reaction. The overall reaction has no molecularity, only individual elementary steps do.'
+  require_pass: true
+- type: short_answer
+  sequence_order: 2
+  question: Order of reaction can be fractional but molecularity is always a whole
+    number.
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: 'For the elementary reaction: 2NO(g) → N₂O₂(g), what are the order and molecularity?'
+  options:
+  - Order = 1, Molecularity = 2
+  - Order = 2, Molecularity = 1
+  - Order = 2, Molecularity = 2
+  - Order = 1, Molecularity = 1
+  correct_answer: Order = 2, Molecularity = 2
+  explanation: 'For an ELEMENTARY reaction, the order equals the molecularity, and both can be determined from the balanced equation. MOLECULARITY: Count the number of molecules participating in the elementary step. For 2NO → N₂O₂, TWO molecules of NO participate, so molecularity = 2 (bimolecular). ORDER: For elementary reactions, the rate law can be written directly from the equation. Rate = k[NO]². The exponent is 2, so the reaction is second order with respect to NO, and second order overall. Verification: Both order and molecularity = 2. This equality holds ONLY for elementary reactions. If this were a complex (multi-step) reaction, order would need to be determined experimentally and might differ from the stoichiometric coefficient. Important examples: Elementary reaction: A → products (unimolecular, first order). Elementary reaction: A + B → products (bimolecular, second order overall: first order in A, first order in B). Elementary reaction: 2A + B → products (termolecular, third order overall: second order in A, first order in B). For complex reactions like 2H₂ + 2NO → N₂ + 2H₂O, you cannot assume order from stoichiometry - must determine experimentally. The overall reaction has no molecularity.'
+  require_pass: true

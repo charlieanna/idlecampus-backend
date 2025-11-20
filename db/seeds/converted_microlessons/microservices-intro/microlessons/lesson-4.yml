@@ -1,0 +1,273 @@
+slug: lesson-4
+title: Lesson 4
+difficulty: easy
+sequence_order: 4
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Microservices Architecture Principles\n\
+  \n    **Microservices** is an architectural style that structures an application\
+  \ as a collection of small, autonomous services organized around business capabilities.\n\
+  \n    ## Monolith vs Microservices\n\n    ### Monolithic Architecture\n\n    **All\
+  \ components in a single codebase and deployment unit**\n\n    ```\n    ┌─────────────────────────────────────┐\n\
+  \    │         Monolithic Application      │\n    │  ┌──────────┬──────────┬─────────┐\
+  \ │\n    │  │   User   │ Product  │ Payment │ │\n    │  │ Service  │ Service  │\
+  \ Service │ │\n    │  └──────────┴──────────┴─────────┘ │\n    │  ┌──────────────────────────────┐\
+  \  │\n    │  │      Shared Database         │  │\n    │  └──────────────────────────────┘\
+  \  │\n    └─────────────────────────────────────┘\n    ```\n\n    ✅ **Advantages:**\n\
+  \    - Simple to develop initially\n    - Easy to test (everything together)\n \
+  \   - Simple deployment (single unit)\n    - No network latency between components\n\
+  \    - ACID transactions work easily\n    - Straightforward debugging\n\n    ❌ **Disadvantages:**\n\
+  \    - Tight coupling (change one thing, test everything)\n    - Scaling limitations\
+  \ (must scale entire app)\n    - Technology lock-in (one language/framework)\n \
+  \   - Long deployment cycles\n    - Large codebase becomes hard to understand\n\
+  \    - Single point of failure\n\n    ### Microservices Architecture\n\n    **Multiple\
+  \ independent services, each with own database**\n\n    ```\n    ┌─────────────┐\
+  \  ┌─────────────┐  ┌─────────────┐\n    │    User     │  │   Product   │  │   Payment\
+  \   │\n    │   Service   │  │   Service   │  │   Service   │\n    ├─────────────┤\
+  \  ├─────────────┤  ├─────────────┤\n    │   User DB   │  │ Product DB  │  │ Payment\
+  \ DB  │\n    └─────────────┘  └─────────────┘  └─────────────┘\n         ↑     \
+  \           ↑                 ↑\n         └────────────────┴─────────────────┘\n\
+  \                  API Gateway / Service Mesh\n    ```\n\n    ✅ **Advantages:**\n\
+  \    - Independent scaling (scale what you need)\n    - Technology diversity (right\
+  \ tool per service)\n    - Faster deployments (deploy one service)\n    - Fault\
+  \ isolation (one service fails, others run)\n    - Team autonomy (teams own services)\n\
+  \    - Easier to understand (smaller codebases)\n\n    ❌ **Disadvantages:**\n  \
+  \  - Distributed system complexity\n    - Network latency between services\n   \
+  \ - Distributed transactions are hard\n    - Testing is more complex\n    - Deployment\
+  \ complexity (many services)\n    - Data consistency challenges\n    - Debugging\
+  \ is harder\n\n    ## When to Use Microservices (and When NOT to)\n\n    ### ✅ Use\
+  \ Microservices When:\n\n    **1. Application has grown too large**\n    ```\n \
+  \   - 100K+ lines of code\n    - 20+ developers\n    - Multiple teams working on\
+  \ same codebase\n    - Frequent merge conflicts\n    ```\n\n    **2. Different scaling\
+  \ requirements**\n    ```python\n    # Example: E-commerce platform\n    - Product\
+  \ catalog: Read-heavy, needs 10 servers\n    - Order processing: Write-heavy, needs\
+  \ 2 servers\n    - Image processing: CPU-intensive, needs GPU servers\n\n    # Microservices:\
+  \ Scale each independently\n    # Monolith: Must scale entire app (wasteful)\n \
+  \   ```\n\n    **3. Need for technology diversity**\n    ```\n    - User service:\
+  \ Node.js (I/O intensive)\n    - Recommendation engine: Python (ML libraries)\n\
+  \    - Payment processing: Java (enterprise libraries)\n    - Real-time chat: Go\
+  \ (concurrency)\n    ```\n\n    **4. Independent deployment needed**\n    ```\n\
+  \    - Update payment service without redeploying entire app\n    - Deploy new features\
+  \ faster\n    - Reduce risk (smaller deployments)\n    ```\n\n    **5. Team structure\
+  \ supports it**\n    ```\n    - Multiple teams\n    - Each team can own a service\n\
+  \    - Clear domain boundaries\n    ```\n\n    ### ❌ DON'T Use Microservices When:\n\
+  \n    **1. Small application**\n    ```python\n    # Simple blog application\n \
+  \   - 1-3 developers\n    - Simple CRUD operations\n    - Low traffic\n\n    # Verdict:\
+  \ Monolith is perfect!\n    # Microservices would be over-engineering\n    ```\n\
+  \n    **2. Unclear domain boundaries**\n    ```\n    - Don't know how to split services\
+  \ yet\n    - Requirements still changing rapidly\n    - Domain not well understood\n\
+  \n    # Start with monolith, extract services later!\n    ```\n\n    **3. Limited\
+  \ operational capability**\n    ```\n    - No DevOps expertise\n    - No container\
+  \ orchestration (Kubernetes)\n    - Small team (1-5 developers)\n    - Limited monitoring/logging\
+  \ infrastructure\n\n    # Microservices require operational maturity\n    ```\n\n\
+  \    **4. Performance-critical application**\n    ```\n    - Sub-millisecond latency\
+  \ required\n    - In-process calls needed\n    - Complex transactions across components\n\
+  \n    # Network calls add latency\n    ```\n\n    ## Service Boundaries and Domain-Driven\
+  \ Design\n\n    ### Domain-Driven Design (DDD)\n\n    **Define service boundaries\
+  \ based on business domains**\n\n    ```\n    E-commerce Platform Domains:\n\n \
+  \   ┌─────────────────────────────────────────────────┐\n    │  User Management\
+  \ (Bounded Context)              │\n    │  - User registration                 \
+  \           │\n    │  - Authentication                               │\n    │  -\
+  \ Profile management                           │\n    └─────────────────────────────────────────────────┘\n\
+  \n    ┌─────────────────────────────────────────────────┐\n    │  Product Catalog\
+  \ (Bounded Context)              │\n    │  - Product listings                  \
+  \           │\n    │  - Search                                       │\n    │  -\
+  \ Categories                                   │\n    └─────────────────────────────────────────────────┘\n\
+  \n    ┌─────────────────────────────────────────────────┐\n    │  Order Management\
+  \ (Bounded Context)             │\n    │  - Shopping cart                      \
+  \          │\n    │  - Order placement                              │\n    │  -\
+  \ Order tracking                               │\n    └─────────────────────────────────────────────────┘\n\
+  \n    ┌─────────────────────────────────────────────────┐\n    │  Payment Processing\
+  \ (Bounded Context)           │\n    │  - Payment methods                      \
+  \        │\n    │  - Transaction processing                       │\n    │  - Refunds\
+  \                                      │\n    └─────────────────────────────────────────────────┘\n\
+  \    ```\n\n    ### Identifying Service Boundaries\n\n    **Ask these questions:**\n\
+  \n    1. **Single Responsibility**: Does the service have one clear purpose?\n \
+  \   2. **Cohesion**: Do related functions belong together?\n    3. **Coupling**:\
+  \ Can it change independently?\n    4. **Data Ownership**: Does it own its data?\n\
+  \n    **Example: Order Service**\n    ```python\n    # Good: Clear boundary\n  \
+  \  class OrderService:\n        def create_order(user_id, items)\n        def get_order(order_id)\n\
+  \        def cancel_order(order_id)\n        def update_order_status(order_id, status)\n\
+  \n    # Bad: Doing too much\n    class OrderService:\n        def create_order(...)\n\
+  \        def process_payment(...)      # Payment service!\n        def send_email(...)\
+  \            # Notification service!\n        def update_inventory(...)      # Inventory\
+  \ service!\n    ```\n\n    ### Service Size: How Small is \"Micro\"?\n\n    **Not\
+  \ about lines of code, but about purpose**\n\n    ```python\n    # Too small (nano-services)\n\
+  \    class AddService:\n        def add(a, b):\n            return a + b\n\n   \
+  \ class SubtractService:\n        def subtract(a, b):\n            return a - b\n\
+  \n    # Too big (mini-monolith)\n    class EverythingService:\n        def handle_users(...)\n\
+  \        def handle_products(...)\n        def handle_orders(...)\n        def handle_payments(...)\n\
+  \n    # Just right\n    class OrderService:\n        # Manages entire order lifecycle\n\
+  \        # ~2000-5000 lines of code\n        # One team can understand and maintain\
+  \ it\n    ```\n\n    ## Communication Patterns (Sync vs Async)\n\n    ### Synchronous\
+  \ Communication (Request-Response)\n\n    **Service waits for response**\n\n   \
+  \ ```python\n    # HTTP/REST example\n    def create_order(user_id, items):\n  \
+  \      # Synchronous call to user service\n        user = http_client.get(f'http://user-service/users/{user_id}')\n\
+  \n        if not user:\n            return {'error': 'User not found'}, 404\n\n\
+  \        # Synchronous call to product service\n        products = http_client.post('http://product-service/validate',\n\
+  \                                    json={'items': items})\n\n        # Create\
+  \ order\n        order = db.save_order(user_id, items)\n\n        # Synchronous\
+  \ call to payment service\n        payment = http_client.post('http://payment-service/charge',\n\
+  \                                  json={'order_id': order.id, 'amount': order.total})\n\
+  \n        return order\n    ```\n\n    ✅ **Pros:**\n    - Simple to understand\n\
+  \    - Immediate response\n    - Easy error handling\n    - Natural request-response\
+  \ flow\n\n    ❌ **Cons:**\n    - Tight coupling (service must be available)\n  \
+  \  - Cascading failures (one service down = all fail)\n    - Higher latency (sequential\
+  \ calls)\n    - Reduced availability\n\n    **When to use:**\n    - Need immediate\
+  \ response\n    - Simple queries\n    - Critical operations (payments)\n\n    ###\
+  \ Asynchronous Communication (Events/Messages)\n\n    **Service doesn't wait for\
+  \ response**\n\n    ```python\n    # Event-driven example\n    def create_order(user_id,\
+  \ items):\n        # Create order\n        order = db.save_order(user_id, items,\
+  \ status='PENDING')\n\n        # Publish event (non-blocking)\n        event_bus.publish('order.created',\
+  \ {\n            'order_id': order.id,\n            'user_id': user_id,\n      \
+  \      'items': items,\n            'total': order.total\n        })\n\n       \
+  \ return order  # Return immediately!\n\n    # Other services react to events (independently)\n\
+  \    @event_bus.subscribe('order.created')\n    def handle_order_payment(event):\n\
+  \        # Payment service processes payment\n        process_payment(event['order_id'],\
+  \ event['total'])\n\n    @event_bus.subscribe('order.created')\n    def handle_order_notification(event):\n\
+  \        # Notification service sends email\n        send_order_confirmation_email(event['user_id'],\
+  \ event['order_id'])\n\n    @event_bus.subscribe('order.created')\n    def handle_inventory_update(event):\n\
+  \        # Inventory service updates stock\n        update_inventory(event['items'])\n\
+  \    ```\n\n    ✅ **Pros:**\n    - Loose coupling (services independent)\n    -\
+  \ Better fault tolerance\n    - Natural for workflows\n    - Easier to add new services\n\
+  \n    ❌ **Cons:**\n    - Eventual consistency\n    - Complex debugging\n    - Message\
+  \ ordering issues\n    - Requires message infrastructure\n\n    **When to use:**\n\
+  \    - Long-running operations\n    - Fire-and-forget operations\n    - Fan-out\
+  \ scenarios (notify multiple services)\n    - High availability requirements\n\n\
+  \    ## API Gateway Pattern\n\n    **Single entry point for all client requests**\n\
+  \n    ```\n              Clients (Web, Mobile, IoT)\n                        │\n\
+  \                        ▼\n              ┌─────────────────┐\n              │ \
+  \  API Gateway   │\n              │  - Routing      │\n              │  - Auth \
+  \        │\n              │  - Rate limit   │\n              │  - Aggregation  │\n\
+  \              └────────┬────────┘\n                       │\n           ┌───────────┼───────────┬──────────┐\n\
+  \           │           │           │          │\n           ▼           ▼     \
+  \      ▼          ▼\n      ┌────────┐  ┌────────┐  ┌────────┐  ┌────────┐\n    \
+  \  │  User  │  │Product │  │ Order  │  │Payment │\n      │Service │  │Service │\
+  \  │Service │  │Service │\n      └────────┘  └────────┘  └────────┘  └────────┘\n\
+  \    ```\n\n    ### API Gateway Responsibilities\n\n    **1. Request Routing**\n\
+  \    ```python\n    # Route requests to appropriate services\n    @gateway.route('/users/*')\n\
+  \    def route_to_user_service(request):\n        return forward_to('user-service',\
+  \ request)\n\n    @gateway.route('/products/*')\n    def route_to_product_service(request):\n\
+  \        return forward_to('product-service', request)\n    ```\n\n    **2. Authentication\
+  \ & Authorization**\n    ```python\n    @gateway.before_request\n    def authenticate():\n\
+  \        token = request.headers.get('Authorization')\n        user = verify_jwt_token(token)\n\
+  \n        if not user:\n            return {'error': 'Unauthorized'}, 401\n\n  \
+  \      request.user = user  # Attach to request\n    ```\n\n    **3. Rate Limiting**\n\
+  \    ```python\n    @gateway.route('/api/*')\n    @rate_limit(limit=1000, per=3600)\
+  \  # 1000 requests/hour\n    def handle_api_request(request):\n        return forward_request(request)\n\
+  \    ```\n\n    **4. Request Aggregation**\n    ```python\n    # Single request\
+  \ to gateway → Multiple service calls\n    @gateway.route('/user-dashboard/:user_id')\n\
+  \    async def get_dashboard(user_id):\n        # Call multiple services in parallel\n\
+  \        user, orders, recommendations = await asyncio.gather(\n            http_client.get(f'user-service/users/{user_id}'),\n\
+  \            http_client.get(f'order-service/users/{user_id}/orders'),\n       \
+  \     http_client.get(f'recommendation-service/users/{user_id}')\n        )\n\n\
+  \        return {\n            'user': user,\n            'recent_orders': orders,\n\
+  \            'recommendations': recommendations\n        }\n    ```\n\n    **5.\
+  \ Protocol Translation**\n    ```python\n    # Client uses REST, service uses gRPC\n\
+  \    @gateway.route('/products', methods=['GET'])\n    def get_products():\n   \
+  \     # Translate REST to gRPC\n        grpc_response = product_grpc_client.GetProducts()\n\
+  \n        # Convert to JSON\n        return json_format.MessageToDict(grpc_response)\n\
+  \    ```\n\n    **Popular API Gateways:**\n    - Kong\n    - AWS API Gateway\n \
+  \   - Nginx\n    - Envoy\n    - Traefik\n\n    ## Service Discovery\n\n    **How\
+  \ services find each other in dynamic environments**\n\n    ### The Problem\n\n\
+  \    ```\n    Problem: Service addresses change constantly\n    - Containers restart\
+  \ → New IP addresses\n    - Auto-scaling → New instances added/removed\n    - Health\
+  \ issues → Instances removed\n\n    How does Order Service find Payment Service?\n\
+  \    ```\n\n    ### Client-Side Discovery\n\n    **Client queries service registry\
+  \ and load balances**\n\n    ```python\n    # Service Registry (Consul, Eureka,\
+  \ etcd)\n    registry = {\n        'payment-service': [\n            '10.0.1.5:8000',\n\
+  \            '10.0.1.6:8000',\n            '10.0.1.7:8000'\n        ]\n    }\n\n\
+  \    # Client-side discovery\n    class ServiceClient:\n        def call_service(self,\
+  \ service_name, path):\n            # 1. Query registry for available instances\n\
+  \            instances = registry.get(service_name)\n\n            # 2. Client-side\
+  \ load balancing\n            instance = random.choice(instances)\n\n          \
+  \  # 3. Make request\n            return http_client.get(f'http://{instance}{path}')\n\
+  \n    # Usage\n    client = ServiceClient()\n    payment = client.call_service('payment-service',\
+  \ '/charge')\n    ```\n\n    ✅ Simple, no additional infrastructure\n    ❌ Client\
+  \ must implement discovery logic\n\n    ### Server-Side Discovery\n\n    **Load\
+  \ balancer queries service registry**\n\n    ```\n    ┌──────────┐\n    │  Client\
+  \  │\n    └────┬─────┘\n         │\n         ▼\n    ┌─────────────┐      ┌──────────────────┐\n\
+  \    │Load Balancer│─────▶│ Service Registry │\n    └──────┬──────┘      └──────────────────┘\n\
+  \           │\n           ├──────────┬──────────┬──────────┐\n           ▼     \
+  \     ▼          ▼          ▼\n      Instance1  Instance2  Instance3  Instance4\n\
+  \    ```\n\n    **Example: Kubernetes Service Discovery**\n    ```yaml\n    # Kubernetes\
+  \ Service automatically discovers pods\n    apiVersion: v1\n    kind: Service\n\
+  \    metadata:\n      name: payment-service\n    spec:\n      selector:\n      \
+  \  app: payment\n      ports:\n        - port: 80\n          targetPort: 8000\n\n\
+  \    # Application code (simple!)\n    # Kubernetes DNS resolves payment-service\
+  \ to actual pod IPs\n    payment = http_client.get('http://payment-service/charge')\n\
+  \    ```\n\n    ✅ Simpler client code\n    ✅ Centralized logic\n    ❌ Additional\
+  \ infrastructure (load balancer)\n\n    ### Service Registration\n\n    **How services\
+  \ register themselves**\n\n    **Self-Registration**\n    ```python\n    # Service\
+  \ registers itself on startup\n    class PaymentService:\n        def start(self):\n\
+  \            # Register with service registry\n            registry.register(\n\
+  \                service_name='payment-service',\n                address=f'{self.host}:{self.port}',\n\
+  \                health_check_url=f'http://{self.host}:{self.port}/health'\n   \
+  \         )\n\n            # Start HTTP server\n            self.run()\n\n     \
+  \   def shutdown(self):\n            # Deregister on shutdown\n            registry.deregister('payment-service',\
+  \ f'{self.host}:{self.port}')\n    ```\n\n    **Third-Party Registration (Kubernetes)**\n\
+  \    ```yaml\n    # Kubernetes automatically registers/deregisters pods\n    # No\
+  \ code changes needed!\n    apiVersion: apps/v1\n    kind: Deployment\n    metadata:\n\
+  \      name: payment-service\n    spec:\n      replicas: 3\n      template:\n  \
+  \      spec:\n          containers:\n          - name: payment\n            image:\
+  \ payment-service:1.0\n            ports:\n            - containerPort: 8000\n \
+  \   ```\n\n    ## Real-World Examples\n\n    ### Netflix\n\n    **One of the largest\
+  \ microservices deployments**\n\n    ```\n    Services: 700+\n    Requests: Billions\
+  \ per day\n    Engineers: 1000s\n\n    Architecture:\n    - Eureka: Service discovery\n\
+  \    - Zuul: API Gateway\n    - Ribbon: Client-side load balancing\n    - Hystrix:\
+  \ Circuit breaker\n    - AWS: Infrastructure\n    ```\n\n    **Benefits achieved:**\n\
+  \    - Deploy 100s of times per day\n    - Scale services independently\n    - Technology\
+  \ diversity (Java, Node.js, Python)\n    - Global deployment\n\n    ### Uber\n\n\
+  \    **Microservices for ride-sharing platform**\n\n    ```\n    Core Services:\n\
+  \    - Rider Service (mobile app backend)\n    - Driver Service (driver app backend)\n\
+  \    - Trip Service (manage trips)\n    - Routing Service (calculate routes)\n \
+  \   - Pricing Service (surge pricing)\n    - Dispatch Service (match riders/drivers)\n\
+  \    - Payment Service (process payments)\n\n    Communication:\n    - Synchronous:\
+  \ REST, gRPC (real-time)\n    - Asynchronous: Kafka (events, analytics)\n    ```\n\
+  \n    **Key learnings:**\n    - Start with monolith, extract services gradually\n\
+  \    - Strong service ownership (team per service)\n    - Invest in observability\
+  \ early\n\n    ### Amazon\n\n    **Pioneered microservices (2001)**\n\n    ```\n\
+  \    \"Two-pizza teams\"\n    - Team small enough to feed with 2 pizzas\n    - Each\
+  \ team owns a service\n    - Full autonomy (build, deploy, operate)\n\n    Results:\n\
+  \    - Faster innovation\n    - Independent deployments\n    - Better fault isolation\n\
+  \    ```\n\n    ## Best Practices\n\n    **1. Start with a Monolith**\n    ```\n\
+  \    - Build monolith first\n    - Learn domain boundaries\n    - Extract services\
+  \ when needed\n    - Don't over-engineer early\n    ```\n\n    **2. Design for Failure**\n\
+  \    ```python\n    # Always assume services can fail\n    try:\n        recommendations\
+  \ = recommendation_service.get(user_id)\n    except ServiceUnavailable:\n      \
+  \  # Fallback: Show default recommendations\n        recommendations = get_popular_products()\n\
+  \    ```\n\n    **3. Decentralize Everything**\n    ```\n    - Decentralized data\
+  \ (each service owns data)\n    - Decentralized governance (teams choose tech)\n\
+  \    - Decentralized deployment (deploy independently)\n    ```\n\n    **4. Build\
+  \ Observable Systems**\n    ```python\n    # Logging, metrics, tracing from day\
+  \ 1\n    @app.route('/checkout')\n    def checkout():\n        logger.info('Checkout\
+  \ started', user_id=user.id)\n        metrics.increment('checkout.started')\n\n\
+  \        with tracer.start_span('checkout'):\n            result = process_checkout()\n\
+  \n        return result\n    ```\n\n    **5. Automate Everything**\n    ```\n  \
+  \  - CI/CD pipelines\n    - Automated testing\n    - Automated deployment\n    -\
+  \ Automated monitoring\n    ```\n\n    **Next**: We'll explore inter-service communication\
+  \ patterns in depth, including REST, gRPC, message queues, and handling distributed\
+  \ transactions."
+  - type: multiple_choice_question
+    sequence_order: 1
+    question: "What is the main difference between monolithic and microservices architecture?"
+    options:
+      - "Monolithic applications are always slower than microservices"
+      - "Monolithic applications have all components in a single codebase while microservices split functionality into independent services"
+      - "Microservices can only be written in one programming language"
+      - "Monolithic applications cannot scale"
+    correct_answer: "Monolithic applications have all components in a single codebase while microservices split functionality into independent services"
+    explanation: "The fundamental difference between monolithic and microservices architectures lies in how the application is structured and deployed. A monolithic application combines all components (user management, products, orders, payments) into a single codebase, shared database, and deployment unit. Any change requires rebuilding and redeploying the entire application. Microservices architecture splits the application into small, independent services, each with its own codebase, database, and deployment lifecycle. Services communicate via APIs (REST, gRPC) or message queues. While monoliths are simpler initially (easy testing, no network calls, straightforward transactions), they become problematic as applications grow (tight coupling, scaling limitations, technology lock-in). Microservices offer independent scaling, technology diversity, faster deployments, and fault isolation, but introduce complexity (distributed systems, network latency, eventual consistency). Neither is inherently faster - performance depends on implementation. Microservices support multiple languages per service, while monoliths typically use one stack. Monoliths can scale (by running multiple instances), but must scale as a whole unit. The choice depends on application size, team structure, and operational maturity."
+    require_pass: true
+  - type: multiple_choice_question
+    sequence_order: 2
+    question: "What is the primary purpose of an API Gateway in microservices architecture?"
+    options:
+      - "To store data for all microservices"
+      - "To provide a single entry point for clients and handle cross-cutting concerns like authentication and routing"
+      - "To replace all microservices with a single service"
+      - "To slow down requests for security"
+    correct_answer: "To provide a single entry point for clients and handle cross-cutting concerns like authentication and routing"
+    explanation: "An API Gateway serves as the single entry point for all client requests in a microservices architecture, handling cross-cutting concerns that would otherwise need to be implemented in every service. Key responsibilities include: request routing (directing requests to appropriate services), authentication and authorization (verifying credentials once rather than in each service), rate limiting (preventing abuse), request aggregation (combining multiple service calls into one client request), protocol translation (REST to gRPC conversion), and load balancing. For example, a mobile app makes one request to the API Gateway for a user dashboard, and the gateway calls User Service, Order Service, and Recommendation Service in parallel, aggregating results before returning to the client. This simplifies client code, centralizes security, and hides internal service architecture. The API Gateway doesn't store data (services have their own databases), doesn't replace services (it routes to them), and doesn't slow requests (though it adds a network hop, it often improves performance through features like response caching and request aggregation). Popular API Gateways include Kong, AWS API Gateway, Nginx, and Envoy. Understanding API Gateway patterns is essential for building maintainable microservices architectures."
+    require_pass: true

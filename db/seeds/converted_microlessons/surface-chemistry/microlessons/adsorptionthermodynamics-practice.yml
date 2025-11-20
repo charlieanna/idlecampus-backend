@@ -1,0 +1,59 @@
+slug: adsorptionthermodynamics-practice
+title: adsorption_thermodynamics — Practice
+difficulty: medium
+sequence_order: 12
+estimated_minutes: 2
+key_concepts:
+- adsorption_thermodynamics
+prerequisites: []
+content_md: '# adsorption_thermodynamics — Practice 🚀
+
+
+  Adsorption is exothermic (ΔH < 0, enthalpy decreases). It also decreases entropy
+  (ΔS < 0) as molecules become more ordered on the surface.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 2
+  question: 'Adsorption is accompanied by:'
+  options:
+  - Decrease in enthalpy and decrease in entropy
+  - Increase in enthalpy and increase in entropy
+  - Decrease in enthalpy and increase in entropy
+  - Increase in enthalpy and decrease in entropy
+  correct_answer: Decrease in enthalpy and decrease in entropy
+  explanation: "Adsorption is an exothermic process, meaning it releases heat and enthalpy decreases (ΔH < 0). Additionally, adsorption decreases entropy (ΔS < 0) because molecules become more ordered and restricted when they attach to a surface, losing their freedom of movement. This combination (negative ΔH and negative ΔS) means adsorption is spontaneous at lower temperatures where the favorable enthalpy change dominates."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: 'Why is adsorption spontaneous at low temperature despite negative entropy change?'
+  options:
+  - The negative ΔH (exothermic) dominates ΔG = ΔH - TΔS at low T
+  - Entropy becomes positive at low temperature
+  - No activation energy is required
+  - Surface area increases
+  correct_answer: The negative ΔH (exothermic) dominates ΔG = ΔH - TΔS at low T
+  explanation: "From the Gibbs free energy equation ΔG = ΔH - TΔS, for adsorption: ΔH is negative (exothermic, favorable) and ΔS is negative (unfavorable). For spontaneity, ΔG must be negative. At low temperatures, the TΔS term is small, so the negative ΔH dominates, making ΔG negative and the process spontaneous. At high temperatures, the positive TΔS term becomes large and may make ΔG positive, favoring desorption. This is why adsorption is favored at low temperature."
+  require_pass: false
+- type: mcq
+  sequence_order: 4
+  question: 'Physical adsorption differs from chemical adsorption in that:'
+  options:
+  - Physical adsorption has low enthalpy change (20-40 kJ/mol) and is reversible
+  - Physical adsorption requires high activation energy
+  - Physical adsorption forms covalent bonds
+  - Physical adsorption occurs only at high temperatures
+  correct_answer: Physical adsorption has low enthalpy change (20-40 kJ/mol) and is reversible
+  explanation: "Physical adsorption (physisorption) involves weak van der Waals forces with low ΔH (20-40 kJ/mol), is reversible, has no activation energy, and forms multilayers. Chemical adsorption (chemisorption) involves chemical bond formation with high ΔH (80-400 kJ/mol), is irreversible, requires activation energy, forms monolayers, and is highly specific. Physisorption occurs at low temperatures, while chemisorption can occur at high temperatures due to required activation energy."
+  require_pass: false

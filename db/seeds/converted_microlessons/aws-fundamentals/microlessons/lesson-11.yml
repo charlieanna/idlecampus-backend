@@ -1,0 +1,147 @@
+slug: lesson-11
+title: Lesson 11
+difficulty: easy
+sequence_order: 11
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# S3: Simple Storage Service\n\n    Scalable\
+  \ object storage in the cloud.\n\n    ## S3 Basics\n\n    **Object Storage**: Store\
+  \ files (objects) in containers (buckets).\n\n    ### Key Concepts\n\n    **Bucket**:\n\
+  \    - Container for objects\n    - Globally unique name\n    - Region-specific\n\
+  \    - Max 100 buckets per account\n\n    **Object**:\n    - File + metadata\n \
+  \   - Max size: 5 TB\n    - Key (name) + Value (data)\n\n    **Key**:\n    - Full\
+  \ path: `s3://my-bucket/folder/file.txt`\n    - No true folders (simulated with\
+  \ prefixes)\n\n    ## Creating Buckets\n\n    ```bash\n    # Create bucket\n   \
+  \ aws s3 mb s3://my-unique-bucket-name-12345\n\n    # List buckets\n    aws s3 ls\n\
+  \n    # Delete bucket (must be empty)\n    aws s3 rb s3://my-bucket\n    ```\n\n\
+  \    ## Working with Objects\n\n    ### Upload\n    ```bash\n    # Upload file\n\
+  \    aws s3 cp myfile.txt s3://my-bucket/\n\n    # Upload directory\n    aws s3\
+  \ cp mydir/ s3://my-bucket/mydir/ --recursive\n\n    # Upload with storage class\n\
+  \    aws s3 cp file.txt s3://my-bucket/ --storage-class GLACIER\n    ```\n\n   \
+  \ ### Download\n    ```bash\n    # Download file\n    aws s3 cp s3://my-bucket/file.txt\
+  \ .\n\n    # Download directory\n    aws s3 cp s3://my-bucket/mydir/ ./local-dir/\
+  \ --recursive\n    ```\n\n    ### List and Delete\n    ```bash\n    # List objects\n\
+  \    aws s3 ls s3://my-bucket/\n\n    # Delete object\n    aws s3 rm s3://my-bucket/file.txt\n\
+  \n    # Delete directory\n    aws s3 rm s3://my-bucket/mydir/ --recursive\n    ```\n\
+  \n    ## S3 Storage Classes\n\n    Choose based on access patterns and cost.\n\n\
+  \    ### S3 Standard\n    - **Use**: Frequently accessed data\n    - **Durability**:\
+  \ 99.999999999% (11 nines)\n    - **Availability**: 99.99%\n    - **Cost**: Highest\
+  \ storage, lowest retrieval\n\n    ### S3 Intelligent-Tiering\n    - **Use**: Unknown\
+  \ or changing access patterns\n    - **Auto-moves**: Between frequent and infrequent\
+  \ access\n    - **Cost**: Small monitoring fee\n\n    ### S3 Standard-IA (Infrequent\
+  \ Access)\n    - **Use**: Less frequently accessed, rapid access needed\n    - **Availability**:\
+  \ 99.9%\n    - **Cost**: Lower storage, higher retrieval\n\n    ### S3 One Zone-IA\n\
+  \    - **Use**: Infrequently accessed, can recreate if lost\n    - **Availability**:\
+  \ 99.5% (single AZ)\n    - **Cost**: 20% less than Standard-IA\n\n    ### S3 Glacier\n\
+  \    - **Use**: Long-term archival\n    - **Retrieval**: Minutes to hours\n    -\
+  \ **Cost**: Very low storage\n\n    ### S3 Glacier Deep Archive\n    - **Use**:\
+  \ Rarely accessed archival\n    - **Retrieval**: 12-48 hours\n    - **Cost**: Lowest\
+  \ storage\n\n    ## S3 Versioning\n\n    Keep multiple versions of objects.\n\n\
+  \    ```bash\n    # Enable versioning\n    aws s3api put-bucket-versioning \\\\\n\
+  \      --bucket my-bucket \\\\\n      --versioning-configuration Status=Enabled\n\
+  \n    # List versions\n    aws s3api list-object-versions --bucket my-bucket\n \
+  \   ```\n\n    Benefits:\n    - Protect from accidental deletion\n    - Roll back\
+  \ to previous versions\n    - Compliance requirements\n\n    ## S3 Security\n\n\
+  \    ### Bucket Policies\n    JSON-based access policies.\n\n    ```json\n    {\n\
+  \      \"Version\": \"2012-10-17\",\n      \"Statement\": [\n        {\n       \
+  \   \"Effect\": \"Allow\",\n          \"Principal\": \"*\",\n          \"Action\"\
+  : \"s3:GetObject\",\n          \"Resource\": \"arn:aws:s3:::my-bucket/*\"\n    \
+  \    }\n      ]\n    }\n    ```\n\n    ### Access Control Lists (ACLs)\n    Legacy\
+  \ access control (use bucket policies instead).\n\n    ### Encryption\n\n    **At\
+  \ Rest**:\n    - SSE-S3: AWS managed keys\n    - SSE-KMS: KMS managed keys\n   \
+  \ - SSE-C: Customer provided keys\n\n    **In Transit**:\n    - HTTPS/TLS\n\n  \
+  \  ```bash\n    # Upload with encryption\n    aws s3 cp file.txt s3://my-bucket/\
+  \ --sse AES256\n    ```\n\n    ## S3 Static Website Hosting\n\n    Host static websites.\n\
+  \n    ```bash\n    # Enable website hosting\n    aws s3 website s3://my-bucket/\
+  \ \\\\\n      --index-document index.html \\\\\n      --error-document error.html\n\
+  \    ```\n\n    URL: `http://my-bucket.s3-website-us-east-1.amazonaws.com`\n\n \
+  \   ## S3 Cross-Region Replication\n\n    Replicate objects to another region.\n\
+  \n    ```bash\n    aws s3api put-bucket-replication \\\\\n      --bucket source-bucket\
+  \ \\\\\n      --replication-configuration file://replication.json\n    ```\n\n \
+  \   Use cases:\n    - Disaster recovery\n    - Compliance\n    - Latency reduction\n\
+  \n    ## S3 Lifecycle Policies\n\n    Automatically transition or delete objects.\n\
+  \n    ```json\n    {\n      \"Rules\": [\n        {\n          \"Id\": \"Move old\
+  \ logs to Glacier\",\n          \"Status\": \"Enabled\",\n          \"Transitions\"\
+  : [\n            {\n              \"Days\": 30,\n              \"StorageClass\"\
+  : \"GLACIER\"\n            }\n          ],\n          \"Expiration\": {\n      \
+  \      \"Days\": 365\n          }\n        }\n      ]\n    }\n    ```\n\n    ##\
+  \ S3 Performance\n\n    ### Multipart Upload\n    For files > 100 MB.\n\n    ```bash\n\
+  \    aws s3 cp large-file.zip s3://my-bucket/ \\\\\n      --storage-class GLACIER\
+  \ \\\\\n      --metadata key1=value1\n    ```\n\n    ### Transfer Acceleration\n\
+  \    Use CloudFront edge locations for faster uploads.\n\n    ### S3 Select\n  \
+  \  Query data without downloading entire object.\n\n    ## S3 Pricing\n\n    **Costs**:\n\
+  \    - Storage (per GB-month)\n    - Requests (PUT, GET, etc.)\n    - Data transfer\
+  \ out\n    - Data retrieval (for IA, Glacier)\n\n    **Free Tier**:\n    - 5 GB\
+  \ Standard storage\n    - 20,000 GET requests\n    - 2,000 PUT requests\n\n    ##\
+  \ S3 Best Practices\n\n    1. **Enable versioning**: Protect from accidental deletion\n\
+  \    2. **Use lifecycle policies**: Automate cost optimization\n    3. **Encrypt\
+  \ data**: Always encrypt sensitive data\n    4. **Block public access**: Unless\
+  \ hosting public website\n    5. **Use CloudFront**: Cache static content globally\n\
+  \    6. **Monitor costs**: Use Cost Explorer\n\n    **Practice**: Try the S3 lab!"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: When should you use S3 Glacier Deep Archive versus S3 Standard storage
+    class?
+  options:
+  - Use Glacier Deep Archive for rarely accessed archival data (12-48 hour retrieval)
+    at lowest cost; S3 Standard for frequently accessed data with immediate access
+  - Glacier Deep Archive is faster than S3 Standard
+  - S3 Standard is cheaper than Glacier Deep Archive
+  - They are the same storage class with different names
+  correct_answer: Use Glacier Deep Archive for rarely accessed archival data (12-48
+    hour retrieval) at lowest cost; S3 Standard for frequently accessed data with
+    immediate access
+  explanation: 'S3 storage classes are optimized for different access patterns with
+    cost-performance tradeoffs. S3 Standard: Designed for frequently accessed data,
+    99.999999999% durability (11 nines), 99.99% availability, immediate retrieval
+    (milliseconds), highest storage cost ($0.023/GB/month), lowest retrieval cost
+    (free), best for active websites, mobile apps, content distribution, big data
+    analytics. S3 Glacier Deep Archive: Designed for long-term archival rarely accessed
+    (1-2 times per year), 99.999999999% durability, 99.99% availability after restoration,
+    retrieval takes 12-48 hours, lowest storage cost ($0.00099/GB/month - 23x cheaper),
+    retrieval costs $0.02/GB, best for regulatory compliance (keep 7+ years), digital
+    preservation, backup disaster recovery. Other classes: S3 Standard-IA (Infrequent
+    Access): Monthly access, retrieval in milliseconds, $0.0125/GB storage + $0.01/GB
+    retrieval. S3 Glacier Flexible: Quarterly access, retrieval 1-5 minutes or 3-5
+    hours, $0.004/GB storage. S3 Intelligent-Tiering: Unknown/changing patterns, auto-moves
+    between tiers, $0.0025/GB monitoring fee. Use case example: Store 100 TB compliance
+    records for 10 years. S3 Standard: $23,000/month × 120 months = $2.76M. Glacier
+    Deep Archive: $99/month × 120 months = $11,880 (237x cheaper). Lifecycle policies:
+    Automate transitions - move to IA after 30 days, Glacier after 90 days, Deep Archive
+    after 365 days, delete after 7 years.'
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What is the purpose of S3 versioning and how does it protect against accidental
+    deletion?
+  options:
+  - Versioning keeps all versions of objects; deletes add a delete marker instead
+    of permanently removing the object, allowing recovery
+  - Versioning creates backups in a different region automatically
+  - Versioning compresses files to save space
+  - Versioning is only for tracking who made changes
+  correct_answer: Versioning keeps all versions of objects; deletes add a delete marker
+    instead of permanently removing the object, allowing recovery
+  explanation: 'S3 versioning is a bucket-level feature that maintains multiple variants
+    of an object, providing protection against accidental overwrites and deletions.
+    How it works: Once enabled, every PUT creates a new version with unique version
+    ID. Example lifecycle: (1) Upload file.txt (version v1), (2) Modify and upload
+    again (version v2, v1 still exists), (3) Delete file.txt (adds delete marker,
+    both versions still exist), (4) Restore by removing delete marker or accessing
+    specific version ID. Delete behavior: Simple DELETE adds delete marker making
+    object appear deleted, but all versions remain retrievable. Permanent delete requires
+    specifying version ID explicitly. Cost implications: Each version counts as separate
+    object for storage billing. If modify 1 GB file daily, after 30 days have 30 GB
+    stored (30x cost). Use lifecycle policies to expire old versions after N days.
+    Recovery scenarios: (1) Accidental delete: Remove delete marker to restore latest
+    version. (2) Accidental overwrite: Download previous version by ID. (3) Ransomware:
+    Malware encrypts files but previous versions remain clean. Best practices: Enable
+    MFA Delete (require MFA to permanently delete versions), use lifecycle rules to
+    transition old versions to cheaper storage (IA, Glacier), set version expiration
+    (delete versions older than 90 days), monitor versioned bucket size with CloudWatch.
+    Compliance: Versioning helps meet regulatory requirements for data retention and
+    audit trails. Real example: Company accidentally deleted critical dataset, versioning
+    allowed instant recovery without restoring from backup.'
+  require_pass: true

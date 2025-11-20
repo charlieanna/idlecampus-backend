@@ -1,0 +1,78 @@
+slug: contexts-cancellation
+title: Contexts & Cancellation
+difficulty: medium
+sequence_order: 4
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: '# Contexts & Cancellation 🚀
+
+
+  Pass context.Context through fetch and pipeline stages to enable timeouts and cancellation.
+
+
+  ## Rules
+
+  - Context is the first param; do not store it; pass it down.
+
+  - Check `ctx.Done()` in loops/selects; return early on cancellation.
+
+  - Prefer `errgroup.Group` when spawning sibling goroutines.
+
+
+  ## Validate
+
+  ```bash
+
+  go test ./examples/go-concurrency-capstone/internal/pipeline -race
+
+  ```
+
+
+  ## Key Points
+
+  - Accept context in public APIs and forward it downstream
+
+  - Select on ctx.Done() in long-running operations
+
+  - Return early on cancellation; propagate errors up'
+exercises:
+- type: terminal
+  problem_statement: Run the pipeline tests with the race detector to verify that context cancellation works gracefully without goroutine leaks or data races
+  expected_output: All tests pass with no race conditions or goroutine leaks detected
+  language: bash
+  starter_code: "# Run tests with race detector\n"
+  sequence_order: 1
+  command: go test ./examples/go-concurrency-capstone/internal/pipeline -race
+  description: Run pipeline tests with race detector to verify graceful cancellation.
+  validation:
+    must_not_include:
+    - goroutine leak
+    - DATA RACE
+  timeout_sec: 60
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What is the idiomatic way to propagate cancellation in Go?
+  options:
+  - Pass context.Context as the first parameter
+  - Use a global boolean flag
+  - Use panic and recover
+  - Kill goroutines with runtime.Kill
+  correct_answer: Pass context.Context as the first parameter
+  explanation: "In Go, the idiomatic way to handle cancellation is to pass context.Context as the first parameter of functions. This allows graceful cancellation propagation across API boundaries, supports timeouts and deadlines, and enables goroutines to check ctx.Done() and return early when cancelled."
+- type: code
+  problem_statement: Write a function that accepts a context and checks for cancellation in a loop. The function should process items but return early if the context is cancelled.
+  language: go
+  starter_code: |
+    package main
+
+    import "context"
+
+    func processItems(ctx context.Context, items []int) error {
+        // TODO: Process items, checking for cancellation
+        return nil
+    }
+  expected_output: Function that properly checks ctx.Done() and returns early on cancellation
+  sequence_order: 3
+  require_pass: true

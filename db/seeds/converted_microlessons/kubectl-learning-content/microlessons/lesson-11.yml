@@ -1,0 +1,95 @@
+slug: lesson-11
+title: Lesson 11
+difficulty: easy
+sequence_order: 11
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Kubernetes Services & Networking\n\n  \
+  \    Services expose Pods to network traffic and enable load balancing across multiple\
+  \ Pod replicas.\n\n      ## Creating Services\n\n      ### ClusterIP (Default -\
+  \ Internal Only)\n\n      ```bash\n      # Create ClusterIP service\n      kubectl\
+  \ create service clusterip my-service --tcp=80:8080\n\n      # Expose existing deployment\n\
+  \      kubectl expose deployment nginx --port=80 --target-port=8080\n\n      # Create\
+  \ from YAML\n      kubectl apply -f service.yaml\n      ```\n\n      ### NodePort\
+  \ (External Access via Node IP)\n\n      ```bash\n      # Create NodePort service\n\
+  \      kubectl create service nodeport my-service --tcp=80:8080 --node-port=30080\n\
+  \n      # Expose deployment as NodePort\n      kubectl expose deployment nginx --type=NodePort\
+  \ --port=80\n      ```\n\n      ### LoadBalancer (Cloud Load Balancer)\n\n     \
+  \ ```bash\n      # Create LoadBalancer service\n      kubectl expose deployment\
+  \ nginx --type=LoadBalancer --port=80\n\n      # Check external IP\n      kubectl\
+  \ get service nginx\n      ```\n\n      ## Viewing Services\n\n      ```bash\n \
+  \     # List all services\n      kubectl get services\n      kubectl get svc\n\n\
+  \      # List services with more details\n      kubectl get svc -o wide\n\n    \
+  \  # Describe service (shows endpoints)\n      kubectl describe service my-service\n\
+  \n      # Get service YAML\n      kubectl get svc my-service -o yaml\n\n      #\
+  \ View service endpoints\n      kubectl get endpoints my-service\n      ```\n\n\
+  \      ## Service Discovery & DNS\n\n      Every service gets a DNS name automatically:\n\
+  \n      ```bash\n      # Format: <service-name>.<namespace>.svc.cluster.local\n\
+  \      # Short form within same namespace: <service-name>\n\n      # Test DNS resolution\n\
+  \      kubectl run debug --image=nicolaka/netshoot -it --rm -- bash\n      nslookup\
+  \ my-service\n      nslookup my-service.default.svc.cluster.local\n\n      # Test\
+  \ service connectivity\n      curl http://my-service\n      wget -O- http://my-service:80\n\
+  \      ```\n\n      ## Port Forwarding\n\n      Access services locally for debugging:\n\
+  \n      ```bash\n      # Forward local port to service\n      kubectl port-forward\
+  \ service/my-service 8080:80\n\n      # Forward to pod directly\n      kubectl port-forward\
+  \ pod/nginx 8080:80\n\n      # Listen on all interfaces\n      kubectl port-forward\
+  \ --address 0.0.0.0 service/my-service 8080:80\n      ```\n\n      ## Headless Services\n\
+  \n      For direct pod access (stateful apps):\n\n      ```bash\n      # Create\
+  \ headless service (ClusterIP: None)\n      kubectl create service clusterip my-service\
+  \ --clusterip=None --tcp=80:8080\n      ```\n\n      ## Service Management\n\n \
+  \     ```bash\n      # Update service\n      kubectl edit service my-service\n \
+  \     kubectl apply -f service.yaml\n\n      # Delete service\n      kubectl delete\
+  \ service my-service\n\n      # Delete multiple services\n      kubectl delete service\
+  \ my-service1 my-service2\n\n      # Delete services by label\n      kubectl delete\
+  \ service -l app=nginx\n      ```\n\n      ## Debugging Network Issues\n\n     \
+  \ ```bash\n      # Check if service has endpoints\n      kubectl get endpoints my-service\n\
+  \n      # Test connectivity from debug pod\n      kubectl run debug --image=busybox\
+  \ -it --rm -- wget -O- http://my-service\n\n      # Check service selector matches\
+  \ pods\n      kubectl get pods -l app=nginx\n      kubectl get service my-service\
+  \ -o yaml | grep selector\n\n      # View service events\n      kubectl get events\
+  \ --field-selector involvedObject.name=my-service\n      ```\n\n      ## Network\
+  \ Policies (Traffic Control)\n\n      ```bash\n      # List network policies\n \
+  \     kubectl get networkpolicies\n      kubectl get netpol\n\n      # Describe\
+  \ network policy\n      kubectl describe networkpolicy my-policy\n\n      # Delete\
+  \ network policy\n      kubectl delete networkpolicy my-policy\n      ```\n\n  \
+  \    ## Ingress (HTTP/HTTPS Routing)\n\n      ```bash\n      # List ingress resources\n\
+  \      kubectl get ingress\n      kubectl get ing\n\n      # Describe ingress\n\
+  \      kubectl describe ingress my-ingress\n\n      # Get ingress with addresses\n\
+  \      kubectl get ingress -o wide\n\n      # Delete ingress\n      kubectl delete\
+  \ ingress my-ingress\n      ```\n\n      Practice service creation and troubleshooting\
+  \ in the labs!"
+exercises:
+  - type: multiple_choice_question
+    sequence_order: 1
+    question: "What is the default service type in Kubernetes when you create a service without specifying a type?"
+    options:
+      - "NodePort"
+      - "LoadBalancer"
+      - "ClusterIP"
+      - "ExternalName"
+    correct_answer: "ClusterIP"
+    explanation: "ClusterIP is the default service type in Kubernetes when no type is explicitly specified. A ClusterIP service exposes the service on an internal IP address that is only accessible from within the cluster. This makes it suitable for internal service-to-service communication, which is the most common use case in microservices architectures. The service receives a stable virtual IP address and DNS name that other pods can use to access it, regardless of which pods are actually backing the service. NodePort builds on ClusterIP by additionally exposing the service on each node's IP at a static port (30000-32767 range), making it accessible from outside the cluster. LoadBalancer further extends NodePort by provisioning an external load balancer in cloud environments, providing a single external IP address. ExternalName is a special type that maps a service to a DNS name rather than a selector. Understanding service types is crucial for designing network architecture in Kubernetes - ClusterIP for internal communication, NodePort for development/testing external access, and LoadBalancer for production external access in cloud environments."
+    require_pass: true
+  - type: multiple_choice_question
+    sequence_order: 2
+    question: "In Kubernetes DNS, what is the full DNS name format for accessing a service from a different namespace?"
+    options:
+      - "<service-name>.<pod-name>.svc.cluster.local"
+      - "<service-name>.<namespace>.svc.cluster.local"
+      - "<namespace>.<service-name>.cluster.local"
+      - "<service-name>.svc.<namespace>.cluster.local"
+    correct_answer: "<service-name>.<namespace>.svc.cluster.local"
+    explanation: "The full qualified DNS name (FQDN) for a Kubernetes service follows the format '<service-name>.<namespace>.svc.cluster.local'. This hierarchical naming scheme allows pods to discover and communicate with services across namespaces. For example, a service named 'database' in the 'production' namespace would be accessible at 'database.production.svc.cluster.local'. Within the same namespace, you can use the short form '<service-name>', and from other namespaces you can use '<service-name>.<namespace>' (omitting 'svc.cluster.local'). The DNS system in Kubernetes is provided by CoreDNS (or kube-dns in older versions) which runs as a service in the kube-system namespace. Each service gets an A record mapping its DNS name to its ClusterIP, and pods can use this name for service discovery without needing to know the actual IP addresses. This abstraction is fundamental to Kubernetes networking, enabling loose coupling between services and allowing services to be moved, scaled, or replaced without requiring changes to clients. The consistent DNS naming also simplifies configuration management and makes it easier to maintain environment parity across development, staging, and production."
+    require_pass: true
+  - type: multiple_choice_question
+    sequence_order: 3
+    question: "What is the primary purpose of a headless service in Kubernetes (ClusterIP: None)?"
+    options:
+      - "To expose the service externally without requiring a load balancer"
+      - "To allow direct pod-to-pod communication without load balancing"
+      - "To reduce memory usage by not allocating a cluster IP address"
+      - "To improve security by hiding the service from DNS resolution"
+    correct_answer: "To allow direct pod-to-pod communication without load balancing"
+    explanation: "A headless service (created with ClusterIP: None) allows direct pod-to-pod communication by returning the IP addresses of individual pods rather than a single service IP. When you perform a DNS lookup on a headless service, you get A records for each pod backing the service instead of a single virtual IP. This is particularly useful for stateful applications like databases (often deployed as StatefulSets) where you need to communicate with specific pod instances rather than having requests randomly distributed. For example, in a database cluster, you might need to write to the primary instance and read from specific replicas, which requires knowing individual pod addresses. Headless services don't perform load balancing - clients receive all pod IPs and must implement their own connection logic. This is different from regular services which provide a stable virtual IP and handle load balancing automatically. Headless services are also used with StatefulSets to provide stable network identities for pods (e.g., pod-0.service-name, pod-1.service-name). While headless services don't consume a ClusterIP from the service IP range, this is a minor benefit compared to their main purpose of enabling direct pod addressing for stateful workloads."
+    require_pass: true

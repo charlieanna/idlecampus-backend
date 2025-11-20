@@ -1,0 +1,272 @@
+slug: lesson-10
+title: Lesson 10
+difficulty: easy
+sequence_order: 10
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# SOLID Principles Explained\n\n    **SOLID**\
+  \ is an acronym for five design principles that make software designs more understandable,\
+  \ flexible, and maintainable.\n\n    ## Why SOLID?\n\n    ```python\n    # Without\
+  \ SOLID principles:\n    - Hard to modify code (ripple effects)\n    - Difficult\
+  \ to test\n    - Tight coupling between components\n    - Code duplication\n   \
+  \ - Fragile to change\n\n    # With SOLID principles:\n    - Easy to extend and\
+  \ modify\n    - Testable and maintainable\n    - Loose coupling\n    - Clear responsibilities\n\
+  \    - Resilient to change\n    ```\n\n    ---\n\n    ## 1. Single Responsibility\
+  \ Principle (SRP)\n\n    **A class should have only ONE reason to change.**\n\n\
+  \    Each class should have one job, one responsibility, one focus.\n\n    ### ❌\
+  \ BEFORE (Bad - Multiple Responsibilities)\n\n    ```python\n    class User:\n \
+  \       def __init__(self, name, email):\n            self.name = name\n       \
+  \     self.email = email\n\n        def get_name(self):\n            return self.name\n\
+  \n        # Responsibility 1: User data management\n        def save_to_database(self):\n\
+  \            db = Database()\n            db.execute(f\"INSERT INTO users VALUES\
+  \ ('{self.name}', '{self.email}')\")\n\n        # Responsibility 2: Email sending\n\
+  \        def send_welcome_email(self):\n            smtp = SMTP('smtp.example.com')\n\
+  \            smtp.send(self.email, 'Welcome!', 'Thanks for joining')\n\n       \
+  \ # Responsibility 3: Report generation\n        def generate_user_report(self):\n\
+  \            return f\"User Report: {self.name} - {self.email}\"\n    ```\n\n  \
+  \  **Problems:**\n    - 3 reasons to change: database logic, email logic, report\
+  \ format\n    - Hard to test (must mock database AND email)\n    - Violates SRP\n\
+  \n    ### ✅ AFTER (Good - Single Responsibility)\n\n    ```python\n    # Responsibility\
+  \ 1: User data only\n    class User:\n        def __init__(self, name, email):\n\
+  \            self.name = name\n            self.email = email\n\n        def get_name(self):\n\
+  \            return self.name\n\n        def get_email(self):\n            return\
+  \ self.email\n\n    # Responsibility 2: Database operations\n    class UserRepository:\n\
+  \        def save(self, user):\n            db = Database()\n            db.execute(f\"\
+  INSERT INTO users VALUES ('{user.name}', '{user.email}')\")\n\n        def find_by_email(self,\
+  \ email):\n            db = Database()\n            result = db.query(f\"SELECT\
+  \ * FROM users WHERE email = '{email}'\")\n            return User(result['name'],\
+  \ result['email'])\n\n    # Responsibility 3: Email operations\n    class EmailService:\n\
+  \        def send_welcome_email(self, user):\n            smtp = SMTP('smtp.example.com')\n\
+  \            smtp.send(user.email, 'Welcome!', f'Thanks for joining, {user.name}!')\n\
+  \n    # Responsibility 4: Report generation\n    class UserReportGenerator:\n  \
+  \      def generate(self, user):\n            return f\"User Report: {user.name}\
+  \ - {user.email}\"\n\n    # Usage:\n    user = User(\"Alice\", \"alice@example.com\"\
+  )\n    UserRepository().save(user)\n    EmailService().send_welcome_email(user)\n\
+  \    report = UserReportGenerator().generate(user)\n    ```\n\n    **Benefits:**\n\
+  \    - Each class has ONE reason to change\n    - Easy to test (each class independently)\n\
+  \    - Easy to modify (change email logic without touching User)\n\n    ---\n\n\
+  \    ## 2. Open/Closed Principle (OCP)\n\n    **Classes should be OPEN for extension\
+  \ but CLOSED for modification.**\n\n    You should be able to add new functionality\
+  \ without changing existing code.\n\n    ### ❌ BEFORE (Bad - Modifying Existing\
+  \ Code)\n\n    ```python\n    class PaymentProcessor:\n        def process_payment(self,\
+  \ amount, payment_type):\n            if payment_type == 'credit_card':\n      \
+  \          print(f\"Processing credit card payment: ${amount}\")\n             \
+  \   # Credit card logic\n            elif payment_type == 'paypal':\n          \
+  \      print(f\"Processing PayPal payment: ${amount}\")\n                # PayPal\
+  \ logic\n            elif payment_type == 'bitcoin':\n                print(f\"\
+  Processing Bitcoin payment: ${amount}\")\n                # Bitcoin logic\n    \
+  \        # Need to add Stripe? Must modify this class!\n            # elif payment_type\
+  \ == 'stripe':\n            #     ...\n    ```\n\n    **Problems:**\n    - Must\
+  \ modify class for each new payment method\n    - Risk of breaking existing functionality\n\
+  \    - Violates OCP\n\n    ### ✅ AFTER (Good - Open for Extension)\n\n    ```python\n\
+  \    from abc import ABC, abstractmethod\n\n    # Abstract base class\n    class\
+  \ PaymentMethod(ABC):\n        @abstractmethod\n        def process(self, amount):\n\
+  \            pass\n\n    # Concrete implementations\n    class CreditCardPayment(PaymentMethod):\n\
+  \        def process(self, amount):\n            print(f\"Processing credit card\
+  \ payment: ${amount}\")\n            # Credit card logic\n\n    class PayPalPayment(PaymentMethod):\n\
+  \        def process(self, amount):\n            print(f\"Processing PayPal payment:\
+  \ ${amount}\")\n            # PayPal logic\n\n    class BitcoinPayment(PaymentMethod):\n\
+  \        def process(self, amount):\n            print(f\"Processing Bitcoin payment:\
+  \ ${amount}\")\n            # Bitcoin logic\n\n    # Add new payment method WITHOUT\
+  \ modifying existing code\n    class StripePayment(PaymentMethod):\n        def\
+  \ process(self, amount):\n            print(f\"Processing Stripe payment: ${amount}\"\
+  )\n            # Stripe logic\n\n    # Processor never needs to change\n    class\
+  \ PaymentProcessor:\n        def process_payment(self, amount, payment_method: PaymentMethod):\n\
+  \            payment_method.process(amount)\n\n    # Usage:\n    processor = PaymentProcessor()\n\
+  \    processor.process_payment(100, CreditCardPayment())\n    processor.process_payment(50,\
+  \ PayPalPayment())\n    processor.process_payment(200, StripePayment())  # New method\
+  \ added easily!\n    ```\n\n    **Benefits:**\n    - Add new payment methods without\
+  \ modifying existing code\n    - No risk of breaking existing functionality\n  \
+  \  - Easy to test each payment method independently\n\n    ---\n\n    ## 3. Liskov\
+  \ Substitution Principle (LSP)\n\n    **Objects of a superclass should be replaceable\
+  \ with objects of a subclass without breaking the application.**\n\n    If S is\
+  \ a subtype of T, then objects of type T can be replaced with objects of type S.\n\
+  \n    ### ❌ BEFORE (Bad - Violates LSP)\n\n    ```python\n    class Bird:\n    \
+  \    def fly(self):\n            return \"Flying in the sky\"\n\n    class Sparrow(Bird):\n\
+  \        def fly(self):\n            return \"Sparrow flying at 20 mph\"\n\n   \
+  \ class Penguin(Bird):\n        def fly(self):\n            # Penguins can't fly!\n\
+  \            raise Exception(\"Penguins cannot fly\")\n\n    # Problem:\n    def\
+  \ make_bird_fly(bird: Bird):\n        return bird.fly()\n\n    make_bird_fly(Sparrow())\
+  \  # Works\n    make_bird_fly(Penguin())  # Crashes! Violates LSP\n    ```\n\n \
+  \   **Problem:** Penguin can't be substituted for Bird without breaking code.\n\n\
+  \    ### ✅ AFTER (Good - Follows LSP)\n\n    ```python\n    class Bird:\n      \
+  \  def move(self):\n            pass\n\n    class FlyingBird(Bird):\n        def\
+  \ fly(self):\n            return \"Flying in the sky\"\n\n        def move(self):\n\
+  \            return self.fly()\n\n    class Sparrow(FlyingBird):\n        def fly(self):\n\
+  \            return \"Sparrow flying at 20 mph\"\n\n    class Penguin(Bird):\n \
+  \       def swim(self):\n            return \"Penguin swimming underwater\"\n\n\
+  \        def move(self):\n            return self.swim()\n\n    # Now all birds\
+  \ can be substituted\n    def make_bird_move(bird: Bird):\n        return bird.move()\n\
+  \n    make_bird_move(Sparrow())  # \"Sparrow flying at 20 mph\"\n    make_bird_move(Penguin())\
+  \  # \"Penguin swimming underwater\"\n    # Both work! LSP satisfied\n    ```\n\n\
+  \    **Benefits:**\n    - All subclasses can be used interchangeably\n    - No unexpected\
+  \ exceptions\n    - Clear hierarchy\n\n    ### Another Example: Rectangle vs Square\n\
+  \n    ```python\n    # BAD: Violates LSP\n    class Rectangle:\n        def __init__(self,\
+  \ width, height):\n            self.width = width\n            self.height = height\n\
+  \n        def set_width(self, width):\n            self.width = width\n\n      \
+  \  def set_height(self, height):\n            self.height = height\n\n        def\
+  \ area(self):\n            return self.width * self.height\n\n    class Square(Rectangle):\n\
+  \        def set_width(self, width):\n            self.width = width\n         \
+  \   self.height = width  # Square must have equal sides\n\n        def set_height(self,\
+  \ height):\n            self.width = height\n            self.height = height\n\n\
+  \    # Test:\n    def test_rectangle(rect: Rectangle):\n        rect.set_width(5)\n\
+  \        rect.set_height(4)\n        assert rect.area() == 20  # Fails for Square!\n\
+  \n    test_rectangle(Rectangle(0, 0))  # Passes\n    test_rectangle(Square(0, 0))\
+  \     # Fails! Violates LSP\n    ```\n\n    **Solution:** Don't inherit Square from\
+  \ Rectangle. Use separate classes or a Shape interface.\n\n    ---\n\n    ## 4.\
+  \ Interface Segregation Principle (ISP)\n\n    **Clients should not be forced to\
+  \ depend on interfaces they don't use.**\n\n    Many specific interfaces are better\
+  \ than one general-purpose interface.\n\n    ### ❌ BEFORE (Bad - Fat Interface)\n\
+  \n    ```python\n    from abc import ABC, abstractmethod\n\n    class Worker(ABC):\n\
+  \        @abstractmethod\n        def work(self):\n            pass\n\n        @abstractmethod\n\
+  \        def eat(self):\n            pass\n\n        @abstractmethod\n        def\
+  \ sleep(self):\n            pass\n\n    class Human(Worker):\n        def work(self):\n\
+  \            print(\"Human working\")\n\n        def eat(self):\n            print(\"\
+  Human eating\")\n\n        def sleep(self):\n            print(\"Human sleeping\"\
+  )\n\n    class Robot(Worker):\n        def work(self):\n            print(\"Robot\
+  \ working\")\n\n        def eat(self):\n            # Robots don't eat!\n      \
+  \      raise NotImplementedError(\"Robots don't eat\")\n\n        def sleep(self):\n\
+  \            # Robots don't sleep!\n            raise NotImplementedError(\"Robots\
+  \ don't sleep\")\n    ```\n\n    **Problem:** Robot forced to implement eat() and\
+  \ sleep() even though it doesn't need them.\n\n    ### ✅ AFTER (Good - Segregated\
+  \ Interfaces)\n\n    ```python\n    from abc import ABC, abstractmethod\n\n    #\
+  \ Separate interfaces for different behaviors\n    class Workable(ABC):\n      \
+  \  @abstractmethod\n        def work(self):\n            pass\n\n    class Eatable(ABC):\n\
+  \        @abstractmethod\n        def eat(self):\n            pass\n\n    class\
+  \ Sleepable(ABC):\n        @abstractmethod\n        def sleep(self):\n         \
+  \   pass\n\n    # Human implements all interfaces\n    class Human(Workable, Eatable,\
+  \ Sleepable):\n        def work(self):\n            print(\"Human working\")\n\n\
+  \        def eat(self):\n            print(\"Human eating\")\n\n        def sleep(self):\n\
+  \            print(\"Human sleeping\")\n\n    # Robot only implements what it needs\n\
+  \    class Robot(Workable):\n        def work(self):\n            print(\"Robot\
+  \ working\")\n\n    # Usage:\n    def manage_worker(worker: Workable):\n       \
+  \ worker.work()\n\n    def feed_creature(creature: Eatable):\n        creature.eat()\n\
+  \n    human = Human()\n    robot = Robot()\n\n    manage_worker(human)  # Works\n\
+  \    manage_worker(robot)  # Works\n\n    feed_creature(human)  # Works\n    # feed_creature(robot)\
+  \  # Type error - good! Robot doesn't implement Eatable\n    ```\n\n    **Benefits:**\n\
+  \    - Classes only implement methods they need\n    - Clear, focused interfaces\n\
+  \    - More flexible and maintainable\n\n    ---\n\n    ## 5. Dependency Inversion\
+  \ Principle (DIP)\n\n    **Depend on abstractions, not concretions.**\n\n    - High-level\
+  \ modules should not depend on low-level modules. Both should depend on abstractions.\n\
+  \    - Abstractions should not depend on details. Details should depend on abstractions.\n\
+  \n    ### ❌ BEFORE (Bad - Depends on Concretions)\n\n    ```python\n    # Low-level\
+  \ module\n    class MySQLDatabase:\n        def connect(self):\n            print(\"\
+  Connecting to MySQL\")\n\n        def save_user(self, user):\n            print(f\"\
+  Saving {user} to MySQL\")\n\n    # High-level module depends on low-level\n    class\
+  \ UserService:\n        def __init__(self):\n            self.database = MySQLDatabase()\
+  \  # Tight coupling!\n\n        def create_user(self, name):\n            user =\
+  \ f\"User: {name}\"\n            self.database.save_user(user)\n\n    # Problem:\
+  \ Want to switch to PostgreSQL? Must modify UserService!\n    ```\n\n    **Problem:**\
+  \ UserService is tightly coupled to MySQLDatabase. Can't easily switch databases.\n\
+  \n    ### ✅ AFTER (Good - Depends on Abstractions)\n\n    ```python\n    from abc\
+  \ import ABC, abstractmethod\n\n    # Abstraction (interface)\n    class Database(ABC):\n\
+  \        @abstractmethod\n        def connect(self):\n            pass\n\n     \
+  \   @abstractmethod\n        def save_user(self, user):\n            pass\n\n  \
+  \  # Low-level implementations\n    class MySQLDatabase(Database):\n        def\
+  \ connect(self):\n            print(\"Connecting to MySQL\")\n\n        def save_user(self,\
+  \ user):\n            print(f\"Saving {user} to MySQL\")\n\n    class PostgreSQLDatabase(Database):\n\
+  \        def connect(self):\n            print(\"Connecting to PostgreSQL\")\n\n\
+  \        def save_user(self, user):\n            print(f\"Saving {user} to PostgreSQL\"\
+  )\n\n    class MongoDBDatabase(Database):\n        def connect(self):\n        \
+  \    print(\"Connecting to MongoDB\")\n\n        def save_user(self, user):\n  \
+  \          print(f\"Saving {user} to MongoDB\")\n\n    # High-level module depends\
+  \ on abstraction\n    class UserService:\n        def __init__(self, database: Database):\
+  \  # Inject dependency!\n            self.database = database\n\n        def create_user(self,\
+  \ name):\n            self.database.connect()\n            user = f\"User: {name}\"\
+  \n            self.database.save_user(user)\n\n    # Usage: Easy to swap implementations\n\
+  \    service1 = UserService(MySQLDatabase())\n    service1.create_user(\"Alice\"\
+  )\n\n    service2 = UserService(PostgreSQLDatabase())\n    service2.create_user(\"\
+  Bob\")\n\n    service3 = UserService(MongoDBDatabase())\n    service3.create_user(\"\
+  Charlie\")\n    ```\n\n    **Benefits:**\n    - Loose coupling\n    - Easy to test\
+  \ (inject mock database)\n    - Easy to switch implementations\n    - Follows Dependency\
+  \ Injection pattern\n\n    ---\n\n    ## Real-World Violation and Fix\n\n    ###\
+  \ E-Commerce System Example\n\n    #### ❌ BEFORE (Violates Multiple SOLID Principles)\n\
+  \n    ```python\n    class Order:\n        def __init__(self, items):\n        \
+  \    self.items = items\n            self.total = 0\n\n        # Violates SRP: Too\
+  \ many responsibilities\n        def calculate_total(self):\n            self.total\
+  \ = sum(item['price'] * item['quantity'] for item in self.items)\n            return\
+  \ self.total\n\n        def apply_discount(self, discount_code):\n            if\
+  \ discount_code == 'SUMMER10':\n                self.total *= 0.9\n            elif\
+  \ discount_code == 'WINTER20':\n                self.total *= 0.8\n            #\
+  \ Violates OCP: Must modify for new discount codes\n\n        def process_payment(self,\
+  \ payment_type):\n            if payment_type == 'credit_card':\n              \
+  \  print(f\"Processing credit card: ${self.total}\")\n            elif payment_type\
+  \ == 'paypal':\n                print(f\"Processing PayPal: ${self.total}\")\n \
+  \           # Violates OCP and DIP: Depends on concrete payment types\n\n      \
+  \  def save_to_database(self):\n            # Violates SRP and DIP: Direct database\
+  \ dependency\n            import mysql.connector\n            db = mysql.connector.connect(host=\"\
+  localhost\", user=\"root\")\n            cursor = db.cursor()\n            cursor.execute(f\"\
+  INSERT INTO orders VALUES ({self.total})\")\n\n        def send_confirmation_email(self):\n\
+  \            # Violates SRP: Order shouldn't know about emails\n            print(f\"\
+  Sending email: Order total ${self.total}\")\n    ```\n\n    #### ✅ AFTER (Follows\
+  \ SOLID Principles)\n\n    ```python\n    from abc import ABC, abstractmethod\n\n\
+  \    # Order only handles order data (SRP)\n    class Order:\n        def __init__(self,\
+  \ items):\n            self.items = items\n            self.subtotal = self._calculate_subtotal()\n\
+  \n        def _calculate_subtotal(self):\n            return sum(item['price'] *\
+  \ item['quantity'] for item in self.items)\n\n    # Discount strategy (OCP)\n  \
+  \  class DiscountStrategy(ABC):\n        @abstractmethod\n        def apply(self,\
+  \ amount):\n            pass\n\n    class PercentageDiscount(DiscountStrategy):\n\
+  \        def __init__(self, percentage):\n            self.percentage = percentage\n\
+  \n        def apply(self, amount):\n            return amount * (1 - self.percentage\
+  \ / 100)\n\n    class FixedDiscount(DiscountStrategy):\n        def __init__(self,\
+  \ amount):\n            self.amount = amount\n\n        def apply(self, amount):\n\
+  \            return amount - self.amount\n\n    # Payment processing (OCP, DIP)\n\
+  \    class PaymentProcessor(ABC):\n        @abstractmethod\n        def process(self,\
+  \ amount):\n            pass\n\n    class CreditCardProcessor(PaymentProcessor):\n\
+  \        def process(self, amount):\n            print(f\"Processing credit card:\
+  \ ${amount}\")\n\n    class PayPalProcessor(PaymentProcessor):\n        def process(self,\
+  \ amount):\n            print(f\"Processing PayPal: ${amount}\")\n\n    # Database\
+  \ abstraction (DIP)\n    class OrderRepository(ABC):\n        @abstractmethod\n\
+  \        def save(self, order, total):\n            pass\n\n    class MySQLOrderRepository(OrderRepository):\n\
+  \        def save(self, order, total):\n            print(f\"Saving order to MySQL:\
+  \ ${total}\")\n\n    # Email service (SRP)\n    class EmailService:\n        def\
+  \ send_order_confirmation(self, order, total):\n            print(f\"Sending confirmation\
+  \ email: Order total ${total}\")\n\n    # Order service coordinates everything\n\
+  \    class OrderService:\n        def __init__(self, repository: OrderRepository,\
+  \ email_service: EmailService):\n            self.repository = repository\n    \
+  \        self.email_service = email_service\n\n        def place_order(self, order:\
+  \ Order, discount: DiscountStrategy,\n                       payment_processor:\
+  \ PaymentProcessor):\n            # Calculate total with discount\n            total\
+  \ = discount.apply(order.subtotal)\n\n            # Process payment\n          \
+  \  payment_processor.process(total)\n\n            # Save order\n            self.repository.save(order,\
+  \ total)\n\n            # Send email\n            self.email_service.send_order_confirmation(order,\
+  \ total)\n\n    # Usage:\n    items = [{'price': 100, 'quantity': 2}, {'price':\
+  \ 50, 'quantity': 1}]\n    order = Order(items)\n\n    service = OrderService(\n\
+  \        MySQLOrderRepository(),\n        EmailService()\n    )\n\n    service.place_order(\n\
+  \        order,\n        PercentageDiscount(10),\n        CreditCardProcessor()\n\
+  \    )\n    ```\n\n    **Benefits:**\n    - ✅ SRP: Each class has one responsibility\n\
+  \    - ✅ OCP: Easy to add new discounts/payments without modifying existing code\n\
+  \    - ✅ LSP: All strategies/processors are interchangeable\n    - ✅ ISP: Focused\
+  \ interfaces\n    - ✅ DIP: Depends on abstractions, not concretions\n\n    ---\n\
+  \n    ## Summary\n\n    | Principle | Key Idea | Benefit |\n    |-----------|----------|---------|\n\
+  \    | **SRP** | One class, one job | Easy to maintain |\n    | **OCP** | Open for\
+  \ extension, closed for modification | Add features without risk |\n    | **LSP**\
+  \ | Subtypes must be substitutable | Reliable inheritance |\n    | **ISP** | Many\
+  \ small interfaces | No unnecessary dependencies |\n    | **DIP** | Depend on abstractions\
+  \ | Loose coupling, testability |\n\n    **Next**: We'll explore creational design\
+  \ patterns that help you create objects in flexible ways."
+exercises: []
+exercises:
+  - type: mcq
+    sequence_order: 1
+    question: "Which SOLID principle states that a class should have only one reason to change?"
+    options:
+      - "Open/Closed Principle"
+      - "Single Responsibility Principle"
+      - "Liskov Substitution Principle"
+      - "Interface Segregation Principle"
+    correct_answer: "Single Responsibility Principle"
+    explanation: "The Single Responsibility Principle (SRP) is the first of the SOLID principles and states that a class should have only one reason to change. This means each class should have a single, well-defined responsibility. Violating SRP leads to classes that are hard to understand, test, and maintain because changes in one area can unexpectedly affect other areas. By following SRP, you create cohesive, focused classes that are easier to reason about and modify. This principle is fundamental to creating maintainable software and works hand-in-hand with the other SOLID principles to promote clean architecture."
+    require_pass: true
+  - type: mcq
+    sequence_order: 2
+    question: "What is the main benefit of following SOLID principles in software development?"
+    options:
+      - "Code runs faster"
+      - "Code is more maintainable, flexible, and testable"
+      - "Fewer lines of code"
+      - "Automatic bug fixes"
+    correct_answer: "Code is more maintainable, flexible, and testable"
+    explanation: "SOLID principles lead to code that is easier to maintain, extend, and test. While they may sometimes result in more classes or lines of code initially, the long-term benefits are substantial: easier to understand (Single Responsibility), easier to extend without modifying existing code (Open/Closed), reliable inheritance (Liskov Substitution), flexible interfaces (Interface Segregation), and loose coupling (Dependency Inversion). These principles help manage complexity as projects grow, reduce technical debt, facilitate team collaboration, and make refactoring safer. They're especially valuable in large, long-lived applications where maintainability is crucial."
+    require_pass: true

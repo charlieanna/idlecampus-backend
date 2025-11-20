@@ -1,0 +1,44 @@
+slug: lesson-99
+title: Lesson 99
+difficulty: easy
+sequence_order: 99
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# DaemonSets and Jobs\n\n    - DaemonSets\
+  \ ensure a Pod runs on every node or subset\n    - Jobs run a task to completion;\
+  \ CronJobs schedule Jobs"
+exercises:
+  - type: mcq
+    sequence_order: 1
+    question: "What is the primary purpose of a DaemonSet in Kubernetes?"
+    options:
+      - "To run exactly one pod per node (or a subset of nodes) in the cluster"
+      - "To schedule pods randomly across the cluster"
+      - "To run background tasks at scheduled intervals"
+      - "To maintain a fixed number of pod replicas cluster-wide"
+    correct_answer: "To run exactly one pod per node (or a subset of nodes) in the cluster"
+    explanation: "DaemonSets ensure that a copy of a specific pod runs on all (or a selected subset of) nodes in a Kubernetes cluster. When a new node joins the cluster, the DaemonSet controller automatically schedules the pod to that node. When a node is removed, those pods are garbage collected. This makes DaemonSets ideal for node-level infrastructure services that need to run on every node, such as log collectors (Fluentd, Filebeat), monitoring agents (Prometheus Node Exporter, Datadog agent), network plugins (CNI agents), or storage daemons. You can also use node selectors or affinity rules to run DaemonSet pods on a subset of nodes - for example, only on nodes with specific hardware (GPUs) or labels (environment=production). DaemonSets bypass the normal scheduler for pod placement since their goal is coverage of all matching nodes, not optimal resource distribution. Unlike Deployments which maintain a specific replica count cluster-wide, DaemonSets ensure per-node coverage. They're not for scheduled tasks (that's CronJobs) or random distribution - they provide deterministic, node-based pod placement."
+    require_pass: true
+  - type: mcq
+    sequence_order: 2
+    question: "What is the difference between a Job and a CronJob in Kubernetes?"
+    options:
+      - "Jobs run once while CronJobs run on a schedule"
+      - "Jobs are for long-running processes while CronJobs are for short tasks"
+      - "Jobs use more resources than CronJobs"
+      - "There is no difference; they are the same"
+    correct_answer: "Jobs run once while CronJobs run on a schedule"
+    explanation: "Jobs and CronJobs serve different purposes in running batch workloads. A Job creates one or more pods and ensures they successfully complete a specific task, then terminate. Jobs run once (or a specified number of times) and are typically used for one-off batch processing, database migrations, data processing tasks, or any work that needs to run to completion rather than continuously. The Job controller tracks successful completions and retries failed pods according to the specified policy. A CronJob, on the other hand, creates Jobs on a time-based schedule using cron syntax (like */5 * * * * for every 5 minutes). CronJobs are used for recurring tasks like periodic backups, report generation, data cleanup, or any scheduled batch work. Each scheduled execution creates a new Job, which in turn creates pods. CronJobs maintain a history of successful and failed Jobs. Neither resource type is inherently for long or short tasks - Jobs can run for any duration until completion, and CronJobs schedule Jobs which can be any length. Resource usage depends on the actual workload, not the controller type. Understanding when to use Jobs vs CronJobs is essential for proper batch workload management."
+    require_pass: true
+  - type: mcq
+    sequence_order: 3
+    question: "How does the 'completions' field work in a Kubernetes Job specification?"
+    options:
+      - "It specifies how long the job can run before timeout"
+      - "It specifies the desired number of successfully completed pods for the job to be considered complete"
+      - "It specifies the number of nodes the job should run on"
+      - "It specifies the CPU completion rate"
+    correct_answer: "It specifies the desired number of successfully completed pods for the job to be considered complete"
+    explanation: "The 'completions' field in a Job spec defines how many pods must successfully complete for the Job itself to be considered complete. By default, completions is 1, meaning the Job finishes when one pod successfully terminates. If you set completions to 5, the Job will create and run pods until 5 have completed successfully. This is useful for batch processing workloads where you need to process a fixed number of work items. The 'parallelism' field works alongside completions to control how many pods run concurrently - for example, with completions: 10 and parallelism: 2, the Job runs 2 pods at a time until 10 total have completed successfully. If a pod fails, the Job controller creates a replacement pod (subject to the backoffLimit for retries). The Job is marked complete only when the specified number of successful completions is reached. This is distinct from timeout behavior (controlled by activeDeadlineSeconds), node placement (controlled by affinity/selectors), or CPU metrics. Understanding completions and parallelism is crucial for efficiently running batch workloads with specific completion requirements."
+    require_pass: true

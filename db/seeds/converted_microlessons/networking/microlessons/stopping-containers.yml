@@ -1,0 +1,152 @@
+slug: stopping-containers
+title: Stopping Containers
+difficulty: easy
+sequence_order: 7
+estimated_minutes: 5
+key_concepts:
+  - Docker stop command
+  - Graceful shutdown
+  - SIGTERM and SIGKILL signals
+  - Container lifecycle
+prerequisites:
+  - running-containers
+content_md: |
+  # Stopping Containers
+
+  ## Introduction
+
+  Stopping containers properly is essential for ensuring data integrity and graceful shutdowns. Docker provides commands to stop running containers in a controlled manner.
+
+  ## The docker stop Command
+
+  **Basic syntax:**
+  ```bash
+  docker stop CONTAINER_ID
+  # or
+  docker stop CONTAINER_NAME
+  ```
+
+  **Example:**
+  ```bash
+  # Stop a container by ID
+  docker stop abc123def456
+
+  # Stop a container by name
+  docker stop my-web-server
+  ```
+
+  ## How docker stop Works
+
+  When you run `docker stop`, Docker:
+
+  1. Sends a **SIGTERM** signal to the main process (PID 1)
+  2. Waits 10 seconds for graceful shutdown
+  3. If still running, sends **SIGKILL** to force termination
+
+  This allows applications to:
+  - Save state
+  - Close database connections
+  - Finish processing requests
+  - Clean up resources
+
+  ## Stopping Multiple Containers
+
+  **Stop several containers at once:**
+  ```bash
+  docker stop container1 container2 container3
+  ```
+
+  **Stop all running containers:**
+  ```bash
+  docker stop $(docker ps -q)
+  ```
+
+  ## Custom Timeout
+
+  **Change the grace period:**
+  ```bash
+  # Wait 30 seconds before force killing
+  docker stop --time 30 my-container
+
+  # Immediately force kill (no grace period)
+  docker stop --time 0 my-container
+  ```
+
+  ## docker kill Command
+
+  **Immediately terminate without grace period:**
+  ```bash
+  docker kill CONTAINER_ID
+  ```
+
+  **Difference from docker stop:**
+  - `docker stop`: Graceful (SIGTERM → wait → SIGKILL)
+  - `docker kill`: Immediate (SIGKILL)
+
+  Use `docker kill` only when:
+  - Container is unresponsive
+  - Immediate termination is needed
+  - Testing failure scenarios
+
+  ## Checking Container Status
+
+  **Before stopping:**
+  ```bash
+  docker ps
+  ```
+
+  **After stopping:**
+  ```bash
+  docker ps -a  # Shows stopped containers
+  ```
+
+  **Check specific container:**
+  ```bash
+  docker inspect CONTAINER_ID | grep Status
+  ```
+
+  ## Restarting Stopped Containers
+
+  ```bash
+  # Start a stopped container
+  docker start CONTAINER_NAME
+
+  # Restart (stop + start)
+  docker restart CONTAINER_NAME
+  ```
+
+  ## Best Practices
+
+  1. **Use docker stop** for normal shutdowns
+  2. **Set appropriate timeouts** for applications that need longer shutdown
+  3. **Implement signal handling** in your applications to respond to SIGTERM
+  4. **Remove stopped containers** to free resources:
+     ```bash
+     docker rm CONTAINER_ID
+     ```
+
+exercises:
+  - type: terminal
+    problem_statement: "Stop a running container named 'my-app' using the docker stop command."
+    expected_output: "my-app"
+    validation_command: "docker ps -a --filter 'name=my-app' --filter 'status=exited' --format '{{.Names}}'"
+    hints:
+      - "Use docker stop followed by the container name"
+    sequence_order: 1
+
+  - type: mcq
+    question: "What signal does 'docker stop' send first to the container?"
+    options:
+      - "SIGKILL"
+      - "SIGTERM"
+      - "SIGINT"
+      - "SIGHUP"
+    correct_answer: "SIGTERM"
+    explanation: "docker stop first sends SIGTERM for graceful shutdown, then SIGKILL after timeout."
+    sequence_order: 2
+
+  - type: short_answer
+    question: "What is the default grace period (in seconds) that docker stop waits before sending SIGKILL?"
+    expected_answer: "10"
+    explanation: "The default timeout is 10 seconds. You can change this with the --time flag."
+    sequence_order: 3

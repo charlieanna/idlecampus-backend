@@ -1,0 +1,136 @@
+slug: optical-isomerism-chirality-enantiomers-and-optical-activity
+title: Optical Isomerism - Chirality, Enantiomers, and Optical Activity
+sequence_order: 5
+estimated_minutes: 2
+difficulty: easy
+content_md: "# Optical Isomerism - Chirality, Enantiomers, and Optical Activity \U0001F680\
+  \n\n# Optical Isomerism and Chirality\n\n    ## 1. What is Chirality?\n\n    ###\
+  \ Definition\n    **Chirality** (from Greek \"cheir\" = hand) means \"handedness\"\
+  . A molecule is **chiral** if it is **non-superimposable on its mirror image**.\n\
+  \n    **Analogy:** Your left and right hands are mirror images but cannot be superimposed\
+  \ perfectly.\n\n    ### Achiral vs Chiral\n    - **Achiral:** Superimposable on\
+  \ mirror image (has symmetry)\n    - **Chiral:** Non-superimposable on mirror image\
+  \ (no symmetry)\n\n    **Example:**\n    ```\n    Achiral: CH₃Cl (has plane of symmetry)\n\
+  \    Chiral:  CHBrClF (no plane of symmetry)\n    ```\n\n    ---\n\n    ## 2. Chiral\
+  \ Center (Stereogenic Center)\n\n    ### Definition\n    A **chiral center** is\
+  \ a carbon atom bonded to **four different groups**.\n\n    **Notation:** Often\
+  \ marked with an asterisk (*)\n\n    ### Identifying Chiral Centers\n\n    **Example\
+  \ 1: 2-Butanol**\n    ```\n           OH\n           |\n    CH₃ — C* — H\n     \
+  \      |\n           CH₂CH₃\n\n    Four different groups: -CH₃, -OH, -H, -CH₂CH₃\n\
+  \    ✓ Chiral center\n    ```\n\n    **Example 2: 2-Propanol**\n    ```\n      \
+  \     OH\n           |\n    CH₃ — C — H\n           |\n           CH₃\n\n    Two\
+  \ identical CH₃ groups\n    ✗ NOT a chiral center\n    ```\n\n    ### Conditions\
+  \ for Chirality\n    1. **sp³ hybridized carbon** (tetrahedral)\n    2. **Four different\
+  \ substituents**\n    3. **No plane of symmetry** in the molecule\n\n    ---\n\n\
+  \    ## 3. Enantiomers\n\n    ### Definition\n    **Enantiomers** are **non-superimposable\
+  \ mirror images** of each other.\n\n    ### Properties of Enantiomers\n\n    | Property\
+  \ | Enantiomer 1 | Enantiomer 2 |\n    |----------|--------------|--------------|\n\
+  \    | **Physical properties** | Identical | Identical |\n    | **Melting point**\
+  \ | Same | Same |\n    | **Boiling point** | Same | Same |\n    | **Solubility**\
+  \ | Same | Same |\n    | **Refractive index** | Same | Same |\n    | **Optical rotation**\
+  \ | +θ (dextrorotatory, d or +) | -θ (levorotatory, l or -) |\n    | **Magnitude\
+  \ of rotation** | Same | Same (opposite sign) |\n    | **Chemical reactions** |\
+  \ Same (with achiral reagents) | Different (with chiral reagents) |\n\n    **Key\
+  \ point:** Enantiomers differ ONLY in:\n    1. Direction of plane-polarized light\
+  \ rotation\n    2. Reactions with chiral molecules\n    3. Biological activity\n\
+  \n    ---\n\n    ## 4. Optical Activity\n\n    ### Definition\n    **Optical activity**\
+  \ is the ability to rotate the plane of **plane-polarized light**.\n\n    ### Polarimeter\n\
+  \    - **Instrument** used to measure optical rotation\n    - **Components:** Light\
+  \ source → Polarizer → Sample tube → Analyzer → Observer\n\n    ### Terminology\n\
+  \    - **Dextrorotatory (d or +):** Rotates light clockwise (to the right)\n   \
+  \ - **Levorotatory (l or -):** Rotates light counterclockwise (to the left)\n  \
+  \  - **Optically active:** Rotates plane-polarized light\n    - **Optically inactive:**\
+  \ Does not rotate light\n\n    ### Specific Rotation [α]\n\n    **Formula:**\n \
+  \   ```\n    [α]ᴰᵗ = α / (l × c)\n\n    Where:\n    [α]ᴰᵗ = Specific rotation at\
+  \ temperature t using D-line of sodium (589 nm)\n    α = Observed rotation (in degrees)\n\
+  \    l = Path length (in decimeters, dm)\n    c = Concentration (g/mL for solutions,\
+  \ or density for pure liquids)\n    ```\n\n    **Units:** degrees·mL/(g·dm) or deg·mL·g⁻¹·dm⁻¹\n\
+  \n    **Example Problem:**\n    A solution of 2.0 g of compound in 50 mL solvent,\
+  \ placed in a 2 dm tube, shows +15° rotation. Calculate [α].\n\n    **Solution:**\n\
+  \    ```\n    c = 2.0 g / 50 mL = 0.04 g/mL\n    l = 2 dm\n    α = +15°\n\n    [α]\
+  \ = 15° / (2 × 0.04) = +187.5°\n    ```\n\n    ---\n\n    ## 5. R/S Nomenclature\
+  \ (Cahn-Ingold-Prelog Rules)\n\n    ### Why R/S System?\n    - d/l (or +/-) tells\
+  \ direction of rotation but NOT configuration\n    - R/S system describes **absolute\
+  \ configuration** of chiral center\n\n    ### Steps to Assign R or S\n\n    **Step\
+  \ 1: Assign priorities (1-4) to four groups**\n    - **Rule 1:** Higher atomic number\
+  \ = Higher priority\n    - **Rule 2:** If tied, look at next atoms\n    - **Rule\
+  \ 3:** Double/triple bonds count as duplicate/triplicate atoms\n\n    **Priority\
+  \ order (common groups):**\n    ```\n    I > Br > Cl > S > F > O > N > C > ³H >\
+  \ ²H > ¹H\n\n    For carbon groups:\n    -COOH > -CHO > -CH₂OH > -CH₃ > -H\n   \
+  \ ```\n\n    **Step 2: Orient molecule**\n    - Place **lowest priority (4) away\
+  \ from you** (going into the page)\n\n    **Step 3: Trace path 1 → 2 → 3**\n   \
+  \ - **Clockwise → R (Rectus = right)**\n    - **Counterclockwise → S (Sinister =\
+  \ left)**\n\n    ### Example: 2-Butanol\n\n    ```\n           OH (2)\n        \
+  \   |\n    CH₃ —  C* — H (4)\n    (3)    |\n           CH₂CH₃ (1)\n\n    Priorities:\n\
+  \    1. -CH₂CH₃ (starts with C, then C,H,H)\n    2. -OH (O has higher atomic number\
+  \ than C)\n    3. -CH₃ (starts with C, then H,H,H)\n    4. -H (lowest)\n\n    Put\
+  \ H away from you, trace 1→2→3:\n    Clockwise → R configuration → (R)-2-butanol\n\
+  \    ```\n\n    ---\n\n    ## 6. Racemic Mixture\n\n    ### Definition\n    A **racemic\
+  \ mixture** (or racemate) is a **1:1 mixture** of two enantiomers.\n\n    **Notation:**\
+  \ (±) or (d,l) or rac-\n\n    ### Properties\n    - **Optically inactive** (equal\
+  \ and opposite rotations cancel out)\n    - **Melting point** may differ from pure\
+  \ enantiomers\n    - **Cannot be separated** by normal methods (achiral techniques)\n\
+  \n    ### Racemization\n    Conversion of one enantiomer to a racemic mixture.\n\
+  \n    **Example:** SN1 reactions at chiral centers often give racemic products (carbocation\
+  \ intermediate is planar, achiral).\n\n    ---\n\n    ## 7. Meso Compounds\n\n \
+  \   ### Definition\n    **Meso compounds** have chiral centers but are **optically\
+  \ inactive** due to an **internal plane of symmetry**.\n\n    ### Characteristics\n\
+  \    - Contains chiral centers (2 or more)\n    - Has plane of symmetry (achiral\
+  \ overall)\n    - Optically inactive\n    - Superimposable on mirror image\n\n \
+  \   ### Example: meso-Tartaric Acid\n\n    ```\n         COOH              COOH\n\
+  \         |                 |\n    H — C* — OH      HO — C* — H\n         |    \
+  \             |\n    H — C* — OH      HO — C* — H\n         |                 |\n\
+  \         COOH              COOH\n\n    (2R,3S)                (same as above due\
+  \ to symmetry)\n\n    Has plane of symmetry between C-2 and C-3\n    → Optically\
+  \ INACTIVE (meso compound)\n    ```\n\n    **Comparison with other tartaric acid\
+  \ isomers:**\n    - **(2R,3R)-Tartaric acid:** Optically active, (+) enantiomer\n\
+  \    - **(2S,3S)-Tartaric acid:** Optically active, (-) enantiomer\n    - **(2R,3S)-Tartaric\
+  \ acid:** meso form, optically inactive\n\n    ---\n\n    ## 8. Number of Stereoisomers\n\
+  \n    ### Formula for Compounds with n Chiral Centers\n\n    **General rule:**\n\
+  \    ```\n    Maximum stereoisomers = 2ⁿ (where n = number of chiral centers)\n\
+  \    ```\n\n    **But:** If there is symmetry (meso forms), actual number < 2ⁿ\n\
+  \n    ### Examples\n\n    **Example 1: 2-Butanol (n = 1)**\n    ```\n    2¹ = 2\
+  \ stereoisomers (R and S enantiomers)\n    ```\n\n    **Example 2: Tartaric acid\
+  \ (n = 2)**\n    ```\n    2² = 4 possible stereoisomers\n    Actual = 3 [(2R,3R),\
+  \ (2S,3S), meso (2R,3S)]\n    (2R,3S) is identical to (2S,3R) due to symmetry\n\
+  \    ```\n\n    **Example 3: 2,3-Dibromopentane (n = 2, no symmetry)**\n    ```\n\
+  \    2² = 4 stereoisomers (all distinct)\n    - (2R,3R) and (2S,3S) - pair of enantiomers\n\
+  \    - (2R,3S) and (2S,3R) - another pair of enantiomers\n    ```\n\n    ---\n\n\
+  \    ## 9. Diastereomers (Preview)\n\n    ### Definition\n    **Diastereomers**\
+  \ are stereoisomers that are **NOT mirror images** of each other.\n\n    ### Characteristics\n\
+  \    - Different physical properties (mp, bp, solubility)\n    - Different optical\
+  \ rotations\n    - Can be separated by normal methods\n\n    **Example:** (2R,3R)\
+  \ and (2R,3S) are diastereomers (not mirror images)\n\n    ---\n\n    ## Important\
+  \ Points for IIT JEE\n\n    1. **Chiral center identification:**\n       - Look\
+  \ for sp³ carbon with 4 different groups\n       - Watch out for pseudo-chiral centers\n\
+  \n    2. **Optical activity requires:**\n       - No plane of symmetry\n       -\
+  \ Pure enantiomer (not racemic mixture)\n       - Not a meso compound\n\n    3.\
+  \ **R/S assignment:**\n       - Practice priority rules\n       - Remember to put\
+  \ group 4 away from you\n       - Common mistake: forgetting to account for perspective\n\
+  \n    4. **Meso compounds:**\n       - Must have internal plane of symmetry\n  \
+  \     - Always optically inactive despite having chiral centers\n\n    5. **Specific\
+  \ rotation calculations:**\n       - Units matter (dm, g/mL)\n       - Sign indicates\
+  \ direction of rotation\n       - Magnitude does NOT correlate with R/S\n\n    ---\n\
+  \n    ## Practice Questions\n\n    1. Identify all chiral centers in: CH₃-CHBr-CHCl-COOH\n\
+  \    2. Calculate specific rotation if 0.5 g in 25 mL shows +10° in a 1 dm tube\n\
+  \    3. Assign R or S to: CHBrClF (with given 3D structure)\n    4. How many stereoisomers\
+  \ does 2,3,4-trihydroxybutanal have?\n    5. Why is meso-tartaric acid optically\
+  \ inactive?\n\n## Key Points\n\n- Chirality and chiral centers\n\n- Enantiomers\
+  \ and mirror images\n\n- Optical activity and specific rotation"
+exercises:
+- type: mcq
+  slug: optical-isomerism-chirality-enantiomers-and-optical-activity-mcq
+  sequence_order: 1
+  question: Pick the correct statement based on this concept.
+  options:
+  - Statement A
+  - Statement B
+  - Statement C
+  - Statement D
+  correct_answer_index: 0
+  explanation: Review the definition and common exceptions.
+objectives:
+- Define the core idea
+- Identify governing formulae or rules
+- Practice with mixed-difficulty problems
+next_recommended: []

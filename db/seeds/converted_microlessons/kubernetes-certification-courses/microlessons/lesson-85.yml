@@ -1,0 +1,44 @@
+slug: lesson-85
+title: Lesson 85
+difficulty: easy
+sequence_order: 85
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Service Types and Endpoints (Admin)\n\n\
+  \    - ClusterIP/NodePort/LoadBalancer and externalTrafficPolicy\n    - EndpointSlice\
+  \ and readiness gates for endpoints"
+exercises:
+  - type: mcq
+    sequence_order: 1
+    question: "What is the primary difference between ClusterIP and NodePort service types in Kubernetes?"
+    options:
+      - "ClusterIP exposes the service on each node's IP at a static port, while NodePort only exposes it internally"
+      - "ClusterIP exposes the service only within the cluster, while NodePort exposes it on each node's IP at a static port"
+      - "ClusterIP requires a load balancer, while NodePort does not"
+      - "ClusterIP is deprecated, while NodePort is the recommended approach"
+    correct_answer: "ClusterIP exposes the service only within the cluster, while NodePort exposes it on each node's IP at a static port"
+    explanation: "ClusterIP is the default Kubernetes service type that provides internal cluster connectivity only. It assigns a virtual IP address accessible only from within the cluster, making it ideal for internal microservices communication. NodePort, on the other hand, builds on ClusterIP functionality but additionally exposes the service on a static port (30000-32767 by default) on every node's IP address, allowing external traffic to reach the service. This means external clients can access the service by connecting to any node's IP address on the NodePort. LoadBalancer service type is a separate type that provisions an external load balancer, while ClusterIP and NodePort are both actively used depending on access requirements. Understanding these distinctions is crucial for properly exposing services in different network architectures."
+    require_pass: true
+  - type: mcq
+    sequence_order: 2
+    question: "What does the externalTrafficPolicy setting control in Kubernetes services?"
+    options:
+      - "Whether external traffic is encrypted"
+      - "How external traffic is routed to pods and whether source IP is preserved"
+      - "The maximum number of external connections allowed"
+      - "Which external IP addresses are allowed to access the service"
+    correct_answer: "How external traffic is routed to pods and whether source IP is preserved"
+    explanation: "The externalTrafficPolicy field in Kubernetes service specifications controls two critical aspects of traffic routing: whether traffic is distributed across all pods cluster-wide or only to pods on the receiving node, and whether the client's source IP address is preserved. With 'Cluster' policy (default), traffic can be forwarded to any pod across all nodes, providing better load distribution but potentially masking the original client IP through SNAT. With 'Local' policy, traffic is only routed to pods on the node that received the traffic, preserving the source IP address but potentially causing imbalanced load distribution. This setting is particularly important for applications that need to implement IP-based access controls or session affinity. The choice between these policies involves trade-offs between load balancing efficiency and the need for source IP preservation."
+    require_pass: true
+  - type: mcq
+    sequence_order: 3
+    question: "What is the purpose of EndpointSlices in Kubernetes, and how do they improve upon traditional Endpoints?"
+    options:
+      - "EndpointSlices replace Services entirely with a more efficient implementation"
+      - "EndpointSlices provide better scalability by splitting large endpoint sets into smaller chunks"
+      - "EndpointSlices are only used for external load balancers"
+      - "EndpointSlices eliminate the need for DNS resolution"
+    correct_answer: "EndpointSlices provide better scalability by splitting large endpoint sets into smaller chunks"
+    explanation: "EndpointSlices are a Kubernetes API resource designed to improve the scalability of endpoint tracking compared to traditional Endpoints objects. In large clusters with services backed by many pods, a single Endpoints object can become very large, causing performance issues when updated. EndpointSlices address this by splitting endpoint information into smaller, more manageable chunks (typically 100 endpoints per slice). This reduces the amount of data that needs to be transmitted and processed when endpoints change, significantly improving performance in large-scale deployments. EndpointSlices also support additional features like topology-aware routing and more detailed endpoint state tracking through readiness gates. They work alongside Services (not replacing them) and are particularly beneficial in clusters with hundreds or thousands of pod replicas. The kube-proxy and other service consumers can watch and process EndpointSlices more efficiently than monolithic Endpoints objects."
+    require_pass: true

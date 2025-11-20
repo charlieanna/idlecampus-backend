@@ -1,0 +1,89 @@
+slug: lesson-29
+title: Lesson 29
+difficulty: easy
+sequence_order: 29
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Pod Scheduling Basics\n\n    - Scheduler\
+  \ flow and predicates/priorities (legacy -> profiles)\n    - Node selection and\
+  \ default scheduler behavior"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What is the primary role of the Kubernetes scheduler?
+  options:
+  - To create pods on nodes
+  - To select the best node for each pending pod based on resource requirements and
+    constraints
+  - To monitor pod health
+  - To manage pod networking
+  correct_answer: To select the best node for each pending pod based on resource requirements
+    and constraints
+  explanation: 'The Kubernetes scheduler (kube-scheduler) is responsible for assigning
+    pending pods to nodes. When a pod is created, it starts in Pending state without
+    a node assignment. The scheduler watches for such pods and selects the most appropriate
+    node based on multiple criteria. The scheduling process involves two main phases:
+    Filtering (predicates) - eliminates nodes that cannot run the pod due to resource
+    constraints (insufficient CPU/memory), taints without matching tolerations, node
+    selectors not matching, pod affinity/anti-affinity violations, or volume binding
+    constraints. Scoring (priorities) - ranks the remaining nodes using various algorithms
+    to find the best fit. Scores consider factors like resource balance (spread pods
+    to balance resource usage), pod affinity preferences (prefer co-location), topology
+    spread (distribute across zones/racks), and image locality (prefer nodes with
+    image cached). The node with the highest score is selected. Once chosen, the scheduler
+    updates the pod''s spec with nodeName and the kubelet on that node takes over
+    to actually start the pod. The scheduler is pluggable and configurable through
+    scheduler profiles and plugins. Default behavior aims to balance pods across nodes
+    for resilience and efficient resource utilization. Understanding scheduling is
+    crucial for: optimizing resource usage, ensuring high availability through proper
+    pod distribution, troubleshooting pod scheduling failures (Pending pods), and
+    designing node topologies. Common scheduling issues: pods stuck in Pending due
+    to insufficient resources, taints blocking scheduling, or pod affinity rules preventing
+    placement. Debug with ''kubectl describe pod'' to see scheduling events and reasons
+    for failures.'
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What happens when no node satisfies a pod's scheduling requirements?
+  options:
+  - The pod is automatically deleted
+  - The pod remains in Pending state with scheduling failure events
+  - A new node is automatically created
+  - The scheduling requirements are ignored
+  correct_answer: The pod remains in Pending state with scheduling failure events
+  explanation: 'When the scheduler cannot find a suitable node for a pod, the pod
+    remains in Pending state indefinitely until a suitable node becomes available.
+    The scheduler continuously retries, checking if conditions have changed that would
+    allow placement. Events recorded with ''kubectl describe pod'' show why scheduling
+    failed, such as ''0/3 nodes are available: 1 Insufficient cpu, 2 node(s) had taints
+    that the pod didn''t tolerate''. Common reasons: Insufficient resources - no node
+    has enough CPU/memory to satisfy pod requests. For example, requesting 16 cores
+    when largest node has 8 cores. Taints without tolerations - pod doesn''t tolerate
+    node taints like ''NoSchedule''. Pod/node affinity not satisfied - requiredDuringSchedulingIgnoredDuringExecution
+    rules cannot be met. Volume constraints - PersistentVolumes in zones incompatible
+    with available nodes, especially with immediate binding mode. Image pull secrets
+    - no node can pull the required image. HostPort conflicts - requested hostPort
+    already in use on all nodes. To resolve: Add nodes with sufficient resources,
+    add tolerations to pod spec, adjust affinity/anti-affinity rules, use WaitForFirstConsumer
+    volumeBindingMode, or reduce resource requests if over-provisioned. The pod will
+    automatically schedule once conditions are met - for instance, when another pod
+    terminates freeing resources, a new node is added, or a taint is removed. Pending
+    pods don''t fail or get deleted automatically - they queue waiting for resources.
+    In production, monitor pending pods as they indicate capacity or configuration
+    issues. Use Cluster Autoscaler to automatically add nodes when pods can''t schedule
+    due to resource constraints, or set pod priority to ensure critical pods can preempt
+    lower-priority ones.'
+  require_pass: true
+- type: mcq
+  sequence_order: 1
+  question: What command lists all pods in all namespaces?
+  options:
+  - kubectl get pods -A
+  - kubectl list pods --all
+  - kubectl get pods --everywhere
+  - kubectl pods list -A
+  correct_answer_index: 0
+  explanation: kubectl get pods -A (or --all-namespaces) lists pods across all namespaces.
+    The -A flag is shorthand for --all-namespaces.
+  require_pass: true

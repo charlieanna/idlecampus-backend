@@ -1,0 +1,59 @@
+slug: eanrule-practice
+title: ean_rule — Practice
+difficulty: hard
+sequence_order: 18
+estimated_minutes: 2
+key_concepts:
+- ean_rule
+prerequisites: []
+content_md: '# ean_rule — Practice 🚀
+
+
+  EAN = Z - oxidation state + 2×CN. Fe oxidation state in [Fe(CN)₆]⁴⁻ is +2. EAN =
+  26 - 2 + 2×6 = 36 (same as Kr, noble gas).
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What is the EAN (Effective Atomic Number) of Fe in [Fe(CN)₆]⁴⁻?
+  options:
+  - '26'
+  - '30'
+  - '36'
+  - '54'
+  correct_answer: '36'
+  explanation: "EAN = Z - oxidation state + 2×CN. Fe has Z = 26. In [Fe(CN)₆]⁴⁻, Fe is in +2 oxidation state and CN = 6. Therefore, EAN = 26 - 2 + 2×6 = 26 - 2 + 12 = 36 (same as Kr, a noble gas). This explains the stability of the complex."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: According to the EAN rule, stable complexes have EAN equal to
+  options:
+  - the atomic number of the metal
+  - the atomic number of a noble gas
+  - the oxidation state of the metal
+  - the coordination number
+  correct_answer: the atomic number of a noble gas
+  explanation: "The EAN (Effective Atomic Number) rule states that stable metal complexes have an EAN equal to the atomic number of the next noble gas. This is also called the 18-electron rule. The complex achieves a stable noble gas configuration by accepting electrons from ligands."
+  require_pass: false
+- type: mcq
+  sequence_order: 3
+  question: What is the formula for calculating EAN?
+  options:
+  - EAN = Z + oxidation state + 2×CN
+  - EAN = Z - oxidation state + 2×CN
+  - EAN = Z - oxidation state - 2×CN
+  - EAN = Z + 2×CN
+  correct_answer: EAN = Z - oxidation state + 2×CN
+  explanation: "EAN = Z - oxidation state + 2×CN, where Z is the atomic number, oxidation state is the charge on the metal (positive value), and CN is the coordination number. The factor of 2 comes from the fact that each coordinate bond involves a pair of electrons donated by the ligand."
+  require_pass: false

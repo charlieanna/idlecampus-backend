@@ -1,0 +1,93 @@
+slug: lesson-11
+title: Lesson 11
+difficulty: easy
+sequence_order: 11
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Testing in Go\n\n    Go has built-in testing\
+  \ support. Write tests alongside your code!\n\n    ## Basic Test\n\n    File: `math.go`\n\
+  \    ```go\n    package math\n\n    func Add(a, b int) int {\n        return a +\
+  \ b\n    }\n    ```\n\n    File: `math_test.go`\n    ```go\n    package math\n\n\
+  \    import \"testing\"\n\n    func TestAdd(t *testing.T) {\n        result := Add(2,\
+  \ 3)\n        expected := 5\n\n        if result != expected {\n            t.Errorf(\"\
+  Add(2, 3) = %d; want %d\", result, expected)\n        }\n    }\n    ```\n\n    Run\
+  \ tests:\n    ```bash\n    go test\n    go test -v  # verbose\n    go test -cover\
+  \  # with coverage\n    ```\n\n    ## Table-Driven Tests\n\n    Test multiple cases\
+  \ efficiently:\n\n    ```go\n    func TestAdd(t *testing.T) {\n        tests :=\
+  \ []struct {\n            name     string\n            a, b     int\n          \
+  \  expected int\n        }{\n            {\"positive numbers\", 2, 3, 5},\n    \
+  \        {\"negative numbers\", -2, -3, -5},\n            {\"mixed signs\", -2,\
+  \ 3, 1},\n            {\"zeros\", 0, 0, 0},\n        }\n\n        for _, tt := range\
+  \ tests {\n            t.Run(tt.name, func(t *testing.T) {\n                result\
+  \ := Add(tt.a, tt.b)\n                if result != tt.expected {\n             \
+  \       t.Errorf(\"Add(%d, %d) = %d; want %d\",\n                        tt.a, tt.b,\
+  \ result, tt.expected)\n                }\n            })\n        }\n    }\n  \
+  \  ```\n\n    ## Test Helpers\n\n    ```go\n    func assertEqual(t *testing.T, got,\
+  \ want int) {\n        t.Helper()  // Mark as helper\n        if got != want {\n\
+  \            t.Errorf(\"got %d; want %d\", got, want)\n        }\n    }\n\n    func\
+  \ TestSomething(t *testing.T) {\n        assertEqual(t, Add(2, 3), 5)\n    }\n \
+  \   ```\n\n    ## Benchmarks\n\n    Measure performance:\n\n    ```go\n    func\
+  \ BenchmarkAdd(b *testing.B) {\n        for i := 0; i < b.N; i++ {\n           \
+  \ Add(2, 3)\n        }\n    }\n    ```\n\n    Run benchmarks:\n    ```bash\n   \
+  \ go test -bench=.\n    go test -bench=. -benchmem  # with memory stats\n    ```\n\
+  \n    ## Examples (Testable Documentation)\n\n    ```go\n    func ExampleAdd() {\n\
+  \        result := Add(2, 3)\n        fmt.Println(result)\n        // Output: 5\n\
+  \    }\n\n    func ExampleAdd_negative() {\n        result := Add(-2, -3)\n    \
+  \    fmt.Println(result)\n        // Output: -5\n    }\n    ```\n\n    ## Test Coverage\n\
+  \n    ```bash\n    go test -cover\n    go test -coverprofile=coverage.out\n    go\
+  \ tool cover -html=coverage.out\n    ```\n\n    ## Mocking\n\n    Use interfaces\
+  \ for testability:\n\n    ```go\n    type UserRepository interface {\n        GetUser(id\
+  \ int) (*User, error)\n    }\n\n    type UserService struct {\n        repo UserRepository\n\
+  \    }\n\n    // Mock for testing\n    type MockUserRepository struct {\n      \
+  \  users map[int]*User\n    }\n\n    func (m *MockUserRepository) GetUser(id int)\
+  \ (*User, error) {\n        if user, ok := m.users[id]; ok {\n            return\
+  \ user, nil\n        }\n        return nil, errors.New(\"user not found\")\n   \
+  \ }\n\n    func TestUserService(t *testing.T) {\n        mockRepo := &MockUserRepository{\n\
+  \            users: map[int]*User{\n                1: {ID: 1, Name: \"Alice\"},\n\
+  \            },\n        }\n\n        service := UserService{repo: mockRepo}\n \
+  \       user, err := service.repo.GetUser(1)\n\n        if err != nil {\n      \
+  \      t.Fatal(err)\n        }\n        if user.Name != \"Alice\" {\n          \
+  \  t.Errorf(\"expected Alice, got %s\", user.Name)\n        }\n    }\n    ```\n\n\
+  \    ## Test Organization\n\n    ```\n    myproject/\n    ├── math.go\n    ├── math_test.go\n\
+  \    ├── user.go\n    ├── user_test.go\n    └── testdata/\n        └── fixtures.json\n\
+  \    ```\n\n    ## Best Practices\n\n    1. **One test file per source file**: `math.go`\
+  \ → `math_test.go`\n    2. **Use table-driven tests**: Test multiple cases efficiently\n\
+  \    3. **Test exported functions**: Focus on public API\n    4. **Keep tests fast**:\
+  \ Fast tests are run more often\n    5. **Use t.Helper()**: For test utility functions\n\
+  \    6. **Aim for high coverage**: But don't obsess over 100%\n\n    **Practice:**\
+  \ Try the Testing lab!"
+exercises:
+  - type: mcq
+    sequence_order: 1
+    question: "What is the correct way to run tests in a Go package with verbose output?"
+    options:
+      - "go test"
+      - "go test -v"
+      - "go test --verbose"
+      - "go run test"
+    correct_answer: "go test -v"
+    explanation: "The `-v` flag enables verbose output when running Go tests. This shows each test function being executed and its result, making it easier to debug failing tests. The basic `go test` command runs tests but provides minimal output. Using `go test -v` is especially helpful during development to see exactly which tests are passing or failing. For example: `go test -v` will output each test function name and its status (PASS/FAIL), while `go test` only shows a summary. Additional useful flags include `-cover` for code coverage and `-bench=.` for running benchmarks. The verbose flag is one of the most commonly used testing flags in Go development."
+    require_pass: true
+  - type: mcq
+    sequence_order: 2
+    question: "In table-driven tests, what is the purpose of using `t.Run()` with a named test case?"
+    options:
+      - "To improve test performance"
+      - "To run tests in parallel automatically"
+      - "To create subtests with clear names for better output"
+      - "To skip tests conditionally"
+    correct_answer: "To create subtests with clear names for better output"
+    explanation: "The `t.Run()` function creates subtests, allowing each test case in a table-driven test to run as its own named subtest. This provides several benefits: First, test output clearly shows which specific case failed (e.g., 'TestAdd/positive_numbers' instead of just 'TestAdd'). Second, you can run individual test cases using the `-run` flag (e.g., `go test -run TestAdd/positive`). Third, failures in one subtest don't prevent other subtests from running. For example:\n\n```go\nfor _, tt := range tests {\n    t.Run(tt.name, func(t *testing.T) {\n        result := Add(tt.a, tt.b)\n        if result != tt.expected {\n            t.Errorf(\"got %d; want %d\", result, tt.expected)\n        }\n    })\n}\n```\n\nThis makes debugging much easier by pinpointing exactly which test scenario failed."
+    require_pass: true
+  - type: mcq
+    sequence_order: 3
+    question: "What does the `t.Helper()` function do in test helper functions?"
+    options:
+      - "It marks the function as a test helper and adjusts error reporting"
+      - "It makes the function run faster"
+      - "It automatically generates test documentation"
+      - "It skips the test if it fails"
+    correct_answer: "It marks the function as a test helper and adjusts error reporting"
+    explanation: "The `t.Helper()` function marks the calling function as a test helper, which adjusts how Go reports test failures. When a test helper calls `t.Error()` or `t.Fatal()`, Go will report the error as occurring at the line where the helper was called, not inside the helper itself. This makes debugging much easier. For example:\n\n```go\nfunc assertEqual(t *testing.T, got, want int) {\n    t.Helper()  // Critical line!\n    if got != want {\n        t.Errorf(\"got %d; want %d\", got, want)\n    }\n}\n\nfunc TestSomething(t *testing.T) {\n    assertEqual(t, Add(2, 3), 5)  // Error reported here\n}\n```\n\nWithout `t.Helper()`, the error would be reported at the `t.Errorf()` line inside `assertEqual`, making it harder to find which test assertion actually failed. Always use `t.Helper()` in test utility functions."
+    require_pass: true

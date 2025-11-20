@@ -1,0 +1,125 @@
+slug: docker-run-creating-and-starting-containers
+title: 'Docker Run: Creating and Starting Containers'
+sequence_order: 2
+estimated_minutes: 2
+difficulty: easy
+key_concepts:
+- containers
+- docker-run
+- deployment
+- port-mapping
+- detached-mode
+content_md: "# Docker Run: Creating and Starting Containers \U0001F680\n\n# Mastering\
+  \ docker run: From Image to Running Container\n\n    ## What is docker run?\n  \
+  \  `docker run` is the most fundamental Docker command - it creates a new container\
+  \ from an image and starts it immediately. This single command combines container\
+  \ creation and startup in one operation.\n\n    ## Why It's Critical\n    - **Instant\
+  \ Deployment**: Launch applications in seconds\n    - **Isolation**: Each container\
+  \ runs in its own isolated environment\n    - **Reproducibility**: Same command\
+  \ works across all systems\n    - **Flexibility**: Customize containers with numerous\
+  \ options\n\n    ## Basic Syntax\n    ```bash\n    docker run [OPTIONS] IMAGE [COMMAND]\
+  \ [ARG...]\n    ```\n\n    ## Common Use Cases\n\n    ### 1. Run a Simple Container\n\
+  \    ```bash\n    docker run nginx\n    ```\n    Downloads nginx image (if needed)\
+  \ and starts a container in foreground mode.\n\n    ### 2. Run in Detached Mode\n\
+  \    ```bash\n    docker run -d nginx\n    ```\n    The `-d` flag runs the container\
+  \ in the background, freeing your terminal.\n\n    ### 3. Assign a Name\n    ```bash\n\
+  \    docker run --name my-nginx nginx\n    ```\n    Give your container a memorable\
+  \ name instead of random auto-generated one.\n\n    ### 4. Map Ports\n    ```bash\n\
+  \    docker run -p 8080:80 nginx\n    ```\n    Maps container port 80 to host port\
+  \ 8080. Access via http://localhost:8080\n\n    ### 5. Complete Example\n    ```bash\n\
+  \    docker run -d --name web-server -p 8080:80 nginx:alpine\n    ```\n    Runs\
+  \ nginx Alpine in background, names it \"web-server\", accessible on port 8080.\n\
+  \n    ## Essential Options\n\n    | Option | Description | Example |\n    |--------|-------------|---------|\n\
+  \    | `-d` | Detached mode (background) | `docker run -d nginx` |\n    | `--name`\
+  \ | Assign container name | `docker run --name web nginx` |\n    | `-p` | Publish\
+  \ port (host:container) | `docker run -p 80:80 nginx` |\n    | `-e` | Set environment\
+  \ variable | `docker run -e NODE_ENV=production node` |\n    | `-v` | Mount volume\
+  \ | `docker run -v /data:/app/data mysql` |\n    | `--rm` | Remove container when\
+  \ stopped | `docker run --rm alpine echo \"hi\"` |\n    | `-it` | Interactive terminal\
+  \ | `docker run -it ubuntu bash` |\n\n    ## How docker run Works Internally\n\n\
+  \    ```\n    1. Check if image exists locally\n       ↓ (if not found)\n    2.\
+  \ Pull image from Docker Hub\n       ↓\n    3. Create container from image\n   \
+  \    ↓\n    4. Allocate filesystem layer\n       ↓\n    5. Set up networking\n \
+  \      ↓\n    6. Start the container process\n       ↓\n    7. Execute the default\
+  \ command (or your override)\n    ```\n\n    ## Common Patterns\n\n    ### Interactive\
+  \ Debugging\n    ```bash\n    docker run -it --rm ubuntu bash\n    ```\n    Opens\
+  \ interactive shell, automatically removes container on exit.\n\n    ### One-off\
+  \ Tasks\n    ```bash\n    docker run --rm node:14 node --version\n    ```\n    Runs\
+  \ command and cleans up immediately.\n\n    ### Environment Configuration\n    ```bash\n\
+  \    docker run -d -e MYSQL_ROOT_PASSWORD=secret -p 3306:3306 mysql\n    ```\n \
+  \   Sets up MySQL with environment variables and port mapping.\n\n    ## Common\
+  \ Mistakes to Avoid\n\n    1. **Forgetting -d**: Container runs in foreground, blocking\
+  \ terminal\n    2. **Port Already in Use**: Check with `docker ps` before mapping\
+  \ ports\n    3. **Not Using --rm for Testing**: Leaves many stopped containers\n\
+  \    4. **Wrong Port Order**: Format is `-p HOST:CONTAINER`, not the reverse\n \
+  \   5. **Missing Environment Variables**: Some images require specific env vars\
+  \ to work\n\n    ## Interactive vs Detached Mode\n\n    **Foreground (Default)**\n\
+  \    - Attaches to container output\n    - Blocks terminal\n    - Good for: debugging,\
+  \ one-off commands\n    - Exit with: Ctrl+C (stops container)\n\n    **Background\
+  \ (-d)**\n    - Returns container ID immediately\n    - Frees terminal\n    - Good\
+  \ for: services, long-running processes\n    - View logs with: `docker logs <container>`\n\
+  \n    ## Pro Tips\n\n    1. **Always name production containers**: Makes management\
+  \ easier\n    2. **Use specific image tags**: `nginx:1.21` instead of `nginx:latest`\n\
+  \    3. **Set restart policies**: `--restart unless-stopped` for services\n    4.\
+  \ **Limit resources**: `--memory=\"512m\" --cpus=\"1.0\"`\n    5. **Use .env files**:\
+  \ `--env-file .env` for multiple variables\n\n## Syntax/Command\n\n```bash\ndocker\
+  \ run -d -p 8080:80 --name my-nginx nginx:alpine\n```\n\n## Example\n\n```bash\n\
+  docker run nginx\n```\n\n## Key Points\n\n- Basic run: docker run nginx (foreground\
+  \ mode)\n\n- Add -d for background: docker run -d nginx\n\n- Name it: docker run\
+  \ -d --name my-web nginx"
+exercises:
+- type: terminal
+  sequence_order: 1
+  command: docker run -d -p 8080:80 --name my-nginx nginx:alpine
+  description: Deploy an nginx:alpine container in detached mode, name it "production-web",
+    and map port 8080 to container port 80
+  timeout_sec: 60
+  require_pass: true
+  validation:
+    must_not_include:
+    - Error
+    - 'panic:'
+- type: mcq
+  sequence_order: 2
+  question: In "docker run -p 8080:80 nginx", which port is on the host machine?
+  options:
+  - '8080'
+  - '80'
+  - Both are host ports
+  - Neither
+  - both are container ports
+  correct_answer_index: 0
+  explanation: In -p HOST:CONTAINER format, the first port (8080) is on the host machine,
+    and the second (80) is inside the container
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: What does the --name flag do in 'docker run --name my-app nginx'?
+  options:
+  - Assigns a custom name to the container for easier management
+  - Names the Docker image
+  - Sets the container hostname
+  - Names the network
+  correct_answer_index: 0
+  explanation: The --name flag assigns a human-readable name to the container, making
+    it easier to reference with commands like docker stop my-app
+  require_pass: true
+- type: mcq
+  sequence_order: 4
+  question: What happens if you run 'docker run nginx' without the -d flag?
+  options:
+  - The container runs in attached mode, blocking your terminal
+  - The container runs in the background automatically
+  - The container fails to start
+  - The container runs and immediately exits
+  correct_answer_index: 0
+  explanation: Without -d, the container runs in attached mode, showing output in
+    your terminal and blocking it until the container stops
+  require_pass: true
+objectives:
+- Create and start containers with docker run
+- Use -d flag for detached mode
+- Map ports and assign container names
+next_recommended:
+- codesprout-exposing-containers-with-port-mapping
+- docker-ps-listing-running-containers

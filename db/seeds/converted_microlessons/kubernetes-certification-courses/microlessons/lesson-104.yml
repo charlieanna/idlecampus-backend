@@ -1,0 +1,79 @@
+slug: lesson-104
+title: Lesson 104
+difficulty: easy
+sequence_order: 104
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Multi-Container Pod Patterns\n\n    Learn\
+  \ common multi-container patterns:\n    - Sidecar: helper handles logs/metrics/proxy\n\
+  \    - Ambassador: proxy pattern for external services\n    - Adapter: transforms\
+  \ output for consumption\n\n    ## Shared Volumes\n    Use emptyDir or other volumes\
+  \ to share data between containers.\n\n    ## Example\n    Sidecar tailing nginx\
+  \ access logs stored in a shared volume."
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: In the Sidecar pattern, what is the primary role of the sidecar container?
+  options:
+  - To replace the main application container during updates
+  - To provide auxiliary functionality like logging, monitoring, or proxying to the
+    main container
+  - To serve as a backup if the main container fails
+  - To run before the main container starts
+  correct_answer: To provide auxiliary functionality like logging, monitoring, or
+    proxying to the main container
+  explanation: The Sidecar pattern involves running a helper container alongside the
+    main application container within the same Pod to provide auxiliary functionality.
+    Common use cases include log forwarding (collecting and shipping logs from the
+    main container), service mesh proxies (like Envoy for Istio handling network traffic),
+    monitoring agents (collecting metrics), and configuration synchronization. For
+    example, a web server container might have a sidecar that tails access logs from
+    a shared volume and ships them to a centralized logging system. Both containers
+    share the same network namespace (accessing localhost), storage volumes, and lifecycle.
+    This pattern enables separation of concerns - the main container focuses on business
+    logic while the sidecar handles cross-cutting concerns. A typical implementation
+    uses an emptyDir volume mounted in both containers for data sharing. Benefits
+    include modular upgrades (update sidecar independently), reusability (same sidecar
+    across multiple applications), and simplified main container logic. The sidecar
+    pattern is foundational to service mesh architectures where every Pod gets a proxy
+    sidecar for traffic management, security, and observability.
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What type of volume is typically used to share data between containers
+    in a multi-container Pod?
+  options:
+  - PersistentVolumeClaim
+  - hostPath
+  - emptyDir
+  - configMap
+  correct_answer: emptyDir
+  explanation: 'The emptyDir volume is the most common choice for sharing data between
+    containers within a Pod. It''s created when the Pod is assigned to a node and
+    exists as long as the Pod runs on that node - data is lost when the Pod is removed.
+    This ephemeral nature makes it perfect for temporary data sharing in multi-container
+    patterns. For example, in a Sidecar pattern, the main container might write logs
+    to an emptyDir volume at ''/var/log/app'', while a logging sidecar reads from
+    the same location to forward logs. The volume is empty initially and can be backed
+    by disk or memory (using ''emptyDir: medium: Memory'' for tmpfs). It''s also useful
+    in Adapter patterns where one container writes data and another transforms it
+    before external consumption. While other volume types have specific purposes -
+    PersistentVolumeClaim for durable storage across Pod restarts, hostPath for accessing
+    node filesystem (not portable), and ConfigMap for configuration data (read-only)
+    - emptyDir''s simplicity and scope (Pod-level) make it ideal for inter-container
+    communication. Memory-backed emptyDir is particularly useful for sensitive data
+    that shouldn''t touch disk or for high-performance scratch space.'
+  require_pass: true
+- type: mcq
+  sequence_order: 1
+  question: What command lists all pods in all namespaces?
+  options:
+  - kubectl get pods -A
+  - kubectl list pods --all
+  - kubectl get pods --everywhere
+  - kubectl pods list -A
+  correct_answer_index: 0
+  explanation: kubectl get pods -A (or --all-namespaces) lists pods across all namespaces.
+    The -A flag is shorthand for --all-namespaces.
+  require_pass: true

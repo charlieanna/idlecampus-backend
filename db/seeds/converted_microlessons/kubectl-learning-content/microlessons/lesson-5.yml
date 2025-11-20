@@ -1,0 +1,109 @@
+slug: lesson-5
+title: Lesson 5
+difficulty: easy
+sequence_order: 5
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Persistent Volumes & Storage\n\n      Provide\
+  \ persistent storage for stateful applications in Kubernetes.\n\n      ## Persistent\
+  \ Volumes (PV)\n\n      Cluster-wide storage resources provisioned by administrators.\n\
+  \n      ### Viewing Persistent Volumes\n\n      ```bash\n      # List all persistent\
+  \ volumes\n      kubectl get pv\n\n      # List with more details\n      kubectl\
+  \ get pv -o wide\n\n      # Describe PV\n      kubectl describe pv pv-name\n\n \
+  \     # Get PV YAML\n      kubectl get pv pv-name -o yaml\n\n      # Filter by status\n\
+  \      kubectl get pv --field-selector=status.phase=Available\n      ```\n\n   \
+  \   ## Persistent Volume Claims (PVC)\n\n      User requests for storage that bind\
+  \ to available PVs.\n\n      ### Creating PVCs\n\n      ```bash\n      # Create\
+  \ PVC from YAML\n      kubectl apply -f pvc.yaml\n\n      # View PVC definition\
+  \ example\n      cat << EOF | kubectl apply -f -\n      apiVersion: v1\n      kind:\
+  \ PersistentVolumeClaim\n      metadata:\n        name: my-pvc\n      spec:\n  \
+  \      accessModes:\n        - ReadWriteOnce\n        resources:\n          requests:\n\
+  \            storage: 1Gi\n        storageClassName: standard\n      EOF\n     \
+  \ ```\n\n      ### Viewing PVCs\n\n      ```bash\n      # List PVCs\n      kubectl\
+  \ get pvc\n\n      # List PVCs in all namespaces\n      kubectl get pvc -A\n\n \
+  \     # Describe PVC (shows binding status)\n      kubectl describe pvc my-pvc\n\
+  \n      # Get PVC YAML\n      kubectl get pvc my-pvc -o yaml\n\n      # Check PVC\
+  \ status\n      kubectl get pvc my-pvc -o jsonpath='{.status.phase}'\n      ```\n\
+  \n      ### Using PVCs in Pods\n\n      ```bash\n      # Create pod using PVC\n\
+  \      cat << EOF | kubectl apply -f -\n      apiVersion: v1\n      kind: Pod\n\
+  \      metadata:\n        name: app-pod\n      spec:\n        containers:\n    \
+  \    - name: app\n          image: nginx\n          volumeMounts:\n          - name:\
+  \ storage\n            mountPath: /data\n        volumes:\n        - name: storage\n\
+  \          persistentVolumeClaim:\n            claimName: my-pvc\n      EOF\n  \
+  \    ```\n\n      ### Managing PVCs\n\n      ```bash\n      # Delete PVC\n     \
+  \ kubectl delete pvc my-pvc\n\n      # Delete PVC and wait for deletion\n      kubectl\
+  \ delete pvc my-pvc --wait=true\n\n      # Expand PVC (if storage class supports\
+  \ it)\n      kubectl patch pvc my-pvc -p '{\"spec\":{\"resources\":{\"requests\"\
+  :{\"storage\":\"2Gi\"}}}}'\n      ```\n\n      ## Storage Classes\n\n      Define\
+  \ different storage tiers with automatic provisioning.\n\n      ### Viewing Storage\
+  \ Classes\n\n      ```bash\n      # List storage classes\n      kubectl get storageclass\n\
+  \      kubectl get sc\n\n      # Describe storage class\n      kubectl describe\
+  \ storageclass standard\n\n      # Get default storage class\n      kubectl get\
+  \ sc -o jsonpath='{.items[?(@.metadata.annotations.storageclass\\.kubernetes\\.io/is-default-class==\"\
+  true\")].metadata.name}'\n      ```\n\n      ### Setting Default Storage Class\n\
+  \n      ```bash\n      # Set as default\n      kubectl patch storageclass standard\
+  \ -p '{\"metadata\": {\"annotations\":{\"storageclass.kubernetes.io/is-default-class\"\
+  :\"true\"}}}'\n\n      # Remove default designation\n      kubectl patch storageclass\
+  \ standard -p '{\"metadata\": {\"annotations\":{\"storageclass.kubernetes.io/is-default-class\"\
+  :\"false\"}}}'\n      ```\n\n      ## Volume Types\n\n      ### emptyDir (Temporary\
+  \ Storage)\n\n      ```bash\n      # Deleted when pod is removed\n      # volumes:\n\
+  \      # - name: cache\n      #   emptyDir: {}\n      ```\n\n      ### hostPath\
+  \ (Node Filesystem)\n\n      ```bash\n      # Mount directory from node\n      #\
+  \ volumes:\n      # - name: data\n      #   hostPath:\n      #     path: /mnt/data\n\
+  \      #     type: DirectoryOrCreate\n      ```\n\n      ## Debugging Storage Issues\n\
+  \n      ```bash\n      # Check PVC binding status\n      kubectl get pvc my-pvc\
+  \ -o jsonpath='{.status.phase}'\n\n      # View PVC events\n      kubectl describe\
+  \ pvc my-pvc\n\n      # Check which pod uses PVC\n      kubectl get pods -o json\
+  \ | jq '.items[] | select(.spec.volumes[]?.persistentVolumeClaim.claimName==\"my-pvc\"\
+  ) | .metadata.name'\n\n      # Verify volume is mounted in pod\n      kubectl exec\
+  \ app-pod -- df -h /data\n\n      # Check volume contents\n      kubectl exec app-pod\
+  \ -- ls -la /data\n\n      # Write test file\n      kubectl exec app-pod -- sh -c\
+  \ 'echo \"test\" > /data/test.txt'\n\n      # Verify persistence after pod recreation\n\
+  \      kubectl delete pod app-pod\n      # Wait for pod to recreate\n      kubectl\
+  \ exec app-pod -- cat /data/test.txt\n      ```\n\n      ## StatefulSet Storage\n\
+  \n      StatefulSets use volumeClaimTemplates for automatic PVC creation:\n\n  \
+  \    ```bash\n      # View PVCs created by StatefulSet\n      kubectl get pvc -l\
+  \ app=mysql\n\n      # Scale StatefulSet (creates new PVCs)\n      kubectl scale\
+  \ statefulset mysql --replicas=3\n\n      # Delete StatefulSet but keep PVCs\n \
+  \     kubectl delete statefulset mysql --cascade=orphan\n      ```\n\n      ## Cleanup\n\
+  \n      ```bash\n      # Delete PVC (PV reclaim policy determines what happens)\n\
+  \      kubectl delete pvc my-pvc\n\n      # View reclaim policy\n      kubectl get\
+  \ pv pv-name -o jsonpath='{.spec.persistentVolumeReclaimPolicy}'\n\n      # Manually\
+  \ delete PV\n      kubectl delete pv pv-name\n\n      # Remove finalizer if PV is\
+  \ stuck\n      kubectl patch pv pv-name -p '{\"metadata\":{\"finalizers\":null}}'\n\
+  \      ```\n\n      Practice storage management in the labs!"
+exercises:
+  - type: multiple_choice_question
+    sequence_order: 1
+    question: "What is the primary purpose of StorageClasses in Kubernetes?"
+    options:
+      - "To encrypt data stored in Persistent Volumes"
+      - "To define different storage tiers and enable dynamic provisioning of storage"
+      - "To backup Persistent Volumes automatically"
+      - "To compress data stored in Persistent Volume Claims"
+    correct_answer: "To define different storage tiers and enable dynamic provisioning of storage"
+    explanation: "StorageClasses in Kubernetes define different storage tiers (like fast SSD, standard HDD, or cloud-specific storage types) and enable dynamic provisioning of Persistent Volumes. When a PersistentVolumeClaim references a StorageClass, Kubernetes automatically provisions a new PersistentVolume from the underlying storage provider without requiring manual PV creation by administrators. This automation is crucial for scalable cloud-native applications. For example, you might have StorageClasses named 'fast' (SSD-backed), 'standard' (HDD-backed), and 'backup' (archival storage), each with different performance characteristics and costs. StorageClasses specify the provisioner (e.g., kubernetes.io/aws-ebs, kubernetes.io/gce-pd, or third-party CSI drivers), parameters for the storage (IOPS, replication settings), and the reclaim policy. One StorageClass can be marked as default, which is used when a PVC doesn't specify a storageClassName. Dynamic provisioning simplifies storage management significantly - developers create PVCs requesting storage, and Kubernetes handles the provisioning automatically. StorageClasses do not handle encryption (though some provisioners support encrypted volumes via parameters), backups, or compression - these are separate concerns."
+    require_pass: true
+  - type: multiple_choice_question
+    sequence_order: 2
+    question: "What is the primary difference between ReadWriteOnce (RWO) and ReadWriteMany (RWX) access modes for Persistent Volumes?"
+    options:
+      - "RWO allows reading only once while RWX allows multiple reads"
+      - "RWO can be mounted by one node while RWX can be mounted by multiple nodes simultaneously"
+      - "RWO is faster than RWX for all operations"
+      - "RWO is for small files while RWX is for large files"
+    correct_answer: "RWO can be mounted by one node while RWX can be mounted by multiple nodes simultaneously"
+    explanation: "ReadWriteOnce (RWO) means the volume can be mounted as read-write by a single node at a time, while ReadWriteMany (RWX) allows the volume to be mounted as read-write by multiple nodes simultaneously. This distinction is critical for understanding volume capabilities and limitations. With RWO, multiple pods on the SAME node can access the volume, but pods on different nodes cannot. This is the most common access mode and is supported by most storage systems (AWS EBS, GCE PD, Azure Disk). RWX is required for scenarios where pods on different nodes need simultaneous write access, such as shared application storage or collaborative workspaces, but it's only supported by certain storage systems (NFS, CephFS, GlusterFS, some cloud file systems like AWS EFS or Azure Files). There's also ReadOnlyMany (ROX) which allows multiple nodes to mount read-only. The access mode doesn't directly affect read/write speed - performance depends on the underlying storage technology. The choice of access mode should be based on your application architecture: use RWO for most applications (especially databases that should run on one node), and RWX only when you genuinely need multi-node write access, as it's more complex and potentially slower."
+    require_pass: true
+  - type: multiple_choice_question
+    sequence_order: 3
+    question: "When using StatefulSets with volumeClaimTemplates, what happens to PersistentVolumeClaims when you scale down the StatefulSet?"
+    options:
+      - "PVCs are automatically deleted when pods are removed"
+      - "PVCs are retained even after scaling down, preserving data for future scale-up"
+      - "PVCs are converted to snapshots for backup"
+      - "PVCs are moved to a different namespace for archival"
+    correct_answer: "PVCs are retained even after scaling down, preserving data for future scale-up"
+    explanation: "When you scale down a StatefulSet that uses volumeClaimTemplates, Kubernetes retains the PersistentVolumeClaims even though the associated pods are deleted. This behavior is intentional and critical for data safety. If you scale from 5 replicas down to 3, the PVCs for pods mysql-3 and mysql-4 remain in the cluster. If you later scale back up to 5, the same PVCs are reattached to the recreated pods, preserving their data. This ensures that scaling operations don't result in accidental data loss. The PVCs must be manually deleted if you want to reclaim the storage, which forces administrators to make explicit decisions about data retention. This is particularly important for stateful applications like databases where each pod has unique data. To delete a StatefulSet and its PVCs, you need two separate commands: first delete the StatefulSet, then explicitly delete the PVCs. Using --cascade=orphan when deleting a StatefulSet leaves both pods and PVCs running. You can identify StatefulSet PVCs by their naming pattern: <pvc-template-name>-<statefulset-name>-<ordinal>. This retention behavior protects against accidental data loss but requires manual cleanup, which is an important operational consideration when managing StatefulSets. Always have a clear PVC lifecycle management strategy for production StatefulSets."
+    require_pass: true

@@ -1,0 +1,99 @@
+course:
+  slug: docker-fundamentals
+  title: Docker Fundamentals
+  description: Master containerization with Docker. Learn to build, run, and manage containers, create custom images, and persist data. Perfect for developers starting their DevOps journey.
+  estimated_hours: 10
+  level: beginner
+  prerequisites:
+    - Basic Linux command-line knowledge
+    - Understanding of terminal/shell
+  learning_outcomes:
+    - Understand containerization concepts and benefits
+    - Run and manage Docker containers
+    - Create and optimize Docker images
+    - Implement data persistence with volumes
+    - Debug and troubleshoot containers
+  tags:
+    - docker
+    - containers
+    - devops
+    - beginner
+  related_courses:
+    - docker-advanced
+    - kubernetes-fundamentals
+  recommended_next: docker-advanced
+
+modules:
+  - slug: introduction-to-docker
+    title: Introduction to Docker
+    description: Get started with Docker - understand containers and learn basic commands to run, stop, and manage your first containers.
+    order: 1
+    estimated_hours: 2
+    lessons:
+      # From docker-basics (4 lessons)
+      - docker-ps-listing-running-containers
+      - docker-run-creating-and-starting-containers
+      - docker-stop-gracefully-stopping-containers
+      - docker-rm-removing-containers
+
+  - slug: working-with-containers
+    title: Working with Containers
+    description: Master the complete container lifecycle - create, start, stop, debug, monitor, and manage containers like a pro.
+    order: 2
+    estimated_hours: 4
+    lessons:
+      # From docker-containers (20 lessons)
+      - docker-container-ls-list-containers
+      - docker-container-create-create-container-without-starting
+      - docker-container-start-start-stopped-containers
+      - docker-container-stop-gracefully-stop-containers
+      - docker-container-restart-stop-and-start-containers
+      - docker-container-kill-forcefully-stop-containers
+      - docker-container-rm-remove-containers
+      - docker-container-prune-batch-container-cleanup
+      - docker-container-exec-run-commands-in-container
+      - docker-container-logs-view-container-output
+      - docker-container-inspect-detailed-container-information
+      - docker-container-wait-block-until-container-stops
+      - docker-cp-copy-files-between-container-and-host
+      - docker-diff-inspect-container-filesystem-changes
+      - docker-export-export-container-filesystem-as-archive
+      - docker-stats-live-resource-usage-statistics
+      - docker-top-display-running-processes-in-container
+      - docker-update-update-container-configuration
+      - docker-port-list-port-mappings
+      - docker-rename-rename-a-container
+
+  - slug: docker-images-and-dockerfiles
+    title: Docker Images & Dockerfiles
+    description: Learn to create, manage, and optimize Docker images. Build custom images with Dockerfiles and work with container registries.
+    order: 3
+    estimated_hours: 3
+    lessons:
+      # From docker-images (11 lessons)
+      - docker-images-list-local-images
+      - docker-pull-download-images-from-registry
+      - docker-build-building-images-from-dockerfile
+      - docker-tag-create-image-aliases
+      - docker-push-upload-images-to-registry
+      - docker-rmi-remove-images
+      - docker-image-ls-list-images
+      - docker-image-rm-remove-images
+      - docker-image-inspect-detailed-image-information
+      - docker-image-prune-clean-unused-images
+      - docker-history-show-image-build-history
+
+  - slug: data-persistence
+    title: Data Persistence with Volumes
+    description: Persist data beyond container lifecycle using volumes and bind mounts. Share data between containers and host systems.
+    order: 4
+    estimated_hours: 1
+    lessons:
+      # From docker-volumes (7 lessons)
+      - docker-volume-create
+      - docker-volume-list
+      - docker-volume-inspect
+      - docker-volume-remove
+      - docker-volume-prune
+      - docker-run-with-volumes
+      - bind-mounts-vs-volumes

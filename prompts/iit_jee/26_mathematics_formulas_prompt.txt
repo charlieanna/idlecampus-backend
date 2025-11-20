@@ -1,0 +1,307 @@
+=======================================
+MICROLESSON GENERATOR - MATHEMATICS (FORMULAS)
+=======================================
+
+[READY TO USE: Copy this entire prompt + attach all files listed below to GPT-5 Pro]
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+STEP 1: ATTACH THESE FILES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+From: idlecampus/backend/db/seeds/
+
+□ iit_jee_mathematics_formulas.rb
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+STEP 2: PASTE THIS PROMPT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+You are an expert educational content designer and Ruby on Rails developer.
+
+I've attached seed files for the IIT JEE Mathematics (Formulas) course. Convert them into microlesson format.
+
+# COURSE INFORMATION
+
+**Course:** IIT JEE - Mathematics (Formulas)
+**Total Files:** 1
+**Focus:** Formula mastery, derivations, applications for JEE exam
+
+# MICROLESSON RULES
+
+**Size:** 1 formula or formula group per microlesson, 2-3 minutes each
+
+**Content Structure:**
+```markdown
+# [Title] 🚀
+
+## Formula
+
+$$[LaTeX formula]$$
+
+## Derivation
+
+[Step-by-step derivation or explanation]
+
+## When to Use
+
+[Conditions and applications]
+
+## Example Problem
+
+**Problem:** [JEE-level problem]
+
+**Solution:**
+[Step-by-step solution using the formula]
+
+**Answer:** [Final answer]
+
+## Key Points
+- Point 1
+- Point 2
+- Point 3
+```
+
+# EXERCISE RULES
+
+**Count based on difficulty:**
+- Easy formulas: 2 exercises
+- Medium formulas: 3 exercises
+- Hard formulas: 4 exercises
+
+**Types:**
+1. **mcq**: Multiple choice with 4 options (JEE Main pattern)
+   - Direct formula application
+   - Formula identification
+   - Problem-solving using formula
+2. **short_answer**: Numerical problems (JEE Advanced pattern)
+   - Step-by-step solutions
+   - Derivation questions
+   - Application problems
+
+**Progressive Hints (3 per exercise):**
+- Hint 1: Which formula to use
+- Hint 2: How to apply it
+- Hint 3: Nearly complete solution
+
+# PREREQUISITES
+
+Analyze content to infer dependencies:
+- First lesson: `prerequisite_ids: []`
+- Sequential lessons: Previous formula as prerequisite
+- Advanced formulas: Multiple prerequisite formulas
+
+# OUTPUT FORMAT
+
+Generate complete Ruby seed files:
+
+```ruby
+# db/seeds/microlessons/iitjee_math_formulas_microlessons.rb
+# AUTO-GENERATED from iit_jee_mathematics_formulas.rb
+
+puts "Creating Microlessons for IIT JEE Math Formulas..."
+
+module_var = CourseModule.find_by(slug: 'iitjee-math-formulas')
+
+# === MICROLESSON 1: [Title] ===
+lesson_1 = MicroLesson.create!(
+  course_module: module_var,
+  title: '[Short, clear title]',
+  content: <<~MARKDOWN,
+    # [Title] 🚀
+
+    ## Formula
+
+    $$[LaTeX formula]$$
+
+    For example:
+    $$\\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}$$
+
+    ## Derivation
+
+    [Step-by-step explanation]
+
+    ## When to Use
+
+    Use this formula when:
+    - Condition 1
+    - Condition 2
+
+    ## Example Problem
+
+    **Problem:** Solve $x^2 + 5x + 6 = 0$ using the quadratic formula.
+
+    **Solution:**
+    Here, $a = 1$, $b = 5$, $c = 6$
+
+    $x = \\frac{-5 \\pm \\sqrt{25 - 24}}{2}$
+
+    $x = \\frac{-5 \\pm 1}{2}$
+
+    $x = -2$ or $x = -3$
+
+    **Answer:** $x \\in \\{-2, -3\\}$
+
+    ## Key Points
+
+    - Discriminant ($b^2 - 4ac$) determines nature of roots
+    - Works for all quadratic equations
+    - Remember to check for complex roots
+  MARKDOWN
+  sequence_order: 1,
+  estimated_minutes: 3,
+  difficulty: 'easy',
+  key_concepts: ['quadratic-formula', 'discriminant'],
+  prerequisite_ids: []
+)
+
+# Exercise 1: MCQ (Direct Application)
+Exercise.create!(
+  micro_lesson: lesson_1,
+  exercise_type: 'mcq',
+  sequence_order: 1,
+  exercise_data: {
+    question: 'Find the roots of $2x^2 + 7x + 3 = 0$ using the quadratic formula.',
+    options: [
+      '$x = -3, -\\frac{1}{2}$',
+      '$x = 3, \\frac{1}{2}$',
+      '$x = -2, -\\frac{3}{2}$',
+      '$x = 2, \\frac{3}{2}$'
+    ],
+    correct_answer: 0,
+    explanation: 'Using $a=2, b=7, c=3$ in $x = \\frac{-b \\pm \\sqrt{b^2-4ac}}{2a}$ gives $x = \\frac{-7 \\pm 5}{4}$, so $x = -\\frac{1}{2}$ or $x = -3$',
+    difficulty: 'easy',
+    hints: [
+      'Identify $a$, $b$, and $c$ from the equation',
+      'Calculate discriminant: $b^2 - 4ac = 49 - 24 = 25$',
+      'Apply formula: $x = \\frac{-7 \\pm \\sqrt{25}}{4} = \\frac{-7 \\pm 5}{4}$'
+    ]
+  }
+)
+
+# Exercise 2: MCQ (Discriminant)
+Exercise.create!(
+  micro_lesson: lesson_1,
+  exercise_type: 'mcq',
+  sequence_order: 2,
+  exercise_data: {
+    question: 'For what value of $k$ does $x^2 + kx + 9 = 0$ have equal roots?',
+    options: [
+      '$k = \\pm 6$',
+      '$k = \\pm 3$',
+      '$k = \\pm 9$',
+      '$k = \\pm 18$'
+    ],
+    correct_answer: 0,
+    explanation: 'Equal roots means discriminant = 0, so $k^2 - 36 = 0$, giving $k = \\pm 6$',
+    difficulty: 'medium',
+    hints: [
+      'Equal roots occur when discriminant $b^2 - 4ac = 0$',
+      'Here: $k^2 - 4(1)(9) = 0$',
+      'Solve: $k^2 = 36$, so $k = \\pm 6$'
+    ]
+  }
+)
+
+# [More microlessons...]
+
+puts "✓ Created [N] microlessons for IIT JEE Math Formulas"
+```
+
+# QUALITY CHECKLIST
+
+For EACH microlesson:
+- [ ] Formula displayed in LaTeX notation
+- [ ] Clear derivation or explanation
+- [ ] JEE-level example problem with solution
+- [ ] 2-4 exercises per formula
+- [ ] MCQs follow JEE Main/Advanced pattern
+- [ ] Hints guide toward solution
+- [ ] Prerequisites link dependent formulas
+- [ ] Ruby syntax is valid
+
+# FORMULA TOPICS TO COVER
+
+Break down by mathematical areas:
+
+**Algebra:**
+- Quadratic formula & discriminant
+- Sum/product of roots
+- Binomial theorem
+- Arithmetic/Geometric progressions
+- Logarithm properties
+- Complex numbers (De Moivre's theorem)
+
+**Trigonometry:**
+- Trigonometric identities
+- Sum/difference formulas
+- Multiple angle formulas
+- Sine/Cosine rules
+- Heights and distances
+
+**Calculus:**
+- Differentiation rules
+- Integration formulas
+- Definite integral properties
+- L'Hôpital's rule
+- Taylor series
+
+**Coordinate Geometry:**
+- Distance formula
+- Section formula
+- Area formulas
+- Circle equations
+- Conic sections (parabola, ellipse, hyperbola)
+
+**Vectors & 3D:**
+- Vector operations
+- Dot product & cross product
+- Equation of line/plane
+- Distance formulas (3D)
+
+**Probability & Statistics:**
+- Permutation/Combination formulas
+- Probability rules
+- Bayes' theorem
+- Mean, variance, standard deviation
+
+# OUTPUT INSTRUCTIONS
+
+Generate output with clear labels:
+
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FILE: iitjee_math_formulas_microlessons.rb
+FROM: iit_jee_mathematics_formulas.rb
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+[Complete Ruby code here]
+```
+
+After generation, provide summary:
+
+```
+=== GENERATION SUMMARY ===
+
+Course: IIT JEE - Mathematics (Formulas)
+
+Microlessons Created: XX
+Total Exercises: YY
+- MCQ: ZZ (JEE Main/Advanced pattern)
+- Short Answer: AA (numerical problems)
+
+Formulas Covered:
+- Algebra (X formulas)
+- Trigonometry (X formulas)
+- Calculus (X formulas)
+- Coordinate Geometry (X formulas)
+- Vectors & 3D (X formulas)
+- Probability & Statistics (X formulas)
+```
+
+# NOW GENERATE
+
+Process the attached seed file and generate complete microlesson file following all rules above.
+
+Focus on formula mastery through JEE-level problems and applications.
+
+START GENERATION NOW.

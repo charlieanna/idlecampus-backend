@@ -1,0 +1,227 @@
+slug: relative-motion-concepts
+title: "Relative Motion and Reference Frames"
+difficulty: advanced
+sequence_order: 8
+estimated_minutes: 16
+key_concepts:
+- relative-velocity
+- reference-frames
+- river-boat
+- rain-man
+- collision-problems
+prerequisites:
+- speed-velocity-concepts
+- projectile-motion-fundamentals
+content_md: |
+  # Relative Motion and Reference Frames
+
+  ## Concept of Relative Motion
+
+  **All motion is relative** - it depends on the observer's frame of reference.
+
+  ### Relative Velocity Formula:
+  ```
+  v⃗_AB = v⃗_A - v⃗_B
+
+  (Velocity of A with respect to B)
+  ```
+
+  ### Key Properties:
+  - v⃗_AB = -v⃗_BA
+  - |v⃗_AB| ≠ |v⃗_A| - |v⃗_B| (in general)
+  - For parallel motion: v_rel = v₁ - v₂
+  - For antiparallel motion: v_rel = v₁ + v₂
+  - For perpendicular: v_rel = √(v₁² + v₂²)
+
+  ## 1D Relative Motion
+
+  ### Same Direction:
+  ```
+  v_rel = v₁ - v₂
+
+  Example: Car A (60 km/h) behind Car B (40 km/h)
+  v_AB = 60 - 40 = 20 km/h (approaching)
+  ```
+
+  ### Opposite Direction:
+  ```
+  v_rel = v₁ + v₂
+
+  Example: Two trains approaching
+  v_rel = 100 + 80 = 180 km/h
+  ```
+
+  ## 2D Relative Motion
+
+  ### Vector Addition/Subtraction:
+  ```
+  v⃗_AB = v⃗_A - v⃗_B
+
+  |v⃗_AB| = √(v_A² + v_B² - 2v_Av_B cos θ)
+  ```
+
+  Where θ is angle between v⃗_A and v⃗_B.
+
+  ## River-Boat Problems
+
+  ### Key Terms:
+  - **v_b** = velocity of boat in still water
+  - **v_r** = velocity of river current
+  - **v_br** = velocity of boat relative to river
+  - **v_bg** = velocity of boat relative to ground
+
+  ```
+  v⃗_bg = v⃗_br + v⃗_r
+  ```
+
+  ### Case 1: Crossing River (Shortest Path)
+  Boat must head upstream at angle θ:
+  ```
+  sin θ = v_r/v_b
+  v_net = √(v_b² - v_r²)
+  Time = d/v_net = d/√(v_b² - v_r²)
+  ```
+
+  **Condition:** v_b > v_r (else impossible)
+
+  ### Case 2: Crossing River (Minimum Time)
+  Boat heads perpendicular to river:
+  ```
+  Time = d/v_b (minimum)
+  Drift = v_r × t = v_r × d/v_b
+  ```
+
+  ### Case 3: Going Downstream
+  ```
+  v_net = v_b + v_r
+  ```
+
+  ### Case 4: Going Upstream
+  ```
+  v_net = v_b - v_r
+  ```
+
+  ## Rain-Man Problems
+
+  ### When Man is Stationary:
+  Rain falls at velocity v⃗_r
+
+  ### When Man Moves:
+  ```
+  v⃗_rm = v⃗_r - v⃗_m (rain velocity w.r.t. man)
+
+  tan θ = v_m/v_r (apparent angle from vertical)
+  ```
+
+  ### Umbrella Angle:
+  To stay dry, hold umbrella at angle θ = tan⁻¹(v_m/v_r) from vertical
+
+  ## Collision Problems
+
+  ### Time to Collision:
+  ```
+  t = Distance/Relative velocity
+
+  t = |r⃗_AB|/|v⃗_AB|
+  ```
+
+  ### Closest Approach:
+  For two objects moving with velocities v⃗_A and v⃗_B:
+  1. Find relative velocity v⃗_BA
+  2. Find component of separation along v⃗_BA
+  3. Minimum distance when relative position ⊥ relative velocity
+
+  ## Reference Frames
+
+  ### Inertial Frame:
+  - Newton's laws valid
+  - Non-accelerating
+  - Examples: Ground (approx), space far from masses
+
+  ### Non-Inertial Frame:
+  - Accelerating
+  - Pseudo forces appear
+  - Examples: Accelerating car, rotating Earth
+
+  ### Galilean Transformation:
+  ```
+  x' = x - vt (for S' moving at v relative to S)
+  v' = v - V
+  a' = a (acceleration same in all inertial frames)
+  ```
+
+  ## Numerical Examples
+
+  **Example 1:** A boat can travel at 5 km/h in still water. River flows at 3 km/h. Find time to cross 400m wide river by shortest path.
+
+  **Solution:**
+  ```
+  Shortest path → Perpendicular crossing
+  v_net = √(5² - 3²) = √16 = 4 km/h
+  d = 400 m = 0.4 km
+  t = 0.4/4 = 0.1 h = 6 minutes
+  ```
+
+  **Example 2:** Rain falls vertically at 10 m/s. A man walks at 5 m/s. At what angle should he hold umbrella?
+
+  **Solution:**
+  ```
+  tan θ = v_man/v_rain = 5/10 = 0.5
+  θ = tan⁻¹(0.5) ≈ 26.57°
+
+  Hold umbrella at 26.57° from vertical (in direction of motion)
+  ```
+
+  **Example 3:** Two cars A and B are 100 km apart. A moves East at 60 km/h, B moves North at 80 km/h. Find minimum distance between them.
+
+  **Solution:**
+  ```
+  v⃗_BA = v⃗_B - v⃗_A = 80ĵ - 60î
+  |v⃗_BA| = √(80² + 60²) = 100 km/h
+
+  Using geometry of closest approach:
+  Minimum distance = perpendicular distance from A to trajectory of B relative to A
+  ```
+
+  ## JEE Important Points
+
+  1. **Relative velocity is vector subtraction**
+  2. **River problems**: Draw velocity triangle
+  3. **Rain problems**: Man's motion affects apparent angle
+  4. **Collision**: Use relative motion to simplify
+  5. **Same acceleration → Constant relative velocity**
+
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: "A boat takes 2 hours to travel from A to B downstream and 4 hours to return upstream. The ratio of speed of boat to speed of current is:"
+  options:
+  - "2:1"
+  - "3:1"
+  - "4:1"
+  - "5:1"
+  correct_answer: "3:1"
+  explanation: "Let boat speed = v_b, current = v_r, distance = d. Downstream: d/(v_b + v_r) = 2. Upstream: d/(v_b - v_r) = 4. From first equation: d = 2(v_b + v_r). From second: d = 4(v_b - v_r). Equating: 2(v_b + v_r) = 4(v_b - v_r), so 2v_b + 2v_r = 4v_b - 4v_r, giving 6v_r = 2v_b, hence v_b/v_r = 3/1 = 3:1. This is a classic river problem - downstream time is always less than upstream time, and the ratio depends on speed of current relative to boat."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: "Rain falls vertically with velocity 20 m/s. A person runs with velocity 15 m/s. The angle at which rain appears to fall to him is:"
+  options:
+  - "tan⁻¹(3/4)"
+  - "tan⁻¹(4/3)"
+  - "sin⁻¹(3/4)"
+  - "cos⁻¹(4/5)"
+  correct_answer: "tan⁻¹(3/4)"
+  explanation: "Relative velocity of rain w.r.t. man: v⃗_rm = v⃗_r - v⃗_m. Rain velocity is 20 m/s downward, man's velocity is 15 m/s horizontal. In man's frame: vertical component = 20 m/s (down), horizontal component = 15 m/s (backward). tan θ = horizontal/vertical = 15/20 = 3/4. So θ = tan⁻¹(3/4) ≈ 36.87° from vertical. The man should hold umbrella at this angle ahead to stay dry. Note: If man runs faster, rain appears more horizontal."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: "Two trains 120 m and 80 m long are running in opposite directions with speeds 42 km/h and 30 km/h. Time to completely pass each other is:"
+  options:
+  - "5 s"
+  - "10 s"
+  - "15 s"
+  - "20 s"
+  correct_answer: "10 s"
+  explanation: "Total distance to cover = sum of lengths = 120 + 80 = 200 m. Relative speed (opposite directions) = 42 + 30 = 72 km/h = 72 × (5/18) = 20 m/s. Time = Distance/Speed = 200/20 = 10 s. For passing in same direction, relative speed = |42-30| = 12 km/h, time would be longer. Key insight: When trains move in opposite directions, their relative speed is maximum (sum of speeds), making passing time minimum. This is why head-on collisions are most dangerous."
+  require_pass: true

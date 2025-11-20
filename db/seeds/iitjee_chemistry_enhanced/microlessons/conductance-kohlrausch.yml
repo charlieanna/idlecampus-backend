@@ -1,0 +1,126 @@
+slug: conductance-kohlrausch
+title: Conductance, Kohlrausch\
+sequence_order: 6
+estimated_minutes: 2
+difficulty: easy
+content_md: "# Conductance, Kohlrausch\\ \U0001F680\n\n# Conductance, Kohlrausch's\
+  \ Law and Electrochemical Devices\n\n    ## Electrical Conductance\n\n    **Conductance\
+  \ (G):** Ability to conduct electricity\n\n    **G = 1/R** (reciprocal of resistance)\n\
+  \n    **Units:** Siemens (S) or mho (℧) or Ω⁻¹\n\n    ### Ohm's Law:\n\n    **V\
+  \ = IR** or **R = V/I**\n\n    **Conductance: G = I/V = 1/R**\n\n    ## Specific\
+  \ Conductance (κ - kappa)\n\n    **Definition:** Conductance of 1 cm³ solution between\
+  \ electrodes 1 cm apart\n\n    **κ = (1/R) × (l/A) = G × (l/A)**\n\n    Where:\n\
+  \    - l = distance between electrodes (cm)\n    - A = area of electrodes (cm²)\n\
+  \    - l/A = cell constant (G*)\n\n    **κ = G × G***\n\n    **Units:** S cm⁻¹ or\
+  \ Ω⁻¹ cm⁻¹\n\n    ### Cell Constant (G*):\n\n    **G* = l/A** (depends on geometry\
+  \ of cell)\n\n    **Units:** cm⁻¹\n\n    Determined using solution of known κ (KCl\
+  \ solution)\n\n    ## Molar Conductivity (Λm)\n\n    **Definition:** Conductance\
+  \ of solution containing 1 mole of electrolyte placed between electrodes 1 cm apart\n\
+  \n    **Λm = κ × 1000 / M**\n\n    Where:\n    - κ = specific conductance (S cm⁻¹)\n\
+  \    - M = molarity (mol/L)\n    - 1000 = conversion factor (1 L = 1000 cm³)\n\n\
+  \    **Units:** S cm² mol⁻¹\n\n    ### Equivalent Conductivity (Λeq):\n\n    **Λeq\
+  \ = κ × 1000 / N**\n\n    Where N = normality\n\n    **Relationship:** Λm = n ×\
+  \ Λeq (n = number of charges)\n\n    ## Variation of Conductivity with Dilution\n\
+  \n    ### Specific Conductance (κ):\n\n    **Decreases with dilution** (fewer ions\
+  \ per unit volume)\n\n    ### Molar Conductivity (Λm):\n\n    **Increases with dilution**\
+  \ (less inter-ionic interactions)\n\n    **Strong electrolytes:** Λm increases slightly\
+  \ with dilution\n    **Weak electrolytes:** Λm increases sharply with dilution\n\
+  \n    At **infinite dilution:** Λm = Λm° (maximum value)\n\n    ## Kohlrausch's\
+  \ Law of Independent Migration\n\n    **Statement:** At infinite dilution, molar\
+  \ conductivity is sum of contributions from individual ions\n\n    **Λm° = λ₊° +\
+  \ λ₋°**\n\n    Where:\n    - λ₊° = limiting molar conductivity of cation\n    -\
+  \ λ₋° = limiting molar conductivity of anion\n\n    ### For Salt:\n\n    **Λm°(NaCl)\
+  \ = λ°(Na⁺) + λ°(Cl⁻)**\n\n    ### For Acid/Base:\n\n    **Λm°(HCl) = λ°(H⁺) + λ°(Cl⁻)**\n\
+  \    **Λm°(NaOH) = λ°(Na⁺) + λ°(OH⁻)**\n\n    ## Applications of Kohlrausch's Law\n\
+  \n    ### 1. Calculate Λm° of weak electrolyte:\n\n    **Example:** Find Λm°(CH₃COOH)\n\
+  \n    **Method:**\n    Λm°(CH₃COOH) = λ°(CH₃COO⁻) + λ°(H⁺)\n\n    Cannot measure\
+  \ directly, so use:\n\n    **Λm°(CH₃COOH) = Λm°(CH₃COONa) + Λm°(HCl) - Λm°(NaCl)**\n\
+  \n    Proof:\n    - Λm°(CH₃COONa) = λ°(CH₃COO⁻) + λ°(Na⁺)\n    - Λm°(HCl) = λ°(H⁺)\
+  \ + λ°(Cl⁻)\n    - Λm°(NaCl) = λ°(Na⁺) + λ°(Cl⁻)\n\n    Adding first two and subtracting\
+  \ third:\n    = λ°(CH₃COO⁻) + λ°(H⁺) ✓\n\n    ### 2. Degree of Dissociation (α):\n\
+  \n    For weak electrolyte:\n\n    **α = Λm / Λm°**\n\n    Where:\n    - Λm = molar\
+  \ conductivity at given concentration\n    - Λm° = limiting molar conductivity\n\
+  \n    ### 3. Dissociation Constant (Ka):\n\n    For weak acid HA:\n\n    **Ka =\
+  \ (Cα²)/(1-α) ≈ Cα²** (if α << 1)\n\n    Since α = Λm/Λm°:\n\n    **Ka = C(Λm/Λm°)²\
+  \ / (1 - Λm/Λm°)**\n\n    ## Numerical Examples\n\n    ### Problem 1: Calculate\
+  \ κ\n\n    **Q: R = 100 Ω, G* = 0.5 cm⁻¹. Calculate κ.**\n\n    Solution:\n    -\
+  \ G = 1/R = 1/100 = 0.01 S\n    - κ = G × G* = 0.01 × 0.5\n    - **κ = 0.005 S cm⁻¹**\n\
+  \n    ### Problem 2: Calculate Λm\n\n    **Q: κ = 0.0025 S cm⁻¹, M = 0.1 M. Calculate\
+  \ Λm.**\n\n    Solution:\n    Λm = (κ × 1000)/M = (0.0025 × 1000)/0.1\n    **Λm\
+  \ = 25 S cm² mol⁻¹**\n\n    ### Problem 3: Kohlrausch's law\n\n    **Q: Calculate\
+  \ Λm°(NH₄OH) given:**\n    - Λm°(NH₄Cl) = 150 S cm² mol⁻¹\n    - Λm°(NaOH) = 248\
+  \ S cm² mol⁻¹\n    - Λm°(NaCl) = 126 S cm² mol⁻¹\n\n    Solution:\n    Λm°(NH₄OH)\
+  \ = Λm°(NH₄Cl) + Λm°(NaOH) - Λm°(NaCl)\n    = 150 + 248 - 126\n    **= 272 S cm²\
+  \ mol⁻¹**\n\n    ### Problem 4: Degree of dissociation\n\n    **Q: For CH₃COOH,\
+  \ Λm = 18 S cm² mol⁻¹, Λm° = 390 S cm² mol⁻¹. Find α.**\n\n    Solution:\n    α\
+  \ = Λm/Λm° = 18/390\n    **α = 0.046 or 4.6%**\n\n    ### Problem 5: Calculate Ka\n\
+  \n    **Q: For 0.01 M CH₃COOH, α = 0.04, find Ka.**\n\n    Solution:\n    Ka = Cα²/(1-α)\
+  \ = (0.01 × 0.04²)/(1-0.04)\n    Ka = (0.01 × 0.0016)/0.96\n    **Ka = 1.67 × 10⁻⁵**\n\
+  \n    ## Batteries (Electrochemical Cells)\n\n    ### Primary Batteries (Non-rechargeable):\n\
+  \n    **1. Dry Cell (Leclanche Cell):**\n\n    - **Anode:** Zn container\n    -\
+  \ **Cathode:** Carbon rod\n    - **Electrolyte:** NH₄Cl + ZnCl₂ paste + MnO₂\n\n\
+  \    Reactions:\n    - Anode: Zn → Zn²⁺ + 2e⁻\n    - Cathode: MnO₂ + NH₄⁺ + e⁻ →\
+  \ MnO(OH) + NH₃\n\n    **Voltage:** ~1.5 V\n    **Uses:** Flashlights, remote controls\n\
+  \n    **2. Mercury Cell:**\n\n    - **Anode:** Zn-Hg amalgam\n    - **Cathode:**\
+  \ HgO + carbon\n    - **Electrolyte:** KOH paste\n\n    Reactions:\n    - Anode:\
+  \ Zn + 2OH⁻ → ZnO + H₂O + 2e⁻\n    - Cathode: HgO + H₂O + 2e⁻ → Hg + 2OH⁻\n\n  \
+  \  **Voltage:** 1.35 V (constant)\n    **Uses:** Hearing aids, watches\n\n    ###\
+  \ Secondary Batteries (Rechargeable):\n\n    **1. Lead-Acid Battery:**\n\n    -\
+  \ **Anode:** Pb\n    - **Cathode:** PbO₂\n    - **Electrolyte:** 38% H₂SO₄\n\n \
+  \   **Discharge:**\n    - Anode: Pb + SO₄²⁻ → PbSO₄ + 2e⁻\n    - Cathode: PbO₂ +\
+  \ 4H⁺ + SO₄²⁻ + 2e⁻ → PbSO₄ + 2H₂O\n    - Overall: Pb + PbO₂ + 2H₂SO₄ → 2PbSO₄ +\
+  \ 2H₂O\n\n    **Charge:** Reverse reaction\n\n    **Voltage:** 2 V per cell (6 cells\
+  \ = 12 V battery)\n    **Uses:** Automobiles\n\n    **2. Nickel-Cadmium (NiCd) Battery:**\n\
+  \n    - **Anode:** Cd\n    - **Cathode:** NiO(OH)\n    - **Electrolyte:** KOH\n\n\
+  \    **Voltage:** 1.4 V\n    **Uses:** Electronic devices\n\n    **3. Lithium-ion\
+  \ Battery:**\n\n    - **Anode:** Graphite (Li intercalated)\n    - **Cathode:**\
+  \ LiCoO₂\n    - **Electrolyte:** Lithium salt in organic solvent\n\n    **Voltage:**\
+  \ 3.7 V\n    **Uses:** Mobile phones, laptops, EVs\n    **Advantages:** High energy\
+  \ density, lightweight\n\n    ## Fuel Cells\n\n    **Definition:** Continuously\
+  \ converts chemical energy to electrical energy as long as fuel is supplied\n\n\
+  \    ### Hydrogen-Oxygen Fuel Cell:\n\n    - **Anode:** H₂ → 2H⁺ + 2e⁻\n    - **Cathode:**\
+  \ O₂ + 4H⁺ + 4e⁻ → 2H₂O\n    - **Overall:** 2H₂ + O₂ → 2H₂O\n\n    **Electrolyte:**\
+  \ KOH (aqueous) or polymer membrane\n    **Efficiency:** 60-70% (higher than combustion)\n\
+  \    **Byproduct:** Water only (clean)\n\n    **Uses:** Space programs, vehicles,\
+  \ stationary power\n\n    **Advantages:**\n    - High efficiency\n    - Low pollution\n\
+  \    - Continuous operation\n\n    ## Corrosion\n\n    **Definition:** Electrochemical\
+  \ degradation of metals\n\n    ### Rusting of Iron:\n\n    **Anodic area:** Fe →\
+  \ Fe²⁺ + 2e⁻\n    **Cathodic area:** O₂ + 4H⁺ + 4e⁻ → 2H₂O (acidic)\n    or O₂ +\
+  \ 2H₂O + 4e⁻ → 4OH⁻ (neutral/basic)\n\n    **Overall:** 2Fe + O₂ + 4H⁺ → 2Fe²⁺ +\
+  \ 2H₂O\n    Then: 4Fe²⁺ + O₂ + 4H₂O → 2Fe₂O₃·xH₂O (rust)\n\n    **Factors enhancing\
+  \ corrosion:**\n    - Moisture, oxygen\n    - Acidic environment\n    - Salts (electrolytes)\n\
+  \    - Impurities in metal\n\n    ### Prevention of Corrosion:\n\n    1. **Painting/coating:**\
+  \ Barrier against O₂, H₂O\n    2. **Galvanization:** Coating with Zn (sacrificial\
+  \ protection)\n    3. **Electroplating:** Ni, Cr plating\n    4. **Alloying:** Stainless\
+  \ steel (Cr, Ni added)\n    5. **Cathodic protection:** Connect to more active metal\n\
+  \    6. **Passivation:** Formation of oxide layer (Al₂O₃ on Al)\n\n    ## IIT JEE\
+  \ Key Points\n\n    1. **Conductance G = 1/R**\n    2. **κ = G × (l/A) = G × G***\n\
+  \    3. **Λm = κ × 1000/M**\n    4. **Λm increases with dilution**\n    5. **Kohlrausch:**\
+  \ Λm° = λ₊° + λ₋°\n    6. **α = Λm/Λm°** (weak electrolyte)\n    7. **Primary battery:**\
+  \ Non-rechargeable\n    8. **Secondary battery:** Rechargeable\n    9. **Fuel cell:**\
+  \ Continuous operation\n    10. **Corrosion:** Electrochemical oxidation\n\n   \
+  \ ## Quick Formulas\n\n    | Concept | Formula |\n    |---------|---------|\n  \
+  \  | Conductance | G = 1/R |\n    | Specific conductance | κ = G × G* |\n    | Molar\
+  \ conductivity | Λm = κ × 1000/M |\n    | Kohlrausch's law | Λm° = λ₊° + λ₋° |\n\
+  \    | Degree of dissociation | α = Λm/Λm° |\n\n    ## Important Facts\n\n    -\
+  \ **H⁺** and **OH⁻** have highest conductivities\n    - **Strong electrolytes:**\
+  \ Complete dissociation\n    - **Weak electrolytes:** Partial dissociation\n   \
+  \ - **Λm° (weak):** Use Kohlrausch's law\n\n## Key Points\n\n- Conductance\n\n-\
+  \ Molar conductivity\n\n- Kohlrauschs law"
+exercises:
+- type: mcq
+  slug: conductance-kohlrausch-mcq
+  sequence_order: 1
+  question: Pick the correct statement based on this concept.
+  options:
+  - Statement A
+  - Statement B
+  - Statement C
+  - Statement D
+  correct_answer_index: 0
+  explanation: Review the definition and common exceptions.
+objectives:
+- Define the core idea
+- Identify governing formulae or rules
+- Practice with mixed-difficulty problems
+next_recommended: []

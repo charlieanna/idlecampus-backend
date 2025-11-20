@@ -1,0 +1,58 @@
+slug: viewing-container-logs
+title: Viewing Container Logs
+difficulty: easy
+sequence_order: 6
+estimated_minutes: 2
+key_concepts:
+- docker-logs
+prerequisites: []
+content_md: '# Viewing Container Logs 🚀
+
+
+  ## What is this?
+
+  A concise explanation of the concept.
+
+
+  ## Syntax/Command
+
+
+  ```bash
+
+  docker logs codesprout-web
+
+  ```
+
+
+  ## Key Points
+
+
+  - Use -f to follow the logs in real-time'
+exercises:
+- type: terminal
+  problem_statement: View the logs from the running container named 'codesprout-web' to see its output and debug information
+  expected_output: Log output from the codesprout-web container showing server activity and requests
+  language: bash
+  starter_code: "# View container logs\n"
+  sequence_order: 1
+  command: docker logs codesprout-web
+  description: 'Practice the command: docker logs codesprout-web'
+  hints:
+  - Use -f to follow the logs in real-time
+  validation:
+    must_not_include:
+    - Error
+    - 'panic:'
+  timeout_sec: 60
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: Which flag follows logs as they are written?
+  options:
+  - -f
+  - -t
+  - --tail 100
+  - -F
+  correct_answer: -f
+  explanation: "The -f flag (short for --follow) streams logs in real-time, similar to 'tail -f' on Linux. It keeps the connection open and continuously displays new log entries as the container writes them. The -t flag adds timestamps, --tail 100 shows only the last 100 lines, and -F is not a valid docker logs flag."
+  require_pass: true

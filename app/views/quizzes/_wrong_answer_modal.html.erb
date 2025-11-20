@@ -1,0 +1,253 @@
+<div class="modal fade" id="wrongAnswerModal" tabindex="-1" role="dialog" aria-labelledby="wrongAnswerModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-warning">
+        <h5 class="modal-title" id="wrongAnswerModalLabel">
+          <i class="fas fa-exclamation-triangle"></i> Let's Review & Improve
+        </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      
+      <div class="modal-body">
+        <!-- Summary Section -->
+        <div class="remediation-summary mb-4">
+          <h6>Quiz Summary</h6>
+          <div class="row">
+            <div class="col-md-3">
+              <div class="stat-card">
+                <div class="stat-value"><%= @remediation_data[:summary][:total_wrong] %></div>
+                <div class="stat-label">Questions Missed</div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="stat-card">
+                <div class="stat-value"><%= @remediation_data[:summary][:wrong_percentage] %>%</div>
+                <div class="stat-label">Error Rate</div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="stat-card">
+                <div class="stat-value"><%= @remediation_data[:summary][:estimated_review_time_minutes] %> min</div>
+                <div class="stat-label">Est. Review Time</div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="stat-card <%= severity_badge_class(@remediation_data[:summary][:severity]) %>">
+                <div class="stat-value"><%= @remediation_data[:summary][:severity].titleize %></div>
+                <div class="stat-label">Severity</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Weakness Patterns -->
+        <% if @remediation_data[:weakness_patterns][:primary_weaknesses][:topics].any? %>
+          <div class="weakness-patterns mb-4">
+            <h6><i class="fas fa-chart-line"></i> Areas Needing Focus</h6>
+            <div class="weakness-tags">
+              <% @remediation_data[:weakness_patterns][:primary_weaknesses][:topics].each do |topic| %>
+                <span class="badge badge-warning mr-2 mb-2">
+                  <%= topic.titleize %> 
+                  <span class="badge badge-light"><%= @remediation_data[:weakness_patterns][:topics][topic] %></span>
+                </span>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+        
+        <!-- Wrong Answers Detail -->
+        <div class="wrong-answers-detail">
+          <h6><i class="fas fa-clipboard-list"></i> Detailed Review</h6>
+          
+          <div class="accordion" id="wrongAnswersAccordion">
+            <% @remediation_data[:immediate_recommendations].each_with_index do |wrong_answer, index| %>
+              <div class="card">
+                <div class="card-header" id="heading<%= index %>">
+                  <h2 class="mb-0">
+                    <button class="btn btn-link btn-block text-left collapsed" type="button" 
+                            data-toggle="collapse" data-target="#collapse<%= index %>" 
+                            aria-expanded="false" aria-controls="collapse<%= index %>">
+                      <strong>Question <%= index + 1 %>:</strong> <%= truncate(wrong_answer[:question_text], length: 80) %>
+                      <span class="badge badge-danger float-right"><%= wrong_answer[:error_type]&.humanize || 'Incorrect' %></span>
+                    </button>
+                  </h2>
+                </div>
+
+                <div id="collapse<%= index %>" class="collapse" aria-labelledby="heading<%= index %>" 
+                     data-parent="#wrongAnswersAccordion">
+                  <div class="card-body">
+                    <div class="row">
+                      <!-- Question & Answer -->
+                      <div class="col-md-6">
+                        <div class="question-review">
+                          <p><strong>Question:</strong> <%= wrong_answer[:question_text] %></p>
+                          
+                          <div class="answer-comparison">
+                            <div class="your-answer mb-3">
+                              <strong class="text-danger">Your Answer:</strong>
+                              <code class="d-block p-2 bg-light"><%= wrong_answer[:your_answer] %></code>
+                            </div>
+                            
+                            <div class="correct-answer mb-3">
+                              <strong class="text-success">Correct Answer:</strong>
+                              <code class="d-block p-2 bg-light"><%= wrong_answer[:correct_answer] %></code>
+                            </div>
+                          </div>
+                          
+                          <% if wrong_answer[:feedback].present? %>
+                            <div class="alert alert-info">
+                              <strong>Feedback:</strong> <%= wrong_answer[:feedback] %>
+                            </div>
+                          <% end %>
+                          
+                          <% if wrong_answer[:explanation].present? %>
+                            <div class="alert alert-secondary">
+                              <strong>Explanation:</strong> <%= wrong_answer[:explanation] %>
+                            </div>
+                          <% end %>
+                          
+                          <% if wrong_answer[:hints]&.any? %>
+                            <div class="hints">
+                              <strong>Hints:</strong>
+                              <ul>
+                                <% wrong_answer[:hints].each do |hint| %>
+                                  <li><%= hint %></li>
+                                <% end %>
+                              </ul>
+                            </div>
+                          <% end %>
+                        </div>
+                      </div>
+                      
+                      <!-- Mini Lesson & Resources -->
+                      <div class="col-md-6">
+                        <% lesson_mapping = @remediation_data[:lesson_mappings].find { |lm| lm[:question_id] == wrong_answer[:question_id] } %>
+                        
+                        <% if lesson_mapping && lesson_mapping[:mini_lesson] %>
+                          <div class="mini-lesson mb-3">
+                            <h6><i class="fas fa-book-open"></i> <%= lesson_mapping[:mini_lesson][:title] %></h6>
+                            <div class="mini-lesson-content">
+                              <%= simple_format(lesson_mapping[:mini_lesson][:quick_explanation]) %>
+                            </div>
+                          </div>
+                        <% end %>
+                        
+                        <!-- Lesson Recommendations -->
+                        <% if lesson_mapping %>
+                          <div class="lesson-recommendations">
+                            <h6><i class="fas fa-graduation-cap"></i> Recommended Lessons</h6>
+                            
+                            <% if lesson_mapping[:primary_lesson] %>
+                              <%= render 'lesson_recommendation_card', 
+                                  mapping: lesson_mapping[:primary_lesson], 
+                                  quiz_attempt_id: @quiz_attempt.id,
+                                  question_id: wrong_answer[:question_id] %>
+                            <% end %>
+                            
+                            <% lesson_mapping[:additional_lessons]&.each do |additional| %>
+                              <%= render 'lesson_recommendation_card', 
+                                  mapping: additional, 
+                                  quiz_attempt_id: @quiz_attempt.id,
+                                  question_id: wrong_answer[:question_id],
+                                  is_additional: true %>
+                            <% end %>
+                          </div>
+                        <% end %>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+      
+      <div class="modal-footer">
+        <div class="d-flex justify-content-between w-100">
+          <div>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+          <div>
+            <%= link_to "Try Original Quiz Again", 
+                        take_quiz_path(@quiz_attempt.quiz), 
+                        class: "btn btn-outline-primary mr-2" %>
+            <%= link_to "Generate Focused Practice Quiz", 
+                        adaptive_retry_quiz_path(@quiz_attempt), 
+                        method: :post,
+                        class: "btn btn-primary",
+                        data: { confirm: "This will create a new quiz focused on your weak areas. Continue?" } %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+.remediation-summary .stat-card {
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.remediation-summary .stat-value {
+  font-size: 24px;
+  font-weight: bold;
+  color: #495057;
+}
+
+.remediation-summary .stat-label {
+  font-size: 12px;
+  color: #6c757d;
+  text-transform: uppercase;
+}
+
+.remediation-summary .stat-card.badge-danger {
+  background: #f8d7da;
+}
+
+.remediation-summary .stat-card.badge-warning {
+  background: #fff3cd;
+}
+
+.weakness-tags {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.wrong-answers-detail .card {
+  margin-bottom: 10px;
+}
+
+.wrong-answers-detail .btn-link {
+  text-decoration: none;
+  color: #495057;
+}
+
+.wrong-answers-detail .btn-link:hover {
+  color: #007bff;
+}
+
+.answer-comparison code {
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
+}
+
+.mini-lesson {
+  background: #e7f3ff;
+  padding: 15px;
+  border-radius: 8px;
+  border-left: 4px solid #007bff;
+}
+
+.mini-lesson-content {
+  font-size: 14px;
+  line-height: 1.6;
+}
+</style>
+

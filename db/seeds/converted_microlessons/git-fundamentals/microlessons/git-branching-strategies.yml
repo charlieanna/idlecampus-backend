@@ -1,0 +1,444 @@
+slug: git-branching-strategies
+title: Git Branching Strategies and Workflows
+difficulty: easy
+sequence_order: 2
+estimated_minutes: 15
+key_concepts:
+  - Branching
+  - Branch management
+  - Git workflows
+  - Branch naming conventions
+prerequisites:
+  - lesson-1
+content_md: |
+  # Git Branching Strategies and Workflows 🚀
+
+  # Git Branching
+
+  Branching is Git's killer feature - lightweight, fast, and powerful for parallel development.
+
+  ## Why Branches?
+
+  ✓ **Isolation**: Work on features without affecting main code
+  ✓ **Experimentation**: Try ideas safely
+  ✓ **Parallel Development**: Multiple features simultaneously
+  ✓ **Code Review**: Review before merging
+  ✓ **Release Management**: Maintain multiple versions
+
+  ## Branch Basics
+
+  ### Creating Branches
+
+  ```bash
+  # Create new branch
+  git branch feature/user-auth
+
+  # Create and switch to branch
+  git checkout -b feature/user-auth
+  # New syntax:
+  git switch -c feature/user-auth
+
+  # Create from specific commit
+  git branch hotfix/login-bug abc123
+
+  # Create from remote branch
+  git checkout -b local-feature origin/remote-feature
+  ```
+
+  ### Switching Branches
+
+  ```bash
+  # Switch to existing branch
+  git checkout main
+  # New syntax:
+  git switch main
+
+  # Switch to previous branch
+  git checkout -
+  git switch -
+
+  # Create and switch if doesn't exist
+  git switch -c new-feature
+  ```
+
+  ### Listing Branches
+
+  ```bash
+  # List local branches (* = current)
+  git branch
+
+  # List with last commit
+  git branch -v
+
+  # List all (local + remote)
+  git branch -a
+
+  # List remote branches only
+  git branch -r
+
+  # List merged branches
+  git branch --merged
+
+  # List unmerged branches
+  git branch --no-merged
+  ```
+
+  ### Deleting Branches
+
+  ```bash
+  # Delete merged branch
+  git branch -d feature/completed
+
+  # Force delete (unmerged branch)
+  git branch -D feature/abandoned
+
+  # Delete remote branch
+  git push origin --delete feature/completed
+  git push origin :feature/completed  # old syntax
+  ```
+
+  ## Branch Naming Conventions
+
+  ### Common Patterns
+
+  ```bash
+  # Feature branches
+  feature/user-authentication
+  feature/payment-integration
+  feat/add-dark-mode
+
+  # Bug fix branches
+  bugfix/fix-login-error
+  fix/correct-calculation
+  hotfix/security-patch
+
+  # Release branches
+  release/v1.2.0
+  release/2024-01-sprint
+
+  # Development branches
+  develop
+  dev
+  staging
+
+  # Personal branches
+  username/experiment-new-ui
+  jdoe/refactor-api
+  ```
+
+  ### Best Practices
+
+  1. **Use descriptive names**: `feature/add-user-profile` not `feature/new-stuff`
+  2. **Use separators**: Kebab-case or slashes
+  3. **Include ticket numbers**: `feature/JIRA-123-add-export`
+  4. **Be consistent**: Team-wide conventions
+
+  ## Popular Git Workflows
+
+  ### 1. GitHub Flow (Simple, Modern)
+
+  **Perfect for:** Continuous deployment, web apps
+
+  ```
+  main (production)
+    ↓
+  feature branch → Pull Request → Review → Merge → Deploy
+  ```
+
+  **Steps:**
+
+  ```bash
+  # 1. Create feature branch from main
+  git checkout main
+  git pull origin main
+  git checkout -b feature/add-comments
+
+  # 2. Work and commit
+  git add .
+  git commit -m "Add comment system"
+
+  # 3. Push to remote
+  git push -u origin feature/add-comments
+
+  # 4. Create Pull Request on GitHub
+
+  # 5. After review and merge, delete branch
+  git checkout main
+  git pull origin main
+  git branch -d feature/add-comments
+  ```
+
+  **Rules:**
+  - `main` is always deployable
+  - Branch off main for any work
+  - Merge only through reviewed Pull Requests
+  - Deploy immediately after merge
+
+  ### 2. Git Flow (Traditional, Complex)
+
+  **Perfect for:** Scheduled releases, desktop software
+
+  ```
+  main (production releases)
+    ↓
+  develop (integration branch)
+    ↓
+  feature/* (features)
+  release/* (release preparation)
+  hotfix/* (emergency fixes to main)
+  ```
+
+  **Branches:**
+
+  ```bash
+  # Long-lived branches
+  main      # Production-ready code
+  develop   # Next release development
+
+  # Short-lived branches
+  feature/user-auth    # New features (from develop)
+  release/v1.2.0       # Release prep (from develop)
+  hotfix/critical-bug  # Production fixes (from main)
+  ```
+
+  **Workflow:**
+
+  ```bash
+  # Start new feature
+  git checkout develop
+  git checkout -b feature/new-dashboard
+
+  # Work on feature
+  git commit -m "Implement dashboard layout"
+  git commit -m "Add dashboard widgets"
+
+  # Finish feature - merge to develop
+  git checkout develop
+  git merge --no-ff feature/new-dashboard
+  git branch -d feature/new-dashboard
+  git push origin develop
+
+  # Create release branch
+  git checkout -b release/v1.2.0 develop
+  # Fix bugs, update version numbers
+  git commit -m "Bump version to 1.2.0"
+
+  # Finish release - merge to main and develop
+  git checkout main
+  git merge --no-ff release/v1.2.0
+  git tag -a v1.2.0 -m "Release version 1.2.0"
+
+  git checkout develop
+  git merge --no-ff release/v1.2.0
+  git branch -d release/v1.2.0
+
+  # Hotfix for production bug
+  git checkout -b hotfix/security-fix main
+  git commit -m "Fix security vulnerability"
+
+  # Merge to both main and develop
+  git checkout main
+  git merge --no-ff hotfix/security-fix
+  git tag -a v1.2.1 -m "Hotfix: security patch"
+
+  git checkout develop
+  git merge --no-ff hotfix/security-fix
+  git branch -d hotfix/security-fix
+  ```
+
+  ### 3. Trunk-Based Development
+
+  **Perfect for:** CI/CD, rapid deployment, Google/Facebook style
+
+  ```
+  main (trunk)
+    ↓
+  short-lived branches (< 1 day) → merge frequently
+  ```
+
+  **Rules:**
+  - Very short-lived feature branches (hours, not days)
+  - Merge to main multiple times per day
+  - Feature flags for incomplete features
+  - Requires excellent CI/CD
+
+  ```bash
+  # Morning: Create branch
+  git checkout -b mini-feature
+
+  # Make small change
+  git commit -m "Add validation to form"
+
+  # Afternoon: Merge back
+  git checkout main
+  git pull origin main
+  git merge mini-feature
+  git push origin main
+  git branch -d mini-feature
+  ```
+
+  ## Branch Management Tips
+
+  ### Keep Branches Up-to-Date
+
+  ```bash
+  # Update feature branch with latest main
+  git checkout feature/my-feature
+  git fetch origin
+  git rebase origin/main  # or merge
+
+  # Alternative: merge strategy
+  git merge origin/main
+  ```
+
+  ### Find Which Branches Contain a Commit
+
+  ```bash
+  # Find branches containing commit
+  git branch --contains abc123
+
+  # Find branches that don't contain commit
+  git branch --no-contains abc123
+  ```
+
+  ### Rename Branch
+
+  ```bash
+  # Rename current branch
+  git branch -m new-name
+
+  # Rename other branch
+  git branch -m old-name new-name
+
+  # Update remote after rename
+  git push origin -u new-name
+  git push origin --delete old-name
+  ```
+
+  ### Track Remote Branches
+
+  ```bash
+  # Set upstream for current branch
+  git branch -u origin/feature-branch
+
+  # Push and set upstream
+  git push -u origin feature-branch
+
+  # See tracking relationships
+  git branch -vv
+  ```
+
+  ## Real-World Scenarios
+
+  ### Scenario 1: Long-Running Feature Branch
+
+  ```bash
+  # Day 1: Create feature branch
+  git checkout -b feature/new-dashboard main
+
+  # Day 3: Main has moved ahead, sync your branch
+  git checkout feature/new-dashboard
+  git fetch origin
+  git rebase origin/main  # replay your commits on top of main
+
+  # Day 5: Feature complete, ready to merge
+  git checkout main
+  git pull origin main
+  git merge --no-ff feature/new-dashboard
+  git push origin main
+  ```
+
+  ### Scenario 2: Multiple Team Members on Same Feature
+
+  ```bash
+  # Create shared feature branch
+  git checkout -b feature/api-redesign main
+  git push -u origin feature/api-redesign
+
+  # Team member 1 works
+  git checkout feature/api-redesign
+  git pull origin feature/api-redesign
+  # make changes
+  git push origin feature/api-redesign
+
+  # Team member 2 works (always pull first!)
+  git checkout feature/api-redesign
+  git pull origin feature/api-redesign  # get teammate's changes
+  # make changes
+  git push origin feature/api-redesign
+  ```
+
+  ### Scenario 3: Oops, Committed to Wrong Branch
+
+  ```bash
+  # You're on main, should be on feature branch
+  git branch feature/accidental-commit  # create branch with current state
+  git reset --hard HEAD~1  # undo commit on main
+  git checkout feature/accidental-commit  # switch to feature branch
+  ```
+
+  ## Best Practices
+
+  1. **Delete merged branches**: Clean up regularly
+  2. **Short-lived branches**: Merge frequently (days, not months)
+  3. **Pull before push**: Stay in sync
+  4. **Rebase local branches**: Keep history clean (before pushing)
+  5. **Never rebase public branches**: After pushing, use merge
+  6. **One feature per branch**: Keep changes focused
+  7. **Name branches descriptively**: Easy to understand purpose
+
+  ## Common Mistakes to Avoid
+
+  ❌ **Working directly on main**
+  ✅ Always create a branch
+
+  ❌ **Long-lived branches** (weeks/months)
+  ✅ Merge frequently, stay up-to-date
+
+  ❌ **Forgetting to pull before creating branch**
+  ✅ `git pull origin main` then create branch
+
+  ❌ **Merging without review**
+  ✅ Use Pull Requests for code review
+
+  ❌ **Force pushing to shared branches**
+  ✅ Never force push to main or shared feature branches
+
+  **Next**: We'll learn about merging branches and resolving conflicts!
+
+exercises:
+  - type: mcq
+    sequence_order: 1
+    question: "What is the difference between GitHub Flow and Git Flow?"
+    options:
+      - "They are the same workflow"
+      - "GitHub Flow is simpler with only main branch and feature branches; Git Flow has multiple long-lived branches (main, develop) and structured release process"
+      - "GitHub Flow is for small teams, Git Flow is for large teams"
+      - "Git Flow is deprecated and shouldn't be used"
+    correct_answer: "GitHub Flow is simpler with only main branch and feature branches; Git Flow has multiple long-lived branches (main, develop) and structured release process"
+    explanation: "GitHub Flow and Git Flow are different branching strategies for different needs. GitHub Flow (Simple, Modern): (1) Single long-lived branch: main (always deployable); (2) Feature branches: created from main, merged via Pull Request; (3) Deployment: immediately after merge to main; (4) Best for: continuous deployment, web apps, SaaS. Workflow: main → feature/add-login → Pull Request → Review → Merge → Deploy. Advantages: simple, fast, fewer merge conflicts. Example: startup shipping features daily. Git Flow (Traditional, Complex): (1) Two long-lived branches: main (production releases only), develop (integration branch); (2) Supporting branches: feature/* (new features from develop), release/* (release preparation), hotfix/* (emergency production fixes from main); (3) Deployment: scheduled releases from release branches; (4) Best for: scheduled releases, desktop software, mobile apps. Workflow: develop → feature/new-ui → merge to develop → release/v2.0 → merge to main + tag → deploy. Advantages: structured, supports multiple versions, clear release process. Example: enterprise software with quarterly releases. When to use: GitHub Flow for continuous deployment; Git Flow for scheduled releases. Modern trend: most teams use GitHub Flow or Trunk-Based (even simpler). Git Flow still valid for products needing long-term support for multiple versions."
+    require_pass: true
+
+  - type: mcq
+    sequence_order: 2
+    question: "Why should feature branches be short-lived (days, not weeks/months)?"
+    options:
+      - "Git has a limit on branch lifetime"
+      - "Short-lived branches reduce merge conflicts, stay up-to-date with main, and enable faster feedback through frequent integration"
+      - "Short branches use less disk space"
+      - "It's just a convention with no real benefit"
+    correct_answer: "Short-lived branches reduce merge conflicts, stay up-to-date with main, and enable faster feedback through frequent integration"
+    explanation: "Short-lived feature branches are a key DevOps best practice. Problems with long-lived branches: (1) Merge conflicts: main branch moves ahead significantly while you work. Example: 2-month feature branch, main has 200 commits. When merging, massive conflicts in dozens of files. Resolution takes days, high risk of bugs. (2) Integration risk: branch works in isolation but breaks when merged with other features. Example: teammate refactored authentication, your branch uses old API. Discover incompatibility only at merge. (3) Feedback delay: code review happens months after writing, hard to remember context. (4) Deployment risk: large merges = large deployments = higher failure risk. (5) Stale code: spending time on code that may be rewritten or deprecated. Benefits of short-lived branches (1-3 days): (1) Minimal conflicts: main hasn't diverged much, easy merges. Example: 2-day branch, main has 10 commits, conflicts are trivial. (2) Continuous integration: code integrates frequently, issues found early. (3) Fast feedback: code reviewed while fresh in mind. (4) Lower risk: small changes = small deployments = easier rollbacks. (5) Motivation: seeing features merge quickly boosts morale. Best practices: (1) Break large features into smaller tasks; (2) Use feature flags for incomplete features; (3) Merge daily if possible; (4) Keep branches under 1 week. Real-world: Google/Facebook: trunk-based development (merge multiple times per day). Goal: ship small changes frequently, not big releases rarely."
+    require_pass: true
+
+  - type: mcq
+    sequence_order: 3
+    question: "What command creates a new branch AND switches to it in one step?"
+    options:
+      - "git branch -c feature/new && git switch feature/new"
+      - "git checkout -b feature/new (or git switch -c feature/new)"
+      - "git create feature/new"
+      - "git branch feature/new --switch"
+    correct_answer: "git checkout -b feature/new (or git switch -c feature/new)"
+    explanation: "Creating and switching to a new branch is a common operation with two syntaxes. git checkout -b <branch-name> (Traditional): Creates new branch and switches to it. Example: git checkout -b feature/user-auth creates feature/user-auth from current commit and checks it out. Flags: -b means 'create branch'. Full command: git checkout -b new-branch existing-branch (create from specific branch). Usage: git checkout -b hotfix/bug main (create from main). git switch -c <branch-name> (Modern, Git 2.23+): Same functionality, clearer intent. -c means 'create'. Example: git switch -c feature/dashboard. Why new command: git checkout does too many things (switch branches, restore files, create branches), confusing for beginners. Git 2.23 split it: git switch (for branches), git restore (for files). Both valid today: checkout for backward compatibility, switch for clarity. Comparison of alternatives: (1) git branch feature/new (creates but doesn't switch - need git checkout feature/new separately). (2) git branch -c (incorrect, -c is for switch, not branch). (3) git create (doesn't exist). (4) git branch --switch (doesn't exist). Workflow example: # Traditional: git checkout -b feature/api; make changes; commit. # Modern: git switch -c feature/api; make changes; commit. Pro tip: create from specific commit: git checkout -b fix/bug abc123 or git switch -c fix/bug abc123. Recommendation: use git switch -c for modern codebases, git checkout -b if team uses older Git or prefers traditional syntax."
+    require_pass: true

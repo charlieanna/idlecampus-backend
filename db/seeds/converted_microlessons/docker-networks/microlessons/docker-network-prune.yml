@@ -1,0 +1,89 @@
+slug: docker-network-prune
+title: Docker Network Prune
+difficulty: easy
+sequence_order: 7
+estimated_minutes: 2
+key_concepts:
+- networking
+- docker-network
+- cleanup
+- prune
+- maintenance
+prerequisites: []
+content_md: '# Docker Network Prune 🚀
+
+
+  Remove all unused Docker networks in one command
+
+
+  ## Syntax/Command
+
+
+  ```bash
+
+  docker network prune
+
+  ```
+
+
+  ## Example
+
+
+  ```bash
+
+  docker network prune -f
+
+  ```
+
+
+  ## Key Points
+
+
+  - Prune networks: docker network prune
+
+
+  - Skip confirmation: -f flag
+
+
+  - Filter by age: --filter until=<time>'
+exercises:
+- type: terminal
+  problem_statement: Remove all unused Docker networks in one command to clean up resources
+  expected_output: Confirmation message showing deleted networks or message that no networks were removed
+  language: bash
+  starter_code: "# Prune unused networks\n"
+  sequence_order: 1
+  command: docker network prune
+  description: Remove all unused networks to reclaim resources
+  hints:
+  - 'Prune networks: docker network prune'
+  - 'Skip confirmation: -f flag'
+  - 'Filter by age: --filter until=<time>'
+  validation:
+    must_not_include:
+    - Error
+    - 'panic:'
+  timeout_sec: 60
+  require_pass: true
+- type: sandbox
+  sequence_order: 99
+  hints:
+  - Run under CPU pressure to surface leaks or races
+  - Keep commands idempotent in CI
+  validation:
+    must_not_include:
+    - Error
+    - 'panic:'
+  timeout_sec: 60
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What does docker network prune remove?
+  options:
+  - Only custom networks that are not currently used by any containers
+  - All custom networks regardless of usage
+  - All networks including default networks (bridge, host, none)
+  - Only networks created more than 1 day ago
+  correct_answer: Only custom networks that are not currently used by any containers
+  explanation: "docker network prune removes only user-created networks that have no containers connected to them. It never removes the default networks (bridge, host, none) and won't remove networks that are in use. This makes it safe to run regularly for cleanup without disrupting running containers."
+  require_pass: true

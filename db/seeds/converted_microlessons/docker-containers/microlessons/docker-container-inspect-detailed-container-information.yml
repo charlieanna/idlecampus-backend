@@ -1,0 +1,84 @@
+slug: docker-container-inspect-detailed-container-information
+title: 'Docker Container Inspect: Detailed Container Information'
+difficulty: medium
+sequence_order: 17
+estimated_minutes: 2
+key_concepts:
+- containers
+- docker-inspect
+- configuration
+- debugging
+prerequisites: []
+content_md: '# Docker Container Inspect: Detailed Container Information 🚀
+
+
+  View complete container configuration and state in JSON format.
+
+
+  ## Syntax/Command
+
+
+  ```bash
+
+  docker container inspect my-container
+
+  ```
+
+
+  ## Example
+
+
+  ```bash
+
+  docker container inspect --format="{{.State.Status}}" container
+
+  ```
+
+
+  ## Key Points
+
+
+  - Inspect: docker container inspect <name>
+
+
+  - Format: --format="{{.NetworkSettings.IPAddress}}"'
+exercises:
+- type: terminal
+  problem_statement: Inspect detailed configuration of a container named 'my-container' and view its JSON output
+  expected_output: JSON formatted container details
+  language: bash
+  starter_code: "# Inspect container configuration\n"
+  sequence_order: 1
+  command: docker container inspect my-container
+  description: Extract specific configuration details using inspect
+  hints:
+  - 'Inspect: docker container inspect <name>'
+  - 'Format: --format="{{.NetworkSettings.IPAddress}}"'
+  validation:
+    must_not_include:
+    - Error
+    - 'panic:'
+  timeout_sec: 60
+  require_pass: true
+- type: sandbox
+  sequence_order: 99
+  hints:
+  - Run under CPU pressure to surface leaks or races
+  - Keep commands idempotent in CI
+  validation:
+    must_not_include:
+    - Error
+    - 'panic:'
+  timeout_sec: 60
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What format does docker inspect output?
+  options:
+  - JSON format with complete container configuration
+  - YAML format for easy reading
+  - Plain text table format
+  - XML format for compatibility
+  correct_answer: JSON format with complete container configuration
+  explanation: "docker inspect outputs detailed information in JSON format, allowing you to parse and extract specific fields using tools like jq or --format templates."
+  require_pass: true

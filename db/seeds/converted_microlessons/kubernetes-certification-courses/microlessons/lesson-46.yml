@@ -1,0 +1,44 @@
+slug: lesson-46
+title: Lesson 46
+difficulty: easy
+sequence_order: 46
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Health Checks: Liveness, Readiness, Startup\n\
+  \n    - livenessProbe: restarts unhealthy containers\n    - readinessProbe: controls\
+  \ traffic gating\n    - startupProbe: delays liveness until startup completes"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What is the key difference between livenessProbe and readinessProbe?
+  options:
+  - LivenessProbe checks if a container is alive and restarts it if not; readinessProbe checks if it's ready for traffic and removes it from service if not
+  - LivenessProbe runs during startup only; readinessProbe runs continuously
+  - LivenessProbe is for HTTP endpoints; readinessProbe is for TCP connections
+  - There is no difference, they are aliases
+  correct_answer: LivenessProbe checks if a container is alive and restarts it if not; readinessProbe checks if it's ready for traffic and removes it from service if not
+  explanation: "LivenessProbe and readinessProbe serve different purposes. A livenessProbe determines if a container is alive - if it fails, Kubernetes kills and restarts the container. Use it to detect deadlocks or hung processes that need a restart to recover. A readinessProbe determines if a container is ready to receive traffic - if it fails, the pod is removed from Service endpoints (no traffic sent) but the container isn't restarted. Use it when your app needs time to initialize or during temporary overload when it shouldn't receive more requests. Both can use HTTP GET, TCP socket, or exec probes. A common pattern is to use livenessProbe to restart frozen apps and readinessProbe to handle startup delays and graceful degradation. Misusing livenessProbe (like checking external dependencies) can cause cascade failures."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: When should you use a startupProbe instead of just a livenessProbe?
+  options:
+  - When the container needs to download large files
+  - When the container has a slow startup that would otherwise trigger liveness probe failures
+  - When the container runs in a multi-container pod
+  - When using init containers
+  correct_answer: When the container has a slow startup that would otherwise trigger liveness probe failures
+  explanation: "StartupProbe is designed for containers that have slow initialization times. The problem with using only livenessProbe for slow-starting apps is that you must set long initialDelaySeconds and failureThreshold values to accommodate startup, which then delays detection of actual failures after the app is running. StartupProbe solves this by running during startup until it succeeds, disabling liveness and readiness probes during this time. Once startupProbe succeeds, it stops and liveness/readiness probes take over with their normal, more aggressive settings. For example, a startupProbe might allow 300 seconds for startup (failureThreshold: 30, periodSeconds: 10), while livenessProbe can then quickly detect failures (failureThreshold: 3, periodSeconds: 10). This gives apps time to start while maintaining fast failure detection once running. Legacy applications or those with extensive initialization benefit most from startupProbe."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: Which probe mechanism would you use to check if a database connection pool is ready?
+  options:
+  - TCP socket probe checking the database port
+  - HTTP GET probe with a custom health endpoint
+  - Exec probe running a database query
+  - LivenessProbe only
+  correct_answer: HTTP GET probe with a custom health endpoint
+  explanation: "For checking application-level readiness like database connection pool status, the best approach is an HTTP GET probe pointing to a custom health endpoint that your application exposes (e.g., /healthz or /ready). This endpoint can perform application-specific checks including verifying database connectivity, checking connection pool health, validating cache availability, or checking dependencies. A TCP socket probe only confirms the port is open, not that the application or its dependencies are actually ready. An exec probe could work (running a query) but adds overhead and complexity - it's better for the application to expose a health endpoint. The application knows best about its own readiness state. This HTTP endpoint should be lightweight (sub-second response) and specifically check readiness concerns, not general health. Many frameworks (Spring Boot, ASP.NET Core) have built-in health check infrastructure for this purpose."
+  require_pass: true

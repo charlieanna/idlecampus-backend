@@ -1,0 +1,247 @@
+slug: pressure-and-pascals-law
+title: "Pressure and Pascal's Law"
+difficulty: intermediate
+sequence_order: 1
+estimated_minutes: 16
+key_concepts:
+- pressure
+- pascals-law
+- hydraulic-systems
+- atmospheric-pressure
+- gauge-pressure
+prerequisites: []
+content_md: |
+  # Pressure and Pascal's Law
+
+  ## Pressure Definition
+
+  **Force per unit area** acting perpendicular to surface.
+
+  ```
+  P = F/A
+
+  Unit: Pascal (Pa) = N/m² = kg/(m·s²)
+  ```
+
+  ### Other Units:
+  - 1 atm = 101325 Pa ≈ 10⁵ Pa
+  - 1 bar = 10⁵ Pa
+  - 1 torr = 133.3 Pa
+  - 1 mm Hg = 133.3 Pa
+
+  ## Pressure in Fluids
+
+  ### Key Properties:
+  1. **Acts in all directions** equally at a point
+  2. **Increases with depth**
+  3. **Acts perpendicular** to any surface
+  4. **Independent of shape** of container
+
+  ### Pressure at Depth:
+  ```
+  P = P₀ + ρgh
+
+  P₀ = atmospheric pressure (at surface)
+  ρ = fluid density
+  g = acceleration due to gravity
+  h = depth below surface
+  ```
+
+  ## Atmospheric Pressure
+
+  **Pressure exerted by atmosphere:**
+  ```
+  P_atm = 1.013 × 10⁵ Pa = 760 mm Hg = 10.3 m of water
+
+  Height of atmosphere if uniform density: ~8 km
+  ```
+
+  ### Torricelli's Experiment:
+  Mercury column of 76 cm (760 mm) balances atmospheric pressure.
+  ```
+  P_atm = ρ_Hg × g × h = 13600 × 10 × 0.76 ≈ 10⁵ Pa
+  ```
+
+  ## Types of Pressure
+
+  ### 1. Absolute Pressure:
+  ```
+  P_abs = P_atm + P_gauge
+
+  Total pressure including atmospheric
+  ```
+
+  ### 2. Gauge Pressure:
+  ```
+  P_gauge = P_abs - P_atm
+
+  Pressure above atmospheric (can be negative)
+  ```
+
+  ### 3. Vacuum Pressure:
+  ```
+  P_vacuum = P_atm - P_abs
+
+  When absolute pressure < atmospheric
+  ```
+
+  ## Pascal's Law
+
+  **Statement:** Pressure applied to enclosed fluid is transmitted undiminished to every point in the fluid.
+
+  ```
+  ΔP₁ = ΔP₂ (at all points)
+
+  F₁/A₁ = F₂/A₂ (hydraulic system)
+  ```
+
+  ### Hydraulic Lift:
+  ```
+  F₂ = F₁ × (A₂/A₁)
+
+  Mechanical advantage = A₂/A₁
+  ```
+
+  **Volume conservation:**
+  ```
+  A₁d₁ = A₂d₂
+
+  d₁/d₂ = A₂/A₁
+  ```
+
+  Work done is same on both sides (energy conservation).
+
+  ## Hydraulic Applications
+
+  ### 1. Hydraulic Lift:
+  - Small force on small piston
+  - Large force on large piston
+  - Used in car lifts, jacks
+
+  ### 2. Hydraulic Brakes:
+  - Uniform pressure to all wheels
+  - Master cylinder to wheel cylinders
+
+  ### 3. Hydraulic Press:
+  - Compress materials with large force
+  - Manufacturing applications
+
+  ## Pressure Measurement
+
+  ### 1. Manometer (U-tube):
+  ```
+  P_gas = P_atm + ρgh (open arm manometer)
+  P_gas = P_atm - ρgh (if gas side higher)
+  ```
+
+  ### 2. Barometer:
+  ```
+  P_atm = ρ_Hg × g × h
+  ```
+
+  ### 3. Bourdon Gauge:
+  - Mechanical device for high pressures
+  - Measures gauge pressure directly
+
+  ## Pressure in Accelerating Fluids
+
+  ### Horizontal Acceleration (a):
+  ```
+  dP/dx = -ρa
+
+  Free surface inclined at angle: tan θ = a/g
+  ```
+
+  ### Vertical Acceleration:
+  ```
+  P = ρ(g ± a)h
+
+  '+' for upward acceleration
+  '-' for downward acceleration
+  ```
+
+  **Free fall: Effective g = 0**, pressure same everywhere.
+
+  ## Numerical Examples
+
+  **Example 1:** Hydraulic lift has pistons of diameter 10 cm and 1 m. Force needed to lift 1000 kg car?
+
+  **Solution:**
+  ```
+  A₁ = π(0.05)² = 7.85×10⁻³ m²
+  A₂ = π(0.5)² = 0.785 m²
+
+  F₂ = mg = 1000 × 10 = 10000 N
+  F₁/A₁ = F₂/A₂
+  F₁ = F₂(A₁/A₂) = 10000 × (7.85×10⁻³/0.785)
+  F₁ = 100 N
+
+  Only 100 N needed to lift 10000 N!
+  ```
+
+  **Example 2:** Pressure at bottom of 10 m deep water tank (ρ = 1000 kg/m³).
+
+  **Solution:**
+  ```
+  P = P_atm + ρgh
+  P = 10⁵ + 1000 × 10 × 10
+  P = 10⁵ + 10⁵ = 2 × 10⁵ Pa = 2 atm
+
+  At 10 m depth, pressure doubles!
+  ```
+
+  **Example 3:** Open U-tube manometer has mercury. Gas pressure if mercury in gas arm is 5 cm higher?
+
+  **Solution:**
+  ```
+  P_gas = P_atm - ρ_Hg × g × h
+  P_gas = 101325 - 13600 × 10 × 0.05
+  P_gas = 101325 - 6800
+  P_gas ≈ 94525 Pa ≈ 0.93 atm
+
+  Gas pressure below atmospheric (partial vacuum)
+  ```
+
+  ## JEE Key Points
+
+  1. **P = F/A** (scalar quantity)
+  2. **P = P₀ + ρgh** (pressure at depth)
+  3. **Pascal's law**: Pressure transmitted equally
+  4. **Hydraulic advantage** = A₂/A₁
+  5. **P_abs = P_atm + P_gauge**
+  6. **1 atm ≈ 10⁵ Pa = 760 mm Hg = 10.3 m water**
+
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: "A hydraulic lift has piston areas in ratio 1:100. If 10 N force is applied on smaller piston, force on larger piston is:"
+  options:
+  - "10 N"
+  - "100 N"
+  - "1000 N"
+  - "0.1 N"
+  correct_answer: "1000 N"
+  explanation: "By Pascal's law: F₁/A₁ = F₂/A₂. Given A₂/A₁ = 100 and F₁ = 10 N. Therefore F₂ = F₁(A₂/A₁) = 10 × 100 = 1000 N. This 100× force multiplication is mechanical advantage of hydraulic systems. Note: distance moves inversely - large piston moves only 1/100 the distance. Work done: F₁d₁ = F₂d₂, so energy is conserved. This principle enables car lifts, hydraulic jacks, and braking systems. The key insight is pressure, not force, is transmitted equally."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: "Pressure at depth of 1 km in ocean (ρ = 1030 kg/m³) is approximately:"
+  options:
+  - "10 atm"
+  - "100 atm"
+  - "103 atm"
+  - "1030 atm"
+  correct_answer: "103 atm"
+  explanation: "P = P_atm + ρgh = 1 atm + (1030 × 10 × 1000) Pa = 10⁵ + 1.03×10⁷ Pa ≈ 1.03×10⁷ Pa = 103 atm. At 1 km depth, pressure is about 100 atmospheres! This immense pressure is why deep sea exploration requires specially designed submarines. At deepest ocean (Mariana Trench, ~11 km), pressure exceeds 1000 atm. Fish at such depths have special adaptations - their bodies maintain internal pressure equal to external, preventing compression."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: "A container accelerates upward with acceleration g. Pressure at depth h in liquid inside is:"
+  options:
+  - "ρgh"
+  - "2ρgh"
+  - "0"
+  - "ρgh/2"
+  correct_answer: "2ρgh"
+  explanation: "When container accelerates upward with 'a', effective gravity becomes (g + a). Here a = g, so g_eff = g + g = 2g. Pressure P = ρg_eff h = ρ(2g)h = 2ρgh. The liquid experiences pseudo force downward (in accelerating frame), adding to gravity. Conversely, in free fall (a = g downward), g_eff = g - g = 0, and pressure is same everywhere - fluid behaves as if weightless! This is why astronauts can drink from any orientation in space. Note: Only gauge pressure is 2ρgh; add atmospheric pressure for absolute."
+  require_pass: true

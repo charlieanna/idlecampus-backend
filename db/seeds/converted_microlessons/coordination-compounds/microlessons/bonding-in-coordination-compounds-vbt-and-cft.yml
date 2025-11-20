@@ -1,0 +1,133 @@
+slug: bonding-in-coordination-compounds-vbt-and-cft
+title: Bonding in Coordination Compounds - VBT and CFT
+difficulty: easy
+sequence_order: 6
+estimated_minutes: 2
+key_concepts:
+- Valence Bond Theory
+- Crystal Field Theory
+- Hybridization
+- d-orbital splitting
+- CFSE
+- Magnetic properties
+prerequisites: []
+content_md: "# Bonding in Coordination Compounds - VBT and CFT \U0001F680\n\n# Bonding\
+  \ Theories in Coordination Compounds\n\n    ## I. Valence Bond Theory (VBT)\n\n\
+  \    **Developed by:** Linus Pauling\n\n    ### Basic Postulates\n\n    1. **Metal\
+  \ uses vacant orbitals** for bonding\n    2. **Ligands donate electron pairs** (coordinate\
+  \ covalent bonds)\n    3. **Hybridization** determines geometry\n    4. **Magnetic\
+  \ properties** explained by unpaired electrons\n\n    ### Hybridization and Geometry\n\
+  \n    | Coordination Number | Hybridization | Geometry | Example |\n    |---------------------|---------------|----------|---------|\n\
+  \    | 4 | sp³ | Tetrahedral | [NiCl₄]²⁻ |\n    | 4 | dsp² | Square planar | [Ni(CN)₄]²⁻\
+  \ |\n    | 5 | sp³d | Trigonal bipyramidal | [Fe(CO)₅] |\n    | 6 | sp³d² | Octahedral\
+  \ | [CoF₆]³⁻ |\n    | 6 | d²sp³ | Octahedral | [Co(NH₃)₆]³⁺ |\n\n    ### Inner Orbital\
+  \ vs Outer Orbital Complexes\n\n    **Inner orbital (low spin):**\n    - Uses (n-1)d\
+  \ orbitals\n    - d²sp³ hybridization\n    - Strong field ligands\n    - Paired\
+  \ electrons → diamagnetic or less paramagnetic\n\n    **Outer orbital (high spin):**\n\
+  \    - Uses nd orbitals\n    - sp³d² hybridization\n    - Weak field ligands\n \
+  \   - Maximum unpaired electrons → paramagnetic\n\n    ### Examples\n\n    ####\
+  \ [Fe(CN)₆]⁴⁻ (Low spin, d²sp³)\n\n    **Fe²⁺:** 3d⁶ → [Ar] 3d⁶\n\n    Before bonding:\
+  \ ↑↓ ↑↓ ↑ ↑ (4 unpaired)\n\n    CN⁻ is **strong field ligand** → pairing occurs\n\
+  \n    After pairing: ↑↓ ↑↓ ↑↓ (0 unpaired)\n\n    ```\n    3d:      ↑↓ ↑↓ ↑↓\n \
+  \   4s: (empty) 4p: (empty)(empty)(empty)\n\n    d²sp³ hybridization → 6 hybrid\
+  \ orbitals\n    ```\n\n    **Result:** Diamagnetic, inner orbital complex\n\n  \
+  \  #### [FeF₆]⁴⁻ (High spin, sp³d²)\n\n    **Fe²⁺:** 3d⁶\n\n    F⁻ is **weak field\
+  \ ligand** → no pairing\n\n    ```\n    3d: ↑↓ ↑ ↑ ↑ ↑ (4 unpaired)\n    4s: (empty)\
+  \ 4p: (empty)(empty)(empty) 4d: (empty)(empty)\n\n    sp³d² hybridization → 6 hybrid\
+  \ orbitals\n    ```\n\n    **Result:** Paramagnetic (4 unpaired), outer orbital\
+  \ complex\n\n    ### Limitations of VBT\n\n    1. No quantitative explanation of\
+  \ magnetic properties\n    2. Cannot explain color of complexes\n    3. No explanation\
+  \ of thermodynamic/kinetic stability\n    4. Doesn't explain spectrochemical series\n\
+  \n    ---\n\n    ## II. Crystal Field Theory (CFT)\n\n    **Developed by:** Hans\
+  \ Bethe and John van Vleck\n\n    ### Basic Assumptions\n\n    1. **Ionic interaction**\
+  \ between metal and ligands\n    2. **Ligands are point charges** (anions) or dipoles\
+  \ (neutral)\n    3. **d-orbital degeneracy removed** by electrostatic field\n  \
+  \  4. **Energy changes** explain color, magnetism, stability\n\n    ### d-Orbital\
+  \ Splitting\n\n    #### Octahedral Complexes\n\n    **Free metal ion:** 5 d-orbitals\
+  \ degenerate (same energy)\n\n    **In octahedral field:**\n    - Ligands approach\
+  \ along axes\n    - Orbitals along axes (dz², dx²-y²) → higher energy → **eg**\n\
+  \    - Orbitals between axes (dxy, dyz, dxz) → lower energy → **t2g**\n\n    **Energy\
+  \ gap:** Δₒ (crystal field splitting energy)\n\n    ```\n              eg  ↑  ↑\
+  \   (+0.6Δₒ each)\n\n    Average ----------------\n\n              t2g ↑  ↑  ↑ \
+  \ (-0.4Δₒ each)\n    ```\n\n    **Splitting:**\n    - eg orbitals: +0.6Δₒ above\
+  \ average\n    - t2g orbitals: -0.4Δₒ below average\n    - Total: 3(-0.4Δₒ) + 2(+0.6Δₒ)\
+  \ = 0\n\n    #### Strong Field vs Weak Field\n\n    **Weak field ligands (Δₒ < Pairing\
+  \ Energy):**\n    - High spin configuration\n    - Maximum unpaired electrons\n\
+  \    - Example: F⁻, Cl⁻, Br⁻, I⁻\n\n    **Strong field ligands (Δₒ > Pairing Energy):**\n\
+  \    - Low spin configuration\n    - Electron pairing occurs\n    - Example: CN⁻,\
+  \ CO, NH₃, en\n\n    ### Spectrochemical Series\n\n    **Increasing Δₒ (field strength):**\n\
+  \n    I⁻ < Br⁻ < SCN⁻ < Cl⁻ < F⁻ < OH⁻ < H₂O < NCS⁻ < NH₃ < en < CN⁻ < CO\n\n  \
+  \  **Weak field ← → Strong field**\n\n    ### Electronic Configuration in Octahedral\
+  \ Field\n\n    **d⁴ to d⁷:** Can be high spin or low spin depending on ligand\n\n\
+  \    **Examples:**\n\n    **Fe²⁺ (d⁶) with CN⁻ (strong field):**\n    ```\n    eg:\
+  \  ↑↓  —\n    t2g: ↑↓ ↑↓ ↑↓\n    Low spin, 0 unpaired electrons\n    ```\n\n   \
+  \ **Fe²⁺ (d⁶) with F⁻ (weak field):**\n    ```\n    eg:  ↑  ↑\n    t2g: ↑↓ ↑  ↑\n\
+  \    High spin, 4 unpaired electrons\n    ```\n\n    ### Crystal Field Stabilization\
+  \ Energy (CFSE)\n\n    **CFSE** = (-0.4 × nₜ₂g + 0.6 × nₑg) Δₒ + Pairing energy\n\
+  \n    **Examples:**\n\n    **[Fe(CN)₆]⁴⁻ (d⁶, low spin):**\n    ```\n    CFSE =\
+  \ (-0.4 × 6 + 0.6 × 0)Δₒ + 2P\n         = -2.4Δₒ + 2P\n    ```\n\n    **[FeF₆]⁴⁻\
+  \ (d⁶, high spin):**\n    ```\n    CFSE = (-0.4 × 4 + 0.6 × 2)Δₒ + 0\n         =\
+  \ -0.4Δₒ\n    ```\n\n    ### Tetrahedral Complexes\n\n    **d-orbital splitting:**\n\
+  \    - Smaller splitting: Δₜ ≈ (4/9)Δₒ\n    - Reverse order: t₂ higher, e lower\n\
+  \    - Always high spin (small Δₜ)\n\n    ```\n    t₂  ↑  ↑  ↑   (+0.4Δₜ each)\n\
+  \n    Average --------\n\n    e   ↑  ↑       (-0.6Δₜ each)\n    ```\n\n    ### Square\
+  \ Planar Complexes\n\n    - Derived from octahedral by removing two trans ligands\n\
+  \    - d⁸ configuration common (Ni²⁺, Pd²⁺, Pt²⁺)\n    - Strong field ligands required\n\
+  \    - Usually low spin\n\n    **Example: [Ni(CN)₄]²⁻**\n    - Ni²⁺: d⁸\n    - dsp²\
+  \ hybridization\n    - Diamagnetic (all paired)\n\n    ---\n\n    ## Color in Coordination\
+  \ Compounds\n\n    ### Origin of Color\n\n    **d-d transitions:**\n    - Electron\
+  \ excited from t2g to eg\n    - Energy absorbed = Δₒ\n    - Complementary color\
+  \ observed\n\n    **Example:**\n    - [Ti(H₂O)₆]³⁺ (d¹): Purple (absorbs yellow-green)\n\
+  \    - [Cu(H₂O)₆]²⁺ (d⁹): Blue\n    - [Fe(H₂O)₆]²⁺ (d⁶): Pale green\n\n    **Colorless\
+  \ complexes:**\n    - d⁰ (no electrons): Sc³⁺, Ti⁴⁺\n    - d¹⁰ (full d): Cu⁺, Zn²⁺\n\
+  \    - No d-d transition possible\n\n    ---\n\n    ## Magnetic Properties\n\n \
+  \   **Magnetic moment (μ):**\n    ```\n    μ = √[n(n+2)] B.M.\n    ```\n    where\
+  \ n = number of unpaired electrons\n\n    **Examples:**\n\n    | Complex | Unpaired\
+  \ e⁻ | μ (calculated) | Magnetic nature |\n    |---------|-------------|----------------|-----------------|\n\
+  \    | [Fe(CN)₆]⁴⁻ | 0 | 0 | Diamagnetic |\n    | [FeF₆]⁴⁻ | 4 | 4.9 | Paramagnetic\
+  \ |\n    | [Co(NH₃)₆]³⁺ | 0 | 0 | Diamagnetic |\n    | [CoF₆]³⁻ | 4 | 4.9 | Paramagnetic\
+  \ |\n\n    ---\n\n    ## IIT JEE Key Points\n\n    1. **VBT:** Hybridization determines\
+  \ geometry\n    2. **d²sp³:** Inner orbital (low spin), strong field\n    3. **sp³d²:**\
+  \ Outer orbital (high spin), weak field\n    4. **CFT:** d-orbital splitting by\
+  \ ligand field\n    5. **Octahedral:** eg (higher) and t2g (lower), Δₒ gap\n   \
+  \ 6. **Spectrochemical series:** I⁻ < Br⁻ < Cl⁻ < F⁻ < H₂O < NH₃ < en < CN⁻ < CO\n\
+  \    7. **Strong field (CN⁻):** Low spin, diamagnetic (pairing)\n    8. **Weak field\
+  \ (F⁻):** High spin, paramagnetic (no pairing)\n    9. **Color:** d-d transitions,\
+  \ Δₒ energy absorbed\n    10. **μ = √[n(n+2)] B.M.** where n = unpaired electrons\n\
+  \    11. **Tetrahedral:** Δₜ ≈ (4/9)Δₒ, always high spin\n    12. **d⁰ and d¹⁰:**\
+  \ Colorless (no d-d transition)\n\n## Key Points\n\n- Valence Bond Theory\n\n- Crystal\
+  \ Field Theory\n\n- Hybridization"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: "Which of the following complexes will be diamagnetic according to Crystal Field Theory?"
+  options:
+  - "[FeF₆]⁴⁻"
+  - "[Fe(CN)₆]⁴⁻"
+  - "[CoF₆]³⁻"
+  - "[Ni(H₂O)₆]²⁺"
+  correct_answer: "[Fe(CN)₆]⁴⁻"
+  explanation: "To determine magnetic properties using Crystal Field Theory, we need to examine the d-electron configuration and whether the ligands cause pairing. Fe²⁺ has d⁶ configuration. For [Fe(CN)₆]⁴⁻: CN⁻ is a strong field ligand (high in spectrochemical series), causing large crystal field splitting (Δₒ). Since Δₒ > Pairing Energy, electrons pair up in t2g orbitals first. Configuration: t2g⁶ eg⁰ with all electrons paired (↑↓ ↑↓ ↑↓) - diamagnetic. For [FeF₆]⁴⁻: F⁻ is a weak field ligand, Δₒ < Pairing Energy, so high spin configuration t2g⁴ eg² with 4 unpaired electrons - paramagnetic. For [CoF₆]³⁻: Co³⁺ is d⁶, but with weak field F⁻, it's high spin with 4 unpaired - paramagnetic. For [Ni(H₂O)₆]²⁺: Ni²⁺ is d⁸, configuration t2g⁶ eg² with 2 unpaired electrons - paramagnetic. The spectrochemical series (I⁻ < Br⁻ < Cl⁻ < F⁻ < H₂O < NH₃ < en < CN⁻ < CO) helps predict: strong field ligands (CN⁻, CO) cause low spin/pairing, while weak field ligands (F⁻, Cl⁻) cause high spin with maximum unpaired electrons."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: "What is the Crystal Field Stabilization Energy (CFSE) for a d⁶ ion in an octahedral strong field (low spin) complex?"
+  options:
+  - "-0.4Δₒ"
+  - "-1.6Δₒ"
+  - "-2.4Δₒ + 2P"
+  - "-1.2Δₒ"
+  correct_answer: "-2.4Δₒ + 2P"
+  explanation: "Crystal Field Stabilization Energy (CFSE) is calculated using the formula: CFSE = (-0.4 × nₜ₂g + 0.6 × nₑg)Δₒ + Pairing Energy, where nₜ₂g and nₑg are the number of electrons in t2g and eg orbitals respectively. For a d⁶ ion in octahedral strong field (low spin): The strong field causes large Δₒ > Pairing Energy, so electrons pair in t2g first. Electronic configuration: t2g⁶ eg⁰ (all 6 electrons in lower t2g orbitals). Therefore: nₜ₂g = 6, nₑg = 0. In free ion, electrons would be distributed as t2g⁴ eg² with no pairing. To achieve t2g⁶ eg⁰, we need 2 pairings, so Pairing Energy = 2P. CFSE = (-0.4 × 6 + 0.6 × 0)Δₒ + 2P = -2.4Δₒ + 2P. The negative value indicates stabilization. For comparison, the same d⁶ ion in weak field (high spin) would have configuration t2g⁴ eg² with CFSE = (-0.4 × 4 + 0.6 × 2)Δₒ = -0.4Δₒ. The low spin complex has higher CFSE (more negative, ignoring pairing energy cost), which is why strong field ligands stabilize low spin configurations."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: "According to Valence Bond Theory, what is the hybridization of Ni in [Ni(CN)₄]²⁻ (diamagnetic, square planar)?"
+  options:
+  - "sp³"
+  - "dsp²"
+  - "sp³d"
+  - "sp³d²"
+  correct_answer: "dsp²"
+  explanation: "To determine hybridization using Valence Bond Theory, we need to consider the geometry, coordination number, and magnetic properties. Ni²⁺ has electronic configuration [Ar] 3d⁸ 4s⁰. Initially: 3d: ↑↓ ↑↓ ↑ ↑ ↑ (8 electrons with 2 unpaired). For square planar geometry with coordination number 4, two hybridization schemes are possible: sp³ (tetrahedral) or dsp² (square planar). Since the complex is diamagnetic, all electrons must be paired. CN⁻ is a strong field ligand causing pairing. After pairing in 3d: ↑↓ ↑↓ ↑↓ ↑↓ (all paired, one 3d orbital becomes empty). This empty 3d orbital + 4s + two 4p orbitals undergo dsp² hybridization to form 4 equivalent hybrid orbitals in square planar geometry. The 4 CN⁻ ligands donate electron pairs into these hybrid orbitals. Result: diamagnetic, square planar complex. If it were sp³ hybridization, the geometry would be tetrahedral and the complex would remain paramagnetic. This is a classic example showing how VBT explains geometry and magnetic properties through appropriate hybridization. Other dsp² complexes include [Pt(NH₃)₂Cl₂] and [Pd(NH₃)₄]²⁺."
+  require_pass: true

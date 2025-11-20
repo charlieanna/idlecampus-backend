@@ -1,0 +1,59 @@
+slug: resonance-practice
+title: resonance — Practice
+difficulty: medium
+sequence_order: 17
+estimated_minutes: 2
+key_concepts:
+- resonance
+prerequisites: []
+content_md: '# resonance — Practice 🚀
+
+
+  Benzene has two resonance structures with alternating single and double bonds. The
+  actual C-C bond order = (1+2)/2 = 1.5
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What is the C-C bond order in benzene (C₆H₆)?
+  options:
+  - '1'
+  - '1.5'
+  - '2'
+  - '3'
+  require_pass: true
+  correct_answer: '1.5'
+  explanation: 'The C-C bond order in benzene is 1.5. Benzene has two major resonance structures with alternating single and double bonds. In resonance structure 1, a particular C-C bond is single (bond order = 1); in structure 2, that same bond is double (bond order = 2). The actual structure is a resonance hybrid - an average of both structures. Average bond order = (1 + 2)/2 = 1.5. This means all six C-C bonds in benzene are identical, each with bond order 1.5, intermediate in length (1.40 Å) and strength between single (1.54 Å) and double (1.34 Å) bonds. The delocalized π electron system (shown as a circle in the hexagon) distributes electrons equally over all six carbons, making benzene exceptionally stable (aromatic). This resonance stabilization explains benzene''s low reactivity compared to alkenes.'
+- type: mcq
+  sequence_order: 2
+  question: Which of the following molecules exhibits resonance?
+  options:
+  - CH₄ (methane)
+  - CO₃²⁻ (carbonate ion)
+  - H₂O (water)
+  - NH₃ (ammonia)
+  require_pass: true
+  correct_answer: CO₃²⁻ (carbonate ion)
+  explanation: 'CO₃²⁻ (carbonate ion) exhibits resonance. It has three equivalent resonance structures where the C=O double bond rotates among the three oxygen atoms. Structure: central carbon bonded to three oxygens, with one C=O double bond and two C-O single bonds in each resonance form. The actual structure is a hybrid where all three C-O bonds are equivalent with bond order 1.33 (average of 1 + 1 + 2 divided by 3), and the negative charge is delocalized over all three oxygens (each oxygen has -2/3 charge). This resonance stabilization makes carbonate more stable than any single structure would suggest. In contrast: CH₄, H₂O, and NH₃ have fixed single bonds with localized electrons and no valid alternative Lewis structures with different electron arrangements, so they show no resonance.'
+- type: mcq
+  sequence_order: 3
+  question: What is the main effect of resonance stabilization on a molecule?
+  options:
+  - Increases bond length
+  - Increases reactivity
+  - Lowers energy and increases stability
+  - Decreases electron density
+  require_pass: true
+  correct_answer: Lowers energy and increases stability
+  explanation: 'Resonance stabilization lowers the energy and increases the stability of a molecule. When a molecule has multiple resonance structures, the actual structure (resonance hybrid) is more stable and has lower energy than any individual resonance structure. This is because electron delocalization spreads electron density over multiple atoms, reducing electron-electron repulsion and creating stronger overall bonding. Examples: (1) Benzene is 36 kcal/mol more stable than predicted for a single structure with alternating single/double bonds, (2) Carbonate CO₃²⁻ distributes negative charge over three oxygens rather than localizing it on one, making it more stable, (3) Carboxylate ions RCOO⁻ are more stable than alkoxide RO⁻ due to resonance. Generally, more resonance structures = greater stability. Resonance decreases reactivity (molecules are less eager to react when already stable) and creates intermediate bond lengths.'

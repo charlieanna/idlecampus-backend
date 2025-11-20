@@ -1,0 +1,63 @@
+slug: lesson-65
+title: Lesson 65
+difficulty: easy
+sequence_order: 65
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Cluster Upgrades Strategy\n\n    - Control\
+  \ plane then workers\n    - Version skew policy"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: In what order should Kubernetes cluster components be upgraded?
+  options:
+  - Worker nodes first, then control plane
+  - All components simultaneously
+  - Control plane components first, then worker nodes
+  - It doesn't matter
+  correct_answer: Control plane components first, then worker nodes
+  explanation: 'Kubernetes cluster upgrades follow a specific order: control plane
+    components first (kube-apiserver, kube-controller-manager, kube-scheduler, and
+    etcd), then worker nodes (kubelet and kube-proxy). Within the control plane, etcd
+    should be upgraded first if needed, followed by kube-apiserver, then controller-manager
+    and scheduler. This order respects Kubernetes version skew policies and ensures
+    components can communicate during the upgrade. Worker nodes can be upgraded one
+    at a time using drain/upgrade/uncordon workflow for zero-downtime upgrades. Never
+    upgrade more than one minor version at a time (e.g., 1.24→1.25, not 1.24→1.26).
+    Control plane components should be at version N or N-1 relative to kube-apiserver.
+    The kubelet on worker nodes can be at N-2. Following this order and version skew
+    policy prevents compatibility issues during upgrades.'
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What is the Kubernetes version skew policy for kubelet?
+  options:
+  - Kubelet must be the same version as the API server
+  - Kubelet can be up to 2 minor versions older than kube-apiserver
+  - Kubelet must be newer than the API server
+  - There is no version skew policy
+  correct_answer: Kubelet can be up to 2 minor versions older than kube-apiserver
+  explanation: The kubelet version skew policy allows kubelet to be up to two minor
+    versions older than kube-apiserver. For example, if kube-apiserver is at v1.25,
+    kubelet can be v1.25, v1.24, or v1.23. This policy enables safe, gradual cluster
+    upgrades where you upgrade the control plane first, then worker nodes over time
+    without rushing. However, kubelet can never be newer than kube-apiserver - the
+    API server must be at least the same version. This skew policy applies to kubelet
+    and kube-proxy. Other control plane components (controller-manager, scheduler)
+    can be at most one minor version older than kube-apiserver. Understanding these
+    policies is crucial for planning upgrade strategies and maintaining supported
+    configurations. Violating skew policies can cause unexpected behavior or failures.
+  require_pass: true
+- type: mcq
+  sequence_order: 1
+  question: What kubectl command checks if you can perform an action?
+  options:
+  - kubectl auth can-i create pods
+  - kubectl check permissions create pods
+  - kubectl verify action create pods
+  - kubectl test auth create pods
+  correct_answer_index: 0
+  explanation: kubectl auth can-i <action> <resource> checks if the current user has
+    permission to perform the specified action.
+  require_pass: true

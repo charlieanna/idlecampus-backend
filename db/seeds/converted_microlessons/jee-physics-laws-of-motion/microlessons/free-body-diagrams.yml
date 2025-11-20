@@ -1,0 +1,222 @@
+slug: free-body-diagrams
+title: "Free Body Diagrams: Systematic Problem Solving"
+difficulty: intermediate
+sequence_order: 4
+estimated_minutes: 16
+key_concepts:
+- free-body-diagram
+- force-analysis
+- normal-force
+- tension
+- weight
+prerequisites:
+- newtons-second-law-force-momentum
+- newtons-third-law-action-reaction
+content_md: |
+  # Free Body Diagrams: Systematic Problem Solving
+
+  ## What is a Free Body Diagram (FBD)?
+
+  A **Free Body Diagram** is a simplified diagram showing:
+  - The object isolated from its surroundings
+  - All external forces acting ON the object
+  - Direction and approximate magnitude of forces
+
+  ## Why FBDs are Essential
+
+  1. **Visualize all forces** systematically
+  2. **Apply Newton's laws** correctly
+  3. **Avoid missing forces** or double-counting
+  4. **Break complex problems** into manageable parts
+
+  ## Steps to Draw FBD
+
+  ### Step 1: Identify the System
+  - Choose the object/system to analyze
+  - Isolate it from surroundings
+
+  ### Step 2: List All Forces
+  - Weight (always present if mass exists)
+  - Normal force (if contact with surface)
+  - Tension (if strings/ropes attached)
+  - Friction (if relative motion/tendency)
+  - Applied forces (push, pull)
+  - Spring force, air resistance, etc.
+
+  ### Step 3: Draw Forces
+  - Represent object as point or simple shape
+  - Draw arrows from object outward
+  - Label each force clearly
+  - Show direction accurately
+
+  ### Step 4: Choose Coordinate System
+  - Usually: x along motion, y perpendicular
+  - On incline: x along incline, y normal to it
+  - Resolve forces into components
+
+  ## Common Forces in FBDs
+
+  ### 1. Weight (W or mg)
+  ```
+  W = mg (always downward)
+  ```
+  - Acts at center of mass
+  - Due to Earth's gravity
+  - Independent of motion or support
+
+  ### 2. Normal Force (N)
+  ```
+  N ⊥ to contact surface
+  ```
+  - Reaction to compression
+  - Adjusts to prevent penetration
+  - N ≠ mg always (common mistake!)
+
+  ### 3. Tension (T)
+  ```
+  T = along string, away from object
+  ```
+  - Pulling force through string/rope
+  - Same throughout massless string
+  - Can only pull, never push
+
+  ### 4. Friction (f)
+  ```
+  f = μN (opposes relative motion)
+  f_s ≤ μ_s N (static)
+  f_k = μ_k N (kinetic)
+  ```
+
+  ## Important FBD Cases
+
+  ### Case 1: Object on Horizontal Surface
+  ```
+  Forces: Weight (mg↓), Normal (N↑)
+  If stationary: N = mg
+  If vertical acceleration a: N = m(g ± a)
+  ```
+
+  ### Case 2: Object on Inclined Plane
+  ```
+  Along incline: mg sin θ (down)
+  Normal to incline: N = mg cos θ
+  Friction: f = μN = μmg cos θ
+  ```
+
+  ### Case 3: Two Connected Masses (Atwood)
+  For mass m₁:
+  ```
+  T - m₁g = m₁a (if moving up)
+  ```
+  For mass m₂:
+  ```
+  m₂g - T = m₂a (if moving down)
+  ```
+
+  ### Case 4: Mass on Accelerating Platform
+  ```
+  In ground frame: N - mg = ma
+  In platform frame: N - mg - ma_pseudo = 0
+  ```
+
+  ## Common Mistakes in FBDs
+
+  1. ❌ Including reaction forces on SAME body
+  2. ❌ Forgetting weight
+  3. ❌ Wrong direction of friction
+  4. ❌ N = mg always (wrong on inclines or with vertical acceleration)
+  5. ❌ Missing normal force at contact
+  6. ❌ Including internal forces
+
+  ## Numerical Examples
+
+  **Example 1:** 10 kg block on table, horizontal force F = 30 N applied. If μ_k = 0.2, find acceleration.
+
+  **FBD:**
+  ```
+  Forces: F (→), N (↑), mg (↓), f (←)
+
+  Vertical: N = mg = 100 N
+  Horizontal: F - f = ma
+  30 - μN = 10a
+  30 - 20 = 10a
+  a = 1 m/s²
+  ```
+
+  **Example 2:** Two masses 3 kg and 2 kg connected by string over pulley. Find tension and acceleration.
+
+  **Solution:**
+  For 3 kg (heavier, moving down):
+  ```
+  3g - T = 3a
+  30 - T = 3a ... (1)
+  ```
+
+  For 2 kg (lighter, moving up):
+  ```
+  T - 2g = 2a
+  T - 20 = 2a ... (2)
+  ```
+
+  Adding: 10 = 5a → a = 2 m/s²
+  T = 20 + 4 = 24 N
+
+  ## JEE Problem-Solving Tips
+
+  1. **Draw separate FBDs** for each mass
+  2. **Choose smart coordinates** (often along motion)
+  3. **Write Newton's second law** for each direction
+  4. **Count equations and unknowns** - should match
+  5. **Check dimensions** of final answer
+  6. **Verify limiting cases** (e.g., μ = 0, θ = 0)
+
+  ## Advanced Concepts
+
+  ### Apparent Weight in Lift:
+  ```
+  W_apparent = N = m(g ± a)
+
+  Lift accelerating up: N = m(g + a) > mg
+  Lift accelerating down: N = m(g - a) < mg
+  Free fall: N = 0 (weightlessness)
+  ```
+
+  ### Multiple Strings/Pulleys:
+  - Different tensions if different strings
+  - Constraint equations needed
+  - T₁ ≠ T₂ if masses of pulleys considered
+
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: "A 5 kg block rests on a surface. A 30 N force is applied at 60° above horizontal. The normal force is: (g = 10 m/s²)"
+  options:
+  - "50 N"
+  - "35 N"
+  - "65 N"
+  - "24 N"
+  correct_answer: "24 N"
+  explanation: "FBD shows: Weight (50 N down), Applied force (30 N at 60°), Normal force (N up). Vertical component of applied force = 30 sin 60° = 30(√3/2) ≈ 26 N (upward). For vertical equilibrium: N + 30 sin 60° = mg. N = 50 - 26 = 24 N. Wait, let me recalculate: 30 × sin 60° = 30 × 0.866 = 26 N. So N = 50 - 26 = 24 N. The upward component of applied force reduces normal force. This shows N ≠ mg when other vertical forces exist. If force were pushed downward, N would increase above mg."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: "In an Atwood machine with masses 4 kg and 6 kg, the tension in string is: (g = 10 m/s²)"
+  options:
+  - "48 N"
+  - "50 N"
+  - "40 N"
+  - "60 N"
+  correct_answer: "48 N"
+  explanation: "For 6 kg (moving down): 6g - T = 6a → 60 - T = 6a. For 4 kg (moving up): T - 4g = 4a → T - 40 = 4a. Adding equations: 20 = 10a, so a = 2 m/s². Substituting: T = 40 + 4(2) = 48 N. Alternative formula: T = 2m₁m₂g/(m₁+m₂) = 2(4)(6)(10)/10 = 48 N. Note: T is between weights of two masses (40 N < 48 N < 60 N), which makes physical sense. If masses were equal, T = mg and a = 0."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: "A person weighing 600 N stands in a lift. If lift accelerates downward at 2 m/s², the apparent weight is: (g = 10 m/s²)"
+  options:
+  - "600 N"
+  - "480 N"
+  - "720 N"
+  - "120 N"
+  correct_answer: "480 N"
+  explanation: "Mass = 600/10 = 60 kg. When lift accelerates downward: N = m(g - a) = 60(10 - 2) = 60 × 8 = 480 N. The apparent weight (normal force from floor) decreases when accelerating downward. Think of it: If acceleration = g (free fall), N = 0 (weightlessness). If lift accelerates upward at 2 m/s², N = 60(10 + 2) = 720 N. This is why you feel heavier when lift starts going up and lighter when it starts going down."
+  require_pass: true

@@ -1,0 +1,59 @@
+slug: lesson-37
+title: Lesson 37
+sequence_order: 37
+estimated_minutes: 2
+difficulty: easy
+content_md: "# Microlesson \U0001F680\n\n# Array Fundamentals & Hash Tables\n\n  \
+  \  ## Introduction\n    Arrays and hash tables are the foundation of most coding\
+  \ interview problems. Understanding their properties and trade-offs is crucial for\
+  \ interview success.\n\n    ## Arrays\n\n    ### Time Complexity\n    - **Access**:\
+  \ O(1) - Direct index access\n    - **Search**: O(n) - Linear search\n    - **Insertion**:\
+  \ O(n) - Requires shifting elements\n    - **Deletion**: O(n) - Requires shifting\
+  \ elements\n\n    ### Common Patterns\n\n    #### 1. Two-Pointer Technique\n   \
+  \ ```python\n    def two_sum_sorted(nums, target):\n        left, right = 0, len(nums)\
+  \ - 1\n        while left < right:\n            current_sum = nums[left] + nums[right]\n\
+  \            if current_sum == target:\n                return [left, right]\n \
+  \           elif current_sum < target:\n                left += 1\n            else:\n\
+  \                right -= 1\n        return []\n    ```\n\n    #### 2. Sliding Window\n\
+  \    ```python\n    def max_sum_subarray(nums, k):\n        window_sum = sum(nums[:k])\n\
+  \        max_sum = window_sum\n\n        for i in range(k, len(nums)):\n       \
+  \     window_sum = window_sum - nums[i-k] + nums[i]\n            max_sum = max(max_sum,\
+  \ window_sum)\n\n        return max_sum\n    ```\n\n    ## Hash Tables\n\n    ###\
+  \ Time Complexity\n    - **Access**: N/A - No ordering\n    - **Search**: O(1) average,\
+  \ O(n) worst\n    - **Insertion**: O(1) average, O(n) worst\n    - **Deletion**:\
+  \ O(1) average, O(n) worst\n\n    ### When to Use Hash Tables\n    1. **Counting\
+  \ frequencies**: Count occurrences of elements\n    2. **Finding pairs**: Two Sum,\
+  \ Three Sum problems\n    3. **Detecting duplicates**: Check if element exists\n\
+  \    4. **Grouping data**: Group anagrams, categorize items\n\n    ### Example:\
+  \ Two Sum Problem\n    ```python\n    def two_sum(nums, target):\n        seen =\
+  \ {}\n        for i, num in enumerate(nums):\n            complement = target -\
+  \ num\n            if complement in seen:\n                return [seen[complement],\
+  \ i]\n            seen[num] = i\n        return []\n    ```\n\n    ## Key Insights\n\
+  \n    1. **Trade Space for Time**: Hash tables often trade memory for speed\n  \
+  \  2. **Sorted Arrays**: Enable binary search and two-pointer techniques\n    3.\
+  \ **In-place Operations**: Minimize space complexity when possible\n    4. **Edge\
+  \ Cases**: Empty arrays, single element, duplicates\n\n    ## Practice Tips\n  \
+  \  - Start with brute force, then optimize\n    - Consider sorting as a preprocessing\
+  \ step\n    - Think about what information to store in hash tables\n    - Always\
+  \ verify constraints (array size, value ranges)"
+exercises:
+- type: mcq
+  slug: lesson-37-mcq
+  sequence_order: 1
+  question: What is the main focus of this lesson on Lesson 37?
+  options:
+  - Understanding core concepts and practical applications related to Lesson 37
+  - Only theoretical knowledge without application
+  - Memorizing definitions without context
+  - Learning unrelated peripheral topics
+  correct_answer_index: 0
+  explanation: This lesson on Lesson 37 aims to build both conceptual understanding
+    and practical knowledge. Effective learning combines theory with application,
+    allowing you to not only understand concepts but also apply them in real-world
+    contexts. This integrated approach is more valuable than rote memorization or
+    purely theoretical study.
+objectives:
+- Apply least privilege
+- Design policies
+- Harden auth & keys
+next_recommended: []

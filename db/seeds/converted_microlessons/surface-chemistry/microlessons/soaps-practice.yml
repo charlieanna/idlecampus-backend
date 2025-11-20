@@ -1,0 +1,59 @@
+slug: soaps-practice
+title: soaps — Practice
+difficulty: medium
+sequence_order: 28
+estimated_minutes: 2
+key_concepts:
+- soaps
+prerequisites: []
+content_md: '# soaps — Practice 🚀
+
+
+  Soap has hydrophilic COO⁻ head and hydrophobic alkyl tail, forms micelles above
+  CMC. But soap does NOT work in hard water (forms scum with Ca²⁺/Mg²⁺).
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: 'Why do soaps not work effectively in hard water?'
+  options:
+  - They form insoluble precipitates (scum) with Ca²⁺ and Mg²⁺ ions
+  - They cannot form micelles in hard water
+  - Hard water is too acidic for soaps
+  - The hydrophobic tail is destroyed
+  correct_answer: They form insoluble precipitates (scum) with Ca²⁺ and Mg²⁺ ions
+  explanation: "Soaps (sodium or potassium salts of long-chain fatty acids) react with Ca²⁺ and Mg²⁺ ions present in hard water to form insoluble calcium/magnesium salts (scum). For example: 2C₁₇H₃₅COO⁻Na⁺ + Ca²⁺ → (C₁₇H₃₅COO)₂Ca + 2Na⁺. This scum wastes soap and doesn't clean. The soap is consumed forming precipitate rather than forming micelles needed for cleaning. This is why detergents are preferred in hard water."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: 'The cleansing action of soap is due to:'
+  options:
+  - Formation of micelles that trap dirt and grease
+  - Strong acidic nature
+  - Formation of covalent bonds with dirt
+  - Increasing surface tension of water
+  correct_answer: Formation of micelles that trap dirt and grease
+  explanation: "Soap molecules have a hydrophilic COO⁻ head and hydrophobic alkyl tail. In water, above the critical micelle concentration (CMC), they form micelles - spherical aggregates with hydrophobic tails pointing inward and hydrophilic heads pointing outward. The hydrophobic core traps grease and oil particles, while the hydrophilic exterior keeps the micelle suspended in water, allowing dirt to be washed away. Soaps actually decrease surface tension (not increase it)."
+  require_pass: false
+- type: mcq
+  sequence_order: 3
+  question: 'Soaps are prepared by:'
+  options:
+  - Saponification of fats/oils with alkali
+  - Esterification of fatty acids
+  - Sulfonation of hydrocarbons
+  - Oxidation of alcohols
+  correct_answer: Saponification of fats/oils with alkali
+  explanation: "Soaps are prepared by saponification - the alkaline hydrolysis of fats or oils (esters of glycerol and fatty acids) with sodium hydroxide (NaOH) or potassium hydroxide (KOH). The reaction produces soap (sodium/potassium salt of fatty acid) and glycerol. For example: Fat + 3NaOH → 3 Soap + Glycerol. Detergents, on the other hand, are prepared by sulfonation of long-chain hydrocarbons followed by neutralization."
+  require_pass: false

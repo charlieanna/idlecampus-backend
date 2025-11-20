@@ -1,0 +1,90 @@
+slug: lesson-101
+title: Lesson 101
+difficulty: easy
+sequence_order: 101
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Blue-Green and Canary Deployments\n\n \
+  \   Progressive delivery strategies to minimize risk.\n    - Blue/Green: switch\
+  \ traffic between environments\n    - Canary: gradually shift traffic to new version"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What is the primary advantage of Blue-Green deployment strategy in Kubernetes?
+  options:
+  - It uses less infrastructure resources
+  - It allows instant rollback by switching traffic back to the previous version
+  - It automatically tests the new version before deployment
+  - It gradually increases load on the new version
+  correct_answer: It allows instant rollback by switching traffic back to the previous
+    version
+  explanation: 'Blue-Green deployment maintains two identical production environments
+    - Blue (current) and Green (new version). The primary advantage is instant rollback
+    capability by simply switching traffic back to the Blue environment if issues
+    arise with Green. This is achieved by updating Service selectors or Ingress rules
+    to point to different Deployment labels. For example, you might have deployments
+    with labels ''version: blue'' and ''version: green'', and switch traffic by updating
+    the Service selector from ''version: blue'' to ''version: green''. This strategy
+    provides zero-downtime deployments and reduces risk by keeping the old version
+    running until you''re confident in the new one. However, it requires double the
+    infrastructure resources during deployment. Best practices include running smoke
+    tests on Green before switching traffic, maintaining Green long enough to detect
+    issues, and using external load balancers or Kubernetes Services for traffic switching.'
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: In a Canary deployment, what is the typical first step when rolling out
+    a new version?
+  options:
+  - Replace all pods with the new version immediately
+  - Deploy the new version to a small percentage of users or pods first
+  - Create a complete duplicate environment with the new version
+  - Delete the old version before deploying the new one
+  correct_answer: Deploy the new version to a small percentage of users or pods first
+  explanation: Canary deployment is a progressive delivery strategy where you deploy
+    the new version to a small subset of users or infrastructure first, monitor its
+    behavior, and gradually increase the percentage if no issues are detected. The
+    name comes from 'canary in a coal mine' - the canary serves as an early warning
+    system. For example, you might start with 5% of traffic going to the new version,
+    then increase to 25%, 50%, 75%, and finally 100% based on success metrics. In
+    Kubernetes, this is often implemented using multiple Deployments with different
+    replica counts and a Service that distributes traffic across both versions. Tools
+    like Istio, Flagger, or Argo Rollouts can automate this process with weighted
+    traffic routing. Monitor key metrics like error rates, latency, and resource usage
+    during each phase. If problems are detected, you can halt the rollout and route
+    all traffic back to the stable version, limiting the blast radius of any issues.
+  require_pass: true
+- type: mcq
+  sequence_order: 1
+  question: Which command creates a deployment with 3 replicas?
+  options:
+  - kubectl create deployment nginx --image=nginx --replicas=3
+  - kubectl make deployment nginx replicas=3
+  - kubectl deploy nginx --count=3
+  - kubectl new deployment nginx x3
+  correct_answer_index: 0
+  explanation: kubectl create deployment creates a deployment. The --replicas flag
+    specifies the number of pod replicas.
+  require_pass: true
+- type: code
+  sequence_order: 2
+  language: yaml
+  question: Create a deployment with 3 replicas of nginx
+  starter_code: '# Write your deployment YAML here
+
+    apiVersion: apps/v1
+
+    kind: Deployment
+
+    '
+  solution_code: "apiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: nginx-deployment\n\
+    spec:\n  replicas: 3\n  selector:\n    matchLabels:\n      app: nginx\n  template:\n\
+    \    metadata:\n      labels:\n        app: nginx\n    spec:\n      containers:\n\
+    \      - name: nginx\n        image: nginx:1.25\n        ports:\n        - containerPort:\
+    \ 80"
+  hints:
+  - 'Use apiVersion: apps/v1 for Deployments'
+  - Set spec.replicas to 3
+  - Define selector.matchLabels to match template.metadata.labels
+  require_pass: true

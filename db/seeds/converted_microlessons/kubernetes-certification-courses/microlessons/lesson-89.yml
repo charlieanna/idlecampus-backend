@@ -1,0 +1,43 @@
+slug: lesson-89
+title: Lesson 89
+difficulty: easy
+sequence_order: 89
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Network Policies Advanced\n\n    - Egress\
+  \ rules and namespace scoping\n    - Common patterns and testing"
+exercises:
+  - type: mcq
+    sequence_order: 1
+    question: "What is the primary purpose of egress rules in Kubernetes NetworkPolicies?"
+    options:
+      - "To control incoming traffic to pods"
+      - "To control outgoing traffic from pods to external destinations"
+      - "To define pod-to-pod communication within the same namespace"
+      - "To configure external load balancers"
+    correct_answer: "To control outgoing traffic from pods to external destinations"
+    explanation: "Egress rules in Kubernetes NetworkPolicies control outbound traffic from selected pods to various destinations, including other pods, services, or external endpoints. While ingress rules control incoming connections to pods, egress rules specify what destinations a pod is allowed to connect to. This is crucial for implementing zero-trust security models and preventing data exfiltration or unauthorized external connections. For example, you might create an egress policy that allows database pods to communicate only with backup storage services and blocks all other external connections. Egress rules can target destinations using pod selectors, namespace selectors, IP blocks (CIDR notation), or ports. By default, if no NetworkPolicy selects a pod, all egress traffic is allowed. Once a NetworkPolicy with egress rules selects a pod, only explicitly allowed egress traffic is permitted. This allows fine-grained control over outbound connections, which is essential for compliance requirements and minimizing the attack surface of your applications."
+    require_pass: true
+  - type: mcq
+    sequence_order: 2
+    question: "How do namespace selectors work in NetworkPolicy specifications?"
+    options:
+      - "They block all traffic between namespaces"
+      - "They allow selecting pods across different namespaces based on namespace labels"
+      - "They create separate network segments for each namespace"
+      - "They automatically isolate all namespaces from each other"
+    correct_answer: "They allow selecting pods across different namespaces based on namespace labels"
+    explanation: "Namespace selectors in NetworkPolicy specifications enable you to define traffic rules that span multiple namespaces by selecting namespaces based on their labels. This is powerful for creating cross-namespace communication policies without hardcoding namespace names. For example, you can label namespaces with environment=production and then create a NetworkPolicy that allows pods to communicate only with other pods in namespaces labeled environment=production, regardless of the specific namespace names. Namespace selectors are typically used in combination with pod selectors to precisely target pods across namespaces. When you specify a namespaceSelector alone, it matches all pods in the selected namespaces. When combined with podSelector, it matches pods that satisfy both conditions. This approach is more flexible and maintainable than IP-based rules, especially in dynamic environments where pod IPs change frequently. Understanding namespace selectors is essential for implementing multi-tenant security models where different teams or applications are isolated in separate namespaces but need controlled inter-namespace communication."
+    require_pass: true
+  - type: mcq
+    sequence_order: 3
+    question: "What is a recommended approach for testing NetworkPolicy effectiveness in a Kubernetes cluster?"
+    options:
+      - "Rely on the API server validation when creating the policy"
+      - "Use kubectl exec to run network connectivity tests (like curl or ping) from pods"
+      - "Check the cluster's firewall configuration"
+      - "Review the NetworkPolicy YAML syntax only"
+    correct_answer: "Use kubectl exec to run network connectivity tests (like curl or ping) from pods"
+    explanation: "Testing NetworkPolicy effectiveness requires active verification because NetworkPolicies are enforced at the network layer by the CNI plugin, and their behavior isn't validated by the Kubernetes API server. The most reliable testing approach is using kubectl exec to run connectivity tests from within pods. For example, you can execute 'kubectl exec -it pod-a -- curl pod-b:8080' to verify whether pod-a can reach pod-b. You should test both allowed and denied connections to ensure the policy works as intended. Common testing patterns include: testing before applying policies to establish baseline connectivity, testing immediately after applying policies to verify restrictions, and testing from multiple source pods to confirm selector logic. Tools like netcat, curl, wget, and ping are commonly used for these tests. Some teams create dedicated test pods with networking tools specifically for policy validation. It's also important to check CNI plugin logs and events for policy enforcement errors. Simply validating YAML syntax or checking API server responses is insufficient because NetworkPolicies can be syntactically correct but logically incorrect or not enforced by the CNI plugin if it doesn't support NetworkPolicies."
+    require_pass: true

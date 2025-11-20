@@ -1,0 +1,75 @@
+slug: empiricalformula-practice
+title: empirical_formula — Practice
+difficulty: hard
+sequence_order: 11
+estimated_minutes: 2
+key_concepts:
+- empirical_formula
+prerequisites: []
+content_md: '# empirical_formula — Practice 🚀
+
+
+  C: 40/12 = 3.33, H: 6.67/1 = 6.67, O: 53.33/16 = 3.33. Ratio = 3.33:6.67:3.33 =
+  1:2:1. Empirical formula = CH₂O
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: short_answer
+  sequence_order: 2
+  hints:
+  - Re-read the question carefully.
+  - Recall the relevant formula or rule.
+  - Review the explanation once you answer.
+  question: A compound contains 40% carbon, 6.67% hydrogen, and 53.33% oxygen by mass.
+    What is its empirical formula?
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: A hydrocarbon contains 85.7% carbon and 14.3% hydrogen by mass. What is
+    its empirical formula?
+  options:
+  - CH
+  - CH₂
+  - CH₃
+  - CH₄
+  require_pass: true
+  correct_answer: CH₂
+  explanation: 'To find the empirical formula from percentage composition: (1) Convert
+    percentages to moles by dividing by atomic masses: **C: 85.7/12 = 7.14 mol, H:
+    14.3/1 = 14.3 mol**. (2) Find the simplest mole ratio by dividing by the smallest
+    value: C: 7.14/7.14 = 1, H: 14.3/7.14 = 2. (3) The empirical formula = **CH₂**.
+    This is the empirical formula for many hydrocarbons including ethene (C₂H₄), propene
+    (C₃H₆), butene (C₄H₈), etc. Note: The empirical formula shows the simplest whole
+    number ratio of atoms, while the molecular formula shows the actual number of
+    atoms in a molecule. If the molar mass is given, we can find molecular formula
+    = n × empirical formula, where n = (molar mass)/(empirical formula mass).'
+- type: mcq
+  sequence_order: 4
+  question: 'A compound contains 52.2% carbon, 13.0% hydrogen, and 34.8% oxygen by
+    mass. What is its empirical formula? (Atomic masses: C=12, H=1, O=16)'
+  options:
+  - C₂H₆O
+  - C₃H₈O
+  - CH₃O
+  - C₄H₁₀O
+  require_pass: true
+  correct_answer: C₂H₆O
+  explanation: 'Finding empirical formula from percentage composition: **Step 1: Convert
+    percentages to moles** - C: 52.2/12 = 4.35 mol, H: 13.0/1 = 13.0 mol, O: 34.8/16
+    = 2.175 mol. **Step 2: Divide by smallest value** - C: 4.35/2.175 = 2, H: 13.0/2.175
+    = 6, O: 2.175/2.175 = 1. **Step 3: Write empirical formula** - C₂H₆O (ethanol).
+    This represents the simplest ratio of atoms. The actual molecular formula could
+    be C₂H₆O (ethanol), C₄H₁₂O₂ (diethyl ether), etc. To determine molecular formula,
+    we need the molar mass: molecular formula = n × empirical formula, where n = (given
+    molar mass)/(empirical formula mass). For C₂H₆O: empirical mass = 2(12) + 6(1)
+    + 16 = 46 g/mol.'

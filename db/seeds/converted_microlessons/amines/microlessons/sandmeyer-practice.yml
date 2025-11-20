@@ -1,0 +1,65 @@
+slug: sandmeyer-practice
+title: sandmeyer — Practice
+difficulty: easy
+sequence_order: 11
+estimated_minutes: 2
+key_concepts:
+- sandmeyer
+prerequisites: []
+content_md: '# sandmeyer — Practice 🚀
+
+
+  Sandmeyer: C₆H₅N₂⁺Cl⁻ + CuX → C₆H₅X + N₂ (X = Cl, Br, CN). Uses copper(I) salts
+  as catalyst. Best method for Cl, Br, CN.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 2
+  question: Sandmeyer reaction uses which catalyst?
+  options:
+  - CuCl/CuBr/CuCN
+  - AlCl₃
+  - FeBr₃
+  - Ni
+  require_pass: true
+  correct_answer: CuCl/CuBr/CuCN
+  explanation: 'The Sandmeyer reaction uses copper(I) halides (CuCl, CuBr) or copper(I)
+    cyanide (CuCN) as catalysts to replace the diazonium group (-N₂⁺) with Cl, Br,
+    or CN respectively. The general reaction is: C₆H₅-N₂⁺Cl⁻ + CuX → C₆H₅-X + N₂ +
+    CuCl, where X = Cl, Br, or CN. This is the best and most reliable method for introducing
+    these specific groups (Cl, Br, CN) onto an aromatic ring. The copper(I) salts
+    act as catalysts by facilitating the decomposition of the diazonium salt and transfer
+    of the halogen or CN group.'
+- type: mcq
+  sequence_order: 3
+  question: 'Which product is formed when benzenediazonium chloride reacts with CuCN in Sandmeyer reaction?'
+  options:
+  - Benzonitrile (C₆H₅CN)
+  - Benzene (C₆H₆)
+  - Chlorobenzene (C₆H₅Cl)
+  - Benzoic acid (C₆H₅COOH)
+  require_pass: true
+  correct_answer: Benzonitrile (C₆H₅CN)
+  explanation: 'When benzenediazonium chloride reacts with copper(I) cyanide (CuCN) in the Sandmeyer reaction, it forms benzonitrile (C₆H₅CN), also called phenyl cyanide. The reaction is: C₆H₅N₂⁺Cl⁻ + CuCN → C₆H₅CN + N₂ + CuCl. The diazonium group (-N₂⁺) is replaced by the cyano group (-CN). This is the best method for introducing a cyano group into an aromatic ring. Benzonitrile is valuable because the -CN group can be further converted to other functional groups: (1) hydrolysis gives benzoic acid (C₆H₅COOH), (2) reduction gives benzylamine (C₆H₅CH₂NH₂). This makes the Sandmeyer cyanation very useful in organic synthesis for building carbon chains.'
+- type: mcq
+  sequence_order: 4
+  question: 'What role does copper(I) salt play in the Sandmeyer reaction?'
+  options:
+  - Acts as catalyst facilitating decomposition and group transfer
+  - Acts as oxidizing agent
+  - Acts as reducing agent
+  - Provides the diazonium group
+  require_pass: true
+  correct_answer: Acts as catalyst facilitating decomposition and group transfer
+  explanation: 'In the Sandmeyer reaction, copper(I) salts (CuCl, CuBr, CuCN) act as catalysts that facilitate both the decomposition of the diazonium salt and the transfer of the halogen or CN group to the aromatic ring. The mechanism involves: (1) coordination of diazonium ion with Cu(I), (2) formation of aryl-copper intermediate, (3) transfer of X (Cl, Br, or CN) from copper to the aromatic ring, and (4) release of N₂ gas. The copper cycles between Cu(I) and Cu(II) states. Without the copper catalyst, direct thermal decomposition of diazonium salts gives poor yields and multiple products. The copper catalyst provides a controlled pathway for selective substitution, making Sandmeyer reaction highly reliable and giving good yields of Cl, Br, or CN products.'

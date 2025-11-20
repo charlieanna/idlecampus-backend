@@ -1,0 +1,104 @@
+slug: ellingham-diagrams-and-thermodynamics-of-reduction
+title: Ellingham Diagrams and Thermodynamics of Reduction
+difficulty: easy
+sequence_order: 5
+estimated_minutes: 2
+key_concepts:
+- Ellingham diagram
+- Gibbs free energy
+- Reduction principles
+- Coupling reactions
+prerequisites: []
+content_md: "# Ellingham Diagrams and Thermodynamics of Reduction \U0001F680\n\n#\
+  \ Ellingham Diagrams\n\n    ## What is an Ellingham Diagram?\n\n    **Definition**:\
+  \ Graph showing variation of ΔG° (standard Gibbs free energy) with temperature for\
+  \ oxidation reactions.\n\n    ### General Reaction\n    2M(s) + O₂(g) → 2MO(s)\n\
+  \n    **Y-axis**: ΔG° (kJ/mol of O₂)\n    **X-axis**: Temperature (K or °C)\n\n\
+  \    ## Key Features\n\n    ### 1. Slope\n    - Most lines have **positive slope**\
+  \ (ΔG° becomes less negative with temperature)\n    - Reason: Negative ΔS° (gas\
+  \ O₂ consumed, solid MO formed)\n    - ΔG° = ΔH° - TΔS°\n\n    ### 2. Position of\
+  \ Line\n    - **Lower line** = More stable oxide (larger negative ΔG°)\n    - **Higher\
+  \ line** = Less stable oxide (less negative ΔG°)\n\n    ### 3. Metal can reduce\
+  \ oxide if its line is below\n    - Metal M can reduce oxide N-O if M-O line is\
+  \ below N-O line at that temperature\n    - Example: At high temperature, C-CO line\
+  \ is below Fe-FeO line → C can reduce FeO\n\n    ### 4. Breaks in Lines\n    - **Abrupt\
+  \ changes** at:\n      - Melting point (s → l)\n      - Boiling point (l → g)\n\
+  \      - Phase transition\n    - Reason: Change in ΔS°\n\n    ## Thermodynamic Principles\n\
+  \n    ### Feasibility of Reduction\n    For reduction to be feasible: **ΔG° < 0**\n\
+  \n    **Coupled reaction principle**:\n    - Reaction 1: M-O formation (more negative\
+  \ ΔG°)\n    - Reaction 2: N-O decomposition (positive ΔG°)\n    - Net: ΔG°_net =\
+  \ ΔG°₁ + ΔG°₂ < 0\n\n    **Example**: Reduction of ZnO by carbon\n    - ZnO(s) →\
+  \ Zn(s) + ½O₂(g)        ΔG°₁ = +480 kJ (at 1000K)\n    - C(s) + ½O₂(g) → CO(g) \
+  \         ΔG°₂ = -380 kJ (at 1000K)\n    - **Net**: ZnO(s) + C(s) → Zn(s) + CO(g)\
+  \   ΔG° = +100 kJ (not feasible at 1000K)\n\n    At higher temperature (~1200K):\n\
+  \    - ΔG°_net becomes negative → reaction feasible\n\n    ## Carbon as Reducing\
+  \ Agent\n\n    ### Two oxidation products:\n    1. **C → CO**: Ellingham line slopes\
+  \ downward (negative slope)\n       - Reason: 2C(s) + O₂(g) → 2CO(g) has ΔS° > 0\
+  \ (solid → gas)\n    2. **C → CO₂**: Similar behavior but less negative slope\n\n\
+  \    ### Why carbon is effective at high temperatures:\n    - At high T, C-CO line\
+  \ crosses below many metal oxide lines\n    - Example: Fe₃O₄, ZnO, CuO can be reduced\
+  \ by C/CO at high temperatures\n\n    ## Special Cases\n\n    ### 1. Aluminum (Al)\n\
+  \    - Al-Al₂O₃ line is very low (highly stable oxide)\n    - Cannot be reduced\
+  \ by carbon\n    - Requires **electrolytic reduction** (Hall-Héroult process)\n\n\
+  \    ### 2. Reactive Metals (Na, K, Ca, Mg)\n    - Very low Ellingham lines (very\
+  \ stable oxides)\n    - Must use electrolysis of molten salts\n    - Down's process\
+  \ (Na), Electrolysis of MgCl₂\n\n    ### 3. Less Reactive Metals (Hg, Ag)\n    -\
+  \ High Ellingham lines (unstable oxides)\n    - Can decompose on heating alone\n\
+  \    - HgO → Hg + ½O₂ (simple heating)\n\n    ## Reduction Methods Based on Thermodynamics\n\
+  \n    ### 1. Self-Reduction (Autoreduction)\n    - No external reducing agent needed\n\
+  \    - Ore reduces itself\n    - **Example**: Copper extraction\n      - 2Cu₂S +\
+  \ 3O₂ → 2Cu₂O + 2SO₂ (partial roasting)\n      - 2Cu₂O + Cu₂S → 6Cu + SO₂ (self-reduction)\n\
+  \n    ### 2. Carbon Reduction\n    - Used for moderately reactive metals\n    -\
+  \ Feasible at high temperatures\n    - **Examples**: Fe, Zn, Sn, Pb\n\n    ### 3.\
+  \ Displacement (More reactive metal)\n    - **Thermite reaction**:\n      - Fe₂O₃\
+  \ + 2Al → 2Fe + Al₂O₃ (highly exothermic)\n      - Used for welding railway tracks\n\
+  \    - **Goldschmidt process**: Cr₂O₃ + 2Al → 2Cr + Al₂O₃\n\n    ### 4. Electrolytic\
+  \ Reduction\n    - For highly reactive metals\n    - **Examples**:\n      - Al:\
+  \ Hall-Héroult process (electrolysis of Al₂O₃ in molten cryolite)\n      - Na: Down's\
+  \ process (electrolysis of molten NaCl)\n\n    ## Interpreting Ellingham Diagrams\n\
+  \n    ### Problem Type 1: Can metal A reduce oxide B-O?\n    **Solution**: Check\
+  \ if A-O line is below B-O line at the given temperature\n\n    ### Problem Type\
+  \ 2: At what temperature does reduction become feasible?\n    **Solution**: Find\
+  \ intersection point of two lines (ΔG°_net = 0)\n\n    ### Problem Type 3: Compare\
+  \ oxidation stability\n    **Solution**: Lower line = more stable oxide\n\n    ##\
+  \ Key Points for IIT JEE\n\n    1. **Lower line** in Ellingham diagram = more stable\
+  \ oxide\n    2. Carbon's effectiveness increases with temperature (negative slope\
+  \ for C-CO)\n    3. Al, Mg, Na, K require electrolysis (very stable oxides)\n  \
+  \  4. ΔG° < 0 for feasible reduction\n    5. Thermite reaction: Al reduces Fe₂O₃\
+  \ (highly exothermic)\n    6. Self-reduction used for Cu (Cu₂S + Cu₂O → Cu)\n  \
+  \  7. Line breaks indicate phase transitions\n\n## Key Points\n\n- Ellingham diagram\n\
+  \n- Gibbs free energy\n\n- Reduction principles"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: "In an Ellingham diagram, what does it indicate when the line for metal A-oxide formation is positioned below the line for metal B-oxide formation at a given temperature?"
+  options:
+  - "Metal A is more reactive than metal B"
+  - "Metal A oxide is more stable than metal B oxide"
+  - "Metal B can reduce metal A oxide"
+  - "Metal A has a higher melting point than metal B"
+  correct_answer: "Metal A oxide is more stable than metal B oxide"
+  explanation: "In an Ellingham diagram, the Y-axis represents ΔG° (standard Gibbs free energy) for the oxidation reaction 2M + O₂ → 2MO, and the X-axis represents temperature. A lower position on the diagram means a more negative ΔG° value, which indicates greater thermodynamic stability of the oxide. When metal A's oxidation line is below metal B's line, it means the formation of A oxide has a more negative ΔG° than B oxide, making A oxide more thermodynamically stable. This relationship also tells us about reduction feasibility: if the A-O line is below the B-O line, then metal A can reduce metal B oxide (but B cannot reduce A oxide) because the coupled reaction (A oxidation + B oxide reduction) would have a negative ΔG°_net. This principle is fundamental to selecting appropriate reducing agents in metallurgy. For example, at high temperatures, the C-CO line falls below many metal oxide lines, making carbon an effective reducing agent for those metals. Understanding Ellingham diagrams is essential for predicting which metallurgical processes are thermodynamically feasible at different temperatures."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: "Why does the Ellingham line for carbon oxidation to CO have a negative slope, unlike most other metal oxidation lines?"
+  options:
+  - "Carbon oxidation releases more heat at higher temperatures"
+  - "The reaction 2C(s) + O₂(g) → 2CO(g) has a positive ΔS° due to increase in gaseous moles"
+  - "Carbon is more reactive at higher temperatures"
+  - "CO is less stable at higher temperatures"
+  correct_answer: "The reaction 2C(s) + O₂(g) → 2CO(g) has a positive ΔS° due to increase in gaseous moles"
+  explanation: "The unique negative slope of the C-CO line in Ellingham diagrams is explained by thermodynamic principles. For most metal oxidations (2M(s) + O₂(g) → 2MO(s)), gaseous oxygen is consumed to form a solid oxide, resulting in a decrease in the number of gaseous moles and thus a negative ΔS° (entropy decreases). Since ΔG° = ΔH° - TΔS°, with negative ΔS°, the -TΔS° term becomes positive and increases with temperature, making ΔG° less negative (positive slope). However, for carbon oxidation to CO: 2C(s) + O₂(g) → 2CO(g), one mole of gaseous O₂ is consumed but two moles of gaseous CO are produced, resulting in a net increase in gaseous moles and thus a positive ΔS°. The -TΔS° term is now negative and becomes more negative as temperature increases, making ΔG° more negative at higher temperatures (negative slope). This is why carbon becomes an increasingly effective reducing agent at higher temperatures—its oxidation line crosses below many metal oxide lines at elevated temperatures, making carbon reduction thermodynamically feasible for metals like iron, zinc, and copper at high temperatures."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: "Why is aluminum extracted by electrolytic reduction rather than carbon reduction, even though carbon is cheaper?"
+  options:
+  - "Aluminum forms a carbide with carbon"
+  - "The Al-Al₂O₃ line in the Ellingham diagram is very low, indicating extremely stable oxide that carbon cannot reduce"
+  - "Aluminum melts at a lower temperature than carbon"
+  - "Carbon reduction produces impure aluminum"
+  correct_answer: "The Al-Al₂O₃ line in the Ellingham diagram is very low, indicating extremely stable oxide that carbon cannot reduce"
+  explanation: "Aluminum oxide (Al₂O₃) is one of the most thermodynamically stable oxides, which is reflected by its position very low on the Ellingham diagram (highly negative ΔG° of formation). The Al-Al₂O₃ line remains below the C-CO and C-CO₂ lines even at very high temperatures, meaning that the reduction of Al₂O₃ by carbon is thermodynamically unfavorable (ΔG° > 0) across all practical temperature ranges. For a reduction reaction to be feasible, we need ΔG°_net < 0, which requires the reducing agent's oxidation line to be below the metal oxide line. Since carbon's lines never fall below aluminum's line, carbon cannot reduce alumina under any normal conditions. Therefore, the only practical method is electrolytic reduction, where electrical energy is used to drive the thermodynamically unfavorable reduction reaction: Al³⁺ + 3e⁻ → Al. This is accomplished through the Hall-Héroult process, where Al₂O₃ is dissolved in molten cryolite and electrolyzed at about 950°C. While this process is energy-intensive and expensive, it's the only viable method for extracting aluminum. The same principle applies to other highly reactive metals like sodium, magnesium, and calcium, which also have very stable oxides requiring electrolytic reduction."
+  require_pass: true

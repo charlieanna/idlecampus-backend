@@ -1,0 +1,90 @@
+slug: docker-diff-inspect-container-filesystem-changes
+title: 'Docker Diff: Inspect Container Filesystem Changes'
+difficulty: medium
+sequence_order: 5
+estimated_minutes: 2
+key_concepts:
+- containers
+- docker-diff
+- filesystem
+- debugging
+- security
+prerequisites: []
+content_md: '# Docker Diff: Inspect Container Filesystem Changes 🚀
+
+
+  Show which files and directories have been modified, added, or deleted in a container
+  compared to its base image.
+
+
+  ## Syntax/Command
+
+
+  ```bash
+
+  docker diff my-container
+
+  ```
+
+
+  ## Example
+
+
+  ```bash
+
+  docker diff container
+
+  ```
+
+
+  ## Key Points
+
+
+  - See all changes: docker diff <container>
+
+
+  - Only added files: docker diff <container> | grep "^A"
+
+
+  - Only modified: docker diff <container> | grep "^C"'
+exercises:
+- type: terminal
+  problem_statement: Inspect filesystem changes in a container named 'my-container' to see what files have been modified, added, or deleted
+  expected_output: List of filesystem changes with prefixes A (added), C (changed), D (deleted)
+  language: bash
+  starter_code: "# Inspect filesystem changes\n"
+  sequence_order: 1
+  command: docker diff my-container
+  description: Use docker diff to identify filesystem changes for security investigation
+  hints:
+  - 'See all changes: docker diff <container>'
+  - 'Only added files: docker diff <container> | grep "^A"'
+  - 'Only modified: docker diff <container> | grep "^C"'
+  validation:
+    must_not_include:
+    - Error
+    - 'panic:'
+  timeout_sec: 60
+  require_pass: true
+- type: sandbox
+  sequence_order: 99
+  hints:
+  - Run under CPU pressure to surface leaks or races
+  - Keep commands idempotent in CI
+  validation:
+    must_not_include:
+    - Error
+    - 'panic:'
+  timeout_sec: 60
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: In docker diff output, what does the "C" prefix indicate?
+  options:
+  - A file or directory that has been changed (modified) since the container was created
+  - A file that has been completely deleted from the container
+  - A new file that was added to the container
+  - A file that is currently being accessed by a process
+  correct_answer: A file or directory that has been changed (modified) since the container was created
+  explanation: "In docker diff output, the prefix 'C' indicates a changed (modified) file or directory. 'A' indicates added files, and 'D' indicates deleted files. This is useful for debugging, security audits, and understanding what changed in a running container."
+  require_pass: true

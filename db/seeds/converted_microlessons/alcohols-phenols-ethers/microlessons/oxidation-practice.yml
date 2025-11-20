@@ -1,0 +1,67 @@
+slug: oxidation-practice
+title: oxidation — Practice
+difficulty: medium
+sequence_order: 12
+estimated_minutes: 2
+key_concepts:
+- oxidation
+prerequisites: []
+content_md: '# oxidation — Practice 🚀
+
+
+  1° alcohols oxidize: R-CH₂-OH → R-CHO (aldehyde) → R-COOH (carboxylic acid). To
+  stop at aldehyde, use mild oxidizing agent like PCC. 2° → ketone, 3° → no oxidation.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 2
+  question: 'Oxidation of primary alcohols with K₂Cr₂O₇/H⁺ gives:'
+  options:
+  - Ketone only
+  - Aldehyde, then carboxylic acid with excess oxidant
+  - Ether only
+  - No oxidation occurs
+  require_pass: true
+  correct_answer: Aldehyde, then carboxylic acid with excess oxidant
+  explanation: 'Primary alcohols undergo oxidation in two stages with strong oxidizing
+    agents like K₂Cr₂O₇/H⁺ or KMnO₄. First stage: R-CH₂-OH → R-CHO (aldehyde). Second
+    stage: R-CHO → R-COOH (carboxylic acid). With excess oxidizing agent, the reaction
+    proceeds all the way to the carboxylic acid. To stop at the aldehyde stage, either
+    use a mild oxidizing agent like PCC (pyridinium chlorochromate) in dry conditions,
+    or distill off the aldehyde as it forms (aldehydes have lower BP than alcohols).
+    Secondary alcohols (R-CHOH-R'') oxidize only to ketones (R-CO-R''), which resist
+    further oxidation. Tertiary alcohols (R₃C-OH) do not undergo oxidation under normal
+    conditions because there is no hydrogen on the carbon bearing the -OH group.'
+- type: mcq
+  sequence_order: 3
+  question: 'Which reagent would you use to oxidize a primary alcohol to an aldehyde without further oxidation to carboxylic acid?'
+  options:
+  - K₂Cr₂O₇/H⁺ with excess oxidant
+  - PCC (pyridinium chlorochromate) in dry CH₂Cl₂
+  - KMnO₄ in acidic solution
+  - Concentrated HNO₃
+  require_pass: true
+  correct_answer: PCC (pyridinium chlorochromate) in dry CH₂Cl₂
+  explanation: 'PCC (pyridinium chlorochromate) is a mild oxidizing agent specifically designed to oxidize primary alcohols to aldehydes and stop there, without further oxidation to carboxylic acids. PCC works in dry aprotic solvents like dichloromethane (CH₂Cl₂), which prevents overoxidation. For example: R-CH₂-OH + PCC → R-CHO. In contrast, strong oxidizing agents like K₂Cr₂O₇/H⁺, KMnO₄, or concentrated HNO₃ oxidize primary alcohols all the way to carboxylic acids (R-CH₂-OH → R-CHO → R-COOH). Another mild oxidizing agent is PDC (pyridinium dichromate). To stop at the aldehyde stage with strong oxidants, you must distill off the aldehyde as it forms (taking advantage of its lower boiling point). PCC also oxidizes secondary alcohols to ketones: R₂CH-OH → R₂C=O. PCC does not oxidize tertiary alcohols.'
+- type: mcq
+  sequence_order: 4
+  question: 'What is the product when a tertiary alcohol is treated with K₂Cr₂O₇/H⁺?'
+  options:
+  - Aldehyde
+  - Ketone
+  - Carboxylic acid
+  - No reaction - tertiary alcohols are not oxidized
+  require_pass: true
+  correct_answer: No reaction - tertiary alcohols are not oxidized
+  explanation: 'Tertiary alcohols (R₃C-OH) do not undergo oxidation under normal conditions with common oxidizing agents like K₂Cr₂O₇/H⁺, KMnO₄, or PCC. This is because oxidation of alcohols requires a hydrogen atom on the carbon bearing the -OH group (the α-hydrogen). In tertiary alcohols, the carbon with -OH is bonded to three other carbon atoms and has no hydrogen atom available for removal. The oxidation mechanism requires removal of this α-hydrogen along with the -OH to form a C=O double bond, which is impossible for tertiary alcohols. Primary alcohols (R-CH₂-OH) have two α-hydrogens and oxidize to aldehydes/carboxylic acids. Secondary alcohols (R₂CH-OH) have one α-hydrogen and oxidize to ketones. Tertiary alcohols (R₃C-OH) have zero α-hydrogens and remain unreacted. Under very harsh conditions (strong heat, concentrated acid), tertiary alcohols may undergo elimination to form alkenes, but not oxidation to carbonyls.'

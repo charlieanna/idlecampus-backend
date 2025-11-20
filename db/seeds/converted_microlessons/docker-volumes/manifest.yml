@@ -1,0 +1,17 @@
+course:
+  slug: docker-volumes
+  title: Docker Volumes
+  description: ''
+  estimated_hours: null
+  level: null
+modules:
+- slug: default
+  title: Default Module
+  lessons:
+  - docker-volume-create
+  - docker-volume-list
+  - docker-volume-inspect
+  - docker-volume-remove
+  - docker-volume-prune
+  - docker-run-with-volumes
+  - bind-mounts-vs-volumes

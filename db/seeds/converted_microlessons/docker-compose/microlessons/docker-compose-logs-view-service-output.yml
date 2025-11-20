@@ -1,0 +1,88 @@
+slug: docker-compose-logs-view-service-output
+title: 'Docker Compose Logs: View Service Output'
+difficulty: easy
+sequence_order: 4
+estimated_minutes: 2
+key_concepts:
+- docker-compose
+- logs
+- debugging
+- monitoring
+- troubleshooting
+prerequisites: []
+content_md: "# Docker Compose Logs: View Service Output \U0001F680\n\n# Mastering\
+  \ docker-compose logs: Monitoring Service Output\n\n    ## What is docker-compose\
+  \ logs?\n    `docker-compose logs` displays output from all services or specific\
+  \ ones, with timestamps and service names. Essential for debugging multi-service\
+  \ applications where logs from different containers need correlation.\n\n    ##\
+  \ Why Compose Logs Matter\n    - **Unified View**: See all service logs in one place\n\
+  \    - **Service Identification**: Color-coded by service name\n    - **Follow Mode**:\
+  \ Real-time log streaming\n    - **Time Correlation**: Timestamps for debugging\n\
+  \    - **Filtering**: View specific services only\n\n    ## Common Use Cases\n\n\
+  \    ### 1. View All Logs\n    ```bash\n    docker-compose logs\n    ```\n    Shows\
+  \ logs from all services with service name prefix.\n\n    ### 2. Follow Logs in\
+  \ Real-Time\n    ```bash\n    docker-compose logs -f\n    ```\n    Continuously\
+  \ streams new log output (like tail -f).\n\n    ### 3. Specific Service Logs\n \
+  \   ```bash\n    docker-compose logs -f api\n    ```\n    Shows only api service\
+  \ logs in real-time.\n\n    ### 4. Last N Lines\n    ```bash\n    docker-compose\
+  \ logs --tail=100\n    ```\n    Shows last 100 lines from each service.\n\n    ##\
+  \ Common Options\n\n    | Option | Description | Example |\n    |--------|-------------|---------|\n\
+  \    | `-f` | Follow log output | `docker-compose logs -f` |\n    | `--tail=N` |\
+  \ Show last N lines | `docker-compose logs --tail=50` |\n    | `-t` | Show timestamps\
+  \ | `docker-compose logs -t` |\n    | `--no-color` | No color output | `docker-compose\
+  \ logs --no-color` |\n\n    ## Pro Tips\n\n    1. **Follow specific services**:\
+  \ `docker-compose logs -f api database`\n    2. **Timestamps for debugging**: Use\
+  \ `-t` flag\n    3. **Limit output**: Use `--tail` to avoid overwhelming output\n\
+  \    4. **Grep logs**: Pipe to grep for filtering\n    5. **Multiple terminals**:\
+  \ Open separate terminals for different services\n\n## Syntax/Command\n\n```bash\n\
+  docker-compose logs -f\n```\n\n## Example\n\n```bash\ndocker-compose logs\n```\n\
+  \n## Key Points\n\n- All logs: docker-compose logs\n\n- Follow: docker-compose logs\
+  \ -f\n\n- Specific service: docker-compose logs -f api"
+exercises:
+- type: terminal
+  sequence_order: 1
+  command: docker-compose logs -f
+  description: Monitor real-time logs from multiple services to identify error patterns
+  hints:
+  - 'All logs: docker-compose logs'
+  - 'Follow: docker-compose logs -f'
+  - 'Specific service: docker-compose logs -f api'
+  validation:
+    must_not_include:
+    - Error
+    - 'panic:'
+  timeout_sec: 60
+  require_pass: true
+- type: sandbox
+  sequence_order: 99
+  hints:
+  - Run under CPU pressure to surface leaks or races
+  - Keep commands idempotent in CI
+  validation:
+    must_not_include:
+    - Error
+    - 'panic:'
+  timeout_sec: 60
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What does the -f flag do in docker-compose logs?
+  options:
+  - Follows logs in real-time like tail -f
+  - Filters logs by pattern
+  - Shows full timestamps
+  - Forces log rotation
+  require_pass: true
+  correct_answer: Follows logs in real-time like tail -f
+  explanation: 'The `-f` flag in `docker-compose logs -f` follows (streams) log output
+    in real-time, similar to the Unix `tail -f` command. When you use this flag: (1)
+    **Continuous streaming**: New log lines appear as they are written by services,
+    (2) **Live debugging**: Watch application behavior in real-time during development,
+    (3) **Multiple services**: See interleaved logs from all services with color-coded
+    service names, (4) **Blocking operation**: Terminal stays attached until you press
+    Ctrl+C. Without `-f`, `docker-compose logs` shows historical logs and exits. Common
+    usage patterns: `docker-compose logs -f` (all services), `docker-compose logs
+    -f api database` (specific services), `docker-compose logs -f --tail=100` (last
+    100 lines then follow). The flag name "f" stands for "follow", not "filter", "full",
+    or "force". For filtering, use pipe with grep: `docker-compose logs -f | grep
+    ERROR`.'

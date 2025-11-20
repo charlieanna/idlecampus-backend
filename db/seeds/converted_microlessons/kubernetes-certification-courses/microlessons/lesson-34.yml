@@ -1,0 +1,73 @@
+slug: lesson-34
+title: Lesson 34
+difficulty: easy
+sequence_order: 34
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Container Images and Registries\n\n   \
+  \ ## Building Container Images\n\n    ### Dockerfile Best Practices\n\n    ```dockerfile\n\
+  \    # Use specific base image versions\n    FROM node:18-alpine\n\n    # Set working\
+  \ directory\n    WORKDIR /app\n\n    # Copy dependency files first (better caching)\n\
+  \    COPY package*.json ./\n    RUN npm ci --only=production\n\n    # Copy application\
+  \ code\n    COPY . .\n\n    # Use non-root user\n    USER node\n\n    # Expose port\n\
+  \    EXPOSE 3000\n\n    # Define command\n    CMD [\"node\", \"server.js\"]\n  \
+  \  ```\n\n    ### Multi-stage Builds\n\n    ```dockerfile\n    # Build stage\n \
+  \   FROM golang:1.20 AS builder\n    WORKDIR /app\n    COPY . .\n    RUN CGO_ENABLED=0\
+  \ go build -o myapp\n\n    # Runtime stage\n    FROM alpine:latest\n    COPY --from=builder\
+  \ /app/myapp /\n    CMD [\"/myapp\"]\n    ```\n\n    ## Image Registries\n\n   \
+  \ ### Docker Hub\n    ```bash\n    # Tag image\n    docker tag myapp:latest username/myapp:v1.0\n\
+  \n    # Push to Docker Hub\n    docker push username/myapp:v1.0\n    ```\n\n   \
+  \ ### Private Registries\n    ```bash\n    # Tag for private registry\n    docker\
+  \ tag myapp:latest registry.example.com/myapp:v1.0\n\n    # Push to private registry\n\
+  \    docker push registry.example.com/myapp:v1.0\n    ```\n\n    ## Kubernetes Image\
+  \ Pull\n\n    ### Using Public Images\n    ```yaml\n    apiVersion: v1\n    kind:\
+  \ Pod\n    metadata:\n      name: nginx-pod\n    spec:\n      containers:\n    \
+  \  - name: nginx\n        image: nginx:1.21\n        imagePullPolicy: IfNotPresent\n\
+  \    ```\n\n    ### Using Private Registries\n    ```yaml\n    apiVersion: v1\n\
+  \    kind: Pod\n    metadata:\n      name: private-app\n    spec:\n      containers:\n\
+  \      - name: app\n        image: registry.example.com/myapp:v1.0\n      imagePullSecrets:\n\
+  \      - name: regcred\n    ```\n\n    ### Creating Image Pull Secret\n    ```bash\n\
+  \    kubectl create secret docker-registry regcred \\\n      --docker-server=registry.example.com\
+  \ \\\n      --docker-username=myuser \\\n      --docker-password=mypass \\\n   \
+  \   --docker-email=myemail@example.com\n    ```\n\n    ## Image Pull Policies\n\n\
+  \    - **Always**: Always pull the image\n    - **IfNotPresent**: Pull if not cached\
+  \ locally\n    - **Never**: Never pull, use local image only\n\n    ## Security\
+  \ Best Practices\n\n    1. Use specific image tags (not `latest`)\n    2. Scan images\
+  \ for vulnerabilities\n    3. Use minimal base images (alpine, distroless)\n   \
+  \ 4. Don't run as root\n    5. Remove unnecessary packages\n    6. Use multi-stage\
+  \ builds"
+exercises:
+  - type: mcq
+    sequence_order: 1
+    question: "What are the key benefits of using multi-stage Docker builds?"
+    options:
+      - "Faster image pull times"
+      - "Smaller final images by excluding build tools and dependencies, improving security and reducing attack surface"
+      - "Better image encryption"
+      - "Automatic vulnerability scanning"
+    correct_answer: "Smaller final images by excluding build tools and dependencies, improving security and reducing attack surface"
+    explanation: "Multi-stage builds allow you to use multiple FROM statements in a Dockerfile, each starting a new build stage. The key benefit is producing minimal final images by excluding build-time dependencies and tools. For example, compiling a Go application requires the Go compiler and build tools (~800MB), but the final binary only needs a minimal runtime environment. A multi-stage Dockerfile: 'FROM golang:1.20 AS builder ... RUN go build -o app; FROM alpine:latest; COPY --from=builder /app/app /; CMD [\"/app\"]' uses a full Go image for building but copies only the binary to a tiny Alpine image (5MB instead of 800MB). Benefits include: dramatically smaller images (reducing storage, transfer time, and attack surface), improved security (fewer packages = fewer vulnerabilities), faster deployments (smaller images pull faster), and cleaner separation of build and runtime environments. The --from flag copies files from previous stages: 'COPY --from=builder /app/binary /'. You can name stages (AS builder) or reference by index (--from=0). Common patterns: compile stage with full SDK -> runtime stage with minimal base, install dependencies stage -> production stage with only runtime deps, or test stage with test tools -> production stage without them. Multi-stage builds also enable better layer caching - you can copy dependency files first, run install, then copy source code, so dependency layers cache unless dependencies change. This is essential for: compiled languages (Go, Java, Rust), JavaScript/Node.js (separating npm install from source), and any application requiring build tools not needed at runtime. Understanding multi-stage builds is crucial for production-grade containers - they're a best practice for reducing image bloat and improving security."
+    require_pass: true
+  - type: mcq
+    sequence_order: 2
+    question: "How do imagePullSecrets work in Kubernetes for private registries?"
+    options:
+      - "They store the actual container images"
+      - "They contain credentials for authenticating to private container registries"
+      - "They control image pull rate limits"
+      - "They are only for Docker Hub"
+    correct_answer: "They contain credentials for authenticating to private container registries"
+    explanation: "imagePullSecrets are Kubernetes Secrets containing credentials (username, password, registry URL) needed to authenticate to private container registries. Without them, kubelet cannot pull images from registries requiring authentication. To create an imagePullSecret: 'kubectl create secret docker-registry regcred --docker-server=registry.example.com --docker-username=myuser --docker-password=mypassword --docker-email=me@example.com'. This creates a Secret of type kubernetes.io/dockerconfigjson containing base64-encoded registry credentials. Reference it in pod spec: 'spec: imagePullSecrets: - name: regcred, containers: - image: registry.example.com/myapp:v1.0'. When kubelet tries to pull the image, it uses credentials from regcred to authenticate. You can specify multiple imagePullSecrets for different registries. The Secret must be in the same namespace as the pod (Secrets don't cross namespaces). For convenience, add imagePullSecrets to the default ServiceAccount in a namespace: 'kubectl patch serviceaccount default -p '{\"imagePullSecrets\": [{\"name\": \"regcred\"}]}'' - then all pods in that namespace automatically use regcred without explicitly specifying it. Common scenarios: private Docker Hub repositories, company-hosted registries (Harbor, Artifactory), cloud provider registries (AWS ECR, GCP GCR, Azure ACR with specific authentication), and registries with per-tenant credentials. Best practices: use dedicated service accounts with minimal permissions for image pulling, rotate credentials regularly, use cloud provider integration when available (AWS IAM for ECR, GCP Workload Identity for GCR), store secrets securely with encryption at rest, and consider using external secret management (Vault, AWS Secrets Manager) synced to Kubernetes. For debugging image pull issues, check: Secret exists and is in correct namespace, credentials are valid, registry URL is correct, network allows access to registry, and pod spec references the Secret correctly."
+    require_pass: true
+  - type: mcq
+    sequence_order: 3
+    question: "What does imagePullPolicy: IfNotPresent do?"
+    options:
+      - "Always pull the latest image from registry"
+      - "Pull image only if it's not already cached locally on the node"
+      - "Never pull images, always use local cache"
+      - "Pull images every hour"
+    correct_answer: "Pull image only if it's not already cached locally on the node"
+    explanation: "The imagePullPolicy controls when kubelet pulls container images from registries. IfNotPresent checks if the image exists in the node's local cache (pulled previously) - if yes, uses the cached image; if no, pulls from registry. This is the default for images with specific tags (not 'latest'). It optimizes startup time and reduces registry traffic but can cause issues if image content changes for the same tag (not recommended practice). Always pulls the image on every pod creation, regardless of cache. This is default for 'latest' tag and ensures you always get the newest version, but increases startup time and registry traffic. Useful in development or for images that update frequently under the same tag (antipattern in production). Never only uses locally cached images, failing if image isn't cached. This is rare - used for airgapped environments or when you pre-load images. For example, with IfNotPresent and tag 'myapp:v1.0', first pod pull retrieves from registry and caches locally. Subsequent pods use the cache. If someone pushes a new image as 'myapp:v1.0' (overwriting the tag - bad practice), new pods still use the old cached version until cache is cleared or node is replaced. Best practices: use specific version tags (v1.2.3) or digest references (@sha256:abc...) with IfNotPresent for reproducible deployments, never use 'latest' in production, use Always in development for rapid iteration, configure image pull timeout for slow networks, and consider pre-pulling critical images to nodes for faster startup. Understanding imagePullPolicy is crucial for debugging why pods use unexpected image versions or for optimizing startup performance."
+    require_pass: true

@@ -1,0 +1,59 @@
+slug: enzymecatalysis-practice
+title: enzyme_catalysis — Practice
+difficulty: medium
+sequence_order: 17
+estimated_minutes: 2
+key_concepts:
+- enzyme_catalysis
+prerequisites: []
+content_md: '# enzyme_catalysis — Practice 🚀
+
+
+  Enzymes are highly specific (lock and key), work at mild conditions (37°C), but
+  are sensitive to pH changes. They only catalyze specific reactions.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 2
+  question: Which are characteristics of enzyme catalysis?
+  options:
+  - Highly specific for particular substrate
+  - Work efficiently at body temperature
+  - Activity independent of pH
+  - Can catalyze any chemical reaction
+  correct_answer: Work efficiently at body temperature
+  explanation: "Enzymes work efficiently at mild conditions, particularly at body temperature (37°C), making them ideal biological catalysts. While enzymes are also highly specific (option 1), their activity is NOT independent of pH - they're actually quite sensitive to pH changes. Each enzyme has an optimal pH range. Enzymes also cannot catalyze any chemical reaction; they only catalyze specific reactions they're designed for (lock-and-key specificity)."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: 'The lock-and-key mechanism of enzyme catalysis refers to:'
+  options:
+  - Substrate fits precisely into the active site of enzyme
+  - Enzyme changes shape permanently
+  - Any substrate can bind to any enzyme
+  - Enzymes form ionic bonds only
+  correct_answer: Substrate fits precisely into the active site of enzyme
+  explanation: "The lock-and-key model explains enzyme specificity: the substrate (key) has a complementary shape that fits precisely into the enzyme's active site (lock). Only substrates with the correct shape, size, and chemical properties can bind to a specific enzyme. This is why each enzyme catalyzes only specific reactions. The modern 'induced-fit' model refines this: the enzyme slightly changes shape upon substrate binding to achieve optimal fit, but the basic principle of specificity remains."
+  require_pass: false
+- type: mcq
+  sequence_order: 4
+  question: 'Enzymes can be denatured (lose activity) by:'
+  options:
+  - High temperature or extreme pH
+  - Low substrate concentration
+  - Adding more enzyme
+  - Low temperature
+  correct_answer: High temperature or extreme pH
+  explanation: "Enzymes are proteins that can be denatured (lose their three-dimensional structure and catalytic activity) by: (1) High temperature - breaks weak bonds maintaining structure (most enzymes denature above 50-60°C), (2) Extreme pH - disrupts ionic and hydrogen bonds, (3) Heavy metals - bind to enzyme and change structure, (4) Organic solvents. Denaturation is usually irreversible. Low temperature just slows enzyme activity without denaturing. Each enzyme has optimal temperature (usually 37°C for human enzymes) and pH."
+  require_pass: false

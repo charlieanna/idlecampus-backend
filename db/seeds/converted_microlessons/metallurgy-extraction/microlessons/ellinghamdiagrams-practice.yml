@@ -1,0 +1,83 @@
+slug: ellinghamdiagrams-practice
+title: ellingham_diagrams — Practice
+difficulty: easy
+sequence_order: 10
+estimated_minutes: 2
+key_concepts:
+- ellingham_diagrams
+prerequisites: []
+content_md: '# ellingham_diagrams — Practice 🚀
+
+
+  Lower line means more negative ΔG°, which indicates greater thermodynamic stability.
+  The metal oxide is more stable and harder to reduce.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: short_answer
+  sequence_order: 2
+  hints:
+  - Re-read the question carefully.
+  - Recall the relevant formula or rule.
+  - Review the explanation once you answer.
+  question: In the Ellingham diagram, a lower line indicates a ________ stable oxide.
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: According to the Ellingham diagram, which statement is correct about using
+    carbon to reduce metal oxides?
+  options:
+  - Carbon can reduce all metal oxides at any temperature
+  - Carbon can reduce a metal oxide only if the carbon line is below the metal oxide
+      line
+  - Carbon can reduce a metal oxide only if the carbon line is above the metal oxide
+      line
+  - The position of lines doesn't matter for reduction
+  require_pass: true
+  correct_answer: Carbon can reduce a metal oxide only if the carbon line is below
+    the metal oxide line
+  explanation: 'Understanding Ellingham diagrams for predicting reduction: A metal
+    oxide can be reduced by carbon (or any reducing agent) only if the **reducing
+    agent''s line lies BELOW the metal oxide line** at that temperature. Why? Lower
+    line = more negative ΔG = more stable oxide = stronger affinity for oxygen. When
+    C line is below MO line: C + O₂ → CO₂ is more favorable than M + O₂ → MO, so
+    carbon "steals" oxygen from metal oxide: **MO + C → M + CO** (or CO₂). Example:
+    In iron extraction, at 700°C, the C→CO line crosses below Fe₂O₃ line, making
+    reduction feasible: Fe₂O₃ + 3C → 2Fe + 3CO. Key observations: (1) **Al₂O₃ line
+    is always below C line** → carbon cannot reduce Al₂O₃ (aluminum requires electrolysis).
+    (2) **ZnO, Fe₂O₃, CuO lines cross above C line** at high temperatures → these
+    can be reduced by carbon. (3) Temperature matters! Some reductions only become
+    feasible above certain temperatures where lines cross.'
+- type: mcq
+  sequence_order: 4
+  question: 'Why do most metal oxide lines in the Ellingham diagram have a positive
+    slope?'
+  options:
+  - Because ΔG increases with temperature due to entropy factor (−TΔS)
+  - Because reactions become less favorable at higher temperatures
+  - Because metal oxides decompose at high temperatures
+  - Because oxygen pressure increases with temperature
+  require_pass: true
+  correct_answer: Because ΔG increases with temperature due to entropy factor (−TΔS)
+  explanation: 'Ellingham diagram slopes explained using thermodynamics: From **ΔG
+    = ΔH − TΔS**, the slope of each line = **−ΔS** (entropy change). For most oxidation
+    reactions like **2M + O₂ → 2MO**: (1) Reactants: 2 solid + 1 gas = 3 particles
+    (high entropy), (2) Products: 2 solid = 2 particles (lower entropy), (3) **ΔS
+    is negative** (entropy decreases as gas is consumed), (4) Therefore, slope =
+    −ΔS = positive (upward slope). As temperature increases, the −TΔS term becomes
+    more positive, making ΔG less negative (reaction becomes less favorable). **Exception
+    - Carbon oxidation has negative slope**: 2C + O₂ → 2CO produces gas (ΔS positive),
+    so slope = −ΔS = negative. This is why carbon lines slope downward! This negative
+    slope causes carbon lines to intersect metal oxide lines at certain temperatures,
+    making reduction possible above those temperatures. The Ellingham diagram brilliantly
+    visualizes thermodynamic feasibility of reactions across temperatures.'

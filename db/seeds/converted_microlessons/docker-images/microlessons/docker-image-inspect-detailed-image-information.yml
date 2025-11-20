@@ -1,0 +1,90 @@
+slug: docker-image-inspect-detailed-image-information
+title: 'Docker Image Inspect: Detailed Image Information'
+difficulty: medium
+sequence_order: 10
+estimated_minutes: 2
+key_concepts:
+- images
+- docker-inspect
+- metadata
+- debugging
+- configuration
+prerequisites: []
+content_md: '# Docker Image Inspect: Detailed Image Information 🚀
+
+
+  Display detailed image information in JSON format including layers, configuration,
+  environment variables, and metadata.
+
+
+  ## Syntax/Command
+
+
+  ```bash
+
+  docker image inspect nginx:alpine
+
+  ```
+
+
+  ## Example
+
+
+  ```bash
+
+  docker image inspect --format="{{.Size}}" nginx
+
+  ```
+
+
+  ## Key Points
+
+
+  - Inspect: docker image inspect <image>
+
+
+  - Extract field: docker image inspect --format="{{.Architecture}}" <image>
+
+
+  - Multiple images: docker image inspect img1 img2'
+exercises:
+- type: terminal
+  problem_statement: Inspect the nginx:alpine image to view its detailed configuration, layers, and metadata in JSON format
+  expected_output: JSON output showing detailed image information including layers, config, environment variables, and metadata
+  language: bash
+  starter_code: "# Inspect image details\n"
+  sequence_order: 1
+  command: docker image inspect nginx:alpine
+  description: Extract detailed configuration from image for security audit
+  hints:
+  - 'Inspect: docker image inspect <image>'
+  - 'Extract field: docker image inspect --format="{{.Architecture}}" <image>'
+  - 'Multiple images: docker image inspect img1 img2'
+  validation:
+    must_not_include:
+    - Error
+    - 'panic:'
+  timeout_sec: 60
+  require_pass: true
+- type: sandbox
+  sequence_order: 99
+  hints:
+  - Run under CPU pressure to surface leaks or races
+  - Keep commands idempotent in CI
+  validation:
+    must_not_include:
+    - Error
+    - 'panic:'
+  timeout_sec: 60
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What information can you find with docker image inspect?
+  options:
+  - Layers, environment variables, exposed ports, architecture, and creation date
+  - Only the image size
+  - Running container information
+  - Network connections of running containers
+  correct_answer: Layers, environment variables, exposed ports, architecture, and creation date
+  explanation: "docker image inspect provides comprehensive metadata about an image in JSON format, including layers, environment variables, exposed ports, architecture, OS, creation date, and configuration. It doesn't show runtime information about containers - for that you'd use docker container inspect."
+  require_pass: true

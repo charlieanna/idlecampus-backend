@@ -1,0 +1,430 @@
+/*
+ * Modern Layout Styles
+ * Clean, minimal design matching React patterns
+ * Uses CSS variables for consistent theming
+ */
+
+:root {
+  /* Color palette - cleaner, more subtle */
+  --color-primary: #3b82f6;
+  --color-primary-light: #dbeafe;
+  --color-success: #10b981;
+  --color-success-light: #d1fae5;
+  --color-warning: #f59e0b;
+  --color-warning-light: #fef3c7;
+  --color-gray-50: #f9fafb;
+  --color-gray-100: #f3f4f6;
+  --color-gray-200: #e5e7eb;
+  --color-gray-300: #d1d5db;
+  --color-gray-400: #9ca3af;
+  --color-gray-500: #6b7280;
+  --color-gray-600: #4b5563;
+  --color-gray-700: #374151;
+  --color-gray-800: #1f2937;
+  --color-gray-900: #111827;
+
+  /* Spacing system (8px grid) */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+
+  /* Border radius */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+/* ===== Resizable Panel Layout ===== */
+.split-layout {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+}
+
+.split-panel {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.gutter {
+  background-color: var(--color-gray-200);
+  background-repeat: no-repeat;
+  background-position: 50%;
+  cursor: col-resize;
+  position: relative;
+}
+
+.gutter:hover {
+  background-color: var(--color-primary);
+}
+
+.gutter::before {
+  content: '';
+  display: block;
+  width: 3px;
+  height: 40px;
+  background: var(--color-gray-400);
+  border-radius: 2px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.gutter:hover::before {
+  background: white;
+}
+
+/* ===== Modern Sidebar Styles ===== */
+.progress-sidebar {
+  background: white;
+  border-right: 1px solid var(--color-gray-200);
+  padding: var(--space-6);
+  overflow-y: auto;
+  height: 100vh;
+}
+
+.sidebar-header {
+  margin-bottom: var(--space-6);
+  padding-bottom: var(--space-4);
+  border-bottom: 1px solid var(--color-gray-200);
+}
+
+.sidebar-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--color-gray-900);
+  margin: 0;
+}
+
+/* ===== Module Headers - Clean Design ===== */
+.module-header {
+  margin: var(--space-5) 0 var(--space-3) 0;
+  cursor: pointer;
+  user-select: none;
+}
+
+.module-header-content {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  background: var(--color-gray-50);
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--radius-md);
+  transition: all 0.2s ease;
+}
+
+.module-header-content:hover {
+  background: var(--color-gray-100);
+  border-color: var(--color-gray-300);
+}
+
+.module-expand-icon {
+  width: 20px;
+  height: 20px;
+  color: var(--color-gray-600);
+  transition: transform 0.2s ease;
+  flex-shrink: 0;
+}
+
+.module-header.collapsed .module-expand-icon {
+  transform: rotate(-90deg);
+}
+
+.module-header-text {
+  flex: 1;
+}
+
+.module-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-gray-800);
+  margin-bottom: var(--space-1);
+}
+
+.module-stats {
+  font-size: 0.75rem;
+  color: var(--color-gray-500);
+  font-weight: 500;
+}
+
+/* ===== Chapter Items - Cleaner Design ===== */
+.journey-step {
+  position: relative;
+  margin-left: 0;
+}
+
+.journey-connector {
+  position: absolute;
+  left: 10px;
+  top: -12px;
+  bottom: 12px;
+  width: 2px;
+  background: var(--color-gray-200);
+  z-index: 0;
+}
+
+.journey-connector.completed {
+  background: var(--color-success);
+}
+
+.chapter-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  margin-bottom: var(--space-2);
+  border-radius: var(--radius-md);
+  border: 1px solid transparent;
+  background: white;
+  transition: all 0.2s ease;
+  position: relative;
+  z-index: 1;
+}
+
+.chapter-item.clickable:hover {
+  background: var(--color-gray-50);
+  border-color: var(--color-gray-200);
+  transform: translateX(2px);
+}
+
+/* Current chapter */
+.chapter-item.current {
+  background: var(--color-primary-light);
+  border-left: 3px solid var(--color-primary);
+  padding-left: calc(var(--space-3) - 2px);
+}
+
+/* Completed chapter */
+.chapter-item.completed {
+  opacity: 0.7;
+}
+
+.chapter-item.completed:hover {
+  opacity: 1;
+}
+
+/* Locked chapter */
+.chapter-item.locked {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* Lab items */
+.chapter-item.lab-item {
+  background: var(--color-warning-light);
+  border-left: 3px solid var(--color-warning);
+  padding-left: calc(var(--space-3) - 2px);
+}
+
+.chapter-item.lab-item.current {
+  background: var(--color-warning-light);
+  border-left: 3px solid var(--color-warning);
+}
+
+/* ===== Chapter Item Components ===== */
+.chapter-status {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-center;
+}
+
+.status-icon {
+  width: 20px;
+  height: 20px;
+  color: var(--color-gray-400);
+}
+
+.status-icon.completed-icon {
+  color: var(--color-success);
+}
+
+.status-icon.current-icon {
+  color: var(--color-primary);
+}
+
+.status-icon.locked-icon {
+  color: var(--color-gray-300);
+}
+
+.chapter-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.chapter-name-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-1);
+}
+
+.chapter-type-icon {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  color: var(--color-gray-500);
+}
+
+.chapter-name {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-gray-800);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ===== Mastery Bar - Simpler Design ===== */
+.mastery-bar-mini {
+  height: 4px;
+  background: var(--color-gray-200);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-bottom: var(--space-1);
+}
+
+.mastery-fill {
+  height: 100%;
+  background: var(--color-gray-400);
+  transition: width 0.3s ease;
+}
+
+.mastery-fill.high {
+  background: var(--color-success);
+}
+
+.mastery-fill.medium {
+  background: var(--color-warning);
+}
+
+.mastery-fill.low {
+  background: var(--color-gray-400);
+}
+
+.mastery-score {
+  font-size: 0.75rem;
+  color: var(--color-gray-500);
+  font-weight: 500;
+}
+
+/* ===== Review Badge - Cleaner Design ===== */
+.review-pending-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  background: var(--color-warning-light);
+  border: 1px solid var(--color-warning);
+  border-radius: var(--radius-md);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-warning);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.review-pending-badge:hover {
+  background: var(--color-warning);
+  color: white;
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.review-badge-icon {
+  width: 16px;
+  height: 16px;
+}
+
+/* ===== Lab Available Indicator ===== */
+.lab-available-indicator {
+  width: 8px;
+  height: 8px;
+  background: var(--color-warning);
+  border-radius: 50%;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.2);
+  }
+}
+
+/* ===== Scrollbar Styling ===== */
+.progress-sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.progress-sidebar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.progress-sidebar::-webkit-scrollbar-thumb {
+  background: var(--color-gray-300);
+  border-radius: 3px;
+}
+
+.progress-sidebar::-webkit-scrollbar-thumb:hover {
+  background: var(--color-gray-400);
+}
+
+/* ===== Responsive Design ===== */
+@media (max-width: 1024px) {
+  .progress-sidebar {
+    width: 240px;
+  }
+
+  .module-title {
+    font-size: 0.8125rem;
+  }
+
+  .chapter-name {
+    font-size: 0.8125rem;
+  }
+}
+
+/* ===== Lucide Icon Utilities ===== */
+.lucide-icon {
+  width: 1em;
+  height: 1em;
+  stroke-width: 2;
+  stroke: currentColor;
+  fill: none;
+}
+
+.lucide-icon-sm {
+  width: 14px;
+  height: 14px;
+}
+
+.lucide-icon-md {
+  width: 18px;
+  height: 18px;
+}
+
+.lucide-icon-lg {
+  width: 24px;
+  height: 24px;
+}

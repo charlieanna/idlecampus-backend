@@ -1,0 +1,234 @@
+slug: lesson-5
+title: Lesson 5
+difficulty: easy
+sequence_order: 5
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Generics and Advanced Types\n\n    **Generics**\
+  \ allow you to write reusable, type-safe code that works with multiple types.\n\n\
+  \    ## Why Generics?\n\n    ### Without Generics\n\n    ```typescript\n    // Specific\
+  \ to numbers\n    function identityNumber(arg: number): number {\n      return arg;\n\
+  \    }\n\n    // Specific to strings\n    function identityString(arg: string):\
+  \ string {\n      return arg;\n    }\n\n    // Using any (loses type safety!)\n\
+  \    function identityAny(arg: any): any {\n      return arg;\n    }\n\n    const\
+  \ result = identityAny(\"hello\");\n    result.toUpperCase();  // No autocomplete,\
+  \ no type checking!\n    ```\n\n    ### With Generics\n\n    ```typescript\n   \
+  \ // Generic function - works with any type\n    function identity<T>(arg: T): T\
+  \ {\n      return arg;\n    }\n\n    // Type is inferred\n    const num = identity(42);\
+  \           // Type: number\n    const str = identity(\"hello\");      // Type:\
+  \ string\n    const bool = identity(true);        // Type: boolean\n\n    // Explicit\
+  \ type parameter\n    const explicit = identity<string>(\"hello\");\n\n    // Full\
+  \ type safety!\n    str.toUpperCase();  // ✓ Autocomplete works\n    str.toFixed();\
+  \      // ❌ Error: Property 'toFixed' does not exist on string\n    ```\n\n    ##\
+  \ Generic Functions\n\n    ### Basic Generic Function\n\n    ```typescript\n   \
+  \ // Generic array reversal\n    function reverse<T>(items: T[]): T[] {\n      return\
+  \ items.reverse();\n    }\n\n    const numbers = reverse([1, 2, 3]);      // Type:\
+  \ number[]\n    const strings = reverse([\"a\", \"b\", \"c\"]);  // Type: string[]\n\
+  \n    // Generic with multiple type parameters\n    function pair<T, U>(first: T,\
+  \ second: U): [T, U] {\n      return [first, second];\n    }\n\n    const p1 = pair(\"\
+  age\", 30);           // Type: [string, number]\n    const p2 = pair(true, \"active\"\
+  );      // Type: [boolean, string]\n\n    // Generic with constraints\n    interface\
+  \ HasLength {\n      length: number;\n    }\n\n    function logLength<T extends\
+  \ HasLength>(arg: T): T {\n      console.log(arg.length);  // OK - T guaranteed\
+  \ to have length\n      return arg;\n    }\n\n    logLength(\"hello\");        //\
+  \ OK - string has length\n    logLength([1, 2, 3]);      // OK - array has length\n\
+  \    logLength({ length: 10 }); // OK - object has length\n    logLength(42);  \
+  \           // ❌ Error: number doesn't have length\n    ```\n\n    ### Real-World\
+  \ Generic Examples\n\n    ```typescript\n    // API response wrapper\n    interface\
+  \ ApiResponse<T> {\n      data: T;\n      status: number;\n      message: string;\n\
+  \    }\n\n    interface User {\n      id: number;\n      name: string;\n      email:\
+  \ string;\n    }\n\n    async function fetchUser(id: number): Promise<ApiResponse<User>>\
+  \ {\n      const response = await fetch(`/api/users/${id}`);\n      return response.json();\n\
+  \    }\n\n    // Usage\n    const userResponse = await fetchUser(1);\n    console.log(userResponse.data.name);\
+  \  // Type-safe: knows data is User\n\n    // Generic cache\n    class Cache<T>\
+  \ {\n      private data: Map<string, T> = new Map();\n\n      set(key: string, value:\
+  \ T): void {\n        this.data.set(key, value);\n      }\n\n      get(key: string):\
+  \ T | undefined {\n        return this.data.get(key);\n      }\n\n      has(key:\
+  \ string): boolean {\n        return this.data.has(key);\n      }\n    }\n\n   \
+  \ // Type-safe caches\n    const userCache = new Cache<User>();\n    userCache.set(\"\
+  user1\", { id: 1, name: \"Alice\", email: \"alice@example.com\" });\n    const user\
+  \ = userCache.get(\"user1\");  // Type: User | undefined\n\n    const numberCache\
+  \ = new Cache<number>();\n    numberCache.set(\"count\", 42);\n    const count =\
+  \ numberCache.get(\"count\");  // Type: number | undefined\n    ```\n\n    ## Generic\
+  \ Interfaces and Classes\n\n    ```typescript\n    // Generic interface\n    interface\
+  \ Repository<T> {\n      findById(id: string): T | null;\n      findAll(): T[];\n\
+  \      create(item: T): T;\n      update(id: string, item: Partial<T>): T | null;\n\
+  \      delete(id: string): boolean;\n    }\n\n    // Implementation\n    class UserRepository\
+  \ implements Repository<User> {\n      private users: User[] = [];\n\n      findById(id:\
+  \ string): User | null {\n        return this.users.find(u => u.id === parseInt(id))\
+  \ || null;\n      }\n\n      findAll(): User[] {\n        return this.users;\n \
+  \     }\n\n      create(user: User): User {\n        this.users.push(user);\n  \
+  \      return user;\n      }\n\n      update(id: string, updates: Partial<User>):\
+  \ User | null {\n        const user = this.findById(id);\n        if (!user) return\
+  \ null;\n        Object.assign(user, updates);\n        return user;\n      }\n\n\
+  \      delete(id: string): boolean {\n        const index = this.users.findIndex(u\
+  \ => u.id === parseInt(id));\n        if (index === -1) return false;\n        this.users.splice(index,\
+  \ 1);\n        return true;\n      }\n    }\n\n    // Generic class\n    class Result<T,\
+  \ E = Error> {\n      private constructor(\n        private value?: T,\n       \
+  \ private error?: E\n      ) {}\n\n      static ok<T, E = Error>(value: T): Result<T,\
+  \ E> {\n        return new Result(value);\n      }\n\n      static err<T, E = Error>(error:\
+  \ E): Result<T, E> {\n        return new Result(undefined, error);\n      }\n\n\
+  \      isOk(): boolean {\n        return this.value !== undefined;\n      }\n\n\
+  \      isErr(): boolean {\n        return this.error !== undefined;\n      }\n\n\
+  \      unwrap(): T {\n        if (this.value === undefined) {\n          throw new\
+  \ Error(\"Called unwrap on an error result\");\n        }\n        return this.value;\n\
+  \      }\n    }\n\n    // Usage\n    function divide(a: number, b: number): Result<number,\
+  \ string> {\n      if (b === 0) {\n        return Result.err(\"Division by zero\"\
+  );\n      }\n      return Result.ok(a / b);\n    }\n\n    const result1 = divide(10,\
+  \ 2);\n    if (result1.isOk()) {\n      console.log(result1.unwrap());  // 5\n \
+  \   }\n\n    const result2 = divide(10, 0);\n    if (result2.isErr()) {\n      console.log(\"\
+  Error occurred\");\n    }\n    ```\n\n    ## Union and Intersection Types\n\n  \
+  \  ### Union Types\n\n    ```typescript\n    // Union: value can be ONE of the types\n\
+  \    type ID = string | number;\n\n    function printId(id: ID) {\n      console.log(`ID:\
+  \ ${id}`);\n    }\n\n    printId(101);      // OK\n    printId(\"abc123\"); // OK\n\
+  \    printId(true);     // ❌ Error: boolean not assignable\n\n    // Discriminated\
+  \ unions (tagged unions)\n    interface Circle {\n      kind: \"circle\";\n    \
+  \  radius: number;\n    }\n\n    interface Square {\n      kind: \"square\";\n \
+  \     sideLength: number;\n    }\n\n    interface Rectangle {\n      kind: \"rectangle\"\
+  ;\n      width: number;\n      height: number;\n    }\n\n    type Shape = Circle\
+  \ | Square | Rectangle;\n\n    function getArea(shape: Shape): number {\n      //\
+  \ TypeScript narrows the type based on 'kind'\n      switch (shape.kind) {\n   \
+  \     case \"circle\":\n          return Math.PI * shape.radius ** 2;\n        case\
+  \ \"square\":\n          return shape.sideLength ** 2;\n        case \"rectangle\"\
+  :\n          return shape.width * shape.height;\n      }\n    }\n\n    // Exhaustiveness\
+  \ checking\n    function assertNever(x: never): never {\n      throw new Error(\"\
+  Unexpected value: \" + x);\n    }\n\n    function getAreaExhaustive(shape: Shape):\
+  \ number {\n      switch (shape.kind) {\n        case \"circle\":\n          return\
+  \ Math.PI * shape.radius ** 2;\n        case \"square\":\n          return shape.sideLength\
+  \ ** 2;\n        case \"rectangle\":\n          return shape.width * shape.height;\n\
+  \        default:\n          return assertNever(shape);  // Ensures all cases handled\n\
+  \      }\n    }\n    ```\n\n    ### Intersection Types\n\n    ```typescript\n  \
+  \  // Intersection: value must have ALL properties\n    interface HasName {\n  \
+  \    name: string;\n    }\n\n    interface HasAge {\n      age: number;\n    }\n\
+  \n    type Person = HasName & HasAge;\n\n    const person: Person = {\n      name:\
+  \ \"Alice\",\n      age: 30\n    };\n\n    // Combining multiple types\n    interface\
+  \ Timestamped {\n      createdAt: Date;\n      updatedAt: Date;\n    }\n\n    interface\
+  \ Identifiable {\n      id: string;\n    }\n\n    type Entity<T> = T & Identifiable\
+  \ & Timestamped;\n\n    interface Product {\n      name: string;\n      price: number;\n\
+  \    }\n\n    const product: Entity<Product> = {\n      id: \"prod-123\",\n    \
+  \  name: \"Laptop\",\n      price: 999,\n      createdAt: new Date(),\n      updatedAt:\
+  \ new Date()\n    };\n    ```\n\n    ## Type Guards and Narrowing\n\n    ### typeof\
+  \ Type Guards\n\n    ```typescript\n    function processValue(value: string | number)\
+  \ {\n      if (typeof value === \"string\") {\n        // Type narrowed to string\n\
+  \        return value.toUpperCase();\n      } else {\n        // Type narrowed to\
+  \ number\n        return value.toFixed(2);\n      }\n    }\n    ```\n\n    ### instanceof\
+  \ Type Guards\n\n    ```typescript\n    class Dog {\n      bark() {\n        console.log(\"\
+  Woof!\");\n      }\n    }\n\n    class Cat {\n      meow() {\n        console.log(\"\
+  Meow!\");\n      }\n    }\n\n    function makeSound(animal: Dog | Cat) {\n     \
+  \ if (animal instanceof Dog) {\n        animal.bark();  // Type: Dog\n      } else\
+  \ {\n        animal.meow();  // Type: Cat\n      }\n    }\n    ```\n\n    ### Custom\
+  \ Type Guards\n\n    ```typescript\n    interface User {\n      name: string;\n\
+  \      email: string;\n    }\n\n    interface Admin extends User {\n      permissions:\
+  \ string[];\n    }\n\n    // Type predicate\n    function isAdmin(user: User): user\
+  \ is Admin {\n      return \"permissions\" in user;\n    }\n\n    function processUser(user:\
+  \ User) {\n      if (isAdmin(user)) {\n        // Type narrowed to Admin\n     \
+  \   console.log(user.permissions);\n      } else {\n        // Type: User\n    \
+  \    console.log(user.email);\n      }\n    }\n\n    // Nullish value guard\n  \
+  \  function isDefined<T>(value: T | null | undefined): value is T {\n      return\
+  \ value !== null && value !== undefined;\n    }\n\n    const values = [1, null,\
+  \ 2, undefined, 3];\n    const defined = values.filter(isDefined);  // Type: number[]\n\
+  \    ```\n\n    ### in Operator Narrowing\n\n    ```typescript\n    interface Bird\
+  \ {\n      fly(): void;\n      layEggs(): void;\n    }\n\n    interface Fish {\n\
+  \      swim(): void;\n      layEggs(): void;\n    }\n\n    function move(animal:\
+  \ Bird | Fish) {\n      if (\"fly\" in animal) {\n        animal.fly();  // Type:\
+  \ Bird\n      } else {\n        animal.swim();  // Type: Fish\n      }\n    }\n\
+  \    ```\n\n    ## Utility Types\n\n    TypeScript provides built-in utility types\
+  \ for common type transformations.\n\n    ### Partial<T>\n\n    ```typescript\n\
+  \    // Makes all properties optional\n    interface User {\n      id: number;\n\
+  \      name: string;\n      email: string;\n      age: number;\n    }\n\n    //\
+  \ Only need to provide some properties\n    function updateUser(id: number, updates:\
+  \ Partial<User>) {\n      // Implementation\n    }\n\n    updateUser(1, { name:\
+  \ \"Alice\" });  // OK\n    updateUser(1, { email: \"alice@example.com\", age: 30\
+  \ });  // OK\n    ```\n\n    ### Required<T>\n\n    ```typescript\n    // Makes\
+  \ all properties required\n    interface Config {\n      host?: string;\n      port?:\
+  \ number;\n      debug?: boolean;\n    }\n\n    const defaultConfig: Required<Config>\
+  \ = {\n      host: \"localhost\",  // Required!\n      port: 3000,         // Required!\n\
+  \      debug: false        // Required!\n    };\n    ```\n\n    ### Readonly<T>\n\
+  \n    ```typescript\n    // Makes all properties readonly\n    interface MutableUser\
+  \ {\n      name: string;\n      age: number;\n    }\n\n    const user: Readonly<MutableUser>\
+  \ = {\n      name: \"Alice\",\n      age: 30\n    };\n\n    user.name = \"Bob\"\
+  ;  // ❌ Error: Cannot assign to 'name' (readonly)\n    ```\n\n    ### Pick<T, K>\n\
+  \n    ```typescript\n    // Pick specific properties\n    interface User {\n   \
+  \   id: number;\n      name: string;\n      email: string;\n      password: string;\n\
+  \      createdAt: Date;\n    }\n\n    // Only expose safe properties\n    type PublicUser\
+  \ = Pick<User, \"id\" | \"name\" | \"email\">;\n\n    const publicUser: PublicUser\
+  \ = {\n      id: 1,\n      name: \"Alice\",\n      email: \"alice@example.com\"\n\
+  \      // password not needed!\n    };\n    ```\n\n    ### Omit<T, K>\n\n    ```typescript\n\
+  \    // Omit specific properties\n    type UserWithoutPassword = Omit<User, \"password\"\
+  >;\n\n    const user: UserWithoutPassword = {\n      id: 1,\n      name: \"Alice\"\
+  ,\n      email: \"alice@example.com\",\n      createdAt: new Date()\n      // password\
+  \ omitted!\n    };\n    ```\n\n    ### Record<K, T>\n\n    ```typescript\n    //\
+  \ Create object type with specific keys and value type\n    type UserRoles = Record<string,\
+  \ string[]>;\n\n    const roles: UserRoles = {\n      admin: [\"read\", \"write\"\
+  , \"delete\"],\n      user: [\"read\"],\n      guest: []\n    };\n\n    // Map user\
+  \ IDs to users\n    type UserMap = Record<number, User>;\n\n    const users: UserMap\
+  \ = {\n      1: { id: 1, name: \"Alice\", email: \"alice@example.com\", password:\
+  \ \"***\", createdAt: new Date() },\n      2: { id: 2, name: \"Bob\", email: \"\
+  bob@example.com\", password: \"***\", createdAt: new Date() }\n    };\n    ```\n\
+  \n    ### ReturnType<T>\n\n    ```typescript\n    // Extract return type of function\n\
+  \    function getUser() {\n      return {\n        id: 1,\n        name: \"Alice\"\
+  ,\n        email: \"alice@example.com\"\n      };\n    }\n\n    type User = ReturnType<typeof\
+  \ getUser>;\n    // Type: { id: number; name: string; email: string; }\n    ```\n\
+  \n    ### Exclude<T, U> and Extract<T, U>\n\n    ```typescript\n    // Exclude:\
+  \ Remove types from union\n    type Status = \"pending\" | \"approved\" | \"rejected\"\
+  \ | \"cancelled\";\n    type ActiveStatus = Exclude<Status, \"cancelled\">;\n  \
+  \  // Type: \"pending\" | \"approved\" | \"rejected\"\n\n    // Extract: Keep only\
+  \ matching types\n    type SuccessStatus = Extract<Status, \"approved\" | \"completed\"\
+  >;\n    // Type: \"approved\"\n    ```\n\n    ## Real-World Example: Type-Safe API\
+  \ Client\n\n    ```typescript\n    // API response types\n    interface ApiResponse<T>\
+  \ {\n      data: T;\n      status: number;\n      message: string;\n    }\n\n  \
+  \  type HttpMethod = \"GET\" | \"POST\" | \"PUT\" | \"DELETE\";\n\n    // Generic\
+  \ API client\n    class ApiClient {\n      constructor(private baseUrl: string)\
+  \ {}\n\n      private async request<T>(\n        method: HttpMethod,\n        endpoint:\
+  \ string,\n        body?: unknown\n      ): Promise<ApiResponse<T>> {\n        const\
+  \ response = await fetch(`${this.baseUrl}${endpoint}`, {\n          method,\n  \
+  \        headers: { \"Content-Type\": \"application/json\" },\n          body: body\
+  \ ? JSON.stringify(body) : undefined\n        });\n\n        return response.json();\n\
+  \      }\n\n      async get<T>(endpoint: string): Promise<ApiResponse<T>> {\n  \
+  \      return this.request<T>(\"GET\", endpoint);\n      }\n\n      async post<T,\
+  \ U = unknown>(\n        endpoint: string,\n        body: U\n      ): Promise<ApiResponse<T>>\
+  \ {\n        return this.request<T>(\"POST\", endpoint, body);\n      }\n\n    \
+  \  async put<T, U = unknown>(\n        endpoint: string,\n        body: U\n    \
+  \  ): Promise<ApiResponse<T>> {\n        return this.request<T>(\"PUT\", endpoint,\
+  \ body);\n      }\n\n      async delete<T>(endpoint: string): Promise<ApiResponse<T>>\
+  \ {\n        return this.request<T>(\"DELETE\", endpoint);\n      }\n    }\n\n \
+  \   // Usage\n    interface User {\n      id: number;\n      name: string;\n   \
+  \   email: string;\n    }\n\n    interface CreateUserDTO {\n      name: string;\n\
+  \      email: string;\n      password: string;\n    }\n\n    const api = new ApiClient(\"\
+  https://api.example.com\");\n\n    // Fully type-safe!\n    const usersResponse\
+  \ = await api.get<User[]>(\"/users\");\n    console.log(usersResponse.data[0].name);\
+  \  // Type: string\n\n    const newUserResponse = await api.post<User, CreateUserDTO>(\"\
+  /users\", {\n      name: \"Alice\",\n      email: \"alice@example.com\",\n     \
+  \ password: \"secret123\"\n    });\n    console.log(newUserResponse.data.id);  //\
+  \ Type: number\n    ```\n\n    ## Interview Tips\n\n    1. **Generics enable reusable,\
+  \ type-safe code**\n    2. **Use constraints** (`<T extends Type>`) to limit generic\
+  \ types\n    3. **Discriminated unions** are powerful for state management\n   \
+  \ 4. **Type guards** enable type narrowing and safer code\n    5. **Utility types**\
+  \ save time - learn the built-in ones\n    6. **ReturnType, Parameters** are useful\
+  \ for extracting types\n    7. **Generics in React**: `useState<Type>()`, `useRef<Type>()`\n\
+  \n    **Next**: We'll learn TypeScript in practice with real-world scenarios!"
+exercises: []
+exercises:
+  - type: mcq
+    sequence_order: 1
+    question: "What is the purpose of the 'readonly' modifier in TypeScript?"
+    options:
+      - "To make properties faster"
+      - "To prevent modification of a property after initialization"
+      - "To make properties private"
+      - "To encrypt data"
+    correct_answer: "To prevent modification of a property after initialization"
+    explanation: "`readonly` prevents reassignment after initialization, catching accidental mutations:\n\n```typescript\ninterface User {\n  readonly id: number;\n  name: string;\n}\n\nconst user: User = { id: 1, name: 'Alice' };\nuser.name = 'Bob';  // OK\nuser.id = 2;        // Error! id is readonly\n\n// Arrays\nconst numbers: readonly number[] = [1, 2, 3];\nnumbers.push(4);    // Error! Cannot modify\nnumbers[0] = 10;    // Error! Cannot modify\n\n// Class\nclass Point {\n  readonly x: number;\n  readonly y: number;\n  constructor(x: number, y: number) {\n    this.x = x;  // OK in constructor\n    this.y = y;\n  }\n}\n\nconst p = new Point(10, 20);\np.x = 30; // Error! readonly\n```\n\nUse `readonly` for: immutable data, configuration objects, preventing accidental mutations. It's compile-time only—no runtime enforcement, but catches bugs early."
+    require_pass: true
+  - type: mcq
+    sequence_order: 2
+    question: "What are utility types in TypeScript?"
+    options:
+      - "Built-in types for common transformations like Partial<T>, Pick<T>, Omit<T>"
+      - "Custom types created by users"
+      - "A testing framework"
+      - "A type of class"
+    correct_answer: "Built-in types for common transformations like Partial<T>, Pick<T>, Omit<T>"
+    explanation: "Utility types are built-in generic types for common type transformations:\n\n```typescript\ninterface User {\n  id: number;\n  name: string;\n  email: string;\n}\n\n// Partial<T> - all properties optional\ntype PartialUser = Partial<User>;\n// { id?: number; name?: string; email?: string }\n\n// Pick<T, K> - select specific properties\ntype UserBasic = Pick<User, 'id' | 'name'>;\n// { id: number; name: string }\n\n// Omit<T, K> - exclude specific properties\ntype UserWithoutEmail = Omit<User, 'email'>;\n// { id: number; name: string }\n\n// Required<T> - all properties required\ntype RequiredUser = Required<PartialUser>;\n\n// Record<K, T> - create object type\ntype UserRoles = Record<string, boolean>;\n// { [key: string]: boolean }\n```\n\nOther utilities: `Readonly<T>`, `Exclude<T, U>`, `Extract<T, U>`, `ReturnType<T>`. These eliminate boilerplate and make code more maintainable."
+    require_pass: true

@@ -1,0 +1,9 @@
+# app/views/lessons/index.html.erb
+<% @lessons.each do |lesson| %>
+    <div>
+      <h3><%= link_to lesson.title, lesson %></h3>
+      <%= link_to "Mark as Done", update_lesson_status_lesson_path(lesson, status: "done"), method: :post, class: "btn btn-default", data: { status: "done" } %>
+      <%= link_to "Review Later", update_lesson_status_lesson_path(lesson, status: "review_later"), method: :post, class: "btn btn-default", data: { status: "review_later" } %>
+      <%= link_to "Very Important", update_lesson_status_lesson_path(lesson, status: "important"), method: :post, class: "btn btn-default", data: { status: "important" } %>
+    </div>
+  <% end %>

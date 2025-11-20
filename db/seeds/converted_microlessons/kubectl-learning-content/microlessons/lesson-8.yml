@@ -1,0 +1,128 @@
+slug: lesson-8
+title: Lesson 8
+difficulty: easy
+sequence_order: 8
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# RBAC & Cluster Operations\n\n      Implement\
+  \ role-based access control and perform essential cluster operations.\n\n      ##\
+  \ RBAC (Role-Based Access Control)\n\n      ### Viewing RBAC Resources\n\n     \
+  \ ```bash\n      # List roles (namespace-scoped)\n      kubectl get roles\n    \
+  \  kubectl get roles -A\n\n      # List cluster roles (cluster-wide)\n      kubectl\
+  \ get clusterroles\n\n      # List role bindings\n      kubectl get rolebindings\n\
+  \      kubectl get rolebindings -A\n\n      # List cluster role bindings\n     \
+  \ kubectl get clusterrolebindings\n\n      # Describe role\n      kubectl describe\
+  \ role pod-reader\n\n      # Describe cluster role\n      kubectl describe clusterrole\
+  \ admin\n      ```\n\n      ### Creating RBAC Resources\n\n      ```bash\n     \
+  \ # Create role\n      kubectl create role pod-reader --verb=get,list,watch --resource=pods\n\
+  \n      # Create cluster role\n      kubectl create clusterrole deployment-manager\
+  \ --verb=get,list,create,delete --resource=deployments\n\n      # Create role binding\n\
+  \      kubectl create rolebinding read-pods --role=pod-reader --user=john\n\n  \
+  \    # Create cluster role binding\n      kubectl create clusterrolebinding cluster-admin-binding\
+  \ --clusterrole=cluster-admin --user=admin\n      ```\n\n      ### Testing Permissions\n\
+  \n      ```bash\n      # Check if you can perform action\n      kubectl auth can-i\
+  \ create pods\n      kubectl auth can-i delete deployments\n\n      # Check for\
+  \ specific user\n      kubectl auth can-i create pods --as=john\n      kubectl auth\
+  \ can-i delete deployments --as=john --namespace=production\n\n      # List all\
+  \ permissions\n      kubectl auth can-i --list\n      kubectl auth can-i --list\
+  \ --as=john\n      ```\n\n      ### Service Accounts\n\n      ```bash\n      # List\
+  \ service accounts\n      kubectl get serviceaccounts\n      kubectl get sa\n\n\
+  \      # Create service account\n      kubectl create serviceaccount my-app\n\n\
+  \      # Describe service account\n      kubectl describe sa my-app\n\n      # Get\
+  \ service account token\n      kubectl create token my-app\n\n      # Create pod\
+  \ using service account\n      # spec:\n      #   serviceAccountName: my-app\n \
+  \     ```\n\n      ## Node Management\n\n      ### Viewing Nodes\n\n      ```bash\n\
+  \      # List nodes\n      kubectl get nodes\n\n      # List nodes with details\n\
+  \      kubectl get nodes -o wide\n\n      # Describe node\n      kubectl describe\
+  \ node my-node\n\n      # Get node YAML\n      kubectl get node my-node -o yaml\n\
+  \n      # Check node conditions\n      kubectl get nodes -o jsonpath='{range .items[*]}{.metadata.name}{\"\
+  \\t\"}{.status.conditions[?(@.type==\"Ready\")].status}{\"\\n\"}{end}'\n      ```\n\
+  \n      ### Node Maintenance\n\n      ```bash\n      # Mark node unschedulable (cordon)\n\
+  \      kubectl cordon my-node\n\n      # Mark node schedulable (uncordon)\n    \
+  \  kubectl uncordon my-node\n\n      # Drain node (evict pods before maintenance)\n\
+  \      kubectl drain my-node --ignore-daemonsets --delete-emptydir-data\n\n    \
+  \  # Drain with grace period\n      kubectl drain my-node --ignore-daemonsets --force\
+  \ --grace-period=30\n\n      # Taint node\n      kubectl taint nodes my-node key=value:NoSchedule\n\
+  \n      # Remove taint\n      kubectl taint nodes my-node key=value:NoSchedule-\n\
+  \n      # Label node\n      kubectl label nodes my-node disktype=ssd\n\n      #\
+  \ Remove label\n      kubectl label nodes my-node disktype-\n      ```\n\n     \
+  \ ## Cluster Operations\n\n      ### Namespaces\n\n      ```bash\n      # List namespaces\n\
+  \      kubectl get namespaces\n      kubectl get ns\n\n      # Create namespace\n\
+  \      kubectl create namespace production\n\n      # Delete namespace (deletes\
+  \ all resources)\n      kubectl delete namespace production\n\n      # Set default\
+  \ namespace\n      kubectl config set-context --current --namespace=production\n\
+  \n      # Get current namespace\n      kubectl config view --minify --output 'jsonpath={..namespace}'\n\
+  \      ```\n\n      ### Context Management\n\n      ```bash\n      # List contexts\n\
+  \      kubectl config get-contexts\n\n      # Get current context\n      kubectl\
+  \ config current-context\n\n      # Switch context\n      kubectl config use-context\
+  \ my-cluster\n\n      # Create context\n      kubectl config set-context dev --cluster=my-cluster\
+  \ --user=developer --namespace=development\n\n      # Delete context\n      kubectl\
+  \ config delete-context dev\n      ```\n\n      ### Resource Management\n\n    \
+  \  ```bash\n      # Apply multiple files\n      kubectl apply -f ./configs/\n\n\
+  \      # Apply with recursive directory scan\n      kubectl apply -f ./configs/\
+  \ --recursive\n\n      # Delete resources by file\n      kubectl delete -f deployment.yaml\n\
+  \n      # Delete all resources of type\n      kubectl delete pods --all\n      kubectl\
+  \ delete deployments --all -n production\n\n      # Delete by label\n      kubectl\
+  \ delete pods -l app=nginx\n\n      # Dry run (test without applying)\n      kubectl\
+  \ apply -f deployment.yaml --dry-run=client\n\n      # Server-side dry run\n   \
+  \   kubectl apply -f deployment.yaml --dry-run=server\n      ```\n\n      ### Backup\
+  \ & Recovery\n\n      ```bash\n      # Export all resources\n      kubectl get all\
+  \ --all-namespaces -o yaml > cluster-backup.yaml\n\n      # Backup specific namespace\n\
+  \      kubectl get all -n production -o yaml > production-backup.yaml\n\n      #\
+  \ Backup etcd (requires etcd access)\n      ETCDCTL_API=3 etcdctl snapshot save\
+  \ backup.db \\\\\n        --endpoints=https://127.0.0.1:2379 \\\\\n        --cacert=/etc/kubernetes/pki/etcd/ca.crt\
+  \ \\\\\n        --cert=/etc/kubernetes/pki/etcd/server.crt \\\\\n        --key=/etc/kubernetes/pki/etcd/server.key\n\
+  \n      # Verify etcd backup\n      ETCDCTL_API=3 etcdctl snapshot status backup.db\
+  \ --write-out=table\n\n      # Restore etcd\n      ETCDCTL_API=3 etcdctl snapshot\
+  \ restore backup.db --data-dir=/var/lib/etcd-restore\n      ```\n\n      ### Cluster\
+  \ Info\n\n      ```bash\n      # Cluster information\n      kubectl cluster-info\n\
+  \n      # Version information\n      kubectl version\n\n      # API server address\n\
+  \      kubectl cluster-info | grep 'Kubernetes control plane'\n\n      # Get cluster-wide\
+  \ resources\n      kubectl get all --all-namespaces\n\n      # Check cluster health\n\
+  \      kubectl get componentstatuses\n      kubectl get cs\n      ```\n\n      ###\
+  \ Security Contexts\n\n      ```bash\n      # View pod security context\n      kubectl\
+  \ get pod my-pod -o jsonpath='{.spec.securityContext}'\n\n      # View container\
+  \ security context\n      kubectl get pod my-pod -o jsonpath='{.spec.containers[*].securityContext}'\n\
+  \n      # Check if pod runs as root\n      kubectl get pod my-pod -o jsonpath='{.spec.containers[*].securityContext.runAsUser}'\n\
+  \      ```\n\n      ### Admission Controllers\n\n      ```bash\n      # Check enabled\
+  \ admission controllers (requires API server access)\n      kubectl exec -n kube-system\
+  \ kube-apiserver-master -- kube-apiserver --help | grep enable-admission-plugins\n\
+  \n      # View pod security admission labels\n      kubectl get ns my-namespace\
+  \ -o jsonpath='{.metadata.labels}'\n\n      # Add pod security standard to namespace\n\
+  \      kubectl label namespace production pod-security.kubernetes.io/enforce=restricted\n\
+  \      ```\n\n      Practice security and operations in the labs!"
+exercises:
+  - type: multiple_choice_question
+    sequence_order: 1
+    question: "What is the difference between a Role and a ClusterRole in Kubernetes RBAC?"
+    options:
+      - "Roles are for administrators while ClusterRoles are for regular users"
+      - "Roles are namespace-scoped while ClusterRoles are cluster-wide"
+      - "Roles grant read permissions while ClusterRoles grant write permissions"
+      - "Roles are deprecated and ClusterRoles are the modern replacement"
+    correct_answer: "Roles are namespace-scoped while ClusterRoles are cluster-wide"
+    explanation: "Roles in Kubernetes RBAC are namespace-scoped, meaning they grant permissions only within a specific namespace, while ClusterRoles are cluster-wide and can grant permissions across all namespaces or to cluster-scoped resources like nodes. For example, a Role in the 'production' namespace might grant permission to view pods only in that namespace, while a ClusterRole could grant permission to view pods across all namespaces or manage cluster-level resources like PersistentVolumes, Nodes, or Namespaces themselves. To use a Role, you create a RoleBinding in the same namespace, which links the Role to users, groups, or service accounts. ClusterRoles can be used with ClusterRoleBindings (for cluster-wide access) or with RoleBindings (to grant permissions within a specific namespace). This flexibility allows you to define a ClusterRole once and bind it in multiple namespaces. Common ClusterRoles include 'cluster-admin' (full cluster access), 'admin' (namespace admin when bound via RoleBinding), 'edit' (read/write access to most resources), and 'view' (read-only access). Neither is deprecated, and both can grant any type of permission (read, write, delete, etc.) depending on the verbs specified. Understanding this distinction is crucial for implementing proper access control - use Roles for namespace-level permissions and ClusterRoles for cluster-level resources or reusable cross-namespace policies."
+    require_pass: true
+  - type: multiple_choice_question
+    sequence_order: 2
+    question: "What is the purpose of the 'kubectl drain' command when performing node maintenance?"
+    options:
+      - "To delete all pods on a node immediately"
+      - "To gracefully evict pods from a node and mark it unschedulable before maintenance"
+      - "To backup all data from node-local storage"
+      - "To drain network traffic from a node's network interfaces"
+    correct_answer: "To gracefully evict pods from a node and mark it unschedulable before maintenance"
+    explanation: "The 'kubectl drain' command safely prepares a node for maintenance by gracefully evicting all pods (respecting PodDisruptionBudgets when possible) and marking the node as unschedulable (cordoned) so new pods aren't scheduled there. This is the recommended approach before performing maintenance tasks like kernel upgrades, hardware repairs, or node replacements. The drain process respects pod grace periods, allowing applications to shut down cleanly, close connections, and save state. DaemonSet pods are typically not evicted (unless you specify --ignore-daemonsets) since they're meant to run on all nodes. Common flags include: --ignore-daemonsets (proceed despite DaemonSets), --delete-emptydir-data (delete pods using emptyDir volumes), --force (delete pods not managed by controllers), and --grace-period (override the default termination grace period). The command doesn't delete pods instantly - it triggers controlled eviction. It also doesn't backup data (you should use PersistentVolumes for important data) or affect network configuration. After maintenance, use 'kubectl uncordon node-name' to mark the node schedulable again. If drain gets stuck, check for PodDisruptionBudgets that might be blocking eviction, or pods with local storage that require the --delete-emptydir-data flag. Best practice: always drain before maintenance to minimize disruption and avoid data loss."
+    require_pass: true
+  - type: multiple_choice_question
+    sequence_order: 3
+    question: "What does the 'kubectl auth can-i' command allow you to do?"
+    options:
+      - "Grant permissions to other users"
+      - "Check whether you or another user can perform a specific action"
+      - "List all users who have access to the cluster"
+      - "Enable authentication on the cluster"
+    correct_answer: "Check whether you or another user can perform a specific action"
+    explanation: "The 'kubectl auth can-i' command checks whether you (or another specified user) have permission to perform a specific action, providing a quick way to verify RBAC permissions without actually attempting the operation. For example, 'kubectl auth can-i create deployments' checks if you can create deployments in the current namespace, returning 'yes' or 'no'. You can check permissions for other users with '--as=username', like 'kubectl auth can-i delete pods --as=john --namespace=production', which is invaluable when troubleshooting permission issues reported by other users. The '--list' flag shows all actions you can perform in a namespace. This command is read-only and doesn't modify permissions - it only queries the authorization system. It's particularly useful for: verifying RBAC configurations are correct, debugging access issues, confirming service account permissions before deploying applications, and testing permissions in different namespaces. The command doesn't grant permissions (that requires creating Roles and RoleBindings), list all users (Kubernetes doesn't have a built-in user database - users are defined externally), or configure authentication. It simply answers the question 'can this user do this action?'. Best practices: use it to verify permissions after creating RBAC rules, test service account permissions before deployment, and include it in documentation to help users understand required permissions. It's a simple but powerful tool for RBAC management and troubleshooting."
+    require_pass: true

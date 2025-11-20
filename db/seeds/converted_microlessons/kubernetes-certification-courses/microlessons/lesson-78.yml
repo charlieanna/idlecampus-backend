@@ -1,0 +1,67 @@
+slug: lesson-78
+title: Lesson 78
+difficulty: easy
+sequence_order: 78
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Admission Controllers\n\n    - Mutating\
+  \ vs Validating webhooks\n    - Common built-in controllers"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What is the difference between validating and mutating admission webhooks?
+  options:
+  - Validating webhooks modify requests, mutating webhooks reject them
+  - Mutating webhooks can modify requests before persistence, validating webhooks
+    can only approve or reject
+  - There is no difference
+  - Mutating webhooks are deprecated
+  correct_answer: Mutating webhooks can modify requests before persistence, validating
+    webhooks can only approve or reject
+  explanation: Admission webhooks intercept API requests before objects are persisted
+    to etcd. Mutating webhooks can modify (mutate) the request - adding labels, injecting
+    sidecar containers, setting defaults, or modifying fields. They run first in the
+    admission chain. Validating webhooks run after mutating webhooks and can only
+    approve or reject requests based on custom business logic - they cannot modify
+    objects. For example, a mutating webhook might inject an Istio sidecar proxy into
+    pods, while a validating webhook ensures pods have required labels or resource
+    limits. Both types receive the API request, execute custom logic (typically via
+    HTTPS to an external service), and return decisions. Webhooks enable policy enforcement
+    and automation without modifying Kubernetes code. They're powerful but add complexity
+    and potential failure points in the API request path.
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What are common built-in admission controllers in Kubernetes?
+  options:
+  - HTTPValidator and JSONParser
+  - NamespaceLifecycle, LimitRanger, ResourceQuota, PodSecurity
+  - TokenAuth and CertAuth
+  - NodeSelector and PodSelector
+  correct_answer: NamespaceLifecycle, LimitRanger, ResourceQuota, PodSecurity
+  explanation: 'Kubernetes includes many built-in admission controllers: NamespaceLifecycle
+    (prevents operations in terminating namespaces), LimitRanger (enforces LimitRange
+    constraints), ResourceQuota (enforces resource quotas), PodSecurity (enforces
+    Pod Security Standards), ServiceAccount (adds default service account to pods),
+    DefaultStorageClass (adds default storage class to PVCs), MutatingAdmissionWebhook
+    and ValidatingAdmissionWebhook (enable custom webhooks), and many others. These
+    are enabled via the --enable-admission-plugins API server flag. Most are enabled
+    by default in modern clusters. Admission controllers enforce policies, set defaults,
+    and validate requests. They''re essential for security (PodSecurity), resource
+    management (ResourceQuota, LimitRanger), and cluster stability (NamespaceLifecycle).
+    Understanding which controllers are active helps troubleshoot API request behaviors
+    and implement cluster policies effectively.'
+  require_pass: true
+- type: mcq
+  sequence_order: 1
+  question: What kubectl command checks if you can perform an action?
+  options:
+  - kubectl auth can-i create pods
+  - kubectl check permissions create pods
+  - kubectl verify action create pods
+  - kubectl test auth create pods
+  correct_answer_index: 0
+  explanation: kubectl auth can-i <action> <resource> checks if the current user has
+    permission to perform the specified action.
+  require_pass: true

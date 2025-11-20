@@ -1,0 +1,84 @@
+slug: amines-classification-basicity-and-preparation
+title: Amines - Classification, Basicity, and Preparation
+difficulty: easy
+sequence_order: 14
+estimated_minutes: 2
+key_concepts:
+- Amines
+- Classification
+- Basicity
+- Preparation
+- Gabriel phthalimide synthesis
+- Hoffmann bromamide
+prerequisites: []
+content_md: "# Amines - Classification, Basicity, and Preparation \U0001F680\n\n#\
+  \ Amines\n\n    ## Classification\n    **Amines:** Derivatives of ammonia (NH₃)\
+  \ where H atoms replaced by alkyl/aryl groups\n\n    **Types:**\n    1. **Primary\
+  \ (1°):** R-NH₂ (one H replaced)\n    2. **Secondary (2°):** R₂NH (two H replaced)\n\
+  \    3. **Tertiary (3°):** R₃N (three H replaced)\n\n    **Examples:**\n    - CH₃NH₂\
+  \ (Methylamine, 1°)\n    - (CH₃)₂NH (Dimethylamine, 2°)\n    - (CH₃)₃N (Trimethylamine,\
+  \ 3°)\n    - C₆H₅NH₂ (Aniline, aromatic 1°)\n\n    ## Basicity\n    **Amines are\
+  \ basic** (lone pair on N accepts H⁺)\n    ```\n    R-NH₂ + H₂O ⇌ R-NH₃⁺ + OH⁻\n\
+  \    ```\n\n    **Basicity order (Aliphatic):**\n    ```\n    (C₂H₅)₂NH > C₂H₅NH₂\
+  \ > (C₂H₅)₃N > NH₃\n    (2°)         (1°)         (3°)\n    ```\n\n    **Factors:**\n\
+  \    1. **+I effect:** Increases electron density on N\n    2. **Steric hindrance:**\
+  \ Decreases stability of R-NH₃⁺ (3° most hindered)\n    3. **Balance:** 2° amines\
+  \ are most basic\n\n    **Aromatic Amines:**\n    ```\n    Aliphatic amines >> Aniline\n\
+  \    (pKb ≈ 3-4)         (pKb ≈ 9.4)\n    ```\n\n    **Why is aniline weakly basic?**\n\
+  \    - Lone pair on N delocalizes into benzene ring (+M effect)\n    - Less available\
+  \ for protonation\n\n    **Substituent effects on aniline:**\n    - **EWG (-NO₂,\
+  \ -CN):** Decrease basicity (withdraw electrons)\n    - **EDG (-CH₃, -OCH₃):** Increase\
+  \ basicity (donate electrons)\n\n    **Order:** p-CH₃-C₆H₄-NH₂ > C₆H₅-NH₂ > p-NO₂-C₆H₄-NH₂\n\
+  \n    ## Preparation\n    ### 1. Reduction of Nitro Compounds\n    ```\n    R-NO₂\
+  \ → [Sn/HCl or Fe/HCl] → R-NH₂ (1° amine)\n    C₆H₅-NO₂ → [Sn/HCl] → C₆H₅-NH₂ (Aniline)\n\
+  \    ```\n\n    ### 2. Reduction of Nitriles\n    ```\n    R-CN → [LiAlH₄ or H₂/Ni]\
+  \ → R-CH₂-NH₂ (1° amine)\n    ```\n\n    ### 3. Reduction of Amides\n    ```\n \
+  \   R-CONH₂ → [LiAlH₄] → R-CH₂-NH₂\n    ```\n\n    ### 4. Gabriel Phthalimide Synthesis\
+  \ (1° amines only)\n    ```\n    Phthalimide + KOH → Phthalimide-K\n    Phthalimide-K\
+  \ + R-X → N-alkylphthalimide\n    N-alkylphthalimide + KOH → R-NH₂ + Phthalic acid\n\
+  \    ```\n\n    **Advantage:** Pure 1° amines (no 2°/3° contamination)\n\n    ###\
+  \ 5. Hoffmann Bromamide Degradation\n    ```\n    R-CONH₂ + Br₂/NaOH → R-NH₂ + CO₂\n\
+  \    ```\n\n    **Note:** One carbon lost\n\n    ### 6. Alkylation of Ammonia\n\
+  \    ```\n    NH₃ + R-X → R-NH₂ + R₂NH + R₃N (mixture)\n    ```\n\n    **Limitation:**\
+  \ Gives mixture of 1°, 2°, 3° amines and quaternary salt\n\n    ## Distinction Tests\n\
+  \    ### Hinsberg Test (with C₆H₅SO₂Cl)\n\n    **1° Amine:**\n    ```\n    R-NH₂\
+  \ + C₆H₅SO₂Cl → R-NH-SO₂-C₆H₅ (soluble in NaOH)\n    ```\n\n    **2° Amine:**\n\
+  \    ```\n    R₂NH + C₆H₅SO₂Cl → R₂N-SO₂-C₆H₅ (insoluble in NaOH)\n    ```\n\n \
+  \   **3° Amine:** No reaction\n\n    ### Carbylamine Test (1° only)\n    ```\n \
+  \   R-NH₂ + CHCl₃ + KOH → R-NC (isocyanide, foul smell)\n    ```\n\n    **Only 1°\
+  \ amines give positive test** (offensive smell)\n\n## Key Points\n\n- Amines\n\n\
+  - Classification\n\n- Basicity"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: 'Why is aniline (C₆H₅NH₂) a much weaker base compared to aliphatic amines like methylamine (CH₃NH₂)?'
+  options:
+  - The lone pair on nitrogen in aniline is delocalized into the benzene ring by resonance, making it less available for protonation
+  - Aniline has a higher molecular weight than methylamine
+  - The benzene ring is electron-withdrawing and pulls electrons away from nitrogen
+  - Aniline cannot form hydrogen bonds with water
+  correct_answer: The lone pair on nitrogen in aniline is delocalized into the benzene ring by resonance, making it less available for protonation
+  explanation: "Aniline is significantly less basic (pKb ≈ 9.4) than aliphatic amines like methylamine (pKb ≈ 3.4) due to resonance delocalization of the nitrogen lone pair into the aromatic ring. In aniline, the lone pair of electrons on the nitrogen atom can participate in resonance with the π-electron system of the benzene ring through conjugation. This delocalization, also called the +M (positive mesomeric) effect, spreads the electron density from nitrogen over the aromatic ring, reducing the electron density available on nitrogen for accepting a proton. When aniline accepts a proton to form the anilinium ion (C₆H₅NH₃⁺), the positive charge on nitrogen prevents the lone pair from delocalizing into the ring, and the resonance stabilization is lost. This destabilizes the conjugate acid and makes protonation unfavorable. In contrast, aliphatic amines like methylamine have no such resonance delocalization; their nitrogen lone pair is localized and fully available for protonation. Additionally, alkyl groups provide +I (inductive) effect, increasing electron density on nitrogen and enhancing basicity. Substituents on the aniline ring can modulate basicity: electron-donating groups (like -CH₃, -OCH₃) increase basicity by increasing electron density on nitrogen, while electron-withdrawing groups (like -NO₂, -CN) further decrease basicity by withdrawing electrons, making compounds like p-nitroaniline extremely weak bases."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: 'The Gabriel phthalimide synthesis is used to prepare which type of amines without contamination from other amine types?'
+  options:
+  - Pure primary (1°) amines only
+  - Pure secondary (2°) amines only
+  - Pure tertiary (3°) amines only
+  - A mixture of primary and secondary amines
+  correct_answer: Pure primary (1°) amines only
+  explanation: "The Gabriel phthalimide synthesis is a highly selective method for preparing pure primary (1°) amines without contamination from secondary or tertiary amines. This method uses phthalimide as the starting material, which is first deprotonated by KOH to form phthalimide potassium salt. This salt acts as a nucleophile and undergoes SN2 reaction with an alkyl halide (R-X) to form N-alkylphthalimide. Subsequent hydrolysis with aqueous KOH or hydrazine cleaves the imide to release the primary amine along with phthalic acid or phthalhydrazide. The key advantage of this method is that it avoids over-alkylation, which is a major problem in the direct alkylation of ammonia. When ammonia reacts with alkyl halides, the initially formed primary amine (which is more nucleophilic than ammonia) reacts further with alkyl halides to form secondary amines, tertiary amines, and even quaternary ammonium salts, resulting in a complex mixture. In the Gabriel synthesis, the nitrogen in phthalimide has only one acidic hydrogen, so only one alkyl group can be introduced, ensuring exclusive formation of primary amines. This makes it an invaluable method in organic synthesis when pure primary amines are required. The method works best with primary alkyl halides; secondary and tertiary halides give poor yields due to steric hindrance in the SN2 mechanism."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: 'Among aliphatic amines, what is the correct order of basicity in aqueous solution: primary (1°), secondary (2°), and tertiary (3°)?'
+  options:
+  - 2° > 1° > 3° > NH₃
+  - 3° > 2° > 1° > NH₃
+  - 1° > 2° > 3° > NH₃
+  - 2° > 3° > 1° > NH₃
+  correct_answer: 2° > 1° > 3° > NH₃
+  explanation: "The basicity order of aliphatic amines in aqueous solution is: secondary (2°) > primary (1°) > tertiary (3°) > ammonia (NH₃). This seemingly counterintuitive order results from a delicate balance between two opposing factors: electronic effects and solvation (steric) effects. Electronic effects favor increased basicity with more alkyl groups: alkyl groups are electron-donating (+I effect), so they increase electron density on nitrogen, making it a better proton acceptor. Based purely on this factor, the order would be 3° > 2° > 1° > NH₃. However, solvation effects are equally important. When an amine accepts a proton to form an ammonium ion (R₃NH⁺), the resulting cation must be stabilized by hydrogen bonding with water molecules. Primary ammonium ions (RNH₃⁺) have three N-H bonds available for hydrogen bonding with water; secondary (R₂NH₂⁺) have two; tertiary (R₃NH⁺) have only one. Greater solvation stabilizes the conjugate acid and increases basicity. Additionally, bulky alkyl groups in tertiary amines create steric hindrance around nitrogen, making it difficult for water molecules to approach and stabilize the ammonium ion. The net result is that secondary amines achieve the best balance: they have sufficient electron-donating groups and adequate hydrogen bonding capacity, making them the most basic. This order applies specifically to aqueous solutions; in the gas phase (no solvation), the order follows pure electronic effects: 3° > 2° > 1° > NH₃."
+  require_pass: true

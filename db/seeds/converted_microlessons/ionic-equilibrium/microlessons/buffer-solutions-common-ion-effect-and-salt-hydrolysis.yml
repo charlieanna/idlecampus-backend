@@ -1,0 +1,135 @@
+slug: buffer-solutions-common-ion-effect-and-salt-hydrolysis
+title: Buffer Solutions, Common Ion Effect and Salt Hydrolysis
+difficulty: easy
+sequence_order: 5
+estimated_minutes: 2
+key_concepts:
+- Buffer solutions
+- Henderson-Hasselbalch equation
+- Common ion effect
+- Salt hydrolysis
+- Acidic basic neutral salts
+prerequisites: []
+content_md: "# Buffer Solutions, Common Ion Effect and Salt Hydrolysis \U0001F680\n\
+  \n# Buffer Solutions, Common Ion Effect and Salt Hydrolysis\n\n    ## Common Ion\
+  \ Effect\n\n    **Definition:** Suppression of ionization of weak electrolyte by\
+  \ adding a strong electrolyte having a common ion\n\n    ### Example 1: CH₃COOH\
+  \ + CH₃COONa\n\n    **CH₃COOH ⇌ H⁺ + CH₃COO⁻** (weak acid)\n    **CH₃COONa → Na⁺\
+  \ + CH₃COO⁻** (strong salt)\n\n    - Adding CH₃COONa increases [CH₃COO⁻]\n    -\
+  \ Equilibrium shifts backward (Le Chatelier)\n    - **Ionization of CH₃COOH decreases**\n\
+  \    - pH increases (less acidic)\n\n    ### Example 2: NH₃ + NH₄Cl\n\n    **NH₃\
+  \ + H₂O ⇌ NH₄⁺ + OH⁻** (weak base)\n    **NH₄Cl → NH₄⁺ + Cl⁻** (strong salt)\n\n\
+  \    - Adding NH₄Cl increases [NH₄⁺]\n    - Equilibrium shifts backward\n    - **Ionization\
+  \ of NH₃ decreases**\n    - pH decreases (less basic)\n\n    ### Effect on pH:\n\
+  \n    **For weak acid + salt:** pH increases\n    **For weak base + salt:** pH decreases\n\
+  \n    ## Buffer Solutions\n\n    **Definition:** Solutions that resist change in\
+  \ pH upon addition of small amounts of acid or base\n\n    ### Types of Buffers:\n\
+  \n    **1. Acidic Buffer (pH < 7):**\n    - Weak acid + its salt with strong base\n\
+  \    - Examples: CH₃COOH + CH₃COONa, H₂CO₃ + NaHCO₃\n\n    **2. Basic Buffer (pH\
+  \ > 7):**\n    - Weak base + its salt with strong acid\n    - Examples: NH₃ + NH₄Cl,\
+  \ NH₄OH + NH₄Cl\n\n    ### Buffer Action:\n\n    **Example: CH₃COOH + CH₃COONa**\n\
+  \n    **On adding acid (H⁺):**\n    - CH₃COO⁻ + H⁺ → CH₃COOH\n    - Neutralizes\
+  \ H⁺, pH remains nearly constant\n\n    **On adding base (OH⁻):**\n    - CH₃COOH\
+  \ + OH⁻ → CH₃COO⁻ + H₂O\n    - Neutralizes OH⁻, pH remains nearly constant\n\n \
+  \   ## Henderson-Hasselbalch Equation\n\n    ### For Acidic Buffer:\n\n    **pH\
+  \ = pKa + log([Salt]/[Acid])**\n\n    Or: **pH = pKa + log([A⁻]/[HA])**\n\n    Where:\n\
+  \    - pKa = -log Ka\n    - [Salt] = concentration of conjugate base\n    - [Acid]\
+  \ = concentration of weak acid\n\n    ### For Basic Buffer:\n\n    **pOH = pKb +\
+  \ log([Salt]/[Base])**\n\n    Or: **pOH = pKb + log([BH⁺]/[B])**\n\n    Then: **pH\
+  \ = 14 - pOH**\n\n    ### Special Cases:\n\n    **1. When [Salt] = [Acid]:**\n \
+  \   - pH = pKa (maximum buffer capacity)\n\n    **2. Buffer Range:**\n    - pH =\
+  \ pKa ± 1 (effective range)\n\n    **3. Buffer Capacity:**\n    - Higher concentration\
+  \ → Higher capacity\n    - Maximum when ratio = 1:1\n\n    ## Buffer pH Calculations\n\
+  \n    ### Problem 1: Acidic buffer\n\n    **Q: Calculate pH of buffer containing\
+  \ 0.1 M CH₃COOH and 0.1 M CH₃COONa. (Ka = 1.8 × 10⁻⁵)**\n\n    Solution:\n    -\
+  \ pKa = -log(1.8 × 10⁻⁵) = 4.74\n    - pH = pKa + log([Salt]/[Acid])\n    - pH =\
+  \ 4.74 + log(0.1/0.1)\n    - pH = 4.74 + 0 = **4.74**\n\n    ### Problem 2: Different\
+  \ concentrations\n\n    **Q: Buffer has 0.2 M CH₃COOH and 0.4 M CH₃COONa. Calculate\
+  \ pH. (pKa = 4.74)**\n\n    Solution:\n    - pH = pKa + log([Salt]/[Acid])\n   \
+  \ - pH = 4.74 + log(0.4/0.2)\n    - pH = 4.74 + log 2\n    - pH = 4.74 + 0.3 = **5.04**\n\
+  \n    ### Problem 3: Basic buffer\n\n    **Q: Calculate pH of 0.1 M NH₃ and 0.1\
+  \ M NH₄Cl. (Kb = 1.8 × 10⁻⁵)**\n\n    Solution:\n    - pKb = -log(1.8 × 10⁻⁵) =\
+  \ 4.74\n    - pOH = pKb + log([Salt]/[Base])\n    - pOH = 4.74 + log(0.1/0.1) =\
+  \ 4.74\n    - pH = 14 - 4.74 = **9.26**\n\n    ## Salt Hydrolysis\n\n    **Hydrolysis:**\
+  \ Reaction of salt with water to produce acidic or basic solution\n\n    ### Types\
+  \ of Salts:\n\n    **1. Salt of Strong Acid + Strong Base:**\n    - Example: NaCl,\
+  \ KNO₃\n    - **No hydrolysis**\n    - pH = 7 (neutral)\n\n    **2. Salt of Weak\
+  \ Acid + Strong Base:**\n    - Example: CH₃COONa, Na₂CO₃\n    - **Anion hydrolysis**\n\
+  \    - CH₃COO⁻ + H₂O ⇌ CH₃COOH + OH⁻\n    - pH > 7 (basic)\n\n    **3. Salt of Strong\
+  \ Acid + Weak Base:**\n    - Example: NH₄Cl, NH₄NO₃\n    - **Cation hydrolysis**\n\
+  \    - NH₄⁺ + H₂O ⇌ NH₃ + H₃O⁺\n    - pH < 7 (acidic)\n\n    **4. Salt of Weak Acid\
+  \ + Weak Base:**\n    - Example: CH₃COONH₄, NH₄CN\n    - **Both ions hydrolyze**\n\
+  \    - pH depends on relative Ka and Kb\n\n    ### pH Formulas for Salt Solutions:\n\
+  \n    **1. Salt of weak acid + strong base:**\n    **pH = 7 + ½pKa + ½log C**\n\n\
+  \    **2. Salt of strong acid + weak base:**\n    **pH = 7 - ½pKb - ½log C**\n\n\
+  \    **3. Salt of weak acid + weak base:**\n    **pH = 7 + ½pKa - ½pKb**\n\n   \
+  \ (Independent of concentration!)\n\n    ## Hydrolysis Constant\n\n    ### For Cation\
+  \ (from weak base):\n\n    **Kh = Kw/Kb**\n\n    **Example:** NH₄⁺\n    - Kh = 10⁻¹⁴/(1.8\
+  \ × 10⁻⁵) = 5.6 × 10⁻¹⁰\n\n    ### For Anion (from weak acid):\n\n    **Kh = Kw/Ka**\n\
+  \n    **Example:** CH₃COO⁻\n    - Kh = 10⁻¹⁴/(1.8 × 10⁻⁵) = 5.6 × 10⁻¹⁰\n\n    ###\
+  \ For Salt of weak acid + weak base:\n\n    **Kh = Kw/(Ka × Kb)**\n\n    ## Solved\
+  \ Salt Hydrolysis Problems\n\n    ### Problem 1: Basic salt\n\n    **Q: Calculate\
+  \ pH of 0.1 M CH₃COONa. (Ka of CH₃COOH = 1.8 × 10⁻⁵)**\n\n    Solution:\n    - pKa\
+  \ = 4.74\n    - pH = 7 + ½pKa + ½log C\n    - pH = 7 + ½(4.74) + ½log(0.1)\n   \
+  \ - pH = 7 + 2.37 + ½(-1)\n    - pH = 7 + 2.37 - 0.5 = **8.87**\n\n    ### Problem\
+  \ 2: Acidic salt\n\n    **Q: Calculate pH of 0.1 M NH₄Cl. (Kb of NH₃ = 1.8 × 10⁻⁵)**\n\
+  \n    Solution:\n    - pKb = 4.74\n    - pH = 7 - ½pKb - ½log C\n    - pH = 7 -\
+  \ ½(4.74) - ½log(0.1)\n    - pH = 7 - 2.37 - ½(-1)\n    - pH = 7 - 2.37 + 0.5 =\
+  \ **5.13**\n\n    ### Problem 3: Both weak\n\n    **Q: Calculate pH of CH₃COONH₄.\
+  \ (Ka = 1.8 × 10⁻⁵, Kb = 1.8 × 10⁻⁵)**\n\n    Solution:\n    - pKa = pKb = 4.74\n\
+  \    - pH = 7 + ½pKa - ½pKb\n    - pH = 7 + ½(4.74) - ½(4.74)\n    - pH = 7 + 0\
+  \ = **7.0** (neutral)\n\n    ### Problem 4: Compare strengths\n\n    **Q: NH₄CN\
+  \ solution: Ka(HCN) = 6.2 × 10⁻¹⁰, Kb(NH₃) = 1.8 × 10⁻⁵. Find pH.**\n\n    Solution:\n\
+  \    - pKa = -log(6.2 × 10⁻¹⁰) = 9.21\n    - pKb = 4.74\n    - pH = 7 + ½(9.21)\
+  \ - ½(4.74)\n    - pH = 7 + 4.61 - 2.37 = **9.24** (basic)\n    - CN⁻ is stronger\
+  \ base than NH₄⁺ is acid\n\n    ## Summary Table: Salt Nature\n\n    | Salt Type\
+  \ | Example | Hydrolysis | pH | Nature |\n    |-----------|---------|------------|-----|--------|\n\
+  \    | SA + SB | NaCl | None | 7 | Neutral |\n    | WA + SB | CH₃COONa | Anion |\
+  \ >7 | Basic |\n    | SA + WB | NH₄Cl | Cation | <7 | Acidic |\n    | WA + WB |\
+  \ CH₃COONH₄ | Both | Depends | Varies |\n\n    SA = Strong Acid, SB = Strong Base,\
+  \ WA = Weak Acid, WB = Weak Base\n\n    ## IIT JEE Key Points\n\n    1. **Common\
+  \ ion effect:** Suppresses ionization\n    2. **Buffer = weak acid/base + its salt**\n\
+  \    3. **Henderson-Hasselbalch:** pH = pKa + log([Salt]/[Acid])\n    4. **Maximum\
+  \ buffer capacity:** [Salt] = [Acid]\n    5. **Buffer range:** pKa ± 1\n    6. **SA+SB\
+  \ salt:** pH = 7\n    7. **WA+SB salt:** pH > 7 (basic)\n    8. **SA+WB salt:**\
+  \ pH < 7 (acidic)\n    9. **WA+WB salt:** pH = 7 + ½pKa - ½pKb\n    10. **Kh = Kw/Ka**\
+  \ or **Kw/Kb**\n\n    ## Quick Formulas\n\n    | Concept | Formula |\n    |---------|---------|\n\
+  \    | Acidic buffer pH | pKa + log([Salt]/[Acid]) |\n    | Basic buffer pOH | pKb\
+  \ + log([Salt]/[Base]) |\n    | WA+SB salt pH | 7 + ½pKa + ½log C |\n    | SA+WB\
+  \ salt pH | 7 - ½pKb - ½log C |\n    | WA+WB salt pH | 7 + ½pKa - ½pKb |\n    |\
+  \ Hydrolysis constant | Kw/Ka or Kw/Kb |\n\n## Key Points\n\n- Buffer solutions\n\
+  \n- Henderson-Hasselbalch equation\n\n- Common ion effect"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: "A buffer solution contains 0.2 M acetic acid (CH₃COOH) and 0.4 M sodium acetate (CH₃COONa). If pKa of acetic acid is 4.74, what is the pH of this buffer?"
+  options:
+  - "4.44"
+  - "4.74"
+  - "5.04"
+  - "5.34"
+  correct_answer: "5.04"
+  explanation: "The pH of a buffer solution is calculated using the Henderson-Hasselbalch equation: pH = pKa + log([Salt]/[Acid]). Substituting the given values: pH = 4.74 + log(0.4/0.2) = 4.74 + log(2) = 4.74 + 0.30 = 5.04. This equation is fundamental to buffer chemistry and shows that the pH depends on both the pKa of the weak acid and the ratio of conjugate base to acid. When the ratio [Salt]/[Acid] = 1, the pH equals the pKa, which is the point of maximum buffer capacity. In this case, since we have twice as much salt as acid (ratio = 2), the pH is 0.30 units higher than the pKa. Buffers are crucial in biological systems, analytical chemistry, and industrial processes because they maintain nearly constant pH even when small amounts of acid or base are added. The effective buffer range is typically pKa ± 1, so this buffer would effectively resist pH changes between approximately 3.74 and 5.74."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: "What is the nature of a solution of ammonium chloride (NH₄Cl) in water, and why?"
+  options:
+  - "Basic, because Cl⁻ undergoes hydrolysis"
+  - "Neutral, because both ions are from strong parents"
+  - "Acidic, because NH₄⁺ undergoes hydrolysis"
+  - "Depends on the concentration"
+  correct_answer: "Acidic, because NH₄⁺ undergoes hydrolysis"
+  explanation: "Ammonium chloride is a salt formed from a weak base (NH₃) and a strong acid (HCl). When dissolved in water, the Cl⁻ ion does not hydrolyze because it is the conjugate base of a strong acid (HCl). However, the NH₄⁺ ion hydrolyzes according to the reaction: NH₄⁺ + H₂O ⇌ NH₃ + H₃O⁺. This hydrolysis produces H₃O⁺ ions, making the solution acidic (pH < 7). The hydrolysis constant Kh for NH₄⁺ is given by Kh = Kw/Kb, where Kb is the ionization constant of ammonia. The pH of such a solution can be calculated using the formula: pH = 7 - ½pKb - ½log C, where C is the concentration. This type of salt hydrolysis is important in understanding soil chemistry, biological buffers, and various industrial processes. For a 0.1 M NH₄Cl solution with pKb(NH₃) = 4.74, the pH would be approximately 5.13, confirming its acidic nature."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: "What is the pH of a 0.1 M solution of sodium acetate (CH₃COONa) if the Ka of acetic acid is 1.8 × 10⁻⁵?"
+  options:
+  - "7.00"
+  - "8.37"
+  - "8.87"
+  - "9.37"
+  correct_answer: "8.87"
+  explanation: "Sodium acetate is a salt of a weak acid (CH₃COOH) and a strong base (NaOH). The acetate ion (CH₃COO⁻) undergoes hydrolysis in water: CH₃COO⁻ + H₂O ⇌ CH₃COOH + OH⁻, producing hydroxide ions and making the solution basic. The pH can be calculated using the formula: pH = 7 + ½pKa + ½log C. First, calculate pKa = -log(1.8 × 10⁻⁵) = 4.74. Then: pH = 7 + ½(4.74) + ½log(0.1) = 7 + 2.37 + ½(-1) = 7 + 2.37 - 0.5 = 8.87. This pH (> 7) confirms the basic nature of the solution. The hydrolysis of salts derived from weak acids and strong bases is an important concept in analytical chemistry, particularly in understanding the behavior of buffer components and in titration endpoint detection. The degree of hydrolysis increases with dilution, and the hydrolysis constant Kh = Kw/Ka = 5.6 × 10⁻¹⁰ for acetate ion. This principle explains why solutions of many common salts like sodium carbonate, sodium phosphate, and sodium cyanide are basic."
+  require_pass: true

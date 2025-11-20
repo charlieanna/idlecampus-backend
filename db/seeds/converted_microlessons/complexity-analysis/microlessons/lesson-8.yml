@@ -1,0 +1,105 @@
+slug: lesson-8
+title: Lesson 8
+difficulty: easy
+sequence_order: 8
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Arrays and Linked Lists\n\n    ## Arrays\n\
+  \n    **Contiguous memory, fixed or dynamic size**\n\n    ### Operations\n\n   \
+  \ | Operation | Time Complexity |\n    |-----------|----------------|\n    | Access\
+  \ by index | O(1) |\n    | Search | O(n) |\n    | Insert at end | O(1) amortized\
+  \ |\n    | Insert at start | O(n) |\n    | Delete | O(n) |\n\n    ```python\n  \
+  \  # Array operations\n    arr = [1, 2, 3, 4, 5]\n\n    # Access: O(1)\n    print(arr[2])\
+  \  # 3\n\n    # Search: O(n)\n    def find(arr, target):\n        for i, val in\
+  \ enumerate(arr):\n            if val == target:\n                return i\n   \
+  \     return -1\n\n    # Insert at end: O(1) amortized\n    arr.append(6)\n\n  \
+  \  # Insert at start: O(n) - shifts all elements\n    arr.insert(0, 0)  # [0, 1,\
+  \ 2, 3, 4, 5, 6]\n\n    # Delete: O(n)\n    arr.pop(2)  # Remove index 2\n    ```\n\
+  \n    ### Common Array Problems\n\n    **Two Sum Problem**\n\n    ```python\n  \
+  \  def two_sum(nums, target):\n        seen = {}  # val -> index\n\n        for\
+  \ i, num in enumerate(nums):\n            complement = target - num\n          \
+  \  if complement in seen:\n                return [seen[complement], i]\n      \
+  \      seen[num] = i\n\n        return []\n\n    # Time: O(n), Space: O(n)\n   \
+  \ ```\n\n    **Remove Duplicates (In-place)**\n\n    ```python\n    def remove_duplicates(nums):\n\
+  \        if not nums:\n            return 0\n\n        write_idx = 1\n        for\
+  \ read_idx in range(1, len(nums)):\n            if nums[read_idx] != nums[read_idx\
+  \ - 1]:\n                nums[write_idx] = nums[read_idx]\n                write_idx\
+  \ += 1\n\n        return write_idx\n\n    # Time: O(n), Space: O(1)\n    ```\n\n\
+  \    ## Linked Lists\n\n    **Nodes with pointers, dynamic size**\n\n    ```python\n\
+  \    class ListNode:\n        def __init__(self, val=0, next=None):\n          \
+  \  self.val = val\n            self.next = next\n    ```\n\n    ### Operations\n\
+  \n    | Operation | Time Complexity |\n    |-----------|----------------|\n    |\
+  \ Access | O(n) |\n    | Search | O(n) |\n    | Insert at start | O(1) |\n    |\
+  \ Insert at end | O(n) or O(1) with tail pointer |\n    | Delete | O(n) |\n\n  \
+  \  ```python\n    class LinkedList:\n        def __init__(self):\n            self.head\
+  \ = None\n\n        def insert_at_start(self, val):\n            new_node = ListNode(val)\n\
+  \            new_node.next = self.head\n            self.head = new_node\n     \
+  \       # O(1)\n\n        def insert_at_end(self, val):\n            new_node =\
+  \ ListNode(val)\n\n            if not self.head:\n                self.head = new_node\n\
+  \                return\n\n            current = self.head\n            while current.next:\n\
+  \                current = current.next\n            current.next = new_node\n \
+  \           # O(n)\n\n        def delete(self, val):\n            if not self.head:\n\
+  \                return\n\n            if self.head.val == val:\n              \
+  \  self.head = self.head.next\n                return\n\n            current = self.head\n\
+  \            while current.next:\n                if current.next.val == val:\n\
+  \                    current.next = current.next.next\n                    return\n\
+  \                current = current.next\n            # O(n)\n    ```\n\n    ###\
+  \ Common Linked List Problems\n\n    **Reverse Linked List**\n\n    ```python\n\
+  \    def reverse_list(head):\n        prev = None\n        current = head\n\n  \
+  \      while current:\n            next_node = current.next\n            current.next\
+  \ = prev\n            prev = current\n            current = next_node\n\n      \
+  \  return prev\n\n    # Time: O(n), Space: O(1)\n    ```\n\n    **Detect Cycle (Floyd's\
+  \ Algorithm)**\n\n    ```python\n    def has_cycle(head):\n        slow = fast =\
+  \ head\n\n        while fast and fast.next:\n            slow = slow.next\n    \
+  \        fast = fast.next.next\n\n            if slow == fast:\n               \
+  \ return True\n\n        return False\n\n    # Time: O(n), Space: O(1)\n    ```\n\
+  \n    **Merge Two Sorted Lists**\n\n    ```python\n    def merge_two_lists(l1, l2):\n\
+  \        dummy = ListNode(0)\n        current = dummy\n\n        while l1 and l2:\n\
+  \            if l1.val <= l2.val:\n                current.next = l1\n         \
+  \       l1 = l1.next\n            else:\n                current.next = l2\n   \
+  \             l2 = l2.next\n            current = current.next\n\n        current.next\
+  \ = l1 or l2\n        return dummy.next\n\n    # Time: O(m + n), Space: O(1)\n \
+  \   ```\n\n    ## Arrays vs Linked Lists\n\n    | Feature | Array | Linked List\
+  \ |\n    |---------|-------|-------------|\n    | Access | O(1) | O(n) |\n    |\
+  \ Insert at start | O(n) | O(1) |\n    | Insert at end | O(1) | O(n) or O(1) |\n\
+  \    | Memory | Contiguous | Scattered |\n    | Cache locality | Better | Worse\
+  \ |\n    | Memory overhead | Low | High (pointers) |\n\n    **When to use:**\n \
+  \   - **Array**: Random access needed, memory cache important\n    - **Linked List**:\
+  \ Frequent insertions/deletions at start\n\n    **Next**: Stacks and Queues!"
+exercises:
+  - type: mcq
+    sequence_order: 1
+    question: "Why does the Two Sum problem use a hash map to achieve O(n) time complexity instead of nested loops?"
+    options:
+      - "Hash maps are always faster than loops"
+      - "Hash maps provide O(1) lookup to find complements, avoiding O(n²) nested iteration"
+      - "Hash maps use less memory than arrays"
+      - "Hash maps automatically sort the data"
+    correct_answer: "Hash maps provide O(1) lookup to find complements, avoiding O(n²) nested iteration"
+    explanation: "The Two Sum problem asks us to find two numbers in an array that sum to a target. A brute force approach using nested loops would check every pair, resulting in O(n²) time complexity. The optimized solution trades space for time using a hash map. As we iterate through the array once (O(n)), for each number, we calculate its complement (target - num) and check if it exists in the hash map in O(1) time. We then store the current number in the hash map. The code looks like: seen = {}; for i, num in enumerate(nums): complement = target - num; if complement in seen: return [seen[complement], i]; seen[num] = i. This achieves O(n) time complexity with O(n) space complexity. This pattern of using hash maps to trade space for time is fundamental in algorithm optimization and appears in many interview problems."
+    require_pass: true
+
+  - type: mcq
+    sequence_order: 2
+    question: "What is the time and space complexity of Floyd's Cycle Detection algorithm for detecting a cycle in a linked list?"
+    options:
+      - "Time: O(n²), Space: O(n)"
+      - "Time: O(n), Space: O(n)"
+      - "Time: O(n), Space: O(1)"
+      - "Time: O(log n), Space: O(1)"
+    correct_answer: "Time: O(n), Space: O(1)"
+    explanation: "Floyd's Cycle Detection algorithm (also known as the tortoise and hare algorithm) uses two pointers moving at different speeds to detect cycles in a linked list with optimal time and space complexity. The implementation uses slow and fast pointers: slow moves one step at a time while fast moves two steps. If there's a cycle, they will eventually meet. The code is: slow = fast = head; while fast and fast.next: slow = slow.next; fast = fast.next.next; if slow == fast: return True. Time complexity is O(n) because in the worst case (no cycle), the fast pointer traverses the entire list. Space complexity is O(1) because we only use two pointer variables regardless of list size. This is superior to the alternative approach of storing visited nodes in a hash set, which would require O(n) space. This algorithm is elegant and demonstrates how clever pointer manipulation can achieve optimal complexity."
+    require_pass: true
+
+  - type: mcq
+    sequence_order: 3
+    question: "When comparing arrays and linked lists, which statement about their performance characteristics is correct?"
+    options:
+      - "Arrays are better in all cases because of O(1) access time"
+      - "Linked lists are better for random access operations"
+      - "Arrays have O(1) access but O(n) insertion at start; linked lists have O(n) access but O(1) insertion at start"
+      - "Both have the same time complexity for all operations"
+    correct_answer: "Arrays have O(1) access but O(n) insertion at start; linked lists have O(n) access but O(1) insertion at start"
+    explanation: "Arrays and linked lists have complementary strengths and weaknesses due to their underlying memory structures. Arrays store elements in contiguous memory, enabling O(1) random access via indexing (arr[i]), but inserting at the beginning requires shifting all elements, taking O(n) time. Linked lists store elements as nodes with pointers, requiring O(n) traversal for access (must follow pointers from head), but inserting at the start only requires creating a new node and updating pointers, taking O(1) time: new_node.next = head; head = new_node. Additional trade-offs include: arrays have better cache locality (memory is contiguous), while linked lists have higher memory overhead (storing pointers). The choice depends on your use case: use arrays when random access is frequent, use linked lists when frequent insertions/deletions at the beginning are needed. Understanding these trade-offs is crucial for selecting the right data structure."
+    require_pass: true

@@ -1,0 +1,59 @@
+slug: phenolreactions-practice
+title: phenol_reactions — Practice
+difficulty: easy
+sequence_order: 15
+estimated_minutes: 2
+key_concepts:
+- phenol_reactions
+prerequisites: []
+content_md: '# phenol_reactions — Practice 🚀
+
+
+  Kolbe reaction: C₆H₅ONa + CO₂ → o-HO-C₆H₄-COONa → Salicylic acid (used to make aspirin).
+  Introduces -COOH at ortho position.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: 'The Kolbe reaction of phenol produces which product?'
+  options:
+  - Benzoic acid
+  - Salicylic acid (o-hydroxybenzoic acid)
+  - Phthalic acid
+  - Terephthalic acid
+  require_pass: true
+  correct_answer: Salicylic acid (o-hydroxybenzoic acid)
+  explanation: 'The Kolbe reaction (also called Kolbe-Schmitt reaction) involves treating sodium phenoxide (C₆H₅ONa) with carbon dioxide (CO₂) under pressure at 125-150°C, followed by acidification. The reaction proceeds as follows: C₆H₅ONa + CO₂ → o-HO-C₆H₄-COONa → o-HO-C₆H₄-COOH (salicylic acid). The -COOH group is introduced at the ortho position (adjacent to the -OH group) on the benzene ring. Salicylic acid is important as the starting material for aspirin synthesis (acetylsalicylic acid). The mechanism involves electrophilic attack of CO₂ on the highly activated ortho position of the phenoxide ion. The ortho-director effect of the -O⁻ group guides the carboxylation to the ortho position rather than para.'
+- type: mcq
+  sequence_order: 2
+  question: 'What is the product when phenol reacts with bromine water at room temperature?'
+  options:
+  - Monobromophenol
+  - 2,4-dibromophenol
+  - 2,4,6-tribromophenol (white precipitate)
+  - No reaction occurs
+  require_pass: true
+  correct_answer: 2,4,6-tribromophenol (white precipitate)
+  explanation: 'Phenol is highly reactive toward electrophilic aromatic substitution due to the strong activating effect of the -OH group. When phenol is treated with bromine water (Br₂/H₂O) at room temperature without any catalyst, it undergoes immediate bromination at all three available ortho and para positions. The product is 2,4,6-tribromophenol, which appears as a white precipitate. This reaction is so facile that it occurs even in dilute bromine water without a Lewis acid catalyst (unlike benzene, which requires Br₂/FeBr₃). The reaction is: C₆H₅OH + 3Br₂ → 2,4,6-Br₃C₆H₂OH + 3HBr. This test is diagnostic for phenols and is used to distinguish phenols from alcohols, which do not react with bromine water.'
+- type: mcq
+  sequence_order: 3
+  question: 'In the Reimer-Tiemann reaction, phenol reacts with chloroform and NaOH to produce:'
+  options:
+  - Salicylic acid
+  - Salicylaldehyde (o-hydroxybenzaldehyde)
+  - Benzyl alcohol
+  - Phenyl chloride
+  require_pass: true
+  correct_answer: Salicylaldehyde (o-hydroxybenzaldehyde)
+  explanation: 'The Reimer-Tiemann reaction is used to introduce a formyl group (-CHO) into the ortho position of phenol. Phenol is treated with chloroform (CHCl₃) and aqueous sodium hydroxide (NaOH) at 60-70°C. The base abstracts a proton from CHCl₃ to generate dichlorocarbene (:CCl₂), a reactive intermediate. This carbene attacks the ortho position of the phenoxide ion (formed from phenol + NaOH). After hydrolysis, the product is salicylaldehyde (o-HO-C₆H₄-CHO). The reaction can be written as: C₆H₅OH + CHCl₃ + 3NaOH → o-HO-C₆H₄-CHO + 3NaCl + 2H₂O. Salicylaldehyde is an important aromatic aldehyde. Some para-hydroxybenzaldehyde is also formed as a minor product.'

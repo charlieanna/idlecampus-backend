@@ -1,0 +1,67 @@
+slug: nonidealsolutions-practice
+title: non_ideal_solutions — Practice
+difficulty: easy
+sequence_order: 12
+estimated_minutes: 2
+key_concepts:
+- non_ideal_solutions
+prerequisites: []
+content_md: '# non_ideal_solutions — Practice 🚀
+
+
+  Ethanol + Water shows positive deviation (A-B interactions weaker than A-A and B-B)
+  forming minimum boiling azeotrope.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 2
+  question: 'Ethanol + Water solution shows:'
+  options:
+  - Ideal behavior
+  - Positive deviation
+  - Negative deviation
+  - No deviation
+  require_pass: true
+  correct_answer: Positive deviation
+  explanation: 'Ethanol + Water mixture shows positive deviation from Raoult''s law.
+    This occurs because ethanol-water (A-B) interactions are weaker than the average
+    of ethanol-ethanol (A-A) and water-water (B-B) interactions. Pure water has strong
+    H-bonding, and adding ethanol disrupts these H-bonds without forming equally strong
+    ethanol-water H-bonds. As a result, molecules escape more easily, vapor pressure
+    increases above ideal, and the mixture forms a minimum boiling azeotrope (boiling
+    at 78.2°C, lower than water''s 100°C). This is practically important: you cannot
+    completely separate ethanol-water by simple distillation beyond the azeotropic
+    composition (95.6% ethanol).'
+- type: mcq
+  sequence_order: 3
+  question: 'Solutions showing negative deviation have:'
+  options:
+  - Vapor pressure lower than predicted by Raoult's law and ΔH_mixing < 0
+  - Vapor pressure higher than predicted by Raoult's law
+  - ΔH_mixing > 0
+  - No change in properties
+  correct_answer: Vapor pressure lower than predicted by Raoult's law and ΔH_mixing < 0
+  explanation: "Negative deviation occurs when A-B interactions are stronger than the average of A-A and B-B interactions. This causes: (1) Lower vapor pressure than ideal (molecules held more tightly), (2) ΔH_mixing < 0 (exothermic mixing - heat released), (3) ΔV_mixing < 0 (volume contraction), (4) Formation of maximum boiling azeotrope. Examples: HCl + water, HNO₃ + water, chloroform + acetone. The strong interactions make it harder for molecules to escape into vapor phase."
+  require_pass: false
+- type: mcq
+  sequence_order: 4
+  question: 'An azeotropic mixture is one that:'
+  options:
+  - Has constant boiling point and composition in both liquid and vapor phases
+  - Can be completely separated by distillation
+  - Shows ideal behavior
+  - Has no vapor pressure
+  correct_answer: Has constant boiling point and composition in both liquid and vapor phases
+  explanation: "An azeotrope (constant boiling mixture) has the same composition in both liquid and vapor phases, so it distills unchanged. Minimum boiling azeotropes (like ethanol-water at 95.6% ethanol, 78.2°C) show positive deviation. Maximum boiling azeotropes (like HCl-water at 20.2% HCl, 108.6°C) show negative deviation. Azeotropes cannot be separated by simple distillation - special methods like azeotropic distillation or using drying agents are needed."
+  require_pass: false

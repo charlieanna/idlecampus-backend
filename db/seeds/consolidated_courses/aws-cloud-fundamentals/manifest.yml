@@ -1,0 +1,54 @@
+---
+course:
+  slug: aws-cloud-fundamentals
+  title: AWS Cloud Fundamentals
+  description: Comprehensive introduction to Amazon Web Services. Master core AWS
+    services including EC2, S3, VPC, RDS, and IAM. Learn to design, deploy, and manage
+    scalable cloud infrastructure.
+  estimated_hours: 8
+  level: intermediate
+  prerequisites:
+  - Linux basics
+  - Understanding of networking concepts
+  - DevOps Essentials (recommended, especially IaC module)
+  learning_outcomes:
+  - Deploy and manage EC2 instances
+  - Configure VPCs and networking
+  - Use S3 for object storage
+  - Set up RDS databases
+  - Implement IAM security and access control
+  - Design cost-effective cloud architectures
+  tags:
+  - aws
+  - cloud
+  - ec2
+  - s3
+  - vpc
+  - devops
+  - infrastructure
+  related_courses:
+  - linux-shell-fundamentals
+  - devops-essentials
+  recommended_next:
+  certification_prep:
+  - AWS Certified Cloud Practitioner
+  - AWS Certified Solutions Architect - Associate
+modules:
+- slug: aws-core-services
+  title: AWS Core Services
+  description: EC2, S3, VPC, RDS, IAM, security, and networking
+  order: 1
+  estimated_hours: 8
+  lessons:
+  - lesson-2
+  - lesson-3
+  - lesson-4
+  - lesson-5
+  - lesson-6
+  - lesson-7
+  - lesson-8
+  - lesson-9
+  - lesson-10
+  - lesson-11
+  - lesson-12
+  - lesson-18

@@ -1,0 +1,84 @@
+slug: conics-parabola-practice
+title: conics-parabola — Practice
+difficulty: medium
+sequence_order: 4
+estimated_minutes: 2
+key_concepts:
+- conics-parabola
+prerequisites: []
+content_md: '# conics-parabola — Practice 🚀
+
+
+  Identify conic type and apply standard form
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: 'What is the vertex of the parabola y = (x - 3)² + 2?'
+  options:
+  - (3, 2)
+  - (-3, 2)
+  - (3, -2)
+  - (2, 3)
+  require_pass: true
+  correct_answer: (3, 2)
+  explanation: 'The **vertex form** of a parabola is: y = a(x - h)² + k, where (h,
+    k) is the vertex. For y = (x - 3)² + 2: a = 1, h = 3, k = 2, so the vertex is
+    (3, 2). **Important**: Note the sign! In (x - h)², if you see (x - 3), then
+    h = +3 (not -3). If you see (x + 3), then h = -3. **Direction**: a = 1 > 0,
+    so parabola opens upward (∪-shaped). Vertex (3, 2) is the minimum point. **Axis
+    of symmetry**: x = h = 3 (vertical line through vertex). **Converting to standard
+    form**: y = (x - 3)² + 2 = x² - 6x + 9 + 2 = x² - 6x + 11. **Focus and directrix**:
+    For y = a(x-h)² + k, focus is at (h, k + 1/(4a)) and directrix is y = k - 1/(4a).
+    Here: focus = (3, 2 + 1/4) = (3, 2.25), directrix: y = 1.75.'
+- type: mcq
+  sequence_order: 2
+  question: 'Find the vertex of y = x² - 4x + 7 by completing the square.'
+  options:
+  - (2, 3)
+  - (-2, 3)
+  - (2, 7)
+  - (4, 7)
+  require_pass: true
+  correct_answer: (2, 3)
+  explanation: 'To find the vertex, **complete the square**: y = x² - 4x + 7. Take
+    half of the coefficient of x: -4/2 = -2. Square it: (-2)² = 4. Add and subtract
+    4: y = (x² - 4x + 4) - 4 + 7 = (x - 2)² + 3. Vertex form: y = (x - 2)² + 3,
+    so vertex is (2, 3). **Alternative - vertex formula**: For y = ax² + bx + c,
+    vertex x-coordinate: h = -b/(2a) = -(-4)/(2·1) = 4/2 = 2. Vertex y-coordinate:
+    k = f(2) = 2² - 4(2) + 7 = 4 - 8 + 7 = 3. Vertex = (2, 3) ✓. **Parabola properties**:
+    Opens upward (a = 1 > 0), minimum value is 3 at x = 2, axis of symmetry: x =
+    2. **Discriminant**: Δ = b² - 4ac = 16 - 28 = -12 < 0, so no x-intercepts (parabola
+    doesn''t cross x-axis).'
+- type: mcq
+  sequence_order: 3
+  question: 'What is the standard equation of a parabola with vertex at origin and
+    focus at (0, 2)?'
+  options:
+  - x² = 8y
+  - x² = 4y
+  - y² = 8x
+  - x² = 2y
+  require_pass: true
+  correct_answer: x² = 8y
+  explanation: 'For a parabola with **vertex at origin** and vertical axis, the standard
+    form is: x² = 4py, where p = distance from vertex to focus. Given focus at (0,
+    2): p = 2. Therefore: x² = 4(2)y = 8y. **Parabola elements**: Vertex: (0, 0),
+    Focus: (0, p) = (0, 2), Directrix: y = -p = -2, Axis of symmetry: x = 0 (y-axis),
+    Opens upward (p > 0). **General parabola equations**: **Vertical axis**: x² =
+    4py (opens up if p > 0, down if p < 0), **Horizontal axis**: y² = 4px (opens
+    right if p > 0, left if p < 0). **With vertex at (h, k)**: (x-h)² = 4p(y-k)
+    or (y-k)² = 4p(x-h). **Relationship**: |p| is the distance from vertex to focus
+    (and from vertex to directrix). For x² = 8y, any point (x, y) on the parabola
+    is equidistant from focus (0, 2) and directrix y = -2.'

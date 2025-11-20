@@ -1,0 +1,57 @@
+slug: quantummechanics-practice
+title: quantum_mechanics — Practice
+difficulty: easy
+sequence_order: 15
+estimated_minutes: 2
+key_concepts:
+- quantum_mechanics
+prerequisites: []
+content_md: '# quantum_mechanics — Practice 🚀
+
+
+  TRUE. Heisenberg uncertainty principle states: Δx·Δp ≥ h/4π. This is a fundamental
+  limitation of nature, not of measurement instruments.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: 'The Heisenberg uncertainty principle states that:'
+  options:
+  - It is impossible to measure the exact position of an electron
+  - It is impossible to measure the exact momentum of an electron
+  - The product of uncertainties in position and momentum is at least h/(4π)
+  - Electrons have wave properties but not particle properties
+  correct_answer: The product of uncertainties in position and momentum is at least h/(4π)
+  explanation: 'The Heisenberg uncertainty principle is a fundamental limitation in quantum mechanics, stating that certain pairs of physical properties (complementary variables) cannot both be known to arbitrary precision simultaneously. Mathematical expression: Δx · Δp ≥ h/(4π) = ℏ/2, where: Δx = uncertainty in position, Δp = uncertainty in momentum, h = Planck''s constant (6.626 × 10⁻³⁴ J·s), ℏ = h/(2π) = reduced Planck constant. Key points: (1) This is NOT a limitation of our measuring instruments - it is a fundamental property of nature at the quantum level. (2) The more precisely we know position (smaller Δx), the less precisely we can know momentum (larger Δp), and vice versa. (3) For macroscopic objects, the uncertainty is negligibly small and not noticeable. (4) Other complementary pairs: Energy and time: ΔE · Δt ≥ ℏ/2. Angular position and angular momentum. (5) This principle invalidates the concept of definite orbits in atoms (contradicts Bohr model), leading to probability distributions (orbitals). Example: If we know an electron''s position to within 10⁻¹⁰ m (atomic size), the uncertainty in momentum must be at least Δp ≥ ℏ/(2×10⁻¹⁰) ≈ 5.3 × 10⁻²⁵ kg·m/s, corresponding to velocity uncertainty of ~600 km/s.'
+  require_pass: true
+- type: short_answer
+  sequence_order: 2
+  hints:
+  - Re-read the question carefully.
+  - Recall the relevant formula or rule.
+  - Review the explanation once you answer.
+  question: According to Heisenberg uncertainty principle, it is impossible to determine
+    both position and momentum of an electron with absolute precision simultaneously.
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: 'Which of the following statements about quantum mechanics is correct?'
+  options:
+  - The Schrödinger equation can be solved exactly for all atoms
+  - Electrons in atoms exist in definite orbits with precise positions and velocities
+  - The square of the wave function (|ψ|²) gives the probability density of finding an electron
+  - Quantum mechanics applies only to electrons, not to protons or neutrons
+  correct_answer: The square of the wave function (|ψ|²) gives the probability density of finding an electron
+  explanation: 'Quantum mechanics describes the behavior of particles at the atomic and subatomic scale using wave functions and probability distributions. Key concepts: (1) WAVE FUNCTION (ψ): A mathematical function that describes the quantum state of a particle. Obtained by solving the Schrödinger equation: Hψ = Eψ (where H is the Hamiltonian operator, E is energy). (2) PROBABILITY INTERPRETATION: |ψ|² (or ψ*ψ) gives the probability density of finding the particle at a particular location. ∫|ψ|²dV = 1 (normalization - total probability = 1). (3) ORBITALS vs. ORBITS: Orbitals are probability distributions (regions where electron is likely to be found), NOT definite paths. Orbits (Bohr model) are definite circular paths - incompatible with uncertainty principle. (4) EXACT SOLUTIONS: The Schrödinger equation can be solved exactly only for simple systems: hydrogen atom (one electron), harmonic oscillator, particle in a box. For multi-electron atoms, approximation methods are needed (variational method, perturbation theory, Hartree-Fock). (5) UNIVERSALITY: Quantum mechanics applies to ALL particles - electrons, protons, neutrons, atoms, molecules, even photons. Example: For 1s orbital of hydrogen, |ψ|² ∝ e^(-2r/a₀), showing highest probability at nucleus (r=0) and decreasing exponentially with distance.'
+  require_pass: true

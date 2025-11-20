@@ -1,0 +1,83 @@
+slug: working-with-processes
+title: Working with Processes
+sequence_order: 7
+estimated_minutes: 2
+difficulty: easy
+key_concepts: []
+content_md: "# Working with Processes \U0001F680\n\n# Working with Processes\n\n \
+  \   ## Viewing Processes\n\n    ```bash\n    # Show processes for current user\n\
+  \    ps\n\n    # Show all processes\n    ps aux\n\n    # Show process tree\n   \
+  \ ps auxf\n    pstree\n\n    # Interactive process viewer\n    top\n\n    # Better\
+  \ top alternative (if installed)\n    htop\n    ```\n\n    ## Process Information\n\
+  \n    ```bash\n    # Find process by name\n    pgrep nginx\n    ps aux | grep nginx\n\
+  \n    # Show specific process details\n    ps -p 1234 -f\n    ```\n\n    ## Managing\
+  \ Processes\n\n    ```bash\n    # Run command in background\n    long_command &\n\
+  \n    # List background jobs\n    jobs\n\n    # Bring job to foreground\n    fg\
+  \ %1\n\n    # Send job to background\n    bg %1\n\n    # Suspend current process\n\
+  \    Ctrl+Z\n\n    # Kill current process\n    Ctrl+C\n    ```\n\n    ## Killing\
+  \ Processes\n\n    ```bash\n    # Graceful shutdown (SIGTERM)\n    kill 1234\n\n\
+  \    # Force kill (SIGKILL)\n    kill -9 1234\n    kill -KILL 1234\n\n    # Kill\
+  \ by name\n    pkill nginx\n    killall nginx\n\n    # Kill all processes matching\
+  \ pattern\n    pkill -f \"python.*server\"\n    ```\n\n    ## Common Signals\n\n\
+  \    | Signal | Number | Description |\n    |--------|--------|-------------|\n\
+  \    | SIGTERM | 15 | Graceful termination (default) |\n    | SIGKILL | 9 | Force\
+  \ kill (cannot be caught) |\n    | SIGHUP | 1 | Hangup (reload config) |\n    |\
+  \ SIGINT | 2 | Interrupt (Ctrl+C) |\n    | SIGSTOP | 19 | Pause process |\n    |\
+  \ SIGCONT | 18 | Continue paused process |\n\n    ## Background Processes\n\n  \
+  \  ```bash\n    # Run and detach from terminal\n    nohup long_command &\n\n   \
+  \ # Output goes to nohup.out by default\n    nohup ./script.sh > output.log 2>&1\
+  \ &\n    ```"
+exercises:
+- type: mcq
+  slug: working-with-processes-mcq-1
+  sequence_order: 1
+  question: What is the difference between SIGTERM and SIGKILL signals?
+  options:
+  - SIGTERM allows graceful shutdown, SIGKILL forces immediate termination
+  - SIGKILL allows graceful shutdown, SIGTERM forces immediate termination
+  - They are exactly the same
+  - SIGTERM is for background processes, SIGKILL is for foreground processes
+  correct_answer_index: 0
+  explanation: SIGTERM (signal 15) requests a process to terminate gracefully, allowing it to clean up resources and save state. SIGKILL (signal 9) immediately terminates the process without allowing cleanup. Always try SIGTERM first with "kill <pid>", and only use "kill -9 <pid>" if the process doesn't respond.
+- type: mcq
+  slug: working-with-processes-mcq-2
+  sequence_order: 2
+  question: What does the command "ps aux" do?
+  options:
+  - Shows all running processes with detailed information for all users
+  - Shows only processes owned by the current user
+  - Shows only background processes
+  - Shows only system processes
+  correct_answer_index: 0
+  explanation: 'The "ps aux" command displays all running processes on the system: "a" shows processes for all users, "u" displays user-oriented format with detailed information, and "x" includes processes without a controlling terminal. This is one of the most common commands for viewing system processes.'
+- type: mcq
+  slug: working-with-processes-mcq-3
+  sequence_order: 3
+  question: What does the "&" symbol do when appended to a command in Bash?
+  options:
+  - Runs the command in the background, returning control to the shell immediately
+  - Runs multiple commands in sequence
+  - Combines two commands with AND logic
+  - Redirects output to a file
+  correct_answer_index: 0
+  explanation: The "&" at the end of a command runs it in the background as a job, allowing you to continue using the shell while the command executes. For example, "long_running_command &" starts the command and immediately returns the prompt. Use "jobs" to list background jobs and "fg" to bring them to foreground.
+- type: mcq
+  slug: working-with-processes-mcq-4
+  sequence_order: 4
+  question: What is the purpose of the "nohup" command?
+  options:
+  - Runs a command that continues even after the terminal is closed
+  - Kills all processes matching a name
+  - Shows process hierarchy in a tree format
+  - Suspends a running process
+  correct_answer_index: 0
+  explanation: 'nohup (no hang up) runs a command immune to hangup signals, so it continues running even if you close the terminal. It redirects output to "nohup.out" by default. Usage: "nohup ./long_script.sh &" - This is essential for running long tasks on remote servers where you might disconnect.'
+objectives:
+- View and monitor running processes using ps, top, and htop
+- Understand process management with background jobs and job control
+- Send appropriate signals to processes (SIGTERM, SIGKILL, SIGHUP)
+- Use nohup to run processes that survive terminal disconnection
+- Find and manage processes by name using pgrep and pkill
+next_recommended:
+- data-structures
+- functions

@@ -1,0 +1,64 @@
+slug: lesson-69
+title: Lesson 69
+difficulty: easy
+sequence_order: 69
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Cluster Component Failures\n\n    - API\
+  \ server, controller-manager, scheduler symptoms\n    - Logs and health endpoints"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What symptom indicates the kube-apiserver has failed?
+  options:
+  - Existing pods stop running immediately
+  - kubectl commands fail, but existing pods continue running
+  - The cluster automatically recovers
+  - Only new pod creation is affected
+  correct_answer: kubectl commands fail, but existing pods continue running
+  explanation: When the kube-apiserver fails, kubectl commands fail with connection
+    errors because kubectl communicates with the cluster through the API server. However,
+    existing pods and workloads continue running normally because the kubelet on each
+    node manages pod lifecycles independently. The API server is the control plane's
+    gateway, but running workloads don't depend on it moment-to-moment. However, you
+    cannot make any cluster changes - creating, updating, or deleting resources is
+    impossible without the API server. Services continue routing traffic, and existing
+    pods keep running unless they fail for other reasons. To troubleshoot API server
+    failures, check the API server logs, verify etcd is accessible, confirm certificates
+    are valid, and ensure network connectivity. This separation between control plane
+    and data plane is a key Kubernetes design principle.
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: Where would you check logs for kube-controller-manager if it runs as a
+    static pod?
+  options:
+  - /var/log/kube-controller-manager.log
+  - kubectl logs in the kube-system namespace
+  - systemctl logs
+  - /etc/kubernetes/logs
+  correct_answer: kubectl logs in the kube-system namespace
+  explanation: When control plane components run as static pods (common in kubeadm
+    clusters), use 'kubectl logs kube-controller-manager-<node-name> -n kube-system'
+    to view logs. Static pods are created directly by the kubelet from manifest files
+    in /etc/kubernetes/manifests/ and appear in the kube-system namespace. In older
+    setups or some managed services where components run as systemd services, you'd
+    use 'journalctl -u kube-controller-manager' instead. Knowing where to find logs
+    is essential for troubleshooting. Controller manager logs help diagnose issues
+    with reconciliation loops, cloud provider integration, certificate rotation, or
+    resource management. Always identify whether components run as pods or services
+    before troubleshooting, as the log location and access method differ.
+  require_pass: true
+- type: mcq
+  sequence_order: 1
+  question: What kubectl command checks if you can perform an action?
+  options:
+  - kubectl auth can-i create pods
+  - kubectl check permissions create pods
+  - kubectl verify action create pods
+  - kubectl test auth create pods
+  correct_answer_index: 0
+  explanation: kubectl auth can-i <action> <resource> checks if the current user has
+    permission to perform the specified action.
+  require_pass: true

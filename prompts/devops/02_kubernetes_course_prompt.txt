@@ -1,0 +1,276 @@
+=======================================
+MICROLESSON GENERATOR - KUBERNETES
+=======================================
+
+[READY TO USE: Copy this entire prompt + attach all files listed below to GPT-5 Pro]
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+STEP 1: ATTACH THESE FILES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+From: idlecampus/backend/db/seeds/
+
+□ kubernetes_certification_courses.rb
+□ kubernetes_complete_guide.rb
+□ kubernetes_resources.rb
+□ kubectl_learning_content.rb
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+STEP 2: PASTE THIS PROMPT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+You are an expert educational content designer and Ruby on Rails developer.
+
+I've attached ALL seed files for the Kubernetes course. Convert each into microlesson format.
+
+# IMPORTANT: INPUT FORMAT
+
+The attached seed files use `Course/CourseModule/CourseLesson.find_or_create_by!` format (NOT InteractiveLearningUnit).
+Extract lesson content from CourseLesson or Lesson blocks, not InteractiveLearningUnit blocks.
+
+# COURSE INFORMATION
+
+**Course:** Kubernetes Fundamentals & Certification
+**Total Files:** 4
+
+# MICROLESSON RULES
+
+**Size:** 1 concept per microlesson, 2-3 minutes each
+
+**Content Structure:**
+```markdown
+# [Title] 🚀
+
+## What is [concept]?
+[2-3 sentence explanation]
+
+## Syntax/Command
+```bash
+[kubectl command or YAML]
+```
+
+## Example
+```bash
+[specific example with output]
+```
+
+## Key Points
+- Point 1
+- Point 2
+- Point 3
+```
+
+# EXERCISE RULES
+
+**Count based on difficulty:**
+- Easy: 1-2 exercises
+- Medium: 2-3 exercises
+- Hard: 3-4 exercises
+
+**Types:**
+1. **terminal**: kubectl commands (create, get, describe, delete, apply, etc.)
+2. **mcq**: Certification-style questions (CKA/CKAD pattern)
+3. **code**: YAML manifest editing
+
+**Progressive Hints (3 per exercise):**
+- Hint 1: Gentle nudge
+- Hint 2: More specific
+- Hint 3: Nearly the answer
+
+# PREREQUISITES
+
+Analyze content to infer dependencies:
+- First lesson: `prerequisite_ids: []`
+- Sequential lessons: Previous lesson as prerequisite
+- Advanced topics: Multiple prerequisites
+
+# OUTPUT FORMAT
+
+Generate complete Ruby seed files:
+
+```ruby
+# db/seeds/microlessons/kubernetes_fundamentals_microlessons.rb
+# AUTO-GENERATED from kubernetes seed files
+
+puts "Creating Microlessons for Kubernetes..."
+
+module_var = CourseModule.find_by(slug: 'kubernetes-fundamentals')
+
+# === MICROLESSON 1: [Title] ===
+lesson_1 = MicroLesson.create!(
+  course_module: module_var,
+  title: '[Short, clear title]',
+  content: <<~MARKDOWN,
+    # [Title] 🚀
+
+    ## What is [concept]?
+
+    [Explanation]
+
+    ## Command
+
+    ```bash
+    [kubectl command]
+    ```
+
+    ## Example
+
+    ```bash
+    kubectl create deployment nginx --image=nginx
+    # deployment.apps/nginx created
+
+    kubectl get deployments
+    # NAME    READY   UP-TO-DATE   AVAILABLE   AGE
+    # nginx   1/1     1            1           10s
+    ```
+
+    ## Key Points
+
+    - Point 1
+    - Point 2
+    - Point 3
+  MARKDOWN
+  sequence_order: 1,
+  estimated_minutes: 2,
+  difficulty: 'easy',
+  key_concepts: ['concept1', 'concept2'],
+  prerequisite_ids: []
+)
+
+# Exercise 1: Terminal Command
+Exercise.create!(
+  micro_lesson: lesson_1,
+  exercise_type: 'terminal',
+  sequence_order: 1,
+  exercise_data: {
+    command: '[exact kubectl command]',
+    description: '[what to do]',
+    expected_output: '[what should happen]',
+    validation_type: 'output_contains',
+    difficulty: 'easy',
+    hints: [
+      '[Hint 1: gentle]',
+      '[Hint 2: specific]',
+      '[Hint 3: nearly answer]'
+    ]
+  }
+)
+
+# Exercise 2: MCQ (Certification Style)
+Exercise.create!(
+  micro_lesson: lesson_1,
+  exercise_type: 'mcq',
+  sequence_order: 2,
+  exercise_data: {
+    question: '[CKA/CKAD style question]',
+    options: ['[correct]', '[wrong]', '[wrong]', '[wrong]'],
+    correct_answer: 0,
+    explanation: '[why]',
+    difficulty: 'easy',
+    hints: [
+      '[Hint 1]',
+      '[Hint 2]',
+      '[Hint 3]'
+    ]
+  }
+)
+
+# [More microlessons...]
+
+puts "✓ Created [N] microlessons for Kubernetes"
+```
+
+# QUALITY CHECKLIST
+
+For EACH microlesson:
+- [ ] Covers exactly 1 Kubernetes concept/resource
+- [ ] 2-3 minutes estimated time
+- [ ] Clear kubectl commands with output
+- [ ] Exercises match CKA/CKAD style
+- [ ] MCQ options are plausible
+- [ ] Hints progress logically
+- [ ] Prerequisites make sense
+- [ ] Ruby syntax is valid
+
+# KUBERNETES TOPICS TO COVER
+
+Break down by resources and concepts:
+
+**Core Resources:**
+- Pods (create, inspect, troubleshoot)
+- Deployments (create, scale, update, rollback)
+- Services (ClusterIP, NodePort, LoadBalancer)
+- ConfigMaps & Secrets
+- Namespaces
+- ReplicaSets
+
+**Advanced Concepts:**
+- StatefulSets
+- DaemonSets
+- Jobs & CronJobs
+- Ingress
+- PersistentVolumes & PersistentVolumeClaims
+- Resource Quotas & Limits
+- Network Policies
+- RBAC (Roles, RoleBindings)
+- Helm basics
+
+**kubectl Commands:**
+Each major command = 1 microlesson:
+- kubectl create/run
+- kubectl get/describe
+- kubectl apply/delete
+- kubectl logs/exec
+- kubectl scale/autoscale
+- kubectl rollout
+- kubectl port-forward
+- kubectl label/annotate
+
+# OUTPUT INSTRUCTIONS
+
+For each seed file, generate output with clear labels:
+
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FILE: kubernetes_fundamentals_microlessons.rb
+FROM: kubernetes_complete_guide.rb
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+[Complete Ruby code here]
+```
+
+After all files, provide summary:
+
+```
+=== GENERATION SUMMARY ===
+
+Course: Kubernetes Fundamentals & Certification
+
+Files Generated:
+1. kubernetes_fundamentals_microlessons.rb
+   - Original units: X
+   - Microlessons created: Y
+   - Total exercises: Z
+   - Prerequisites linked: N
+
+2. kubernetes_certification_microlessons.rb
+   ...
+
+Grand Total:
+- Microlessons: XX
+- Exercises: YY
+- Terminal: ZZ (kubectl commands)
+- MCQ: AA (certification-style)
+- Code: BB (YAML manifests)
+
+Topics Covered:
+- Core Resources (X lessons)
+- Advanced Concepts (X lessons)
+- kubectl Commands (X lessons)
+```
+
+# NOW GENERATE
+
+Process all 4 attached seed files and generate complete microlesson files following all rules above.
+
+START GENERATION NOW.

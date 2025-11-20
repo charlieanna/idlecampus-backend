@@ -1,0 +1,79 @@
+slug: docker-container-start-start-stopped-containers
+title: 'Docker Container Start: Start Stopped Containers'
+difficulty: easy
+sequence_order: 14
+estimated_minutes: 2
+key_concepts:
+- containers
+- docker-start
+- lifecycle
+prerequisites: []
+content_md: '# Docker Container Start: Start Stopped Containers 🚀
+
+
+  Start one or more stopped containers, preserving their state and configuration.
+
+
+  ## Syntax/Command
+
+
+  ```bash
+
+  docker container start my-container
+
+  ```
+
+
+  ## Example
+
+
+  ```bash
+
+  docker container start -a container
+
+  ```
+
+
+  ## Key Points
+
+
+  - Start: docker container start <name>'
+exercises:
+- type: terminal
+  problem_statement: Start a previously stopped container named 'my-container'
+  expected_output: Container ID or name confirming it started
+  language: bash
+  starter_code: "# Start a stopped container\n"
+  sequence_order: 1
+  command: docker container start my-container
+  description: Start previously stopped container
+  hints:
+  - 'Start: docker container start <name>'
+  validation:
+    must_not_include:
+    - Error
+    - 'panic:'
+  timeout_sec: 60
+  require_pass: true
+- type: sandbox
+  sequence_order: 99
+  hints:
+  - Run under CPU pressure to surface leaks or races
+  - Keep commands idempotent in CI
+  validation:
+    must_not_include:
+    - Error
+    - 'panic:'
+  timeout_sec: 60
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What happens to container data when you start a stopped container?
+  options:
+  - Data is preserved from when it was stopped - the container resumes with the same state
+  - Container starts fresh with no data from previous run
+  - Data is preserved but all running processes are restarted
+  - Only volumes are preserved, filesystem changes are lost
+  correct_answer: Data is preserved from when it was stopped - the container resumes with the same state
+  explanation: "When you stop and then start a container, its filesystem state is preserved exactly as it was when stopped. This is different from removing and recreating a container, which would lose all changes."
+  require_pass: true

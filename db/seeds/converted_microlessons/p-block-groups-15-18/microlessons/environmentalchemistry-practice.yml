@@ -1,0 +1,59 @@
+slug: environmentalchemistry-practice
+title: environmental_chemistry — Practice
+difficulty: medium
+sequence_order: 1
+estimated_minutes: 2
+key_concepts:
+- environmental_chemistry
+prerequisites: []
+content_md: '# environmental_chemistry — Practice 🚀
+
+
+  CFCs release Cl radicals which catalytically destroy ozone: Cl + O₃ → ClO + O₂;
+  ClO + O → Cl + O₂. Net: O₃ + O → 2O₂.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 2
+  question: 'Ozone layer depletion is primarily caused by:'
+  options:
+  - Chlorine radicals from CFCs
+  - Carbon dioxide
+  - Sulfur dioxide
+  - Nitrogen oxides only
+  correct_answer: Chlorine radicals from CFCs
+  explanation: "Ozone layer depletion is primarily caused by chlorine radicals released from CFCs (chlorofluorocarbons). When CFCs reach the stratosphere, UV radiation breaks them down, releasing Cl radicals that catalytically destroy ozone through the reaction cycle: Cl + O₃ → ClO + O₂, then ClO + O → Cl + O₂ (regenerating Cl). A single chlorine radical can destroy thousands of ozone molecules. CO₂ causes global warming but not ozone depletion. SO₂ causes acid rain. NOₓ can contribute to ozone depletion but is not the primary cause."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: What is the net reaction in the catalytic destruction of ozone by chlorine radicals?
+  options:
+  - O₃ + O → 2O₂
+  - 2O₃ → 3O₂
+  - O₃ + Cl → O₂ + ClO
+  - Cl + O → ClO
+  correct_answer: O₃ + O → 2O₂
+  explanation: "The net reaction in the catalytic destruction of ozone by chlorine radicals is O₃ + O → 2O₂. This occurs through a two-step mechanism: (1) Cl + O₃ → ClO + O₂, and (2) ClO + O → Cl + O₂. When these steps are added together, the chlorine radical cancels out (it acts as a catalyst) and the net reaction is O₃ + O → 2O₂. This shows that the chlorine radical is regenerated and can continue destroying more ozone molecules, which is why even small amounts of CFCs can cause significant ozone depletion."
+  require_pass: true
+- type: mcq
+  sequence_order: 4
+  question: Which gas is the primary contributor to acid rain?
+  options:
+  - Carbon dioxide (CO₂)
+  - Sulfur dioxide (SO₂)
+  - Methane (CH₄)
+  - Ozone (O₃)
+  correct_answer: Sulfur dioxide (SO₂)
+  explanation: "Sulfur dioxide (SO₂) is the primary contributor to acid rain. SO₂ is released into the atmosphere mainly from burning fossil fuels (especially coal) and industrial processes. In the atmosphere, SO₂ reacts with water vapor to form sulfurous acid (H₂SO₃), which can be further oxidized to sulfuric acid (H₂SO₄). The reactions are: SO₂ + H₂O → H₂SO₃ and 2SO₂ + O₂ + 2H₂O → 2H₂SO₄. Nitrogen oxides (NOₓ) also contribute to acid rain by forming nitric acid, but SO₂ is generally the main culprit. CO₂ forms carbonic acid but is much weaker."
+  require_pass: true

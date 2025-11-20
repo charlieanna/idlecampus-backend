@@ -1,0 +1,94 @@
+slug: crystalfieldtheory-practice
+title: crystal_field_theory — Practice
+difficulty: easy
+sequence_order: 11
+estimated_minutes: 2
+key_concepts:
+- crystal_field_theory
+prerequisites: []
+content_md: '# crystal_field_theory — Practice 🚀
+
+
+  According to spectrochemical series: CN⁻ is strongest field ligand (largest Δₒ),
+  followed by NH₃, H₂O, F⁻, Cl⁻, Br⁻, I⁻.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 2
+  question: According to the spectrochemical series, which ligand causes the largest
+    crystal field splitting (Δₒ)?
+  options:
+  - Cl⁻
+  - H₂O
+  - NH₃
+  - CN⁻
+  require_pass: true
+  correct_answer: CN⁻
+  explanation: 'The **spectrochemical series** ranks ligands by their crystal field
+    splitting strength: **Weak field ligands** (small Δₒ): I⁻ < Br⁻ < Cl⁻ < F⁻
+    < OH⁻ < H₂O < ... **Strong field ligands** (large Δₒ): ... < NH₃ < en (ethylenediamine)
+    < NO₂⁻ < **CN⁻** < CO. **CN⁻ is the strongest field ligand** among common ligands,
+    causing maximum crystal field splitting. Why? Strong σ-donor and π-acceptor abilities.
+    It can accept electron density from metal d-orbitals into its empty π* orbitals
+    (back-bonding). Consequences of large Δₒ: (1) **Low-spin complexes** form (electrons
+    pair in t2g before filling eg), (2) Greater stability, (3) Inner orbital complexes
+    (d²sp³ hybridization). Example: [Fe(CN)₆]⁴⁻ is low-spin (diamagnetic, all electrons
+    paired) while [Fe(H₂O)₆]²⁺ is high-spin (paramagnetic, 4 unpaired electrons).
+    The strength of CN⁻ makes cyanide complexes extremely stable (and toxic!).'
+- type: mcq
+  sequence_order: 3
+  question: 'In octahedral crystal field theory, the d-orbitals split into which
+    two sets?'
+  options:
+  - t2g (lower energy, 3 orbitals) and eg (higher energy, 2 orbitals)
+  - eg (lower energy, 3 orbitals) and t2g (higher energy, 2 orbitals)
+  - All five orbitals remain at the same energy
+  - Three sets of different energies
+  require_pass: true
+  correct_answer: t2g (lower energy, 3 orbitals) and eg (higher energy, 2 orbitals)
+  explanation: 'In octahedral complexes, crystal field splitting creates two sets:
+    **t2g orbitals** (lower energy, 3 orbitals): dxy, dyz, dxz - These orbitals lie
+    **between the axes** (between ligands), experiencing less repulsion from ligands.
+    **eg orbitals** (higher energy, 2 orbitals): dx²−y², dz² - These orbitals point
+    **directly at ligands** along axes, experiencing maximum repulsion. **Energy
+    gap = Δₒ** (octahedral splitting energy). The splitting occurs because ligands
+    approach along x, y, z axes in octahedral geometry. Electrons preferentially
+    fill t2g first (lower energy). Electron filling: (1) **High-spin**: Fill t2g,
+    then eg, then pair (weak field ligands, small Δₒ < pairing energy). (2) **Low-spin**:
+    Pair in t2g before filling eg (strong field ligands, large Δₒ > pairing energy).
+    Example: d⁴ configuration can be: High-spin: t2g³ eg¹ (4 unpaired), Low-spin:
+    t2g⁴ eg⁰ (2 unpaired). Remember: "t2g low, eg high" for octahedral!'
+- type: mcq
+  sequence_order: 4
+  question: Which d-electron configuration shows maximum crystal field stabilization
+    energy (CFSE) in octahedral complexes?
+  options:
+  - d³
+  - d⁵ (low-spin)
+  - d⁶ (low-spin)
+  - d¹⁰
+  require_pass: true
+  correct_answer: d⁶ (low-spin)
+  explanation: 'Crystal Field Stabilization Energy (CFSE) measures the extra stability
+    gained from orbital splitting: **CFSE calculation**: Each electron in t2g: −0.4Δₒ
+    stabilization, Each electron in eg: +0.6Δₒ destabilization, Pairing energy penalty
+    for low-spin. **d⁶ low-spin (t2g⁶ eg⁰)** has maximum CFSE: CFSE = 6(−0.4Δₒ)
+    + 2P = −2.4Δₒ + 2P (P = pairing energy). For strong field ligands where Δₒ >>
+    P, this is maximum! Other configurations: **d³** (t2g³): −1.2Δₒ (all unpaired,
+    no pairing penalty). **d⁵ low-spin** (t2g⁵): −2.0Δₒ + 1P. **d¹⁰**: All orbitals
+    filled, CFSE = 0 (spherical distribution). Why d⁶ low-spin is special: (1) All
+    stabilizing t2g orbitals filled, (2) No destabilizing eg electrons, (3) Maximum
+    negative CFSE. Examples: [Fe(CN)₆]⁴⁻ (Fe²⁺, d⁶ low-spin) - extremely stable.
+    [Co(NH₃)₆]³⁺ (Co³⁺, d⁶ low-spin) - inert, substitution-resistant. This explains
+    why Fe²⁺ and Co³⁺ form remarkably stable complexes with strong field ligands!'

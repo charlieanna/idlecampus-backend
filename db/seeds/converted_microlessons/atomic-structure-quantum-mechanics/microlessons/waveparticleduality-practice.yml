@@ -1,0 +1,66 @@
+slug: waveparticleduality-practice
+title: wave_particle_duality — Practice
+difficulty: easy
+sequence_order: 8
+estimated_minutes: 2
+key_concepts:
+- wave_particle_duality
+prerequisites: []
+content_md: '# wave_particle_duality — Practice 🚀
+
+
+  λ = h/p where p is momentum. Therefore, wavelength is inversely proportional to
+  momentum (p = mv).
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 2
+  question: 'The de Broglie wavelength is inversely proportional to:'
+  options:
+  - Mass
+  - Velocity
+  - Momentum
+  - Energy
+  require_pass: true
+  correct_answer: Momentum
+  explanation: 'The de Broglie wavelength λ is given by λ = h/p, where h is Planck''s
+    constant and p is momentum (p = mv = mass × velocity). Therefore, wavelength is
+    inversely proportional to momentum: as momentum increases, wavelength decreases.
+    This means: (1) Heavier particles have shorter wavelengths, (2) Faster-moving
+    particles have shorter wavelengths, (3) Electrons, being light, show significant
+    wave properties (used in electron microscopes), (4) Macroscopic objects have negligibly
+    small wavelengths. This wave-particle duality was confirmed experimentally by
+    Davisson-Germer (electron diffraction) and is fundamental to quantum mechanics.'
+- type: mcq
+  sequence_order: 3
+  question: 'Calculate the de Broglie wavelength of an electron (mass = 9.1 × 10⁻³¹ kg) moving with velocity 10⁶ m/s. (h = 6.63 × 10⁻³⁴ J·s)'
+  options:
+  - 7.3 × 10⁻¹⁰ m
+  - 7.3 × 10⁻¹¹ m
+  - 7.3 × 10⁻¹² m
+  - 7.3 × 10⁻⁸ m
+  correct_answer: 7.3 × 10⁻¹⁰ m
+  explanation: 'Using the de Broglie equation λ = h/p = h/(mv): Given: h = 6.63 × 10⁻³⁴ J·s, m = 9.1 × 10⁻³¹ kg, v = 10⁶ m/s. Calculate: λ = (6.63 × 10⁻³⁴) / (9.1 × 10⁻³¹ × 10⁶) = (6.63 × 10⁻³⁴) / (9.1 × 10⁻²⁵) = 0.728 × 10⁻⁹ m = 7.28 × 10⁻¹⁰ m ≈ 7.3 × 10⁻¹⁰ m = 0.73 nm = 7.3 Å. Significance: (1) This wavelength (7.3 Å) is comparable to atomic spacing in crystals (a few Angstroms), which is why electrons can show diffraction patterns when passing through crystals. (2) This validates the wave nature of electrons and is the basis for electron diffraction techniques and electron microscopy. (3) For comparison, visible light has wavelength ~400-700 nm, much larger than this electron wavelength. Comparison with macroscopic objects: For a 0.1 kg ball moving at 10 m/s: λ = (6.63 × 10⁻³⁴) / (0.1 × 10) = 6.63 × 10⁻³⁴ m (immeasurably small, no observable wave behavior). De Broglie''s hypothesis (1924) was confirmed by Davisson-Germer experiment (1927), which showed electron diffraction patterns similar to X-ray diffraction.'
+  require_pass: true
+- type: mcq
+  sequence_order: 4
+  question: 'Which experiment provided the first experimental evidence for the wave nature of electrons?'
+  options:
+  - Photoelectric effect experiment by Einstein
+  - Gold foil experiment by Rutherford
+  - Davisson-Germer electron diffraction experiment
+  - Millikan oil drop experiment
+  correct_answer: Davisson-Germer electron diffraction experiment
+  explanation: 'The Davisson-Germer experiment (1927) provided the first direct experimental confirmation of de Broglie''s hypothesis that particles have wave properties. Experimental setup: (1) Electrons were accelerated to a specific kinetic energy (hence specific velocity and momentum). (2) These electrons were directed at a nickel crystal. (3) The scattered electrons were detected at various angles. (4) A strong peak in scattered electron intensity was observed at specific angles, similar to X-ray diffraction patterns (Bragg''s law). (5) The angle of maximum intensity corresponded exactly to the wavelength predicted by λ = h/(mv), confirming de Broglie''s equation. Significance: This proved that electrons exhibit wave behavior (diffraction and interference), not just particle behavior. This was revolutionary, as electrons were previously thought to be purely particles. Applications: Electron diffraction is now used to study crystal structures (similar to X-ray diffraction but with better resolution for light elements). Electron microscopes exploit the wave nature to achieve much higher resolution than optical microscopes (shorter wavelength). Other experiments: Photoelectric effect (Einstein, 1905) showed light has particle properties (photons), complementing wave-particle duality. G.P. Thomson (1927) independently confirmed electron diffraction using thin metal films. Louis de Broglie received the Nobel Prize in 1929 for predicting wave-particle duality, and Davisson shared the 1937 Nobel Prize for experimental confirmation.'
+  require_pass: true

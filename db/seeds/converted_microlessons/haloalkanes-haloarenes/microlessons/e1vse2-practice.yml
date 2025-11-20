@@ -1,0 +1,59 @@
+slug: e1vse2-practice
+title: e1_vs_e2 — Practice
+difficulty: hard
+sequence_order: 1
+estimated_minutes: 2
+key_concepts:
+- e1_vs_e2
+prerequisites: []
+content_md: '# e1_vs_e2 — Practice 🚀
+
+
+  E1 favored by: (1) Weak base, (2) Polar protic solvent (stabilizes carbocation),
+  (3) Tertiary halide. E2 needs strong base. E1 rate independent of base concentration.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 2
+  question: Which condition favors E1 over E2?
+  options:
+  - Weak base and polar protic solvent
+  - Strong base and high concentration
+  - Primary alkyl halide
+  - Polar aprotic solvent
+  correct_answer: Weak base and polar protic solvent
+  explanation: "E1 (Elimination Unimolecular) is favored by: (1) weak base (since E1 rate is independent of base concentration and strength), (2) polar protic solvent (stabilizes the carbocation intermediate), and (3) tertiary alkyl halides (form stable carbocations). E2 requires a strong base and high base concentration. The key distinguishing factor is that E1 proceeds through a carbocation intermediate (like SN1), while E2 is a concerted one-step mechanism."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: What is the rate law for an E2 elimination reaction?
+  options:
+  - Rate = k[substrate]
+  - Rate = k[base]
+  - Rate = k[substrate][base]
+  - Rate is independent of concentrations
+  correct_answer: Rate = k[substrate][base]
+  explanation: "E2 (Elimination Bimolecular) has a second-order rate law: Rate = k[substrate][base]. Both the substrate and base are involved in the rate-determining step, which is the only step since E2 is a concerted mechanism. The reaction occurs in one step where the base removes a β-hydrogen while the leaving group departs simultaneously. This contrasts with E1, which has a first-order rate law (Rate = k[substrate]) because only the substrate is involved in the slow step (carbocation formation)."
+  require_pass: true
+- type: mcq
+  sequence_order: 4
+  question: Which type of alkyl halide can undergo BOTH E1 and E2 mechanisms?
+  options:
+  - Primary alkyl halide
+  - Secondary alkyl halide
+  - Tertiary alkyl halide
+  - Methyl halide
+  correct_answer: Secondary alkyl halide
+  explanation: "Secondary alkyl halides can undergo both E1 and E2 mechanisms depending on reaction conditions. With a strong base, they undergo E2. With a weak base in polar protic solvent, they can undergo E1 (though less readily than tertiary halides). Primary alkyl halides undergo only E2 (they don't form stable carbocations for E1). Tertiary alkyl halides preferentially undergo E1 under mild conditions or E2 with strong bulky bases. Methyl halides cannot undergo elimination as they lack β-hydrogens."
+  require_pass: true

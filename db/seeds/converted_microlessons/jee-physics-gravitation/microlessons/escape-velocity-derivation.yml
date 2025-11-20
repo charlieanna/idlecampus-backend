@@ -1,0 +1,225 @@
+slug: escape-velocity-derivation
+title: "Escape Velocity and Orbital Mechanics"
+difficulty: advanced
+sequence_order: 7
+estimated_minutes: 18
+key_concepts:
+- escape-velocity
+- orbital-velocity
+- gravitational-potential-energy
+- binding-energy
+- satellite-motion
+prerequisites:
+- gravitational-potential-energy
+- orbital-velocity-satellites
+content_md: |
+  # Escape Velocity and Orbital Mechanics
+
+  ## Escape Velocity (vₑ)
+
+  **Definition:** Minimum velocity needed for an object to escape Earth's gravitational field permanently.
+
+  ### Derivation:
+  At surface, total energy = 0 (just escapes):
+  ```
+  KE + PE = 0
+  ½mv²ₑ - GMm/R = 0
+  vₑ = √(2GM/R) = √(2gR)
+  ```
+
+  ### For Earth:
+  ```
+  vₑ = √(2 × 10 × 6.4×10⁶) = 11.2 km/s
+
+  vₑ = √2 × vₒ (orbital velocity at surface)
+  ```
+
+  ## Orbital Velocity (vₒ)
+
+  **For circular orbit at height h:**
+  ```
+  Centripetal force = Gravitational force
+  mv²ₒ/(R+h) = GMm/(R+h)²
+
+  vₒ = √(GM/(R+h)) = √(gR²/(R+h))
+  ```
+
+  **At Earth's surface:**
+  ```
+  vₒ = √(gR) ≈ 7.9 km/s
+  ```
+
+  ## Key Relationships
+
+  ```
+  vₑ = √2 × vₒ (at same location)
+
+  vₒ decreases with height (vₒ ∝ 1/√(R+h))
+  vₑ decreases with height (vₑ ∝ 1/√(R+h))
+  ```
+
+  ## Satellite Energy
+
+  ### Kinetic Energy:
+  ```
+  KE = ½mv²ₒ = GMm/(2r)
+  ```
+
+  ### Potential Energy:
+  ```
+  PE = -GMm/r = -2KE
+  ```
+
+  ### Total Energy:
+  ```
+  E = KE + PE = -GMm/(2r) = -KE
+
+  Total energy is NEGATIVE (bound system)
+  ```
+
+  ### Binding Energy:
+  ```
+  BE = -E = GMm/(2r) = KE
+
+  Energy needed to remove satellite from orbit
+  ```
+
+  ## Different Scenarios
+
+  ### 1. Satellite Falls to Earth:
+  ```
+  If vₒ decreases, orbit decays
+  PE decreases (more negative), KE increases
+  Paradox: Satellite speeds up while losing energy!
+  ```
+
+  ### 2. Satellite Escapes:
+  ```
+  If given additional velocity: Δv = vₑ - vₒ = (√2 - 1)vₒ ≈ 0.414vₒ
+  ```
+
+  ### 3. Transfer Orbit (Hohmann):
+  ```
+  To change from orbit r₁ to r₂:
+  ΔE = GMm/2 × (1/r₁ - 1/r₂)
+  ```
+
+  ## Geostationary Satellites
+
+  ```
+  T = 24 hours = 86400 s
+  r = (GMT²/4π²)^(1/3) ≈ 42,000 km from Earth center
+  Height above surface ≈ 36,000 km
+  vₒ ≈ 3.1 km/s
+  ```
+
+  ## Escape Velocity from Different Bodies
+
+  | Body | Mass (kg) | Radius (m) | vₑ (km/s) |
+  |------|-----------|------------|-----------|
+  | Earth | 6×10²⁴ | 6.4×10⁶ | 11.2 |
+  | Moon | 7.4×10²² | 1.74×10⁶ | 2.4 |
+  | Sun | 2×10³⁰ | 7×10⁸ | 618 |
+  | Jupiter | 1.9×10²⁷ | 7.1×10⁷ | 60 |
+
+  ## Important Results
+
+  ### 1. Atmosphere Retention:
+  ```
+  If vₑ > 6 × v_rms (gas molecules), planet retains atmosphere
+  vₑ_Moon ≈ 2.4 km/s (too low, no atmosphere)
+  ```
+
+  ### 2. Black Hole:
+  ```
+  When vₑ = c (speed of light)
+  R_schwarzschild = 2GM/c²
+  ```
+
+  ### 3. Multiple Bodies:
+  ```
+  vₑ = √(2G(M₁/r₁ + M₂/r₂ + ...))
+  ```
+
+  ## Numerical Examples
+
+  **Example 1:** Find escape velocity from a planet with mass 4M_E and radius 2R_E.
+
+  **Solution:**
+  ```
+  vₑ ∝ √(M/R)
+  vₑ_planet/vₑ_Earth = √((4M_E)/(2R_E) × R_E/M_E)
+  = √(4/2) = √2
+
+  vₑ_planet = √2 × 11.2 ≈ 15.8 km/s
+  ```
+
+  **Example 2:** Satellite in orbit at height R above Earth. Find orbital and escape velocities.
+
+  **Solution:**
+  ```
+  r = R + R = 2R
+
+  vₒ = √(gR²/2R) = √(gR/2) = 7.9/√2 ≈ 5.6 km/s
+  vₑ = √2 × vₒ ≈ 7.9 km/s
+
+  Note: vₑ at height R equals vₒ at surface!
+  ```
+
+  **Example 3:** Energy needed to launch 1000 kg satellite to orbit at height R.
+
+  **Solution:**
+  ```
+  At surface: E₁ = -GMm/R
+  At orbit (r = 2R): E₂ = -GMm/(4R)
+
+  Energy needed = E₂ - E₁ = -GMm/4R + GMm/R
+  = 3GMm/(4R) = 3mgR/4
+
+  = 3 × 1000 × 10 × 6.4×10⁶/4
+  = 4.8×10¹⁰ J = 48 GJ
+  ```
+
+  ## JEE Key Points
+
+  1. **vₑ = √(2gR)** at surface, independent of mass
+  2. **E_total < 0** for bound orbit
+  3. **KE = -E**, **PE = 2E** for circular orbit
+  4. **To escape from orbit**: Need additional (√2 - 1)vₒ
+  5. **Higher orbit = Lower speed** but more energy
+  6. **Binding energy = |Total energy|**
+
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: "If Earth's mass becomes 4 times and radius becomes 2 times, escape velocity becomes:"
+  options:
+  - "Same"
+  - "√2 times"
+  - "2 times"
+  - "4 times"
+  correct_answer: "√2 times"
+  explanation: "vₑ = √(2GM/R) ∝ √(M/R). New vₑ/Old vₑ = √((4M)/(2R) × R/M) = √(4/2) = √2. The escape velocity increases by √2 times (about 41%). This shows vₑ depends on ratio M/R, not individual values. A denser planet (more mass in same radius) has higher escape velocity. This is why neutron stars have enormous escape velocities despite small sizes - they're incredibly dense."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: "Ratio of escape velocity to orbital velocity for a satellite close to Earth's surface is:"
+  options:
+  - "1:1"
+  - "√2:1"
+  - "2:1"
+  - "1:√2"
+  correct_answer: "√2:1"
+  explanation: "vₑ = √(2gR) and vₒ = √(gR). Ratio vₑ/vₒ = √(2gR)/√(gR) = √2. So vₑ:vₒ = √2:1. This means to escape Earth from low orbit, you need only 41% more velocity (factor of √2 - 1 ≈ 0.414). For Earth: vₒ ≈ 7.9 km/s, vₑ ≈ 11.2 km/s, difference is about 3.3 km/s. This is why rockets need staged propulsion - enormous energy required even for the last bit of velocity increase."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: "A satellite is in circular orbit around Earth. If its speed is increased by √2 times, it will:"
+  options:
+  - "Move in larger circular orbit"
+  - "Move in elliptical orbit"
+  - "Escape Earth's gravity"
+  - "Fall towards Earth"
+  correct_answer: "Escape Earth's gravity"
+  explanation: "New velocity = √2 × vₒ = vₑ (escape velocity). When satellite's velocity equals escape velocity, it has just enough energy to escape Earth's gravitational pull. Total energy becomes zero: KE + PE = ½m(√2vₒ)² - GMm/r = mv²ₒ - GMm/r = GMm/r - GMm/r = 0. With E = 0, satellite follows parabolic path to infinity. If v < vₑ, satellite remains bound (elliptical orbit). If v > vₑ, it escapes with excess kinetic energy (hyperbolic path)."
+  require_pass: true

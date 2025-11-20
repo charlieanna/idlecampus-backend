@@ -1,0 +1,91 @@
+slug: bodcod-practice
+title: bod_cod — Practice
+difficulty: medium
+sequence_order: 13
+estimated_minutes: 2
+key_concepts:
+- bod_cod
+prerequisites: []
+content_md: '# bod_cod — Practice 🚀
+
+
+  TRUE. COD measures total organic and inorganic matter (chemical oxidation), while
+  BOD measures only biodegradable organic matter (biological oxidation). Therefore,
+  COD ≥ BOD always.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What is the relationship between COD and BOD for the same water sample?
+  options:
+  - COD < BOD always
+  - COD ≥ BOD always
+  - COD = BOD always
+  - No relationship exists
+  require_pass: true
+  correct_answer: COD ≥ BOD always
+  explanation: 'COD (Chemical Oxygen Demand) is **always greater than or equal to**
+    BOD (Biochemical Oxygen Demand) for the same water sample: COD ≥ BOD. **Reasons**:
+    **BOD** measures only biodegradable organic matter that can be oxidized by microorganisms
+    (biological oxidation over 5 days at 20°C). **COD** measures total organic and
+    inorganic matter that can be chemically oxidized by strong oxidizing agents (K₂Cr₂O₇
+    in acidic medium). COD includes: All biodegradable organic matter (measured by
+    BOD), Non-biodegradable organic matter (e.g., lignin, cellulose, plastics), Some
+    inorganic reducing agents (Fe²⁺, S²⁻, Cl⁻). Therefore, COD ≥ BOD. The **COD/BOD
+    ratio** indicates biodegradability: Ratio < 2: Highly biodegradable (domestic
+    sewage), Ratio 2-5: Moderately biodegradable, Ratio > 5: Low biodegradability
+    (industrial waste with toxic/refractory compounds).'
+- type: mcq
+  sequence_order: 2
+  question: Which test provides faster results for measuring water pollution?
+  options:
+  - BOD test (5 days)
+  - COD test (2-3 hours)
+  - Both take equal time
+  - Neither can measure pollution
+  require_pass: true
+  correct_answer: COD test (2-3 hours)
+  explanation: '**COD test** provides much faster results (2-3 hours) compared to
+    **BOD test** (5 days). This is a major advantage for rapid water quality assessment.
+    **BOD test**: Takes 5 days at 20°C, relies on slow microbial decomposition, labor-intensive
+    (requires careful DO measurements), susceptible to bacterial variability. **COD
+    test**: Takes only 2-3 hours, uses strong chemical oxidants (K₂Cr₂O₇ + H₂SO₄
+    at high temperature), more reproducible and reliable, measures both biodegradable
+    and non-biodegradable matter. **Applications**: COD is preferred for: Industrial
+    wastewater monitoring (faster compliance checking), Toxic waste (where microorganisms
+    may not survive), Process control in treatment plants. BOD is preferred for:
+    Assessing biodegradable pollution, Determining treatment efficiency, Natural water
+    bodies monitoring. Often both tests are performed: COD for quick screening, BOD
+    for detailed assessment.'
+- type: mcq
+  sequence_order: 3
+  question: In the COD test, which oxidizing agent is commonly used?
+  options:
+  - KMnO₄ in acidic medium
+  - K₂Cr₂O₇ in acidic medium
+  - H₂O₂ in basic medium
+  - Cl₂ gas
+  require_pass: true
+  correct_answer: K₂Cr₂O₇ in acidic medium
+  explanation: '**Potassium dichromate (K₂Cr₂O₇) in acidic medium** is the standard
+    oxidizing agent used in COD test. **Test procedure**: (1) Add excess K₂Cr₂O₇
+    and concentrated H₂SO₄ to water sample, (2) Add Ag₂SO₄ (catalyst) and HgSO₄
+    (to complex chloride ions that interfere), (3) Reflux at 150°C for 2 hours, (4)
+    Cool and titrate excess dichromate with standard ferrous ammonium sulfate (FAS)
+    using ferroin indicator, (5) Calculate COD from amount of dichromate consumed.
+    **Reaction**: Organic matter + Cr₂O₇²⁻ + H⁺ → Cr³⁺ + CO₂ + H₂O (orange Cr₂O₇²⁻
+    reduced to green Cr³⁺). **Why K₂Cr₂O₇?**: Strong oxidizing agent (oxidizes 95-100%
+    of organic matter), stable and easy to standardize, color change (orange → green)
+    aids visual detection. **Alternative**: KMnO₄ is used in older methods but less
+    preferred due to instability and lower oxidizing power.'

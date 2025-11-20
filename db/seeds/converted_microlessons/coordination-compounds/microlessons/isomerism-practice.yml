@@ -1,0 +1,92 @@
+slug: isomerism-practice
+title: isomerism — Practice
+difficulty: medium
+sequence_order: 9
+estimated_minutes: 2
+key_concepts:
+- isomerism
+prerequisites: []
+content_md: '# isomerism — Practice 🚀
+
+
+  [Co(en)₃]³⁺ and cis-[Co(en)₂Cl₂]⁺ are chiral (no plane of symmetry). Trans isomer
+  and square planar complex have symmetry, hence achiral.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 2
+  question: Which type of isomerism is shown by [Co(NH₃)₅Cl]SO₄ and [Co(NH₃)₅SO₄]Cl?
+  options:
+  - Geometrical isomerism
+  - Optical isomerism
+  - Ionization isomerism
+  - Linkage isomerism
+  require_pass: true
+  correct_answer: Ionization isomerism
+  explanation: '**Ionization isomerism** occurs when ligands can exchange positions
+    between coordination sphere and counter ion: [Co(NH₃)₅Cl]SO₄ and [Co(NH₃)₅SO₄]Cl
+    are ionization isomers. In the first complex: Cl⁻ is in coordination sphere,
+    SO₄²⁻ is counter ion. In the second: SO₄²⁻ is in coordination sphere, Cl⁻ is
+    counter ion. These give **different ions in solution**: [Co(NH₃)₅Cl]SO₄ → [Co(NH₃)₅Cl]²⁺
+    + SO₄²⁻ (gives BaSO₄ precipitate with Ba²⁺). [Co(NH₃)₅SO₄]Cl → [Co(NH₃)₅SO₄]⁺
+    + Cl⁻ (gives AgCl precipitate with Ag⁺). Other types: **Geometrical** = cis/trans
+    (e.g., [Pt(NH₃)₂Cl₂]). **Optical** = non-superimposable mirror images (chirality).
+    **Linkage** = ambidentate ligands bonding through different atoms (e.g., NO₂⁻/ONO⁻).
+    **Coordination** = ligand exchange between different metal centers. **Solvate**
+    = coordinated vs free solvent molecules.'
+- type: mcq
+  sequence_order: 3
+  question: Which complex can show geometrical isomerism?
+  options:
+  - '[Co(NH₃)₆]³⁺'
+  - '[Pt(NH₃)₂Cl₂] (square planar)'
+  - '[Ni(CO)₄] (tetrahedral)'
+  - '[Ag(NH₃)₂]⁺ (linear)'
+  require_pass: true
+  correct_answer: '[Pt(NH₃)₂Cl₂] (square planar)'
+  explanation: '**Geometrical isomerism** (cis-trans) requires: (1) Restricted rotation
+    (rigid structure), (2) Different groups that can occupy different relative positions.
+    **[Pt(NH₃)₂Cl₂]** shows cis-trans isomerism: **Cis-isomer**: Two NH₃ (or two
+    Cl) adjacent (90° angle). Used as anticancer drug (cisplatin). **Trans-isomer**:
+    Two NH₃ (or two Cl) opposite (180° angle). Not effective as drug. Why others
+    don''t show: **[Co(NH₃)₆]³⁺**: All ligands identical - no isomerism possible.
+    **[Ni(CO)₄]**: Tetrahedral - high symmetry, all positions equivalent. **[Ag(NH₃)₂]⁺**:
+    Linear - only one arrangement possible. Other examples showing geometrical isomerism:
+    Octahedral [MA₄B₂]: cis-trans. Octahedral [MA₃B₃]: fac-mer (facial-meridional).
+    Square planar [MA₂B₂]: cis-trans. Square planar [MABCD]: 3 geometrical isomers.
+    Note: Tetrahedral complexes generally don''t show geometrical isomerism due to
+    high symmetry.'
+- type: mcq
+  sequence_order: 4
+  question: Which statement about optical isomerism in coordination compounds is
+    correct?
+  options:
+  - All octahedral complexes show optical isomerism
+  - Complexes with a plane of symmetry cannot show optical isomerism
+  - Square planar complexes always show optical isomerism
+  - Tetrahedral complexes never show optical isomerism
+  require_pass: true
+  correct_answer: Complexes with a plane of symmetry cannot show optical isomerism
+  explanation: '**Optical isomerism** (chirality) requires absence of plane of symmetry:
+    A chiral molecule and its mirror image are non-superimposable → they are **optical
+    isomers (enantiomers)**. They rotate plane-polarized light in opposite directions
+    (d and l forms). **Rule**: If a molecule has a **plane of symmetry**, it is **achiral**
+    (not optically active). Examples showing optical isomerism: **[Co(en)₃]³⁺** -
+    three chelating ligands, no plane of symmetry, **optically active**. **cis-[Co(en)₂Cl₂]⁺**
+    - no plane of symmetry, optically active. Examples NOT showing: **trans-[Co(en)₂Cl₂]⁺**
+    - has plane of symmetry, achiral. **[Co(NH₃)₆]³⁺** - highly symmetric, achiral.
+    **[Pt(NH₃)₂Cl₂]** (square planar) - both cis and trans have planes of symmetry,
+    achiral. Why optical isomerism matters: (1) Enantiomers have identical physical
+    properties (except optical rotation), (2) Different biological activity (drugs,
+    enzymes), (3) Separated by polarimetry or chiral chromatography.'

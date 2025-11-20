@@ -1,0 +1,234 @@
+slug: removing-containers
+title: Removing Containers
+difficulty: easy
+sequence_order: 8
+estimated_minutes: 6
+key_concepts:
+  - Docker rm command
+  - Container cleanup
+  - Force removal
+  - Removing multiple containers
+  - Disk space management
+prerequisites:
+  - stopping-containers
+content_md: |
+  # Removing Containers
+
+  ## Introduction
+
+  Stopped containers still consume disk space and clutter your system. Docker provides commands to remove containers and free up resources.
+
+  ## The docker rm Command
+
+  **Basic syntax:**
+  ```bash
+  docker rm CONTAINER_ID
+  # or
+  docker rm CONTAINER_NAME
+  ```
+
+  **Example:**
+  ```bash
+  # Remove a stopped container by ID
+  docker rm abc123def456
+
+  # Remove by name
+  docker rm my-old-container
+  ```
+
+  **Important:** You cannot remove a running container by default.
+
+  ## Removing Running Containers
+
+  **Option 1: Stop first, then remove**
+  ```bash
+  docker stop my-container
+  docker rm my-container
+  ```
+
+  **Option 2: Force remove (stops and removes)**
+  ```bash
+  docker rm --force my-container
+  # or
+  docker rm -f my-container
+  ```
+
+  ## Removing Multiple Containers
+
+  **Remove several containers:**
+  ```bash
+  docker rm container1 container2 container3
+  ```
+
+  **Remove all stopped containers:**
+  ```bash
+  docker rm $(docker ps -a -q --filter "status=exited")
+  ```
+
+  **Alternative using container prune:**
+  ```bash
+  docker container prune
+  ```
+  This prompts for confirmation before removing all stopped containers.
+
+  **Skip confirmation:**
+  ```bash
+  docker container prune --force
+  # or
+  docker container prune -f
+  ```
+
+  ## Removing Containers and Volumes
+
+  **Remove container and its anonymous volumes:**
+  ```bash
+  docker rm -v my-container
+  ```
+
+  This prevents orphaned volumes that waste disk space.
+
+  ## One-Line Run and Remove
+
+  **Automatically remove container after it exits:**
+  ```bash
+  docker run --rm ubuntu echo "Hello World"
+  ```
+
+  The `--rm` flag is useful for:
+  - One-time commands
+  - Testing
+  - CI/CD pipelines
+  - Scripts that don't need persistent containers
+
+  ## Checking What Will Be Removed
+
+  **List all stopped containers:**
+  ```bash
+  docker ps -a --filter "status=exited"
+  ```
+
+  **See how much space they use:**
+  ```bash
+  docker ps -a --size
+  ```
+
+  ## Complete Cleanup
+
+  **Remove all containers (running and stopped):**
+  ```bash
+  docker rm -f $(docker ps -a -q)
+  ```
+
+  **WARNING:** This removes ALL containers! Use with caution.
+
+  ## System-Wide Cleanup
+
+  **Remove all stopped containers, unused networks, dangling images:**
+  ```bash
+  docker system prune
+  ```
+
+  **Remove everything including unused images:**
+  ```bash
+  docker system prune -a
+  ```
+
+  **Remove everything including volumes:**
+  ```bash
+  docker system prune -a --volumes
+  ```
+
+  ## Common Errors
+
+  **"cannot remove running container":**
+  ```bash
+  # Error
+  $ docker rm my-app
+  Error: cannot remove running container
+
+  # Solution 1: Stop first
+  $ docker stop my-app
+  $ docker rm my-app
+
+  # Solution 2: Force remove
+  $ docker rm -f my-app
+  ```
+
+  ## Best Practices
+
+  1. **Use --rm for temporary containers:**
+     ```bash
+     docker run --rm -it ubuntu bash
+     ```
+
+  2. **Regular cleanup:**
+     ```bash
+     # Weekly cleanup of stopped containers
+     docker container prune
+     ```
+
+  3. **Remove volumes with containers:**
+     ```bash
+     docker rm -v container-name
+     ```
+
+  4. **Check before mass deletion:**
+     ```bash
+     docker ps -a  # Review what will be deleted
+     docker rm -f $(docker ps -a -q)  # Then delete
+     ```
+
+  5. **Automate cleanup in scripts:**
+     ```bash
+     #!/bin/bash
+     # Stop and remove old containers
+     docker stop my-app 2>/dev/null || true
+     docker rm my-app 2>/dev/null || true
+     # Start fresh container
+     docker run --name my-app my-image
+     ```
+
+  ## Disk Space Management
+
+  **Check Docker disk usage:**
+  ```bash
+  docker system df
+  ```
+
+  **Detailed breakdown:**
+  ```bash
+  docker system df -v
+  ```
+
+  This shows space used by:
+  - Images
+  - Containers
+  - Volumes
+  - Build cache
+
+exercises:
+  - type: terminal
+    problem_statement: "Remove a stopped container named 'old-app' using docker rm."
+    expected_output: "old-app"
+    validation_command: "docker ps -a --filter 'name=old-app' --format '{{.Names}}' | wc -l | grep -q '^0$' && echo 'old-app'"
+    hints:
+      - "Use docker rm followed by the container name"
+      - "Make sure the container is stopped first"
+    sequence_order: 1
+
+  - type: mcq
+    question: "Which command removes a running container without stopping it first?"
+    options:
+      - "docker rm container-name"
+      - "docker rm -f container-name"
+      - "docker remove container-name"
+      - "docker delete container-name"
+    correct_answer: "docker rm -f container-name"
+    explanation: "The -f (force) flag stops and removes the container in one command."
+    sequence_order: 2
+
+  - type: short_answer
+    question: "What flag should you add to 'docker run' to automatically remove the container when it exits?"
+    expected_answer: "--rm"
+    explanation: "The --rm flag automatically removes the container when it stops running."
+    sequence_order: 3

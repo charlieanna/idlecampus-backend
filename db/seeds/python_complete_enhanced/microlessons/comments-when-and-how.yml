@@ -1,0 +1,178 @@
+slug: comments-when-and-how
+title: 'Comments: When and How'
+sequence_order: 1
+estimated_minutes: 2
+difficulty: easy
+key_concepts: []
+content_md: "# Comments: When and How \U0001F680\n\n# Comments: When and How\n\n \
+  \   \"Don't comment bad code—rewrite it.\" — Brian W. Kernighan & P. J. Plaugher\n\
+  \n    ## The Proper Use of Comments\n\n    **The best comment is the one you found\
+  \ a way not to write.**\n\n    Comments are, at best, a necessary evil. Every comment\
+  \ represents a failure to express yourself in code.\n\n    ### Why Comments Are\
+  \ Often Bad\n\n    1. **They lie** - Code changes, comments often don't\n    2.\
+  \ **They're maintained** - Extra work that's often neglected\n    3. **They clutter**\
+  \ - Make code harder to read\n    4. **They mislead** - Outdated comments are worse\
+  \ than no comments\n\n    ## Good Comments\n\n    ### 1. Legal Comments\n    ```python\n\
+  \    # Copyright (C) 2024 Company Name\n    # Licensed under the Apache License,\
+  \ Version 2.0\n    ```\n\n    ### 2. Informative Comments\n    ```python\n    #\
+  \ Returns an instance of the Responder being tested\n    def responder_instance():\n\
+  \        return Responder()\n\n    # format matched: kk:mm:ss EEE, MMM dd, yyyy\n\
+  \    pattern = r'\\\\d{2}:\\\\d{2}:\\\\d{2} \\\\w{3}, \\\\w{3} \\\\d{2}, \\\\d{4}'\n\
+  \    ```\n\n    **Better:** Use function names instead:\n    ```python\n    def\
+  \ responder_being_tested():\n        return Responder()\n\n    TIMESTAMP_FORMAT_PATTERN\
+  \ = r'\\\\d{2}:\\\\d{2}:\\\\d{2} \\\\w{3}, \\\\w{3} \\\\d{2}, \\\\d{4}'\n    ```\n\
+  \n    ### 3. Explanation of Intent\n    ```python\n    def compare_to(other):\n\
+  \        if self < other:\n            return -1\n        elif self > other:\n \
+  \           return 1\n        else:\n            # We want to force objects of this\
+  \ type to the bottom of the list\n            return 0\n    ```\n\n    ### 4. Clarification\n\
+  \    ```python\n    assertTrue(a.compareTo(a) == 0)    # a == a\n    assertTrue(a.compareTo(b)\
+  \ != 0)    # a != b\n    assertTrue(ab.compareTo(ab) == 0)  # ab == ab\n    assertTrue(a.compareTo(b)\
+  \ == -1)   # a < b\n    ```\n\n    ### 5. Warning of Consequences\n    ```python\n\
+  \    # Don't run unless you have 8+ hours to spare\n    def test_with_really_big_file():\n\
+  \        write_lines_to_file(10000000)\n        response = serve_file()\n      \
+  \  # ...\n\n    # SimpleDateFormat is not thread safe\n    # so we need to create\
+  \ a new instance each time\n    date_format = SimpleDateFormat(\"yyyy-MM-dd\")\n\
+  \    ```\n\n    ### 6. TODO Comments\n    ```python\n    # TODO: These are not needed\n\
+  \    # We expect this to go away when we do the checkout model\n    def make_version():\n\
+  \        return None\n    ```\n\n    **Important:** Scan and eliminate TODOs regularly!\n\
+  \n    ### 7. Amplification\n    ```python\n    # the trim is really important. It\
+  \ removes the starting spaces\n    # that could cause the item to be recognized\
+  \ as another list\n    list_item_content = match.group(3).strip()\n    ```\n\n \
+  \   ### 8. Public API Documentation\n    ```python\n    def calculate_compound_interest(principal,\
+  \ rate, time):\n        \"\"\"\n        Calculate compound interest.\n\n       \
+  \ Args:\n            principal (float): Initial amount\n            rate (float):\
+  \ Interest rate (as decimal, e.g., 0.05 for 5%)\n            time (int): Time period\
+  \ in years\n\n        Returns:\n            float: Final amount after compound interest\n\
+  \n        Example:\n            >>> calculate_compound_interest(1000, 0.05, 2)\n\
+  \            1102.50\n        \"\"\"\n        return principal * (1 + rate) ** time\n\
+  \    ```\n\n    ## Bad Comments\n\n    ### 1. Mumbling\n    ```python\n    def load_properties():\n\
+  \        try:\n            properties_path = \"properties.xml\"\n            # Load\
+  \ properties here\n            load(properties_path)\n        except Exception:\n\
+  \            # No properties files means all defaults are loaded\n            pass\n\
+  \    ```\n\n    **Problems:**\n    - Who loads the defaults?\n    - When are they\
+  \ loaded?\n    - Were they already loaded before the exception?\n\n    ### 2. Redundant\
+  \ Comments\n    ```python\n    # Utility method that returns when this.closed is\
+  \ true.\n    # Throws an exception if the timeout is reached.\n    def wait_for_close(timeout_millis):\n\
+  \        if not self.closed:\n            wait(timeout_millis)\n            if not\
+  \ self.closed:\n                raise Exception(\"MockResponseSender could not be\
+  \ closed\")\n    ```\n\n    The comment provides no more information than the code\
+  \ itself!\n\n    ### 3. Misleading Comments\n    ```python\n    # Returns days between\
+  \ two dates (inclusive)\n    def days_between(start, end):\n        # Actually doesn't\
+  \ include the end date!\n        return (end - start).days\n    ```\n\n    ### 4.\
+  \ Mandated Comments\n    ```python\n    # ❌ Don't do this for every function\n \
+  \   def __init__(self, name):\n        \"\"\"\n        Constructor for Employee.\n\
+  \n        Args:\n            name: The name\n        \"\"\"\n        self.name =\
+  \ name\n    ```\n\n    ### 5. Journal Comments\n    ```python\n    # Changes (from\
+  \ 11-Oct-2001)\n    # ---------------------------\n    # 11-Oct-2001 : Re-organized\
+  \ the class (DG);\n    # 05-Nov-2001 : Added getDescription() method (DG);\n   \
+  \ # 25-Jun-2002 : Removed unnecessary import (DG);\n    ```\n\n    **Use version\
+  \ control instead!**\n\n    ### 6. Noise Comments\n    ```python\n    # Default\
+  \ constructor\n    def __init__(self):\n        pass\n\n    # Returns the day\n\
+  \    def get_day(self):\n        return self.day\n\n    # Sets the day\n    def\
+  \ set_day(self, day):\n        self.day = day\n    ```\n\n    These add zero value!\n\
+  \n    ### 7. Position Markers\n    ```python\n    # //////////////// Actions //////////////////\n\
+  \    def action1():\n        pass\n\n    def action2():\n        pass\n    ```\n\
+  \n    Use sparingly, if at all.\n\n    ### 8. Closing Brace Comments\n    ```python\n\
+  \    def process_data():\n        if condition:\n            while True:\n     \
+  \           try:\n                    # lots of code\n                except Exception:\n\
+  \                    pass\n                # end try\n            # end while\n\
+  \        # end if\n    # end function\n    ```\n\n    **Solution:** Make functions\
+  \ shorter!\n\n    ### 9. Commented-Out Code\n    ```python\n    # inputRecord =\
+  \ self.input_stream.read()\n    response = Response()\n    # response.set_status(200)\n\
+  \    response.set_body(formatter.format(body))\n    # old_response = response\n\
+  \    ```\n\n    **NEVER DO THIS!**\n    - Others won't delete it (afraid it's important)\n\
+  \    - It piles up over time\n    - Use version control to preserve history\n\n\
+  \    ### 10. HTML in Comments\n    ```python\n    \"\"\"\n    Load properties from\
+  \ a file.\n    <p>\n    This method reads a properties file and loads all\n    key-value\
+  \ pairs into memory.\n    <ul>\n    <li>Supports .properties files</li>\n    <li>Supports\
+  \ .xml files</li>\n    </ul>\n    </p>\n    \"\"\"\n    ```\n\n    HTML is unreadable\
+  \ in source code!\n\n    ### 11. Too Much Information\n    ```python\n    # RFC\
+  \ 2045 - Multipurpose Internet Mail Extensions (MIME)\n    # Part One: Format of\
+  \ Internet Message Bodies\n    # Section 6.8. Base64 Content-Transfer-Encoding\n\
+  \    # The encoding process represents 24-bit groups of input bits\n    # as output\
+  \ strings of 4 encoded characters. Proceeding from\n    # left to right... (continues\
+  \ for 30 more lines)\n    def encode_base64(data):\n        pass\n    ```\n\n  \
+  \  Link to RFC instead!\n\n    ## Comment Best Practices\n\n    ### When to Comment\n\
+  \n    **DO comment when:**\n    - Explaining complex algorithms\n    - Documenting\
+  \ public APIs\n    - Warning about consequences\n    - Legal requirements\n    -\
+  \ TODO notes (temporarily)\n\n    **DON'T comment when:**\n    - Code is self-explanatory\n\
+  \    - You can use better names instead\n    - Function/variable name would suffice\n\
+  \    - It restates what code does\n\n    ### Before Writing a Comment\n\n    Ask\
+  \ yourself:\n    1. Can I express this in code instead?\n    2. Can I use a better\
+  \ function/variable name?\n    3. Can I extract a method with a descriptive name?\n\
+  \    4. Is this comment worth maintaining?\n\n    ### Example: Comment to Code Transformation\n\
+  \n    #### ❌ With Comments\n    ```python\n    def get_employees():\n        # Check\
+  \ to see if the employee is eligible for full benefits\n        if employee.flags\
+  \ & HOURLY_FLAG and employee.age > 65:\n            # Complex logic here\n     \
+  \       pass\n    ```\n\n    #### ✅ Without Comments\n    ```python\n    def get_employees():\n\
+  \        if is_eligible_for_full_benefits(employee):\n            # Complex logic\
+  \ here\n            pass\n\n    def is_eligible_for_full_benefits(employee):\n \
+  \       return employee.flags & HOURLY_FLAG and employee.age > 65\n    ```\n\n \
+  \   ## Documentation vs Comments\n\n    ### Documentation (Good)\n    - Public API\
+  \ reference\n    - Architecture decisions\n    - Setup instructions\n    - Usage\
+  \ examples\n    - Design patterns used\n\n    ### Comments in Code (Use Sparingly)\n\
+  \    - Why, not what\n    - Non-obvious consequences\n    - Temporary notes (TODO)\n\
+  \n    ## Key Takeaways\n\n    1. **Comments are a failure** - Represent inability\
+  \ to express in code\n    2. **Code changes, comments rot** - Outdated comments\
+  \ mislead\n    3. **Explain yourself in code** - Better names > comments\n    4.\
+  \ **Good comments are rare** - Legal, warning, TODO, public API docs\n    5. **Bad\
+  \ comments are common** - Mumbling, noise, redundant, misleading\n    6. **Delete\
+  \ commented-out code** - Version control preserves history\n    7. **Before commenting,\
+  \ try:**\n       - Better names\n       - Extract method\n       - Simplify code\n\
+  \    8. **Document the \"why\", not the \"what\"**\n\n    Remember: **The best comment\
+  \ is a well-named function or variable!**"
+exercises:
+- type: mcq
+  slug: comments-when-and-how-mcq-1
+  sequence_order: 1
+  question: When should you write code comments?
+  options:
+  - When code cannot be made self-explanatory, to explain WHY not WHAT
+  - On every single line of code for thorough documentation
+  - Never, code should always be self-documenting
+  - Only at the end of functions to summarize
+  correct_answer_index: 0
+  explanation: 'Comments should explain the reasoning behind non-obvious decisions, not repeat what the code does. Good code is self-documenting for the "what," comments explain the "why." Before commenting, try: better names, extracting methods, or simplifying code. Use comments sparingly for explanations that cannot be expressed in code, warnings, or public API documentation.'
+- type: mcq
+  slug: comments-when-and-how-mcq-2
+  sequence_order: 2
+  question: What is wrong with redundant comments?
+  options:
+  - They provide no more information than the code itself and add clutter
+  - They make the code run slower
+  - They are not allowed in Python
+  - They prevent the code from compiling
+  correct_answer_index: 0
+  explanation: 'Redundant comments repeat what the code already clearly states, adding noise without value. For example: "# Returns the day" above "def get_day(): return self.day" is completely redundant. The function name and code already make this obvious. Such comments must be maintained but provide zero benefit.'
+- type: mcq
+  slug: comments-when-and-how-mcq-3
+  sequence_order: 3
+  question: Why should you never leave commented-out code in your codebase?
+  options:
+  - Others won't delete it (thinking it's important), it accumulates over time, and version control preserves history anyway
+  - It makes files too large
+  - It causes syntax errors
+  - Compilers cannot process it
+  correct_answer_index: 0
+  explanation: Commented-out code is a major anti-pattern. Other developers won't delete it because they assume it might be important, so it accumulates. Modern version control (Git) preserves all history, so there's no reason to keep old code in comments. If you need to reference old code, use version control history.
+- type: mcq
+  slug: comments-when-and-how-mcq-4
+  sequence_order: 4
+  question: What is a better alternative to writing a comment that explains complex code?
+  options:
+  - Extract the complex code into a well-named function that explains itself
+  - Write a longer, more detailed comment
+  - Add multiple single-line comments throughout
+  - Create a separate documentation file
+  correct_answer_index: 0
+  explanation: 'Instead of commenting complex code, extract it into a function with a descriptive name. For example, instead of "# Check if employee is eligible for full benefits" with complex logic, create a function "is_eligible_for_full_benefits(employee)". The function name explains the intent better than a comment, and the code becomes self-documenting.'
+objectives:
+- Understand that comments often represent failure to express intent in code
+- Recognize good comments (legal, warnings, TODOs, public API docs)
+- Avoid bad comments (noise, redundant, misleading, commented-out code)
+- Prefer expressing intent through better naming and code structure
+- Document the "why" not the "what" when comments are necessary
+- Treat well-named functions and variables as the best form of documentation
+next_recommended:
+- control
+- data-structures

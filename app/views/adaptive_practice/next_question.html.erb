@@ -1,0 +1,291 @@
+<div class="container py-4">
+  <div class="row">
+    <div class="col-lg-8 mx-auto">
+      <!-- Header -->
+      <div class="card border-0 shadow-sm mb-4">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h3 class="mb-0">
+              <i class="fas fa-brain"></i> Adaptive Practice
+            </h3>
+            <% if @using_fallback %>
+              <span class="badge badge-warning" title="Using heuristic selection (Flask service unavailable)">
+                <i class="fas fa-exclamation-triangle"></i> Fallback Mode
+              </span>
+            <% end %>
+          </div>
+          
+          <!-- Progress -->
+          <% adaptive_session = session[:adaptive_session] || {} %>
+          <div class="progress mb-2" style="height: 20px;">
+            <div class="progress-bar" role="progressbar" 
+                 style="width: <%= (adaptive_session[:questions_answered] || 0) * 10 %>%"
+                 aria-valuenow="<%= adaptive_session[:questions_answered] || 0 %>" 
+                 aria-valuemin="0" 
+                 aria-valuemax="10">
+              <%= adaptive_session[:questions_answered] || 0 %> / 10 questions
+            </div>
+          </div>
+          
+          <div class="d-flex justify-content-between text-muted small">
+            <span>
+              Accuracy: <%= adaptive_session[:questions_answered].to_i > 0 ? ((adaptive_session[:correct_count].to_f / adaptive_session[:questions_answered]) * 100).round(1) : 0 %>%
+            </span>
+            <span>
+              Difficulty: <%= @question.difficulty.round(2) %> 
+              (Match: <%= (@difficulty_match * 100).round(0) %>%)
+            </span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Question Card -->
+      <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+          <h5 class="mb-0">
+            <span class="badge badge-light text-primary mr-2">
+              Q<%= (adaptive_session[:questions_answered] || 0) + 1 %>
+            </span>
+            <%= @question.question_type.titleize %>
+            <% if @question.topic %>
+              <span class="badge badge-info ml-2"><%= @question.topic.titleize %></span>
+            <% end %>
+          </h5>
+        </div>
+        
+        <div class="card-body">
+          <!-- Question Text -->
+          <p class="lead mb-4"><%= @question.question_text %></p>
+          
+          <!-- Answer Input (varies by type) -->
+          <div id="answer-area">
+            <% if @question.question_type == 'mcq' %>
+              <% @question.shuffled_options.each_with_index do |option, index| %>
+                <div class="form-check mb-2">
+                  <input class="form-check-input" type="radio" name="answer" 
+                         id="option_<%= index %>" value="<%= option['text'] %>">
+                  <label class="form-check-label" for="option_<%= index %>">
+                    <%= option['text'] %>
+                  </label>
+                </div>
+              <% end %>
+              
+            <% elsif @question.question_type == 'command' %>
+              <label for="command-input" class="form-label">Enter the command:</label>
+              <input type="text" class="form-control font-monospace" 
+                     id="command-input" name="answer" 
+                     placeholder="kubectl ..." autofocus>
+              
+            <% elsif @question.question_type == 'true_false' %>
+              <div class="btn-group btn-group-lg w-100" role="group">
+                <button type="button" class="btn btn-outline-success" onclick="submitTrueFalse('true')">
+                  <i class="fas fa-check"></i> True
+                </button>
+                <button type="button" class="btn btn-outline-danger" onclick="submitTrueFalse('false')">
+                  <i class="fas fa-times"></i> False
+                </button>
+              </div>
+              
+            <% elsif @question.question_type == 'fill_blank' %>
+              <label for="blank-input" class="form-label">Fill in the blank:</label>
+              <input type="text" class="form-control" 
+                     id="blank-input" name="answer" 
+                     placeholder="Your answer..." autofocus>
+            <% end %>
+          </div>
+          
+          <!-- Submit Button -->
+          <div class="mt-4" id="submit-area">
+            <button type="button" class="btn btn-primary btn-lg" onclick="submitAnswer()">
+              <i class="fas fa-check"></i> Submit Answer
+            </button>
+            <button type="button" class="btn btn-outline-secondary btn-lg ml-2" onclick="skipQuestion()">
+              Skip
+            </button>
+          </div>
+          
+          <!-- Feedback Area (hidden initially) -->
+          <div id="feedback-area" class="mt-4" style="display: none;">
+            <!-- Populated by JavaScript -->
+          </div>
+        </div>
+      </div>
+      
+      <!-- Info -->
+      <div class="mt-3">
+        <small class="text-muted">
+          <i class="fas fa-info-circle"></i> 
+          <%= @reason %>
+        </small>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+let questionStartTime = Date.now();
+
+function submitAnswer() {
+  const answer = getAnswer();
+  
+  if (!answer) {
+    alert('Please select or enter an answer');
+    return;
+  }
+  
+  const timeTaken = (Date.now() - questionStartTime) / 1000;
+  
+  // Disable submit
+  document.getElementById('submit-area').style.display = 'none';
+  
+  // Show loading
+  showFeedback('Checking answer...', 'info', false);
+  
+  // Submit to backend
+  fetch('<%= submit_adaptive_answer_path %>', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
+    },
+    body: JSON.stringify({
+      answer: answer,
+      time_taken: timeTaken
+    })
+  })
+  .then(response => response.json())
+  .then(data => {
+    displayResult(data);
+  })
+  .catch(error => {
+    console.error('Error:', error);
+    showFeedback('An error occurred. Please try again.', 'danger', true);
+  });
+}
+
+function getAnswer() {
+  const questionType = '<%= @question.question_type %>';
+  
+  if (questionType === 'mcq') {
+    const selected = document.querySelector('input[name="answer"]:checked');
+    return selected ? selected.value : null;
+  } else if (questionType === 'command' || questionType === 'fill_blank') {
+    const input = document.getElementById(questionType === 'command' ? 'command-input' : 'blank-input');
+    return input ? input.value : null;
+  } else if (questionType === 'true_false') {
+    // Handled by submitTrueFalse
+    return null;
+  }
+}
+
+function submitTrueFalse(value) {
+  questionStartTime = Date.now(); // Reset for immediate click
+  const timeTaken = 0.5;
+  
+  document.getElementById('submit-area').style.display = 'none';
+  showFeedback('Checking answer...', 'info', false);
+  
+  fetch('<%= submit_adaptive_answer_path %>', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
+    },
+    body: JSON.stringify({
+      answer: value,
+      time_taken: timeTaken
+    })
+  })
+  .then(response => response.json())
+  .then(data => displayResult(data))
+  .catch(error => {
+    console.error('Error:', error);
+    showFeedback('An error occurred.', 'danger', true);
+  });
+}
+
+function displayResult(data) {
+  const isCorrect = data.correct;
+  const feedbackType = isCorrect ? 'success' : 'danger';
+  const icon = isCorrect ? 'fa-check-circle' : 'fa-times-circle';
+  
+  let html = `
+    <div class="alert alert-${feedbackType}">
+      <h5><i class="fas ${icon}"></i> ${isCorrect ? 'Correct!' : 'Incorrect'}</h5>
+      <p>${data.feedback.level_1 || data.feedback.explanation}</p>
+      ${!isCorrect && data.correct_answer ? `<p class="mb-0"><strong>Correct answer:</strong> ${data.correct_answer}</p>` : ''}
+    </div>
+  `;
+  
+  if (data.explanation) {
+    html += `
+      <div class="alert alert-info">
+        <strong>Explanation:</strong><br>
+        ${data.explanation}
+      </div>
+    `;
+  }
+  
+  if (data.ability_update) {
+    html += `
+      <div class="alert alert-secondary">
+        <small>
+          <i class="fas fa-chart-line"></i> 
+          Ability updated: ${data.ability_update.new_ability.toFixed(2)} 
+          (confidence: ${(data.ability_update.confidence * 100).toFixed(0)}%)
+        </small>
+      </div>
+    `;
+  }
+  
+  html += `
+    <div class="mt-3">
+      <strong>Progress:</strong> ${data.progress.answered} answered, 
+      ${data.progress.correct} correct 
+      (${data.progress.accuracy.toFixed(1)}% accuracy)
+    </div>
+  `;
+  
+  html += `
+    <button class="btn btn-primary btn-lg mt-3" onclick="nextQuestion()">
+      Next Question <i class="fas fa-arrow-right"></i>
+    </button>
+  `;
+  
+  showFeedback(html, feedbackType, false);
+}
+
+function showFeedback(html, type, showSubmit) {
+  const feedbackArea = document.getElementById('feedback-area');
+  feedbackArea.innerHTML = html;
+  feedbackArea.style.display = 'block';
+  
+  if (showSubmit) {
+    document.getElementById('submit-area').style.display = 'block';
+  }
+}
+
+function nextQuestion() {
+  window.location.href = '<%= next_adaptive_question_path %>';
+}
+
+function skipQuestion() {
+  if (confirm('Skip this question? (Will count as incorrect)')) {
+    // Submit with empty answer
+    fetch('<%= submit_adaptive_answer_path %>', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
+      },
+      body: JSON.stringify({
+        answer: '',
+        time_taken: 0
+      })
+    })
+    .then(() => nextQuestion())
+    .catch(error => console.error('Error:', error));
+  }
+}
+</script>
+

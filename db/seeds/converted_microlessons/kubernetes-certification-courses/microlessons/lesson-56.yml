@@ -1,0 +1,66 @@
+slug: lesson-56
+title: Lesson 56
+difficulty: easy
+sequence_order: 56
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# ConfigMaps: Application Configuration\n\
+  \n    - Key/value pairs and file-based configs\n    - Mount via envFrom, env, and\
+  \ volumes\n    - Updates and rollout behavior"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: How can you mount an entire ConfigMap as environment variables in a pod?
+  options:
+  - Using envFrom with configMapRef
+  - Using volumeMounts only
+  - Using env with individual key references
+  - ConfigMaps cannot be used as environment variables
+  correct_answer: Using envFrom with configMapRef
+  explanation: 'The envFrom field with configMapRef allows you to mount all key-value
+    pairs from a ConfigMap as environment variables in one declaration. For example,
+    ''envFrom: - configMapRef: name: app-config'' creates environment variables for
+    all keys in the ''app-config'' ConfigMap. This is convenient when you have many
+    configuration values. Alternatively, you can use the ''env'' field with ''valueFrom.configMapKeyRef''
+    to selectively import individual keys, giving more control but requiring more
+    YAML. ConfigMaps can also be mounted as volumes, where each key becomes a file
+    in the mount directory. The envFrom approach is simple but less flexible - all
+    keys are imported, and if a key name conflicts with existing environment variables
+    or isn''t a valid environment variable name, it may cause issues.'
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What happens to pods when a ConfigMap that is mounted as a volume is updated?
+  options:
+  - Pods are automatically restarted
+  - The mounted files are updated in the pod, but the application must reload the
+    configuration
+  - Nothing, ConfigMaps cannot be updated
+  - The pod is deleted
+  correct_answer: The mounted files are updated in the pod, but the application must
+    reload the configuration
+  explanation: 'When a ConfigMap mounted as a volume is updated, Kubernetes eventually
+    updates the files in the pod (typically within a minute due to kubelet sync period).
+    However, the application must be designed to watch for file changes and reload
+    configuration - Kubernetes doesn''t restart the pod or signal the application.
+    In contrast, if a ConfigMap is used via environment variables, those values are
+    set at pod creation and never change - the pod must be restarted to pick up ConfigMap
+    updates. This is a key difference: volume-mounted ConfigMaps can be updated without
+    restarting pods (if the app supports it), while env-based ConfigMaps require pod
+    restart. Some tools like Reloader can automate pod restarts when ConfigMaps change.
+    For critical configuration changes, many teams trigger rolling updates of Deployments
+    to ensure consistent state.'
+  require_pass: true
+- type: mcq
+  sequence_order: 1
+  question: What kubectl command checks if you can perform an action?
+  options:
+  - kubectl auth can-i create pods
+  - kubectl check permissions create pods
+  - kubectl verify action create pods
+  - kubectl test auth create pods
+  correct_answer_index: 0
+  explanation: kubectl auth can-i <action> <resource> checks if the current user has
+    permission to perform the specified action.
+  require_pass: true

@@ -1,0 +1,155 @@
+slug: python-lists
+title: Python Lists
+sequence_order: 3
+estimated_minutes: 2
+difficulty: easy
+key_concepts: []
+content_md: "# Python Lists \U0001F680\n\n# Python Lists\n\n    **Lists** are ordered\
+  \ collections that can hold multiple items. They're one of the most useful data\
+  \ structures in Python!\n\n    ## Creating Lists\n\n    ```python\n    # Empty list\n\
+  \    my_list = []\n\n    # List with items\n    numbers = [1, 2, 3, 4, 5]\n    fruits\
+  \ = [\"apple\", \"banana\", \"cherry\"]\n\n    # Mixed types (not common, but possible)\n\
+  \    mixed = [1, \"hello\", 3.14, True]\n\n    # Using list() constructor\n    numbers\
+  \ = list(range(5))  # [0, 1, 2, 3, 4]\n    ```\n\n    ## Accessing Items\n\n   \
+  \ ### Indexing (starts at 0)\n    ```python\n    fruits = [\"apple\", \"banana\"\
+  , \"cherry\", \"date\"]\n\n    print(fruits[0])   # \"apple\" (first item)\n   \
+  \ print(fruits[1])   # \"banana\"\n    print(fruits[-1])  # \"date\" (last item)\n\
+  \    print(fruits[-2])  # \"cherry\" (second from end)\n    ```\n\n    ### Slicing\n\
+  \    ```python\n    numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]\n\n    print(numbers[2:5])\
+  \    # [2, 3, 4]\n    print(numbers[:3])     # [0, 1, 2] (from start)\n    print(numbers[7:])\
+  \     # [7, 8, 9] (to end)\n    print(numbers[::2])    # [0, 2, 4, 6, 8] (every\
+  \ 2nd item)\n    print(numbers[::-1])   # [9, 8, 7, ...] (reversed)\n    ```\n\n\
+  \    ## Modifying Lists\n\n    Lists are **mutable** (can be changed):\n\n    ```python\n\
+  \    fruits = [\"apple\", \"banana\", \"cherry\"]\n\n    # Change an item\n    fruits[1]\
+  \ = \"blueberry\"\n    print(fruits)  # [\"apple\", \"blueberry\", \"cherry\"]\n\
+  \n    # Add to end\n    fruits.append(\"date\")\n    print(fruits)  # [\"apple\"\
+  , \"blueberry\", \"cherry\", \"date\"]\n\n    # Insert at position\n    fruits.insert(1,\
+  \ \"banana\")  # Insert at index 1\n    print(fruits)  # [\"apple\", \"banana\"\
+  , \"blueberry\", \"cherry\", \"date\"]\n\n    # Remove by value\n    fruits.remove(\"\
+  blueberry\")\n\n    # Remove by index\n    removed = fruits.pop(0)  # Removes and\
+  \ returns \"apple\"\n\n    # Remove last item\n    last = fruits.pop()  # Removes\
+  \ and returns last item\n\n    # Clear all items\n    fruits.clear()\n    ```\n\n\
+  \    ## List Operations\n\n    ```python\n    # Length\n    numbers = [1, 2, 3,\
+  \ 4, 5]\n    print(len(numbers))  # 5\n\n    # Concatenation\n    list1 = [1, 2,\
+  \ 3]\n    list2 = [4, 5, 6]\n    combined = list1 + list2  # [1, 2, 3, 4, 5, 6]\n\
+  \n    # Repetition\n    zeros = [0] * 5  # [0, 0, 0, 0, 0]\n\n    # Membership\n\
+  \    if 3 in numbers:\n        print(\"Found 3!\")\n\n    # Count occurrences\n\
+  \    numbers = [1, 2, 2, 3, 2, 4]\n    print(numbers.count(2))  # 3\n\n    # Find\
+  \ index\n    print(numbers.index(3))  # 3 (index of first occurrence)\n    ```\n\
+  \n    ## Sorting and Reversing\n\n    ```python\n    numbers = [5, 2, 8, 1, 9]\n\
+  \n    # Sort (modifies original)\n    numbers.sort()\n    print(numbers)  # [1,\
+  \ 2, 5, 8, 9]\n\n    # Sort descending\n    numbers.sort(reverse=True)\n    print(numbers)\
+  \  # [9, 8, 5, 2, 1]\n\n    # sorted() - creates new sorted list\n    original =\
+  \ [5, 2, 8, 1, 9]\n    sorted_list = sorted(original)\n    print(original)     \
+  \ # [5, 2, 8, 1, 9] (unchanged)\n    print(sorted_list)   # [1, 2, 5, 8, 9]\n\n\
+  \    # Reverse (modifies original)\n    numbers.reverse()\n\n    # reversed() -\
+  \ returns iterator\n    reversed_list = list(reversed(original))\n    ```\n\n  \
+  \  ## Looping Through Lists\n\n    ### Using for loop\n    ```python\n    fruits\
+  \ = [\"apple\", \"banana\", \"cherry\"]\n\n    # Loop through values\n    for fruit\
+  \ in fruits:\n        print(fruit)\n\n    # Loop with index\n    for i in range(len(fruits)):\n\
+  \        print(f\"{i}: {fruits[i]}\")\n\n    # enumerate() - better way to get index\
+  \ and value\n    for index, fruit in enumerate(fruits):\n        print(f\"{index}:\
+  \ {fruit}\")\n\n    # Start enumerate at 1\n    for num, fruit in enumerate(fruits,\
+  \ start=1):\n        print(f\"{num}. {fruit}\")\n    ```\n\n    ## List Comprehensions\n\
+  \n    Create lists in a concise way:\n\n    ### Basic syntax\n    ```python\n  \
+  \  # Traditional way\n    squares = []\n    for x in range(10):\n        squares.append(x\
+  \ ** 2)\n\n    # List comprehension\n    squares = [x ** 2 for x in range(10)]\n\
+  \    print(squares)  # [0, 1, 4, 9, 16, 25, 36, 49, 64, 81]\n    ```\n\n    ###\
+  \ With condition\n    ```python\n    # Only even numbers\n    evens = [x for x in\
+  \ range(20) if x % 2 == 0]\n    print(evens)  # [0, 2, 4, 6, 8, 10, 12, 14, 16,\
+  \ 18]\n\n    # Transform strings\n    fruits = [\"apple\", \"banana\", \"cherry\"\
+  ]\n    upper_fruits = [fruit.upper() for fruit in fruits]\n    print(upper_fruits)\
+  \  # [\"APPLE\", \"BANANA\", \"CHERRY\"]\n\n    # Filter and transform\n    numbers\
+  \ = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]\n    even_squares = [x ** 2 for x in numbers\
+  \ if x % 2 == 0]\n    print(even_squares)  # [4, 16, 36, 64, 100]\n    ```\n\n \
+  \   ### Nested comprehensions\n    ```python\n    # 2D matrix\n    matrix = [[i\
+  \ * j for j in range(3)] for i in range(3)]\n    print(matrix)\n    # [[0, 0, 0],\n\
+  \    #  [0, 1, 2],\n    #  [0, 2, 4]]\n\n    # Flatten nested list\n    nested =\
+  \ [[1, 2, 3], [4, 5, 6], [7, 8, 9]]\n    flat = [num for sublist in nested for num\
+  \ in sublist]\n    print(flat)  # [1, 2, 3, 4, 5, 6, 7, 8, 9]\n    ```\n\n    ##\
+  \ Common List Methods\n\n    | Method | Description | Example |\n    |--------|-------------|---------|\n\
+  \    | `append(x)` | Add item to end | `lst.append(5)` |\n    | `extend(iterable)`\
+  \ | Add all items from iterable | `lst.extend([4,5,6])` |\n    | `insert(i, x)`\
+  \ | Insert at index | `lst.insert(0, 'first')` |\n    | `remove(x)` | Remove first\
+  \ occurrence | `lst.remove('apple')` |\n    | `pop([i])` | Remove and return item\
+  \ | `lst.pop(0)` |\n    | `clear()` | Remove all items | `lst.clear()` |\n    |\
+  \ `index(x)` | Find index of value | `lst.index('banana')` |\n    | `count(x)` |\
+  \ Count occurrences | `lst.count(5)` |\n    | `sort()` | Sort in place | `lst.sort()`\
+  \ |\n    | `reverse()` | Reverse in place | `lst.reverse()` |\n    | `copy()` |\
+  \ Create shallow copy | `new = lst.copy()` |\n\n    ## Copying Lists\n\n    ```python\n\
+  \    # Wrong way - creates reference\n    list1 = [1, 2, 3]\n    list2 = list1 \
+  \ # Both point to same list!\n    list2.append(4)\n    print(list1)  # [1, 2, 3,\
+  \ 4] - original changed!\n\n    # Correct ways\n    list2 = list1.copy()       #\
+  \ Method 1\n    list2 = list1[:]           # Method 2\n    list2 = list(list1) \
+  \       # Method 3\n\n    # Deep copy (for nested lists)\n    import copy\n    nested\
+  \ = [[1, 2], [3, 4]]\n    deep_copy = copy.deepcopy(nested)\n    ```\n\n    ## Practical\
+  \ Examples\n\n    ### 1. Finding Min/Max\n    ```python\n    numbers = [23, 45,\
+  \ 12, 67, 34]\n    print(min(numbers))  # 12\n    print(max(numbers))  # 67\n  \
+  \  print(sum(numbers))  # 181\n    ```\n\n    ### 2. Filtering\n    ```python\n\
+  \    ages = [15, 22, 17, 30, 12, 19, 25]\n    adults = [age for age in ages if age\
+  \ >= 18]\n    print(adults)  # [22, 30, 19, 25]\n    ```\n\n    ### 3. Removing\
+  \ Duplicates\n    ```python\n    numbers = [1, 2, 2, 3, 4, 4, 5]\n    unique = list(set(numbers))\
+  \  # [1, 2, 3, 4, 5]\n    # Note: order not guaranteed with set\n    ```\n\n   \
+  \ ### 4. List as Stack (LIFO)\n    ```python\n    stack = []\n    stack.append(1)\
+  \  # Push\n    stack.append(2)\n    stack.append(3)\n    top = stack.pop()  # Pop\
+  \ (3)\n    ```\n\n    ### 5. List as Queue (FIFO) - use deque instead\n    ```python\n\
+  \    from collections import deque\n    queue = deque([1, 2, 3])\n    queue.append(4)\
+  \      # Add to end\n    first = queue.popleft()  # Remove from start (1)\n    ```\n\
+  \n    ## Practice Time!\n\n    Now try the **Python List Comprehensions** lab to\
+  \ practice what you've learned!"
+exercises:
+- type: mcq
+  slug: python-lists-mcq-1
+  sequence_order: 1
+  question: 'What does this list comprehension create? [x**2 for x in range(5) if x % 2 == 0]'
+  options:
+  - '[0, 4, 16] - squares of even numbers from 0-4'
+  - '[0, 1, 4, 9, 16] - squares of all numbers'
+  - '[0, 2, 4] - even numbers only'
+  - '[1, 9] - squares of odd numbers'
+  correct_answer_index: 0
+  explanation: This list comprehension iterates through range(5) which gives [0,1,2,3,4], filters for even numbers (x % 2 == 0) giving [0,2,4], then squares each (x**2) resulting in [0, 4, 16]. List comprehensions are concise ways to create lists with optional filtering.
+- type: mcq
+  slug: python-lists-mcq-2
+  sequence_order: 2
+  question: What is the difference between append() and extend() methods on a list?
+  options:
+  - append() adds a single item, extend() adds multiple items from an iterable
+  - They do exactly the same thing
+  - extend() adds one item, append() adds multiple
+  - append() is faster than extend()
+  correct_answer_index: 0
+  explanation: 'append() adds its argument as a single element: [1,2].append([3,4]) gives [1,2,[3,4]]. extend() adds each element from an iterable: [1,2].extend([3,4]) gives [1,2,3,4]. Use append() for single items, extend() to merge lists.'
+- type: mcq
+  slug: python-lists-mcq-3
+  sequence_order: 3
+  question: 'What is wrong with this code? list1 = [1,2,3]; list2 = list1; list2.append(4)'
+  options:
+  - list2 is a reference to list1, so both lists now contain [1,2,3,4]
+  - Nothing is wrong, list1 and list2 are independent
+  - append() should be extend()
+  - You cannot assign one list to another
+  correct_answer_index: 0
+  explanation: 'Assignment creates a reference, not a copy. list2 = list1 makes both variables point to the same list object. Changes to either affect both. To copy: use list1.copy(), list1[:], or list(list1). This is a common source of bugs in Python.'
+- type: mcq
+  slug: python-lists-mcq-4
+  sequence_order: 4
+  question: What does the slice notation [::-1] do to a list?
+  options:
+  - Reverses the list
+  - Returns every other element
+  - Returns the first and last elements
+  - Removes all elements
+  correct_answer_index: 0
+  explanation: 'Slice notation is [start:stop:step]. [::-1] means: start from the beginning (default), go to the end (default), step backwards (-1). This effectively reverses the list. For example, [1,2,3,4][::-1] gives [4,3,2,1].'
+objectives:
+- Create and manipulate lists using indexing and slicing
+- Add, remove, and modify list elements with methods like append, insert, remove, pop
+- Use list comprehensions to create lists concisely
+- Sort and reverse lists with sort(), sorted(), reverse()
+- Understand list mutability and how to properly copy lists
+- Loop through lists with for loops and enumerate()
+- Apply common list operations like len(), count(), index()
+next_recommended:
+- control
+- data-structures

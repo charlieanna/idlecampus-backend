@@ -1,0 +1,165 @@
+slug: lesson-2
+title: Lesson 2
+difficulty: easy
+sequence_order: 2
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Mastering Deployments\n\n      Deployments\
+  \ provide declarative updates for Pods and ReplicaSets, enabling rolling updates\
+  \ and rollbacks.\n\n      ## Creating Deployments\n\n      ```bash\n      # Imperative\
+  \ creation\n      kubectl create deployment nginx --image=nginx:1.25 --replicas=3\n\
+  \n      # With resource limits\n      kubectl create deployment nginx --image=nginx:1.25\
+  \ --replicas=3 \\\\\n        --requests=\"cpu=100m,memory=128Mi\" \\\\\n       \
+  \ --limits=\"cpu=200m,memory=256Mi\"\n\n      # Declarative creation from YAML\n\
+  \      kubectl apply -f deployment.yaml\n\n      # Create from existing deployment\
+  \ (dry-run)\n      kubectl create deployment nginx --image=nginx:1.25 --dry-run=client\
+  \ -o yaml > deployment.yaml\n      ```\n\n      ## Viewing Deployments\n\n     \
+  \ ```bash\n      # List deployments\n      kubectl get deployments\n      kubectl\
+  \ get deploy\n\n      # Describe deployment (shows events and status)\n      kubectl\
+  \ describe deployment nginx\n\n      # Get deployment YAML\n      kubectl get deployment\
+  \ nginx -o yaml\n\n      # Check deployment status\n      kubectl rollout status\
+  \ deployment/nginx\n      ```\n\n      ## Scaling Deployments\n\n      ```bash\n\
+  \      # Scale to specific number of replicas\n      kubectl scale deployment nginx\
+  \ --replicas=5\n\n      # Autoscale based on CPU usage\n      kubectl autoscale\
+  \ deployment nginx --min=2 --max=10 --cpu-percent=80\n\n      # View autoscalers\n\
+  \      kubectl get hpa\n      ```\n\n      ## Updating Deployments\n\n      ```bash\n\
+  \      # Update container image\n      kubectl set image deployment/nginx nginx=nginx:1.26\n\
+  \n      # Update multiple images\n      kubectl set image deployment/nginx nginx=nginx:1.26\
+  \ sidecar=busybox:1.36\n\n      # Update via editing\n      kubectl edit deployment\
+  \ nginx\n\n      # Update via applying modified YAML\n      kubectl apply -f deployment.yaml\n\
+  \n      # Patch deployment\n      kubectl patch deployment nginx -p '{\"spec\":{\"\
+  replicas\":4}}'\n      ```\n\n      ## Rollout Management\n\n      ```bash\n   \
+  \   # Pause rollout (stop updates)\n      kubectl rollout pause deployment/nginx\n\
+  \n      # Resume rollout\n      kubectl rollout resume deployment/nginx\n\n    \
+  \  # View rollout history\n      kubectl rollout history deployment/nginx\n\n  \
+  \    # View specific revision\n      kubectl rollout history deployment/nginx --revision=2\n\
+  \n      # Rollback to previous version\n      kubectl rollout undo deployment/nginx\n\
+  \n      # Rollback to specific revision\n      kubectl rollout undo deployment/nginx\
+  \ --to-revision=2\n\n      # Restart deployment (rolling restart)\n      kubectl\
+  \ rollout restart deployment/nginx\n      ```\n\n      ## ReplicaSets\n\n      Deployments\
+  \ manage ReplicaSets automatically, but you can inspect them:\n\n      ```bash\n\
+  \      # List replicasets\n      kubectl get replicasets\n      kubectl get rs\n\
+  \n      # Describe replicaset\n      kubectl describe rs nginx-deployment-5d59d67564\n\
+  \n      # Get replicaset for specific deployment\n      kubectl get rs -l app=nginx\n\
+  \      ```\n\n      ## Deployment Strategies\n\n      ### Rolling Update (Default)\n\
+  \      Gradually replaces old pods with new ones:\n\n      ```yaml\n      spec:\n\
+  \        strategy:\n          type: RollingUpdate\n          rollingUpdate:\n  \
+  \          maxSurge: 1        # Max pods above desired count\n            maxUnavailable:\
+  \ 0  # Max pods unavailable during update\n      ```\n\n      ### Recreate\n   \
+  \   Terminates all pods before creating new ones:\n\n      ```yaml\n      spec:\n\
+  \        strategy:\n          type: Recreate\n      ```\n\n      ## Useful Commands\n\
+  \n      ```bash\n      # Delete deployment\n      kubectl delete deployment nginx\n\
+  \n      # Delete deployment but keep pods\n      kubectl delete deployment nginx\
+  \ --cascade=orphan\n\n      # Export deployment to file\n      kubectl get deployment\
+  \ nginx -o yaml > nginx-deployment.yaml\n\n      # Create deployment from URL\n\
+  \      kubectl apply -f https://k8s.io/examples/application/deployment.yaml\n  \
+  \    ```\n\n      Practice deployment management in the labs!"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What is the difference between RollingUpdate and Recreate deployment strategies,
+    and when would you use each?
+  options:
+  - RollingUpdate replaces pods gradually with zero downtime; Recreate terminates
+    all pods before creating new ones causing downtime; use RollingUpdate for stateless
+    apps, Recreate when you can't run old and new versions simultaneously
+  - Recreate is faster than RollingUpdate
+  - RollingUpdate requires more resources; Recreate uses less memory
+  - They are identical in Kubernetes 1.25+
+  correct_answer: RollingUpdate replaces pods gradually with zero downtime; Recreate
+    terminates all pods before creating new ones causing downtime; use RollingUpdate
+    for stateless apps, Recreate when you can't run old and new versions simultaneously
+  explanation: 'Kubernetes deployment strategies control how pod updates occur. ROLLING
+    UPDATE (default): Gradually replaces old pods with new ones. Configuration: maxSurge
+    (e.g., 1) = maximum additional pods above desired count during update (allows
+    4 pods if desired=3); maxUnavailable (e.g., 0) = maximum pods that can be unavailable.
+    Process: (1) Create new pod (v2), (2) Wait for it to be Ready, (3) Terminate old
+    pod (v1), (4) Repeat until all pods updated. ADVANTAGES: Zero downtime - users
+    never see unavailable service. Old and new versions run simultaneously briefly.
+    Health checks ensure new version works before terminating old. DISADVANTAGES:
+    Requires extra resources (maxSurge pods). Both versions run concurrently (must
+    be compatible). Slower than Recreate. USE CASES: Stateless web apps, APIs, microservices
+    - standard for most applications. RECREATE strategy: Terminates ALL old pods first,
+    then creates new pods. Process: (1) Scale deployment to 0 (kill all v1 pods),
+    (2) Create all new pods (v2). ADVANTAGES: Simple - no version mixing. Uses less
+    resources (no maxSurge). Faster deployment. DISADVANTAGES: Downtime - service
+    unavailable during transition (seconds to minutes). USE CASES: (1) Stateful apps
+    where old/new versions can''t coexist (incompatible database schemas), (2) Apps
+    that can''t run multiple instances (license restrictions, singleton pattern),
+    (3) Development environments where downtime is acceptable. Example: Database migration
+    tool that must run exactly once, not during rolling update where both versions
+    might trigger migrations. Choose based on availability requirements vs version
+    compatibility constraints.'
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: How does kubectl rollout undo work, and what is the difference between
+    kubectl rollout undo deployment/nginx and kubectl rollout undo deployment/nginx
+    --to-revision=2?
+  options:
+  - Both commands do the same thing - rollback to the previous version
+  - kubectl rollout undo rolls back to the immediately previous revision; --to-revision=2
+    rolls back to a specific revision number from history
+  - kubectl rollout undo deletes the deployment; --to-revision recreates it
+  - Rollback is not supported in Kubernetes deployments
+  correct_answer: kubectl rollout undo rolls back to the immediately previous revision;
+    --to-revision=2 rolls back to a specific revision number from history
+  explanation: 'Kubernetes deployments maintain a revision history enabling rollbacks.
+    REVISION HISTORY: Every deployment update (image change, config update) creates
+    a new ReplicaSet and increments the revision number. Kubernetes keeps old ReplicaSets
+    (scaled to 0) based on spec.revisionHistoryLimit (default 10). View history: kubectl
+    rollout history deployment/nginx shows revision numbers and change-cause. ROLLBACK
+    WITHOUT --to-revision: kubectl rollout undo deployment/nginx rolls back to the
+    immediately previous revision. If current revision is 5 (broken), this reverts
+    to revision 4 (last working version). Quick recovery from bad deployments. Process:
+    Kubernetes scales up the previous ReplicaSet and scales down the current one (same
+    rolling update mechanism). The rollback itself becomes a new revision (revision
+    6, identical to revision 4 config). ROLLBACK WITH --to-revision: kubectl rollout
+    undo deployment/nginx --to-revision=2 rolls back to a specific revision from history,
+    not just the previous one. Use case: If you''ve had multiple bad deployments (rev
+    3, 4, 5 all broken), jump back to rev 2 (last known good). Check specific revision:
+    kubectl rollout history deployment/nginx --revision=2 shows what that revision
+    contains. IMPORTANT: After rollback, the revision number increments (rollback
+    to rev 2 creates rev 6 with rev 2''s config). To prevent issues: (1) Record changes
+    with --record flag (deprecated) or annotations, (2) Test updates in staging first,
+    (3) Set spec.revisionHistoryLimit appropriately (balance history vs etcd storage),
+    (4) Monitor rollouts: kubectl rollout status deployment/nginx. Common workflow:
+    Deploy update → observe metrics → if problems detected → kubectl rollout undo
+    (instant recovery).'
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: What is the purpose of kubectl rollout pause and kubectl rollout resume,
+    and when would you use this pattern?
+  options:
+  - To stop the deployment completely and restart it later
+  - To pause ongoing updates (canary pattern), make multiple changes without triggering
+    separate rollouts, then resume to deploy all changes together
+  - To debug failing pods by preventing restarts
+  - Pause and resume are only for autoscaling, not deployments
+  correct_answer: To pause ongoing updates (canary pattern), make multiple changes
+    without triggering separate rollouts, then resume to deploy all changes together
+  explanation: 'kubectl rollout pause/resume enables advanced deployment patterns
+    and batching updates. BASIC USAGE: kubectl rollout pause deployment/nginx freezes
+    the rollout in its current state - no new pods created, no old pods terminated,
+    even if you modify the deployment spec. kubectl rollout resume deployment/nginx
+    unfreezes and continues/starts the rollout with accumulated changes. USE CASE
+    1 - BATCHING MULTIPLE CHANGES: Problem: Updating image AND environment variables
+    normally triggers two separate rollouts (inefficient, temporary inconsistent state).
+    Solution: (1) Pause: kubectl rollout pause deployment/nginx, (2) Make changes:
+    kubectl set image deployment/nginx nginx=nginx:1.26; kubectl set env deployment/nginx
+    ENV=production, (3) Resume: kubectl rollout resume deployment/nginx. Now both
+    changes roll out together in a single update, ensuring consistency. USE CASE 2
+    - MANUAL CANARY DEPLOYMENT: (1) Update deployment spec (new image), (2) Immediately
+    pause: kubectl rollout pause deployment/nginx, (3) Rollout starts but pauses after
+    creating first new pod (canary), (4) Monitor metrics/logs of canary pod, (5) If
+    healthy: kubectl rollout resume deployment/nginx (completes rollout). If issues:
+    kubectl rollout undo deployment/nginx (instant rollback). This gives manual control
+    over canary exposure percentage and duration. USE CASE 3 - EMERGENCY FREEZE: During
+    incidents, pause prevents further automated changes while you investigate. IMPORTANT:
+    Pause prevents ALL rollout progress, including health check failures or node evictions.
+    Don''t leave deployments paused indefinitely. Check pause status: kubectl get
+    deployment nginx -o yaml | grep -i pause. This feature gives fine-grained control
+    over deployment timing, enabling safer releases and operational flexibility.'
+  require_pass: true

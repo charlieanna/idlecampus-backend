@@ -1,0 +1,23 @@
+course:
+  slug: jee-physics-gravitation
+  title: "JEE Physics: Gravitation"
+  description: "Universal gravitation, orbital mechanics, Kepler's laws, and escape velocity for IIT JEE"
+  estimated_hours: 10
+  level: intermediate
+modules:
+- slug: gravitational-fundamentals
+  title: Gravitational Force and Field
+  lessons:
+  - newtons-law-universal-gravitation
+  - gravitational-field-intensity
+  - gravitational-potential-energy
+  - variation-of-g-with-altitude-depth
+  - gravitational-potential
+- slug: orbital-mechanics
+  title: Satellites and Orbital Mechanics
+  lessons:
+  - orbital-velocity-satellites
+  - escape-velocity-derivation
+  - keplers-laws-planetary-motion
+  - geostationary-polar-orbits
+  - binding-energy-satellites

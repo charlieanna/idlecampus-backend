@@ -1,0 +1,76 @@
+slug: magneticproperties-practice
+title: magnetic_properties — Practice
+difficulty: medium
+sequence_order: 1
+estimated_minutes: 2
+key_concepts:
+- magnetic_properties
+prerequisites: []
+content_md: '# magnetic_properties — Practice 🚀
+
+
+  CN⁻ is strong field ligand causing electron pairing in Fe²⁺ (d⁶). Configuration
+  becomes t2g⁶ eg⁰ with all electrons paired, hence diamagnetic (0 unpaired electrons).
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: short_answer
+  sequence_order: 2
+  question: 'Explain why [Fe(CN)₆]⁴⁻ is diamagnetic while [Fe(H₂O)₆]²⁺ is paramagnetic.
+    (Fe²⁺ has d⁶ configuration)'
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: How many unpaired electrons are present in [Ni(NH₃)₆]²⁺? (Ni²⁺ has d⁸
+    configuration)
+  options:
+  - 0
+  - 1
+  - 2
+  - 4
+  require_pass: true
+  correct_answer: 2
+  explanation: 'For [Ni(NH₃)₆]²⁺, determine magnetic behavior: **Ni²⁺ electron configuration**:
+    d⁸ (3d⁸). **NH₃ is a moderate field ligand** (between H₂O and CN⁻ in spectrochemical
+    series). **Octahedral d⁸ configuration**: For d⁸, even with moderate/strong
+    field ligands, the electron arrangement is typically: t2g⁶ eg² (with 2 unpaired
+    electrons in eg orbitals). Why? Filling order: t2g↑, t2g↑, t2g↑, t2g↑↓, t2g↑↓,
+    t2g↑↓ (6 in t2g), eg↑, eg↑ (2 unpaired in eg). **Result: 2 unpaired electrons**
+    → paramagnetic. Magnetic moment μ = √(n(n+2)) BM where n = number of unpaired
+    electrons. μ = √(2(4)) = √8 = 2.83 BM (Bohr magnetons). Note: d⁸ complexes in
+    octahedral geometry **always have 2 unpaired electrons** regardless of ligand
+    strength (unlike d⁴, d⁵, d⁶, d⁷ which can be high-spin or low-spin). Examples:
+    [Ni(H₂O)₆]²⁺, [Ni(NH₃)₆]²⁺, [Ni(en)₃]²⁺ all have 2 unpaired electrons. Exception:
+    Square planar Ni²⁺ complexes like [Ni(CN)₄]²⁻ are diamagnetic (dsp² hybridization).'
+- type: mcq
+  sequence_order: 4
+  question: Which complex is diamagnetic?
+  options:
+  - '[Fe(H₂O)₆]³⁺ (Fe³⁺ = d⁵)'
+  - '[Co(NH₃)₆]³⁺ (Co³⁺ = d⁶)'
+  - '[Ni(H₂O)₆]²⁺ (Ni²⁺ = d⁸)'
+  - '[Mn(H₂O)₆]²⁺ (Mn²⁺ = d⁵)'
+  require_pass: true
+  correct_answer: '[Co(NH₃)₆]³⁺ (Co³⁺ = d⁶)'
+  explanation: 'Analyzing magnetic properties of each complex: **[Co(NH₃)₆]³⁺ (Co³⁺,
+    d⁶)**: NH₃ is strong field ligand. Forms low-spin complex: t2g⁶ eg⁰. **All electrons
+    paired → DIAMAGNETIC** (0 unpaired electrons). **[Fe(H₂O)₆]³⁺ (Fe³⁺, d⁵)**:
+    H₂O is weak field. High-spin: t2g³ eg² (5 unpaired) → strongly paramagnetic.
+    **[Ni(H₂O)₆]²⁺ (Ni²⁺, d⁸)**: H₂O is weak field. Configuration: t2g⁶ eg² (2 unpaired)
+    → paramagnetic. **[Mn(H₂O)₆]²⁺ (Mn²⁺, d⁵)**: H₂O is weak field. High-spin: t2g³
+    eg² (5 unpaired) → strongly paramagnetic. Key points: (1) **Diamagnetic** = all
+    electrons paired (repelled by magnetic field), (2) **Paramagnetic** = unpaired
+    electrons present (attracted to magnetic field). (3) Low-spin complexes (strong
+    field ligands) more likely to be diamagnetic. (4) d⁶ with strong field ligands
+    (CN⁻, NH₃, CO) → diamagnetic. Other diamagnetic examples: [Fe(CN)₆]⁴⁻, [Co(NH₃)₆]³⁺,
+    [Ni(CN)₄]²⁻ (square planar).'

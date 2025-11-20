@@ -1,0 +1,58 @@
+slug: salthydrolysis-practice
+title: salt_hydrolysis — Practice
+difficulty: medium
+sequence_order: 14
+estimated_minutes: 2
+key_concepts:
+- salt_hydrolysis
+prerequisites: []
+content_md: '# salt_hydrolysis — Practice 🚀
+
+
+  pH = 7 + ½(4.74) + ½log(0.1) = 7 + 2.37 + ½(-1) = 7 + 2.37 - 0.5 = 8.87
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: 'Calculate the pH of 0.1 M CH₃COONa solution (salt of weak acid and strong base). Use: pH = 7 + ½pKa + ½log(C), where pKa = 4.74.'
+  options:
+  - 7.87
+  - 8.37
+  - 8.87
+  - 9.37
+  require_pass: true
+  correct_answer: 8.87
+  explanation: 'For salt of weak acid + strong base, use: pH = 7 + ½pKa + ½log(C). Given: pKa = 4.74, C = 0.1 M. pH = 7 + ½(4.74) + ½log(0.1) = 7 + 2.37 + ½(-1) = 7 + 2.37 - 0.5 = 8.87. Why is the solution basic? CH₃COONa → CH₃COO⁻ + Na⁺ (complete dissociation). The acetate ion (CH₃COO⁻) undergoes hydrolysis: CH₃COO⁻ + H₂O ⇌ CH₃COOH + OH⁻. This produces OH⁻, making the solution basic (pH > 7). The Na⁺ ion does not hydrolyze (it''s from strong base NaOH). General rule: Salt of weak acid + strong base → basic solution (pH > 7). Examples: CH₃COONa, NaCN, Na₂CO₃ all give basic solutions. The degree of hydrolysis and pH depend on the weakness of the parent acid (smaller Ka → more basic salt solution).'
+- type: mcq
+  sequence_order: 2
+  question: 'What is the nature of aqueous solution of NH₄Cl (salt of weak base and strong acid)?'
+  options:
+  - Basic (pH > 7)
+  - Neutral (pH = 7)
+  - Acidic (pH < 7)
+  - Cannot be determined
+  require_pass: true
+  correct_answer: Acidic (pH < 7)
+  explanation: 'NH₄Cl is a salt of weak base (NH₃) and strong acid (HCl), producing an acidic solution (pH < 7). Mechanism: NH₄Cl → NH₄⁺ + Cl⁻ (complete dissociation). The ammonium ion (NH₄⁺) undergoes hydrolysis: NH₄⁺ + H₂O ⇌ NH₃ + H₃O⁺. This produces H₃O⁺ (or H⁺), making the solution acidic. The Cl⁻ ion does not hydrolyze (from strong acid HCl). pH calculation: pH = 7 - ½pKb - ½log(C), where pKb is for NH₃. For 0.1 M NH₄Cl with pKb(NH₃) = 4.74: pH = 7 - 2.37 - 0.5 = 5.13 (acidic). General rules for salt hydrolysis: (1) Weak acid + Strong base → Basic (e.g., CH₃COONa), (2) Strong acid + Weak base → Acidic (e.g., NH₄Cl), (3) Strong acid + Strong base → Neutral (e.g., NaCl), (4) Weak acid + Weak base → Depends on Ka and Kb values.'
+- type: mcq
+  sequence_order: 3
+  question: 'Which salt will NOT undergo hydrolysis in aqueous solution?'
+  options:
+  - CH₃COONa
+  - NH₄Cl
+  - NaCl
+  - NH₄CN
+  require_pass: true
+  correct_answer: NaCl
+  explanation: 'NaCl (salt of strong acid HCl + strong base NaOH) does NOT undergo hydrolysis and gives neutral solution (pH = 7). Reasoning: NaCl → Na⁺ + Cl⁻. Neither ion hydrolyzes: (1) Na⁺ from NaOH (strong base) - does not accept OH⁻ from water, (2) Cl⁻ from HCl (strong acid) - does not accept H⁺ from water. No hydrolysis reaction occurs, so pH remains 7. Salts that DO hydrolyze: (1) CH₃COONa (weak acid + strong base) - CH₃COO⁻ hydrolyzes → basic, (2) NH₄Cl (strong acid + weak base) - NH₄⁺ hydrolyzes → acidic, (3) NH₄CN (weak acid + weak base) - both ions hydrolyze → depends on Ka vs Kb. General principle: Ions from strong acids/bases do NOT hydrolyze; ions from weak acids/bases DO hydrolyze. Salts from strong acid + strong base (NaCl, KNO₃, Na₂SO₄) always give neutral solutions (pH = 7).'

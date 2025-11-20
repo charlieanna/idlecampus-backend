@@ -1,0 +1,96 @@
+slug: electronicconfiguration-practice
+title: electronic_configuration — Practice
+difficulty: easy
+sequence_order: 5
+estimated_minutes: 2
+key_concepts:
+- electronic_configuration
+prerequisites: []
+content_md: '# electronic_configuration — Practice 🚀
+
+
+  Chromium has exceptional configuration [Ar] 3d⁵ 4s¹ instead of expected 3d⁴ 4s²
+  due to extra stability of half-filled d-orbital (d⁵).
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 2
+  question: What is the electronic configuration of Chromium (Cr, Z=24)?
+  options:
+  - '[Ar] 3d⁴ 4s²'
+  - '[Ar] 3d⁵ 4s¹'
+  - '[Ar] 3d⁶ 4s⁰'
+  - '[Ar] 3d³ 4s³'
+  require_pass: true
+  correct_answer: '[Ar] 3d⁵ 4s¹'
+  explanation: 'Chromium has an exceptional electronic configuration [Ar] 3d⁵ 4s¹
+    instead of the expected [Ar] 3d⁴ 4s². This exception occurs due to the extra
+    stability of half-filled d-orbitals. Here''s why: (1) **Expected configuration**:
+    Following the Aufbau principle, we expect 3d⁴ 4s². (2) **Actual configuration**:
+    One electron from 4s promotes to 3d, giving 3d⁵ 4s¹. (3) **Reason for stability**:
+    The d⁵ configuration (↑ ↑ ↑ ↑ ↑) is half-filled with one electron in each d-orbital,
+    which provides: (a) **Exchange energy**: Maximum exchange interactions between
+    parallel spins. (b) **Symmetry**: Spherically symmetric electron distribution.
+    (c) **Lower repulsion**: Electrons spread across all five orbitals minimize repulsion.
+    (4) The energy gained from half-filled d⁵ stability exceeds the energy cost of
+    promoting an electron from 4s to 3d. Similarly, Copper (Cu, Z=29) shows [Ar]
+    3d¹⁰ 4s¹ instead of 3d⁹ 4s² due to stability of fully-filled d¹⁰ configuration.'
+- type: mcq
+  sequence_order: 3
+  question: Which element shows an exceptional electronic configuration due to the
+    stability of fully-filled d-orbitals?
+  options:
+  - Manganese (Mn)
+  - Copper (Cu)
+  - Iron (Fe)
+  - Nickel (Ni)
+  require_pass: true
+  correct_answer: Copper (Cu)
+  explanation: 'Copper (Cu, Z=29) shows an exceptional electronic configuration [Ar]
+    3d¹⁰ 4s¹ instead of the expected [Ar] 3d⁹ 4s² due to the extra stability of
+    fully-filled d¹⁰ orbitals. The fully-filled d¹⁰ configuration (↑↓ ↑↓ ↑↓ ↑↓ ↑↓)
+    provides: (1) **Maximum exchange energy**: All possible exchange interactions
+    between electrons. (2) **Symmetrical distribution**: Spherically symmetric, minimizing
+    electron-electron repulsion. (3) **Enhanced stability**: The energy gain from
+    d¹⁰ stability exceeds the cost of promoting one electron from 4s to 3d. Other
+    elements: **Mn** has regular configuration 3d⁵ 4s² (already half-filled d⁵ in
+    expected configuration). **Fe** has regular 3d⁶ 4s². **Ni** has regular 3d⁸
+    4s². The two main exceptions in 3d series are: **Cr (Z=24)**: [Ar] 3d⁵ 4s¹ (half-filled
+    d⁵ stability). **Cu (Z=29)**: [Ar] 3d¹⁰ 4s¹ (fully-filled d¹⁰ stability). Similar
+    exceptions occur in 4d series (Mo, Ag) and 5d series (W, Au, Pt).'
+- type: mcq
+  sequence_order: 4
+  question: Why do Cr and Cu show exceptional electronic configurations?
+  options:
+  - To achieve noble gas configuration
+  - To maximize the number of electrons in s-orbital
+  - To achieve extra stability from half-filled (d⁵) or fully-filled (d¹⁰) d-orbitals
+  - To minimize the atomic radius
+  require_pass: true
+  correct_answer: To achieve extra stability from half-filled (d⁵) or fully-filled
+    (d¹⁰) d-orbitals
+  explanation: 'Chromium and Copper show exceptional configurations to achieve extra
+    stability from half-filled (d⁵) and fully-filled (d¹⁰) d-orbitals respectively.
+    **Chromium**: [Ar] 3d⁵ 4s¹ achieves half-filled d⁵ stability. **Copper**: [Ar]
+    3d¹⁰ 4s¹ achieves fully-filled d¹⁰ stability. The stability arises from: (1)
+    **Symmetry**: Half-filled (d⁵) and fully-filled (d¹⁰) configurations have spherical
+    symmetry, with electrons evenly distributed, reducing repulsion. (2) **Exchange
+    energy**: Maximum exchange interactions occur when electrons have parallel spins.
+    In d⁵, all five electrons are parallel (↑ ↑ ↑ ↑ ↑). In d¹⁰, maximum pairing
+    gives maximum exchange. (3) **Energy balance**: Though promoting an electron
+    from 4s to 3d requires energy (4s is lower than 3d), the exchange energy and
+    symmetry gained from d⁵ or d¹⁰ provides net stabilization. This is an exception
+    to the normal Aufbau principle and shows that electron configuration is determined
+    by overall energy minimization, not just orbital filling order. Similar exceptions:
+    Mo [Kr] 4d⁵ 5s¹, Ag [Kr] 4d¹⁰ 5s¹.'

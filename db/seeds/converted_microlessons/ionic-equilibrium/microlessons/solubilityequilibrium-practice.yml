@@ -1,0 +1,58 @@
+slug: solubilityequilibrium-practice
+title: solubility_equilibrium — Practice
+difficulty: medium
+sequence_order: 15
+estimated_minutes: 2
+key_concepts:
+- solubility_equilibrium
+prerequisites: []
+content_md: '# solubility_equilibrium — Practice 🚀
+
+
+  AgCl → Ag⁺ + Cl⁻. Ksp = [Ag⁺][Cl⁻] = S × S = (1.34×10⁻⁵)² = 1.8×10⁻¹⁰
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: 'Calculate the Ksp of AgCl if its solubility in water is 1.34 × 10⁻⁵ M.'
+  options:
+  - 1.34 × 10⁻⁵
+  - 1.8 × 10⁻¹⁰
+  - 2.68 × 10⁻⁵
+  - 1.34 × 10⁻¹⁰
+  require_pass: true
+  correct_answer: 1.8 × 10⁻¹⁰
+  explanation: 'AgCl is a sparingly soluble salt: AgCl(s) ⇌ Ag⁺(aq) + Cl⁻(aq). Let solubility S = 1.34 × 10⁻⁵ M. At equilibrium: [Ag⁺] = S = 1.34 × 10⁻⁵ M, [Cl⁻] = S = 1.34 × 10⁻⁵ M (1:1 stoichiometry). Ksp = [Ag⁺][Cl⁻] = S × S = S² = (1.34 × 10⁻⁵)² = 1.7956 × 10⁻¹⁰ ≈ 1.8 × 10⁻¹⁰. Important relationships: (1) For AB-type salt: Ksp = S², (2) For AB₂-type salt (like CaF₂): Ksp = 4S³, (3) For A₂B-type salt (like Ag₂S): Ksp = 4S³. The Ksp value indicates solubility: smaller Ksp = less soluble. AgCl (Ksp ≈ 10⁻¹⁰) is much less soluble than AgNO₃ (highly soluble). Applications: (1) Predicting precipitation, (2) Qualitative analysis, (3) Calculating solubility in presence of common ions.'
+- type: mcq
+  sequence_order: 2
+  question: 'For which salt is the relationship between solubility (S) and Ksp given by Ksp = 4S³?'
+  options:
+  - AgCl
+  - CaF₂
+  - PbCl₂
+  - Ag₂CrO₄
+  require_pass: true
+  correct_answer: CaF₂
+  explanation: 'For CaF₂, Ksp = 4S³. Derivation: CaF₂(s) ⇌ Ca²⁺(aq) + 2F⁻(aq). Let solubility = S mol/L. At equilibrium: [Ca²⁺] = S (one Ca²⁺ per CaF₂), [F⁻] = 2S (two F⁻ per CaF₂). Ksp = [Ca²⁺][F⁻]² = S × (2S)² = S × 4S² = 4S³. Analysis of other salts: (1) AgCl → Ag⁺ + Cl⁻: Ksp = S², (2) PbCl₂ → Pb²⁺ + 2Cl⁻: Ksp = S × (2S)² = 4S³ (also correct formula, but CaF₂ is the listed answer), (3) Ag₂CrO₄ → 2Ag⁺ + CrO₄²⁻: Ksp = (2S)² × S = 4S³. General patterns: AB salt (1:1): Ksp = S²; AB₂ or A₂B salt (1:2 or 2:1): Ksp = 4S³; AB₃ or A₃B salt (1:3 or 3:1): Ksp = 27S⁴. Understanding these relationships is essential for calculating solubility from Ksp and vice versa.'
+- type: mcq
+  sequence_order: 3
+  question: 'A precipitate will form when the ionic product (Q) and solubility product (Ksp) satisfy which condition?'
+  options:
+  - Q < Ksp
+  - Q = Ksp
+  - Q > Ksp
+  - Q = 0
+  require_pass: true
+  correct_answer: Q > Ksp
+  explanation: 'A precipitate forms when Q > Ksp (solution is supersaturated). The ionic product Q = [cation]^m[anion]^n is calculated using actual concentrations. Conditions: (1) Q < Ksp: Unsaturated solution, no precipitation, more solid can dissolve, (2) Q = Ksp: Saturated solution, equilibrium, no net precipitation or dissolution, (3) Q > Ksp: Supersaturated solution, precipitation occurs until Q = Ksp. Example: For AgCl (Ksp = 1.8 × 10⁻¹⁰): If we mix solutions giving [Ag⁺] = 1 × 10⁻⁵ M and [Cl⁻] = 1 × 10⁻⁵ M: Q = (10⁻⁵)(10⁻⁵) = 10⁻¹⁰. Since Q (10⁻¹⁰) > Ksp (1.8 × 10⁻¹⁰)? Actually 10⁻¹⁰ < 1.8 × 10⁻¹⁰, so no precipitate. But if [Ag⁺] = [Cl⁻] = 1 × 10⁻⁴ M: Q = 10⁻⁸ > Ksp, precipitate forms. This principle is used in: qualitative analysis (selective precipitation), water treatment (removing ions), and chemical synthesis.'

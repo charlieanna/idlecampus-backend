@@ -1,0 +1,154 @@
+<div class="container py-4">
+  <div class="row mb-4">
+    <div class="col-lg-8">
+      <h2><i class="fas fa-calendar-check"></i> Daily Reviews</h2>
+      <p class="lead">Practice questions you've missed to reinforce your learning</p>
+    </div>
+    <div class="col-lg-4 text-right">
+      <% if @total_due > 0 %>
+        <%= link_to practice_reviews_path, class: "btn btn-success btn-lg" do %>
+          <i class="fas fa-play"></i> Start Reviewing
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+
+  <!-- Stats Cards -->
+  <div class="row mb-4">
+    <div class="col-md-3">
+      <div class="card text-center">
+        <div class="card-body">
+          <h3 class="text-primary"><%= @total_due %></h3>
+          <small class="text-muted">Due Now</small>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-center">
+        <div class="card-body">
+          <h3 class="text-success"><%= @easy_reviews.count %></h3>
+          <small class="text-muted">Easy</small>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-center">
+        <div class="card-body">
+          <h3 class="text-warning"><%= @medium_reviews.count %></h3>
+          <small class="text-muted">Medium</small>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-center">
+        <div class="card-body">
+          <h3 class="text-danger"><%= @hard_reviews.count %></h3>
+          <small class="text-muted">Hard</small>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <% if @total_due == 0 %>
+    <!-- No Reviews Due -->
+    <div class="card border-0 shadow-sm text-center py-5">
+      <div class="card-body">
+        <i class="fas fa-check-circle text-success" style="font-size: 4rem;"></i>
+        <h3 class="mt-3">All Caught Up!</h3>
+        <p class="lead">You don't have any reviews due right now.</p>
+        <p class="text-muted">Come back later when more reviews are scheduled.</p>
+        <%= link_to "Back to Dashboard", dashboard_path, class: "btn btn-primary mt-3" %>
+      </div>
+    </div>
+  <% else %>
+    <!-- Review Items List -->
+    <div class="row">
+      <div class="col-lg-8">
+        <div class="card">
+          <div class="card-header">
+            <h5 class="mb-0">Quiz Questions to Review</h5>
+          </div>
+          <div class="card-body">
+            <% if @quiz_question_reviews.any? %>
+              <div class="list-group">
+                <% @quiz_question_reviews.each do |review_item| %>
+                  <% question = review_item.item %>
+                  <div class="list-group-item">
+                    <div class="d-flex w-100 justify-content-between align-items-start">
+                      <div>
+                        <h6 class="mb-1"><%= question.question_text.truncate(80) %></h6>
+                        <small class="text-muted">
+                          <span class="badge badge-<%= review_item.difficulty_level == 'easy' ? 'success' : review_item.difficulty_level == 'medium' ? 'warning' : 'danger' %>">
+                            <%= review_item.difficulty_level.titleize %>
+                          </span>
+                          <span class="ml-2">
+                            <i class="fas fa-redo"></i> <%= review_item.review_count %> reviews
+                          </span>
+                          <% if review_item.overdue? %>
+                            <span class="ml-2 text-danger">
+                              <i class="fas fa-exclamation-circle"></i> +<%= review_item.points_overdue %> points overdue
+                            </span>
+                          <% else %>
+                            <span class="ml-2 text-info">
+                              <%= review_item.points_until_due %> points until due
+                            </span>
+                          <% end %>
+                        </small>
+                      </div>
+                      <div>
+                        <small class="text-muted">
+                          Retention: <%= (review_item.retention_probability * 100).round %>%
+                        </small>
+                      </div>
+                    </div>
+                  </div>
+                <% end %>
+              </div>
+            <% else %>
+              <p class="text-muted mb-0">No quiz questions to review</p>
+            <% end %>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sidebar -->
+      <div class="col-lg-4">
+        <!-- Tips Card -->
+        <div class="card border-info mb-3">
+          <div class="card-header bg-info text-white">
+            <h6 class="mb-0"><i class="fas fa-lightbulb"></i> Review Tips</h6>
+          </div>
+          <div class="card-body">
+            <ul class="mb-0">
+              <li>Review daily for best retention</li>
+              <li>Focus on hard items first</li>
+              <li>Rate honestly to optimize scheduling</li>
+              <li>Overdue items need immediate attention</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- How It Works -->
+        <div class="card">
+          <div class="card-header">
+            <h6 class="mb-0"><i class="fas fa-question-circle"></i> How It Works</h6>
+          </div>
+          <div class="card-body">
+            <p class="small mb-2">
+              <strong>Progress-Based:</strong> Reviews appear based on your learning activity, not calendar days.
+            </p>
+            <p class="small mb-2">
+              <strong>FSRS Algorithm:</strong> Optimizes review timing for maximum retention.
+            </p>
+            <p class="small mb-2">
+              <strong>Adaptive:</strong> More active learning = more frequent reviews.
+            </p>
+            <p class="small mb-0">
+              <strong>Earn Points:</strong> Complete lessons, quizzes, and labs to progress.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>

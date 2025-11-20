@@ -1,0 +1,59 @@
+slug: esterreactions-practice
+title: ester_reactions — Practice
+difficulty: medium
+sequence_order: 1
+estimated_minutes: 2
+key_concepts:
+- ester_reactions
+prerequisites: []
+content_md: '# ester_reactions — Practice 🚀
+
+
+  R-COOR'' + 2R''''MgX → R-C(R'''')₂-OH (tertiary alcohol). First Grignard forms ketone,
+  second forms tertiary alcohol with two identical R'''' groups.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 2
+  question: 'Reaction of 2 moles of Grignard reagent with ester gives:'
+  options:
+  - Tertiary alcohol
+  - Secondary alcohol
+  - Primary alcohol
+  - Ketone
+  correct_answer: Tertiary alcohol
+  explanation: "When an ester (R-COOR') reacts with 2 moles of Grignard reagent (R''MgX), it produces a tertiary alcohol. The first mole of Grignard reagent attacks the carbonyl carbon forming a ketone intermediate, then the second mole attacks the ketone to give a tertiary alcohol with two identical R'' groups. For example: CH₃COOC₂H₅ + 2CH₃MgBr → (CH₃)₃COH. This is a characteristic reaction used to synthesize tertiary alcohols with two identical substituents."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: What product is formed when an ester reacts with LiAlH₄?
+  options:
+  - Carboxylic acid
+  - Aldehyde
+  - Primary alcohol
+  - Ketone
+  correct_answer: Primary alcohol
+  explanation: "Esters react with LiAlH₄ (lithium aluminum hydride) to give primary alcohols. The reaction: R-COOR' + LiAlH₄ → R-CH₂-OH + R'-OH. LiAlH₄ is a strong reducing agent that reduces the ester all the way to the primary alcohol, producing two alcohols - one from the acyl part and one from the alkoxy part. For example: CH₃COOCH₃ + LiAlH₄ → CH₃CH₂OH + CH₃OH. This is different from Grignard reagents which give tertiary alcohols, or DIBAL-H at low temperature which can stop at the aldehyde stage."
+  require_pass: true
+- type: mcq
+  sequence_order: 4
+  question: What happens when an ester undergoes acid-catalyzed hydrolysis?
+  options:
+  - Forms carboxylic acid and alcohol (reversible)
+  - Forms ketone and alcohol (irreversible)
+  - Forms aldehyde and alcohol (reversible)
+  - Forms carboxylate salt and alcohol (irreversible)
+  correct_answer: Forms carboxylic acid and alcohol (reversible)
+  explanation: "Acid-catalyzed hydrolysis of esters produces a carboxylic acid and an alcohol, and the reaction is reversible: R-COOR' + H₂O ⇌ R-COOH + R'-OH. This is the reverse of Fischer esterification. The reaction requires acid catalyst (like H₂SO₄ or HCl) and excess water to drive equilibrium toward products. In contrast, base-catalyzed hydrolysis (saponification) produces carboxylate salt and is irreversible because the carboxylate ion doesn't react back with alcohol. Acid hydrolysis is reversible, base hydrolysis (saponification) is not."
+  require_pass: true

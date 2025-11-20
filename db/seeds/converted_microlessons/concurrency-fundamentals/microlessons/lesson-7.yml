@@ -1,0 +1,101 @@
+slug: lesson-7
+title: Lesson 7
+difficulty: easy
+sequence_order: 7
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Introduction to Mutexes\n\n    A **mutex**\
+  \ (mutual exclusion) is a synchronization primitive that prevents multiple threads\
+  \ from simultaneously accessing shared resources.\n\n    ## The Problem: Race Conditions\n\
+  \n    Without synchronization, multiple threads accessing shared data can cause\
+  \ unpredictable results:\n\n    ```python\n    # Python example: Race condition\n\
+  \    counter = 0\n\n    def increment():\n        global counter\n        for _\
+  \ in range(1000000):\n            counter += 1  # NOT ATOMIC!\n\n    # Two threads\
+  \ incrementing counter\n    t1 = threading.Thread(target=increment)\n    t2 = threading.Thread(target=increment)\n\
+  \    t1.start(); t2.start()\n    t1.join(); t2.join()\n\n    print(counter)  # Expected:\
+  \ 2000000, Actual: ???\n    ```\n\n    **Why?** The operation `counter += 1` consists\
+  \ of three steps:\n    1. Read current value\n    2. Add 1\n    3. Write back\n\n\
+  \    Threads can interleave these steps, causing lost updates.\n\n    ## The Solution:\
+  \ Mutex\n\n    ```python\n    import threading\n\n    counter = 0\n    lock = threading.Lock()\n\
+  \n    def increment():\n        global counter\n        for _ in range(1000000):\n\
+  \            with lock:  # Acquire lock\n                counter += 1  # Critical\
+  \ section\n            # Lock released automatically\n\n    # Now counter will be\
+  \ exactly 2000000\n    ```\n\n    ## Mutex Operations\n\n    ### Lock/Acquire\n\
+  \    - Requests exclusive access\n    - Blocks if another thread holds the lock\n\
+  \    - Proceeds when lock becomes available\n\n    ### Unlock/Release\n    - Releases\
+  \ exclusive access\n    - Allows waiting threads to acquire\n\n    ## Critical Section\n\
+  \n    Code between lock and unlock is the **critical section** - only one thread\
+  \ can execute it at a time.\n\n    **Best Practice**: Keep critical sections as\
+  \ short as possible!\n\n    ## Language-Specific Implementations\n\n    ### Python\n\
+  \    ```python\n    lock = threading.Lock()\n    with lock:\n        # critical\
+  \ section\n        shared_data += 1\n    ```\n\n    ### Java\n    ```java\n    synchronized(object)\
+  \ {\n        // critical section\n        sharedData++;\n    }\n    ```\n\n    ###\
+  \ C++\n    ```cpp\n    std::mutex mtx;\n    std::lock_guard<std::mutex> lock(mtx);\n\
+  \    sharedData++;\n    ```\n\n    ### Go\n    ```go\n    var mu sync.Mutex\n  \
+  \  mu.Lock()\n    sharedData++\n    mu.Unlock()\n    ```\n\n    ### Rust\n    ```rust\n\
+  \    let mutex = Mutex::new(0);\n    let mut data = mutex.lock().unwrap();\n   \
+  \ *data += 1;\n    ```\n\n    ## Types of Locks\n\n    ### 1. Reentrant Lock (Recursive\
+  \ Mutex)\n    - Same thread can acquire multiple times\n    - Must release same\
+  \ number of times\n\n    ```python\n    lock = threading.RLock()  # Reentrant lock\n\
+  \n    def outer():\n        with lock:\n            inner()  # OK - same thread\n\
+  \n    def inner():\n        with lock:  # Reacquire by same thread\n           \
+  \ pass\n    ```\n\n    ### 2. Read-Write Lock\n    - Multiple readers OR one writer\n\
+  \    - Improves performance for read-heavy workloads\n\n    ```python\n    from\
+  \ threading import RLock\n\n    class ReadWriteLock:\n        def __init__(self):\n\
+  \            self.readers = 0\n            self.lock = RLock()\n\n        def acquire_read(self):\n\
+  \            with self.lock:\n                self.readers += 1\n\n        def acquire_write(self):\n\
+  \            self.lock.acquire()\n    ```\n\n    ### 3. Spin Lock\n    - Busy-waits\
+  \ instead of blocking\n    - Good for very short critical sections\n    - Wastes\
+  \ CPU but avoids context switch\n\n    ## Common Pitfalls\n\n    ### 1. Forgetting\
+  \ to Unlock\n    ```python\n    # BAD\n    lock.acquire()\n    do_something()  #\
+  \ If this raises exception, lock never released!\n    lock.release()\n\n    # GOOD\n\
+  \    with lock:  # Automatically releases even on exception\n        do_something()\n\
+  \    ```\n\n    ### 2. Lock Ordering (can cause deadlock)\n    ```python\n    #\
+  \ Thread 1\n    with lock_a:\n        with lock_b:\n            pass\n\n    # Thread\
+  \ 2 (WRONG ORDER)\n    with lock_b:  # Deadlock possible!\n        with lock_a:\n\
+  \            pass\n    ```\n\n    ### 3. Holding Locks Too Long\n    ```python\n\
+  \    # BAD - long operation in critical section\n    with lock:\n        result\
+  \ = expensive_calculation()  # Others wait!\n        shared_data = result\n\n  \
+  \  # GOOD - minimize critical section\n    result = expensive_calculation()  # Outside\
+  \ lock\n    with lock:\n        shared_data = result  # Quick!\n    ```\n\n    ##\
+  \ Performance Considerations\n\n    1. **Lock Contention**: Many threads competing\
+  \ for same lock = slower\n    2. **Granularity**: Fine-grained locks = more concurrency\
+  \ but more overhead\n    3. **Lock-Free Alternatives**: Atomic operations can be\
+  \ faster\n\n    **Next**: We'll explore deadlocks and how to prevent them."
+exercises:
+  - type: mcq
+    sequence_order: 1
+    question: "Why does the operation `counter += 1` cause race conditions in multi-threaded code?"
+    options:
+      - "Because Python is not thread-safe"
+      - "Because it consists of three non-atomic operations: read, add, and write, which can be interleaved"
+      - "Because the += operator is deprecated"
+      - "Because counters cannot be shared between threads"
+    correct_answer: "Because it consists of three non-atomic operations: read, add, and write, which can be interleaved"
+    explanation: "The operation `counter += 1` appears to be a single line of code, but it actually performs three separate operations at the machine level: (1) Read the current value of counter from memory, (2) Add 1 to that value, (3) Write the new value back to memory. When multiple threads execute this simultaneously, these steps can interleave in problematic ways. For example, if Thread 1 reads counter=5, then Thread 2 also reads counter=5 before Thread 1 writes back, both threads will write counter=6 instead of the expected 7. This is called a lost update. The solution is to use a mutex to make the entire read-modify-write sequence atomic: with lock: counter += 1. This ensures only one thread can execute the operation at a time, preventing interleaving. This pattern applies to any compound operation on shared data, not just increments."
+    require_pass: true
+
+  - type: mcq
+    sequence_order: 2
+    question: "What is the main difference between a regular mutex and a reentrant lock (RLock)?"
+    options:
+      - "Reentrant locks are faster than regular mutexes"
+      - "A reentrant lock allows the same thread to acquire it multiple times without deadlocking itself"
+      - "Reentrant locks work with multiple processes, not just threads"
+      - "Regular mutexes cannot be released"
+    correct_answer: "A reentrant lock allows the same thread to acquire it multiple times without deadlocking itself"
+    explanation: "A reentrant lock (also called a recursive mutex) differs from a regular mutex in that it tracks which thread currently holds the lock and maintains an acquisition count. If the same thread that already holds the lock tries to acquire it again, the reentrant lock allows it and simply increments the counter, rather than deadlocking. The thread must then release the lock the same number of times it acquired it. This is useful for recursive functions or when a method calls another method that also needs the same lock. For example: lock = threading.RLock(); def outer(): with lock: inner(); def inner(): with lock: pass. With a regular Lock, this would deadlock when outer() calls inner() because the thread already holds the lock. With RLock, it works correctly. The tradeoff is that reentrant locks have slightly more overhead due to tracking the owner thread and count."
+    require_pass: true
+
+  - type: mcq
+    sequence_order: 3
+    question: "Why is it important to keep critical sections as short as possible?"
+    options:
+      - "To reduce code complexity"
+      - "To minimize lock contention and maximize concurrency by reducing the time other threads must wait"
+      - "To use less memory"
+      - "To make the code easier to read"
+    correct_answer: "To minimize lock contention and maximize concurrency by reducing the time other threads must wait"
+    explanation: "Critical sections should be kept as short as possible because while one thread holds a lock, all other threads that need that lock must wait, effectively serializing execution. The longer the critical section, the more time threads spend waiting instead of doing useful work, reducing the benefits of concurrency. For example, compare: BAD: with lock: result = expensive_calculation(); shared_data = result (other threads wait during entire calculation), versus GOOD: result = expensive_calculation(); with lock: shared_data = result (other threads only wait for quick assignment). In the good version, the expensive calculation happens outside the lock in parallel across threads, and only the brief update is serialized. This principle applies broadly: perform I/O operations, complex calculations, and any work that doesn't need the shared resource outside the critical section. Only protect the minimal code that actually accesses shared data."
+    require_pass: true

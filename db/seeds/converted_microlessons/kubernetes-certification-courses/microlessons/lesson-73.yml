@@ -1,0 +1,440 @@
+slug: lesson-73
+title: Kubernetes Storage Troubleshooting
+difficulty: medium
+sequence_order: 73
+estimated_minutes: 12
+key_concepts:
+  - PersistentVolumeClaims
+  - Storage provisioners
+  - Mount failures
+  - Volume binding
+  - Storage classes
+prerequisites: []
+content_md: |
+  # Kubernetes Storage Troubleshooting
+
+  ## Introduction
+
+  Storage issues are common in Kubernetes and can prevent pods from starting or cause data loss. Understanding how to diagnose PersistentVolumeClaim (PVC) problems, provisioner logs, and mount failures is critical.
+
+  ## Persistent Volumes and Claims
+
+  ### Storage Architecture
+
+  **Kubernetes storage components:**
+  - **PersistentVolume (PV)** - Cluster-wide storage resource
+  - **PersistentVolumeClaim (PVC)** - User request for storage
+  - **StorageClass** - Dynamic provisioning template
+  - **CSI Driver** - Container Storage Interface plugin
+
+  ### PVC Lifecycle
+
+  ```
+  Pending → Bound → Released → (Available/Failed)
+  ```
+
+  ## Diagnosing Pending PVCs
+
+  ### Check PVC Status
+
+  ```bash
+  # List all PVCs
+  kubectl get pvc
+
+  # Describe PVC to see events
+  kubectl describe pvc my-pvc
+
+  # Check PVC in YAML format
+  kubectl get pvc my-pvc -o yaml
+  ```
+
+  ### Common Reasons for Pending PVCs
+
+  **1. No Matching PersistentVolume**
+
+  ```bash
+  # Check available PVs
+  kubectl get pv
+
+  # Look for PVs with status "Available"
+  kubectl get pv --field-selector=status.phase=Available
+
+  # PVC requirements must match PV:
+  # - Storage size (PV >= PVC)
+  # - Access modes
+  # - Storage class
+  ```
+
+  **2. StorageClass Not Found**
+
+  ```bash
+  # List storage classes
+  kubectl get storageclass
+
+  # Check if default storage class exists
+  kubectl get storageclass -o yaml | grep 'is-default-class: "true"'
+
+  # Describe storage class
+  kubectl describe storageclass standard
+  ```
+
+  **3. Insufficient Storage**
+
+  ```bash
+  # Check requested vs available storage
+  kubectl describe pvc my-pvc | grep -A3 "Requested"
+
+  # Check available PVs with enough capacity
+  kubectl get pv --sort-by=.spec.capacity.storage
+  ```
+
+  **4. Access Mode Mismatch**
+
+  **Access modes:**
+  - **ReadWriteOnce (RWO)** - Single node read/write
+  - **ReadOnlyMany (ROX)** - Multiple nodes read-only
+  - **ReadWriteMany (RWX)** - Multiple nodes read/write
+
+  ```bash
+  # Check PVC access mode
+  kubectl get pvc my-pvc -o jsonpath='{.spec.accessModes}'
+
+  # Check available PV access modes
+  kubectl get pv -o custom-columns=NAME:.metadata.name,ACCESS:.spec.accessModes
+  ```
+
+  ### PVC Example
+
+  ```yaml
+  apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    name: my-pvc
+  spec:
+    accessModes:
+    - ReadWriteOnce
+    resources:
+      requests:
+        storage: 10Gi
+    storageClassName: standard  # Must match existing StorageClass
+  ```
+
+  ## Storage Provisioner Diagnostics
+
+  ### What is a Provisioner?
+
+  Provisioners automatically create PVs when PVCs are requested.
+
+  **Common provisioners:**
+  - AWS EBS
+  - Google Persistent Disk
+  - Azure Disk
+  - NFS
+  - Local storage
+
+  ### Check Provisioner Logs
+
+  ```bash
+  # For external provisioners (check deployment)
+  kubectl get deployment -A | grep provisioner
+
+  # Check provisioner pods
+  kubectl get pods -n kube-system | grep provisioner
+
+  # View provisioner logs
+  kubectl logs -n kube-system <provisioner-pod-name>
+
+  # For CSI provisioners
+  kubectl get pods -n kube-system | grep csi
+  kubectl logs -n kube-system <csi-provisioner-pod>
+  ```
+
+  ### StorageClass Configuration
+
+  ```yaml
+  apiVersion: storage.k8s.io/v1
+  kind: StorageClass
+  metadata:
+    name: fast
+    annotations:
+      storageclass.kubernetes.io/is-default-class: "true"
+  provisioner: kubernetes.io/aws-ebs  # Provisioner plugin
+  parameters:
+    type: gp3
+    encrypted: "true"
+  volumeBindingMode: WaitForFirstConsumer  # Delay binding until pod scheduled
+  ```
+
+  ### Dynamic Provisioning Issues
+
+  **Problem: PVC stuck in Pending with dynamic provisioning**
+
+  ```bash
+  # 1. Check events
+  kubectl describe pvc my-pvc | grep Events -A10
+
+  # 2. Verify StorageClass exists
+  kubectl get sc
+
+  # 3. Check provisioner pod is running
+  kubectl get pods -n kube-system | grep provisioner
+
+  # 4. Check provisioner logs for errors
+  kubectl logs -n kube-system -l app=ebs-csi-controller
+
+  # 5. Verify cloud provider credentials
+  kubectl get secret -n kube-system
+  ```
+
+  ## Mount Failures
+
+  ### Detecting Mount Issues
+
+  **Pod stuck in ContainerCreating:**
+
+  ```bash
+  # Check pod status
+  kubectl get pods
+
+  # Describe pod to see mount errors
+  kubectl describe pod my-pod
+
+  # Look for errors like:
+  # - "Unable to attach or mount volumes"
+  # - "failed to mount volume"
+  # - "orphaned pod"
+  ```
+
+  ### Common Mount Failures
+
+  **1. Volume Already Mounted Elsewhere (RWO)**
+
+  ```bash
+  # Check which pods are using the PVC
+  kubectl get pods -o json | jq -r '.items[] |
+    select(.spec.volumes[]?.persistentVolumeClaim.claimName=="my-pvc") |
+    .metadata.name'
+
+  # For RWO volumes, only one pod per node can mount
+  # Delete old pod or wait for it to terminate
+  kubectl delete pod old-pod --wait=true
+  ```
+
+  **2. Volume Not Attached to Node**
+
+  ```bash
+  # Check VolumeAttachments
+  kubectl get volumeattachments
+
+  # Describe to see errors
+  kubectl describe volumeattachment <name>
+
+  # Check node where pod is scheduled
+  kubectl get pod my-pod -o wide
+
+  # Verify CSI driver pods on that node
+  kubectl get pods -n kube-system -o wide | grep csi
+  ```
+
+  **3. File System Corruption**
+
+  ```bash
+  # Check kubelet logs on the node
+  # SSH to node
+  sudo journalctl -u kubelet | grep -i "mount\|volume"
+
+  # Check for file system errors
+  sudo dmesg | grep -i "error\|mount"
+  ```
+
+  **4. Permission Issues**
+
+  ```bash
+  # Check security context in pod spec
+  kubectl get pod my-pod -o yaml | grep -A10 securityContext
+
+  # Volume might require specific fsGroup
+  # Example:
+  spec:
+    securityContext:
+      fsGroup: 2000  # All containers run as group 2000
+    containers:
+    - name: app
+      volumeMounts:
+      - name: data
+        mountPath: /data
+  ```
+
+  ### Volume Mount Example
+
+  ```yaml
+  apiVersion: v1
+  kind: Pod
+  metadata:
+    name: my-pod
+  spec:
+    containers:
+    - name: app
+      image: nginx
+      volumeMounts:
+      - name: data
+        mountPath: /data
+    volumes:
+    - name: data
+      persistentVolumeClaim:
+        claimName: my-pvc
+  ```
+
+  ## Troubleshooting Workflow
+
+  ### Step-by-Step Debugging
+
+  **1. Check PVC Status**
+  ```bash
+  kubectl get pvc
+  ```
+
+  **2. If Pending, check events**
+  ```bash
+  kubectl describe pvc my-pvc
+  ```
+
+  **3. Verify StorageClass**
+  ```bash
+  kubectl get sc
+  kubectl describe sc standard
+  ```
+
+  **4. Check provisioner**
+  ```bash
+  kubectl get pods -n kube-system | grep provisioner
+  kubectl logs -n kube-system <provisioner-pod>
+  ```
+
+  **5. For mount issues, check pod**
+  ```bash
+  kubectl describe pod my-pod
+  kubectl get events --field-selector involvedObject.name=my-pod
+  ```
+
+  **6. Check node and kubelet**
+  ```bash
+  kubectl get nodes
+  kubectl describe node <node-name>
+  # On node: sudo journalctl -u kubelet
+  ```
+
+  ## Common Error Messages
+
+  **"waiting for a volume to be created"**
+  - StorageClass not found or provisioner not working
+  - Check: `kubectl get sc` and provisioner logs
+
+  **"FailedAttachVolume"**
+  - Volume cannot attach to node
+  - Check: VolumeAttachments, CSI driver pods
+
+  **"FailedMount"**
+  - Volume attached but cannot mount
+  - Check: kubelet logs, file system, permissions
+
+  **"multi-attach error"**
+  - RWO volume already attached elsewhere
+  - Check: other pods using same PVC, delete old pods
+
+  ## StatefulSet Storage
+
+  StatefulSets create PVCs automatically from templates.
+
+  ```yaml
+  apiVersion: apps/v1
+  kind: StatefulSet
+  metadata:
+    name: web
+  spec:
+    serviceName: "nginx"
+    replicas: 3
+    volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        storageClassName: "standard"
+        resources:
+          requests:
+            storage: 10Gi
+  ```
+
+  **Debugging StatefulSet storage:**
+  ```bash
+  # Check PVCs created by StatefulSet
+  kubectl get pvc | grep web
+
+  # Each pod gets its own PVC: data-web-0, data-web-1, data-web-2
+  ```
+
+  ## Volume Binding Modes
+
+  **Immediate** - PV bound as soon as PVC created
+  **WaitForFirstConsumer** - PV bound when pod scheduled (better for topology)
+
+  ```bash
+  # Check binding mode
+  kubectl get sc -o custom-columns=NAME:.metadata.name,BINDING:.volumeBindingMode
+  ```
+
+  ## Cleanup and Recovery
+
+  ```bash
+  # Delete PVC (careful - data loss!)
+  kubectl delete pvc my-pvc
+
+  # PV reclaim policies:
+  # - Retain: Manual cleanup required
+  # - Delete: Auto-deleted with PVC
+  # - Recycle: Data scrubbed for reuse (deprecated)
+
+  # Check PV reclaim policy
+  kubectl get pv -o custom-columns=NAME:.metadata.name,RECLAIM:.spec.persistentVolumeReclaimPolicy
+  ```
+
+  ## Key Takeaways
+
+  1. **Pending PVCs** - Check StorageClass, provisioner, and PV availability
+  2. **Mount failures** - Check pod events, VolumeAttachments, kubelet logs
+  3. **RWO volumes** - Can only be mounted by one pod per node
+  4. **Provisioner logs** - Essential for dynamic provisioning issues
+  5. **VolumeBindingMode** - WaitForFirstConsumer for topology awareness
+
+exercises:
+  - type: mcq
+    question: "What command shows why a PVC is stuck in Pending status?"
+    options:
+      - "kubectl get pvc my-pvc"
+      - "kubectl describe pvc my-pvc"
+      - "kubectl logs pvc my-pvc"
+      - "kubectl edit pvc my-pvc"
+    correct_answer: "kubectl describe pvc my-pvc"
+    explanation: "kubectl describe pvc shows events and details about why a PVC cannot be bound, including errors from the provisioner."
+    sequence_order: 1
+
+  - type: mcq
+    question: "Which access mode allows a volume to be mounted by multiple pods on different nodes?"
+    options:
+      - "ReadWriteOnce (RWO)"
+      - "ReadOnlyMany (ROX)"
+      - "ReadWriteMany (RWX)"
+      - "ReadWriteSingle (RWS)"
+    correct_answer: "ReadWriteMany (RWX)"
+    explanation: "ReadWriteMany (RWX) allows multiple nodes to mount the volume with read-write access. Note: Not all storage backends support RWX."
+    sequence_order: 2
+
+  - type: terminal
+    problem_statement: "List all PersistentVolumeClaims in the default namespace and check their status."
+    expected_output: "List of PVCs with their status"
+    language: bash
+    starter_code: "# List all PVCs\n"
+    command: kubectl get pvc
+    hints:
+      - "Use: kubectl get pvc"
+    sequence_order: 3

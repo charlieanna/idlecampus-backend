@@ -1,0 +1,45 @@
+slug: lesson-44
+title: Lesson 44
+difficulty: easy
+sequence_order: 44
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Building Cloud-Native Applications\n\n\
+  \    Design 12-factor applications for Kubernetes:\n    - Config via environment\n\
+  \    - Stateless processes\n    - Disposability\n    - Dev/prod parity\n    - Logs\
+  \ as event streams"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: According to 12-factor app principles, how should application configuration be stored in a cloud-native application?
+  options:
+  - Hardcoded in the application code
+  - Stored in environment variables
+  - Stored in a configuration file bundled with the application
+  - Stored in a separate database
+  correct_answer: Stored in environment variables
+  explanation: "The 12-factor app methodology emphasizes strict separation of config from code. Configuration should be stored in environment variables, making it easy to change between deployments without rebuilding the application. In Kubernetes, this is typically achieved using ConfigMaps and Secrets, which populate environment variables or mount configuration files. This approach enables the same code to be deployed across different environments (development, staging, production) with different configurations. Hardcoding configuration violates this principle and makes the application inflexible. While configuration files can work, they're less portable than environment variables. The key principle is that config varies between deployments but code doesn't - you should be able to open-source your code without exposing credentials or environment-specific settings."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What does the 12-factor principle of 'stateless processes' mean for Kubernetes applications?
+  options:
+  - Applications should never use databases
+  - Application instances should not store state in memory or on disk that needs to persist across restarts
+  - Applications should use StatefulSets instead of Deployments
+  - Applications should not have any configuration
+  correct_answer: Application instances should not store state in memory or on disk that needs to persist across restarts
+  explanation: "The stateless processes principle means that each instance of your application should not rely on in-memory state or local disk storage that needs to persist across restarts. Any data that needs to persist should be stored in a stateful backing service (like a database, object store, or cache). This is crucial in Kubernetes where pods can be killed and rescheduled at any time. Stateless apps are horizontally scalable - you can add or remove instances without worrying about state consistency. Session data should be stored in Redis or similar, not in the application's memory. Uploaded files should go to S3 or similar, not local disk. This doesn't mean you can't use databases - it means your application processes themselves should be stateless, treating databases as attached resources. This enables easy scaling, resilience, and zero-downtime deployments."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: According to 12-factor principles, how should applications handle logging?
+  options:
+  - Write logs to files and rotate them
+  - Stream logs to stdout/stderr as event streams
+  - Store logs in a database
+  - Send logs directly to a log aggregation service
+  correct_answer: Stream logs to stdout/stderr as event streams
+  explanation: "The 12-factor app treats logs as event streams that are written unbuffered to stdout/stderr. The application doesn't concern itself with log storage or routing - that's handled by the execution environment. In Kubernetes, this works perfectly: your application writes to stdout/stderr, Docker captures these streams, and Kubernetes makes them available via 'kubectl logs'. You can then use tools like Fluentd, Filebeat, or Promtail (running as DaemonSets) to collect logs from all containers and ship them to centralized logging systems like Elasticsearch, Loki, or CloudWatch. This separation of concerns means applications don't need log rotation, retention policies, or storage management logic. They simply output events as they happen. This makes applications simpler and more portable across different environments."
+  require_pass: true

@@ -1,0 +1,54 @@
+slug: lesson-16
+title: Lesson 16
+sequence_order: 16
+estimated_minutes: 2
+difficulty: easy
+content_md: "# Microlesson \U0001F680\n\n# Networking Deep Dive\n\n    Master advanced\
+  \ networking concepts including Ingress, Network Policies, and troubleshooting techniques.\n\
+  \n    ## Ingress\n\n    HTTP/HTTPS routing to services:\n    - Single external endpoint\n\
+  \    - Path-based routing\n    - Virtual hosting\n    - TLS/SSL termination\n\n\
+  \    **Ingress Controllers:**\n    - NGINX Ingress Controller\n    - Traefik\n \
+  \   - HAProxy\n    - Cloud-specific (ALB, GCE)\n\n    **Example Ingress:**\n   \
+  \ ```yaml\n    apiVersion: networking.k8s.io/v1\n    kind: Ingress\n    metadata:\n\
+  \      name: my-ingress\n    spec:\n      rules:\n      - host: app.example.com\n\
+  \        http:\n          paths:\n          - path: /api\n            pathType:\
+  \ Prefix\n            backend:\n              service:\n                name: api-service\n\
+  \                port:\n                  number: 80\n    ```\n\n    ## Network\
+  \ Policies\n\n    Control traffic between pods:\n\n    **Default Behavior:** All\
+  \ pods can communicate\n\n    **With NetworkPolicy:**\n    - Deny all, allow specific\n\
+  \    - Label-based selection\n    - Namespace isolation\n    - Ingress and egress\
+  \ rules\n\n    **Example Policy:**\n    ```yaml\n    apiVersion: networking.k8s.io/v1\n\
+  \    kind: NetworkPolicy\n    metadata:\n      name: allow-frontend\n    spec:\n\
+  \      podSelector:\n        matchLabels:\n          role: backend\n      ingress:\n\
+  \      - from:\n        - podSelector:\n            matchLabels:\n             \
+  \ role: frontend\n        ports:\n        - protocol: TCP\n          port: 8080\n\
+  \    ```\n\n    ## Network Troubleshooting\n\n    **Common Issues:**\n    - Service\
+  \ not accessible\n    - DNS resolution failures\n    - Network policy blocking traffic\n\
+  \    - Ingress misconfiguration\n\n    **Debugging Tools:**\n    ```bash\n    #\
+  \ Test service connectivity\n    kubectl run debug --image=nicolaka/netshoot -it\
+  \ --rm -- bash\n\n    # DNS lookup\n    nslookup my-service\n\n    # Check endpoints\n\
+  \    kubectl get endpoints\n\n    # Test port connectivity\n    nc -zv my-service\
+  \ 80\n    ```\n\n    ## Service Mesh (Introduction)\n\n    Advanced traffic management:\n\
+  \    - Istio, Linkerd, Consul\n    - Traffic splitting\n    - Circuit breaking\n\
+  \    - Observability\n\n    Practice networking in the hands-on labs!"
+exercises:
+- type: mcq
+  slug: lesson-16-mcq
+  sequence_order: 1
+  question: What is the main focus of this lesson on Lesson 16?
+  options:
+  - Understanding core concepts and practical applications related to Lesson 16
+  - Only theoretical knowledge without application
+  - Memorizing definitions without context
+  - Learning unrelated peripheral topics
+  correct_answer_index: 0
+  explanation: This lesson on Lesson 16 aims to build both conceptual understanding
+    and practical knowledge. Effective learning combines theory with application,
+    allowing you to not only understand concepts but also apply them in real-world
+    contexts. This integrated approach is more valuable than rote memorization or
+    purely theoretical study.
+objectives:
+- Apply least privilege
+- Design policies
+- Harden auth & keys
+next_recommended: []

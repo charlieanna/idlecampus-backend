@@ -1,0 +1,107 @@
+slug: lesson-12
+title: Lesson 12
+difficulty: easy
+sequence_order: 12
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# EBS and EFS: Block and File Storage\n\n\
+  \    Persistent storage for EC2 instances.\n\n    ## EBS: Elastic Block Store\n\n\
+  \    **Block storage** volumes for EC2 instances (like virtual hard drives).\n\n\
+  \    ### EBS Volume Types\n\n    **GP3 (General Purpose SSD)**:\n    - 3,000-16,000\
+  \ IOPS\n    - 125-1,000 MB/s throughput\n    - Cost-effective\n\n    **IO2 (Provisioned\
+  \ IOPS SSD)**:\n    - Up to 64,000 IOPS\n    - Mission-critical workloads\n    -\
+  \ Databases\n\n    **ST1 (Throughput Optimized HDD)**:\n    - Big data, data warehouses\n\
+  \    - Cannot be boot volume\n\n    **SC1 (Cold HDD)**:\n    - Infrequently accessed\
+  \ data\n    - Lowest cost\n    - Cannot be boot volume\n\n    ### Creating EBS Volumes\n\
+  \n    ```bash\n    aws ec2 create-volume \\\\\n      --availability-zone us-east-1a\
+  \ \\\\\n      --size 100 \\\\\n      --volume-type gp3\n    ```\n\n    ### Attaching\
+  \ Volumes\n\n    ```bash\n    aws ec2 attach-volume \\\\\n      --volume-id vol-1234567890abcdef0\
+  \ \\\\\n      --instance-id i-1234567890abcdef0 \\\\\n      --device /dev/sdf\n\
+  \    ```\n\n    ### EBS Snapshots\n\n    Backup EBS volumes.\n\n    ```bash\n  \
+  \  # Create snapshot\n    aws ec2 create-snapshot \\\\\n      --volume-id vol-1234567890abcdef0\
+  \ \\\\\n      --description \"My backup\"\n\n    # List snapshots\n    aws ec2 describe-snapshots\
+  \ --owner-ids self\n\n    # Create volume from snapshot\n    aws ec2 create-volume\
+  \ \\\\\n      --snapshot-id snap-1234567890abcdef0 \\\\\n      --availability-zone\
+  \ us-east-1a\n    ```\n\n    ## EFS: Elastic File System\n\n    **Network file system**\
+  \ (NFS) for multiple EC2 instances.\n\n    ### EFS vs EBS\n\n    | Feature | EBS\
+  \ | EFS |\n    |---------|-----|-----|\n    | Type | Block storage | File storage\
+  \ |\n    | Attachment | One EC2 at a time* | Multiple EC2 simultaneously |\n   \
+  \ | Scope | Single AZ | Multi-AZ |\n    | Use Case | Boot volumes, databases | Shared\
+  \ file storage |\n\n    *Multi-attach available for io1/io2 in same AZ\n\n    ###\
+  \ Creating EFS\n\n    ```bash\n    aws efs create-file-system \\\\\n      --creation-token\
+  \ my-efs \\\\\n      --performance-mode generalPurpose \\\\\n      --throughput-mode\
+  \ bursting\n    ```\n\n    ### Mounting EFS\n\n    ```bash\n    # Install NFS client\n\
+  \    sudo yum install -y amazon-efs-utils\n\n    # Mount EFS\n    sudo mount -t\
+  \ efs fs-1234567890abcdef0:/ /mnt/efs\n    ```\n\n    ### EFS Storage Classes\n\n\
+  \    **Standard**: Frequently accessed\n    **Infrequent Access**: Automatically\
+  \ move rarely accessed files\n\n    ## Storage Comparison\n\n    | Service | Type\
+  \ | Use Case |\n    |---------|------|----------|\n    | **S3** | Object | Static\
+  \ files, backups, big data |\n    | **EBS** | Block | EC2 boot volumes, databases\
+  \ |\n    | **EFS** | File | Shared file storage across EC2 |\n    | **S3 Glacier**\
+  \ | Object (archive) | Long-term backups |\n\n    **Practice**: Try the EBS/EFS\
+  \ lab!"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What is the fundamental difference between EBS and EFS, and when should
+    you use each?
+  options:
+  - EBS is block storage for single EC2 instance; EFS is file storage mountable by
+    multiple EC2 instances simultaneously across AZs
+  - EBS and EFS are the same service with different names
+  - EFS is faster than EBS for all workloads
+  - EBS can be shared by unlimited instances while EFS cannot
+  correct_answer: EBS is block storage for single EC2 instance; EFS is file storage
+    mountable by multiple EC2 instances simultaneously across AZs
+  explanation: 'EBS (Elastic Block Store) and EFS (Elastic File System) serve different
+    storage needs with distinct architectures. EBS: Block-level storage acting as
+    virtual hard drive, attached to one EC2 instance at a time (except io1/io2 multi-attach
+    in same AZ), lives in single Availability Zone, maximum size 16 TB, survives instance
+    termination if configured, ideal for databases, boot volumes, applications requiring
+    consistent low-latency. Performance: GP3 offers 3,000-16,000 IOPS, IO2 up to 64,000
+    IOPS for mission-critical databases. Example: Attach 100 GB gp3 volume to EC2
+    for PostgreSQL database - data persists when instance stops. EFS: Network file
+    system (NFS) using POSIX file system, mountable by multiple EC2 instances simultaneously,
+    spans multiple Availability Zones in region, automatically grows/shrinks (no capacity
+    planning), ideal for shared content, web serving, content management, development
+    environments. Performance: Throughput scales with size, bursting mode or provisioned
+    mode. Example: 100 web servers mount same EFS containing website files - all read/write
+    same shared content. Cost comparison: EBS gp3 $0.08/GB-month, EFS Standard $0.30/GB-month
+    (3.75x more). Decision matrix: Single instance + database = EBS, Multiple instances
+    + shared files = EFS, Boot volume = EBS only, High IOPS database = EBS io2, Content
+    repository = EFS, Cross-AZ access = EFS.'
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: Why are EBS snapshots important and how do they work?
+  options:
+  - Snapshots are incremental backups stored in S3, enabling disaster recovery, volume
+    cloning, and cross-region copying
+  - Snapshots are real-time mirrors that update instantly
+  - Snapshots only work for deleted volumes
+  - Snapshots replace the need for EBS volumes entirely
+  correct_answer: Snapshots are incremental backups stored in S3, enabling disaster
+    recovery, volume cloning, and cross-region copying
+  explanation: 'EBS snapshots are incremental, point-in-time backups stored in S3
+    providing critical data protection capabilities. How incremental snapshots work:
+    First snapshot copies all blocks from volume (100 GB volume = 100 GB snapshot),
+    subsequent snapshots only copy changed blocks. Example: Day 1 snapshot = 100 GB,
+    modify 5 GB data, Day 2 snapshot = 5 GB additional (total storage 105 GB), modify
+    10 GB more, Day 3 snapshot = 10 GB additional (total 115 GB). AWS manages block-level
+    tracking automatically. Snapshot lifecycle: Create snapshot of active volume (no
+    downtime required but may affect performance), snapshot stored durably in S3 across
+    multiple AZs, restore snapshot to create new EBS volume in any AZ, copy snapshot
+    to different region for disaster recovery. Use cases: (1) Disaster Recovery: Daily
+    snapshots of production databases, restore if volume corrupts or instance fails,
+    RPO of 24 hours with daily snapshots. (2) Environment Cloning: Snapshot production
+    database, restore to create dev/test copy with identical data. (3) Regional Migration:
+    Copy snapshot from us-east-1 to eu-west-1, create volume from snapshot, migrate
+    workload to Europe. (4) Volume Type Change: Snapshot gp2 volume, restore as gp3
+    with better performance. Cost: $0.05/GB-month for snapshot storage (cheaper than
+    active EBS), plus $0.01/GB for cross-region copy. Best practices: Automate snapshots
+    with lifecycle policies (daily, weekly, monthly), tag snapshots with metadata,
+    test restore procedures regularly, encrypt snapshots for sensitive data, delete
+    old snapshots to control costs. Performance: Snapshots are asynchronous (don''t
+    block application), fast incremental algorithm minimizes time and storage.'
+  require_pass: true

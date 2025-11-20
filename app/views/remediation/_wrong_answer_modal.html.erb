@@ -1,0 +1,259 @@
+<div class="modal fade" id="wrongAnswerModal" tabindex="-1" aria-labelledby="wrongAnswerModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header bg-warning">
+        <h5 class="modal-title" id="wrongAnswerModalLabel">
+          <i class="fas fa-lightbulb"></i> Let's Review This Concept
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      
+      <div class="modal-body">
+        <!-- Question Review -->
+        <div class="question-review mb-4">
+          <h6 class="text-muted">Question:</h6>
+          <p id="modal-question-text" class="fw-bold"></p>
+          
+          <div class="row">
+            <div class="col-md-6">
+              <div class="alert alert-danger">
+                <strong>Your Answer:</strong>
+                <p id="modal-user-answer" class="mb-0"></p>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="alert alert-success">
+                <strong>Correct Answer:</strong>
+                <p id="modal-correct-answer" class="mb-0"></p>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Feedback Section -->
+          <div id="modal-feedback" class="alert alert-info">
+            <strong><i class="fas fa-info-circle"></i> Feedback:</strong>
+            <p id="modal-feedback-text" class="mb-0"></p>
+          </div>
+          
+          <!-- Hint Section -->
+          <div id="modal-hint" class="alert alert-light" style="display:none;">
+            <strong><i class="fas fa-key"></i> Hint:</strong>
+            <p id="modal-hint-text" class="mb-0"></p>
+          </div>
+        </div>
+        
+        <!-- Mini-lesson Preview -->
+        <div class="mini-lesson-container mb-4" id="mini-lesson-container">
+          <h6 class="border-bottom pb-2 mb-3">
+            <i class="fas fa-book-open"></i> Quick Review
+          </h6>
+          <div id="mini-lesson-content">
+            <!-- Mini-lesson will be loaded here -->
+          </div>
+        </div>
+        
+        <!-- Lesson Recommendations -->
+        <div class="lesson-recommendations" id="lesson-recommendations">
+          <h6 class="border-bottom pb-2 mb-3">
+            <i class="fas fa-graduation-cap"></i> Recommended Lessons
+          </h6>
+          <div id="lesson-cards-container">
+            <!-- Lesson cards will be inserted here -->
+          </div>
+        </div>
+      </div>
+      
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="show-hint-btn" onclick="showHint()">
+          <i class="fas fa-lightbulb"></i> Show Hint
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .lesson-card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 10px;
+    transition: box-shadow 0.3s;
+  }
+  
+  .lesson-card:hover {
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  }
+  
+  .lesson-card.primary {
+    border-left: 4px solid #007bff;
+  }
+  
+  .lesson-card.additional {
+    border-left: 4px solid #6c757d;
+  }
+  
+  .mini-lesson-container {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 20px;
+  }
+  
+  .key-point {
+    padding: 8px 12px;
+    margin: 5px 0;
+    background: white;
+    border-left: 3px solid #28a745;
+    border-radius: 4px;
+  }
+  
+  .command-example {
+    background: #2d2d2d;
+    color: #f8f8f2;
+    padding: 12px;
+    border-radius: 4px;
+    font-family: 'Courier New', monospace;
+    margin: 5px 0;
+  }
+</style>
+
+<script>
+  function showWrongAnswerModal(data) {
+    // Populate question and answers
+    document.getElementById('modal-question-text').textContent = data.question_text;
+    document.getElementById('modal-user-answer').textContent = data.user_answer || 'No answer provided';
+    document.getElementById('modal-correct-answer').textContent = data.correct_answer;
+    
+    // Populate feedback
+    if (data.feedback) {
+      document.getElementById('modal-feedback-text').textContent = data.feedback;
+      document.getElementById('modal-feedback').style.display = 'block';
+    }
+    
+    // Store hint for later
+    if (data.hint) {
+      document.getElementById('modal-hint-text').textContent = data.hint;
+      document.getElementById('show-hint-btn').style.display = 'inline-block';
+    } else {
+      document.getElementById('show-hint-btn').style.display = 'none';
+    }
+    
+    // Load mini-lesson
+    if (data.mini_lesson) {
+      loadMiniLesson(data.mini_lesson);
+    }
+    
+    // Load lesson recommendations
+    if (data.lesson_mappings) {
+      loadLessonRecommendations(data.lesson_mappings, data.question_id, data.quiz_attempt_id);
+    }
+    
+    // Show modal
+    var modal = new bootstrap.Modal(document.getElementById('wrongAnswerModal'));
+    modal.show();
+  }
+  
+  function showHint() {
+    document.getElementById('modal-hint').style.display = 'block';
+    document.getElementById('show-hint-btn').style.display = 'none';
+  }
+  
+  function loadMiniLesson(miniLesson) {
+    let html = `
+      <h6 class="fw-bold">${miniLesson.title}</h6>
+      <p>${miniLesson.summary || miniLesson.content}</p>
+    `;
+    
+    if (miniLesson.key_points && miniLesson.key_points.length > 0) {
+      html += '<div class="mt-3"><strong>Key Points:</strong>';
+      miniLesson.key_points.forEach(point => {
+        html += `<div class="key-point"><i class="fas fa-check-circle text-success"></i> ${point}</div>`;
+      });
+      html += '</div>';
+    }
+    
+    if (miniLesson.common_commands && miniLesson.common_commands.length > 0) {
+      html += '<div class="mt-3"><strong>Common Commands:</strong>';
+      miniLesson.common_commands.forEach(cmd => {
+        html += `<div class="command-example">${cmd}</div>`;
+      });
+      html += '</div>';
+    }
+    
+    if (miniLesson.visual_example) {
+      html += `<div class="mt-3 p-3 bg-light border-start border-primary border-3">
+                <strong><i class="fas fa-eye"></i> Visual:</strong> ${miniLesson.visual_example}
+               </div>`;
+    }
+    
+    document.getElementById('mini-lesson-content').innerHTML = html;
+  }
+  
+  function loadLessonRecommendations(mapping, questionId, quizAttemptId) {
+    let html = '';
+    
+    if (mapping.primary_lesson) {
+      html += createLessonCard(mapping.primary_lesson, 'primary', 'Recommended', questionId, quizAttemptId);
+    }
+    
+    if (mapping.additional_lessons && mapping.additional_lessons.length > 0) {
+      mapping.additional_lessons.forEach(lesson => {
+        html += createLessonCard(lesson, 'additional', 'Also Helpful', questionId, quizAttemptId);
+      });
+    }
+    
+    document.getElementById('lesson-cards-container').innerHTML = html;
+  }
+  
+  function createLessonCard(lesson, type, label, questionId, quizAttemptId) {
+    const sectionInfo = lesson.section_title ? 
+      `<small class="text-muted"><i class="fas fa-bookmark"></i> Section: ${lesson.section_title}</small>` : '';
+    
+    const relevanceBadge = type === 'primary' ? 
+      '<span class="badge bg-primary">Most Relevant</span>' :
+      '<span class="badge bg-secondary">Related</span>';
+    
+    return `
+      <div class="lesson-card ${type}">
+        <div class="d-flex justify-content-between align-items-start">
+          <div>
+            <h6 class="mb-1">${lesson.lesson_title}</h6>
+            ${sectionInfo}
+          </div>
+          ${relevanceBadge}
+        </div>
+        <div class="mt-2">
+          <a href="${lesson.url}" 
+             class="btn btn-sm btn-primary"
+             onclick="trackLessonReview(${lesson.lesson_id}, ${questionId}, ${quizAttemptId})"
+             data-track="remediation_click">
+            <i class="fas fa-book-reader"></i> 
+            ${lesson.section_anchor ? 'Go to Section' : 'Review Lesson'}
+          </a>
+        </div>
+      </div>
+    `;
+  }
+  
+  function trackLessonReview(lessonId, questionId, quizAttemptId) {
+    fetch('/remediation/track_lesson_review', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': document.querySelector('[name="csrf-token"]').content
+      },
+      body: JSON.stringify({
+        lesson_id: lessonId,
+        question_id: questionId,
+        quiz_attempt_id: quizAttemptId
+      })
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log('Remediation tracked:', data);
+    })
+    .catch(error => console.error('Error tracking remediation:', error));
+  }
+</script>
+

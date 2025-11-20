@@ -1,0 +1,100 @@
+slug: lesson-1
+title: Lesson 1
+difficulty: easy
+sequence_order: 1
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Ownership and Borrowing in Rust\n\n   \
+  \ **Ownership** is Rust's most unique feature, enabling memory safety without garbage\
+  \ collection.\n\n    ## The Three Rules of Ownership\n\n    1. Each value has an\
+  \ **owner**\n    2. There can only be **one owner** at a time\n    3. When the owner\
+  \ goes out of scope, the value is **dropped**\n\n    ## Memory Safety Without GC\n\
+  \n    ```rust\n    fn main() {\n        let s1 = String::from(\"hello\");\n    \
+  \    let s2 = s1;  // s1 MOVED to s2\n\n        // println!(\"{}\", s1);  // ERROR:\
+  \ s1 no longer valid\n        println!(\"{}\", s2);  // OK\n    }\n    ```\n\n \
+  \   **What happened?**\n    - `s1` owned the String\n    - Ownership transferred\
+  \ (moved) to `s2`\n    - `s1` is no longer valid\n    - No double-free possible!\n\
+  \n    ## Stack vs Heap\n\n    ### Stack (Copy types)\n    ```rust\n    let x = 5;\n\
+  \    let y = x;  // COPY (not move)\n    println!(\"{}, {}\", x, y);  // Both valid\n\
+  \    ```\n\n    Types that implement `Copy`:\n    - Integers, floats, booleans\n\
+  \    - Characters\n    - Tuples (if all elements are Copy)\n    - Arrays (if elements\
+  \ are Copy)\n\n    ### Heap (Move types)\n    ```rust\n    let s1 = String::from(\"\
+  hello\");\n    let s2 = s1;  // MOVE (not copy)\n    // s1 no longer valid\n   \
+  \ ```\n\n    ## Borrowing\n\n    **References let you refer to a value without taking\
+  \ ownership**\n\n    ### Immutable References\n\n    ```rust\n    fn main() {\n\
+  \        let s1 = String::from(\"hello\");\n\n        let len = calculate_length(&s1);\
+  \  // Borrow s1\n\n        println!(\"Length of '{}' is {}\", s1, len);  // s1 still\
+  \ valid!\n    }\n\n    fn calculate_length(s: &String) -> usize {\n        s.len()\
+  \  // Can read but not modify\n    }\n    ```\n\n    **The `&` symbol creates a\
+  \ reference (borrow)**\n\n    ### Mutable References\n\n    ```rust\n    fn main()\
+  \ {\n        let mut s = String::from(\"hello\");\n\n        change(&mut s);  //\
+  \ Mutable borrow\n\n        println!(\"{}\", s);  // \"hello, world\"\n    }\n\n\
+  \    fn change(s: &mut String) {\n        s.push_str(\", world\");  // Can modify\n\
+  \    }\n    ```\n\n    ## Borrowing Rules\n\n    **At any given time, you can have\
+  \ EITHER:**\n    1. One mutable reference, OR\n    2. Any number of immutable references\n\
+  \n    **This prevents data races at compile time!**\n\n    ### Valid Borrows\n\n\
+  \    ```rust\n    let mut s = String::from(\"hello\");\n\n    // Multiple immutable\
+  \ borrows OK\n    let r1 = &s;\n    let r2 = &s;\n    println!(\"{} and {}\", r1,\
+  \ r2);  // OK\n\n    // Mutable borrow after immutable borrows end\n    let r3 =\
+  \ &mut s;  // OK - r1, r2 no longer used\n    ```\n\n    ### Invalid Borrows\n\n\
+  \    ```rust\n    let mut s = String::from(\"hello\");\n\n    let r1 = &s;     \
+  \   // Immutable borrow\n    let r2 = &mut s;    // ERROR: can't have mutable with\
+  \ immutable\n\n    println!(\"{}, {}\", r1, r2);\n    ```\n\n    ```rust\n    let\
+  \ mut s = String::from(\"hello\");\n\n    let r1 = &mut s;  // First mutable borrow\n\
+  \    let r2 = &mut s;  // ERROR: only one mutable borrow allowed\n\n    println!(\"\
+  {}, {}\", r1, r2);\n    ```\n\n    ## Dangling References\n\n    **Rust prevents\
+  \ dangling pointers at compile time:**\n\n    ```rust\n    fn dangle() -> &String\
+  \ {  // ERROR: missing lifetime\n        let s = String::from(\"hello\");\n    \
+  \    &s  // s goes out of scope, reference would dangle!\n    }  // s dropped here\n\
+  \n    // Fix: Return owned value\n    fn no_dangle() -> String {\n        let s\
+  \ = String::from(\"hello\");\n        s  // Ownership moves to caller\n    }\n \
+  \   ```\n\n    ## Lifetimes\n\n    **Annotations that tell Rust how long references\
+  \ are valid**\n\n    ### Lifetime Syntax\n\n    ```rust\n    fn longest<'a>(x: &'a\
+  \ str, y: &'a str) -> &'a str {\n        if x.len() > y.len() {\n            x\n\
+  \        } else {\n            y\n        }\n    }\n    ```\n\n    **The `'a` annotation\
+  \ says:** \"All references must live at least as long as `'a`\"\n\n    ### Why Lifetimes?\n\
+  \n    ```rust\n    fn main() {\n        let string1 = String::from(\"long string\"\
+  );\n        let result;\n\n        {\n            let string2 = String::from(\"\
+  xyz\");\n            result = longest(string1.as_str(), string2.as_str());\n   \
+  \     }  // string2 dropped here\n\n        // println!(\"{}\", result);  // ERROR:\
+  \ result might reference string2\n    }\n    ```\n\n    ### Lifetime Elision\n\n\
+  \    **Common patterns where lifetimes are inferred:**\n\n    ```rust\n    // Explicit\
+  \ lifetime\n    fn first_word<'a>(s: &'a str) -> &'a str {\n        &s[..1]\n  \
+  \  }\n\n    // Elided (compiler infers)\n    fn first_word(s: &str) -> &str {\n\
+  \        &s[..1]\n    }\n    ```\n\n    ## Ownership Patterns\n\n    ### Clone (Deep\
+  \ Copy)\n\n    ```rust\n    let s1 = String::from(\"hello\");\n    let s2 = s1.clone();\
+  \  // Explicit deep copy\n\n    println!(\"{}, {}\", s1, s2);  // Both valid\n \
+  \   ```\n\n    ### Move Semantics with Functions\n\n    ```rust\n    fn takes_ownership(s:\
+  \ String) {\n        println!(\"{}\", s);\n    }  // s dropped here\n\n    fn main()\
+  \ {\n        let s = String::from(\"hello\");\n        takes_ownership(s);\n   \
+  \     // println!(\"{}\", s);  // ERROR: s moved\n    }\n    ```\n\n    ### Return\
+  \ Ownership\n\n    ```rust\n    fn gives_ownership() -> String {\n        String::from(\"\
+  hello\")  // Ownership moves to caller\n    }\n\n    fn main() {\n        let s\
+  \ = gives_ownership();  // s receives ownership\n        println!(\"{}\", s);\n\
+  \    }\n    ```\n\n    ## Slices\n\n    **References to a contiguous sequence**\n\
+  \n    ### String Slices\n\n    ```rust\n    let s = String::from(\"hello world\"\
+  );\n\n    let hello = &s[0..5];   // \"hello\"\n    let world = &s[6..11];  // \"\
+  world\"\n\n    // Shorthand\n    let hello = &s[..5];    // Start from 0\n    let\
+  \ world = &s[6..];    // To end\n    let all = &s[..];       // Entire string\n\
+  \    ```\n\n    ### Array Slices\n\n    ```rust\n    let a = [1, 2, 3, 4, 5];\n\n\
+  \    let slice = &a[1..3];  // [2, 3]\n    ```\n\n    ## Smart Pointers\n\n    ###\
+  \ Box<T> - Heap Allocation\n\n    ```rust\n    let b = Box::new(5);  // Allocate\
+  \ on heap\n    println!(\"b = {}\", b);\n    ```\n\n    ### Rc<T> - Reference Counting\n\
+  \n    ```rust\n    use std::rc::Rc;\n\n    let a = Rc::new(5);\n    let b = Rc::clone(&a);\
+  \  // Increment reference count\n    let c = Rc::clone(&a);\n\n    println!(\"count\
+  \ = {}\", Rc::strong_count(&a));  // 3\n    ```\n\n    ### RefCell<T> - Interior\
+  \ Mutability\n\n    ```rust\n    use std::cell::RefCell;\n\n    let data = RefCell::new(5);\n\
+  \    *data.borrow_mut() += 1;  // Runtime borrowing check\n    println!(\"{}\",\
+  \ data.borrow());  // 6\n    ```\n\n    ## Common Patterns\n\n    ### Builder Pattern\
+  \ with Ownership\n\n    ```rust\n    struct Config {\n        host: String,\n  \
+  \      port: u16,\n    }\n\n    impl Config {\n        fn new() -> Self {\n    \
+  \        Self {\n                host: String::from(\"localhost\"),\n          \
+  \      port: 8080,\n            }\n        }\n\n        fn host(mut self, host:\
+  \ String) -> Self {\n            self.host = host;\n            self  // Return\
+  \ ownership\n        }\n\n        fn port(mut self, port: u16) -> Self {\n     \
+  \       self.port = port;\n            self\n        }\n    }\n\n    // Usage\n\
+  \    let config = Config::new()\n        .host(String::from(\"example.com\"))\n\
+  \        .port(3000);\n    ```\n\n    **Next**: We'll explore Rust's powerful type\
+  \ system and pattern matching!"
+exercises: []

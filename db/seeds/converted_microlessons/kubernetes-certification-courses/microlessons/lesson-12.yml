@@ -1,0 +1,81 @@
+slug: lesson-12
+title: Lesson 12
+difficulty: easy
+sequence_order: 12
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Performance Bottlenecks\n\n    - CPU/memory\
+  \ pressure, throttling\n    - Scheduling delays and resource quotas"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What is CPU throttling in Kubernetes, and when does it occur?
+  options:
+  - The process of reducing container replica count
+  - Limiting CPU usage when a container exceeds its CPU limit, causing performance
+    degradation
+  - Automatically scaling down pods during low traffic
+  - A method to prioritize network traffic
+  correct_answer: Limiting CPU usage when a container exceeds its CPU limit, causing
+    performance degradation
+  explanation: 'CPU throttling occurs when a container tries to use more CPU than
+    its specified limit. Unlike memory limits (which cause OOMKills when exceeded),
+    CPU is a compressible resource - Kubernetes doesn''t kill the container but instead
+    throttles (slows down) its CPU usage to stay within the limit. This is implemented
+    using Linux cgroups CFS (Completely Fair Scheduler) quota. When throttling happens,
+    the container''s processes get less CPU time, causing increased latency and slower
+    processing. For example, if you set ''limits: cpu: 500m'' (half a core) but the
+    application needs 1 full core, it will be throttled to 500m, potentially causing
+    timeouts or poor user experience. You can detect throttling by monitoring the
+    ''container_cpu_cfs_throttled_seconds_total'' metric in Prometheus or checking
+    cgroup stats. Common causes include: underestimating CPU requirements, traffic
+    spikes, inefficient application code, or noisy neighbors competing for CPU. To
+    address throttling: increase CPU limits (but be mindful of node capacity), optimize
+    application performance, use Horizontal Pod Autoscaler to scale replicas instead
+    of relying on bursting, or remove CPU limits entirely for latency-sensitive applications
+    (though this risks noisy neighbor problems). Best practice: set requests based
+    on typical usage and limits at maximum expected usage, monitor throttling metrics,
+    and use load testing to validate resource requirements.'
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What is a Resource Quota in Kubernetes?
+  options:
+  - A limit on the size of container images
+  - A namespace-level constraint that limits aggregate resource consumption
+  - The maximum number of nodes in a cluster
+  - A method to allocate specific CPU cores to containers
+  correct_answer: A namespace-level constraint that limits aggregate resource consumption
+  explanation: 'ResourceQuota is a Kubernetes object that constrains aggregate resource
+    consumption within a namespace, providing multi-tenancy and preventing resource
+    hogging. It can limit: compute resources (total CPU/memory requests and limits
+    across all pods), storage (total PersistentVolumeClaim storage), and object counts
+    (max number of pods, services, configmaps, etc.). For example, a ResourceQuota
+    might specify ''requests.cpu: 10, requests.memory: 20Gi, pods: 50'', preventing
+    any namespace from requesting more than 10 CPU cores, 20 GiB memory, or creating
+    more than 50 pods. When a ResourceQuota is active in a namespace, pods must specify
+    resource requests and limits (otherwise admission is denied), ensuring predictable
+    resource allocation. This prevents the ''tragedy of the commons'' where one team''s
+    unconstrained workloads starve others. ResourceQuotas work with LimitRanges (which
+    set default/min/max for individual pods) to provide comprehensive resource governance.
+    Common use cases: multi-tenant clusters (quota per team/project), cost control
+    (limit expensive resources), capacity planning (prevent oversubscription), and
+    compliance (enforce resource declarations). To implement quotas: create ResourceQuota
+    in namespace, set appropriate limits based on team needs and cluster capacity,
+    monitor quota usage with ''kubectl describe quota'', and adjust as teams'' needs
+    evolve. Note that quotas don''t guarantee resources - they only limit requests.
+    Actual scheduling depends on node availability.'
+  require_pass: true
+- type: mcq
+  sequence_order: 1
+  question: What kubectl command checks if you can perform an action?
+  options:
+  - kubectl auth can-i create pods
+  - kubectl check permissions create pods
+  - kubectl verify action create pods
+  - kubectl test auth create pods
+  correct_answer_index: 0
+  explanation: kubectl auth can-i <action> <resource> checks if the current user has
+    permission to perform the specified action.
+  require_pass: true

@@ -1,0 +1,87 @@
+slug: atomeconomy-practice
+title: atom_economy — Practice
+difficulty: medium
+sequence_order: 15
+estimated_minutes: 2
+key_concepts:
+- atom_economy
+prerequisites: []
+content_md: '# atom_economy — Practice 🚀
+
+
+  Atom economy = (Molar mass of product / Sum of molar masses of reactants) × 100%
+  = (30 / (28 + 2)) × 100% = (30/30) × 100% = 100%. This is an addition reaction with
+  perfect atom economy.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: 'Calculate the atom economy for: C₂H₄ + H₂ → C₂H₆'
+  options:
+  - 75%
+  - 100%
+  - 50%
+  - 93.3%
+  require_pass: true
+  correct_answer: 100%
+  explanation: 'Atom economy measures the efficiency of a reaction in converting reactants
+    to desired products. Formula: Atom economy = (Molar mass of desired product /
+    Sum of molar masses of all reactants) × 100%. For C₂H₄ + H₂ → C₂H₆: Molar mass
+    of C₂H₆ = 2(12) + 6(1) = 30 g/mol, Molar mass of C₂H₄ = 2(12) + 4(1) = 28 g/mol,
+    Molar mass of H₂ = 2(1) = 2 g/mol. Sum of reactants = 28 + 2 = 30 g/mol. Atom
+    economy = (30/30) × 100% = 100%. This is an addition reaction where all atoms
+    from reactants are incorporated into the product with zero waste. Addition reactions
+    typically have 100% atom economy, making them environmentally friendly. Substitution
+    reactions generally have lower atom economy due to by-products.'
+- type: mcq
+  sequence_order: 2
+  question: Which type of reaction typically has the highest atom economy?
+  options:
+  - Substitution reactions
+  - Addition reactions
+  - Elimination reactions
+  - Combustion reactions
+  require_pass: true
+  correct_answer: Addition reactions
+  explanation: 'Addition reactions typically have the highest atom economy (often
+    100%) because all atoms from all reactants are incorporated into a single product
+    with no by-products or waste. Examples: Hydrogenation (C₂H₄ + H₂ → C₂H₆), Hydration
+    (C₂H₄ + H₂O → C₂H₅OH). In contrast: **Substitution reactions** produce by-products,
+    reducing atom economy. Example: CH₄ + Cl₂ → CH₃Cl + HCl (HCl is waste). **Elimination
+    reactions** produce small molecules as by-products. Example: C₂H₅OH → C₂H₄ +
+    H₂O. **Combustion reactions** produce CO₂ and H₂O, with very low atom economy
+    for most purposes. Green chemistry principle #2 emphasizes designing syntheses
+    with maximum atom economy to minimize waste. High atom economy reduces raw material
+    costs, waste disposal costs, and environmental impact.'
+- type: mcq
+  sequence_order: 3
+  question: 'For the reaction: CaCO₃ → CaO + CO₂, if CaO is the desired product,
+    what is the atom economy?'
+  options:
+  - 100%
+  - 56%
+  - 44%
+  - 80%
+  require_pass: true
+  correct_answer: 56%
+  explanation: 'Atom economy = (Molar mass of desired product / Molar mass of reactant)
+    × 100%. For thermal decomposition of calcium carbonate: CaCO₃ → CaO + CO₂. Given
+    CaO is the desired product: Molar mass of CaO = 40 + 16 = 56 g/mol, Molar mass
+    of CaCO₃ = 40 + 12 + 3(16) = 100 g/mol. Atom economy = (56/100) × 100% = 56%.
+    This means 44% of the mass becomes waste (CO₂). Decomposition reactions typically
+    have low atom economy. This reaction is used industrially to produce quicklime
+    (CaO) for cement production, but the low atom economy means significant waste.
+    In industry, the waste CO₂ can sometimes be captured and used, improving overall
+    process efficiency. Note: For thermal decomposition, we only consider the reactant
+    mass, not products like heat.'

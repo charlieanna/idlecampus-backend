@@ -1,0 +1,84 @@
+slug: docker-network-disconnect
+title: Docker Network Disconnect
+difficulty: medium
+sequence_order: 5
+estimated_minutes: 2
+key_concepts:
+- networking
+- docker-network
+- disconnect
+- isolation
+prerequisites: []
+content_md: '# Docker Network Disconnect 🚀
+
+
+  Disconnect a container from a network
+
+
+  ## Syntax/Command
+
+
+  ```bash
+
+  docker network disconnect my-network my-container
+
+  ```
+
+
+  ## Example
+
+
+  ```bash
+
+  docker network disconnect -f my-network my-container
+
+  ```
+
+
+  ## Key Points
+
+
+  - Disconnect: docker network disconnect <network> <container>
+
+
+  - Force disconnect: -f flag'
+exercises:
+- type: terminal
+  problem_statement: Disconnect the container 'my-container' from the network 'my-network' to isolate it from other containers on that network
+  expected_output: Silent success (container disconnected with no output)
+  language: bash
+  starter_code: "# Disconnect container from network\n"
+  sequence_order: 1
+  command: docker network disconnect my-network my-container
+  description: Disconnect a container from a specific network
+  hints:
+  - 'Disconnect: docker network disconnect <network> <container>'
+  - 'Force disconnect: -f flag'
+  validation:
+    must_not_include:
+    - Error
+    - 'panic:'
+  timeout_sec: 60
+  require_pass: true
+- type: sandbox
+  sequence_order: 99
+  hints:
+  - Run under CPU pressure to surface leaks or races
+  - Keep commands idempotent in CI
+  validation:
+    must_not_include:
+    - Error
+    - 'panic:'
+  timeout_sec: 60
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What happens when you disconnect a container from its only network?
+  options:
+  - The container loses all network connectivity and becomes isolated
+  - The container is automatically stopped
+  - The container automatically joins the default bridge network
+  - The operation fails with an error
+  correct_answer: The container loses all network connectivity and becomes isolated
+  explanation: "When you disconnect a container from its only network, it loses all network connectivity. The container continues running but has no network interfaces (except loopback). It won't automatically join another network - you must explicitly connect it to a network if you want to restore connectivity."
+  require_pass: true

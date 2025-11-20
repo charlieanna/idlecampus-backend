@@ -1,0 +1,60 @@
+<div class="container">
+  <div id="current-challenge">
+    <h1><%= @challenge.title %></h1>
+    <p><%= @challenge.description %></p>
+    <h3>Tags:</h3>
+    <% @challenge.tags.each do |tag| %>
+      <span class="badge badge-secondary"><%= tag.name %></span>
+    <% end %>
+    <p>Write your solution in the editor below:</p>
+    <div class="row">
+      <div class="col-md-6">
+        <%= form_with(model: @submission, local: true) do |f| %>
+          <div class="form-group">
+            <%= f.label :code, "Solution" %>
+            <%= f.text_area :code, class: "form-control", rows: 10 %>
+          </div>
+          <button id="submit-button" type="submit" class="btn btn-primary">Submit</button>
+        <% end %>
+      </div>
+      <div id="output-container"></div>
+      <div class="col-md-6">
+        <h3>Test Cases</h3>
+        <% @challenge.test_cases.each do |test_case| %>
+          <p>
+            <strong>Input:</strong>
+            <%= test_case.input %>
+          </p>
+          <p>
+            <strong>Expected Output:</strong>
+            <%= test_case.expected %>
+          </p>
+          <hr>
+        <% end %>
+        <% if @submission && @submission.result.present? %>
+          <h3>Result</h3>
+          <p id="result"><%= @submission.result %></p>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <% if @next_challenge %>
+    <div id="next-challenge">
+      <h1><%= @next_challenge.title %></h1>
+      <p><%= @next_challenge.description %></p>
+    </div>
+  <% end %>
+</div>
+
+<script>
+  $(document).ready(function() {
+    $("#next-challenge").hide();
+    $("#submit-button").click(function() {
+      if ($("#result").text() == "Correct") {
+        $("#current-challenge").fadeOut(400, function() {
+          $("#next-challenge").fadeIn(400);
+        });
+      }
+    });
+  });
+</script>

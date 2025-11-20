@@ -1,0 +1,84 @@
+slug: docker-container-exec-run-commands-in-container
+title: 'Docker Container Exec: Run Commands in Container'
+difficulty: easy
+sequence_order: 19
+estimated_minutes: 2
+key_concepts:
+- containers
+- docker-exec
+- debugging
+- interactive
+prerequisites: []
+content_md: '# Docker Container Exec: Run Commands in Container 🚀
+
+
+  Execute commands inside running containers for debugging and maintenance.
+
+
+  ## Syntax/Command
+
+
+  ```bash
+
+  docker container exec -it my-container bash
+
+  ```
+
+
+  ## Example
+
+
+  ```bash
+
+  docker container exec container ls -la
+
+  ```
+
+
+  ## Key Points
+
+
+  - Shell: docker container exec -it <name> bash
+
+
+  - Command: docker container exec <name> <command>'
+exercises:
+- type: terminal
+  problem_statement: Execute an interactive bash shell in a running container named 'my-container'
+  expected_output: Interactive shell prompt
+  language: bash
+  starter_code: "# Execute command in running container\n"
+  sequence_order: 1
+  command: docker container exec -it my-container bash
+  description: Execute commands in running container for troubleshooting
+  hints:
+  - 'Shell: docker container exec -it <name> bash'
+  - 'Command: docker container exec <name> <command>'
+  validation:
+    must_not_include:
+    - Error
+    - 'panic:'
+  timeout_sec: 60
+  require_pass: true
+- type: sandbox
+  sequence_order: 99
+  hints:
+  - Run under CPU pressure to surface leaks or races
+  - Keep commands idempotent in CI
+  validation:
+    must_not_include:
+    - Error
+    - 'panic:'
+  timeout_sec: 60
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What does -it flag do in docker exec?
+  options:
+  - Provides interactive terminal with TTY allocation
+  - Installs tools in the container
+  - Iterates through all containers
+  - Identifies the container by tag
+  correct_answer: Provides interactive terminal with TTY allocation
+  explanation: "The -it flags combine -i (interactive, keeps STDIN open) and -t (allocates a pseudo-TTY), providing an interactive terminal session inside the container."
+  require_pass: true

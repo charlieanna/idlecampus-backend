@@ -1,0 +1,66 @@
+slug: lesson-60
+title: Lesson 60
+difficulty: easy
+sequence_order: 60
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Security Contexts and Pod Security\n\n\
+  \    - runAsUser, fsGroup, readOnlyRootFilesystem\n    - Capabilities and privilege\
+  \ escalation\n    - Overview of Pod Security standards"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What does the runAsNonRoot security context setting do?
+  options:
+  - It creates a non-root user in the container
+  - It prevents the container from running if the image specifies UID 0 (root)
+  - It automatically runs the container as user 1000
+  - It disables root access to the host
+  correct_answer: It prevents the container from running if the image specifies UID
+    0 (root)
+  explanation: 'The runAsNonRoot: true security context setting is a validation that
+    prevents containers from running as root (UID 0). If the container image tries
+    to run as root, Kubernetes blocks the container from starting with an error. This
+    doesn''t create users or change the image - it''s a safety check enforcing that
+    the image itself is configured to run as non-root. You typically combine this
+    with runAsUser to specify which non-root UID to use (e.g., runAsUser: 1000). Running
+    as non-root is a security best practice that limits damage if a container is compromised
+    - attackers can''t perform privileged operations even within the container. Many
+    official images now support non-root execution. Pod Security Standards enforce
+    this in restricted mode, requiring all containers to set runAsNonRoot: true or
+    runAsUser to a non-zero value.'
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What is the purpose of the fsGroup security context field?
+  options:
+  - To set the filesystem size limit
+  - To set the group ownership of mounted volumes
+  - To enable filesystem encryption
+  - To configure filesystem type
+  correct_answer: To set the group ownership of mounted volumes
+  explanation: 'The fsGroup field in a pod''s security context sets the group ID that
+    owns pod volumes and files created in those volumes. When you set fsGroup: 2000,
+    Kubernetes changes the group ownership of all files in volumes to GID 2000, and
+    sets the setgid bit so new files inherit this group. This is crucial for multiple
+    containers in a pod that need to share files - they can all run with supplemental
+    group 2000 and access shared volumes. For example, if an application runs as UID
+    1000 but needs to read files owned by GID 2000, fsGroup: 2000 makes those files
+    accessible. Note that fsGroup only affects volumes, not the root filesystem. This
+    ownership change can take time for volumes with many files, potentially delaying
+    pod startup. Recent Kubernetes versions support FSGroupChangePolicy to control
+    this behavior.'
+  require_pass: true
+- type: mcq
+  sequence_order: 1
+  question: What command lists all pods in all namespaces?
+  options:
+  - kubectl get pods -A
+  - kubectl list pods --all
+  - kubectl get pods --everywhere
+  - kubectl pods list -A
+  correct_answer_index: 0
+  explanation: kubectl get pods -A (or --all-namespaces) lists pods across all namespaces.
+    The -A flag is shorthand for --all-namespaces.
+  require_pass: true

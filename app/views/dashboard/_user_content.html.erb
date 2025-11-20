@@ -1,0 +1,15 @@
+<% if @profile %>
+  <h2>Welcome, <%= @profile.name || "User" %>!</h2>
+  <p>Here is your dashboard content...</p>
+  <div class="mt-4">
+    <%= render 'user_info' %>
+    <% if @results %>
+      <% @results.each do |site_name, v| %>
+        <%= render 'questions_answered', site_name: site_name %>
+      <% end %>
+    <% end %>
+  </div>
+<% else %>
+  <h2>Welcome!</h2>
+  <p>Please complete your profile to see dashboard content.</p>
+<% end %>

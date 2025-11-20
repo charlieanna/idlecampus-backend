@@ -1,0 +1,94 @@
+slug: lesson-8
+title: Lesson 8
+sequence_order: 8
+estimated_minutes: 2
+difficulty: easy
+content_md: "# Microlesson \U0001F680\n\n# IAM: Identity and Access Management\n\n\
+  \    Control access to AWS services securely.\n\n    ## IAM Components\n\n    ###\
+  \ 1. Users\n    Individual people or applications.\n\n    ```bash\n    # Create\
+  \ user\n    aws iam create-user --user-name alice\n\n    # List users\n    aws iam\
+  \ list-users\n    ```\n\n    **Best Practices**:\n    - One user per person/app\n\
+  \    - Enable MFA (Multi-Factor Authentication)\n    - Use strong passwords\n  \
+  \  - Rotate access keys regularly\n\n    ### 2. Groups\n    Collection of users\
+  \ with shared permissions.\n\n    ```bash\n    # Create group\n    aws iam create-group\
+  \ --group-name developers\n\n    # Add user to group\n    aws iam add-user-to-group\
+  \ --user-name alice --group-name developers\n    ```\n\n    Common groups:\n   \
+  \ - Admins\n    - Developers\n    - ReadOnly\n    - Auditors\n\n    ### 3. Roles\n\
+  \    Temporary permissions for AWS services or users.\n\n    **Use cases**:\n  \
+  \  - EC2 instance accessing S3\n    - Lambda function accessing DynamoDB\n    -\
+  \ Cross-account access\n    - External identity federation\n\n    ```bash\n    #\
+  \ Create role\n    aws iam create-role --role-name EC2-S3-Access \\\\\n      --assume-role-policy-document\
+  \ file://trust-policy.json\n    ```\n\n    ### 4. Policies\n    JSON documents defining\
+  \ permissions.\n\n    **Policy Structure**:\n    ```json\n    {\n      \"Version\"\
+  : \"2012-10-17\",\n      \"Statement\": [\n        {\n          \"Effect\": \"Allow\"\
+  ,\n          \"Action\": \"s3:GetObject\",\n          \"Resource\": \"arn:aws:s3:::my-bucket/*\"\
+  \n        }\n      ]\n    }\n    ```\n\n    **Components**:\n    - `Effect`: Allow\
+  \ or Deny\n    - `Action`: What can be done\n    - `Resource`: Which resources\n\
+  \    - `Condition` (optional): When it applies\n\n    ## Policy Types\n\n    ###\
+  \ 1. AWS Managed Policies\n    Pre-built by AWS.\n\n    Examples:\n    - `AdministratorAccess`:\
+  \ Full access\n    - `ReadOnlyAccess`: Read all services\n    - `PowerUserAccess`:\
+  \ All except IAM\n\n    ### 2. Customer Managed Policies\n    Custom policies you\
+  \ create.\n\n    ```json\n    {\n      \"Version\": \"2012-10-17\",\n      \"Statement\"\
+  : [\n        {\n          \"Effect\": \"Allow\",\n          \"Action\": [\n    \
+  \        \"s3:ListBucket\",\n            \"s3:GetObject\"\n          ],\n      \
+  \    \"Resource\": [\n            \"arn:aws:s3:::my-app-bucket\",\n            \"\
+  arn:aws:s3:::my-app-bucket/*\"\n          ]\n        }\n      ]\n    }\n    ```\n\
+  \n    ### 3. Inline Policies\n    Embedded directly in user/group/role.\n\n    ##\
+  \ IAM Best Practices\n\n    ### 1. Principle of Least Privilege\n    Grant minimum\
+  \ permissions needed.\n\n    ❌ Bad:\n    ```json\n    {\n      \"Effect\": \"Allow\"\
+  ,\n      \"Action\": \"*\",\n      \"Resource\": \"*\"\n    }\n    ```\n\n    ✅\
+  \ Good:\n    ```json\n    {\n      \"Effect\": \"Allow\",\n      \"Action\": [\"\
+  s3:GetObject\", \"s3:PutObject\"],\n      \"Resource\": \"arn:aws:s3:::my-bucket/uploads/*\"\
+  \n    }\n    ```\n\n    ### 2. Enable MFA\n    Especially for:\n    - Root account\
+  \ (always!)\n    - Admin users\n    - Production access\n\n    ### 3. Use Roles,\
+  \ Not Keys\n    For EC2, Lambda, etc., use IAM roles instead of hardcoding keys.\n\
+  \n    ❌ Bad:\n    ```python\n    # Hardcoded credentials\n    aws_access_key = \"\
+  AKIAIOSFODNN7EXAMPLE\"\n    aws_secret_key = \"wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY\"\
+  \n    ```\n\n    ✅ Good:\n    ```python\n    # Use IAM role attached to EC2\n  \
+  \  s3 = boto3.client('s3')  # Credentials from role\n    ```\n\n    ### 4. Rotate\
+  \ Credentials\n    - Access keys: Every 90 days\n    - Passwords: Every 90 days\n\
+  \    - Use AWS Secrets Manager for app secrets\n\n    ### 5. Monitor with CloudTrail\n\
+  \    Log all API calls for audit.\n\n    ## IAM Access Methods\n\n    ### 1. AWS\
+  \ Management Console\n    Web-based UI with username/password + MFA.\n\n    ###\
+  \ 2. AWS CLI\n    Command-line with access keys.\n\n    ```bash\n    aws configure\n\
+  \    # Enter Access Key ID\n    # Enter Secret Access Key\n    # Enter Region\n\
+  \    ```\n\n    ### 3. AWS SDK\n    Programmatic access with access keys or IAM\
+  \ roles.\n\n    ## Cross-Account Access\n\n    Allow users from Account A to access\
+  \ Account B.\n\n    **Account B (Resource Account)**:\n    1. Create role with trust\
+  \ policy allowing Account A\n    2. Attach permissions policy\n\n    **Account A\
+  \ (User Account)**:\n    1. Grant users permission to assume role\n    2. Users\
+  \ switch to role via console or CLI\n\n    ## IAM Policy Evaluation Logic\n\n  \
+  \  ```\n    1. Deny by default\n    2. Evaluate all policies\n    3. Explicit DENY\
+  \ overrides everything\n    4. Explicit ALLOW granted if no DENY\n    5. Otherwise:\
+  \ DENY\n    ```\n\n    ## Common IAM Policies\n\n    ### S3 Read-Only\n    ```json\n\
+  \    {\n      \"Version\": \"2012-10-17\",\n      \"Statement\": [\n        {\n\
+  \          \"Effect\": \"Allow\",\n          \"Action\": [\n            \"s3:GetObject\"\
+  ,\n            \"s3:ListBucket\"\n          ],\n          \"Resource\": [\n    \
+  \        \"arn:aws:s3:::my-bucket\",\n            \"arn:aws:s3:::my-bucket/*\"\n\
+  \          ]\n        }\n      ]\n    }\n    ```\n\n    ### EC2 Start/Stop\n   \
+  \ ```json\n    {\n      \"Version\": \"2012-10-17\",\n      \"Statement\": [\n \
+  \       {\n          \"Effect\": \"Allow\",\n          \"Action\": [\n         \
+  \   \"ec2:StartInstances\",\n            \"ec2:StopInstances\"\n          ],\n \
+  \         \"Resource\": \"arn:aws:ec2:*:*:instance/*\",\n          \"Condition\"\
+  : {\n            \"StringEquals\": {\n              \"ec2:ResourceTag/Environment\"\
+  : \"dev\"\n            }\n          }\n        }\n      ]\n    }\n    ```\n\n  \
+  \  **Practice**: Try the IAM lab!"
+exercises:
+- type: mcq
+  slug: lesson-8-mcq
+  sequence_order: 1
+  question: What is the maximum execution time for an AWS Lambda function?
+  options:
+  - 15 minutes
+  - 5 minutes
+  - 1 hour
+  - 24 hours
+  correct_answer_index: 0
+  explanation: AWS Lambda functions have a maximum execution timeout of 15 minutes
+    (900 seconds). This is a hard limit designed for serverless, event-driven workloads.
+    For longer-running tasks, consider using EC2, ECS, or AWS Batch.
+objectives:
+- Understand the fundamental concepts and mechanisms of lesson 8
+- Apply chemical principles to solve related problems
+- Identify key reactions, equations, and chemical behaviors
+next_recommended: []

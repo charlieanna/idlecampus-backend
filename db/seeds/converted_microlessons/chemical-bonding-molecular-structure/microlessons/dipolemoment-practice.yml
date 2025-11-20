@@ -1,0 +1,67 @@
+slug: dipolemoment-practice
+title: dipole_moment — Practice
+difficulty: easy
+sequence_order: 14
+estimated_minutes: 2
+key_concepts:
+- dipole_moment
+prerequisites: []
+content_md: '# dipole_moment — Practice 🚀
+
+
+  CO₂ is linear (O=C=O). The two C=O dipoles are equal and opposite, canceling each
+  other. Net dipole moment = 0.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 2
+  question: Which molecule has zero dipole moment due to symmetry?
+  options:
+  - H₂O
+  - NH₃
+  - CO₂
+  - HCl
+  require_pass: true
+  correct_answer: CO₂
+  explanation: 'CO₂ has zero dipole moment despite having polar C=O bonds because
+    it is linear (O=C=O, 180° bond angle). Each C=O bond has a dipole moment pointing
+    from C(δ+) to O(δ-) due to oxygen''s higher electronegativity (3.5) vs carbon
+    (2.5). However, in the linear geometry, the two bond dipoles are equal in magnitude
+    but opposite in direction, so they cancel vectorially: μ_net = 0. CO₂ is therefore
+    non-polar overall despite polar bonds. Molecular symmetry determines polarity.
+    Compare: H₂O and SO₂ are bent (~104° and ~119°), so bond dipoles don''t cancel,
+    resulting in net dipole moments (H₂O: 1.85 D, SO₂: 1.63 D). Linear molecules with
+    identical terminal atoms are always non-polar.'
+- type: mcq
+  sequence_order: 3
+  question: Which molecule has the largest dipole moment?
+  options:
+  - CH₄
+  - NH₃
+  - BF₃
+  - CCl₄
+  require_pass: true
+  correct_answer: NH₃
+  explanation: 'NH₃ (ammonia) has the largest dipole moment at 1.47 D. NH₃ has a trigonal pyramidal geometry with one lone pair on nitrogen, creating an asymmetric charge distribution. The three N-H bonds are polar (N is more electronegative than H), and the geometry ensures the bond dipoles do not cancel. The lone pair also contributes to the overall dipole, pointing toward the nitrogen. In contrast: (1) CH₄ and CCl₄ are tetrahedral with perfect symmetry - their bond dipoles cancel completely, resulting in zero dipole moment despite C-Cl bonds being quite polar, (2) BF₃ is trigonal planar with 120° bond angles - the three B-F bond dipoles (pointing toward F) cancel vectorially, giving zero dipole moment. Molecular geometry is crucial: asymmetric shapes with polar bonds produce net dipole moments. The magnitude depends on both bond polarity (electronegativity difference) and molecular shape.'
+- type: mcq
+  sequence_order: 4
+  question: Why does CCl₄ have zero dipole moment while CHCl₃ (chloroform) has a significant dipole moment?
+  options:
+  - CCl₄ has weaker C-Cl bonds
+  - CCl₄ is symmetric (tetrahedral); CHCl₃ is asymmetric
+  - CHCl₃ has hydrogen bonding
+  - Chlorine is less electronegative in CCl₄
+  require_pass: true
+  correct_answer: CCl₄ is symmetric (tetrahedral); CHCl₃ is asymmetric
+  explanation: 'CCl₄ has zero dipole moment because it is perfectly symmetric (tetrahedral with four identical C-Cl bonds), while CHCl₃ has a significant dipole moment (1.04 D) because it is asymmetric (one C-H bond and three C-Cl bonds). In CCl₄, the four C-Cl bond dipoles (each pointing from C to Cl due to Cl''s higher electronegativity 3.0 vs C''s 2.5) are arranged at 109.5° angles in a tetrahedron. These four vectors cancel perfectly: their sum equals zero. In CHCl₃, the C-H bond (dipole pointing H→C, opposite direction) and three C-Cl bonds (dipoles pointing C→Cl) do not cancel. The net dipole points from H toward the Cl₃ side. This demonstrates that molecular polarity depends on both bond polarity and geometry - symmetric molecules can have polar bonds yet zero net dipole, while asymmetric molecules typically have net dipoles.'

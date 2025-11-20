@@ -1,0 +1,214 @@
+slug: k-means-clustering
+title: K-Means Clustering
+sequence_order: 7
+estimated_minutes: 2
+difficulty: easy
+key_concepts: []
+content_md: "# K-Means Clustering \U0001F680\n\n# K-Means Clustering\n\n    K-Means\
+  \ is one of the most popular unsupervised learning algorithms for grouping similar\
+  \ data points together.\n\n    ## What is Clustering?\n\n    **Goal:** Group similar\
+  \ data points together without predefined labels\n\n    **Key Difference from Classification:**\n\
+  \    - **Classification (Supervised):** Learn from labeled data\n    - **Clustering\
+  \ (Unsupervised):** Find patterns in unlabeled data\n\n    ## K-Means Algorithm\n\
+  \n    ### How It Works\n\n    1. **Choose K:** Decide number of clusters\n    2.\
+  \ **Initialize:** Randomly place K centroids\n    3. **Assign:** Assign each point\
+  \ to nearest centroid\n    4. **Update:** Move centroids to center of assigned points\n\
+  \    5. **Repeat:** Steps 3-4 until convergence\n\n    ### Mathematical Objective\n\
+  \n    Minimize within-cluster sum of squares (WCSS):\n    ```\n    WCSS = Σ Σ ||xᵢ\
+  \ - μⱼ||²\n    ```\n    Where:\n    - xᵢ = data point\n    - μⱼ = centroid of cluster\
+  \ j\n\n    ## Python Implementation\n\n    ### Basic Example\n\n    ```python\n\
+  \    import numpy as np\n    import matplotlib.pyplot as plt\n    from sklearn.cluster\
+  \ import KMeans\n    from sklearn.datasets import make_blobs\n\n    # Generate sample\
+  \ data\n    X, y_true = make_blobs(\n        n_samples=300,\n        centers=4,\n\
+  \        cluster_std=0.60,\n        random_state=42\n    )\n\n    # Create K-Means\
+  \ model\n    kmeans = KMeans(\n        n_clusters=4,\n        init='k-means++',\
+  \  # Smart initialization\n        n_init=10,         # Number of times to run with\
+  \ different centroids\n        max_iter=300,      # Maximum iterations\n       \
+  \ random_state=42\n    )\n\n    # Fit and predict\n    kmeans.fit(X)\n    y_pred\
+  \ = kmeans.predict(X)\n\n    # Get cluster centers\n    centers = kmeans.cluster_centers_\n\
+  \n    # Visualize\n    plt.figure(figsize=(10, 6))\n    plt.scatter(X[:, 0], X[:,\
+  \ 1], c=y_pred, cmap='viridis', marker='o', edgecolor='k', s=50)\n    plt.scatter(centers[:,\
+  \ 0], centers[:, 1], c='red', marker='X', s=200, edgecolor='k', label='Centroids')\n\
+  \    plt.xlabel('Feature 1')\n    plt.ylabel('Feature 2')\n    plt.title('K-Means\
+  \ Clustering')\n    plt.legend()\n    plt.show()\n\n    print(f\"Inertia (WCSS):\
+  \ {kmeans.inertia_:.2f}\")\n    ```\n\n    ## Choosing K (Number of Clusters)\n\n\
+  \    ### 1. Elbow Method\n\n    Plot WCSS vs number of clusters, look for \"elbow\"\
+  \n\n    ```python\n    wcss = []\n    K_range = range(1, 11)\n\n    for k in K_range:\n\
+  \        kmeans = KMeans(n_clusters=k, random_state=42)\n        kmeans.fit(X)\n\
+  \        wcss.append(kmeans.inertia_)\n\n    # Plot elbow curve\n    plt.figure(figsize=(10,\
+  \ 6))\n    plt.plot(K_range, wcss, 'bo-')\n    plt.xlabel('Number of Clusters (K)')\n\
+  \    plt.ylabel('WCSS (Inertia)')\n    plt.title('Elbow Method')\n    plt.grid(True)\n\
+  \    plt.show()\n    ```\n\n    **How to interpret:**\n    - Look for the \"elbow\"\
+  \ - where the rate of decrease sharply shifts\n    - Choose K at the elbow point\n\
+  \n    ### 2. Silhouette Score\n\n    Measures how similar a point is to its own\
+  \ cluster vs other clusters\n\n    ```python\n    from sklearn.metrics import silhouette_score\n\
+  \n    silhouette_scores = []\n    K_range = range(2, 11)\n\n    for k in K_range:\n\
+  \        kmeans = KMeans(n_clusters=k, random_state=42)\n        y_pred = kmeans.fit_predict(X)\n\
+  \        score = silhouette_score(X, y_pred)\n        silhouette_scores.append(score)\n\
+  \        print(f\"K={k}: Silhouette Score = {score:.4f}\")\n\n    # Plot\n    plt.figure(figsize=(10,\
+  \ 6))\n    plt.plot(K_range, silhouette_scores, 'bo-')\n    plt.xlabel('Number of\
+  \ Clusters (K)')\n    plt.ylabel('Silhouette Score')\n    plt.title('Silhouette\
+  \ Score vs K')\n    plt.grid(True)\n    plt.show()\n    ```\n\n    **Score interpretation:**\n\
+  \    - Range: -1 to 1\n    - Close to 1: Well-clustered\n    - Close to 0: Overlapping\
+  \ clusters\n    - Negative: Wrong cluster assignment\n\n    ## Real-World Example:\
+  \ Customer Segmentation\n\n    ```python\n    import pandas as pd\n    from sklearn.preprocessing\
+  \ import StandardScaler\n    from sklearn.cluster import KMeans\n    import seaborn\
+  \ as sns\n\n    # Load customer data (example)\n    # df = pd.read_csv('customers.csv')\n\
+  \n    # Select features for clustering\n    features = ['age', 'annual_income',\
+  \ 'spending_score']\n    X = df[features]\n\n    # Handle missing values\n    from\
+  \ sklearn.impute import SimpleImputer\n    imputer = SimpleImputer(strategy='median')\n\
+  \    X = imputer.fit_transform(X)\n\n    # Scale features (important for K-Means!)\n\
+  \    scaler = StandardScaler()\n    X_scaled = scaler.fit_transform(X)\n\n    #\
+  \ Find optimal K using elbow method\n    wcss = []\n    for k in range(1, 11):\n\
+  \        kmeans = KMeans(n_clusters=k, random_state=42)\n        kmeans.fit(X_scaled)\n\
+  \        wcss.append(kmeans.inertia_)\n\n    plt.figure(figsize=(10, 6))\n    plt.plot(range(1,\
+  \ 11), wcss, 'bo-')\n    plt.xlabel('Number of Clusters')\n    plt.ylabel('WCSS')\n\
+  \    plt.title('Elbow Method')\n    plt.show()\n\n    # Train with optimal K (let's\
+  \ say K=4)\n    optimal_k = 4\n    kmeans = KMeans(n_clusters=optimal_k, random_state=42)\n\
+  \    df['cluster'] = kmeans.fit_predict(X_scaled)\n\n    # Analyze clusters\n  \
+  \  cluster_profile = df.groupby('cluster')[features].mean()\n    print(\"\\\\nCluster\
+  \ Profiles:\")\n    print(cluster_profile)\n\n    # Visualize clusters (2D)\n  \
+  \  plt.figure(figsize=(12, 5))\n\n    plt.subplot(1, 2, 1)\n    plt.scatter(df['age'],\
+  \ df['annual_income'], c=df['cluster'], cmap='viridis')\n    plt.xlabel('Age')\n\
+  \    plt.ylabel('Annual Income')\n    plt.title('Clusters: Age vs Income')\n   \
+  \ plt.colorbar(label='Cluster')\n\n    plt.subplot(1, 2, 2)\n    plt.scatter(df['annual_income'],\
+  \ df['spending_score'], c=df['cluster'], cmap='viridis')\n    plt.xlabel('Annual\
+  \ Income')\n    plt.ylabel('Spending Score')\n    plt.title('Clusters: Income vs\
+  \ Spending')\n    plt.colorbar(label='Cluster')\n\n    plt.tight_layout()\n    plt.show()\n\
+  \n    # Name clusters based on characteristics\n    cluster_names = {\n        0:\
+  \ 'Low Income, Low Spending',\n        1: 'High Income, High Spending',\n      \
+  \  2: 'High Income, Low Spending',\n        3: 'Low Income, High Spending'\n   \
+  \ }\n    df['segment'] = df['cluster'].map(cluster_names)\n\n    # Count by segment\n\
+  \    print(\"\\\\nCustomer Distribution:\")\n    print(df['segment'].value_counts())\n\
+  \    ```\n\n    ## Advantages\n\n    ✅ Simple and easy to understand\n    ✅ Fast\
+  \ and efficient (linear complexity)\n    ✅ Works well with spherical clusters\n\
+  \    ✅ Scales to large datasets\n    ✅ Easy to implement\n\n    ## Disadvantages\n\
+  \n    ❌ Need to specify K beforehand\n    ❌ Sensitive to initialization (random\
+  \ centroids)\n    ❌ Sensitive to outliers\n    ❌ Assumes spherical clusters\n  \
+  \  ❌ Sensitive to feature scaling\n    ❌ Can't find clusters of different sizes/densities\n\
+  \n    ## Initialization Methods\n\n    ### 1. Random Initialization (default)\n\
+  \    Randomly select K points as initial centroids\n\n    ### 2. K-Means++ (recommended)\n\
+  \    Smart initialization that spreads out initial centroids\n\n    ```python\n\
+  \    kmeans = KMeans(n_clusters=4, init='k-means++', random_state=42)\n    ```\n\
+  \n    **Why K-Means++:**\n    - Faster convergence\n    - Better final clusters\n\
+  \    - Reduces impact of initialization\n\n    ## Handling Limitations\n\n    ###\
+  \ 1. Dealing with Outliers\n\n    ```python\n    # Remove outliers before clustering\n\
+  \    from scipy import stats\n    z_scores = np.abs(stats.zscore(X))\n    X_no_outliers\
+  \ = X[(z_scores < 3).all(axis=1)]\n\n    # Or use outlier-robust algorithm (DBSCAN,\
+  \ etc.)\n    ```\n\n    ### 2. Non-Spherical Clusters\n\n    ```python\n    # Use\
+  \ other algorithms:\n    from sklearn.cluster import DBSCAN, AgglomerativeClustering\n\
+  \n    # DBSCAN for arbitrary shapes\n    dbscan = DBSCAN(eps=0.5, min_samples=5)\n\
+  \    labels = dbscan.fit_predict(X)\n    ```\n\n    ### 3. Feature Scaling\n\n \
+  \   ```python\n    # Always scale before K-Means!\n    from sklearn.preprocessing\
+  \ import StandardScaler\n\n    scaler = StandardScaler()\n    X_scaled = scaler.fit_transform(X)\n\
+  \    ```\n\n    ## Evaluation Metrics\n\n    ### 1. Inertia (WCSS)\n    ```python\n\
+  \    inertia = kmeans.inertia_\n    # Lower is better (but can always reduce by\
+  \ increasing K)\n    ```\n\n    ### 2. Silhouette Score\n    ```python\n    from\
+  \ sklearn.metrics import silhouette_score\n    score = silhouette_score(X, labels)\n\
+  \    # Range: -1 to 1 (higher is better)\n    ```\n\n    ### 3. Calinski-Harabasz\
+  \ Index\n    ```python\n    from sklearn.metrics import calinski_harabasz_score\n\
+  \    score = calinski_harabasz_score(X, labels)\n    # Higher is better\n    ```\n\
+  \n    ### 4. Davies-Bouldin Index\n    ```python\n    from sklearn.metrics import\
+  \ davies_bouldin_score\n    score = davies_bouldin_score(X, labels)\n    # Lower\
+  \ is better\n    ```\n\n    ## Mini-Batch K-Means\n\n    Faster version for large\
+  \ datasets\n\n    ```python\n    from sklearn.cluster import MiniBatchKMeans\n\n\
+  \    mbk = MiniBatchKMeans(\n        n_clusters=4,\n        batch_size=100,\n  \
+  \      random_state=42\n    )\n\n    mbk.fit(X)\n    labels = mbk.predict(X)\n\n\
+  \    # Much faster for large datasets (millions of samples)\n    ```\n\n    ## Practical\
+  \ Applications\n\n    ### 1. Customer Segmentation\n    - Group customers by behavior\n\
+  \    - Targeted marketing\n    - Personalized recommendations\n\n    ### 2. Image\
+  \ Compression\n    - Reduce number of colors\n    - Cluster similar colors\n\n \
+  \   ```python\n    from sklearn.cluster import KMeans\n    import matplotlib.pyplot\
+  \ as plt\n    from PIL import Image\n\n    # Load image\n    img = np.array(Image.open('photo.jpg'))\n\
+  \    h, w, c = img.shape\n\n    # Reshape to (n_pixels, 3)\n    pixels = img.reshape(-1,\
+  \ 3)\n\n    # Cluster colors\n    kmeans = KMeans(n_clusters=16, random_state=42)\n\
+  \    kmeans.fit(pixels)\n    compressed_pixels = kmeans.cluster_centers_[kmeans.labels_]\n\
+  \n    # Reshape back\n    compressed_img = compressed_pixels.reshape(h, w, c).astype('uint8')\n\
+  \n    # Display\n    plt.figure(figsize=(12, 6))\n    plt.subplot(1, 2, 1)\n   \
+  \ plt.imshow(img)\n    plt.title('Original')\n    plt.axis('off')\n\n    plt.subplot(1,\
+  \ 2, 2)\n    plt.imshow(compressed_img)\n    plt.title(f'Compressed (K={16})')\n\
+  \    plt.axis('off')\n    plt.show()\n    ```\n\n    ### 3. Document Clustering\n\
+  \    - Group similar documents\n    - Topic discovery\n\n    ### 4. Anomaly Detection\n\
+  \    - Points far from all centroids = anomalies\n\n    ```python\n    # Get distances\
+  \ to nearest centroid\n    distances = kmeans.transform(X).min(axis=1)\n\n    #\
+  \ Points with large distances are anomalies\n    threshold = np.percentile(distances,\
+  \ 95)\n    anomalies = distances > threshold\n\n    print(f\"Number of anomalies:\
+  \ {anomalies.sum()}\")\n    ```\n\n    ## Best Practices\n\n    1. **Always scale\
+  \ features** before K-Means\n    2. **Use elbow method + silhouette** to choose\
+  \ K\n    3. **Try K-Means++** initialization\n    4. **Run multiple times** with\
+  \ different random states\n    5. **Remove outliers** if they affect clustering\n\
+  \    6. **Visualize results** to validate clusters\n    7. **Profile clusters**\
+  \ to understand characteristics\n    8. **Domain knowledge** helps choose K\n\n\
+  \    ## Key Takeaways\n\n    1. **K-Means groups similar points** into K clusters\n\
+  \    2. **Minimizes WCSS** by iteratively updating centroids\n    3. **Need to choose\
+  \ K** beforehand (use elbow/silhouette)\n    4. **Sensitive to scaling** - always\
+  \ standardize\n    5. **Assumes spherical clusters** of similar size\n    6. **Fast\
+  \ and scalable** to large datasets\n    7. **K-Means++** initialization improves\
+  \ results\n    8. **Evaluate with silhouette** or other metrics\n\n    ## Next Steps\n\
+  \n    - Practice with real datasets\n    - Try different K values\n    - Learn hierarchical\
+  \ clustering\n    - Explore DBSCAN for arbitrary shapes\n    - Apply to customer\
+  \ segmentation problems"
+exercises:
+- type: mcq
+  slug: k-means-clustering-mcq-1
+  sequence_order: 1
+  question: What is the main difference between K-Means clustering and logistic regression?
+  options:
+  - K-Means is unsupervised (no labels), logistic regression is supervised (uses labels)
+  - K-Means is faster than logistic regression
+  - K-Means can only handle numeric data
+  - They are the same algorithm
+  correct_answer_index: 0
+  explanation: K-Means is an unsupervised learning algorithm that finds patterns in
+    unlabeled data, while logistic regression is supervised and learns from labeled
+    examples.
+- type: mcq
+  slug: k-means-clustering-mcq-2
+  sequence_order: 2
+  question: What does the K-Means algorithm minimize?
+  options:
+  - Within-cluster sum of squares (WCSS) - distance of points from their cluster centroids
+  - The number of clusters
+  - The number of iterations
+  - The distance between centroids
+  correct_answer_index: 0
+  explanation: K-Means minimizes WCSS, which is the sum of squared distances between
+    each point and its assigned cluster centroid. This creates compact, well-separated
+    clusters.
+- type: mcq
+  slug: k-means-clustering-mcq-3
+  sequence_order: 3
+  question: What is the Elbow Method used for in K-Means?
+  options:
+  - Determining the optimal number of clusters (K)
+  - Initializing the centroids
+  - Scaling the features
+  - Evaluating model accuracy
+  correct_answer_index: 0
+  explanation: The Elbow Method plots WCSS against different values of K. The optimal
+    K is where the curve bends (the "elbow"), indicating diminishing returns from
+    adding more clusters.
+- type: terminal
+  slug: k-means-clustering-term
+  sequence_order: 4
+  description: Run K-Means clustering example
+  command: 'python - << "PY" from sklearn.cluster import KMeans from sklearn.datasets
+    import make_blobs X, _ = make_blobs(n_samples=100, centers=3, random_state=42)
+    kmeans = KMeans(n_clusters=3, random_state=42) labels = kmeans.fit_predict(X)
+    print(f"Cluster labels: {labels[:10]}") print(f"Centroids shape: {kmeans.cluster_centers_.shape}")
+    print(f"Inertia (WCSS): {kmeans.inertia_:.2f}") PY'
+  validation:
+    must_not_include:
+    - Traceback
+    - SyntaxError
+  hints:
+  - If `python` is not available, try `python3`.
+  - Make sure scikit-learn is installed.
+objectives:
+- Understand the difference between supervised and unsupervised learning
+- Explain how the K-Means algorithm works (initialization, assignment, update)
+- Use the Elbow Method and Silhouette Score to choose optimal K
+- Apply K-Means clustering using sklearn for real-world problems
+next_recommended:
+- control
+- data-structures

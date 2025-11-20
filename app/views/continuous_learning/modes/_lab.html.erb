@@ -1,0 +1,338 @@
+<div class="lab-content">
+  <% if content[:metadata][:is_lab_unlock] %>
+    <div class="lab-unlock-celebration">
+      <div class="unlock-icon">🎉</div>
+      <div class="unlock-content">
+        <h3>Lab Unlocked!</h3>
+        <p>You've mastered: <strong><%= content[:metadata][:prerequisites].join(', ') %></strong></p>
+        <p class="unlock-subtitle">Time to put it all together in a real scenario!</p>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="content-header">
+    <div class="mode-badge lab-badge">
+      <span class="badge-icon">🔧</span>
+      <span class="badge-text">
+        <%= content[:type] == 'comprehensive_lab' ? 'Comprehensive Lab' : 'Hands-On Lab' %>
+      </span>
+    </div>
+  </div>
+
+  <h2 class="lab-title">
+    <%= content[:content][:title] %>
+  </h2>
+  
+  <% if content[:content][:scenario].present? %>
+    <div class="scenario-box">
+      <div class="scenario-icon">📖</div>
+      <div class="scenario-content">
+        <h4>Scenario</h4>
+        <p><%= content[:content][:scenario] %></p>
+      </div>
+    </div>
+  <% elsif content[:content][:description].present? %>
+    <div class="scenario-box">
+      <div class="scenario-icon">📖</div>
+      <div class="scenario-content">
+        <h4>About This Lab</h4>
+        <p><%= content[:content][:description] %></p>
+      </div>
+    </div>
+  <% end %>
+  
+  <% if content[:content][:objectives].present? %>
+    <div class="objectives-section">
+      <div class="objectives-header">
+        <span class="objectives-icon">🎯</span>
+        <h4>What You'll Learn</h4>
+      </div>
+      <div class="objectives-content">
+        <% if content[:content][:objectives].is_a?(Array) && content[:content][:objectives].length > 1 %>
+          <%# Multiple objectives - show as a clean list %>
+          <ul class="objectives-list-simple">
+            <% content[:content][:objectives].each do |objective| %>
+              <li><%= objective %></li>
+            <% end %>
+          </ul>
+        <% else %>
+          <%# Single objective or comma-separated text - show as paragraph %>
+          <p class="objectives-text">
+            <%= content[:content][:objectives].is_a?(Array) ? content[:content][:objectives].join('. ') : content[:content][:objectives] %>
+          </p>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+
+  <% if content[:content][:current_instruction].present? %>
+    <div class="current-step-box">
+      <div class="current-step-header">
+        <span class="step-icon">🧭</span>
+        <h4>Current Step <span class="step-count">(1 of <%= content[:metadata][:step_count] %>)</span></h4>
+      </div>
+      <div class="current-instruction"><%= content[:content][:current_instruction] %></div>
+      <div class="lab-hint">Type your commands in the terminal on the right →</div>
+    </div>
+  <% end %>
+
+  <!-- Terminal is now persistent on the right side -->
+
+  <div id="labFeedback" class="lab-feedback"></div>
+</div>
+
+<style>
+.lab-content {
+  animation: fadeInContent 0.5s ease-out;
+}
+
+.lab-unlock-celebration {
+  display: flex;
+  gap: 20px;
+  padding: 30px;
+  margin-bottom: 25px;
+  background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+  border-radius: 15px;
+  border: 3px solid #4facfe;
+  animation: bounceIn 0.8s ease-out;
+}
+
+@keyframes bounceIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.unlock-icon {
+  font-size: 3.5rem;
+  animation: tada 1s ease-in-out;
+}
+
+@keyframes tada {
+  0%, 100% { transform: scale(1) rotate(0deg); }
+  10%, 20% { transform: scale(0.9) rotate(-3deg); }
+  30%, 50%, 70%, 90% { transform: scale(1.1) rotate(3deg); }
+  40%, 60%, 80% { transform: scale(1.1) rotate(-3deg); }
+}
+
+.unlock-content h3 {
+  margin: 0 0 10px 0;
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #2c3e50;
+}
+
+.unlock-content p {
+  margin: 5px 0;
+  font-size: 1rem;
+  color: #34495e;
+}
+
+.unlock-subtitle {
+  font-style: italic;
+  color: #7f8c8d;
+  font-size: 0.95rem !important;
+}
+
+.lab-badge {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  color: white;
+  box-shadow: 0 4px 15px rgba(240, 147, 251, 0.3);
+}
+
+.lab-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #2c3e50;
+  margin: 25px 0;
+}
+
+.scenario-box {
+  display: flex;
+  gap: 20px;
+  padding: 30px;
+  background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
+  border-radius: 15px;
+  margin: 25px 0;
+  animation: slideIn 0.5s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.scenario-icon {
+  font-size: 3rem;
+  flex-shrink: 0;
+}
+
+.scenario-content h4 {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #2c3e50;
+  margin: 0 0 10px 0;
+}
+
+.scenario-content p {
+  font-size: 1.05rem;
+  color: #34495e;
+  margin: 0;
+  line-height: 1.6;
+}
+
+.objectives-section {
+  margin: 30px 0;
+  padding: 25px;
+  background: white;
+  border: 2px solid #e8e8e8;
+  border-radius: 15px;
+}
+
+.objectives-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.objectives-icon {
+  font-size: 2rem;
+}
+
+.objectives-header h4 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #2c3e50;
+  margin: 0;
+}
+
+.objectives-content {
+  margin-top: 15px;
+}
+
+.objectives-list-simple {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.objectives-list-simple li {
+  padding: 12px 0;
+  padding-left: 25px;
+  position: relative;
+  font-size: 1.05rem;
+  color: #2c3e50;
+  line-height: 1.6;
+  border-bottom: 1px solid #e8e8e8;
+}
+
+.objectives-list-simple li:last-child {
+  border-bottom: none;
+}
+
+.objectives-list-simple li:before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: #667eea;
+  font-weight: 700;
+  font-size: 1.2rem;
+}
+
+.objectives-text {
+  font-size: 1.05rem;
+  color: #2c3e50;
+  line-height: 1.8;
+  margin: 0;
+  padding: 0;
+}
+
+.lab-hint {
+  font-size: 0.9rem;
+  color: #667eea;
+  font-weight: 600;
+  margin-top: 10px;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.lab-feedback {
+  margin-top: 25px;
+  animation: slideDown 0.4s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.current-step-box {
+  margin: 20px 0;
+  padding: 20px;
+  background: #fff;
+  border: 2px solid #e8e8e8;
+  border-radius: 12px;
+}
+
+.current-step-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.current-step-header h4 {
+  margin: 0;
+  color: #2c3e50;
+}
+
+.step-icon {
+  font-size: 1.4rem;
+}
+
+.step-count {
+  font-weight: 600;
+  color: #667eea;
+}
+
+.current-instruction {
+  font-size: 1.05rem;
+  color: #2c3e50;
+}
+
+
+/* Responsive */
+@media (max-width: 768px) {
+  .scenario-box {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+</style>
+
+<!-- Lab mode now uses persistent terminal on right side -->

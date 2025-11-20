@@ -1,0 +1,168 @@
+slug: lesson-3
+title: Lesson 3
+difficulty: easy
+sequence_order: 3
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# User and Permission Management\n\n    ##\
+  \ Linux Multi-User Model\n\n    Linux is a multi-user operating system designed\
+  \ to allow multiple users to work simultaneously while maintaining security and\
+  \ isolation.\n\n    ### Users\n\n    **Regular Users**:\n    - Limited permissions\n\
+  \    - Own home directory (`/home/username`)\n    - Cannot modify system files\n\
+  \    - UID (User ID) typically starts at 1000\n\n    **Root User (superuser)**:\n\
+  \    - Complete system control\n    - UID = 0\n    - Can do anything (including\
+  \ break the system!)\n    - Login as root directly is often disabled for security\n\
+  \n    **System Users**:\n    - Run services and daemons\n    - No login shell\n\
+  \    - Examples: `www-data` (web server), `mysql`, `nobody`\n\n    ### User Information\
+  \ Files\n\n    | File | Purpose | Readable By |\n    |------|---------|-------------|\n\
+  \    | `/etc/passwd` | User account information | Everyone |\n    | `/etc/shadow`\
+  \ | Encrypted passwords and password policies | Root only |\n    | `/etc/group`\
+  \ | Group information | Everyone |\n\n    #### /etc/passwd Format\n    ```\n   \
+  \ username:x:UID:GID:comment:home_dir:shell\n    alice:x:1001:1001:Alice Smith:/home/alice:/bin/bash\n\
+  \    ```\n\n    #### /etc/group Format\n    ```\n    group_name:x:GID:member_list\n\
+  \    developers:x:1005:alice,bob\n    ```\n\n    ## Groups\n\n    Groups allow collective\
+  \ permission management:\n    - **Primary Group**: User's default group (usually\
+  \ same name as username)\n    - **Supplementary Groups**: Additional groups user\
+  \ belongs to\n\n    ```bash\n    # View user's groups\n    groups username\n   \
+  \ id username\n\n    # Example output\n    $ id alice\n    uid=1001(alice) gid=1001(alice)\
+  \ groups=1001(alice),27(sudo),1005(developers)\n    ```\n\n    ## User Management\
+  \ Commands\n\n    ### Creating Users\n\n    ```bash\n    # Ubuntu/Debian (interactive)\n\
+  \    sudo adduser alice\n\n    # RHEL/CentOS or manual\n    sudo useradd -m -s /bin/bash\
+  \ alice\n    sudo passwd alice\n\n    # Options\n    -m    # Create home directory\n\
+  \    -s    # Specify shell\n    -G    # Add to supplementary groups\n    -c    #\
+  \ Add comment (full name)\n    ```\n\n    ### Modifying Users\n\n    ```bash\n \
+  \   # Change user password\n    sudo passwd alice\n\n    # Add user to group\n \
+  \   sudo usermod -aG developers alice\n\n    # Change user's shell\n    sudo usermod\
+  \ -s /bin/zsh alice\n\n    # Lock/unlock user account\n    sudo usermod -L alice\
+  \    # Lock\n    sudo usermod -U alice    # Unlock\n    ```\n\n    ### Deleting\
+  \ Users\n\n    ```bash\n    # Delete user but keep home directory\n    sudo userdel\
+  \ alice\n\n    # Delete user and home directory\n    sudo userdel -r alice\n   \
+  \ ```\n\n    ### Group Management\n\n    ```bash\n    # Create group\n    sudo groupadd\
+  \ developers\n\n    # Delete group\n    sudo groupdel developers\n\n    # Change\
+  \ group password (rarely used)\n    sudo gpasswd developers\n    ```\n\n    ## File\
+  \ Permissions\n\n    Linux permissions determine who can read, write, or execute\
+  \ files.\n\n    ### Permission Types\n\n    | Permission | Files | Directories |\n\
+  \    |-----------|-------|-------------|\n    | **r** (read) | View file contents\
+  \ | List directory contents |\n    | **w** (write) | Modify file contents | Create/delete\
+  \ files in directory |\n    | **x** (execute) | Execute file as program | Enter\
+  \ (cd into) directory |\n\n    ### Permission Groups\n\n    Every file has three\
+  \ permission groups:\n    1. **Owner (u)**: The user who owns the file\n    2. **Group\
+  \ (g)**: Members of the file's group\n    3. **Others (o)**: Everyone else\n\n \
+  \   ### Reading ls -l Output\n\n    ```bash\n    $ ls -l\n    -rw-r--r--  1 alice\
+  \ developers  1024 Nov  5 10:00 report.txt\n    drwxr-xr-x  2 alice developers \
+  \ 4096 Nov  5 10:00 mydir\n    lrwxrwxrwx  1 alice developers    10 Nov  5 10:00\
+  \ link -> target\n    │││││││││\n    │└┴┴┴┴┴┴┴┴ Permissions\n    └────────── File\
+  \ type\n    ```\n\n    **Breaking down permissions: `-rw-r--r--`**\n\n    ```\n\
+  \    -        rw-      r--      r--\n    │        │        │        │\n    │   \
+  \     │        │        └─ Others: read only\n    │        │        └──────────\
+  \ Group: read only\n    │        └─────────────────── Owner: read + write\n    └────────────────────────────\
+  \ File type (- = regular file)\n    ```\n\n    **File types:**\n    - `-` = Regular\
+  \ file\n    - `d` = Directory\n    - `l` = Symbolic link\n    - `b` = Block device\n\
+  \    - `c` = Character device\n\n    ### Permission Notation\n\n    **Symbolic (rwx)**:\n\
+  \    - `rwx` = read, write, execute (all permissions)\n    - `rw-` = read and write\
+  \ only\n    - `r--` = read only\n    - `---` = no permissions\n\n    **Octal (numeric)**:\n\
+  \    - r = 4\n    - w = 2\n    - x = 1\n\n    | Octal | Binary | Symbolic | Meaning\
+  \ |\n    |-------|--------|----------|---------|\n    | 7 | 111 | rwx | Read + write\
+  \ + execute |\n    | 6 | 110 | rw- | Read + write |\n    | 5 | 101 | r-x | Read\
+  \ + execute |\n    | 4 | 100 | r-- | Read only |\n    | 3 | 011 | -wx | Write +\
+  \ execute |\n    | 2 | 010 | -w- | Write only |\n    | 1 | 001 | --x | Execute only\
+  \ |\n    | 0 | 000 | --- | No permissions |\n\n    **Common permission combinations:**\n\
+  \    - `644` (`rw-r--r--`): Files readable by all, writable by owner\n    - `755`\
+  \ (`rwxr-xr-x`): Executables/directories accessible by all\n    - `600` (`rw-------`):\
+  \ Private files (owner only)\n    - `700` (`rwx------`): Private directories/executables\n\
+  \    - `777` (`rwxrwxrwx`): All permissions for everyone (insecure!)\n\n    ## Changing\
+  \ Permissions (chmod)\n\n    ### Symbolic Mode\n\n    ```bash\n    chmod u+x file.sh\
+  \        # Add execute for owner\n    chmod g+w file.txt       # Add write for group\n\
+  \    chmod o-r file.txt       # Remove read for others\n    chmod a+r file.txt \
+  \      # Add read for all (u+g+o)\n    chmod u=rwx,g=rx,o=r file.txt  # Set exact\
+  \ permissions\n\n    # Recursively change directory\n    chmod -R 755 /var/www\n\
+  \    ```\n\n    **Format**: `chmod [who][+/-/=][permissions] file`\n    - Who: `u`\
+  \ (user), `g` (group), `o` (others), `a` (all)\n    - Operation: `+` (add), `-`\
+  \ (remove), `=` (set exactly)\n    - Permissions: `r`, `w`, `x`\n\n    ### Octal\
+  \ Mode\n\n    ```bash\n    chmod 644 file.txt       # rw-r--r--\n    chmod 755 script.sh\
+  \      # rwxr-xr-x\n    chmod 600 secret.txt     # rw-------\n    chmod 777 public.sh\
+  \      # rwxrwxrwx (avoid this!)\n    ```\n\n    ## Changing Ownership\n\n    ###\
+  \ chown - Change Owner\n\n    ```bash\n    # Change owner\n    sudo chown alice\
+  \ file.txt\n\n    # Change owner and group\n    sudo chown alice:developers file.txt\n\
+  \n    # Change owner recursively\n    sudo chown -R alice:developers /var/www\n\
+  \    ```\n\n    ### chgrp - Change Group\n\n    ```bash\n    # Change group only\n\
+  \    sudo chgrp developers file.txt\n\n    # Recursive\n    sudo chgrp -R developers\
+  \ /shared/projects\n    ```\n\n    ## Sudo - Superuser Do\n\n    Instead of logging\
+  \ in as root, use `sudo` to run specific commands with elevated privileges.\n\n\
+  \    ### Why sudo?\n\n    ✅ **Benefits**:\n    - Accountability (logs who ran what)\n\
+  \    - Limited privilege escalation\n    - Doesn't require sharing root password\n\
+  \    - Can grant granular permissions\n\n    ❌ **Risks of direct root login**:\n\
+  \    - One mistake can break the system\n    - No audit trail\n    - Can't restrict\
+  \ which commands\n\n    ### Using sudo\n\n    ```bash\n    # Run single command\
+  \ as root\n    sudo apt update\n    sudo systemctl restart nginx\n    sudo nano\
+  \ /etc/hosts\n\n    # Open shell as root (use sparingly)\n    sudo -i          #\
+  \ Root shell with root environment\n    sudo -s          # Root shell with current\
+  \ environment\n\n    # Run command as another user\n    sudo -u alice cat /home/alice/file.txt\n\
+  \    ```\n\n    ### sudo Configuration\n\n    Users must be in the `sudo` group\
+  \ (Ubuntu/Debian) or `wheel` group (RHEL/CentOS):\n\n    ```bash\n    # Add user\
+  \ to sudo group\n    sudo usermod -aG sudo alice\n\n    # Check who has sudo access\n\
+  \    sudo cat /etc/sudoers\n    ```\n\n    ### sudoers File\n\n    Edit with `visudo`\
+  \ (validates syntax before saving):\n\n    ```bash\n    sudo visudo\n    ```\n\n\
+  \    Example entries:\n    ```\n    # Allow alice to run all commands\n    alice\
+  \ ALL=(ALL:ALL) ALL\n\n    # Allow developers group to run all commands\n    %developers\
+  \ ALL=(ALL:ALL) ALL\n\n    # Allow bob to restart nginx without password\n    bob\
+  \ ALL=(ALL) NOPASSWD: /usr/bin/systemctl restart nginx\n    ```\n\n    ## Special\
+  \ Permissions\n\n    ### setuid (Set User ID)\n\n    When set on executable, it\
+  \ runs with owner's permissions:\n    ```bash\n    chmod u+s file\n    chmod 4755\
+  \ file    # setuid + 755\n    ```\n\n    Example: `/usr/bin/passwd` has setuid so\
+  \ users can change their passwords (which requires writing to /etc/shadow).\n\n\
+  \    ### setgid (Set Group ID)\n\n    On directory: New files inherit directory's\
+  \ group:\n    ```bash\n    chmod g+s directory\n    chmod 2755 directory\n    ```\n\
+  \n    ### Sticky Bit\n\n    On directory: Users can only delete their own files:\n\
+  \    ```bash\n    chmod +t directory\n    chmod 1777 directory\n    ```\n\n    Example:\
+  \ `/tmp` has sticky bit so users can't delete each other's temp files.\n\n    ##\
+  \ Best Practices\n\n    1. **Principle of Least Privilege**: Give minimum permissions\
+  \ needed\n    2. **Avoid 777**: Almost never necessary and insecure\n    3. **Use\
+  \ sudo**: Don't log in as root directly\n    4. **Review permissions**: Regularly\
+  \ audit sensitive files\n    5. **Secure private keys**: SSH keys should be 600\
+  \ or 400\n    6. **Web files**: Typically 644 for files, 755 for directories\n\n\
+  \    ## Summary\n\n    In this module, you learned:\n    - Linux multi-user architecture\
+  \ with regular users, root, and system users\n    - How to create, modify, and delete\
+  \ user accounts and groups\n    - Understanding file permissions: read, write, execute\
+  \ for owner, group, others\n    - Using chmod (symbolic and octal), chown, chgrp\n\
+  \    - Using sudo for privilege escalation safely\n    - Special permissions: setuid,\
+  \ setgid, sticky bit"
+exercises:
+- type: terminal
+  sequence_order: 1
+  command: chmod 644 file.txt
+  description: Set permissions on file.txt to be readable/writable by owner, readable by group and others (644)
+  hints:
+  - 'Change permissions: chmod 644 filename'
+  - 'Octal: 6=rw-, 4=r--, 4=r--'
+  - 'Symbolic: chmod u=rw,g=r,o=r filename'
+  validation:
+    must_not_include:
+    - Error
+  timeout_sec: 30
+  require_pass: true
+- type: terminal
+  sequence_order: 2
+  command: ls -la
+  description: List all files in long format including hidden files to view permissions
+  hints:
+  - 'List with details: ls -l'
+  - 'Include hidden files: ls -a'
+  - 'Combine flags: ls -la'
+  validation:
+    must_not_include:
+    - Error
+  timeout_sec: 30
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: What do the permissions 'rwxr-xr-x' (755) mean?
+  options:
+  - Owner can read/write/execute, group and others can read and execute
+  - Everyone can read, write, and execute
+  - Only owner can read and execute
+  - Owner can read/execute, group and others can write/execute
+  correct_answer: Owner can read/write/execute, group and others can read and execute
+  explanation: "Permission format is 'rwxr-xr-x' which breaks down into three triplets: rwx (owner), r-x (group), r-x (others). rwx = read(4) + write(2) + execute(1) = 7. r-x = read(4) + execute(1) = 5. So 755 means: Owner has full permissions (7), group can read and execute (5), others can read and execute (5). This is common for executable files and directories."
+  require_pass: true

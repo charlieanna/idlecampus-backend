@@ -1,0 +1,229 @@
+slug: de-broglie-hypothesis
+title: "de Broglie Hypothesis and Matter Waves"
+difficulty: intermediate
+sequence_order: 2
+estimated_minutes: 15
+key_concepts:
+- de-broglie-wavelength
+- matter-waves
+- wave-particle-duality
+- electron-microscope
+- davisson-germer
+prerequisites:
+- photoelectric-effect-einsteins-equation
+content_md: |
+  # de Broglie Hypothesis and Matter Waves
+
+  ## Wave-Particle Duality
+
+  Einstein showed light has dual nature:
+  - **Wave:** Interference, diffraction
+  - **Particle:** Photoelectric effect, Compton effect
+
+  ## de Broglie Hypothesis (1924)
+
+  **If light can behave as particles, matter should behave as waves.**
+
+  ### de Broglie Wavelength:
+  ```
+  λ = h/p = h/(mv)
+
+  h = Planck's constant = 6.626×10⁻³⁴ J·s
+  p = momentum
+  m = mass
+  v = velocity
+  ```
+
+  ### For photon (E = pc):
+  ```
+  λ = h/p = hc/E
+  ```
+
+  ### For particle with kinetic energy K:
+  ```
+  λ = h/√(2mK)
+
+  Since K = p²/(2m)
+  ```
+
+  ## Important Formulas
+
+  ### For Electron:
+  ```
+  λ = h/√(2meV) = h/√(2m_e eV)
+
+  V = accelerating potential
+  e = electron charge
+  m_e = electron mass
+  ```
+
+  ### Simplified (for electron):
+  ```
+  λ = 12.27/√V Å (V in volts)
+
+  OR
+
+  λ = 1.227/√V nm
+  ```
+
+  ### At temperature T:
+  ```
+  Average KE = (3/2)kT
+  λ = h/√(3mkT)
+  ```
+
+  ## Relativistic de Broglie Wavelength
+
+  For high-speed particles:
+  ```
+  λ = h/p = h/(γmv)
+
+  γ = 1/√(1 - v²/c²) (Lorentz factor)
+  ```
+
+  ## Properties of Matter Waves
+
+  1. **Wavelength inversely proportional to momentum**
+  2. **Heavier particles have shorter wavelengths**
+  3. **Not electromagnetic waves**
+  4. **Probability waves** (quantum mechanical interpretation)
+
+  ## Comparison
+
+  | Property | Photon | Electron |
+  |----------|--------|----------|
+  | Rest mass | 0 | m_e = 9.1×10⁻³¹ kg |
+  | Momentum | p = E/c = hf/c | p = mv |
+  | Wavelength | λ = hc/E | λ = h/(mv) |
+  | Speed | c (always) | v < c (variable) |
+
+  ## Experimental Verification
+
+  ### Davisson-Germer Experiment (1927):
+  - Electrons diffracted by nickel crystal
+  - Confirmed wave nature of electrons
+  - Verified de Broglie wavelength
+
+  ```
+  Bragg's law: 2d sin θ = nλ
+  Matched with λ = h/(mv) from de Broglie
+  ```
+
+  ### G.P. Thomson's Experiment:
+  - Electron diffraction through thin foil
+  - Produced diffraction rings
+  - Nobel Prize 1937
+
+  ## Applications
+
+  ### 1. Electron Microscope:
+  - Electrons have much shorter λ than visible light
+  - Can resolve smaller objects
+  - λ_electron << λ_light
+  - Resolution: ~0.1 nm (vs ~500 nm for light)
+
+  ### 2. Electron Diffraction:
+  - Study crystal structures
+  - Material analysis
+
+  ### 3. Scanning Tunneling Microscope:
+  - Uses quantum tunneling
+  - Atomic resolution
+
+  ## Numerical Examples
+
+  **Example 1:** Find de Broglie wavelength of electron accelerated through 100 V.
+
+  **Solution:**
+  ```
+  λ = 12.27/√V = 12.27/√100 = 12.27/10 = 1.227 Å
+
+  Very small! Comparable to atomic dimensions.
+  ```
+
+  **Example 2:** Cricket ball (150 g) moving at 30 m/s. Find wavelength.
+
+  **Solution:**
+  ```
+  λ = h/(mv) = (6.626×10⁻³⁴)/(0.15 × 30)
+  λ = 6.626×10⁻³⁴/4.5 ≈ 1.5×10⁻³⁴ m
+
+  Incredibly small! Unobservable in daily life.
+  ```
+
+  **Example 3:** Proton and electron have same de Broglie wavelength. Find ratio of their velocities.
+
+  **Solution:**
+  ```
+  λ_p = h/(m_p v_p) = λ_e = h/(m_e v_e)
+  m_p v_p = m_e v_e
+  v_e/v_p = m_p/m_e ≈ 1836
+
+  Electron moves 1836 times faster!
+  ```
+
+  ## Why Don't We See Matter Waves?
+
+  For macroscopic objects:
+  - Mass is large → λ extremely small
+  - λ << size of object
+  - Wave effects negligible
+
+  For quantum particles (electrons, atoms):
+  - Mass is tiny → λ comparable to size
+  - Wave effects significant
+  - Quantum mechanics essential
+
+  ## Heisenberg Uncertainty Principle
+
+  ```
+  Δx × Δp ≥ ℏ/2
+
+  ΔE × Δt ≥ ℏ/2
+  ```
+
+  Cannot simultaneously know exact position and momentum.
+
+  ## JEE Key Points
+
+  1. **λ = h/p = h/(mv)** (de Broglie)
+  2. **λ = 12.27/√V Å** (electron in volts)
+  3. **Wavelength ∝ 1/momentum**
+  4. **Davisson-Germer** confirmed hypothesis
+  5. **Matter waves are probability waves**
+  6. **Only significant for microscopic particles**
+
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: "De Broglie wavelength of electron accelerated through potential V is λ. If potential is made 4V, new wavelength is:"
+  options:
+  - "4λ"
+  - "2λ"
+  - "λ/2"
+  - "λ/4"
+  correct_answer: "λ/2"
+  explanation: "λ = h/√(2meV) ∝ 1/√V. If V → 4V: λ' = λ/√4 = λ/2. Wavelength halves! This is inverse square root relationship. To reduce wavelength by factor 2, increase voltage by factor 4. This principle is used in electron microscopes - higher accelerating voltage gives shorter wavelength and better resolution. For 100 V: λ ≈ 1.2 Å. For 400 V: λ ≈ 0.6 Å. For 10,000 V: λ ≈ 0.12 Å (smaller than atom size!). Higher energy electrons can probe smaller structures."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: "An α-particle and proton have same kinetic energy. Ratio of their de Broglie wavelengths λ_α/λ_p is:"
+  options:
+  - "1:1"
+  - "1:2"
+  - "2:1"
+  - "1:4"
+  correct_answer: "1:2"
+  explanation: "λ = h/√(2mK). For same K: λ ∝ 1/√m. α-particle: mass = 4m_p. λ_α/λ_p = √(m_p/m_α) = √(m_p/4m_p) = 1/2. So λ_α : λ_p = 1:2. Heavier particle has shorter wavelength at same energy! This is because heavier particle has more momentum for same KE: p = √(2mK) ∝ √m. Since λ = h/p, larger p means smaller λ. In contrast, if same MOMENTUM: λ would be same (λ = h/p). Always clarify whether comparing same energy or same momentum. This distinction is crucial in particle physics experiments."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: "De Broglie wavelength of neutron at temperature T is λ. At temperature 4T, wavelength becomes:"
+  options:
+  - "λ/4"
+  - "λ/2"
+  - "2λ"
+  - "4λ"
+  correct_answer: "λ/2"
+  explanation: "At temperature T: Average KE = (3/2)kT. λ = h/√(2mK) = h/√(3mkT) ∝ 1/√T. If T → 4T: λ' = λ/√4 = λ/2. Wavelength halves when temperature quadruples. This is thermal de Broglie wavelength. At higher temperature, particles move faster (higher p), shorter λ. At room temperature (300 K), neutron λ ≈ 1.5 Å. At 1200 K: λ ≈ 0.75 Å. This is used in neutron diffraction studies where 'thermal neutrons' (neutrons at thermal equilibrium) have wavelengths similar to atomic spacings, making them ideal for crystal structure analysis."
+  require_pass: true

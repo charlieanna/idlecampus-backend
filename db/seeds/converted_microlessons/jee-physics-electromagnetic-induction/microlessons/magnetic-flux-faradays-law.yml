@@ -1,0 +1,220 @@
+slug: magnetic-flux-faradays-law
+title: "Magnetic Flux and Faraday's Law"
+difficulty: advanced
+sequence_order: 1
+estimated_minutes: 18
+key_concepts:
+- magnetic-flux
+- faradays-law
+- electromagnetic-induction
+- emf
+- flux-linkage
+prerequisites: []
+content_md: |
+  # Magnetic Flux and Faraday's Law
+
+  ## Magnetic Flux (Φ)
+
+  **Definition:** Number of magnetic field lines passing through a surface.
+
+  ```
+  Φ = B⃗ · A⃗ = BA cos θ
+
+  Unit: Weber (Wb) = T·m²
+  1 Wb = 1 V·s
+  ```
+
+  Where θ is angle between B⃗ and area normal.
+
+  ### Special Cases:
+  - θ = 0°: Φ = BA (maximum)
+  - θ = 90°: Φ = 0 (no flux)
+
+  ## Faraday's Law of Electromagnetic Induction
+
+  ### Statement:
+  **"Induced EMF equals negative rate of change of magnetic flux."**
+
+  ```
+  ε = -dΦ/dt
+
+  For N turns:
+  ε = -N dΦ/dt
+  ```
+
+  ### Magnitude:
+  ```
+  |ε| = N × |dΦ/dt|
+  ```
+
+  ## Lenz's Law
+
+  **"Induced current opposes the change producing it."**
+
+  - Flux increasing → Induced current creates opposing field
+  - Flux decreasing → Induced current reinforces field
+
+  This is the reason for negative sign in Faraday's law.
+
+  ## Ways to Change Flux
+
+  ```
+  Φ = BA cos θ
+
+  ε = -N d(BA cos θ)/dt
+  ```
+
+  ### 1. Change in B:
+  ```
+  ε = -NA cos θ × dB/dt
+  ```
+
+  ### 2. Change in Area:
+  ```
+  ε = -NB cos θ × dA/dt
+  ```
+
+  ### 3. Change in Orientation:
+  ```
+  ε = NAB sin θ × dθ/dt
+
+  If θ = ωt:
+  ε = NABω sin(ωt)
+  ```
+
+  ## Motional EMF
+
+  When conductor moves through magnetic field:
+  ```
+  ε = Blv
+
+  where:
+  l = length of conductor
+  v = velocity perpendicular to B
+  ```
+
+  **This is basis of electric generators.**
+
+  ### Derivation:
+  ```
+  Force on charge: F = qvB
+  EMF = Work/charge = Fl/q = qvBl/q = Blv
+  ```
+
+  ## EMF in Rotating Coil
+
+  Coil with N turns, area A, rotating with angular velocity ω:
+  ```
+  Φ = NBA cos(ωt)
+  ε = NBAω sin(ωt) = ε₀ sin(ωt)
+
+  ε₀ = NBAω (maximum EMF)
+  ```
+
+  **This is principle of AC generator.**
+
+  ## Induced Current and Charge
+
+  ```
+  Induced current: i = ε/R = -N/R × dΦ/dt
+
+  Charge transferred: q = ∫i dt = -NΔΦ/R
+  ```
+
+  **Charge depends only on flux change, not rate!**
+
+  ## Self-Inductance
+
+  ```
+  Φ = LI
+
+  ε = -L dI/dt
+
+  L = self-inductance (Henry)
+  ```
+
+  For solenoid:
+  ```
+  L = μ₀n²Al = μ₀N²A/l
+  ```
+
+  ## Energy Stored in Inductor
+
+  ```
+  U = ½LI²
+  ```
+
+  Energy density:
+  ```
+  u = B²/(2μ₀) (compare with electric: u = ε₀E²/2)
+  ```
+
+  ## Numerical Examples
+
+  **Example 1:** Coil of 100 turns, area 0.01 m². Field changes from 0.1T to 0.5T in 0.1s. Find induced EMF.
+
+  **Solution:**
+  ```
+  ΔΦ = A × ΔB = 0.01 × 0.4 = 0.004 Wb
+  ε = N × ΔΦ/Δt = 100 × 0.004/0.1 = 4 V
+  ```
+
+  **Example 2:** Rod of length 1m moves at 5 m/s perpendicular to B = 0.2T. Find motional EMF.
+
+  **Solution:**
+  ```
+  ε = Blv = 0.2 × 1 × 5 = 1 V
+  ```
+
+  **Example 3:** Coil (200 turns, A = 0.05 m²) rotates at 50 Hz in B = 0.1T. Find maximum EMF.
+
+  **Solution:**
+  ```
+  ω = 2πf = 2π × 50 = 100π rad/s
+  ε₀ = NBAω = 200 × 0.1 × 0.05 × 100π
+  ε₀ = 100π ≈ 314 V
+  ```
+
+  ## JEE Key Points
+
+  1. **Flux change causes EMF**, not flux itself
+  2. **Lenz's law** ensures energy conservation
+  3. **Motional EMF** = Blv (conductor cutting field lines)
+  4. **Charge transferred** independent of time (q = NΔΦ/R)
+  5. **Generator principle**: Rotating coil in magnetic field
+  6. **Self-inductance** opposes current change
+
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: "Magnetic flux through a coil of 50 turns changes from 0.04 Wb to 0.01 Wb in 0.02 s. Induced EMF is:"
+  options:
+  - "75 V"
+  - "-75 V"
+  - "1.5 V"
+  - "150 V"
+  correct_answer: "75 V"
+  explanation: "ε = -N × dΦ/dt = -N × (Φ₂ - Φ₁)/Δt = -50 × (0.01 - 0.04)/0.02 = -50 × (-0.03)/0.02 = 50 × 0.03/0.02 = 75 V. The negative sign indicates direction (Lenz's law), but magnitude is 75 V. Flux is decreasing (0.04 → 0.01), so induced EMF tries to maintain flux by creating field in same direction as original. This is fundamental to electromagnetic induction - rate of flux change determines EMF magnitude."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: "A 2 m long conductor moves at 3 m/s perpendicular to magnetic field 0.5 T. Induced EMF is:"
+  options:
+  - "0.5 V"
+  - "1 V"
+  - "3 V"
+  - "6 V"
+  correct_answer: "3 V"
+  explanation: "Motional EMF ε = Blv = 0.5 × 2 × 3 = 3 V. This is the basic principle of generator: conductor cutting magnetic field lines. The EMF is generated because magnetic force on charges in moving conductor separates positive and negative charges, creating potential difference. Longer conductor (more charges) or faster motion (more lines cut per second) gives higher EMF. If conductor moved parallel to field, no EMF would be induced."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: "When flux through a coil changes from +2 Wb to -2 Wb, charge flowing is (resistance = 10Ω, turns = 20):"
+  options:
+  - "8 C"
+  - "0.8 C"
+  - "4 C"
+  - "0.4 C"
+  correct_answer: "8 C"
+  explanation: "Charge q = N|ΔΦ|/R = 20 × |(-2) - 2|/10 = 20 × 4/10 = 8 C. Note: Charge depends on total flux change, NOT on how fast it changes! Whether flux changes in 1 second or 1 hour, same charge flows (but current differs). This is because q = ∫i dt = ∫(ε/R)dt = (N/R)∫dΦ = NΔΦ/R. This concept is used in ballistic galvanometers where charge measurement gives flux change regardless of time."
+  require_pass: true

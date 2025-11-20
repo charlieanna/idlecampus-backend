@@ -1,0 +1,44 @@
+slug: lesson-100
+title: Lesson 100
+difficulty: easy
+sequence_order: 100
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# CronJobs and Batch Processing\n\n    Schedule\
+  \ recurring tasks with CronJobs.\n    - cron schedule format\n    - history limits\
+  \ and concurrencyPolicy\n    - suspend and resume"
+exercises:
+  - type: mcq
+    sequence_order: 1
+    question: "What does the cron schedule expression '*/15 * * * *' mean in a Kubernetes CronJob?"
+    options:
+      - "Run every 15 hours"
+      - "Run every 15 minutes"
+      - "Run at 15 minutes past every hour"
+      - "Run 15 times per day"
+    correct_answer: "Run every 15 minutes"
+    explanation: "In cron schedule format, the expression '*/15 * * * *' means run every 15 minutes. The five fields represent minute, hour, day of month, month, and day of week respectively. The */15 syntax in the minute field means 'every 15 minutes' (divisible by 15). This would execute at 0, 15, 30, and 45 minutes past each hour. For example, to run at 15 minutes past every hour, you would use '15 * * * *'. Understanding cron syntax is essential for scheduling batch jobs, backups, and maintenance tasks in Kubernetes. Common patterns include '0 * * * *' for hourly, '0 0 * * *' for daily at midnight, and '@hourly', '@daily' as convenient shortcuts."
+    require_pass: true
+  - type: mcq
+    sequence_order: 2
+    question: "What is the purpose of the 'concurrencyPolicy' field in a Kubernetes CronJob?"
+    options:
+      - "To set the maximum number of pods that can run"
+      - "To control whether new job instances can run while previous ones are still active"
+      - "To define how many workers process the job"
+      - "To limit CPU usage during concurrent operations"
+    correct_answer: "To control whether new job instances can run while previous ones are still active"
+    explanation: "The concurrencyPolicy field controls how Kubernetes handles overlapping job executions. It has three possible values: 'Allow' (default) permits concurrent jobs to run simultaneously, 'Forbid' skips new job runs if the previous one hasn't completed, and 'Replace' cancels the currently running job and starts a new one. This is crucial for managing long-running batch processes that might exceed their scheduled interval. For example, if a CronJob scheduled every 5 minutes takes 7 minutes to complete, setting 'Forbid' prevents resource exhaustion by skipping the overlapping execution. Choose 'Allow' for independent tasks, 'Forbid' for sequential processing, and 'Replace' when only the latest execution matters. This setting helps prevent resource conflicts and ensures predictable job behavior."
+    require_pass: true
+  - type: mcq
+    sequence_order: 3
+    question: "What happens when you set 'suspend: true' on a CronJob in Kubernetes?"
+    options:
+      - "All running job instances are immediately terminated"
+      - "The CronJob is deleted from the cluster"
+      - "New job executions are prevented, but running jobs continue"
+      - "The cron schedule is permanently disabled"
+    correct_answer: "New job executions are prevented, but running jobs continue"
+    explanation: "Setting 'suspend: true' on a CronJob prevents the creation of new job instances while allowing any currently running jobs to complete normally. This is useful for temporarily pausing scheduled tasks during maintenance windows, debugging issues, or when you need to prevent new executions without losing the CronJob configuration. To resume normal operations, simply set 'suspend: false'. This field is particularly valuable in production environments where you might need to quickly stop batch processes without deleting resources. The suspend field can be toggled using 'kubectl patch cronjob <name> -p '{\"spec\":{\"suspend\":true}}'' or by editing the CronJob manifest directly. Unlike deleting the CronJob, suspending preserves the complete configuration including schedule, job template, and history limits, making it easy to resume operations when ready."
+    require_pass: true

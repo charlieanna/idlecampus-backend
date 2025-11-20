@@ -1,0 +1,62 @@
+slug: lesson-70
+title: Lesson 70
+difficulty: easy
+sequence_order: 70
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Node Troubleshooting\n\n    - kubelet status\
+  \ and logs\n    - NotReady nodes and taints"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What command would you use to view kubelet logs on a systemd-based node?
+  options:
+  - kubectl logs kubelet
+  - journalctl -u kubelet
+  - cat /var/log/kubelet.log
+  - kubelet --logs
+  correct_answer: journalctl -u kubelet
+  explanation: On systemd-based Linux systems, view kubelet logs using 'journalctl
+    -u kubelet'. The kubelet runs as a systemd service (not a pod), so kubectl logs
+    doesn't work. Use journalctl flags like '-f' to follow logs in real-time, '-n
+    100' for the last 100 lines, or '--since "1 hour ago"' for time-based filtering.
+    While some systems might write to /var/log/, systemd-managed services typically
+    use journald. Kubelet logs are crucial for diagnosing node issues including pod
+    startup failures, image pull problems, volume mount errors, resource pressure,
+    and container runtime communication issues. Understanding kubelet logs helps troubleshoot
+    why pods won't start, why nodes are NotReady, or why containers are failing.
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What does a NoExecute taint do when applied to a node?
+  options:
+  - Prevents new pods from being scheduled and evicts existing pods without tolerations
+  - Only prevents new scheduling
+  - Deletes the node
+  - Restarts all pods
+  correct_answer: Prevents new pods from being scheduled and evicts existing pods
+    without tolerations
+  explanation: A NoExecute taint is the most restrictive taint effect. It prevents
+    new pods from being scheduled on the node (like NoSchedule) but also evicts existing
+    pods that don't have a matching toleration. This is different from NoSchedule,
+    which only affects new scheduling but leaves existing pods alone. NoExecute is
+    useful for draining nodes for maintenance or when nodes have critical issues.
+    Pods can specify a toleration with tolerationSeconds to remain on the node for
+    a grace period before eviction. Kubernetes automatically adds NoExecute taints
+    like node.kubernetes.io/not-ready when nodes have problems. PreferNoSchedule is
+    a soft version that tries to avoid scheduling but doesn't guarantee it. Understanding
+    taint effects is essential for node management and workload placement control.
+  require_pass: true
+- type: mcq
+  sequence_order: 1
+  question: What kubectl command checks if you can perform an action?
+  options:
+  - kubectl auth can-i create pods
+  - kubectl check permissions create pods
+  - kubectl verify action create pods
+  - kubectl test auth create pods
+  correct_answer_index: 0
+  explanation: kubectl auth can-i <action> <resource> checks if the current user has
+    permission to perform the specified action.
+  require_pass: true

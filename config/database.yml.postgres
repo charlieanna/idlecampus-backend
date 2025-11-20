@@ -1,0 +1,63 @@
+# PostgreSQL Configuration
+#
+# This configuration supports both:
+# 1. Local PostgreSQL (via individual env vars)
+# 2. Neon/Heroku/Render (via DATABASE_URL)
+#
+# DATABASE_URL takes precedence if set (standard for cloud deployments)
+
+development:
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 10 } %>
+  timeout: 30000
+  # DATABASE_URL takes precedence if set, otherwise uses individual parameters below
+  database: idlecampus_development
+  host: <%= ENV.fetch("POSTGRES_HOST") { "localhost" } %>
+  port: <%= ENV.fetch("POSTGRES_PORT") { 5432 } %>
+  username: <%= ENV.fetch("POSTGRES_USER") { "postgres" } %>
+  password: <%= ENV.fetch("POSTGRES_PASSWORD") { "postgres" } %>
+
+test:
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 10 } %>
+  timeout: 30000
+  database: idlecampus_test
+  host: <%= ENV.fetch("POSTGRES_HOST") { "localhost" } %>
+  port: <%= ENV.fetch("POSTGRES_PORT") { 5432 } %>
+  username: <%= ENV.fetch("POSTGRES_USER") { "postgres" } %>
+  password: <%= ENV.fetch("POSTGRES_PASSWORD") { "postgres" } %>
+
+production:
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 25 } %>
+  timeout: 30000
+  # In production, DATABASE_URL is preferred (set by Neon/Heroku/Render)
+  # If DATABASE_URL is not set, falls back to these individual parameters:
+  database: <%= ENV.fetch("POSTGRES_DB") { "idlecampus_production" } %>
+  host: <%= ENV["POSTGRES_HOST"] %>
+  port: <%= ENV.fetch("POSTGRES_PORT") { 5432 } %>
+  username: <%= ENV["POSTGRES_USER"] %>
+  password: <%= ENV["POSTGRES_PASSWORD"] %>
+  # SSL mode (required for Neon, Heroku Postgres, AWS RDS)
+  sslmode: <%= ENV.fetch("POSTGRES_SSLMODE") { "require" } %>
+
+# =============================================================================
+# USAGE EXAMPLES:
+# =============================================================================
+#
+# Local Development (Docker Compose or Homebrew PostgreSQL):
+#   POSTGRES_HOST=localhost
+#   POSTGRES_USER=postgres
+#   POSTGRES_PASSWORD=postgres
+#
+# Neon Database (Development or Production):
+#   DATABASE_URL=postgresql://user:pass@ep-cool-darkness-123456.us-east-2.aws.neon.tech/neondb?sslmode=require
+#
+# Heroku/Render:
+#   DATABASE_URL is automatically set by the platform
+#
+# Note: Rails automatically uses DATABASE_URL if it's set, overriding the above.
+# =============================================================================

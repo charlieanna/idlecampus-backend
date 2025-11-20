@@ -1,0 +1,212 @@
+slug: total-internal-reflection
+title: "Total Internal Reflection and Applications"
+difficulty: intermediate
+sequence_order: 3
+estimated_minutes: 16
+key_concepts:
+- total-internal-reflection
+- critical-angle
+- optical-fiber
+- prism-applications
+- mirage
+prerequisites:
+- refraction-snells-law
+content_md: |
+  # Total Internal Reflection and Applications
+
+  ## Conditions for TIR
+
+  **Total Internal Reflection (TIR)** occurs when:
+  1. Light travels from **denser to rarer** medium
+  2. Angle of incidence > **critical angle**
+
+  ## Critical Angle (θc)
+
+  **Definition:** Angle of incidence for which angle of refraction = 90°
+
+  ```
+  sin θc = n₂/n₁ = 1/n (when n₂ = 1, air)
+
+  θc = sin⁻¹(1/n)
+  ```
+
+  ### Critical Angles for Common Media:
+  | Medium | n | θc (with air) |
+  |--------|---|---------------|
+  | Water | 1.33 | 48.75° |
+  | Glass | 1.5 | 41.81° |
+  | Diamond | 2.42 | 24.41° |
+
+  ## Behavior at Different Angles
+
+  ### i < θc:
+  - Both reflection and refraction occur
+  - Most light refracted, some reflected
+
+  ### i = θc:
+  - Refracted ray grazes along interface
+  - r = 90°
+
+  ### i > θc:
+  - Total Internal Reflection
+  - No refraction, 100% reflection
+  - Intensity preserved (no energy loss)
+
+  ## Applications of TIR
+
+  ### 1. Optical Fibers
+  ```
+  Core (higher n) surrounded by cladding (lower n)
+  Light undergoes multiple TIR, travels long distances
+  Used in: Internet, medical endoscopes, sensors
+  ```
+
+  **Acceptance Angle:**
+  ```
+  sin α = √(n₁² - n₂²)
+
+  Only light within cone of acceptance undergoes TIR
+  ```
+
+  ### 2. Totally Reflecting Prisms
+  - Replace mirrors (100% reflection vs ~95%)
+  - No multiple images
+  - No silvering needed
+
+  **90°-45°-45° Prism:**
+  - Deviates light by 90° or 180°
+  - Used in periscopes, binoculars
+
+  **60°-60°-60° Prism:**
+  - Special applications in optics
+
+  ### 3. Brilliance of Diamond
+  ```
+  θc = 24.41° (very low)
+  Light trapped inside, multiple TIR
+  Sparkles brilliantly when cut properly
+  ```
+
+  ### 4. Mirages
+  - Hot air near ground has lower n
+  - Gradual TIR creates inverted image
+  - Appears as water on road
+
+  ### 5. Sparkling of Air Bubble in Water
+  - Air (rarer) inside water (denser)
+  - TIR at bubble surface
+  - Bubble appears silvery
+
+  ## Important Formulas
+
+  ### Critical Angle:
+  ```
+  sin θc = n_rarer/n_denser = 1/n (if rarer is air)
+  ```
+
+  ### For Prism (TIR condition):
+  Ray must enter prism such that at second surface:
+  ```
+  r₂ > θc for TIR
+
+  For 45° prism: θc < 45°, so n > √2 ≈ 1.414
+  ```
+
+  ### Grazing Incidence:
+  When i = 90°:
+  ```
+  sin 90° = n sin r
+  sin r = 1/n
+  r = θc
+  ```
+
+  ## Numerical Examples
+
+  **Example 1:** Critical angle for glass (n=1.5) to air interface.
+
+  **Solution:**
+  ```
+  sin θc = 1/n = 1/1.5 = 2/3
+  θc = sin⁻¹(2/3) ≈ 41.81°
+  ```
+
+  **Example 2:** Can TIR occur when light goes from water (n=1.33) to glass (n=1.5)?
+
+  **Solution:**
+  ```
+  No! TIR requires denser to rarer medium.
+  Here light goes from rarer (water) to denser (glass).
+  TIR impossible in this direction.
+
+  But water to air: Yes (1.33 > 1)
+  Glass to water: Yes (1.5 > 1.33)
+  ```
+
+  **Example 3:** Light enters a glass rod (n=1.5) at angle 45°. Will it undergo TIR at curved surface?
+
+  **Solution:**
+  ```
+  Using Snell's law at entry:
+  sin 45° = 1.5 sin r
+  sin r = 1/(1.5√2) = 0.471
+  r ≈ 28.1°
+
+  At curved surface, angle with normal = 90° - 28.1° = 61.9°
+  θc = sin⁻¹(1/1.5) = 41.81°
+
+  Since 61.9° > 41.81°, TIR occurs!
+  ```
+
+  ## JEE Important Concepts
+
+  1. **TIR only from denser to rarer** - never reverse
+  2. **Higher n → Lower θc** (diamond sparkles more than glass)
+  3. **No energy loss in TIR** (ideal reflection)
+  4. **Optical fibers use cladding** to ensure TIR
+  5. **Fish's view**: circular window of sky (rest appears silvery)
+
+  ## Circle of Illumination (Fish Eye View)
+
+  When looking up from underwater:
+  ```
+  Radius of illuminated circle: r = h tan θc
+
+  where h = depth of fish
+  ```
+
+  Everything outside this circle appears dark/silvery due to TIR from below surface.
+
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: "Critical angle for a medium is 45°. Its refractive index is:"
+  options:
+  - "1.414"
+  - "1.5"
+  - "1.33"
+  - "2"
+  correct_answer: "1.414"
+  explanation: "sin θc = 1/n. So sin 45° = 1/n, giving 1/√2 = 1/n, hence n = √2 ≈ 1.414. This is the minimum refractive index needed for a 45°-45°-90° prism to totally internally reflect light. Such prisms are used in periscopes and binoculars. If n < √2, light would refract out instead of reflecting. Diamond (n=2.42) has much lower critical angle (24.4°), making it ideal for jewelry as more light is trapped inside."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: "For total internal reflection to occur, light must travel from:"
+  options:
+  - "Rarer to denser medium at any angle"
+  - "Denser to rarer medium at angle greater than critical angle"
+  - "Any medium to any other at critical angle"
+  - "Denser to rarer medium at any angle"
+  correct_answer: "Denser to rarer medium at angle greater than critical angle"
+  explanation: "TIR requires two conditions: (1) Light must travel from denser (higher n) to rarer (lower n) medium, (2) Angle of incidence must exceed critical angle. At critical angle, refracted ray grazes along interface. Beyond critical angle, no refraction is geometrically possible (sin r would exceed 1), so all light reflects back. This is why swimmers see a silvery surface when looking up at shallow angles - TIR from water-air interface. Rarer to denser never gives TIR as r < i always."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: "A fish is 1 m below water surface (n = 4/3). The radius of circle through which it can see outside world is:"
+  options:
+  - "3/√7 m"
+  - "√7/3 m"
+  - "3 m"
+  - "4/3 m"
+  correct_answer: "3/√7 m"
+  explanation: "sin θc = 1/n = 3/4, so cos θc = √(1 - 9/16) = √7/4. tan θc = sin/cos = (3/4)/(√7/4) = 3/√7. Radius of illuminated circle r = h tan θc = 1 × 3/√7 = 3/√7 m ≈ 1.13 m. Outside this circle, light undergoes TIR at water surface, so fish sees reflection of underwater objects (appears dark or silvery). This is the 'window to the world' through which aquatic creatures see sky. Deeper fish have larger windows (r ∝ h)."
+  require_pass: true

@@ -1,0 +1,36 @@
+slug: sql-aggregate-functions-and-group-by
+title: SQL Aggregate Functions and GROUP BY
+difficulty: easy
+sequence_order: 5
+estimated_minutes: 2
+key_concepts:
+- Aggregate functions
+- GROUP BY
+- HAVING clause
+- COUNT, SUM, AVG
+prerequisites: []
+content_md: "# SQL Aggregate Functions and GROUP BY \U0001F680\n\n# SQL Aggregate\
+  \ Functions and GROUP BY\n\n      Aggregate functions perform calculations on multiple\
+  \ rows of data and return a single value. They are essential for data analysis and\
+  \ reporting.\n\n      ## Common Aggregate Functions\n\n      ### COUNT()\n     \
+  \ Counts the number of rows:\n      ```sql\n      SELECT COUNT(*) FROM users;\n\
+  \      SELECT COUNT(DISTINCT city) FROM users;\n      ```\n\n      ### SUM()\n \
+  \     Adds up numeric values:\n      ```sql\n      SELECT SUM(price) FROM orders;\n\
+  \      ```\n\n      ### AVG()\n      Calculates the average:\n      ```sql\n   \
+  \   SELECT AVG(age) FROM users;\n      ```\n\n      ### MAX() and MIN()\n      Find\
+  \ maximum and minimum values:\n      ```sql\n      SELECT MAX(price), MIN(price)\
+  \ FROM products;\n      ```\n\n      ## GROUP BY Clause\n\n      GROUP BY groups\
+  \ rows with the same values into summary rows:\n\n      ```sql\n      SELECT city,\
+  \ COUNT(*) as user_count\n      FROM users\n      GROUP BY city;\n      ```\n\n\
+  \      ## HAVING Clause\n\n      HAVING filters grouped results (like WHERE for\
+  \ aggregates):\n\n      ```sql\n      SELECT city, COUNT(*) as user_count\n    \
+  \  FROM users\n      GROUP BY city\n      HAVING COUNT(*) > 5;\n      ```\n\n  \
+  \    ## Examples\n\n      **Count users by city:**\n      ```sql\n      SELECT city,\
+  \ COUNT(*) FROM users\n      GROUP BY city;\n      ```\n\n      **Average age by\
+  \ city:**\n      ```sql\n      SELECT city, AVG(age) as avg_age\n      FROM users\n\
+  \      GROUP BY city;\n      ```\n\n      **Cities with more than 3 users:**\n \
+  \     ```sql\n      SELECT city, COUNT(*) as count\n      FROM users\n      GROUP\
+  \ BY city\n      HAVING COUNT(*) > 3;\n      ```\n\n      Ready to practice aggregate\
+  \ functions? Let's move to the lab!\n\n## Key Points\n\n- Aggregate functions\n\n\
+  - GROUP BY\n\n- HAVING clause"
+exercises: []

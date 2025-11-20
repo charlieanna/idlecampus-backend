@@ -1,0 +1,68 @@
+slug: kinetictheory-practice
+title: kinetic_theory — Practice
+difficulty: easy
+sequence_order: 11
+estimated_minutes: 2
+key_concepts:
+- kinetic_theory
+prerequisites: []
+content_md: '# kinetic_theory — Practice 🚀
+
+
+  urms = √(3RT/M), which shows urms ∝ √T (square root of temperature)
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: 'The RMS velocity of a gas is proportional to:'
+  options:
+  - √T
+  - T
+  - T²
+  - 1/T
+  require_pass: true
+  correct_answer: √T
+  explanation: 'According to kinetic molecular theory, the root mean square (RMS)
+    velocity of gas molecules is given by: u_rms = √(3RT/M), where R = universal gas
+    constant, T = absolute temperature (K), M = molar mass (kg/mol). From this equation,
+    u_rms ∝ √T (proportional to square root of temperature). This means: (1) If temperature
+    increases 4 times, RMS velocity doubles (√4 = 2), (2) At higher temperatures,
+    molecules move faster, (3) Lighter gases (lower M) have higher RMS velocities
+    at same temperature. Examples: At 300K, H₂ molecules move ~1930 m/s while O₂ molecules
+    move ~483 m/s. The relationship is NOT linear (not T) or quadratic (not T²). This
+    square root relationship explains why temperature must increase significantly
+    to noticeably increase molecular velocities, which affects diffusion rates, effusion
+    rates (Graham''s law), and collision frequencies.'
+- type: mcq
+  sequence_order: 2
+  question: 'Which of the following is NOT an assumption of the kinetic molecular theory of gases?'
+  options:
+  - Gas molecules are in constant, random motion
+  - The volume of gas molecules is negligible compared to the container volume
+  - Collisions between molecules are perfectly elastic
+  - Attractive forces between molecules are significant
+  require_pass: true
+  correct_answer: Attractive forces between molecules are significant
+  explanation: 'Kinetic molecular theory assumes that attractive forces between gas molecules are NEGLIGIBLE, not significant. The five key assumptions are: (1) Gases consist of tiny particles in constant, random motion, (2) The volume of individual molecules is negligible compared to the total volume (molecules are point masses), (3) Molecules exert no forces on each other except during collisions (no intermolecular attractions or repulsions), (4) Collisions between molecules and with container walls are perfectly elastic (no energy loss), (5) The average kinetic energy of molecules is proportional to absolute temperature (KE_avg ∝ T). These assumptions work well at: low pressure (large volume, molecules far apart) and high temperature (high kinetic energy overcomes any weak attractions). Real gases deviate from these assumptions, especially at high pressure (molecular volume becomes significant) and low temperature (intermolecular forces become important), leading to the need for van der Waals equation corrections.'
+- type: mcq
+  sequence_order: 3
+  question: 'At the same temperature, which gas has the highest average kinetic energy per molecule: H₂, N₂, O₂, or CO₂?'
+  options:
+  - H₂
+  - N₂
+  - O₂
+  - All have the same average kinetic energy
+  require_pass: true
+  correct_answer: All have the same average kinetic energy
+  explanation: 'All gases at the same temperature have the same average kinetic energy per molecule, regardless of their mass. According to kinetic molecular theory: Average KE = (3/2)kT, where k = Boltzmann constant (1.38 × 10⁻²³ J/K), T = absolute temperature. This equation depends only on temperature, not on molecular mass or identity. Important implications: (1) At 300 K, one H₂ molecule has the same average KE as one CO₂ molecule, (2) Since KE = ½mv², and KE is constant at constant T: lighter molecules (smaller m) must move faster (larger v) to maintain the same kinetic energy, (3) This explains Graham''s law: r ∝ 1/√M (lighter gases diffuse faster). Example: At same T, H₂ (M=2) moves ~3.7× faster than O₂ (M=32) because √(32/2) ≈ 4, but both have identical average kinetic energy. Temperature is a direct measure of average molecular kinetic energy, which is why it''s so fundamental in thermodynamics.'

@@ -1,0 +1,110 @@
+slug: run-nginx-in-the-background
+title: Run Nginx in the Background
+sequence_order: 5
+estimated_minutes: 2
+difficulty: easy
+key_concepts:
+- detached-mode
+- docker-run
+- background-processes
+content_md: "# Run Nginx in the Background \U0001F680\n\n**Background Services Challenge**\
+  \ \U0001F3C3\n\n    Your project manager says:\n\n    > \"We need an nginx server\
+  \ running continuously in the background.\n    > But I don't want my terminal blocked\
+  \ - I need to keep working!\"\n\n    ### The Problem\n    By default, `docker run`\
+  \ runs in **attached mode**, meaning:\n    - Your terminal is blocked\n    - You\
+  \ see the container's output directly\n    - When you close the terminal or press\
+  \ Ctrl+C, the container stops\n\n    For long-running services like web servers,\
+  \ databases, or APIs, this is impractical.\n\n    ### Detached Mode (-d) Explained\n\
+  \    The `-d` flag runs containers in **detached mode** (in the background):\n\n\
+  \    ```bash\n    docker run -d nginx:alpine\n    ```\n\n    **What happens:**\n\
+  \    - Container starts in the background\n    - Your terminal is freed immediately\n\
+  \    - Container prints only its ID (you can use this to manage it later)\n    -\
+  \ Container keeps running even if you close your terminal\n\n    ### Attached vs\
+  \ Detached\n\n    **Attached mode** (default):\n    ```bash\n    $ docker run nginx:alpine\n\
+  \    # Terminal is blocked, showing nginx logs:\n    # 2025/11/09 12:34:56 [notice]\
+  \ nginx/1.24.0\n    # 2025/11/09 12:34:56 [notice] start worker processes\n    #\
+  \ ... (you can't use this terminal until you stop the container)\n    ```\n\n  \
+  \  **Detached mode** (with -d):\n    ```bash\n    $ docker run -d nginx:alpine\n\
+  \    abc123def456789...   # Container ID\n    $                    # Terminal is\
+  \ free! You can run more commands\n    ```\n\n    ### Visual Example\n\n    ```\n\
+  \    WITHOUT -d (Attached):\n    Terminal → docker run nginx → BLOCKED (showing\
+  \ logs)\n                                      └─ Press Ctrl+C → Container stops\n\
+  \n    WITH -d (Detached):\n    Terminal → docker run -d nginx → Prints container\
+  \ ID\n                                        └─ Terminal free → Container runs\
+  \ in background\n    ```\n\n    ### Working with Detached Containers\n\n    **After\
+  \ starting:**\n    ```bash\n    docker run -d nginx:alpine\n    # Returns: abc123def456\n\
+  \    ```\n\n    **Check if it's running:**\n    ```bash\n    docker ps\n    # Shows:\
+  \ nginx:alpine container is Up\n    ```\n\n    **View logs:**\n    ```bash\n   \
+  \ docker logs abc123def456\n    # Or follow in real-time:\n    docker logs -f abc123def456\n\
+  \    ```\n\n    **Stop it:**\n    ```bash\n    docker stop abc123def456\n    ```\n\
+  \n    ### Real-World Example\n\n    **Running a web server with a custom name:**\n\
+  \    ```bash\n    docker run -d --name my-web-server -p 8080:80 nginx:alpine\n \
+  \   ```\n\n    - `-d` → Detached mode\n    - `--name my-web-server` → Give it a\
+  \ friendly name\n    - `-p 8080:80` → Map host port 8080 to container port 80\n\
+  \    - `nginx:alpine` → Use the lightweight alpine version\n\n    Now you can:\n\
+  \    - Visit http://localhost:8080 to see the server\n    - Continue working in\
+  \ your terminal\n    - Manage it by name: `docker logs my-web-server`, `docker stop\
+  \ my-web-server`\n\n    ### Common Mistakes\n\n    1. **Forgetting -d for services**:\
+  \ Servers, databases, and daemons should almost always use `-d`.\n    2. **Not naming\
+  \ containers**: Without `--name`, you'll have to use the random container ID.\n\
+  \    3. **Thinking detached = running**: A container can start in detached mode\
+  \ and still crash. Always check `docker ps`.\n\n    ### When to Use Attached vs\
+  \ Detached\n\n    **Use Attached Mode** (no -d):\n    - Running one-off commands:\
+  \ `docker run ubuntu ls -la`\n    - Debugging and testing: You want to see output\
+  \ immediately\n    - Interactive sessions: `docker run -it ubuntu bash`\n\n    **Use\
+  \ Detached Mode** (-d):\n    - Web servers, APIs, and long-running services\n  \
+  \  - Databases (MySQL, PostgreSQL, Redis, etc.)\n    - Background workers and queues\n\
+  \    - Production deployments\n\n    ### Pro Tip: Re-attach to a Detached Container\n\
+  \n    ```bash\n    # Start detached\n    docker run -d --name myapp nginx:alpine\n\
+  \n    # Later, attach to see live output:\n    docker attach myapp\n\n    # Or just\
+  \ follow logs:\n    docker logs -f myapp\n    ```\n\n## Syntax/Command\n\n```bash\n\
+  docker run -d nginx:alpine\n```\n\n## Example\n\n```bash\n# Run nginx in detached\
+  \ mode\ndocker run -d nginx:alpine\n\n# Run with a name and port mapping\ndocker\
+  \ run -d --name my-nginx -p 8080:80 nginx:alpine\n```\n\n## Key Points\n\n- Use\
+  \ -d flag to run containers in detached mode (background)\n\n- Detached containers\
+  \ free your terminal immediately\n\n- Use docker ps to verify the container is running"
+exercises:
+- type: terminal
+  sequence_order: 1
+  command: docker run -d nginx:alpine
+  description: Run an nginx container in detached mode so it runs in the background
+  hints:
+  - Use the -d flag for detached mode
+  - The command will print the container ID and return immediately
+  timeout_sec: 60
+  require_pass: true
+  validation:
+    must_not_include:
+    - Error
+    - 'panic:'
+- type: mcq
+  sequence_order: 2
+  question: What does the -d flag do in 'docker run -d nginx'?
+  options:
+  - Runs the container in detached mode (background)
+  - Deletes the container after it exits
+  - Downloads the image only without running
+  - Enables debug mode with verbose output
+  correct_answer_index: 0
+  explanation: The -d flag (detached mode) runs the container in the background, freeing
+    your terminal immediately
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: When should you use detached mode (-d)?
+  options:
+  - For long-running services like web servers and databases
+  - For one-off commands that complete quickly
+  - For interactive terminal sessions
+  - Only when debugging containers
+  correct_answer_index: 0
+  explanation: Detached mode is ideal for services that need to run continuously in
+    the background without blocking your terminal
+  require_pass: true
+objectives:
+- Run containers in detached mode with -d flag
+- Understand when to use attached vs detached mode
+- Manage background containers effectively
+next_recommended:
+- listing-containers
+- viewing-container-logs

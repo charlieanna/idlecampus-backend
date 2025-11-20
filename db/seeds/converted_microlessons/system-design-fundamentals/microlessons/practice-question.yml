@@ -1,0 +1,49 @@
+slug: practice-question
+title: Practice Question
+difficulty: medium
+sequence_order: 11
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: '# Practice Question 🚀
+
+
+  ## What is this?
+
+  A concise explanation of the concept.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises: []
+exercises:
+  - type: mcq
+    sequence_order: 1
+    question: "When reviewing a system design, what is a common indicator of poor scalability?"
+    options:
+      - "Using cloud services"
+      - "Single point of failure, shared mutable state, lack of caching, synchronous processing"
+      - "Having multiple services"
+      - "Using databases"
+    correct_answer: "Single point of failure, shared mutable state, lack of caching, synchronous processing"
+    explanation: "Scalability red flags: (1) Single point of failure—one component's failure crashes entire system (add redundancy, load balancing), (2) Shared mutable state—global variables, file system state that doesn't scale horizontally (use stateless services, external storage), (3) No caching—repeated expensive operations (add caching layers), (4) Synchronous processing—waiting for slow operations (use async/message queues), (5) Monolithic architecture—can't scale parts independently (consider microservices), (6) No database indexing—full table scans (add indexes), (7) N+1 queries—fetching related data inefficiently (use joins, eager loading). Recognizing these patterns helps you design better systems and improve existing ones."
+    require_pass: true
+  - type: mcq
+    sequence_order: 2
+    question: "What is the most important step when beginning a system design interview or project?"
+    options:
+      - "Start coding immediately"
+      - "Clarify requirements and constraints (functional/non-functional requirements, scale, users)"
+      - "Choose technologies first"
+      - "Draw diagrams without planning"
+    correct_answer: "Clarify requirements and constraints (functional/non-functional requirements, scale, users)"
+    explanation: "Always start by clarifying requirements before designing. Ask about: (1) Functional requirements—what features exactly? (create tweets, follow users, like posts?), (2) Non-functional requirements—scale (1M users? 1B?), performance (latency requirements?), availability (99.9%? 99.999%?), consistency needs, (3) Constraints—budget, timeline, team size, existing infrastructure. Example: 'Design Twitter' could mean different things—for 1,000 users vs 500M users, read-heavy vs write-heavy, global vs regional. Getting requirements wrong leads to over-engineering or under-engineering. In interviews, asking thoughtful questions shows experience. In projects, saves costly rewrites. Remember: there's no perfect system design, only appropriate trade-offs for your specific requirements."
+    require_pass: true

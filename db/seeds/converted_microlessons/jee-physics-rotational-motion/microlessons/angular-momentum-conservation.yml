@@ -1,0 +1,234 @@
+slug: angular-momentum-conservation
+title: "Angular Momentum and Conservation"
+difficulty: advanced
+sequence_order: 6
+estimated_minutes: 18
+key_concepts:
+- angular-momentum
+- torque
+- conservation
+- spin
+- orbital-angular-momentum
+prerequisites:
+- moment-of-inertia-concepts
+- torque-and-angular-acceleration
+content_md: |
+  # Angular Momentum and Conservation
+
+  ## Angular Momentum (L)
+
+  **Definition:** Rotational analog of linear momentum.
+
+  ### For Particle:
+  ```
+  L⃗ = r⃗ × p⃗ = r⃗ × mv⃗
+  L = mvr sin θ = mvr⊥
+  ```
+
+  ### For Rigid Body:
+  ```
+  L = Iω
+
+  I = moment of inertia
+  ω = angular velocity
+  ```
+
+  **Unit:** kg·m²/s or J·s
+
+  ## Torque and Angular Momentum
+
+  ```
+  τ⃗ = dL⃗/dt
+
+  Net torque = Rate of change of angular momentum
+  ```
+
+  Rotational analog of F⃗ = dp⃗/dt
+
+  ## Conservation of Angular Momentum
+
+  **When net external torque = 0:**
+  ```
+  L = constant
+
+  Iω = constant (for rotation about fixed axis)
+
+  I₁ω₁ = I₂ω₂
+  ```
+
+  ## Applications
+
+  ### 1. Ice Skater Spin
+  ```
+  Arms extended: I large, ω small
+  Arms pulled in: I small, ω large
+
+  I₁ω₁ = I₂ω₂ (conservation)
+  ```
+
+  ### 2. Diver's Rotation
+  ```
+  Tuck position: Faster rotation
+  Extended position: Slower rotation
+  ```
+
+  ### 3. Ballet Pirouette
+  Similar to ice skater.
+
+  ### 4. Neutron Star
+  ```
+  When star collapses: R decreases
+  I ∝ MR² decreases
+  ω increases dramatically (millisecond pulsars)
+  ```
+
+  ### 5. Planetary Motion
+  ```
+  L = mvr = constant
+
+  At perihelion: r small, v large
+  At aphelion: r large, v small
+
+  Kepler's second law: Equal areas in equal times
+  ```
+
+  ## Types of Angular Momentum
+
+  ### 1. Spin Angular Momentum:
+  ```
+  L_spin = Iω (rotation about own axis)
+  ```
+
+  ### 2. Orbital Angular Momentum:
+  ```
+  L_orbital = mvr (motion around external axis)
+  ```
+
+  ### 3. Total:
+  ```
+  L_total = L_spin + L_orbital
+  ```
+
+  ## Angular Impulse
+
+  ```
+  J⃗ = ∫τ⃗ dt = ΔL⃗
+
+  Angular impulse = Change in angular momentum
+  ```
+
+  ## Important Relations
+
+  ### Angular Momentum of Particle in Circular Motion:
+  ```
+  L = mvr = mr²ω
+  ```
+
+  ### Angular Momentum of Rotating Rigid Body:
+  ```
+  L = Iω = (mk²)ω
+
+  where k = radius of gyration
+  ```
+
+  ### Rolling Without Slipping:
+  ```
+  L_total = L_spin + L_orbital
+  L = Iω + MvR = (I + MR²)ω
+
+  For disc: L = (MR²/2 + MR²)ω = (3/2)MR²ω
+  ```
+
+  ## Numerical Examples
+
+  **Example 1:** Particle of mass 2 kg moves in circle of radius 3 m with velocity 6 m/s. Find angular momentum.
+
+  **Solution:**
+  ```
+  L = mvr = 2 × 6 × 3 = 36 kg·m²/s
+
+  Or: ω = v/r = 2 rad/s
+  I = mr² = 18 kg·m²
+  L = Iω = 18 × 2 = 36 kg·m²/s ✓
+  ```
+
+  **Example 2:** Disc rotates at 10 rad/s. If radius halves due to contraction, find new angular velocity.
+
+  **Solution:**
+  ```
+  I₁ = (1/2)MR²
+  I₂ = (1/2)M(R/2)² = (1/8)MR² = I₁/4
+
+  Conservation: I₁ω₁ = I₂ω₂
+  I₁(10) = (I₁/4)ω₂
+  ω₂ = 40 rad/s
+
+  Angular velocity increases 4 times!
+  ```
+
+  **Example 3:** Turntable (I = 0.1 kg·m²) rotates at 2 rad/s. Child (mass 20 kg) at center moves to edge (r = 0.5 m). Find new ω.
+
+  **Solution:**
+  ```
+  I_initial = 0.1 kg·m²
+  I_final = 0.1 + mr² = 0.1 + 20(0.25) = 5.1 kg·m²
+
+  L = constant
+  0.1 × 2 = 5.1 × ω₂
+  ω₂ = 0.2/5.1 ≈ 0.039 rad/s
+
+  Rotation slows dramatically when child moves out.
+  ```
+
+  ## JEE Key Points
+
+  1. **L = Iω** (fundamental relation)
+  2. **Conservation when τ_ext = 0**
+  3. **L is vector** - direction along rotation axis
+  4. **Kepler's 2nd law** is angular momentum conservation
+  5. **Decrease I → Increase ω** (and vice versa)
+  6. **Right hand rule** for direction
+  7. **Both spin and orbital** contribute to total L
+
+  ## Common Mistakes
+
+  1. ❌ Forgetting I changes when mass distribution changes
+  2. ❌ Not including both spin and orbital L
+  3. ❌ Wrong sign for rotation direction
+  4. ❌ Confusing L with τ
+  5. ❌ Assuming conservation when external torque exists
+
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: "A person on rotating platform holds weights in outstretched arms. When arms are folded, angular velocity:"
+  options:
+  - "Increases"
+  - "Decreases"
+  - "Remains same"
+  - "Becomes zero"
+  correct_answer: "Increases"
+  explanation: "When arms are folded, weights move closer to rotation axis, decreasing moment of inertia (I ∝ r²). By conservation of angular momentum (no external torque): Iω = constant. If I decreases, ω must increase proportionally. This is dramatically demonstrated by figure skaters who spin faster by pulling arms in. A 4-fold decrease in I gives 4-fold increase in ω. The angular momentum remains constant, but kinetic energy KE = ½Iω² actually increases - the person does work by pulling arms in against centrifugal force."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: "Angular momentum of planet in elliptical orbit is constant. At perihelion, compared to aphelion:"
+  options:
+  - "Speed is less, distance is more"
+  - "Speed is more, distance is less"
+  - "Both speed and distance are more"
+  - "Both are same"
+  correct_answer: "Speed is more, distance is less"
+  explanation: "L = mvr = constant. At perihelion (closest to sun): r is minimum, so v must be maximum to maintain constant L. At aphelion: r is maximum, v is minimum. This is Kepler's second law: planets sweep equal areas in equal times (dA/dt = L/2m = constant). Earth moves fastest in January (perihelion) at ~30.3 km/s and slowest in July (aphelion) at ~29.3 km/s. This ~3% variation is why Northern Hemisphere winter is slightly shorter than summer."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: "A disc of mass M and radius R rolls without slipping. Its angular momentum about center of mass is:"
+  options:
+  - "MR²ω"
+  - "(1/2)MR²ω"
+  - "(3/2)MR²ω"
+  - "2MR²ω"
+  correct_answer: "(1/2)MR²ω"
+  explanation: "About center of mass, only spin angular momentum matters: L_cm = I_cm × ω = (MR²/2) × ω. The orbital angular momentum about CM is zero (CM is the reference point). If asked about total angular momentum about contact point: L_total = I_contact × ω = (3MR²/2) × ω (using parallel axis theorem). The distinction between 'about CM' vs 'about contact point' is crucial. For rolling disc: L_cm = MR²ω/2, but L_contact = 3MR²ω/2."
+  require_pass: true

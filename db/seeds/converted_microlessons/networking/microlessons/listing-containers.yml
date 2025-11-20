@@ -1,0 +1,239 @@
+slug: listing-containers
+title: Listing Containers
+difficulty: easy
+sequence_order: 4
+estimated_minutes: 2
+key_concepts:
+- docker-ps
+prerequisites: []
+content_md: '# Listing Containers 🚀
+
+
+  ## What is docker ps?
+
+  The `docker ps` command lists all running containers on your system, showing their status, names, IDs, and resource usage. It''s one of the most frequently used Docker commands for monitoring and managing containers.
+
+
+  ## Why It''s Important
+
+  - **Container Visibility**: See what''s currently running on your system
+
+  - **Quick Status Check**: Monitor container health and uptime
+
+  - **Get Container IDs**: Find IDs/names for other Docker commands
+
+  - **Troubleshooting**: Identify stuck or crashed containers
+
+  - **Resource Monitoring**: Check ports and resource allocation
+
+
+  ## Basic Usage
+
+
+  ### Show Running Containers
+
+  ```bash
+
+  docker ps
+
+  ```
+
+  Displays all currently running containers with columns:
+
+  - **CONTAINER ID**: Unique identifier (first 12 chars of full ID)
+
+  - **IMAGE**: Image used to create the container
+
+  - **COMMAND**: Command running inside container
+
+  - **CREATED**: When container was created
+
+  - **STATUS**: Current status (Up 2 hours, Exited, etc.)
+
+  - **PORTS**: Port mappings (0.0.0.0:8080->80/tcp)
+
+  - **NAMES**: Container name (auto-generated or custom)
+
+
+  ### Show All Containers (Including Stopped)
+
+  ```bash
+
+  docker ps -a
+
+  ```
+
+  The `-a` or `--all` flag includes stopped and exited containers.
+
+
+  ### Show Only Container IDs
+
+  ```bash
+
+  docker ps -q
+
+  ```
+
+  The `-q` or `--quiet` flag outputs only container IDs (useful for scripting).
+
+
+  ### Filter Containers
+
+  ```bash
+
+  # Show containers by status
+
+  docker ps -a --filter "status=exited"
+
+
+  # Show containers by name
+
+  docker ps --filter "name=web"
+
+
+  # Show containers by image
+
+  docker ps --filter "ancestor=nginx"
+
+  ```
+
+
+  ## Common Use Cases
+
+
+  ### 1. Quick Health Check
+
+  ```bash
+
+  docker ps
+
+  ```
+
+  See if your services are running.
+
+
+  ### 2. Get Container ID for Commands
+
+  ```bash
+
+  # First, list containers
+
+  docker ps
+
+
+  # Then use ID for other commands
+
+  docker logs abc123
+
+  docker exec -it abc123 bash
+
+  ```
+
+
+  ### 3. Stop All Running Containers
+
+  ```bash
+
+  docker stop $(docker ps -q)
+
+  ```
+
+  Combines `docker ps -q` (get IDs) with `docker stop`.
+
+
+  ### 4. Remove All Stopped Containers
+
+  ```bash
+
+  docker rm $(docker ps -aq --filter "status=exited")
+
+  ```
+
+
+  ## Pro Tips
+
+
+  1. **Custom Format**: Use `--format` for custom output
+
+     ```bash
+
+     docker ps --format "table {{.ID}}\t{{.Names}}\t{{.Status}}"
+
+     ```
+
+
+  2. **Watch Mode**: Continuously monitor containers
+
+     ```bash
+
+     watch docker ps
+
+     ```
+
+
+  3. **Size Information**: See disk usage
+
+     ```bash
+
+     docker ps -s
+
+     ```
+
+
+  4. **Recent Containers**: Show last created containers
+
+     ```bash
+
+     docker ps -a -n 5
+
+     ```
+
+
+  ## Syntax/Command
+
+
+  ```bash
+
+  docker ps
+
+  ```
+
+
+  ## Key Points
+
+
+  - `docker ps` shows running containers only
+
+  - `docker ps -a` includes stopped containers
+
+  - `docker ps -q` outputs only container IDs (great for scripting)
+
+  - Use filters to narrow down results by status, name, or image'
+exercises:
+- type: terminal
+  problem_statement: List all currently running Docker containers to see their status, names, and IDs
+  expected_output: Table showing running containers with CONTAINER ID, IMAGE, COMMAND, CREATED, STATUS, PORTS, and NAMES columns
+  language: bash
+  starter_code: "# List running containers\n"
+  sequence_order: 1
+  command: docker ps
+  description: 'Practice the command: docker ps'
+  hints:
+  - Try docker ps -a to include stopped ones
+  validation:
+    must_not_include:
+    - Error
+    - 'panic:'
+  timeout_sec: 60
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: Which command lists all containers including stopped ones?
+  options:
+  - docker ps -a
+  - docker list --all
+  - docker containers
+  - docker ps --running
+  correct_answer: docker ps -a
+  explanation: "docker ps -a shows all containers regardless of state (running, stopped, exited). By default, docker ps only shows running containers. The -a (or --all) flag includes stopped and exited containers. There is no 'docker list' or 'docker containers' command, and --running is not a valid flag."
+  require_pass: true

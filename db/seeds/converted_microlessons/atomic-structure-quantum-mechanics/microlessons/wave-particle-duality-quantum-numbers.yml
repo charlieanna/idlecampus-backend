@@ -1,0 +1,130 @@
+slug: wave-particle-duality-quantum-numbers
+title: Wave-Particle Duality & Quantum Numbers
+difficulty: easy
+sequence_order: 5
+estimated_minutes: 2
+key_concepts:
+- de Broglie equation
+- Heisenberg uncertainty
+- Schrodinger equation
+- Quantum numbers
+- Orbitals
+prerequisites: []
+content_md: "# Wave-Particle Duality & Quantum Numbers \U0001F680\n\n# Wave-Particle\
+  \ Duality & Quantum Numbers\n\n    ## de Broglie Hypothesis (1924)\n\n    **Concept:**\
+  \ Matter has both particle and wave properties\n\n    ### de Broglie Equation:\n\
+  \n    **λ = h/mv = h/p**\n\n    Where:\n    - λ = wavelength of matter wave\n  \
+  \  - h = Planck's constant = 6.626 × 10⁻³⁴ J·s\n    - m = mass of particle\n   \
+  \ - v = velocity\n    - p = momentum (mv)\n\n    ### Key Points:\n    - All moving\
+  \ particles have wave character\n    - Wavelength is **inversely proportional to\
+  \ momentum**\n    - For macroscopic objects, λ is negligibly small\n    - For electrons,\
+  \ λ is significant and measurable\n\n    ### Solved Problems:\n\n    **Problem 1:\
+  \ Calculate wavelength of electron**\n\n    **Q: Calculate de Broglie wavelength\
+  \ of electron moving with velocity 2.05 × 10⁶ m/s.**\n\n    Solution:\n    - m =\
+  \ 9.11 × 10⁻³¹ kg\n    - λ = h/mv = (6.626 × 10⁻³⁴)/(9.11 × 10⁻³¹ × 2.05 × 10⁶)\n\
+  \    - λ = 3.55 × 10⁻¹⁰ m = **0.355 nm**\n\n    **Problem 2: Compare wavelengths**\n\
+  \n    **Q: Calculate ratio of de Broglie wavelengths of proton and electron moving\
+  \ with same velocity.**\n\n    Solution:\n    - λ₁/λ₂ = (h/m₁v)/(h/m₂v) = m₂/m₁\n\
+  \    - λₚ/λₑ = mₑ/mₚ = (9.11 × 10⁻³¹)/(1.67 × 10⁻²⁷)\n    - **λₑ/λₚ = 1836:1** (electron\
+  \ wavelength is 1836 times larger)\n\n    ## Heisenberg Uncertainty Principle (1927)\n\
+  \n    **Principle:** It is impossible to determine simultaneously the exact position\
+  \ and momentum of a particle with absolute precision.\n\n    ### Mathematical Form:\n\
+  \n    **Δx · Δp ≥ h/4π**\n\n    Or equivalently:\n\n    **Δx · Δv ≥ h/4πm**\n\n\
+  \    Where:\n    - Δx = uncertainty in position\n    - Δp = uncertainty in momentum\n\
+  \    - Δv = uncertainty in velocity\n    - h = Planck's constant\n\n    ### Important\
+  \ Points:\n    1. More precisely we know position, less precisely we know momentum\
+  \ (and vice versa)\n    2. This is **fundamental limitation of nature**, not instrumental\n\
+  \    3. Significant for microscopic particles (electrons)\n    4. Negligible for\
+  \ macroscopic objects\n    5. Explains why Bohr's fixed orbits are incorrect\n\n\
+  \    ### Solved Problem:\n\n    **Q: Calculate uncertainty in position of electron\
+  \ if uncertainty in velocity is 5.7 × 10⁵ m/s.**\n\n    Solution:\n    - Δx · Δv\
+  \ ≥ h/4πm\n    - Δx ≥ (6.626 × 10⁻³⁴)/(4 × 3.14 × 9.11 × 10⁻³¹ × 5.7 × 10⁵)\n  \
+  \  - Δx ≥ **1.01 × 10⁻¹⁰ m = 1.01 Å**\n\n    ## Schrödinger Wave Equation\n\n  \
+  \  **Equation:** Ĥψ = Eψ\n\n    - ψ (psi) = wave function (describes state of electron)\n\
+  \    - ψ² = probability density (probability of finding electron)\n    - Solutions\
+  \ give **quantum numbers** and **energy levels**\n\n    ### Key Concepts:\n    -\
+  \ **Orbital** = region of space where probability of finding electron is maximum\
+  \ (typically 90%)\n    - Orbital is NOT a fixed path (unlike Bohr orbit)\n    -\
+  \ ψ² gives probability distribution\n\n    ## Quantum Numbers\n\n    Four quantum\
+  \ numbers describe an electron in an atom:\n\n    ### 1. Principal Quantum Number\
+  \ (n)\n\n    **Symbol:** n\n    **Values:** 1, 2, 3, 4, ... (positive integers)\n\
+  \n    **Significance:**\n    - Determines **main energy level** or **shell**\n \
+  \   - Larger n → higher energy, farther from nucleus\n    - n = 1 (K shell), n =\
+  \ 2 (L shell), n = 3 (M shell), n = 4 (N shell)\n\n    **Maximum electrons in shell\
+  \ = 2n²**\n    - n=1: max 2 electrons\n    - n=2: max 8 electrons\n    - n=3: max\
+  \ 18 electrons\n    - n=4: max 32 electrons\n\n    ### 2. Azimuthal Quantum Number\
+  \ (l)\n\n    **Symbol:** l (or ℓ)\n    **Values:** 0, 1, 2, 3, ... (n-1)\n\n   \
+  \ **Significance:**\n    - Determines **subshell** or **sublevel**\n    - Determines\
+  \ **shape of orbital**\n\n    | l value | Subshell | Shape |\n    |---------|----------|-------|\n\
+  \    | 0 | s | Spherical |\n    | 1 | p | Dumbbell |\n    | 2 | d | Complex |\n\
+  \    | 3 | f | More complex |\n\n    **Number of orbitals in subshell = 2l + 1**\n\
+  \    - s: 1 orbital\n    - p: 3 orbitals\n    - d: 5 orbitals\n    - f: 7 orbitals\n\
+  \n    **Maximum electrons in subshell = 2(2l + 1)**\n    - s: 2 electrons\n    -\
+  \ p: 6 electrons\n    - d: 10 electrons\n    - f: 14 electrons\n\n    ### 3. Magnetic\
+  \ Quantum Number (mₗ)\n\n    **Symbol:** mₗ (or m)\n    **Values:** -l to +l (including\
+  \ 0)\n\n    **Significance:**\n    - Determines **orientation of orbital** in space\n\
+  \    - Number of values = 2l + 1 (number of orbitals)\n\n    **Examples:**\n   \
+  \ - l = 0 (s): mₗ = 0 (1 orbital)\n    - l = 1 (p): mₗ = -1, 0, +1 (3 orbitals:\
+  \ px, py, pz)\n    - l = 2 (d): mₗ = -2, -1, 0, +1, +2 (5 orbitals)\n\n    ### 4.\
+  \ Spin Quantum Number (mₛ)\n\n    **Symbol:** mₛ (or s)\n    **Values:** +½ or -½\n\
+  \n    **Significance:**\n    - Describes **spin** of electron (intrinsic angular\
+  \ momentum)\n    - +½ = spin up (↑)\n    - -½ = spin down (↓)\n    - Two electrons\
+  \ in same orbital must have **opposite spins**\n\n    ## Summary Table\n\n    |\
+  \ Quantum Number | Symbol | Values | Determines |\n    |----------------|--------|--------|------------|\n\
+  \    | Principal | n | 1, 2, 3... | Shell, energy |\n    | Azimuthal | l | 0 to\
+  \ (n-1) | Subshell, shape |\n    | Magnetic | mₗ | -l to +l | Orientation |\n  \
+  \  | Spin | mₛ | +½, -½ | Spin direction |\n\n    ## Possible Combinations\n\n \
+  \   ### For n = 1:\n    - l = 0 (1s)\n    - mₗ = 0\n    - mₛ = +½, -½\n    - **2\
+  \ electrons in 1s orbital**\n\n    ### For n = 2:\n    - l = 0 (2s): 1 orbital,\
+  \ 2 electrons\n    - l = 1 (2p): 3 orbitals (px, py, pz), 6 electrons\n    - **Total:\
+  \ 8 electrons in n=2 shell**\n\n    ### For n = 3:\n    - l = 0 (3s): 2 electrons\n\
+  \    - l = 1 (3p): 6 electrons\n    - l = 2 (3d): 10 electrons\n    - **Total: 18\
+  \ electrons in n=3 shell**\n\n    ## IIT JEE Key Points\n\n    1. **de Broglie:**\
+  \ λ = h/mv (matter waves)\n    2. **Heisenberg:** Δx·Δp ≥ h/4π (uncertainty)\n \
+  \   3. **n determines shell**: 1(K), 2(L), 3(M), 4(N)\n    4. **l determines subshell**:\
+  \ 0(s), 1(p), 2(d), 3(f)\n    5. **mₗ determines orientation**: -l to +l\n    6.\
+  \ **mₛ determines spin**: +½ or -½\n    7. **Max electrons in shell**: 2n²\n   \
+  \ 8. **Max electrons in subshell**: 2(2l+1)\n    9. **Number of orbitals**: (2l+1)\n\
+  \    10. **Orbital ≠ Orbit** (probability vs fixed path)\n\n    ## Common Questions\n\
+  \n    **Q: How many electrons can have n=3, l=2?**\n    A: l=2 is d subshell, can\
+  \ hold 10 electrons\n\n    **Q: How many orbitals in n=3?**\n    A: 3s(1) + 3p(3)\
+  \ + 3d(5) = **9 orbitals**\n\n    **Q: Which is impossible: (a) n=2, l=2 (b) n=3,\
+  \ l=2?**\n    A: (a) is impossible (l cannot equal n)\n\n    ## Practice Tips\n\
+  \    - Remember: **l < n** always\n    - For given n: l = 0, 1, 2, ... (n-1)\n \
+  \   - For given l: (2l+1) orbitals, 2(2l+1) electrons\n    - **s² p⁶ d¹⁰ f¹⁴** (max\
+  \ electrons)\n\n## Key Points\n\n- de Broglie equation\n\n- Heisenberg uncertainty\n\
+  \n- Schrodinger equation"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: 'According to the de Broglie equation, what happens to the wavelength of a moving particle when its momentum is doubled?'
+  options:
+  - The wavelength is halved
+  - The wavelength is doubled
+  - The wavelength remains the same
+  - The wavelength is quadrupled
+  correct_answer: The wavelength is halved
+  explanation: "The de Broglie equation establishes the wave-particle duality of matter by relating the wavelength (λ) of a particle to its momentum (p): λ = h/p, where h is Planck's constant (6.626 × 10⁻³⁴ J·s). Since momentum p = mv (mass × velocity), we can also write λ = h/mv. This equation shows that wavelength is inversely proportional to momentum. If the momentum is doubled (either by doubling the mass or doubling the velocity), the wavelength becomes half: λ_new = h/(2p) = (1/2)(h/p) = λ/2. This inverse relationship explains why macroscopic objects (with large mass and/or high velocity, hence large momentum) have negligibly small wavelengths that cannot be detected, while microscopic particles like electrons have significant, measurable wavelengths. For example, an electron moving at 2.05 × 10⁶ m/s has a wavelength of about 0.355 nm, comparable to atomic dimensions, making electron diffraction possible. This wave nature of electrons is exploited in electron microscopes, which can achieve much higher resolution than optical microscopes. The de Broglie hypothesis was revolutionary because it suggested that all matter exhibits wave-like properties, not just electromagnetic radiation, and was later confirmed experimentally by electron diffraction experiments."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: 'For a 3d orbital, what are the possible values of the magnetic quantum number (mₗ)?'
+  options:
+  - '-2, -1, 0, +1, +2'
+  - '-1, 0, +1'
+  - '0, 1, 2'
+  - '-3, -2, -1, 0, +1, +2, +3'
+  correct_answer: '-2, -1, 0, +1, +2'
+  explanation: "The magnetic quantum number (mₗ) describes the orientation of an orbital in three-dimensional space and can take integer values from -l to +l, including zero. For a 3d orbital, we need to identify the azimuthal quantum number (l). The '3' represents the principal quantum number (n=3), and 'd' represents the azimuthal quantum number l=2. For l=2, the magnetic quantum number can have values: mₗ = -2, -1, 0, +1, +2. This gives us 5 possible values, corresponding to the 5 different d orbitals (dxy, dyz, dxz, dx²-y², dz²). The number of possible mₗ values is always equal to (2l+1), which also equals the number of orbitals in that subshell. For s orbitals (l=0): mₗ = 0 (1 orbital). For p orbitals (l=1): mₗ = -1, 0, +1 (3 orbitals: px, py, pz). For d orbitals (l=2): mₗ = -2, -1, 0, +1, +2 (5 orbitals). For f orbitals (l=3): mₗ = -3, -2, -1, 0, +1, +2, +3 (7 orbitals). Each orbital can accommodate a maximum of 2 electrons with opposite spins (mₛ = +½ and -½), as stated by the Pauli exclusion principle. Understanding quantum numbers is essential for determining electron configurations and predicting chemical properties."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: 'What is the maximum number of electrons that can be present in the n=3 shell?'
+  options:
+  - '18'
+  - '8'
+  - '10'
+  - '32'
+  correct_answer: '18'
+  explanation: "The maximum number of electrons in a shell is given by the formula 2n², where n is the principal quantum number. For n=3: maximum electrons = 2(3)² = 2 × 9 = 18 electrons. We can verify this by counting electrons in each subshell within the n=3 shell. For n=3, the possible values of l are 0, 1, and 2, corresponding to s, p, and d subshells: 3s subshell (l=0): can hold 2 electrons. 3p subshell (l=1): can hold 6 electrons (3 orbitals × 2 electrons each). 3d subshell (l=2): can hold 10 electrons (5 orbitals × 2 electrons each). Total: 2 + 6 + 10 = 18 electrons. This explains why the third period of the periodic table can accommodate 18 elements (from K to Kr), though only 8 elements (Na to Ar) appear in the third period because the 3d subshell fills after 4s due to the n+l rule. The general pattern is: n=1 can hold 2 electrons (first period: H, He). n=2 can hold 8 electrons (second period: Li to Ne). n=3 can hold 18 electrons (includes third and fourth period elements). n=4 can hold 32 electrons. Understanding shell capacities is crucial for writing electronic configurations, predicting periodic trends, and understanding the structure of the periodic table."
+  require_pass: true

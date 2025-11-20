@@ -1,0 +1,154 @@
+slug: lesson-6
+title: Lesson 6
+difficulty: easy
+sequence_order: 6
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Scalability Patterns\n\n    Common patterns\
+  \ for building systems that scale to millions of users.\n\n    ## Load Balancing\n\
+  \n    Distribute traffic across multiple servers.\n\n    ### Types of Load Balancers\n\
+  \n    **Layer 4 (Transport Layer)**:\n    - Routes based on IP + Port\n    - Fast\
+  \ but limited routing logic\n    - Examples: AWS NLB, HAProxy\n\n    **Layer 7 (Application\
+  \ Layer)**:\n    - Routes based on HTTP headers, URL, cookies\n    - Slower but\
+  \ more intelligent\n    - Examples: AWS ALB, Nginx\n\n    ### Load Balancing Algorithms\n\
+  \n    1. **Round Robin**: Distribute requests evenly\n    2. **Least Connections**:\
+  \ Send to server with fewest active connections\n    3. **Least Response Time**:\
+  \ Send to fastest server\n    4. **IP Hash**: Same client always goes to same server\n\
+  \    5. **Weighted**: Some servers get more traffic\n\n    ## Caching\n\n    Store\
+  \ frequently accessed data in fast storage.\n\n    ### Cache Levels\n\n    ```\n\
+  \    Client → CDN → Load Balancer → Web Server → Application Cache → Database\n\
+  \    ```\n\n    ### Caching Strategies\n\n    **1. Cache-Aside (Lazy Loading)**:\n\
+  \    ```\n    1. Check cache\n    2. If miss, query database\n    3. Write to cache\n\
+  \    4. Return data\n    ```\n\n    **2. Write-Through**:\n    ```\n    1. Write\
+  \ to cache\n    2. Write to database\n    3. Return success\n    ```\n\n    **3.\
+  \ Write-Back**:\n    ```\n    1. Write to cache\n    2. Return success\n    3. Async\
+  \ write to database\n    ```\n\n    ### Cache Eviction Policies\n\n    - **LRU**\
+  \ (Least Recently Used): Remove oldest accessed\n    - **LFU** (Least Frequently\
+  \ Used): Remove least accessed\n    - **FIFO**: Remove oldest added\n    - **TTL**:\
+  \ Expire after time\n\n    ## Database Scaling\n\n    ### Vertical Scaling (Scale\
+  \ Up)\n    - Add more CPU/RAM/Disk to existing server\n    - ✅ Simple\n    - ❌ Limited\
+  \ by hardware\n    - ❌ Single point of failure\n\n    ### Horizontal Scaling (Scale\
+  \ Out)\n    - Add more database servers\n    - ✅ Unlimited scaling\n    - ❌ Complex\
+  \ implementation\n\n    ### Database Replication\n\n    **Primary-Replica (Master-Slave)**:\n\
+  \    ```\n    Primary (writes) → Replica 1 (reads)\n                    → Replica\
+  \ 2 (reads)\n                    → Replica N (reads)\n    ```\n\n    Benefits:\n\
+  \    - Read scaling\n    - High availability\n    - Disaster recovery\n\n    **Multi-Primary**:\n\
+  \    ```\n    Primary 1 ←→ Primary 2 ←→ Primary 3\n    ```\n\n    Benefits:\n  \
+  \  - Write scaling\n    - Lower latency (geo-distributed)\n\n    Challenges:\n \
+  \   - Conflict resolution\n    - Consistency issues\n\n    ### Database Sharding\n\
+  \n    Split data across multiple databases.\n\n    **Horizontal Sharding (by rows)**:\n\
+  \    ```\n    Users 1-1M    → Shard 1\n    Users 1M-2M   → Shard 2\n    Users 2M-3M\
+  \   → Shard 3\n    ```\n\n    **Sharding Strategies**:\n\n    1. **Range-based**:\
+  \ user_id 1-1M, 1M-2M\n       - ✅ Simple\n       - ❌ Uneven distribution\n\n   \
+  \ 2. **Hash-based**: hash(user_id) % num_shards\n       - ✅ Even distribution\n\
+  \       - ❌ Hard to add shards\n\n    3. **Geographic**: US users, EU users, Asia\
+  \ users\n       - ✅ Low latency\n       - ❌ Uneven growth\n\n    ## CDN (Content\
+  \ Delivery Network)\n\n    Distribute static content globally.\n\n    ### How CDN\
+  \ Works\n\n    ```\n    1. User requests image\n    2. CDN checks cache\n    3.\
+  \ If hit: Return from edge location\n    4. If miss:\n       a. Fetch from origin\n\
+  \       b. Cache at edge\n       c. Return to user\n    ```\n\n    ### What to CDN\n\
+  \n    ✅ Static content:\n    - Images, CSS, JavaScript\n    - Videos\n    - Static\
+  \ HTML\n\n    ❌ Don't CDN:\n    - Dynamic user-specific content\n    - Real-time\
+  \ data\n    - Content that changes rapidly\n\n    ## Message Queues\n\n    Decouple\
+  \ components for better scalability.\n\n    ### Pattern: Producer-Consumer\n\n \
+  \   ```\n    Producer → Queue → Consumer\n    ```\n\n    Benefits:\n    - Async\
+  \ processing\n    - Load smoothing\n    - Fault tolerance\n\n    Examples:\n   \
+  \ - RabbitMQ\n    - Apache Kafka\n    - AWS SQS\n\n    ## Microservices\n\n    Break\
+  \ monolith into smaller services.\n\n    ### Monolith\n\n    ```\n    [All-in-One\
+  \ Application]\n    ↓\n    Database\n    ```\n\n    ### Microservices\n\n    ```\n\
+  \    User Service → User DB\n    Order Service → Order DB\n    Payment Service →\
+  \ Payment DB\n    ```\n\n    Benefits:\n    - Independent scaling\n    - Technology\
+  \ flexibility\n    - Easier deployment\n\n    Challenges:\n    - Network latency\n\
+  \    - Data consistency\n    - Monitoring complexity\n\n    ## Eventual Consistency\n\
+  \n    Accept temporary inconsistency for better performance.\n\n    ### Strong Consistency\n\
+  \n    ```\n    Write → Wait for all replicas → Return success\n    ```\n\n    -\
+  \ ✅ Always consistent\n    - ❌ Slow writes\n    - ❌ Lower availability\n\n    ###\
+  \ Eventual Consistency\n\n    ```\n    Write → Return success immediately → Replicate\
+  \ async\n    ```\n\n    - ✅ Fast writes\n    - ✅ High availability\n    - ❌ Temporary\
+  \ inconsistency\n\n    ## Practice\n\n    Try the System Design labs to apply these\
+  \ patterns!"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What is the key difference between Layer 4 (Transport Layer) and Layer
+    7 (Application Layer) load balancers in terms of routing capabilities and performance?
+  options:
+  - Layer 4 routes based on HTTP headers and is faster; Layer 7 routes based on IP/Port
+    and is slower
+  - Layer 4 routes based on IP/Port and is faster but limited; Layer 7 routes based
+    on HTTP content and is more intelligent but slower
+  - Layer 7 handles TCP connections; Layer 4 handles HTTP connections
+  - Both perform identically, but Layer 7 is the newer standard
+  correct_answer: Layer 4 routes based on IP/Port and is faster but limited; Layer
+    7 routes based on HTTP content and is more intelligent but slower
+  explanation: Layer 4 (L4) load balancers operate at the transport layer of the OSI
+    model, making routing decisions based only on network information like IP address
+    and TCP/UDP port. They don't inspect the actual application data, making them
+    very fast (low latency) but limited in routing logic - they can't route based
+    on URL paths, cookies, or HTTP headers. Examples include AWS Network Load Balancer
+    (NLB) and HAProxy in TCP mode. Layer 7 (L7) load balancers operate at the application
+    layer, parsing HTTP/HTTPS traffic to make intelligent routing decisions based
+    on URLs (send /api/* to API servers, /static/* to CDN), headers (route mobile
+    users differently), cookies (session affinity), or even request content. This
+    inspection adds overhead, making L7 slower than L4, but enables sophisticated
+    routing patterns like canary deployments, A/B testing, and microservice routing.
+    Examples include AWS Application Load Balancer (ALB) and Nginx. Choose L4 for
+    maximum performance and L7 for intelligent routing.
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: In database sharding, what are the key trade-offs between hash-based sharding
+    (hash(user_id) % num_shards) and range-based sharding (user_id 1-1M, 1M-2M)?
+  options:
+  - Hash-based provides even distribution but makes adding shards difficult; range-based
+    is simple but can have uneven distribution
+  - Range-based is faster for queries; hash-based is slower but more reliable
+  - Hash-based requires more storage; range-based is more space-efficient
+  - Range-based automatically rebalances data; hash-based requires manual intervention
+  correct_answer: Hash-based provides even distribution but makes adding shards difficult;
+    range-based is simple but can have uneven distribution
+  explanation: Hash-based sharding uses a hash function (like hash(user_id) % num_shards)
+    to distribute data evenly across shards. The advantage is excellent load distribution
+    - each shard gets roughly the same amount of data and traffic. However, adding
+    new shards is difficult because changing num_shards (e.g., from 4 to 5) changes
+    which shard almost every key maps to, requiring massive data migration. Consistent
+    hashing can mitigate this but adds complexity. Range-based sharding divides data
+    by ranges (users 1-1M → shard1, 1M-2M → shard2). It's conceptually simple and
+    allows range queries to hit a single shard. However, it often creates uneven distribution
+    - if recent users (high IDs) are more active, the last shard becomes a hotspot.
+    Geographic sharding (US users, EU users, Asia users) is another form of range
+    sharding that reduces latency but can have uneven growth patterns. In practice,
+    hash-based is preferred for even distribution despite migration challenges, while
+    range-based works when data has natural partitions.
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: What is the fundamental trade-off between strong consistency and eventual
+    consistency in distributed systems, and when should you choose each?
+  options:
+  - Strong consistency is always better because data is always correct
+  - Strong consistency guarantees immediate consistency but reduces availability and
+    write speed; eventual consistency allows high availability and fast writes but
+    accepts temporary inconsistency
+  - Eventual consistency is faster to implement and requires less infrastructure
+  - Strong consistency is only for databases; eventual consistency is for caching
+  correct_answer: Strong consistency guarantees immediate consistency but reduces
+    availability and write speed; eventual consistency allows high availability and
+    fast writes but accepts temporary inconsistency
+  explanation: 'This trade-off is formalized by the CAP theorem (Consistency, Availability,
+    Partition tolerance - pick 2). Strong consistency requires that all replicas agree
+    before confirming a write: Write → Wait for all replicas to acknowledge → Return
+    success. This guarantees clients always read the latest value, but has downsides:
+    (1) Slow writes - must wait for slowest replica and network round-trips, (2) Reduced
+    availability - if any replica is down, writes may fail, (3) Not partition-tolerant
+    - network splits can block operations. Use strong consistency for financial transactions,
+    inventory systems, or anywhere incorrect data causes serious problems. Eventual
+    consistency returns success immediately after writing to one node, then asynchronously
+    replicates: Write → Return success → Replicate async. This provides: (1) Fast
+    writes - no waiting, (2) High availability - works even if replicas are down,
+    (3) Partition tolerance. However, clients might briefly read stale data. Use eventual
+    consistency for social media feeds, view counts, caching, or any scenario where
+    temporary inconsistency is acceptable. Most large-scale systems (Facebook, Twitter,
+    Amazon shopping cart) use eventual consistency for performance.'
+  require_pass: true

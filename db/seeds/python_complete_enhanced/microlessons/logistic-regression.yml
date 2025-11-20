@@ -1,0 +1,242 @@
+slug: logistic-regression
+title: Logistic Regression
+sequence_order: 5
+estimated_minutes: 2
+difficulty: easy
+key_concepts: []
+content_md: "# Logistic Regression \U0001F680\n\n# Logistic Regression\n\n    Despite\
+  \ its name, logistic regression is a **classification** algorithm, not regression.\
+  \ It predicts the probability that an instance belongs to a particular class.\n\n\
+  \    ## What is Logistic Regression?\n\n    **Goal:** Predict probability of a binary\
+  \ outcome (0 or 1, yes or no, true or false)\n\n    ### Key Difference from Linear\
+  \ Regression\n\n    **Linear Regression:**\n    ```\n    y = β₀ + β₁x₁ + ... + βₙxₙ\n\
+  \    Output: Continuous value (-∞ to +∞)\n    ```\n\n    **Logistic Regression:**\n\
+  \    ```\n    P(y=1) = 1 / (1 + e^(-(β₀ + β₁x₁ + ... + βₙxₙ)))\n    Output: Probability\
+  \ (0 to 1)\n    ```\n\n    ## The Sigmoid Function\n\n    Transforms linear output\
+  \ to probability\n\n    ```python\n    def sigmoid(z):\n        return 1 / (1 +\
+  \ np.exp(-z))\n    ```\n\n    **Properties:**\n    - Output range: 0 to 1\n    -\
+  \ S-shaped curve\n    - z = 0 → σ(z) = 0.5\n    - z → ∞ → σ(z) → 1\n    - z → -∞\
+  \ → σ(z) → 0\n\n    ```python\n    import numpy as np\n    import matplotlib.pyplot\
+  \ as plt\n\n    z = np.linspace(-10, 10, 100)\n    sigma = 1 / (1 + np.exp(-z))\n\
+  \n    plt.plot(z, sigma)\n    plt.axhline(y=0.5, color='r', linestyle='--', label='Decision\
+  \ boundary')\n    plt.xlabel('z (linear combination)')\n    plt.ylabel('σ(z) - Probability')\n\
+  \    plt.title('Sigmoid Function')\n    plt.legend()\n    plt.grid(True)\n    plt.show()\n\
+  \    ```\n\n    ## Binary Classification\n\n    ### Decision Rule\n    ```\n   \
+  \ if P(y=1|X) >= 0.5: predict class 1\n    else: predict class 0\n    ```\n\n  \
+  \  ### Example: Email Spam Detection\n    ```\n    Input: email features (word counts,\
+  \ sender, etc.)\n    Output: P(spam) = 0.85 → Classify as SPAM\n    ```\n\n    ##\
+  \ Python Implementation\n\n    ### Basic Example\n\n    ```python\n    import numpy\
+  \ as np\n    from sklearn.linear_model import LogisticRegression\n    from sklearn.model_selection\
+  \ import train_test_split\n    from sklearn.preprocessing import StandardScaler\n\
+  \    from sklearn.metrics import accuracy_score, confusion_matrix, classification_report\n\
+  \n    # Generate sample data\n    from sklearn.datasets import make_classification\n\
+  \    X, y = make_classification(\n        n_samples=1000,\n        n_features=4,\n\
+  \        n_classes=2,\n        random_state=42\n    )\n\n    # Split data\n    X_train,\
+  \ X_test, y_train, y_test = train_test_split(\n        X, y, test_size=0.2, random_state=42\n\
+  \    )\n\n    # Scale features (important for logistic regression!)\n    scaler\
+  \ = StandardScaler()\n    X_train_scaled = scaler.fit_transform(X_train)\n    X_test_scaled\
+  \ = scaler.transform(X_test)\n\n    # Create and train model\n    model = LogisticRegression(random_state=42)\n\
+  \    model.fit(X_train_scaled, y_train)\n\n    # Make predictions\n    y_pred =\
+  \ model.predict(X_test_scaled)\n    y_pred_proba = model.predict_proba(X_test_scaled)\n\
+  \n    # Evaluate\n    accuracy = accuracy_score(y_test, y_pred)\n    print(f\"Accuracy:\
+  \ {accuracy:.4f}\")\n    print(f\"\\\\nClassification Report:\\\\n{classification_report(y_test,\
+  \ y_pred)}\")\n\n    # Show probabilities for first 5 samples\n    print(f\"\\\\\
+  nPredicted probabilities (first 5):\")\n    for i in range(5):\n        print(f\"\
+  Sample {i}: P(class 0)={y_pred_proba[i][0]:.4f}, \"\n              f\"P(class 1)={y_pred_proba[i][1]:.4f}\
+  \ → Predicted: {y_pred[i]}\")\n    ```\n\n    ## Evaluation Metrics\n\n    ### 1.\
+  \ Confusion Matrix\n\n    ```python\n    from sklearn.metrics import confusion_matrix\n\
+  \    import seaborn as sns\n\n    cm = confusion_matrix(y_test, y_pred)\n    sns.heatmap(cm,\
+  \ annot=True, fmt='d', cmap='Blues')\n    plt.title('Confusion Matrix')\n    plt.ylabel('True\
+  \ Label')\n    plt.xlabel('Predicted Label')\n    plt.show()\n\n    # Structure:\n\
+  \    # [[TN  FP]\n    #  [FN  TP]]\n    ```\n\n    ### 2. Accuracy\n    ```python\n\
+  \    accuracy = (TP + TN) / (TP + TN + FP + FN)\n    ```\n    - Percentage of correct\
+  \ predictions\n    - **Not good for imbalanced datasets!**\n\n    ### 3. Precision\n\
+  \    ```python\n    precision = TP / (TP + FP)\n    ```\n    - Of predicted positives,\
+  \ how many are correct?\n    - **Use when false positives are costly**\n    - Example:\
+  \ Spam detection (don't want to lose important emails)\n\n    ### 4. Recall (Sensitivity)\n\
+  \    ```python\n    recall = TP / (TP + FN)\n    ```\n    - Of actual positives,\
+  \ how many did we find?\n    - **Use when false negatives are costly**\n    - Example:\
+  \ Disease detection (don't want to miss sick patients)\n\n    ### 5. F1 Score\n\
+  \    ```python\n    f1 = 2 × (precision × recall) / (precision + recall)\n    ```\n\
+  \    - Harmonic mean of precision and recall\n    - **Use for balanced metric**\n\
+  \n    ### 6. ROC Curve and AUC\n\n    ```python\n    from sklearn.metrics import\
+  \ roc_curve, roc_auc_score\n\n    # Get probabilities\n    y_proba = model.predict_proba(X_test_scaled)[:,\
+  \ 1]\n\n    # Calculate ROC curve\n    fpr, tpr, thresholds = roc_curve(y_test,\
+  \ y_proba)\n    auc = roc_auc_score(y_test, y_proba)\n\n    # Plot\n    plt.plot(fpr,\
+  \ tpr, label=f'ROC Curve (AUC = {auc:.2f})')\n    plt.plot([0, 1], [0, 1], 'k--',\
+  \ label='Random')\n    plt.xlabel('False Positive Rate')\n    plt.ylabel('True Positive\
+  \ Rate')\n    plt.title('ROC Curve')\n    plt.legend()\n    plt.show()\n    ```\n\
+  \n    **AUC (Area Under Curve):**\n    - 1.0 = Perfect classifier\n    - 0.5 = Random\
+  \ classifier\n    - Higher is better\n\n    ## Multiclass Classification\n\n   \
+  \ ### One-vs-Rest (OvR)\n    Train N binary classifiers (one per class)\n\n    ```python\n\
+  \    # Automatically handles multiclass\n    model = LogisticRegression(multi_class='ovr')\n\
+  \    model.fit(X_train, y_train)\n    ```\n\n    ### Multinomial\n    Single model\
+  \ with softmax function\n\n    ```python\n    model = LogisticRegression(multi_class='multinomial',\
+  \ solver='lbfgs')\n    model.fit(X_train, y_train)\n    ```\n\n    ### Example:\
+  \ Iris Classification\n\n    ```python\n    from sklearn.datasets import load_iris\n\
+  \n    iris = load_iris()\n    X, y = iris.data, iris.target\n\n    X_train, X_test,\
+  \ y_train, y_test = train_test_split(\n        X, y, test_size=0.2, random_state=42\n\
+  \    )\n\n    scaler = StandardScaler()\n    X_train_scaled = scaler.fit_transform(X_train)\n\
+  \    X_test_scaled = scaler.transform(X_test)\n\n    model = LogisticRegression(multi_class='multinomial',\
+  \ max_iter=1000)\n    model.fit(X_train_scaled, y_train)\n\n    y_pred = model.predict(X_test_scaled)\n\
+  \    print(f\"Accuracy: {accuracy_score(y_test, y_pred):.4f}\")\n    print(f\"\\\
+  \\n{classification_report(y_test, y_pred, target_names=iris.target_names)}\")\n\
+  \    ```\n\n    ## Regularization\n\n    ### L1 Regularization (Lasso)\n    ```python\n\
+  \    model = LogisticRegression(penalty='l1', solver='liblinear', C=1.0)\n    ```\n\
+  \    - Feature selection (some coefficients → 0)\n    - Use when many irrelevant\
+  \ features\n\n    ### L2 Regularization (Ridge) - Default\n    ```python\n    model\
+  \ = LogisticRegression(penalty='l2', C=1.0)\n    ```\n    - Shrinks coefficients\n\
+  \    - Prevents overfitting\n    - **C parameter:** Inverse of regularization strength\n\
+  \      - Small C = Strong regularization\n      - Large C = Weak regularization\n\
+  \n    ### Example: Tuning C\n\n    ```python\n    from sklearn.model_selection import\
+  \ cross_val_score\n\n    C_values = [0.001, 0.01, 0.1, 1, 10, 100]\n    scores =\
+  \ []\n\n    for C in C_values:\n        model = LogisticRegression(C=C, max_iter=1000)\n\
+  \        cv_scores = cross_val_score(model, X_train_scaled, y_train, cv=5)\n   \
+  \     scores.append(cv_scores.mean())\n        print(f\"C={C}: {cv_scores.mean():.4f}\"\
+  )\n\n    # Plot\n    plt.plot(C_values, scores, marker='o')\n    plt.xscale('log')\n\
+  \    plt.xlabel('C (Regularization)')\n    plt.ylabel('Cross-validation Score')\n\
+  \    plt.title('Tuning Regularization Parameter')\n    plt.show()\n    ```\n\n \
+  \   ## Decision Boundary Visualization\n\n    ```python\n    import numpy as np\n\
+  \    import matplotlib.pyplot as plt\n    from sklearn.datasets import make_classification\n\
+  \n    # Generate 2D data for visualization\n    X, y = make_classification(\n  \
+  \      n_samples=200,\n        n_features=2,\n        n_redundant=0,\n        n_informative=2,\n\
+  \        random_state=42,\n        n_clusters_per_class=1\n    )\n\n    # Train\
+  \ model\n    model = LogisticRegression()\n    model.fit(X, y)\n\n    # Create mesh\n\
+  \    x_min, x_max = X[:, 0].min() - 1, X[:, 0].max() + 1\n    y_min, y_max = X[:,\
+  \ 1].min() - 1, X[:, 1].max() + 1\n    xx, yy = np.meshgrid(np.arange(x_min, x_max,\
+  \ 0.02),\n                         np.arange(y_min, y_max, 0.02))\n\n    # Predict\
+  \ on mesh\n    Z = model.predict(np.c_[xx.ravel(), yy.ravel()])\n    Z = Z.reshape(xx.shape)\n\
+  \n    # Plot\n    plt.contourf(xx, yy, Z, alpha=0.4, cmap='RdYlBu')\n    plt.scatter(X[:,\
+  \ 0], X[:, 1], c=y, cmap='RdYlBu', edgecolor='black')\n    plt.xlabel('Feature 1')\n\
+  \    plt.ylabel('Feature 2')\n    plt.title('Decision Boundary')\n    plt.show()\n\
+  \    ```\n\n    ## Real-World Example: Customer Churn Prediction\n\n    ```python\n\
+  \    import pandas as pd\n    from sklearn.linear_model import LogisticRegression\n\
+  \    from sklearn.model_selection import train_test_split, GridSearchCV\n    from\
+  \ sklearn.preprocessing import StandardScaler\n    from sklearn.metrics import classification_report,\
+  \ roc_auc_score\n\n    # Assume we have customer data\n    # df = pd.read_csv('customer_data.csv')\n\
+  \n    # Feature engineering\n    df['tenure_months'] = df['tenure_years'] * 12\n\
+  \    df['avg_monthly_spend'] = df['total_spend'] / df['tenure_months']\n    df['support_ticket_rate']\
+  \ = df['support_tickets'] / df['tenure_months']\n\n    # Select features\n    features\
+  \ = [\n        'tenure_months',\n        'avg_monthly_spend',\n        'support_ticket_rate',\n\
+  \        'age',\n        'num_products',\n        'satisfaction_score'\n    ]\n\n\
+  \    X = df[features]\n    y = df['churned']  # Binary: 0 = stayed, 1 = churned\n\
+  \n    # Handle missing values\n    from sklearn.impute import SimpleImputer\n  \
+  \  imputer = SimpleImputer(strategy='median')\n    X = imputer.fit_transform(X)\n\
+  \n    # Split\n    X_train, X_test, y_train, y_test = train_test_split(\n      \
+  \  X, y, test_size=0.2, stratify=y, random_state=42\n    )\n\n    # Scale\n    scaler\
+  \ = StandardScaler()\n    X_train_scaled = scaler.fit_transform(X_train)\n    X_test_scaled\
+  \ = scaler.transform(X_test)\n\n    # Hyperparameter tuning\n    param_grid = {\n\
+  \        'C': [0.001, 0.01, 0.1, 1, 10],\n        'penalty': ['l1', 'l2'],\n   \
+  \     'solver': ['liblinear']\n    }\n\n    grid_search = GridSearchCV(\n      \
+  \  LogisticRegression(max_iter=1000),\n        param_grid,\n        cv=5,\n    \
+  \    scoring='roc_auc',\n        n_jobs=-1\n    )\n\n    grid_search.fit(X_train_scaled,\
+  \ y_train)\n    print(f\"Best parameters: {grid_search.best_params_}\")\n    print(f\"\
+  Best CV AUC: {grid_search.best_score_:.4f}\")\n\n    # Train final model\n    best_model\
+  \ = grid_search.best_estimator_\n\n    # Predictions\n    y_pred = best_model.predict(X_test_scaled)\n\
+  \    y_pred_proba = best_model.predict_proba(X_test_scaled)[:, 1]\n\n    # Evaluation\n\
+  \    print(f\"\\\\nTest AUC: {roc_auc_score(y_test, y_pred_proba):.4f}\")\n    print(f\"\
+  \\\\n{classification_report(y_test, y_pred)}\")\n\n    # Feature importance\n  \
+  \  feature_importance = pd.DataFrame({\n        'feature': features,\n        'coefficient':\
+  \ best_model.coef_[0]\n    }).sort_values('coefficient', key=abs, ascending=False)\n\
+  \n    print(f\"\\\\nTop risk factors for churn:\\\\n{feature_importance}\")\n\n\
+  \    # Predict churn probability for new customers\n    # new_customer = [[12, 50,\
+  \ 0.5, 35, 2, 7]]  # Example\n    # churn_probability = best_model.predict_proba(\n\
+  \    #     scaler.transform(new_customer)\n    # )[0][1]\n    # print(f\"Churn probability:\
+  \ {churn_probability:.2%}\")\n    ```\n\n    ## Handling Imbalanced Data\n\n   \
+  \ ### 1. Class Weights\n    ```python\n    model = LogisticRegression(class_weight='balanced')\n\
+  \    # Automatically adjusts for class imbalance\n    ```\n\n    ### 2. Custom Weights\n\
+  \    ```python\n    model = LogisticRegression(class_weight={0: 1, 1: 10})\n   \
+  \ # Penalize misclassifying class 1 (minority) more\n    ```\n\n    ### 3. Threshold\
+  \ Tuning\n    ```python\n    # Instead of default 0.5 threshold\n    y_proba = model.predict_proba(X_test_scaled)[:,\
+  \ 1]\n    y_pred_custom = (y_proba >= 0.3).astype(int)  # Lower threshold\n    ```\n\
+  \n    ## Advantages\n\n    ✅ Probabilistic output (interpretable)\n    ✅ Works well\
+  \ for linearly separable classes\n    ✅ Fast to train\n    ✅ No hyperparameters\
+  \ (basic version)\n    ✅ Handles multiclass naturally\n    ✅ Feature importance\
+  \ via coefficients\n\n    ## Disadvantages\n\n    ❌ Assumes linear decision boundary\n\
+  \    ❌ Can't capture complex relationships\n    ❌ Sensitive to feature scaling\n\
+  \    ❌ Requires more data for many features\n    ❌ Not great for highly imbalanced\
+  \ data\n\n    ## When to Use Logistic Regression\n\n    ### ✅ Good Fit\n    - Binary\
+  \ or multiclass classification\n    - Need probability estimates\n    - Linearly\
+  \ separable classes\n    - Need interpretability\n    - Baseline classification\
+  \ model\n\n    ### ❌ Not Good Fit\n    - Highly non-linear decision boundaries\n\
+  \    - Very complex patterns\n    - Very high-dimensional data\n\n    ## Best Practices\n\
+  \n    1. **Always scale features** (crucial!)\n    2. **Use cross-validation** for\
+  \ robust evaluation\n    3. **Check for class imbalance** and handle appropriately\n\
+  \    4. **Tune regularization (C)** to prevent overfitting\n    5. **Use appropriate\
+  \ metrics** for your problem\n    6. **Consider threshold tuning** for imbalanced\
+  \ data\n    7. **Start with logistic regression** before complex models\n\n    ##\
+  \ Key Takeaways\n\n    1. **Logistic regression = classification** algorithm\n \
+  \   2. **Sigmoid function** converts linear output to probability\n    3. **Outputs\
+  \ probabilities** (0 to 1)\n    4. **Decision boundary** is linear\n    5. **Regularization**\
+  \ prevents overfitting\n    6. **Choose metrics** based on problem (accuracy, precision,\
+  \ recall, F1, AUC)\n    7. **Handle imbalanced data** with class weights or threshold\
+  \ tuning\n    8. **Great baseline** for classification problems\n\n    ## Next Steps\n\
+  \n    - Practice with real classification datasets\n    - Experiment with different\
+  \ metrics\n    - Learn ROC curves and AUC in depth\n    - Try decision trees for\
+  \ non-linear boundaries\n    - Study threshold tuning techniques"
+exercises:
+- type: mcq
+  slug: logistic-regression-mcq-1
+  sequence_order: 1
+  question: What does the sigmoid function in logistic regression output?
+  options:
+  - A probability between 0 and 1
+  - Any real number from negative to positive infinity
+  - Only integer values 0 or 1
+  - A classification label as a string
+  correct_answer_index: 0
+  explanation: The sigmoid function σ(z) = 1/(1+e^(-z)) maps any real-valued number
+    to the range [0, 1], making it perfect for representing probabilities in binary
+    classification.
+- type: mcq
+  slug: logistic-regression-mcq-2
+  sequence_order: 2
+  question: What is the key difference between linear regression and logistic regression?
+  options:
+  - Logistic regression outputs probabilities (0-1), linear regression outputs continuous
+    values (-∞ to +∞)
+  - Logistic regression is faster to train
+  - Linear regression can only handle two features
+  - They are the same algorithm with different names
+  correct_answer_index: 0
+  explanation: Linear regression predicts continuous values, while logistic regression
+    uses the sigmoid function to transform linear output into probabilities between
+    0 and 1 for classification tasks.
+- type: mcq
+  slug: logistic-regression-mcq-3
+  sequence_order: 3
+  question: In a confusion matrix for binary classification, what does a high number
+    of False Positives indicate?
+  options:
+  - The model is predicting positive class too often when it should predict negative
+  - The model is missing many actual positive cases
+  - The model is perfectly accurate
+  - The model needs more training data
+  correct_answer_index: 0
+  explanation: False Positives (FP) occur when the model predicts positive but the
+    actual label is negative. High FP means the model is too eager to classify instances
+    as positive.
+- type: terminal
+  slug: logistic-regression-term
+  sequence_order: 4
+  description: Test logistic regression with sklearn
+  command: 'python - << "PY" from sklearn.linear_model import LogisticRegression from
+    sklearn.datasets import make_classification X, y = make_classification(n_samples=100,
+    n_features=2, n_classes=2, random_state=42) model = LogisticRegression() model.fit(X,
+    y) print(f"Model accuracy: {model.score(X, y):.2f}") print(f"First prediction
+    probability: {model.predict_proba(X[0:1])[0]}") PY'
+  validation:
+    must_not_include:
+    - Traceback
+    - SyntaxError
+  hints:
+  - If `python` is not available, try `python3`.
+  - Make sure scikit-learn is installed.
+objectives:
+- Understand the sigmoid function and its role in logistic regression
+- Distinguish between classification and regression problems
+- Interpret confusion matrix and classification metrics (precision, recall, F1)
+- Apply logistic regression using sklearn for binary classification
+next_recommended:
+- control
+- data-structures

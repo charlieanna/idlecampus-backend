@@ -1,0 +1,58 @@
+slug: reactivity-practice
+title: reactivity — Practice
+difficulty: medium
+sequence_order: 10
+estimated_minutes: 2
+key_concepts:
+- reactivity
+prerequisites: []
+content_md: '# reactivity — Practice 🚀
+
+
+  Reactivity: Amide < Ester < Anhydride < Acid chloride. Based on leaving group ability.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What is the correct order of reactivity for acyl derivatives towards nucleophilic acyl substitution?
+  options:
+  - Amide > Ester > Anhydride > Acid chloride
+  - Acid chloride > Anhydride > Ester > Amide
+  - Ester > Amide > Acid chloride > Anhydride
+  - Anhydride > Amide > Ester > Acid chloride
+  correct_answer: Acid chloride > Anhydride > Ester > Amide
+  explanation: "The reactivity order for nucleophilic acyl substitution is: Acid chloride > Anhydride > Ester > Amide. This order is based on leaving group ability and carbonyl carbon electrophilicity. Acid chlorides are most reactive because Cl⁻ is an excellent leaving group and the carbonyl is highly electrophilic. Amides are least reactive because NH₂⁻ is a very poor leaving group and the carbonyl is deactivated by nitrogen lone pair resonance. This reactivity order allows converting more reactive derivatives to less reactive ones but not vice versa."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: Why are acid chlorides more reactive than esters in nucleophilic acyl substitution?
+  options:
+  - Acid chlorides have higher molecular weight
+  - Chloride is a better leaving group than alkoxide
+  - Acid chlorides are more polar
+  - Esters are stabilized by hydrogen bonding
+  correct_answer: Chloride is a better leaving group than alkoxide
+  explanation: "Acid chlorides are more reactive than esters because chloride (Cl⁻) is a much better leaving group than alkoxide (RO⁻). A good leaving group is a weak base - chloride is the conjugate base of strong HCl (pKa = -7), while alkoxide is the conjugate base of weak alcohol (pKa ~16). Additionally, chlorine is less able to donate electrons through resonance compared to oxygen, making the carbonyl carbon in acid chlorides more electrophilic and susceptible to nucleophilic attack."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: Why are amides the LEAST reactive carboxylic acid derivatives?
+  options:
+  - Amides have the highest molecular weight
+  - The nitrogen lone pair delocalizes into the carbonyl, reducing electrophilicity
+  - Amides form strong hydrogen bonds
+  - The C-N bond is too short
+  correct_answer: The nitrogen lone pair delocalizes into the carbonyl, reducing electrophilicity
+  explanation: "Amides are the least reactive acyl derivatives because the nitrogen lone pair strongly delocalizes into the carbonyl group through resonance (R-C(O⁻)=NH₂⁺ ↔ R-CO-NH₂). This resonance has two effects: (1) it reduces the electrophilicity of the carbonyl carbon, making it less susceptible to nucleophilic attack, and (2) it makes NH₂⁻ an extremely poor leaving group (very strong base). This resonance stabilization is so strong that it gives the C-N bond partial double bond character and makes amides essentially unreactive under mild conditions."
+  require_pass: true

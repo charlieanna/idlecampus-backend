@@ -1,0 +1,44 @@
+slug: lesson-108
+title: Lesson 108
+difficulty: easy
+sequence_order: 108
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Health Checks: Liveness, Readiness, Startup\n\
+  \n    - livenessProbe: restarts unhealthy containers\n    - readinessProbe: controls\
+  \ traffic gating\n    - startupProbe: delays liveness until startup completes"
+exercises:
+  - type: mcq
+    sequence_order: 1
+    question: "What action does Kubernetes take when a liveness probe fails?"
+    options:
+      - "Removes the Pod from Service endpoints"
+      - "Restarts the container"
+      - "Marks the Pod as unready but keeps it running"
+      - "Deletes the entire Pod"
+    correct_answer: "Restarts the container"
+    explanation: "When a liveness probe fails after the configured number of attempts (failureThreshold, default 3), Kubernetes restarts the container according to the Pod's restartPolicy. The liveness probe is designed to detect and recover from deadlocks, infinite loops, or other states where the process is running but unable to make progress. For example, an application might have a memory leak causing it to hang - the liveness probe failing would trigger a restart, temporarily resolving the issue. A typical liveness probe checks a /healthz endpoint: 'livenessProbe: httpGet: path: /healthz, port: 8080, initialDelaySeconds: 30, periodSeconds: 10, failureThreshold: 3'. This means Kubernetes waits 30 seconds after container start, then checks every 10 seconds, restarting after 3 consecutive failures. Best practices: set initialDelaySeconds longer than app startup time to avoid restart loops, make the endpoint lightweight (avoid heavy database queries), check actual health not just process existence, and be cautious with thresholds (too aggressive causes unnecessary restarts, too lenient delays recovery). Unlike readiness probes which only affect traffic routing, liveness probes directly impact container lifecycle and should detect unrecoverable conditions only."
+    require_pass: true
+  - type: mcq
+    sequence_order: 2
+    question: "What is the primary purpose of a startup probe in Kubernetes?"
+    options:
+      - "To check if the application is ready to receive traffic"
+      - "To delay liveness and readiness probes until the application has completed its slow initialization"
+      - "To verify the container image was downloaded correctly"
+      - "To measure application startup performance"
+    correct_answer: "To delay liveness and readiness probes until the application has completed its slow initialization"
+    explanation: "Startup probes are specifically designed for applications with slow startup times, protecting them from premature liveness probe failures during initialization. Without a startup probe, an application taking 2 minutes to start might be killed by liveness probes before it becomes healthy. Once the startup probe succeeds, it's disabled and normal liveness/readiness probes take over. For example, a legacy Java application might need 90 seconds to initialize: 'startupProbe: httpGet: path: /started, port: 8080, failureThreshold: 30, periodSeconds: 5'. This allows up to 150 seconds (30 * 5) for startup while keeping liveness probe responsive (checking every 10 seconds) once running. The startup probe runs instead of liveness/readiness probes during the startup period. This is superior to just increasing liveness probe initialDelaySeconds because it maintains fast failure detection after startup - if the app starts in 30 seconds, the startup probe succeeds and liveness probe begins immediately rather than waiting the full initialDelaySeconds. Use startup probes for: legacy applications with unpredictable startup times, applications loading large datasets at startup, or any container requiring more than 30-60 seconds to initialize. The startup probe endpoint can be the same as liveness but with different thresholds."
+    require_pass: true
+  - type: mcq
+    sequence_order: 3
+    question: "What happens when a readiness probe fails for a Pod that is part of a Service?"
+    options:
+      - "The Pod is immediately deleted and replaced"
+      - "The container is restarted to restore functionality"
+      - "The Pod's IP is removed from the Service's endpoints, stopping traffic to it"
+      - "All Pods in the Service are marked as unhealthy"
+    correct_answer: "The Pod's IP is removed from the Service's endpoints, stopping traffic to it"
+    explanation: "When a readiness probe fails, Kubernetes removes the Pod's IP address from the Service's endpoints list, preventing new traffic from being routed to it. Critically, the Pod and container continue running - readiness probes don't trigger restarts. This behavior is perfect for temporary unavailability scenarios like processing a long request, warming up caches, experiencing transient database connectivity issues, or performing background maintenance. Once the readiness probe succeeds again, the Pod is automatically re-added to Service endpoints and starts receiving traffic. For example, during a rolling update, new Pods wait for their readiness probe to pass before being added to the Service, ensuring zero-downtime deployments. A typical readiness probe: 'readinessProbe: httpGet: path: /ready, port: 8080, initialDelaySeconds: 5, periodSeconds: 10, successThreshold: 1, failureThreshold: 3'. This checks every 10 seconds, removing from endpoints after 3 failures, and re-adding after 1 success. The endpoint should verify dependencies are available - database connections, required services, cache readiness, etc. Best practices: always use readiness probes for user-facing services, make checks comprehensive but fast, tune failure/success thresholds based on your application's behavior, and monitor readiness probe metrics to detect systemic issues affecting multiple Pods."
+    require_pass: true

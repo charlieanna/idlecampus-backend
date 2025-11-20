@@ -1,0 +1,68 @@
+slug: lesson-12
+title: Lesson 12
+sequence_order: 12
+estimated_minutes: 2
+difficulty: easy
+key_concepts: []
+content_md: "# Microlesson \U0001F680\n\n# If Statements & Conditions\n\n    **If\
+  \ statements** let your program make decisions based on conditions.\n\n    ## Basic\
+  \ If Statement\n\n    ```python\n    age = 18\n    if age >= 18:\n        print(\"\
+  You are an adult\")\n    ```\n\n    ## If-Else\n\n    ```python\n    temperature\
+  \ = 25\n    if temperature > 30:\n        print(\"It's hot outside!\")\n    else:\n\
+  \        print(\"It's not too hot\")\n    ```\n\n    ## If-Elif-Else\n\n    ```python\n\
+  \    score = 85\n    if score >= 90:\n        grade = \"A\"\n    elif score >= 80:\n\
+  \        grade = \"B\"\n    elif score >= 70:\n        grade = \"C\"\n    else:\n\
+  \        grade = \"F\"\n    print(f\"Your grade is: {grade}\")\n    ```\n\n    ##\
+  \ Comparison Operators\n\n    - `==` Equal to\n    - `!=` Not equal to\n    - `>`\
+  \ Greater than\n    - `<` Less than\n    - `>=` Greater than or equal\n    - `<=`\
+  \ Less than or equal\n\n    ## Logical Operators\n\n    ### AND - Both must be True\n\
+  \    ```python\n    age = 25\n    has_license = True\n    if age >= 18 and has_license:\n\
+  \        print(\"You can drive\")\n    ```\n\n    ### OR - At least one must be\
+  \ True\n    ```python\n    is_weekend = True\n    is_holiday = False\n    if is_weekend\
+  \ or is_holiday:\n        print(\"You can relax!\")\n    ```\n\n    ### NOT - Inverts\
+  \ the condition\n    ```python\n    is_raining = False\n    if not is_raining:\n\
+  \        print(\"You don't need an umbrella\")\n    ```\n\n    ## Ternary Operator\n\
+  \n    ```python\n    age = 20\n    status = \"adult\" if age >= 18 else \"minor\"\
+  \n    ```\n\n    **Practice:** Try the Control Flow lab to master if statements!"
+exercises:
+- type: mcq
+  slug: lesson-12-mcq-1
+  sequence_order: 1
+  question: What is the difference between a list and a tuple in Python?
+  options:
+  - Lists are mutable (can be modified), tuples are immutable (cannot be changed)
+  - Lists are faster than tuples
+  - Tuples can only store strings
+  - Lists use less memory
+  correct_answer_index: 0
+  explanation: Lists are mutable - you can add, remove, or modify elements after creation using methods like append(), remove(), etc. Tuples are immutable - once created, they cannot be modified. Tuples are slightly faster and use less memory, making them ideal for fixed collections of data.
+- type: mcq
+  slug: lesson-12-mcq-2
+  sequence_order: 2
+  question: What is a list comprehension in Python?
+  options:
+  - A concise way to create lists using a single line of code with optional filtering
+  - A method to compress lists
+  - A way to compare two lists
+  - A list sorting algorithm
+  correct_answer_index: 0
+  explanation: List comprehensions provide a concise syntax to create lists: [expression for item in iterable if condition]. For example, [x**2 for x in range(10) if x % 2 == 0] creates a list of squares of even numbers. This is more readable and often faster than traditional loops.
+- type: mcq
+  slug: lesson-12-mcq-3
+  sequence_order: 3
+  question: What does the try-except block do in Python?
+  options:
+  - Handles exceptions (errors) gracefully without crashing the program
+  - Tries to optimize code performance
+  - Tests if code syntax is correct
+  - Executes code multiple times until it succeeds
+  correct_answer_index: 0
+  explanation: try-except blocks catch and handle exceptions, preventing program crashes. Code in the try block is executed, and if an exception occurs, the except block handles it. For example, catching ValueError when converting user input to int prevents crashes from invalid input.
+objectives:
+- Understand core concepts of If Statements & Conditions
+- Apply learned concepts in practical scenarios
+- Identify best practices and common patterns
+- Recognize trade-offs in different approaches
+next_recommended:
+- control
+- data-structures

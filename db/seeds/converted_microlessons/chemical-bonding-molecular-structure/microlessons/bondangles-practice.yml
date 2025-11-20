@@ -1,0 +1,59 @@
+slug: bondangles-practice
+title: bond_angles — Practice
+difficulty: medium
+sequence_order: 10
+estimated_minutes: 2
+key_concepts:
+- bond_angles
+prerequisites: []
+content_md: '# bond_angles — Practice 🚀
+
+
+  H₂O (104.5°) < NH₃ (107°) < CH₄ (109.5°) < BF₃ (120°). Lone pairs decrease bond
+  angles: 2 LP < 1 LP < 0 LP.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: Which molecule has the smallest H-X-H bond angle?
+  options:
+  - CH₄
+  - NH₃
+  - H₂O
+  - BF₃
+  require_pass: true
+  correct_answer: H₂O
+  explanation: 'H₂O has the smallest H-O-H bond angle at 104.5°. This is due to oxygen having 2 bonding pairs and 2 lone pairs. According to VSEPR theory, lone pair-lone pair repulsion is strongest, followed by lone pair-bonding pair, and then bonding pair-bonding pair repulsion. The two lone pairs on oxygen compress the H-O-H bond angle from the ideal tetrahedral angle of 109.5° down to 104.5°. Comparing bond angles: H₂O (104.5°, 2 lone pairs) < NH₃ (107°, 1 lone pair) < CH₄ (109.5°, 0 lone pairs). BF₃ is trigonal planar with 120° bond angles, but has no H-X-H bonds. The presence of lone pairs always decreases bond angles from ideal geometry values.'
+- type: mcq
+  sequence_order: 2
+  question: Arrange the following molecules in order of INCREASING H-X-H or X-Y-X bond angle.
+  options:
+  - H₂O < NH₃ < CH₄
+  - NH₃ < H₂O < CH₄
+  - CH₄ < NH₃ < H₂O
+  - H₂O < CH₄ < NH₃
+  require_pass: true
+  correct_answer: H₂O < NH₃ < CH₄
+  explanation: 'The correct order of increasing bond angles is H₂O (104.5°) < NH₃ (107°) < CH₄ (109.5°). All three molecules have sp³ hybridization with tetrahedral electron pair geometry, but different numbers of lone pairs affect the molecular geometry and bond angles. CH₄ has 0 lone pairs and maintains the ideal tetrahedral bond angle of 109.5°. NH₃ has 1 lone pair that compresses the H-N-H bond angle to ~107° due to lone pair-bonding pair repulsion being stronger than bonding pair-bonding pair repulsion. H₂O has 2 lone pairs, creating even stronger repulsions that compress the H-O-H bond angle further to 104.5°. The pattern is clear: more lone pairs result in smaller bond angles.'
+- type: mcq
+  sequence_order: 3
+  question: Why does the bond angle decrease from CH₄ (109.5°) to NH₃ (107°) to H₂O (104.5°)?
+  options:
+  - Increasing atomic size of central atom
+  - Increasing number of lone pairs on central atom
+  - Decreasing electronegativity of central atom
+  - Increasing number of bonding pairs
+  require_pass: true
+  correct_answer: Increasing number of lone pairs on central atom
+  explanation: 'Bond angles decrease from CH₄ to NH₃ to H₂O due to the increasing number of lone pairs on the central atom: CH₄ has 0 lone pairs, NH₃ has 1 lone pair, and H₂O has 2 lone pairs. According to VSEPR theory, electron pair repulsion strength follows the order: lone pair-lone pair > lone pair-bonding pair > bonding pair-bonding pair. Lone pairs occupy more angular space than bonding pairs because they are attracted to only one nucleus (rather than two), allowing them to spread out more. As lone pairs are added, they push the bonding pairs closer together, compressing the bond angles. This explains the trend: CH₄ (4 bonding pairs, 0 lone pairs) maintains ideal 109.5°, NH₃ (3 bonding pairs, 1 lone pair) decreases to 107°, and H₂O (2 bonding pairs, 2 lone pairs) further decreases to 104.5°.'

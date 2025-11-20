@@ -1,0 +1,148 @@
+slug: lesson-3
+title: Lesson 3
+difficulty: easy
+sequence_order: 3
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Shell Scripting and Automation\n\n    ##\
+  \ Why Scripting Matters\n\n    **Shell scripts automate repetitive tasks:**\n  \
+  \  - System backups\n    - User provisioning\n    - Log rotation\n    - Health checks\n\
+  \    - Deployment automation\n\n    **Benefits:**\n    - Save time\n    - Reduce\
+  \ human error\n    - Ensure consistency\n    - Enable scheduling (cron)\n\n    In\
+  \ DevOps and containerization, scripting is essential for CI/CD pipelines, container\
+  \ builds, and infrastructure automation.\n\n    ## Shell Script Basics\n\n    ###\
+  \ What is a Shell Script?\n\n    A shell script is a text file containing a sequence\
+  \ of shell commands that can be executed together.\n\n    **Basic structure:**\n\
+  \    ```bash\n    #!/bin/bash\n    # This is a comment\n\n    echo \"Hello, World!\"\
+  \n    ```\n\n    ### The Shebang (#!)\n\n    The **shebang** tells the system which\
+  \ interpreter to use:\n\n    ```bash\n    #!/bin/bash          # Use Bash\n    #!/bin/sh\
+  \            # Use sh (POSIX)\n    #!/usr/bin/env bash  # Find bash in PATH (portable)\n\
+  \    #!/usr/bin/python3   # Python script\n    ```\n\n    Must be the **first line**\
+  \ of the script.\n\n    ### Creating and Running Scripts\n\n    **Create script:**\n\
+  \    ```bash\n    nano myscript.sh\n    ```\n\n    **Make executable:**\n    ```bash\n\
+  \    chmod +x myscript.sh\n    ```\n\n    **Run script:**\n    ```bash\n    # If\
+  \ executable and in PATH\n    ./myscript.sh\n\n    # Or explicitly with bash\n \
+  \   bash myscript.sh\n\n    # Or with absolute path\n    /home/user/scripts/myscript.sh\n\
+  \    ```\n\n    ### Simple Script Example\n\n    ```bash\n    #!/bin/bash\n    #\
+  \ Simple system info script\n\n    echo \"System Information Report\"\n    echo\
+  \ \"=========================\"\n    echo \"User: $(whoami)\"\n    echo \"Date:\
+  \ $(date)\"\n    echo \"Hostname: $(hostname)\"\n    echo \"Uptime: $(uptime -p)\"\
+  \n    ```\n\n    ## Variables\n\n    ### Declaring Variables\n\n    ```bash\n  \
+  \  # No spaces around =\n    NAME=\"Alice\"\n    COUNT=10\n    TODAY=$(date +%Y-%m-%d)\n\
+  \n    # Use variables with $\n    echo \"Hello, $NAME\"\n    echo \"Count is $COUNT\"\
+  \n    echo \"Today is $TODAY\"\n    ```\n\n    **Variable naming:**\n    - Use UPPERCASE\
+  \ for constants\n    - Use lowercase for local variables\n    - Use descriptive\
+  \ names\n\n    ### Command Substitution\n\n    Execute a command and capture its\
+  \ output:\n\n    ```bash\n    # Modern syntax (recommended)\n    CURRENT_USER=$(whoami)\n\
+  \    FILE_COUNT=$(ls | wc -l)\n\n    # Legacy syntax (backticks)\n    CURRENT_USER=`whoami`\n\
+  \n    echo \"User: $CURRENT_USER\"\n    echo \"Files: $FILE_COUNT\"\n    ```\n\n\
+  \    ### Special Variables\n\n    | Variable | Meaning |\n    |----------|---------|\n\
+  \    | `$0` | Script name |\n    | `$1`, `$2`, ... | Positional parameters (arguments)\
+  \ |\n    | `$#` | Number of arguments |\n    | `$@` | All arguments as separate\
+  \ words |\n    | `$*` | All arguments as single word |\n    | `$?` | Exit status\
+  \ of last command |\n    | `$$` | Current process ID |\n    | `$HOME` | Home directory\
+  \ |\n    | `$PATH` | Command search path |\n    | `$PWD` | Current directory |\n\
+  \n    ### Example with Variables\n\n    ```bash\n    #!/bin/bash\n    # Backup script\
+  \ with variables\n\n    SOURCE_DIR=\"/var/www\"\n    BACKUP_DIR=\"/backup\"\n  \
+  \  DATE=$(date +%Y%m%d_%H%M%S)\n    BACKUP_FILE=\"website_backup_$DATE.tar.gz\"\n\
+  \n    echo \"Creating backup: $BACKUP_FILE\"\n    tar -czf \"$BACKUP_DIR/$BACKUP_FILE\"\
+  \ \"$SOURCE_DIR\"\n    echo \"Backup complete!\"\n    ```\n\n    ## Control Structures\n\
+  \n    ### If Statements\n\n    **Basic syntax:**\n    ```bash\n    if [ condition\
+  \ ]; then\n        # commands\n    elif [ condition ]; then\n        # commands\n\
+  \    else\n        # commands\n    fi\n    ```\n\n    **Example:**\n    ```bash\n\
+  \    #!/bin/bash\n\n    if [ -f \"/etc/passwd\" ]; then\n        echo \"Password\
+  \ file exists\"\n    else\n        echo \"Password file not found\"\n    fi\n  \
+  \  ```\n\n    ### Test Operators\n\n    **File tests:**\n    ```bash\n    [ -e file\
+  \ ]     # File exists\n    [ -f file ]     # Regular file exists\n    [ -d dir ]\
+  \      # Directory exists\n    [ -r file ]     # File is readable\n    [ -w file\
+  \ ]     # File is writable\n    [ -x file ]     # File is executable\n    [ -s file\
+  \ ]     # File exists and not empty\n    ```\n\n    **String tests:**\n    ```bash\n\
+  \    [ -z \"$str\" ]      # String is empty\n    [ -n \"$str\" ]      # String is\
+  \ not empty\n    [ \"$a\" = \"$b\" ]    # Strings equal\n    [ \"$a\" != \"$b\"\
+  \ ]   # Strings not equal\n    ```\n\n    **Numeric tests:**\n    ```bash\n    [\
+  \ \"$a\" -eq \"$b\" ]  # Equal\n    [ \"$a\" -ne \"$b\" ]  # Not equal\n    [ \"\
+  $a\" -lt \"$b\" ]  # Less than\n    [ \"$a\" -le \"$b\" ]  # Less than or equal\n\
+  \    [ \"$a\" -gt \"$b\" ]  # Greater than\n    [ \"$a\" -ge \"$b\" ]  # Greater\
+  \ than or equal\n    ```\n\n    **Logical operators:**\n    ```bash\n    [ condition1\
+  \ ] && [ condition2 ]  # AND\n    [ condition1 ] || [ condition2 ]  # OR\n    [\
+  \ ! condition ]                   # NOT\n    ```\n\n    ### Example: Check if Service\
+  \ is Running\n\n    ```bash\n    #!/bin/bash\n\n    if systemctl is-active --quiet\
+  \ apache2; then\n        echo \"Apache is running\"\n    else\n        echo \"Apache\
+  \ is NOT running\"\n        echo \"Starting Apache...\"\n        sudo systemctl\
+  \ start apache2\n    fi\n    ```\n\n    ### For Loops\n\n    **Loop over list:**\n\
+  \    ```bash\n    #!/bin/bash\n\n    for user in alice bob charlie; do\n       \
+  \ echo \"Processing user: $user\"\n        # Add commands here\n    done\n    ```\n\
+  \n    **Loop over files:**\n    ```bash\n    #!/bin/bash\n\n    for file in *.txt;\
+  \ do\n        echo \"Processing: $file\"\n        # Add commands here\n    done\n\
+  \    ```\n\n    **Loop with range:**\n    ```bash\n    #!/bin/bash\n\n    for i\
+  \ in {1..5}; do\n        echo \"Number: $i\"\n    done\n    ```\n\n    **C-style\
+  \ loop:**\n    ```bash\n    #!/bin/bash\n\n    for ((i=1; i<=10; i++)); do\n   \
+  \     echo \"Count: $i\"\n    done\n    ```\n\n    ### While Loops\n\n    ```bash\n\
+  \    #!/bin/bash\n\n    COUNT=1\n    while [ $COUNT -le 5 ]; do\n        echo \"\
+  Count: $COUNT\"\n        COUNT=$((COUNT + 1))\n    done\n    ```\n\n    ### Example:\
+  \ Cleanup Script\n\n    ```bash\n    #!/bin/bash\n    # Clean up old log files\n\
+  \n    LOG_DIR=\"/var/log/myapp\"\n    DAYS=30\n\n    echo \"Removing log files older\
+  \ than $DAYS days...\"\n\n    for file in \"$LOG_DIR\"/*.log; do\n        if [ -f\
+  \ \"$file\" ]; then\n            # Check if file is older than DAYS\n          \
+  \  if [ $(find \"$file\" -mtime +$DAYS) ]; then\n                echo \"Deleting:\
+  \ $file\"\n                rm \"$file\"\n            fi\n        fi\n    done\n\n\
+  \    echo \"Cleanup complete!\"\n    ```\n\n    ## Script Arguments\n\n    ### Accepting\
+  \ Arguments\n\n    ```bash\n    #!/bin/bash\n    # backup.sh - Backup a directory\n\
+  \n    if [ $# -eq 0 ]; then\n        echo \"Usage: $0 <directory>\"\n        exit\
+  \ 1\n    fi\n\n    SOURCE=$1\n    BACKUP_DIR=\"/backup\"\n    DATE=$(date +%Y%m%d)\n\
+  \n    if [ ! -d \"$SOURCE\" ]; then\n        echo \"Error: $SOURCE is not a directory\"\
+  \n        exit 1\n    fi\n\n    echo \"Backing up $SOURCE...\"\n    tar -czf \"\
+  $BACKUP_DIR/backup_$DATE.tar.gz\" \"$SOURCE\"\n    echo \"Backup complete!\"\n \
+  \   ```\n\n    **Usage:**\n    ```bash\n    ./backup.sh /var/www\n    ./backup.sh\
+  \ /home/user/documents\n    ```\n\n    ### Exit Status\n\n    Scripts return an\
+  \ exit code:\n    - **0**: Success\n    - **Non-zero**: Error\n\n    ```bash\n \
+  \   #!/bin/bash\n\n    if ping -c 1 google.com &> /dev/null; then\n        echo\
+  \ \"Internet is working\"\n        exit 0\n    else\n        echo \"No internet\
+  \ connection\"\n        exit 1\n    fi\n    ```\n\n    Check exit status:\n    ```bash\n\
+  \    ./check_internet.sh\n    echo \"Exit status: $?\"\n    ```\n\n    ## Functions\n\
+  \n    ```bash\n    #!/bin/bash\n\n    # Define function\n    backup_directory()\
+  \ {\n        local dir=$1\n        local backup_file=\"backup_$(date +%Y%m%d).tar.gz\"\
+  \n\n        echo \"Backing up $dir...\"\n        tar -czf \"$backup_file\" \"$dir\"\
+  \n        echo \"Backup saved to $backup_file\"\n    }\n\n    # Call function\n\
+  \    backup_directory \"/var/www\"\n    backup_directory \"/etc\"\n    ```\n\n \
+  \   ## Scheduling Scripts with Cron\n\n    ### Cron Integration\n\n    Once you\
+  \ have a working script, schedule it:\n\n    ```bash\n    # Edit crontab\n    crontab\
+  \ -e\n\n    # Run backup script daily at 2 AM\n    0 2 * * * /home/user/scripts/backup.sh\n\
+  \n    # Run cleanup weekly on Sunday at midnight\n    0 0 * * 0 /home/user/scripts/cleanup.sh\n\
+  \n    # Run health check every 15 minutes\n    */15 * * * * /home/user/scripts/health_check.sh\
+  \ >> /var/log/health.log 2>&1\n    ```\n\n    **Important:** Use absolute paths\
+  \ in cron scripts!\n\n    ### Cron Script Best Practices\n\n    ```bash\n    #!/bin/bash\n\
+  \    # Good cron script template\n\n    # Set PATH explicitly\n    PATH=/usr/local/bin:/usr/bin:/bin\n\
+  \n    # Redirect output to log file\n    LOG_FILE=\"/var/log/myscript.log\"\n  \
+  \  exec >> \"$LOG_FILE\" 2>&1\n\n    # Log start time\n    echo \"[$(date)] Script\
+  \ started\"\n\n    # Your commands here\n    # ...\n\n    # Log completion\n   \
+  \ echo \"[$(date)] Script completed\"\n    ```\n\n    ## Debugging Scripts\n\n \
+  \   ### Common Techniques\n\n    ```bash\n    # Run with verbose output\n    bash\
+  \ -x script.sh\n\n    # Add debugging in script\n    #!/bin/bash\n    set -x   \
+  \       # Enable debugging\n    # commands\n    set +x          # Disable debugging\n\
+  \n    # Check syntax without running\n    bash -n script.sh\n\n    # Add error handling\n\
+  \    set -e          # Exit on any error\n    set -u          # Exit on undefined\
+  \ variable\n    set -o pipefail # Exit on pipe failure\n    ```\n\n    ### Example\
+  \ with Error Handling\n\n    ```bash\n    #!/bin/bash\n    set -euo pipefail\n\n\
+  \    # Log function\n    log() {\n        echo \"[$(date +'%Y-%m-%d %H:%M:%S')]\
+  \ $*\"\n    }\n\n    log \"Script started\"\n\n    # Commands that might fail\n\
+  \    if ! ping -c 1 google.com &> /dev/null; then\n        log \"ERROR: No internet\
+  \ connection\"\n        exit 1\n    fi\n\n    log \"Script completed successfully\"\
+  \n    exit 0\n    ```\n\n    ## Advanced Automation Tools\n\n    ### Beyond Shell\
+  \ Scripts\n\n    As infrastructure grows, consider:\n\n    **Ansible:**\n    - Configuration\
+  \ management\n    - Uses YAML playbooks\n    - Agentless (SSH-based)\n\n    ```yaml\n\
+  \    # Example Ansible playbook\n    - hosts: webservers\n      tasks:\n       \
+  \ - name: Install Apache\n          apt: name=apache2 state=present\n    ```\n\n\
+  \    **Python:**\n    - More powerful than Bash\n    - Better error handling\n \
+  \   - Rich libraries\n\n    **Terraform:**\n    - Infrastructure as code\n    -\
+  \ Cloud provisioning\n\n    **Version Control (Git):**\n    - Store scripts in Git\
+  \ repositories\n    - Track changes\n    - Collaborate with team\n\n    ## Summary\n\
+  \n    In this module, you learned:\n    - Shell scripts automate repetitive Linux\
+  \ tasks\n    - Use shebang (#!/bin/bash) and make scripts executable\n    - Variables\
+  \ store data, command substitution captures output\n    - Control structures: if/then/else,\
+  \ for loops, while loops\n    - Pass arguments to scripts using $1, $2, etc.\n \
+  \   - Exit status indicates success (0) or failure (non-zero)\n    - Schedule scripts\
+  \ with cron for automation\n    - Debug scripts with bash -x and error handling\n\
+  \    - Advanced tools: Ansible, Python, Terraform for complex automation"
+exercises: []

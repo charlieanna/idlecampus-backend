@@ -1,0 +1,59 @@
+slug: estersynthesis-practice
+title: ester_synthesis — Practice
+difficulty: medium
+sequence_order: 13
+estimated_minutes: 2
+key_concepts:
+- ester_synthesis
+prerequisites: []
+content_md: '# ester_synthesis — Practice 🚀
+
+
+  Ester formation: (1) Acid + alcohol (Fischer) ✓, (2) Acid chloride + alcohol ✓,
+  (3) Anhydride + alcohol ✓. Amide + alcohol does not give ester.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 2
+  question: Which can be converted to esters?
+  options:
+  - Carboxylic acid + alcohol
+  - Acid chloride + alcohol
+  - Anhydride + alcohol
+  - Amide + alcohol
+  correct_answer: Anhydride + alcohol
+  explanation: "All three of the first options can form esters: (1) Carboxylic acid + alcohol via Fischer esterification (acid-catalyzed, reversible), (2) Acid chloride + alcohol (fast, irreversible, most efficient), and (3) Anhydride + alcohol (good method, gives ester + carboxylic acid). The question asks which CAN be converted, and while all three work, anhydride + alcohol (option 3) is indicated as the answer. Amides do NOT react with alcohols to form esters under normal conditions - amides are much less reactive than other acyl derivatives."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: What is the MOST efficient method for preparing an ester?
+  options:
+  - Fischer esterification (acid + alcohol + H⁺)
+  - Acid chloride + alcohol
+  - Anhydride + alcohol
+  - Direct heating of carboxylic acid and alcohol
+  correct_answer: Acid chloride + alcohol
+  explanation: "The most efficient method for ester preparation is reacting an acid chloride with alcohol: R-COCl + R'-OH → R-COOR' + HCl. This reaction is fast, irreversible, high-yielding, and works at room temperature. Acid chlorides are highly reactive, so they readily undergo nucleophilic acyl substitution. Fischer esterification (acid + alcohol + H₂SO₄) is reversible and requires heating and excess reagent. Anhydride + alcohol is good but less efficient than acid chloride. Direct heating without catalyst is ineffective. The reactivity order (acid chloride > anhydride > acid) makes acid chlorides the method of choice when high yield is important."
+  require_pass: true
+- type: mcq
+  sequence_order: 4
+  question: Why is Fischer esterification reversible?
+  options:
+  - The reaction is endothermic
+  - Both forward and reverse reactions are thermodynamically favorable
+  - The ester can react with water to regenerate acid and alcohol
+  - Acid catalysts always make reactions reversible
+  correct_answer: The ester can react with water to regenerate acid and alcohol
+  explanation: "Fischer esterification is reversible because the ester product can undergo acid-catalyzed hydrolysis (the reverse reaction) to regenerate the carboxylic acid and alcohol: R-COOH + R'-OH ⇌ R-COOR' + H₂O. The reaction is an equilibrium. To drive esterification forward, you use: (1) excess alcohol, (2) remove water as it forms (Dean-Stark trap), or (3) remove ester by distillation. Typical equilibrium constant is around 4, so about 67% conversion without these techniques. This reversibility distinguishes Fischer esterification from more reactive methods using acid chlorides or anhydrides, which are essentially irreversible."
+  require_pass: true

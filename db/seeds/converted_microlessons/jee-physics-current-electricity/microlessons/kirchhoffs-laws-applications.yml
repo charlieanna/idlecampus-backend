@@ -1,0 +1,229 @@
+slug: kirchhoffs-laws-applications
+title: "Kirchhoff's Laws and Circuit Analysis"
+difficulty: intermediate
+sequence_order: 6
+estimated_minutes: 18
+key_concepts:
+- kirchhoffs-current-law
+- kirchhoffs-voltage-law
+- junction-rule
+- loop-rule
+- circuit-analysis
+prerequisites:
+- ohms-law-resistance
+- series-parallel-resistances
+content_md: |
+  # Kirchhoff's Laws and Circuit Analysis
+
+  ## Introduction
+
+  **Kirchhoff's Laws** are fundamental tools for analyzing complex electrical circuits where simple series-parallel combinations don't apply.
+
+  ## Kirchhoff's Current Law (KCL) - Junction Rule
+
+  ### Statement:
+  **"The algebraic sum of currents at any junction (node) is zero."**
+
+  ```
+  Σ I_in = Σ I_out
+
+  or
+
+  Σ I = 0 (at a junction)
+  ```
+
+  ### Physical Basis:
+  - Conservation of charge
+  - No charge accumulation at junction
+  - Current in = Current out
+
+  ### Sign Convention:
+  - Current entering: **Positive**
+  - Current leaving: **Negative**
+
+  ### Example:
+  At junction with three branches:
+  ```
+  I₁ + I₂ = I₃
+
+  or
+
+  I₁ + I₂ - I₃ = 0
+  ```
+
+  ## Kirchhoff's Voltage Law (KVL) - Loop Rule
+
+  ### Statement:
+  **"The algebraic sum of potential differences around any closed loop is zero."**
+
+  ```
+  Σ V = 0 (around closed loop)
+
+  or
+
+  Σ EMF = Σ IR (in a loop)
+  ```
+
+  ### Physical Basis:
+  - Conservation of energy
+  - Work done around closed path = 0
+  - Electric field is conservative
+
+  ### Sign Convention:
+  While traversing loop:
+  - Through resistor **along current**: -IR (voltage drop)
+  - Through resistor **against current**: +IR (voltage rise)
+  - Through battery **from - to +**: +ε (voltage rise)
+  - Through battery **from + to -**: -ε (voltage drop)
+
+  ## Problem-Solving Strategy
+
+  ### Step 1: Assign Currents
+  - Mark current directions (assume if unknown)
+  - Use KCL at junctions to reduce unknowns
+
+  ### Step 2: Identify Loops
+  - Choose independent loops
+  - Number of independent loops = Branches - Nodes + 1
+
+  ### Step 3: Apply KVL
+  - Write equation for each loop
+  - Be consistent with sign convention
+
+  ### Step 4: Solve System
+  - Solve simultaneous equations
+  - Negative current means opposite direction assumed
+
+  ## Common Circuit Configurations
+
+  ### 1. Two-Loop Circuit
+  ```
+       I₁→    R₁        I₂→    R₃
+  ε₁ ━━━━━━━┯━━━━━━━ε₂━━━━━━━┯━━━━
+         I₃↓ R₂
+           ┗━━━━━━━━━━━━━━━━━━━┛
+  ```
+
+  KCL: I₁ = I₂ + I₃
+
+  Loop 1: ε₁ - I₁R₁ - I₃R₂ = 0
+  Loop 2: ε₂ - I₂R₃ + I₃R₂ = 0
+
+  ### 2. Balanced Wheatstone Bridge
+  ```
+  No current through galvanometer when:
+  P/Q = R/S
+
+  or
+
+  P × S = Q × R
+  ```
+
+  ### 3. Unbalanced Wheatstone Bridge
+  - Apply KVL to mesh
+  - Use star-delta transformation if needed
+
+  ## Important Cases
+
+  ### Internal Resistance of Battery:
+  ```
+  Terminal voltage: V = ε - Ir
+
+  When charging: V = ε + Ir
+  ```
+
+  ### Maximum Power Transfer:
+  ```
+  P_max when R_external = r_internal
+  P_max = ε²/(4r)
+  ```
+
+  ### Superposition Theorem:
+  For multiple sources:
+  - Calculate current due to each source separately
+  - Algebraically add all contributions
+
+  ## Numerical Examples
+
+  **Example 1:** In the circuit below, find currents I₁ and I₂.
+  ```
+  ε₁ = 12V, ε₂ = 6V, R₁ = 2Ω, R₂ = 4Ω, R₃ = 3Ω
+  ```
+
+  **Solution:**
+  KCL: I₁ = I₂ + I₃
+
+  Loop 1: 12 - 2I₁ - 4I₃ = 0 ... (1)
+  Loop 2: 6 - 3I₂ + 4I₃ = 0 ... (2)
+
+  From (1): I₁ = 6 - 2I₃
+  From (2): I₂ = 2 + (4/3)I₃
+
+  Using KCL:
+  6 - 2I₃ = 2 + (4/3)I₃ + I₃
+  4 = 2I₃ + (4/3)I₃ = (10/3)I₃
+  I₃ = 1.2A
+
+  Therefore:
+  I₁ = 3.6A, I₂ = 3.6A, I₃ = 1.2A
+
+  **Example 2:** Find current through 5Ω resistor in Wheatstone bridge with:
+  P = 10Ω, Q = 20Ω, R = 30Ω, S = 40Ω, G = 5Ω, V = 10V
+
+  First check balance: P/Q = 10/20 = 0.5
+  R/S = 30/40 = 0.75
+
+  Since P/Q ≠ R/S, bridge is unbalanced.
+  Use mesh analysis or star-delta conversion.
+
+  ## JEE Key Points
+
+  1. **KCL is charge conservation**, KVL is energy conservation
+  2. **Number of equations needed** = Number of unknowns
+  3. **Negative current** means opposite to assumed direction
+  4. **Wheatstone bridge balance** eliminates galvanometer current
+  5. **Internal resistance** causes terminal voltage to differ from EMF
+  6. **For complex networks**, use symmetry to simplify
+
+  ## Common Mistakes
+
+  1. ❌ Wrong sign convention in KVL
+  2. ❌ Not using KCL to reduce variables
+  3. ❌ Counting dependent equations as independent
+  4. ❌ Forgetting internal resistance of battery
+  5. ❌ Not checking for bridge balance first
+
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: "In a circuit, three currents meet at a junction: 3A entering, 2A entering, and I leaving. The value of I is:"
+  options:
+  - "1 A"
+  - "5 A"
+  - "6 A"
+  - "-1 A"
+  correct_answer: "5 A"
+  explanation: "By Kirchhoff's Current Law (junction rule): Current in = Current out. So 3A + 2A = I, giving I = 5A. This is conservation of charge - charge cannot accumulate at a junction. If I were negative, it would mean current actually enters the junction (opposite to our assumption). KCL is always valid regardless of circuit complexity. In practice, this law helps reduce the number of unknown currents in circuit analysis."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: "A battery of EMF 10V and internal resistance 2Ω is connected to external resistance 3Ω. The terminal voltage of battery is:"
+  options:
+  - "10 V"
+  - "6 V"
+  - "4 V"
+  - "8 V"
+  correct_answer: "6 V"
+  explanation: "Current in circuit: I = EMF/(R + r) = 10/(3 + 2) = 2A. Terminal voltage V = EMF - Ir = 10 - 2(2) = 10 - 4 = 6V. Alternatively: V = IR_external = 2 × 3 = 6V. The difference between EMF (10V) and terminal voltage (6V) is the voltage drop across internal resistance (4V). This explains why batteries provide less voltage under load. As external resistance decreases (high current), terminal voltage drops further. For ideal battery (r = 0), V = EMF always."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: "In a balanced Wheatstone bridge, P = 100Ω, Q = 200Ω, S = 400Ω. The value of R is:"
+  options:
+  - "100 Ω"
+  - "200 Ω"
+  - "400 Ω"
+  - "800 Ω"
+  correct_answer: "200 Ω"
+  explanation: "For balanced Wheatstone bridge: P/Q = R/S. So R = PS/Q = 100 × 400/200 = 40000/200 = 200Ω. When balanced, no current flows through galvanometer (connecting BD), making the bridge extremely sensitive for measuring unknown resistances. This is the principle behind meter bridge and post office box. The bridge is balanced when products of opposite arms are equal: P×S = Q×R, i.e., 100×400 = 200×200 = 40000. This eliminates effect of battery and galvanometer resistance."
+  require_pass: true

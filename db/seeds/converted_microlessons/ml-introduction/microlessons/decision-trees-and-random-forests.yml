@@ -1,0 +1,305 @@
+slug: decision-trees-and-random-forests
+title: Decision Trees and Random Forests
+difficulty: easy
+sequence_order: 16
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Decision Trees and Random Forests \U0001F680\n\n# Decision Trees and\
+  \ Random Forests\n\n    Decision trees are intuitive, interpretable models that\
+  \ make decisions by asking a series of questions. Random Forests ensemble multiple\
+  \ trees for better performance.\n\n    ## Decision Trees\n\n    ### What is a Decision\
+  \ Tree?\n\n    A tree-like model that makes decisions by splitting data based on\
+  \ feature values.\n\n    **Example: Should I play tennis today?**\n    ```\n   \
+  \ Outlook = Sunny?\n    ├─ Yes → Humidity = High?\n    │  ├─ Yes → Don't Play\n\
+  \    │  └─ No → Play\n    └─ No → Wind = Strong?\n       ├─ Yes → Don't Play\n \
+  \      └─ No → Play\n    ```\n\n    ### Key Components\n\n    1. **Root Node:**\
+  \ First decision (top)\n    2. **Internal Nodes:** Decisions/tests\n    3. **Branches:**\
+  \ Outcomes of tests\n    4. **Leaf Nodes:** Final predictions\n\n    ## How Decision\
+  \ Trees Work\n\n    ### Building a Tree (CART Algorithm)\n\n    **Goal:** Split\
+  \ data to create pure (homogeneous) groups\n\n    #### 1. Choose Best Split\n  \
+  \  At each node, find the feature and threshold that best separates classes\n\n\
+  \    #### 2. Splitting Criteria\n\n    **For Classification:**\n\n    **Gini Impurity:**\n\
+  \    ```\n    Gini = 1 - Σ(pᵢ²)\n\n    Perfect split (pure): Gini = 0\n    Random\
+  \ split: Gini = 0.5 (binary)\n    ```\n\n    **Entropy (Information Gain):**\n \
+  \   ```\n    Entropy = -Σ(pᵢ × log₂(pᵢ))\n    Information Gain = Entropy(parent)\
+  \ - Weighted Entropy(children)\n    ```\n\n    **For Regression:**\n\n    **MSE\
+  \ (Mean Squared Error):**\n    ```\n    MSE = (1/n) Σ(yᵢ - ŷ)²\n    Goal: Minimize\
+  \ MSE\n    ```\n\n    #### 3. Stopping Criteria\n    - Max depth reached\n    -\
+  \ Min samples per node\n    - No improvement in impurity\n    - All samples same\
+  \ class\n\n    ## Python Implementation\n\n    ### Classification Tree\n\n    ```python\n\
+  \    from sklearn.tree import DecisionTreeClassifier\n    from sklearn.datasets\
+  \ import load_iris\n    from sklearn.model_selection import train_test_split\n \
+  \   from sklearn.metrics import accuracy_score, classification_report\n    import\
+  \ matplotlib.pyplot as plt\n    from sklearn import tree\n\n    # Load data\n  \
+  \  iris = load_iris()\n    X, y = iris.data, iris.target\n\n    # Split\n    X_train,\
+  \ X_test, y_train, y_test = train_test_split(\n        X, y, test_size=0.2, random_state=42\n\
+  \    )\n\n    # Create and train model\n    dt = DecisionTreeClassifier(\n     \
+  \   max_depth=3,\n        min_samples_split=5,\n        min_samples_leaf=2,\n  \
+  \      random_state=42\n    )\n    dt.fit(X_train, y_train)\n\n    # Predictions\n\
+  \    y_pred = dt.predict(X_test)\n    accuracy = accuracy_score(y_test, y_pred)\n\
+  \    print(f\"Accuracy: {accuracy:.4f}\")\n    print(f\"\\\\n{classification_report(y_test,\
+  \ y_pred, target_names=iris.target_names)}\")\n\n    # Visualize tree\n    plt.figure(figsize=(15,\
+  \ 10))\n    tree.plot_tree(\n        dt,\n        feature_names=iris.feature_names,\n\
+  \        class_names=iris.target_names,\n        filled=True,\n        rounded=True\n\
+  \    )\n    plt.title('Decision Tree Visualization')\n    plt.show()\n\n    # Feature\
+  \ importance\n    import pandas as pd\n    feature_importance = pd.DataFrame({\n\
+  \        'feature': iris.feature_names,\n        'importance': dt.feature_importances_\n\
+  \    }).sort_values('importance', ascending=False)\n    print(f\"\\\\nFeature Importance:\\\
+  \\n{feature_importance}\")\n    ```\n\n    ### Regression Tree\n\n    ```python\n\
+  \    from sklearn.tree import DecisionTreeRegressor\n    from sklearn.datasets import\
+  \ fetch_california_housing\n    from sklearn.metrics import mean_squared_error,\
+  \ r2_score\n\n    # Load data\n    data = fetch_california_housing()\n    X, y =\
+  \ data.data, data.target\n\n    # Split\n    X_train, X_test, y_train, y_test =\
+  \ train_test_split(\n        X, y, test_size=0.2, random_state=42\n    )\n\n   \
+  \ # Train\n    dt_reg = DecisionTreeRegressor(\n        max_depth=5,\n        min_samples_split=20,\n\
+  \        random_state=42\n    )\n    dt_reg.fit(X_train, y_train)\n\n    # Evaluate\n\
+  \    y_pred = dt_reg.predict(X_test)\n    mse = mean_squared_error(y_test, y_pred)\n\
+  \    r2 = r2_score(y_test, y_pred)\n\n    print(f\"MSE: {mse:.4f}\")\n    print(f\"\
+  RMSE: {np.sqrt(mse):.4f}\")\n    print(f\"R² Score: {r2:.4f}\")\n    ```\n\n   \
+  \ ## Hyperparameters\n\n    ### Controlling Tree Complexity\n\n    #### 1. max_depth\n\
+  \    ```python\n    dt = DecisionTreeClassifier(max_depth=5)\n    ```\n    - Maximum\
+  \ depth of tree\n    - Deeper trees = more complex, prone to overfitting\n    -\
+  \ Typical range: 3-10\n\n    #### 2. min_samples_split\n    ```python\n    dt =\
+  \ DecisionTreeClassifier(min_samples_split=10)\n    ```\n    - Minimum samples required\
+  \ to split node\n    - Higher = simpler tree\n    - Default: 2\n\n    #### 3. min_samples_leaf\n\
+  \    ```python\n    dt = DecisionTreeClassifier(min_samples_leaf=5)\n    ```\n \
+  \   - Minimum samples in leaf node\n    - Higher = smoother decision boundary\n\n\
+  \    #### 4. max_features\n    ```python\n    dt = DecisionTreeClassifier(max_features='sqrt')\n\
+  \    ```\n    - Number of features to consider for best split\n    - Options: int,\
+  \ 'sqrt', 'log2', None (all)\n\n    ### Hyperparameter Tuning\n\n    ```python\n\
+  \    from sklearn.model_selection import GridSearchCV\n\n    param_grid = {\n  \
+  \      'max_depth': [3, 5, 7, 10],\n        'min_samples_split': [2, 5, 10],\n \
+  \       'min_samples_leaf': [1, 2, 4],\n        'criterion': ['gini', 'entropy']\n\
+  \    }\n\n    grid_search = GridSearchCV(\n        DecisionTreeClassifier(random_state=42),\n\
+  \        param_grid,\n        cv=5,\n        scoring='accuracy',\n        n_jobs=-1\n\
+  \    )\n\n    grid_search.fit(X_train, y_train)\n    print(f\"Best parameters: {grid_search.best_params_}\"\
+  )\n    print(f\"Best CV score: {grid_search.best_score_:.4f}\")\n\n    # Use best\
+  \ model\n    best_dt = grid_search.best_estimator_\n    y_pred = best_dt.predict(X_test)\n\
+  \    print(f\"Test accuracy: {accuracy_score(y_test, y_pred):.4f}\")\n    ```\n\n\
+  \    ## Random Forests\n\n    ### What is Random Forest?\n\n    **Ensemble of decision\
+  \ trees** that vote on predictions\n\n    **Key Ideas:**\n    1. **Bootstrap Aggregating\
+  \ (Bagging):** Train each tree on random subset\n    2. **Feature Randomness:**\
+  \ Each split considers random subset of features\n    3. **Majority Voting:** Combine\
+  \ predictions from all trees\n\n    ### Why Random Forests Work\n\n    - **Reduces\
+  \ Overfitting:** Individual trees overfit, but ensemble averages out errors\n  \
+  \  - **Reduces Variance:** More stable than single tree\n    - **Better Generalization:**\
+  \ More robust to noise\n\n    ## Python Implementation\n\n    ### Classification\n\
+  \n    ```python\n    from sklearn.ensemble import RandomForestClassifier\n    from\
+  \ sklearn.datasets import make_classification\n\n    # Generate data\n    X, y =\
+  \ make_classification(\n        n_samples=1000,\n        n_features=20,\n      \
+  \  n_informative=15,\n        random_state=42\n    )\n\n    # Split\n    X_train,\
+  \ X_test, y_train, y_test = train_test_split(\n        X, y, test_size=0.2, random_state=42\n\
+  \    )\n\n    # Train Random Forest\n    rf = RandomForestClassifier(\n        n_estimators=100,\
+  \      # Number of trees\n        max_depth=10,\n        min_samples_split=5,\n\
+  \        min_samples_leaf=2,\n        max_features='sqrt',   # sqrt(n_features)\
+  \ for each split\n        random_state=42,\n        n_jobs=-1              # Use\
+  \ all CPU cores\n    )\n\n    rf.fit(X_train, y_train)\n\n    # Predictions\n  \
+  \  y_pred = rf.predict(X_test)\n    y_pred_proba = rf.predict_proba(X_test)\n\n\
+  \    # Evaluate\n    accuracy = accuracy_score(y_test, y_pred)\n    print(f\"Accuracy:\
+  \ {accuracy:.4f}\")\n    print(f\"\\\\n{classification_report(y_test, y_pred)}\"\
+  )\n\n    # Feature importance\n    import pandas as pd\n    feature_names = [f'feature_{i}'\
+  \ for i in range(X.shape[1])]\n    feature_importance = pd.DataFrame({\n       \
+  \ 'feature': feature_names,\n        'importance': rf.feature_importances_\n   \
+  \ }).sort_values('importance', ascending=False)\n\n    # Plot top 10 features\n\
+  \    top_features = feature_importance.head(10)\n    plt.figure(figsize=(10, 6))\n\
+  \    plt.barh(top_features['feature'], top_features['importance'])\n    plt.xlabel('Importance')\n\
+  \    plt.title('Top 10 Feature Importances')\n    plt.gca().invert_yaxis()\n   \
+  \ plt.show()\n    ```\n\n    ### Regression\n\n    ```python\n    from sklearn.ensemble\
+  \ import RandomForestRegressor\n\n    # Train\n    rf_reg = RandomForestRegressor(\n\
+  \        n_estimators=100,\n        max_depth=10,\n        random_state=42,\n  \
+  \      n_jobs=-1\n    )\n\n    rf_reg.fit(X_train, y_train)\n\n    # Predictions\n\
+  \    y_pred = rf_reg.predict(X_test)\n\n    # Evaluate\n    mse = mean_squared_error(y_test,\
+  \ y_pred)\n    r2 = r2_score(y_test, y_pred)\n\n    print(f\"MSE: {mse:.4f}\")\n\
+  \    print(f\"R² Score: {r2:.4f}\")\n    ```\n\n    ## Hyperparameters\n\n    ###\
+  \ Key Parameters\n\n    #### 1. n_estimators\n    ```python\n    rf = RandomForestClassifier(n_estimators=100)\n\
+  \    ```\n    - Number of trees in forest\n    - More trees = better performance\
+  \ but slower\n    - Typical range: 100-500\n    - **More is usually better** (diminishing\
+  \ returns)\n\n    #### 2. max_features\n    ```python\n    rf = RandomForestClassifier(max_features='sqrt')\n\
+  \    ```\n    - Features to consider at each split\n    - Classification: 'sqrt'\
+  \ (√n_features)\n    - Regression: 'log2' or n_features/3\n\n    #### 3. max_depth\n\
+  \    ```python\n    rf = RandomForestClassifier(max_depth=10)\n    ```\n    - Maximum\
+  \ depth of each tree\n    - None = grow until pure leaves (can overfit)\n    - Typical\
+  \ range: 10-50\n\n    ### Tuning Random Forest\n\n    ```python\n    from sklearn.model_selection\
+  \ import RandomizedSearchCV\n    from scipy.stats import randint\n\n    param_distributions\
+  \ = {\n        'n_estimators': [100, 200, 300, 400, 500],\n        'max_depth':\
+  \ [10, 20, 30, 40, 50, None],\n        'min_samples_split': [2, 5, 10],\n      \
+  \  'min_samples_leaf': [1, 2, 4],\n        'max_features': ['sqrt', 'log2']\n  \
+  \  }\n\n    random_search = RandomizedSearchCV(\n        RandomForestClassifier(random_state=42),\n\
+  \        param_distributions,\n        n_iter=50,         # Try 50 random combinations\n\
+  \        cv=5,\n        scoring='accuracy',\n        n_jobs=-1,\n        random_state=42\n\
+  \    )\n\n    random_search.fit(X_train, y_train)\n    print(f\"Best parameters:\
+  \ {random_search.best_params_}\")\n    print(f\"Best CV score: {random_search.best_score_:.4f}\"\
+  )\n    ```\n\n    ## Feature Importance\n\n    ```python\n    # Train model\n  \
+  \  rf = RandomForestClassifier(n_estimators=100, random_state=42)\n    rf.fit(X_train,\
+  \ y_train)\n\n    # Get importances\n    importances = rf.feature_importances_\n\
+  \    indices = np.argsort(importances)[::-1]\n\n    # Plot\n    plt.figure(figsize=(10,\
+  \ 6))\n    plt.title('Feature Importances')\n    plt.bar(range(X.shape[1]), importances[indices])\n\
+  \    plt.xlabel('Feature Index')\n    plt.ylabel('Importance')\n    plt.show()\n\
+  \n    # Print top features\n    print(\"Top 5 features:\")\n    for i in range(5):\n\
+  \        print(f\"{i+1}. Feature {indices[i]}: {importances[indices[i]]:.4f}\")\n\
+  \    ```\n\n    ## Out-of-Bag (OOB) Error\n\n    Built-in validation without separate\
+  \ validation set\n\n    ```python\n    rf = RandomForestClassifier(\n        n_estimators=100,\n\
+  \        oob_score=True,    # Enable OOB evaluation\n        random_state=42\n \
+  \   )\n\n    rf.fit(X_train, y_train)\n\n    print(f\"OOB Score: {rf.oob_score_:.4f}\"\
+  )\n    # OOB score approximates cross-validation score\n    ```\n\n    ## Real-World\
+  \ Example: Credit Card Fraud Detection\n\n    ```python\n    import pandas as pd\n\
+  \    from sklearn.ensemble import RandomForestClassifier\n    from sklearn.model_selection\
+  \ import train_test_split, cross_val_score\n    from sklearn.metrics import classification_report,\
+  \ confusion_matrix, roc_auc_score\n    import seaborn as sns\n\n    # Load data\
+  \ (example)\n    # df = pd.read_csv('credit_card_transactions.csv')\n\n    # Features\n\
+  \    features = [\n        'amount',\n        'transaction_hour',\n        'days_since_last_transaction',\n\
+  \        'num_transactions_24h',\n        'avg_transaction_amount',\n        'is_international',\n\
+  \        'merchant_category'\n    ]\n\n    X = df[features]\n    y = df['is_fraud']\
+  \  # 0 = legitimate, 1 = fraud\n\n    # Handle categorical\n    X = pd.get_dummies(X,\
+  \ columns=['merchant_category'], drop_first=True)\n\n    # Split (stratify to handle\
+  \ imbalance)\n    X_train, X_test, y_train, y_test = train_test_split(\n       \
+  \ X, y, test_size=0.2, stratify=y, random_state=42\n    )\n\n    # Train Random\
+  \ Forest with class weights for imbalance\n    rf = RandomForestClassifier(\n  \
+  \      n_estimators=200,\n        max_depth=20,\n        min_samples_split=10,\n\
+  \        min_samples_leaf=4,\n        max_features='sqrt',\n        class_weight='balanced',\
+  \  # Handle imbalanced data\n        random_state=42,\n        n_jobs=-1\n    )\n\
+  \n    # Cross-validation\n    cv_scores = cross_val_score(rf, X_train, y_train,\
+  \ cv=5, scoring='roc_auc')\n    print(f\"CV AUC scores: {cv_scores}\")\n    print(f\"\
+  Mean CV AUC: {cv_scores.mean():.4f} (+/- {cv_scores.std()*2:.4f})\")\n\n    # Train\
+  \ final model\n    rf.fit(X_train, y_train)\n\n    # Predictions\n    y_pred = rf.predict(X_test)\n\
+  \    y_pred_proba = rf.predict_proba(X_test)[:, 1]\n\n    # Evaluation\n    print(f\"\
+  \\\\nTest AUC: {roc_auc_score(y_test, y_pred_proba):.4f}\")\n    print(f\"\\\\n{classification_report(y_test,\
+  \ y_pred)}\")\n\n    # Confusion matrix\n    cm = confusion_matrix(y_test, y_pred)\n\
+  \    plt.figure(figsize=(8, 6))\n    sns.heatmap(cm, annot=True, fmt='d', cmap='Blues')\n\
+  \    plt.title('Confusion Matrix')\n    plt.ylabel('True Label')\n    plt.xlabel('Predicted\
+  \ Label')\n    plt.show()\n\n    # Feature importance\n    feature_importance =\
+  \ pd.DataFrame({\n        'feature': X.columns,\n        'importance': rf.feature_importances_\n\
+  \    }).sort_values('importance', ascending=False)\n\n    print(f\"\\\\nTop Fraud\
+  \ Indicators:\\\\n{feature_importance.head(10)}\")\n\n    # Threshold tuning for\
+  \ imbalanced data\n    from sklearn.metrics import precision_recall_curve\n\n  \
+  \  precision, recall, thresholds = precision_recall_curve(y_test, y_pred_proba)\n\
+  \n    # Find optimal threshold\n    f1_scores = 2 * (precision * recall) / (precision\
+  \ + recall)\n    optimal_idx = np.argmax(f1_scores)\n    optimal_threshold = thresholds[optimal_idx]\n\
+  \n    print(f\"\\\\nOptimal threshold: {optimal_threshold:.4f}\")\n    y_pred_optimized\
+  \ = (y_pred_proba >= optimal_threshold).astype(int)\n    print(f\"\\\\nOptimized\
+  \ predictions:\\\\n{classification_report(y_test, y_pred_optimized)}\")\n    ```\n\
+  \n    ## Comparison: Decision Tree vs Random Forest\n\n    | Aspect | Decision Tree\
+  \ | Random Forest |\n    |--------|---------------|---------------|\n    | **Complexity**\
+  \ | Simple | Complex |\n    | **Training Speed** | Fast | Slower |\n    | **Prediction\
+  \ Speed** | Very Fast | Moderate |\n    | **Overfitting** | Prone | Resistant |\n\
+  \    | **Interpretability** | High | Low |\n    | **Performance** | Good | Better\
+  \ |\n    | **Variance** | High | Low |\n    | **Feature Importance** | Yes | Yes\
+  \ (more robust) |\n\n    ## Advantages\n\n    ### Decision Trees\n    ✅ Easy to\
+  \ understand and visualize\n    ✅ No feature scaling needed\n    ✅ Handles non-linear\
+  \ relationships\n    ✅ Handles mixed data types\n    ✅ Fast predictions\n\n    ###\
+  \ Random Forests\n    ✅ More accurate than single tree\n    ✅ Reduces overfitting\n\
+  \    ✅ Handles missing values well\n    ✅ Works with high-dimensional data\n   \
+  \ ✅ Provides feature importance\n    ✅ Robust to outliers\n\n    ## Disadvantages\n\
+  \n    ### Decision Trees\n    ❌ Prone to overfitting\n    ❌ High variance (unstable)\n\
+  \    ❌ Biased toward dominant classes\n\n    ### Random Forests\n    ❌ Less interpretable\n\
+  \    ❌ Slower training and prediction\n    ❌ Large memory footprint\n    ❌ Can overfit\
+  \ noisy data with many trees\n\n    ## When to Use\n\n    ### Decision Trees\n \
+  \   - Need interpretability\n    - Small datasets\n    - Quick baseline model\n\
+  \    - Feature engineering\n\n    ### Random Forests\n    - Need high accuracy\n\
+  \    - Complex relationships\n    - Large datasets\n    - Feature importance analysis\n\
+  \    - Don't need interpretability\n\n    ## Best Practices\n\n    1. **Start with\
+  \ default parameters** then tune\n    2. **Use more trees** (100-500) for better\
+  \ performance\n    3. **Use OOB score** for quick validation\n    4. **Handle imbalanced\
+  \ data** with class_weight='balanced'\n    5. **Use feature importance** for feature\
+  \ selection\n    6. **Consider memory** with large datasets\n    7. **Use n_jobs=-1**\
+  \ to parallelize training\n\n    ## Key Takeaways\n\n    1. **Decision trees** split\
+  \ data based on features\n    2. **Gini/Entropy** measure split quality\n    3.\
+  \ **Prone to overfitting** without constraints\n    4. **Random Forest** ensembles\
+  \ multiple trees\n    5. **Bagging + feature randomness** reduces overfitting\n\
+  \    6. **Feature importance** helps understand data\n    7. **Random Forest** usually\
+  \ beats single tree\n    8. **Trade-off:** Accuracy vs interpretability\n\n    ##\
+  \ Next Steps\n\n    - Practice with real datasets\n    - Visualize decision trees\n\
+  \    - Tune Random Forest hyperparameters\n    - Try gradient boosting (XGBoost,\
+  \ LightGBM)\n    - Learn ensemble methods"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What is the main problem that Random Forests solve compared to single
+    Decision Trees?
+  options:
+  - Random Forests are faster to train than Decision Trees
+  - Random Forests reduce overfitting by averaging predictions from multiple trees
+    trained on different data subsets
+  - Random Forests always give more accurate predictions on training data
+  - Random Forests can handle only numerical features
+  correct_answer: Random Forests reduce overfitting by averaging predictions from
+    multiple trees trained on different data subsets
+  explanation: 'Random Forests address the key weakness of single decision trees:
+    overfitting. Single tree problem: Decision trees are prone to high variance -
+    they fit training data too closely, capturing noise instead of patterns. Small
+    change in training data → completely different tree. Overfitting → poor generalization
+    to new data. Random Forest solution: Ensemble of trees with two randomization
+    techniques. (1) Bootstrap Aggregating (Bagging): Train each tree on random sample
+    of data (with replacement). Tree 1 sees samples [1,3,5,7,9], Tree 2 sees [2,3,4,6,8],
+    etc. Each tree makes different mistakes, (2) Feature randomness: Each split considers
+    random subset of features (typically sqrt(n_features)). Forces trees to be diverse,
+    prevents correlation. Why averaging works: Individual trees overfit in different
+    ways. Tree 1 might overfit on feature A, Tree 2 on feature B. Averaging cancels
+    out individual errors, ensemble captures true patterns. Benefits: (1) Reduced
+    variance - More stable predictions, (2) Better generalization - Lower test error
+    than single tree, (3) Handles noise - Individual errors averaged out. Trade-offs:
+    Slower training (100 trees vs 1), Less interpretable than single tree, Higher
+    memory usage. Typical configuration: 100-500 trees, max_features=''sqrt'' for
+    classification. Real-world performance: Single tree: 85% training accuracy, 70%
+    test (overfitting). Random Forest: 90% training, 85% test (better generalization).'
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What does the Gini impurity measure in decision tree splitting?
+  options:
+  - The depth of the tree
+  - The probability of incorrectly classifying a randomly chosen element if labeled
+    according to class distribution in the node
+  - The number of samples in each node
+  - The accuracy of predictions
+  correct_answer: The probability of incorrectly classifying a randomly chosen element
+    if labeled according to class distribution in the node
+  explanation: 'Gini impurity measures node "impurity" - how mixed the classes are.
+    It represents probability of misclassification if we randomly labeled a sample
+    according to class distribution. Formula: Gini = 1 - Σ(pᵢ²) where pᵢ is proportion
+    of class i. Interpretation: Gini = 0 (perfect): All samples same class, pure node,
+    no misclassification possible. Gini = 0.5 (worst for binary): 50/50 split, maximum
+    impurity, 50% misclassification chance. Example calculation: Node with 100 samples:
+    60 class A, 40 class B. pₐ = 60/100 = 0.6, pᵦ = 40/100 = 0.4. Gini = 1 - (0.6²
+    + 0.4²) = 1 - (0.36 + 0.16) = 0.48. Pure node (100 class A): Gini = 1 - (1² +
+    0²) = 0. How decision trees use it: At each node, try all features and thresholds,
+    calculate weighted Gini of resulting child nodes, choose split with lowest Gini
+    (best separation). Weighted Gini = (n_left/n_total × Gini_left) + (n_right/n_total
+    × Gini_right). Information gain: Reduction in Gini from parent to children. Example:
+    Parent Gini=0.48 splits into Left Gini=0.32 (60 samples), Right Gini=0.18 (40
+    samples). Weighted Gini = 0.6×0.32 + 0.4×0.18 = 0.264. Information gain = 0.48
+    - 0.264 = 0.216. Alternative: Entropy uses log instead of square, gives similar
+    results. Gini preferred for speed (no log computation).'
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: Why is it important to tune max_depth in decision trees?
+  options:
+  - max_depth controls training speed only
+  - max_depth controls overfitting - shallow trees underfit, deep trees overfit training
+    data
+  - max_depth determines the number of features used
+  - max_depth is not important and can be ignored
+  correct_answer: max_depth controls overfitting - shallow trees underfit, deep trees
+    overfit training data
+  explanation: 'max_depth is the most critical hyperparameter for controlling bias-variance
+    tradeoff in decision trees. Too shallow (e.g., max_depth=2): High bias, low variance.
+    Tree too simple to capture patterns. Underfitting - poor training AND test performance.
+    Example: Trying to classify complex dataset with only 2 splits - can''t capture
+    decision boundary. Too deep (e.g., max_depth=None, unlimited): Low bias, high
+    variance. Tree memorizes training data, including noise. Overfitting - excellent
+    training performance, poor test performance. Creates leaf for every training sample
+    (100% training accuracy, terrible generalization). Optimal depth: Balances bias
+    and variance. Captures patterns without memorizing noise. Good generalization
+    to new data. Typical range: 3-10 for most problems. Finding optimal depth: Use
+    cross-validation: depths = [2,3,4,5,7,10,15,20]; for each, train and evaluate
+    CV score; choose depth with best CV score. Example results: depth=3: 82% CV accuracy,
+    depth=7: 88% CV (optimal), depth=20: 85% CV (overfitting). Relationship with other
+    parameters: min_samples_split also controls complexity, max_depth easier to interpret
+    and tune, Random Forests less sensitive (averaging reduces overfitting). Real-world
+    strategy: Start with max_depth=5, Use GridSearchCV to search [3,5,7,10], Monitor
+    training vs validation gap (large gap = overfitting). Production tip: Shallower
+    trees in Random Forest (depth=10) vs single tree (depth=20) because averaging
+    compensates for individual tree bias.'
+  require_pass: true

@@ -1,0 +1,43 @@
+slug: lesson-93
+title: Lesson 93
+difficulty: easy
+sequence_order: 93
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Taints, Tolerations, and Priority\n\n \
+  \   - NoSchedule, PreferNoSchedule, NoExecute effects\n    - Pod priority and preemption"
+exercises:
+  - type: mcq
+    sequence_order: 1
+    question: "What is the effect of the NoExecute taint on pods in Kubernetes?"
+    options:
+      - "It prevents new pods from being scheduled on the node but doesn't affect running pods"
+      - "It prevents new pods from being scheduled and evicts running pods that don't tolerate the taint"
+      - "It suggests the scheduler avoid the node but allows scheduling if necessary"
+      - "It only logs warnings when pods are scheduled on the node"
+    correct_answer: "It prevents new pods from being scheduled and evicts running pods that don't tolerate the taint"
+    explanation: "The NoExecute taint effect is the most severe of the three taint effects in Kubernetes (NoSchedule, PreferNoSchedule, NoExecute). When a node has a NoExecute taint, two things happen: first, like NoSchedule, new pods without a matching toleration cannot be scheduled on the node; second, and more importantly, existing pods already running on the node that don't have a matching toleration are immediately evicted. This makes NoExecute powerful for maintenance scenarios, node degradation, or forcing workload migration. Pods can specify tolerationSeconds in their toleration to indicate how long they can tolerate a NoExecute taint before being evicted, allowing for graceful migration. For example, if a node develops a hardware issue, you can add a NoExecute taint to drain it of pods. This is different from NoSchedule (which only affects scheduling, not running pods) and PreferNoSchedule (which is a soft constraint). NoExecute is particularly useful for node maintenance, responding to node conditions, or implementing custom eviction logic."
+    require_pass: true
+  - type: mcq
+    sequence_order: 2
+    question: "What is the relationship between taints and tolerations in Kubernetes?"
+    options:
+      - "Taints are applied to pods and tolerations are applied to nodes"
+      - "Taints are applied to nodes to repel pods, and tolerations are applied to pods to allow scheduling on tainted nodes"
+      - "Taints and tolerations are the same thing with different names"
+      - "Taints improve performance while tolerations improve security"
+    correct_answer: "Taints are applied to nodes to repel pods, and tolerations are applied to pods to allow scheduling on tainted nodes"
+    explanation: "Taints and tolerations work together as a mechanism to control pod placement by allowing nodes to repel certain pods. Taints are applied to nodes and act as a repellent - they mark a node with a key-value pair and an effect (NoSchedule, PreferNoSchedule, or NoExecute), indicating that pods should not be scheduled there unless they specifically tolerate the taint. Tolerations are applied to pods and express that the pod can 'tolerate' a specific taint, allowing it to be scheduled on nodes with matching taints. The matching logic compares the toleration's key, value (if specified), and effect with the node's taints. For example, you might taint GPU nodes with 'gpu=true:NoSchedule' so only pods with a matching toleration can use them, preventing general workloads from consuming expensive GPU resources. This pattern is also used for dedicated nodes, isolation requirements, and handling node conditions. Control plane nodes typically have taints to prevent regular workloads from scheduling there. Understanding this relationship is crucial for advanced scheduling and cluster segmentation."
+    require_pass: true
+  - type: mcq
+    sequence_order: 3
+    question: "How does pod priority affect scheduling and preemption in Kubernetes?"
+    options:
+      - "Higher priority pods are always scheduled first and can cause lower priority pods to be evicted if resources are scarce"
+      - "Pod priority only affects the order in the scheduling queue but never causes eviction"
+      - "Pod priority is only used for logging and monitoring purposes"
+      - "Lower priority pods get scheduled first to ensure fairness"
+    correct_answer: "Higher priority pods are always scheduled first and can cause lower priority pods to be evicted if resources are scarce"
+    explanation: "Pod priority is a mechanism in Kubernetes that assigns importance levels to pods using PriorityClass resources. This affects both scheduling order and preemption behavior. When multiple pods are waiting to be scheduled, the scheduler processes higher priority pods first. More significantly, if a high-priority pod cannot be scheduled due to insufficient resources, the scheduler's preemption logic can evict lower-priority pods to make room. The scheduler identifies lower-priority pods (called victims) whose removal would free enough resources, evicts them (with graceful termination), and then schedules the high-priority pod. This ensures critical workloads can run even in resource-constrained clusters. PriorityClasses are created cluster-wide with a priority value (higher numbers mean higher priority) and pods reference them. Common use cases include ensuring system-critical components run, prioritizing customer-facing services over batch jobs, or implementing tiered service levels. Preemption respects PodDisruptionBudgets where possible. Understanding priority and preemption is essential for production clusters where workload importance varies significantly."
+    require_pass: true

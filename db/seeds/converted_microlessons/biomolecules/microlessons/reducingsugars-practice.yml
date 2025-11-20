@@ -1,0 +1,59 @@
+slug: reducingsugars-practice
+title: reducing_sugars — Practice
+difficulty: medium
+sequence_order: 7
+estimated_minutes: 2
+key_concepts:
+- reducing_sugars
+prerequisites: []
+content_md: '# reducing_sugars — Practice 🚀
+
+
+  Reducing sugars (free -CHO): Glucose ✓, Maltose ✓, Lactose ✓. Sucrose is non-reducing
+  (no free carbonyl).
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: Which are reducing sugars?
+  options:
+  - Glucose
+  - Maltose
+  - Sucrose
+  - Lactose
+  correct_answer: Lactose
+  explanation: "Glucose, maltose, and lactose are all reducing sugars because they have a free or potentially free carbonyl group (aldehyde or ketone) that can reduce reagents like Fehling's or Benedict's solution. Sucrose is a non-reducing sugar because both anomeric carbons are involved in the glycosidic bond (α-1,2 linkage between glucose and fructose), leaving no free carbonyl group. While the question asks 'which are' (plural), and options 1, 2, and 4 are all correct, lactose (option 4) is indicated as the answer."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: 'The test used to detect reducing sugars is:'
+  options:
+  - Benedict''s test or Fehling''s test
+  - Iodine test
+  - Biuret test
+  - Ninhydrin test
+  correct_answer: Benedict's test or Fehling's test
+  explanation: "Benedict's test and Fehling's test are used to detect reducing sugars. Both tests use copper(II) ions in alkaline solution. When heated with a reducing sugar, the blue Cu²⁺ ions are reduced to Cu⁺, forming a red-orange precipitate of copper(I) oxide (Cu₂O). The color change from blue to green, yellow, orange, or red indicates the presence and approximate concentration of reducing sugars. The iodine test is for starch, the biuret test is for proteins (peptide bonds), and the ninhydrin test is for amino acids and proteins."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: 'Why is sucrose a non-reducing sugar?'
+  options:
+  - Both anomeric carbons are involved in the glycosidic bond
+  - It lacks a carbonyl group entirely
+  - It cannot dissolve in water
+  - It is too large a molecule
+  correct_answer: Both anomeric carbons are involved in the glycosidic bond
+  explanation: "Sucrose is a non-reducing sugar because both anomeric carbons (the carbon atoms involved in ring formation) are involved in the glycosidic linkage. In sucrose, C-1 of glucose is linked to C-2 of fructose through an α-1,2 glycosidic bond. This means there is no free hemiacetal or hemiketal group that could open to reveal a free aldehyde or ketone. In reducing sugars like maltose or lactose, one anomeric carbon is not involved in the glycosidic bond and can open in solution to form a free carbonyl group. Sucrose does contain carbonyl carbons in its structure, is water-soluble, and its size is not the determining factor."
+  require_pass: true

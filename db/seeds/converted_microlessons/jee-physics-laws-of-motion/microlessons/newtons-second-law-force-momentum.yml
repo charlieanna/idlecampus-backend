@@ -1,0 +1,184 @@
+slug: newtons-second-law-force-momentum
+title: "Newton's Second Law: Force and Momentum"
+difficulty: intermediate
+sequence_order: 2
+estimated_minutes: 18
+key_concepts:
+- force
+- momentum
+- impulse
+- rate-of-change
+- inertial-mass
+prerequisites:
+- newtons-first-law-inertia
+content_md: |
+  # Newton's Second Law: Force and Momentum
+
+  ## Statement
+
+  **"The rate of change of linear momentum of a body is directly proportional to the net external force applied and occurs in the direction of the force."**
+
+  ## Mathematical Formulation
+
+  ### General Form (Most Fundamental):
+  ```
+  F⃗ = dp⃗/dt = d(mv⃗)/dt
+  ```
+
+  ### For Constant Mass:
+  ```
+  F⃗ = m(dv⃗/dt) = ma⃗
+  ```
+
+  ### For Variable Mass (Rocket Equation):
+  ```
+  F⃗ = m(dv⃗/dt) + v⃗_rel(dm/dt)
+  ```
+
+  ## Linear Momentum
+
+  **Definition:** p⃗ = mv⃗
+
+  **Properties:**
+  - Vector quantity
+  - Direction same as velocity
+  - SI unit: kg·m/s or N·s
+  - Dimensions: [MLT⁻¹]
+
+  ## Impulse
+
+  **Definition:** J⃗ = ∫F⃗ dt = Δp⃗
+
+  **Impulse-Momentum Theorem:**
+  ```
+  J⃗ = p⃗_f - p⃗_i = mΔv⃗
+  ```
+
+  **Average Force:**
+  ```
+  F⃗_avg = Δp⃗/Δt = J⃗/Δt
+  ```
+
+  ## Important Applications
+
+  ### 1. Recoil of Gun
+  ```
+  m_bullet × v_bullet = -M_gun × V_gun
+  (Conservation of momentum: initial momentum = 0)
+  ```
+
+  ### 2. Water Jet on Wall
+  ```
+  F = ρAv² (perpendicular jet)
+  F = 2ρAv² (jet bouncing back)
+  ```
+
+  ### 3. Sand Falling on Conveyor Belt
+  ```
+  F = v(dm/dt)
+  Power = Fv = v²(dm/dt)
+  ```
+
+  ### 4. Rocket Propulsion
+  ```
+  F_thrust = -v_rel(dm/dt) = v_rel × (rate of fuel burn)
+
+  Rocket equation:
+  v = u + v_rel ln(m₀/m)
+  ```
+
+  ## JEE Important Concepts
+
+  ### 1. Force as Rate of Momentum Change
+  - More general than F = ma
+  - Applies to variable mass systems
+  - Foundation of rocket mechanics
+
+  ### 2. Impulse in Collisions
+  - Equal impulse on both colliding bodies (Newton's third law)
+  - Opposite directions
+  - Independent of collision time
+
+  ### 3. Average vs Instantaneous Force
+  ```
+  F_avg = Δp/Δt (over finite time)
+  F_inst = dp/dt (at an instant)
+  ```
+
+  ## Numerical Examples
+
+  **Example 1:** A 50g ball hits wall at 20 m/s and rebounds at 15 m/s. Contact time = 0.01s. Find average force.
+
+  **Solution:**
+  ```
+  Δp = m(v_f - v_i) = 0.05(-15 - 20) = -1.75 kg·m/s
+  F_avg = Δp/Δt = 1.75/0.01 = 175 N
+  ```
+
+  **Example 2:** Water flows through pipe at 10 m/s, cross-section 0.1 m². Find force on wall (perpendicular impact, ρ = 1000 kg/m³).
+
+  **Solution:**
+  ```
+  dm/dt = ρAv = 1000 × 0.1 × 10 = 1000 kg/s
+  F = v(dm/dt) = 10 × 1000 = 10,000 N = 10 kN
+  ```
+
+  ## Common JEE Problems
+
+  ### Type 1: Impulse Calculation
+  - Area under F-t graph = Impulse = Δp
+
+  ### Type 2: Variable Force Problems
+  - F = F(t) or F = F(x)
+  - Integrate to find velocity/displacement
+
+  ### Type 3: Collision Problems
+  - Use momentum conservation
+  - Calculate impulse during collision
+
+  ### Type 4: Chain/Rope Problems
+  - Variable mass consideration
+  - F = λv² (λ = mass per unit length)
+
+  ## Key Points for JEE
+
+  1. **F = ma is special case** of F = dp/dt (when m is constant)
+  2. **Impulse has same units** as momentum (N·s = kg·m/s)
+  3. **During very short collisions**, impulse ≈ constant even if force varies
+  4. **Rocket acceleration increases** as fuel burns (mass decreases)
+  5. **Force on hose pipe** when water exits = ρAv²
+
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: "A 2 kg object moving at 10 m/s is brought to rest in 0.5 s. The average force applied is:"
+  options:
+  - "10 N"
+  - "20 N"
+  - "40 N"
+  - "100 N"
+  correct_answer: "40 N"
+  explanation: "Using impulse-momentum theorem: F_avg = Δp/Δt = m(v_f - v_i)/Δt = 2(0 - 10)/0.5 = -20/0.5 = -40 N. The magnitude is 40 N. This demonstrates that force equals rate of change of momentum. The negative sign indicates the force opposes motion (retarding force). In JEE, always consider direction - the force acts opposite to initial velocity to bring object to rest."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: "Water flows from a pipe at rate 5 kg/s and strikes a vertical wall normally with velocity 10 m/s. If water does not rebound, the force on wall is:"
+  options:
+  - "25 N"
+  - "50 N"
+  - "100 N"
+  - "500 N"
+  correct_answer: "50 N"
+  explanation: "For a jet of water hitting wall without rebounding: F = v × (dm/dt) = 10 × 5 = 50 N. The momentum change per second equals the force. If water rebounds with same speed, force would be 2v(dm/dt) = 100 N. This is because momentum change would be from +mv to -mv, total change 2mv. This type of problem frequently appears in JEE, testing understanding of continuous momentum transfer."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: "A rocket expels gas at rate 10 kg/s with exhaust velocity 500 m/s relative to rocket. The thrust on rocket is:"
+  options:
+  - "50 N"
+  - "500 N"
+  - "5000 N"
+  - "50000 N"
+  correct_answer: "5000 N"
+  explanation: "Rocket thrust = exhaust velocity × mass flow rate = v_rel × (dm/dt) = 500 × 10 = 5000 N. This comes from Newton's second law for variable mass: F = v_rel(dm/dt). The rocket gains momentum equal to the momentum carried away by exhaust gases. As fuel burns (mass decreases), if thrust remains constant, acceleration increases (a = F/m). This principle drives all rocket propulsion and is a key JEE topic."
+  require_pass: true

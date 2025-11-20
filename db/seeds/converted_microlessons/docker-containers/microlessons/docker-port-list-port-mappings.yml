@@ -1,0 +1,86 @@
+slug: docker-port-list-port-mappings
+title: 'Docker Port: List Port Mappings'
+difficulty: easy
+sequence_order: 10
+estimated_minutes: 2
+key_concepts:
+- containers
+- docker-port
+- networking
+- port-mapping
+- configuration
+prerequisites: []
+content_md: '# Docker Port: List Port Mappings 🚀
+
+
+  Display port mappings for a container showing how container ports are exposed on
+  the host.
+
+
+  ## Syntax/Command
+
+
+  ```bash
+
+  docker port my-container
+
+  ```
+
+
+  ## Example
+
+
+  ```bash
+
+  docker port container
+
+  ```
+
+
+  ## Key Points
+
+
+  - All mappings: docker port <container>
+
+
+  - Specific port: docker port <container> 80'
+exercises:
+- type: terminal
+  problem_statement: List all port mappings for a container named 'my-container'
+  expected_output: List showing container ports mapped to host ports (e.g., 80/tcp -> 0.0.0.0:8080)
+  language: bash
+  starter_code: "# List port mappings\n"
+  sequence_order: 1
+  command: docker port my-container
+  description: Identify port mappings to access containerized service
+  hints:
+  - 'All mappings: docker port <container>'
+  - 'Specific port: docker port <container> 80'
+  validation:
+    must_not_include:
+    - Error
+    - 'panic:'
+  timeout_sec: 60
+  require_pass: true
+- type: sandbox
+  sequence_order: 99
+  hints:
+  - Run under CPU pressure to surface leaks or races
+  - Keep commands idempotent in CI
+  validation:
+    must_not_include:
+    - Error
+    - 'panic:'
+  timeout_sec: 60
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What information does docker port provide?
+  options:
+  - Port mappings showing which container ports are exposed on which host ports
+  - List of all open ports inside the container
+  - Complete network configuration of the container
+  - Firewall rules applied to the container
+  correct_answer: Port mappings showing which container ports are exposed on which host ports
+  explanation: "docker port displays the mapping between container ports and host ports, showing how you can access services running inside the container from the host machine (e.g., container port 80 mapped to host port 8080)."
+  require_pass: true

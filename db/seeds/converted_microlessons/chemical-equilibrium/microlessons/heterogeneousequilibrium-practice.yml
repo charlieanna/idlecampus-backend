@@ -1,0 +1,59 @@
+slug: heterogeneousequilibrium-practice
+title: heterogeneous_equilibrium — Practice
+difficulty: medium
+sequence_order: 13
+estimated_minutes: 2
+key_concepts:
+- heterogeneous_equilibrium
+prerequisites: []
+content_md: '# heterogeneous_equilibrium — Practice 🚀
+
+
+  For heterogeneous equilibria, pure solids are not included in K expression. Only
+  gases and aqueous solutions appear. Kp = P_CO₂
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: For the heterogeneous equilibrium CaCO₃(s) ⇌ CaO(s) + CO₂(g), what is the correct equilibrium expression?
+  options:
+  - Kp = P_CO₂
+  - Kp = P_CO₂/(P_CaCO₃)
+  - Kp = (P_CaO × P_CO₂)/(P_CaCO₃)
+  - Kp = 1/P_CO₂
+  require_pass: true
+  correct_answer: Kp = P_CO₂
+  explanation: 'For heterogeneous equilibria, pure solids and pure liquids are not included in the equilibrium expression because their activities are constant (equal to 1). For CaCO₃(s) ⇌ CaO(s) + CO₂(g), both CaCO₃ and CaO are pure solids, so only the gaseous CO₂ appears in the expression: Kp = P_CO₂. The value of Kp depends only on temperature. At a given temperature, the partial pressure of CO₂ at equilibrium is constant, regardless of the amounts of CaCO₃ or CaO present (as long as some of each solid is present). This is why adding more CaCO₃ doesn''t shift the equilibrium or change CO₂ pressure. Other examples: (1) NH₄Cl(s) ⇌ NH₃(g) + HCl(g): Kp = P_NH₃ × P_HCl, (2) C(s) + CO₂(g) ⇌ 2CO(g): Kp = (P_CO)²/P_CO₂ (solid C omitted).'
+- type: mcq
+  sequence_order: 2
+  question: For the reaction H₂O(l) ⇌ H₂O(g) at 100°C, why is liquid water not included in the equilibrium expression?
+  options:
+  - Liquid water has zero concentration
+  - Pure liquids have constant activity and are omitted
+  - Liquid water is a reactant, not a product
+  - Liquid water does not participate in equilibrium
+  require_pass: true
+  correct_answer: Pure liquids have constant activity and are omitted
+  explanation: 'Pure liquids (and pure solids) are omitted from equilibrium expressions because their activity (effective concentration) is constant, defined as 1. For H₂O(l) ⇌ H₂O(g), the equilibrium expression is simply Kp = P_H₂O(g). At 100°C, this equals 1 atm (normal boiling point). The concentration of pure liquid water is constant at ~55.5 M (density 1 g/mL = 1000 g/L, divided by 18 g/mol), which doesn''t change during the phase transition. Including it would make Kp = P_H₂O/55.5, but we absorb the constant 55.5 into K, giving Kp = P_H₂O. This principle applies to all phase equilibria: solid ⇌ gas, liquid ⇌ gas, solid ⇌ liquid. Only gases (partial pressures) and aqueous solutions (concentrations) appear in K expressions. Pure phases maintain constant concentration regardless of quantity present.'
+- type: mcq
+  sequence_order: 3
+  question: For Ag₂O(s) + H₂O(l) ⇌ 2Ag⁺(aq) + 2OH⁻(aq), what is the correct Kc expression?
+  options:
+  - Kc = [Ag⁺]²[OH⁻]²
+  - Kc = [Ag⁺]²[OH⁻]²/[Ag₂O]
+  - Kc = [Ag⁺]²[OH⁻]²/([Ag₂O][H₂O])
+  - Kc = [Ag⁺][OH⁻]/[Ag₂O]
+  require_pass: true
+  correct_answer: Kc = [Ag⁺]²[OH⁻]²
+  explanation: 'The correct expression is Kc = [Ag⁺]²[OH⁻]². For heterogeneous equilibria, pure solids (Ag₂O) and pure liquids (H₂O) are omitted from the equilibrium expression. Only aqueous species appear: Ag⁺(aq) and OH⁻(aq). The exponents match the stoichiometric coefficients: 2Ag⁺ gives [Ag⁺]², and 2OH⁻ gives [OH⁻]². This Kc is actually the solubility product constant Ksp for Ag₂O, which describes the equilibrium between the solid and its dissolved ions. At 25°C, Ksp = 2 × 10⁻⁸. If more Ag₂O solid is added beyond saturation, it doesn''t change Ksp or the ion concentrations - excess solid simply remains undissolved. The equilibrium is only affected by temperature changes or by adding/removing Ag⁺ or OH⁻ ions (common ion effect). Pure solids and liquids maintain constant activity = 1.'

@@ -1,0 +1,7 @@
+<ul>
+<% @links_arr.each do |link| %>
+  <% if link['score'] > 0 %>
+    <li><%= link_to link['link'], link['link'], target: "_blank" %></li>
+  <% end %>
+<% end %>
+</ul>

@@ -1,0 +1,59 @@
+slug: preparationmethods-practice
+title: preparation_methods — Practice
+difficulty: easy
+sequence_order: 12
+estimated_minutes: 2
+key_concepts:
+- preparation_methods
+prerequisites: []
+content_md: '# preparation_methods — Practice 🚀
+
+
+  Swarts reaction specifically prepares fluoroalkanes: R-Cl + AgF → R-F + AgCl or
+  R-Cl + SbF₃ → R-F + SbCl₃. Named after Belgian chemist Frédéric Swarts.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 2
+  question: 'Swarts reaction is used for the preparation of:'
+  options:
+  - Chloroalkanes
+  - Bromoalkanes
+  - Fluoroalkanes
+  - Iodoalkanes
+  correct_answer: Fluoroalkanes
+  explanation: "The Swarts reaction specifically prepares fluoroalkanes from chloro or bromoalkanes using reagents like AgF, SbF₃, or Hg₂F₂. For example: R-Cl + AgF → R-F + AgCl. This reaction is named after Belgian chemist Frédéric Swarts. Fluorine's high electronegativity and the strength of the C-F bond make direct fluorination difficult, so this halogen exchange method is important for preparing organofluorine compounds."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: Which reagent is used to convert alcohols to alkyl chlorides?
+  options:
+  - PCl₅ or SOCl₂
+  - AgCl
+  - HCl only
+  - Cl₂/UV
+  correct_answer: PCl₅ or SOCl₂
+  explanation: "Alcohols are converted to alkyl chlorides using reagents like PCl₅ (phosphorus pentachloride), PCl₃ (phosphorus trichloride), or SOCl₂ (thionyl chloride). For example: R-OH + PCl₅ → R-Cl + POCl₃ + HCl, or R-OH + SOCl₂ → R-Cl + SO₂ + HCl. SOCl₂ is particularly useful because the byproducts (SO₂ and HCl) are gases and escape, making purification easier. Simple HCl is too weak to convert alcohols directly (requires ZnCl₂ catalyst in Lucas reagent), and Cl₂/UV is used for free radical halogenation of alkanes, not alcohols."
+  require_pass: true
+- type: mcq
+  sequence_order: 4
+  question: How are alkyl bromides prepared from alcohols?
+  options:
+  - Using HBr or PBr₃
+  - Using Br₂/UV light
+  - Using NaBr in water
+  - Using Br₂/FeBr₃
+  correct_answer: Using HBr or PBr₃
+  explanation: "Alkyl bromides are prepared from alcohols using HBr or PBr₃ (phosphorus tribromide). With HBr: R-OH + HBr → R-Br + H₂O (often with H₂SO₄ catalyst). With PBr₃: 3R-OH + PBr₃ → 3R-Br + H₃PO₃. PBr₃ is preferred for primary alcohols as it avoids carbocation rearrangements. Br₂/UV is for free radical halogenation of alkanes. NaBr in water won't work (needs acidic conditions). Br₂/FeBr₃ is for aromatic bromination, not preparing alkyl bromides from alcohols."
+  require_pass: true

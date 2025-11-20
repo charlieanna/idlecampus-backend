@@ -1,0 +1,71 @@
+slug: carboxylic-acids-structure-acidity-and-reactions
+title: Carboxylic Acids - Structure, Acidity, and Reactions
+difficulty: easy
+sequence_order: 14
+estimated_minutes: 2
+key_concepts:
+- Carboxylic acids
+- IUPAC nomenclature
+- Acidity
+- Hydrogen bonding
+- Preparation
+- Hell-Volhard-Zelinsky reaction
+prerequisites: []
+content_md: "# Carboxylic Acids - Structure, Acidity, and Reactions \U0001F680\n\n\
+  # Carboxylic Acids\n\n    ## Structure and Nomenclature\n    **General formula:**\
+  \ R-COOH\n    **Functional group:** -COOH (carboxyl group = carbonyl + hydroxyl)\n\
+  \n    **IUPAC:** Replace -e with -oic acid\n    - CH₃COOH: Ethanoic acid (Acetic\
+  \ acid)\n    - CH₃CH₂COOH: Propanoic acid (Propionic acid)\n    - C₆H₅COOH: Benzoic\
+  \ acid\n\n    ## Acidity\n    **Most acidic organic compounds (pKa ≈ 4-5)**\n\n\
+  \    **Reason:** Resonance stabilization of carboxylate anion (RCOO⁻)\n    ```\n\
+  \    R-C(=O)-O⁻ ⟷ R-C(-O)=O\n    (Two equivalent resonance structures)\n    ```\n\
+  \n    **Factors Affecting Acidity:**\n    1. **-I groups increase acidity:** Cl₃CCOOH\
+  \ > Cl₂CHCOOH > ClCH₂COOH > CH₃COOH\n    2. **+I groups decrease acidity:** CH₃COOH\
+  \ > CH₃CH₂COOH > (CH₃)₂CHCOOH\n    3. **Aromatic acids:** C₆H₅COOH (pKa 4.2) > CH₃COOH\
+  \ (pKa 4.8)\n\n    **Acidity order:** HCOOH > C₆H₅COOH > CH₃COOH > H₂O > ROH\n\n\
+  \    ## Preparation\n    1. **Oxidation of 1° alcohols/aldehydes:**\n       ```\n\
+  \       R-CH₂OH → [K₂Cr₂O₇/H⁺] → R-COOH\n       R-CHO → [KMnO₄/H⁺] → R-COOH\n  \
+  \     ```\n\n    2. **Hydrolysis of nitriles:**\n       ```\n       R-CN + H₂O →\
+  \ [H⁺ or OH⁻] → R-COOH\n       ```\n\n    3. **Grignard + CO₂:**\n       ```\n \
+  \      R-MgX + CO₂ → R-COO⁻MgX → [H₃O⁺] → R-COOH\n       ```\n\n    4. **From alkylbenzenes:**\n\
+  \       ```\n       C₆H₅-CH₃ → [KMnO₄/H⁺] → C₆H₅-COOH\n       ```\n\n    ## Important\
+  \ Reactions\n    1. **Formation of salts:** R-COOH + NaOH → R-COONa + H₂O\n    2.\
+  \ **Acid chloride:** R-COOH + SOCl₂ → R-COCl + SO₂ + HCl\n    3. **Esterification:**\
+  \ R-COOH + R'-OH → [H₂SO₄] → R-COOR' + H₂O\n    4. **Reduction:** R-COOH → [LiAlH₄]\
+  \ → R-CH₂OH\n    5. **Hell-Volhard-Zelinsky:** R-CH₂-COOH + Br₂/P → R-CHBr-COOH\
+  \ (α-halogenation)\n    6. **Decarboxylation:** R-COONa + NaOH → [CaO, heat] → R-H\
+  \ + Na₂CO₃\n\n## Key Points\n\n- Carboxylic acids\n\n- IUPAC nomenclature\n\n- Acidity"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: 'Why are carboxylic acids more acidic than alcohols and phenols more acidic than alcohols, but carboxylic acids more acidic than phenols?'
+  options:
+  - The carboxylate ion has two equivalent resonance structures, providing greater stabilization than the phenoxide ion which has delocalization into the ring
+  - Carboxylic acids have higher molecular weight than phenols
+  - Carboxylic acids can form more hydrogen bonds than phenols
+  - The O-H bond in carboxylic acids is weaker than in phenols
+  correct_answer: The carboxylate ion has two equivalent resonance structures, providing greater stabilization than the phenoxide ion which has delocalization into the ring
+  explanation: "The acidity order is: Carboxylic acids (pKa ≈ 4-5) > Phenols (pKa ≈ 10) > Alcohols (pKa ≈ 15-16). This trend is entirely explained by the stability of the conjugate bases formed after deprotonation. When a carboxylic acid (R-COOH) loses a proton, it forms the carboxylate ion (R-COO⁻), which is exceptionally stable due to resonance. The negative charge is equally distributed between two equivalent oxygen atoms through two resonance structures: R-C(=O)-O⁻ ↔ R-C(-O)=O. This resonance is particularly effective because both structures are equivalent (same energy), and the negative charge is shared equally between two highly electronegative oxygen atoms. When phenol (C₆H₅OH) loses a proton, it forms the phenoxide ion (C₆H₅O⁻), which is also stabilized by resonance, but the delocalization is into the benzene ring, spreading the charge over carbon atoms (less electronegative than oxygen). This makes phenoxide less stable than carboxylate, so phenol is less acidic than carboxylic acids. Alcohols (R-OH) form alkoxide ions (R-O⁻) where the negative charge is completely localized on oxygen with no resonance stabilization, making alcohols the weakest acids. The greater stability of the conjugate base corresponds to greater acidity. This principle is fundamental to understanding acid-base chemistry and predicting reactivity patterns in organic compounds."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: 'In the Hell-Volhard-Zelinsky (HVZ) reaction, what product is formed when a carboxylic acid with α-hydrogens is treated with Br₂ and phosphorus?'
+  options:
+  - α-Halo carboxylic acid (halogenation at the carbon adjacent to the carboxyl group)
+  - β-Halo carboxylic acid (halogenation at the second carbon from the carboxyl group)
+  - Acid bromide (R-COBr)
+  - Dicarboxylic acid
+  correct_answer: α-Halo carboxylic acid (halogenation at the carbon adjacent to the carboxyl group)
+  explanation: "The Hell-Volhard-Zelinsky (HVZ) reaction is a specific method for halogenating carboxylic acids at the α-position (the carbon atom directly adjacent to the carboxyl group). When a carboxylic acid with α-hydrogens (R-CH₂-COOH) is treated with bromine (Br₂) or chlorine (Cl₂) in the presence of a small amount of phosphorus (P) or phosphorus tribromide (PBr₃), the product is an α-halo carboxylic acid (R-CHBr-COOH). The mechanism involves: (1) conversion of the carboxylic acid to the acid bromide (R-CH₂-COBr) by PBr₃, (2) enolization of the acid bromide under the reaction conditions, and (3) halogenation of the enol form at the α-position. The acid bromide intermediate is then hydrolyzed back to the carboxylic acid, but now with a halogen at the α-position. For example, propanoic acid (CH₃CH₂COOH) reacts to form 2-bromopropanoic acid (CH₃CHBr-COOH). This reaction is highly selective for α-halogenation and does not affect other positions on the carbon chain. α-Halo acids are important intermediates in synthesis because: (1) the halogen can be substituted by nucleophiles (SN2) to introduce other functional groups at the α-position, (2) elimination can give α,β-unsaturated acids, and (3) they are used in the synthesis of amino acids. The HVZ reaction is particularly important because direct halogenation of carboxylic acids is difficult without this special procedure."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: 'How does the inductive effect of substituents affect the acidity of carboxylic acids? Arrange the following in order of increasing acidity: CH₃COOH, ClCH₂COOH, Cl₂CHCOOH, Cl₃CCOOH'
+  options:
+  - CH₃COOH < ClCH₂COOH < Cl₂CHCOOH < Cl₃CCOOH
+  - Cl₃CCOOH < Cl₂CHCOOH < ClCH₂COOH < CH₃COOH
+  - ClCH₂COOH < Cl₂CHCOOH < CH₃COOH < Cl₃CCOOH
+  - CH₃COOH < Cl₃CCOOH < Cl₂CHCOOH < ClCH₂COOH
+  correct_answer: CH₃COOH < ClCH₂COOH < Cl₂CHCOOH < Cl₃CCOOH
+  explanation: "The acidity of carboxylic acids is significantly influenced by the inductive effect of substituents. Electron-withdrawing groups (-I effect) increase acidity by stabilizing the carboxylate anion, while electron-donating groups (+I effect) decrease acidity by destabilizing the anion. Chlorine is highly electronegative and exerts a strong -I effect, withdrawing electron density from the carboxylate group through σ-bonds. This makes the oxygen atoms of the carboxylate ion less electron-rich and more stable, facilitating proton loss and increasing acidity. The more chlorine atoms present, the stronger the cumulative -I effect. Therefore, the acidity order is: Trichloroacetic acid (Cl₃CCOOH, pKa ≈ 0.7) > Dichloroacetic acid (Cl₂CHCOOH, pKa ≈ 1.3) > Monochloroacetic acid (ClCH₂COOH, pKa ≈ 2.9) > Acetic acid (CH₃COOH, pKa ≈ 4.8). Trichloroacetic acid is so acidic that it's comparable to some mineral acids. In contrast, the methyl group in acetic acid has a weak +I effect, making it less acidic than formic acid (HCOOH, pKa ≈ 3.8), which has no alkyl group. The distance of the substituent also matters: the inductive effect decreases with distance. For example, 2-chlorobutanoic acid is more acidic than 3-chlorobutanoic acid. Understanding these effects is crucial for predicting and manipulating the properties of organic acids in synthesis and for explaining pH behavior in biological and chemical systems."
+  require_pass: true

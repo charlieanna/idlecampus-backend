@@ -1,0 +1,59 @@
+slug: magneticproperties-practice
+title: magnetic_properties — Practice
+difficulty: medium
+sequence_order: 1
+estimated_minutes: 2
+key_concepts:
+- magnetic_properties
+prerequisites: []
+content_md: '# magnetic_properties — Practice 🚀
+
+
+  Zn²⁺ has configuration [Ar] 3d¹⁰ with all electrons paired, making it diamagnetic.
+  All others have unpaired electrons and are paramagnetic.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: 'Which of the following ions is diamagnetic?'
+  options:
+  - Fe²⁺
+  - Cu²⁺
+  - Zn²⁺
+  - Ni²⁺
+  correct_answer: Zn²⁺
+  explanation: 'Diamagnetic substances have all electrons paired, while paramagnetic substances have one or more unpaired electrons. Let us check the electronic configurations and unpaired electrons: Zn²⁺ (Z=30, lost 2e⁻): [Ar] 3d¹⁰ 4s⁰. All 10 d-electrons are paired (↑↓ in each of 5 d-orbitals). NO unpaired electrons → DIAMAGNETIC. Fe²⁺ (Z=26, lost 2e⁻): [Ar] 3d⁶. Configuration: ↑↓ ↑ ↑ ↑ ↑ (4 unpaired electrons) → Paramagnetic. Cu²⁺ (Z=29, lost 2e⁻): [Ar] 3d⁹. Configuration: ↑↓ ↑↓ ↑↓ ↑↓ ↑ (1 unpaired electron) → Paramagnetic. Ni²⁺ (Z=28, lost 2e⁻): [Ar] 3d⁸. Configuration: ↑↓ ↑↓ ↑↓ ↑ ↑ (2 unpaired electrons) → Paramagnetic. Key concepts: (1) Diamagnetic: All electrons paired, weakly repelled by magnetic field. Examples: Zn²⁺, Cu⁺ ([Ar]3d¹⁰), Ar, N₂. (2) Paramagnetic: Unpaired electrons present, weakly attracted to magnetic field. Strength increases with number of unpaired electrons. Examples: O₂ (2 unpaired), Fe²⁺ (4 unpaired), Gd³⁺ (7 unpaired). (3) For transition metal ions, remove electrons from 4s before 3d when forming cations. (4) Measurement: Paramagnetic substances show positive magnetic susceptibility, diamagnetic show negative.'
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: 'Which species has the maximum number of unpaired electrons?'
+  options:
+  - Fe²⁺ ([Ar] 3d⁶)
+  - Mn²⁺ ([Ar] 3d⁵)
+  - Cr³⁺ ([Ar] 3d³)
+  - Co²⁺ ([Ar] 3d⁷)
+  correct_answer: Mn²⁺ ([Ar] 3d⁵)
+  explanation: 'The number of unpaired electrons determines the magnetic moment and paramagnetic strength. Let us analyze each configuration using Hund''s rule (electrons occupy orbitals singly with parallel spins before pairing): Mn²⁺: [Ar] 3d⁵. Five d-orbitals: ↑ ↑ ↑ ↑ ↑. All 5 electrons unpaired (maximum possible for d⁵). This is a half-filled d subshell, highly stable. Fe²⁺: [Ar] 3d⁶. Five d-orbitals: ↑↓ ↑ ↑ ↑ ↑. One pair + 4 unpaired = 4 unpaired electrons. Cr³⁺: [Ar] 3d³. Five d-orbitals: ↑ ↑ ↑ _ _. Three unpaired electrons. Co²⁺: [Ar] 3d⁷. Five d-orbitals: ↑↓ ↑↓ ↑ ↑ ↑. Two pairs + 3 unpaired = 3 unpaired electrons. Maximum unpaired: Mn²⁺ with 5 unpaired electrons. Magnetic moment formula: μ = √(n(n+2)) BM (Bohr magnetons), where n = number of unpaired electrons. For Mn²⁺: μ = √(5×7) = √35 ≈ 5.92 BM. General pattern for d⁵ configuration: This is maximally paramagnetic for first-row transition metals. Examples: Mn²⁺, Fe³⁺, Cr⁺ all have d⁵ with 5 unpaired electrons. Note: d¹⁰ (fully filled) and d⁰ (empty) have zero unpaired electrons (diamagnetic).'
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: 'The magnetic moment of a species with 3 unpaired electrons is approximately:'
+  options:
+  - 2.83 BM
+  - 3.87 BM
+  - 4.90 BM
+  - 5.92 BM
+  correct_answer: 3.87 BM
+  explanation: 'The spin-only magnetic moment (μ) for a species with n unpaired electrons is calculated using the formula: μ = √(n(n+2)) BM (Bohr magnetons). For n = 3 unpaired electrons: μ = √(3(3+2)) = √(3×5) = √15 = 3.87 BM. Examples of species with 3 unpaired electrons: Cr³⁺: [Ar] 3d³ (↑ ↑ ↑). Co²⁺: [Ar] 3d⁷ (↑↓ ↑↓ ↑ ↑ ↑) has 3 unpaired. V²⁺: [Ar] 3d³ (↑ ↑ ↑). Magnetic moments for different numbers of unpaired electrons: n=1: μ = √(1×3) = √3 = 1.73 BM (examples: Cu²⁺, Ti³⁺). n=2: μ = √(2×4) = √8 = 2.83 BM (examples: Ni²⁺, V³⁺). n=3: μ = √(3×5) = √15 = 3.87 BM (examples: Cr³⁺, Co²⁺). n=4: μ = √(4×6) = √24 = 4.90 BM (examples: Fe²⁺, Cr²⁺). n=5: μ = √(5×7) = √35 = 5.92 BM (examples: Mn²⁺, Fe³⁺). Experimental values may differ slightly from calculated spin-only values due to orbital angular momentum contribution (spin-orbit coupling), especially for heavier elements. The formula assumes spin-only contribution, valid for first-row transition metals where orbital contribution is quenched.'
+  require_pass: true

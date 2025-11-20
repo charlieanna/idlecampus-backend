@@ -1,0 +1,95 @@
+slug: pipes-and-redirection
+title: Pipes and Redirection
+difficulty: easy
+sequence_order: 14
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Pipes and Redirection \U0001F680\n\n# Pipes and Redirection\n\n   \
+  \ ## Pipes (|)\n\n    Send output of one command to input of another:\n\n    ```bash\n\
+  \    # List files and search for pattern\n    ls -l | grep \"txt\"\n\n    # Count\
+  \ number of processes\n    ps aux | wc -l\n\n    # Find largest files\n    du -sh\
+  \ * | sort -hr | head -10\n\n    # Chain multiple commands\n    cat access.log |\
+  \ grep \"ERROR\" | grep \"2024\" | wc -l\n    ```\n\n    ## Output Redirection\n\
+  \n    ### Redirect to File (>)\n\n    ```bash\n    # Overwrite file with output\n\
+  \    echo \"Hello\" > file.txt\n\n    # Command output to file\n    ls -l > listing.txt\n\
+  \n    # Redirect errors (stderr) to file\n    command 2> errors.txt\n\n    # Redirect\
+  \ both stdout and stderr\n    command > output.txt 2>&1\n    command &> output.txt\
+  \  # Same thing, shorter\n    ```\n\n    ### Append to File (>>)\n\n    ```bash\n\
+  \    # Append to file (don't overwrite)\n    echo \"New line\" >> file.txt\n\n \
+  \   # Append command output\n    date >> log.txt\n    ```\n\n    ### Input Redirection\
+  \ (<)\n\n    ```bash\n    # Read input from file\n    wc -l < file.txt\n\n    #\
+  \ Here document\n    cat << EOF > config.txt\n    Setting1=value1\n    Setting2=value2\n\
+  \    EOF\n    ```\n\n    ## Standard Streams\n\n    - **stdin (0)**: Standard input\n\
+  \    - **stdout (1)**: Standard output\n    - **stderr (2)**: Standard error\n\n\
+  \    ```bash\n    # Redirect stderr to stdout, then pipe\n    command 2>&1 | grep\
+  \ \"error\"\n\n    # Discard output\n    command > /dev/null 2>&1\n    ```"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What is the difference between > and >> when redirecting output to a file?
+  options:
+  - '> appends to file, >> overwrites the file'
+  - '> overwrites the file, >> appends to the file'
+  - They are identical and interchangeable
+  - '> redirects stdout, >> redirects stderr'
+  correct_answer: '> overwrites the file, >> appends to the file'
+  explanation: '> (redirect) overwrites the file completely, destroying previous contents.
+    >> (append) adds to the end of the file, preserving existing content. Example
+    scenario: echo "First" > log.txt creates log.txt with "First". echo "Second" >
+    log.txt overwrites it - now contains only "Second". echo "Third" >> log.txt appends
+    - now contains "Second" and "Third". This is critical for logging: (1) Use >>
+    for log files to accumulate entries: date >> app.log; echo "Started" >> app.log,
+    (2) Use > for output files you want to regenerate: ls -l > current_files.txt.
+    Common mistake: Using > instead of >> loses valuable log data. Both > and >> redirect
+    stdout (file descriptor 1) by default. To append errors: command 2>> errors.log.
+    Safe pattern for scripts: echo "=== Build started ===" > build.log followed by
+    build_commands >> build.log 2>&1 to capture all output.'
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What does the command "command 2>&1" do?
+  options:
+  - Redirects stdout to stderr
+  - Redirects stderr to stdout (merges error output with standard output)
+  - Redirects both stdout and stderr to file descriptor 1
+  - Swaps stdout and stderr streams
+  correct_answer: Redirects stderr to stdout (merges error output with standard output)
+  explanation: 'The 2>&1 syntax redirects stderr (file descriptor 2) to wherever stdout
+    (file descriptor 1) is currently going. Understanding file descriptors: 0=stdin,
+    1=stdout, 2=stderr. By default, stdout and stderr are separate streams - stdout
+    goes to terminal, stderr goes to terminal separately. Use cases for 2>&1: (1)
+    Capture ALL output to file: command > output.txt 2>&1 sends both stdout and stderr
+    to output.txt, (2) Pipe errors too: command 2>&1 | grep "error" searches both
+    stdout and stderr, (3) Discard everything: command > /dev/null 2>&1 silences all
+    output. ORDER MATTERS: command 2>&1 > file.txt is WRONG - redirects stderr to
+    terminal, then stdout to file (stderr not captured). Correct: command > file.txt
+    2>&1 - redirects stdout to file, then stderr to stdout (both captured). Shorthand:
+    command &> file.txt is equivalent to command > file.txt 2>&1. Essential for debugging:
+    see both normal output and error messages together.'
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: How do pipes (|) work in Linux command chaining?
+  options:
+  - Pipes execute commands sequentially, waiting for each to complete
+  - Pipes connect stdout of one command to stdin of the next, allowing concurrent
+    processing
+  - Pipes store intermediate results in temporary files
+  - Pipes only work with text files, not command output
+  correct_answer: Pipes connect stdout of one command to stdin of the next, allowing
+    concurrent processing
+  explanation: 'Pipes (|) connect the stdout of one command to the stdin of the next,
+    creating a data stream between commands. Both commands run concurrently (not sequentially)
+    - the second command processes data as the first produces it, no need to wait
+    for completion or store intermediate results. Example: cat access.log | grep "ERROR"
+    | wc -l. How it works: (1) cat outputs log lines to stdout, (2) grep receives
+    lines via stdin, filters for "ERROR", outputs matches to stdout, (3) wc -l receives
+    matches via stdin, counts lines. This is efficient: no temporary files created,
+    streaming processing uses minimal memory, concurrent execution is faster. Pipe
+    limitations: (1) Only connects stdout to stdin (not stderr - use 2>&1 if needed:
+    command 2>&1 | grep error), (2) Unidirectional - data flows left to right, (3)
+    If any command fails mid-pipeline, may get partial results. Real-world example:
+    du -sh * | sort -hr | head -10 finds 10 largest directories - all three commands
+    run simultaneously, processing data as it streams through.'
+  require_pass: true

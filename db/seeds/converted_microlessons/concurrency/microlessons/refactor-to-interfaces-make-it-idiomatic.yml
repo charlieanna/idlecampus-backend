@@ -1,0 +1,109 @@
+slug: refactor-to-interfaces-make-it-idiomatic
+title: Refactor to Interfaces & Make It Idiomatic
+difficulty: easy
+sequence_order: 2
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: '# Refactor to Interfaces & Make It Idiomatic 🚀
+
+
+  Extract interfaces for components (Fetcher, Parser, Store) and inject dependencies
+  for testability.
+
+
+  ## Why it matters
+
+  - Enables mocking/fakes, faster tests, and clear boundaries.
+
+  - Reduces coupling and clarifies ownership of behavior.
+
+
+  ## Idioms
+
+  - Define interfaces at the consumer; keep them small (1–2 methods).
+
+  - Prefer constructor injection; avoid global vars; no stutter in names.
+
+
+  ## Example
+
+  ```go
+
+  type Fetcher interface { Fetch(ctx context.Context, url string) ([]byte, error)
+  }
+
+  type Parser  interface { Parse(ctx context.Context, b []byte) (Item, error) }
+
+  ```
+
+
+  ## Validate
+
+  ```bash
+
+  go test ./examples/go-concurrency-capstone/... -race -count=1
+
+  ```
+
+
+  ## Key Points
+
+  - Keep interfaces small (one or two methods)
+
+  - Define interfaces at the consumer side
+
+  - Use table-driven tests and fakes to validate behavior'
+exercises:
+- type: terminal
+  problem_statement: Run the full test suite with race detector to verify that the refactored code with interfaces passes all tests without data races
+  expected_output: All tests pass with no data races detected
+  language: bash
+  starter_code: "# Run all tests with race detector\n"
+  sequence_order: 1
+  command: go test ./examples/go-concurrency-capstone/... -race -count=1
+  description: Run full test suite with race detector after refactor.
+  validation:
+    must_not_include:
+    - DATA RACE
+  timeout_sec: 90
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: Where should you define a small interface in Go?
+  options:
+  - At the consumer package that needs the behavior
+  - In a global shared interfaces package
+  - At the concrete implementation package
+  - In main only
+  correct_answer: At the consumer package that needs the behavior
+  explanation: "In idiomatic Go, interfaces should be defined at the consumer side, not the producer. This allows the consumer to define exactly the behavior it needs (often just 1-2 methods), promotes decoupling, and enables easy testing with mocks. Avoid large, shared interface packages - instead, let each consumer define its own small interface."
+  require_pass: true
+- type: code
+  problem_statement: Refactor the following code to use interfaces for better testability. Define small interfaces at the consumer side and use dependency injection.
+  language: go
+  starter_code: |
+    package main
+
+    import "context"
+
+    // TODO: Define interfaces for Fetcher and Parser at consumer side
+    // type Fetcher interface { ... }
+    // type Parser interface { ... }
+
+    type Pipeline struct {
+        // TODO: Use interface types instead of concrete types
+    }
+
+    func NewPipeline(/* inject dependencies */) *Pipeline {
+        // TODO: Implement constructor with dependency injection
+        return &Pipeline{}
+    }
+
+    func (p *Pipeline) Process(ctx context.Context, url string) error {
+        // TODO: Use injected dependencies
+        return nil
+    }
+  expected_output: Code with small, focused interfaces defined at consumer side and dependency injection
+  sequence_order: 3
+  require_pass: true

@@ -1,0 +1,59 @@
+slug: semiconductors-practice
+title: semiconductors — Practice
+difficulty: easy
+sequence_order: 13
+estimated_minutes: 2
+key_concepts:
+- semiconductors
+prerequisites: []
+content_md: '# semiconductors — Practice 🚀
+
+
+  P (Group 15) has 5 valence electrons. When doped in Si (Group 14), it provides extra
+  electron, creating n-type semiconductor.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: 'Silicon doped with phosphorus gives:'
+  options:
+  - n-type semiconductor
+  - p-type semiconductor
+  - Insulator
+  - Conductor
+  correct_answer: n-type semiconductor
+  explanation: "When silicon (Group 14, 4 valence electrons) is doped with phosphorus (Group 15, 5 valence electrons), the extra electron from phosphorus creates an n-type (negative-type) semiconductor. The '5th' electron becomes a charge carrier, increasing conductivity. P (Group 15) has 5 valence electrons, providing an extra electron donor."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: 'Silicon doped with boron gives:'
+  options:
+  - p-type semiconductor
+  - n-type semiconductor
+  - Insulator
+  - Conductor
+  correct_answer: p-type semiconductor
+  explanation: "When silicon (Group 14, 4 valence electrons) is doped with boron (Group 13, 3 valence electrons), it creates electron 'holes' (positive charge carriers), producing a p-type (positive-type) semiconductor. Boron acts as an electron acceptor, creating vacancies in the valence band."
+  require_pass: false
+- type: mcq
+  sequence_order: 3
+  question: Which element can be used to make n-type semiconductor from germanium?
+  options:
+  - Arsenic
+  - Boron
+  - Aluminum
+  - Gallium
+  correct_answer: Arsenic
+  explanation: "Arsenic (Group 15, 5 valence electrons) can be used to dope germanium (Group 14, 4 valence electrons) to create an n-type semiconductor. The extra electron from arsenic acts as a charge carrier. Boron, aluminum, and gallium are Group 13 elements that would create p-type semiconductors."
+  require_pass: false

@@ -1,0 +1,79 @@
+slug: lesson-24
+title: Lesson 24
+sequence_order: 24
+estimated_minutes: 2
+difficulty: easy
+content_md: "# Microlesson \U0001F680\n\n# Interfaces in Go\n\n    **Interfaces**\
+  \ define behavior without specifying implementation. They're Go's way of achieving\
+  \ polymorphism.\n\n    ## Defining Interfaces\n\n    ```go\n    type Writer interface\
+  \ {\n        Write([]byte) (int, error)\n    }\n\n    type Reader interface {\n\
+  \        Read([]byte) (int, error)\n    }\n    ```\n\n    ## Implementing Interfaces\n\
+  \n    **Implicit implementation** - no \"implements\" keyword needed!\n\n    ```go\n\
+  \    type File struct {\n        path string\n    }\n\n    // File implements Writer\
+  \ by having a Write method\n    func (f *File) Write(data []byte) (int, error) {\n\
+  \        fmt.Printf(\"Writing %d bytes to %s\\\\n\", len(data), f.path)\n      \
+  \  return len(data), nil\n    }\n\n    // Use it polymorphically\n    var w Writer\
+  \ = &File{path: \"/tmp/data.txt\"}\n    w.Write([]byte(\"Hello\"))\n    ```\n\n\
+  \    ## Empty Interface\n\n    `interface{}` can hold any type:\n\n    ```go\n \
+  \   func PrintAnything(v interface{}) {\n        fmt.Println(v)\n    }\n\n    PrintAnything(42)\n\
+  \    PrintAnything(\"hello\")\n    PrintAnything([]int{1, 2, 3})\n    ```\n\n  \
+  \  ## Type Assertions\n\n    ```go\n    var i interface{} = \"hello\"\n\n    //\
+  \ Type assertion\n    s := i.(string)\n    fmt.Println(s)  // \"hello\"\n\n    //\
+  \ Safe type assertion\n    s, ok := i.(string)\n    if ok {\n        fmt.Println(s)\n\
+  \    }\n\n    // Type switch\n    switch v := i.(type) {\n    case string:\n   \
+  \     fmt.Printf(\"String: %s\\\\n\", v)\n    case int:\n        fmt.Printf(\"Int:\
+  \ %d\\\\n\", v)\n    default:\n        fmt.Printf(\"Unknown type\\\\n\")\n    }\n\
+  \    ```\n\n    ## Common Standard Interfaces\n\n    ### io.Reader and io.Writer\n\
+  \    ```go\n    type Reader interface {\n        Read(p []byte) (n int, err error)\n\
+  \    }\n\n    type Writer interface {\n        Write(p []byte) (n int, err error)\n\
+  \    }\n    ```\n\n    ### fmt.Stringer\n    ```go\n    type Stringer interface\
+  \ {\n        String() string\n    }\n\n    type Person struct {\n        Name string\n\
+  \        Age  int\n    }\n\n    func (p Person) String() string {\n        return\
+  \ fmt.Sprintf(\"%s (%d years)\", p.Name, p.Age)\n    }\n\n    person := Person{Name:\
+  \ \"Alice\", Age: 25}\n    fmt.Println(person)  // Calls String() method\n    ```\n\
+  \n    ### error interface\n    ```go\n    type error interface {\n        Error()\
+  \ string\n    }\n\n    type MyError struct {\n        Code    int\n        Message\
+  \ string\n    }\n\n    func (e MyError) Error() string {\n        return fmt.Sprintf(\"\
+  Error %d: %s\", e.Code, e.Message)\n    }\n    ```\n\n    ## Interface Composition\n\
+  \n    Combine interfaces:\n\n    ```go\n    type Reader interface {\n        Read([]byte)\
+  \ (int, error)\n    }\n\n    type Writer interface {\n        Write([]byte) (int,\
+  \ error)\n    }\n\n    type ReadWriter interface {\n        Reader\n        Writer\n\
+  \    }\n\n    // Or inline\n    type ReadWriteCloser interface {\n        Read([]byte)\
+  \ (int, error)\n        Write([]byte) (int, error)\n        Close() error\n    }\n\
+  \    ```\n\n    ## Practical Example\n\n    ```go\n    type Shape interface {\n\
+  \        Area() float64\n        Perimeter() float64\n    }\n\n    type Circle struct\
+  \ {\n        Radius float64\n    }\n\n    func (c Circle) Area() float64 {\n   \
+  \     return math.Pi * c.Radius * c.Radius\n    }\n\n    func (c Circle) Perimeter()\
+  \ float64 {\n        return 2 * math.Pi * c.Radius\n    }\n\n    type Rectangle\
+  \ struct {\n        Width, Height float64\n    }\n\n    func (r Rectangle) Area()\
+  \ float64 {\n        return r.Width * r.Height\n    }\n\n    func (r Rectangle)\
+  \ Perimeter() float64 {\n        return 2 * (r.Width + r.Height)\n    }\n\n    func\
+  \ PrintShapeInfo(s Shape) {\n        fmt.Printf(\"Area: %.2f\\\\n\", s.Area())\n\
+  \        fmt.Printf(\"Perimeter: %.2f\\\\n\", s.Perimeter())\n    }\n\n    circle\
+  \ := Circle{Radius: 5}\n    rectangle := Rectangle{Width: 10, Height: 5}\n\n   \
+  \ PrintShapeInfo(circle)\n    PrintShapeInfo(rectangle)\n    ```\n\n    ## Best\
+  \ Practices\n\n    1. **Keep interfaces small**: Prefer single-method interfaces\n\
+  \    2. **Accept interfaces, return structs**: Functions should accept interfaces\
+  \ but return concrete types\n    3. **Interface at usage point**: Define interfaces\
+  \ where they're used, not where types are defined\n    4. **Implicit satisfaction**:\
+  \ Don't explicitly declare implementation\n\n    **Practice:** Try the Interfaces\
+  \ lab!"
+exercises:
+- type: mcq
+  slug: lesson-24-mcq
+  sequence_order: 1
+  question: What is a key consideration when working with Interfaces in Go?
+  options:
+  - Understanding the core principles and best practices of Interfaces in Go
+  - Ignoring documentation
+  - Skipping testing
+  - Avoiding industry standards
+  correct_answer_index: 0
+  explanation: When working with Interfaces in Go, it's essential to understand the
+    fundamental principles, follow best practices, and stay updated with current standards
+    to ensure effective implementation and maintenance.
+objectives:
+- Understand the fundamental concepts and mechanisms of lesson 24
+- Apply chemical principles to solve related problems
+- Identify key reactions, equations, and chemical behaviors
+next_recommended: []

@@ -1,0 +1,84 @@
+slug: bind-mounts-vs-volumes
+title: Bind Mounts vs Volumes
+difficulty: medium
+sequence_order: 7
+estimated_minutes: 2
+key_concepts:
+- volumes
+- bind-mounts
+- comparison
+- best-practices
+prerequisites: []
+content_md: '# Bind Mounts vs Volumes 🚀
+
+
+  Understand the differences between bind mounts and volumes
+
+
+  ## Syntax/Command
+
+
+  ```bash
+
+  docker run -v /host/path:/container/path nginx
+
+  ```
+
+
+  ## Example
+
+
+  ```bash
+
+  docker run -v $(pwd):/app nginx
+
+  ```
+
+
+  ## Key Points
+
+
+  - Bind mount: -v /absolute/host/path:/container/path
+
+
+  - Current dir: -v $(pwd):/app
+
+
+  - Explicit: --mount type=bind,source=...,target=...'
+exercises:
+- type: terminal
+  problem_statement: Run an nginx container with a bind mount from /host/path on the host to /container/path inside the container
+  expected_output: Container starts with the host directory mounted
+  language: bash
+  starter_code: "# Run with bind mount\n"
+  sequence_order: 1
+  command: docker run -v /host/path:/container/path nginx
+  description: Understand when to use bind mounts vs volumes
+  validation:
+    must_not_include:
+    - Error
+    - 'panic:'
+  timeout_sec: 60
+  require_pass: true
+- type: sandbox
+  sequence_order: 99
+  hints:
+  - Run under CPU pressure to surface leaks or races
+  - Keep commands idempotent in CI
+  validation:
+    must_not_include:
+    - Error
+    - 'panic:'
+  timeout_sec: 60
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: When should you use bind mounts instead of volumes?
+  options:
+  - During development to sync code changes between host and container in real-time
+  - For production databases requiring maximum reliability
+  - For better performance across all platforms
+  - For cross-platform compatibility between Windows, Mac, and Linux
+  correct_answer: During development to sync code changes between host and container in real-time
+  explanation: "Bind mounts are ideal for development because they map a host directory directly into the container, allowing real-time code synchronization. Changes on the host immediately reflect in the container. However, for production use volumes instead: they're Docker-managed, platform-independent, perform better on Windows/Mac, and have better backup/migration tools."
+  require_pass: true

@@ -1,0 +1,89 @@
+slug: extractionprocesses-practice
+title: extraction_processes — Practice
+difficulty: medium
+sequence_order: 8
+estimated_minutes: 2
+key_concepts:
+- extraction_processes
+prerequisites: []
+content_md: '# extraction_processes — Practice 🚀
+
+
+  Calcination is heating in limited or no air (removes H₂O, CO₂). Roasting is heating
+  in excess air (converts sulfides to oxides). Example: ZnCO₃ → ZnO (calcination),
+  2ZnS + 3O₂ → 2ZnO (roasting).
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 2
+  question: What is the main difference between calcination and roasting?
+  options:
+  - Calcination uses excess air, roasting uses limited air
+  - Calcination uses limited/no air, roasting uses excess air
+  - Both processes are identical
+  - Calcination is only for sulfides, roasting only for carbonates
+  require_pass: true
+  correct_answer: Calcination uses limited/no air, roasting uses excess air
+  explanation: 'Calcination and roasting are both heating processes used in metallurgy
+    but differ in air supply: **Calcination** = heating ore in limited or absent air
+    supply. Used for carbonate and hydrated ores to remove volatile impurities like
+    H₂O, CO₂. Example: ZnCO₃ → ZnO + CO₂ (heating limestone: CaCO₃ → CaO + CO₂). **Roasting**
+    = heating ore in excess air/oxygen. Used for sulfide ores to convert them to oxides.
+    Example: 2ZnS + 3O₂ → 2ZnO + 2SO₂ (copper: 2Cu₂S + 3O₂ → 2Cu₂O + 2SO₂). The key
+    difference is oxygen availability: calcination excludes it, roasting requires
+    it.'
+- type: mcq
+  sequence_order: 3
+  question: 'Which process is used to convert carbonate ores to oxides?'
+  options:
+  - Roasting
+  - Calcination
+  - Smelting
+  - Leaching
+  require_pass: true
+  correct_answer: Calcination
+  explanation: '**Calcination** converts carbonate and hydrated ores to oxides by
+    heating in limited/absent air: Examples of carbonate ore calcination: (1) **ZnCO₃
+    → ZnO + CO₂** (zinc carbonate to zinc oxide), (2) **CaCO₃ → CaO + CO₂** (limestone
+    to quicklime), (3) **FeCO₃ → FeO + CO₂** (siderite to iron oxide), (4) **MgCO₃
+    → MgO + CO₂** (magnesite to magnesia). Hydrated ore examples: (5) **Al₂O₃·2H₂O
+    → Al₂O₃ + 2H₂O** (bauxite dehydration), (6) **CuSO₄·5H₂O → CuSO₄ + 5H₂O**. Why
+    limited air? To prevent unwanted oxidation reactions. The ore is heated in kilns/furnaces
+    below the decomposition temperature. Temperature range: 800-1000°C typically.
+    **Roasting vs Calcination**: Roasting = sulfides → oxides (needs excess O₂),
+    Calcination = carbonates/hydrates → oxides (limited air). **Smelting** = reduction
+    of oxide to metal (needs reducing agent). **Leaching** = chemical dissolution
+    (no heating). Mnemonic: **CAL**cination for **CAL**cium carbonate (CaCO₃)!'
+- type: mcq
+  sequence_order: 4
+  question: What type of ore requires roasting as a preliminary step before reduction?
+  options:
+  - Oxide ores
+  - Sulfide ores
+  - Carbonate ores
+  - Halide ores
+  require_pass: true
+  correct_answer: Sulfide ores
+  explanation: '**Sulfide ores must be roasted** before reduction to convert them
+    to oxides: Why? Sulfides cannot be directly reduced by carbon (thermodynamically
+    unfavorable). They must first be converted to oxides. Roasting reactions: (1)
+    **2ZnS + 3O₂ → 2ZnO + 2SO₂** (zinc blende), (2) **2PbS + 3O₂ → 2PbO + 2SO₂**
+    (galena), (3) **2Cu₂S + 3O₂ → 2Cu₂O + 2SO₂** (copper glance), (4) **4FeS₂ +
+    11O₂ → 2Fe₂O₃ + 8SO₂** (iron pyrites). Process: Ore is heated strongly in excess
+    air in a reverberatory furnace or fluidized bed. Temperature: 500-800°C typically.
+    Products: Metal oxide (desired) + SO₂ (problematic). Environmental concern: SO₂
+    is a pollutant causing acid rain. Modern plants capture SO₂ to make sulfuric
+    acid (H₂SO₄), turning waste into valuable product! After roasting, the oxide
+    is reduced: ZnO + C → Zn + CO (for example). **Oxide ores** can be reduced directly.
+    **Carbonate ores** need calcination, not roasting.'

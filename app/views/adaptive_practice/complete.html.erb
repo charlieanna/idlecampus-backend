@@ -1,0 +1,84 @@
+<div class="container py-5">
+  <div class="row">
+    <div class="col-lg-6 mx-auto">
+      <div class="card border-0 shadow-lg">
+        <div class="card-body text-center py-5">
+          <div class="mb-4">
+            <i class="fas fa-trophy text-warning" style="font-size: 4rem;"></i>
+          </div>
+          
+          <h2 class="mb-4">Practice Session Complete!</h2>
+          
+          <!-- Summary Stats -->
+          <div class="row mb-4">
+            <div class="col-6">
+              <div class="card bg-light">
+                <div class="card-body">
+                  <h3 class="mb-0"><%= @summary[:questions_answered] %></h3>
+                  <small class="text-muted">Questions</small>
+                </div>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="card bg-light">
+                <div class="card-body">
+                  <h3 class="mb-0 <%= @summary[:accuracy] >= 70 ? 'text-success' : 'text-warning' %>">
+                    <%= @summary[:accuracy] %>%
+                  </h3>
+                  <small class="text-muted">Accuracy</small>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="row mb-4">
+            <div class="col-6">
+              <div class="card bg-light">
+                <div class="card-body">
+                  <h3 class="mb-0 text-success"><%= @summary[:correct_count] %></h3>
+                  <small class="text-muted">Correct</small>
+                </div>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="card bg-light">
+                <div class="card-body">
+                  <h3 class="mb-0"><%= @summary[:time_spent_minutes] %> min</h3>
+                  <small class="text-muted">Time Spent</small>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Performance Message -->
+          <% if @summary[:accuracy] >= 80 %>
+            <div class="alert alert-success mb-4">
+              <i class="fas fa-star"></i> Excellent work! You're mastering this content.
+            </div>
+          <% elsif @summary[:accuracy] >= 60 %>
+            <div class="alert alert-info mb-4">
+              <i class="fas fa-thumbs-up"></i> Good progress! Keep practicing to improve.
+            </div>
+          <% else %>
+            <div class="alert alert-warning mb-4">
+              <i class="fas fa-book"></i> Review the content and try again to strengthen your understanding.
+            </div>
+          <% end %>
+          
+          <!-- Actions -->
+          <div class="btn-group-vertical w-100">
+            <%= link_to start_adaptive_practice_path(skill_dimension: @summary[:skill_dimension]), 
+                class: "btn btn-primary btn-lg mb-2" do %>
+              <i class="fas fa-redo"></i> Practice Again
+            <% end %>
+            
+            <%= link_to dashboard_path, class: "btn btn-outline-secondary btn-lg" do %>
+              <i class="fas fa-home"></i> Back to Dashboard
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

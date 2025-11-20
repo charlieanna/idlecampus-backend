@@ -1,0 +1,71 @@
+slug: docker-container-stop-gracefully-stop-containers
+title: 'Docker Container Stop: Gracefully Stop Containers'
+difficulty: easy
+sequence_order: 1
+estimated_minutes: 2
+key_concepts:
+- docker-stop
+- graceful-shutdown
+- signals
+- SIGTERM
+- container-lifecycle
+prerequisites:
+- docker-run-creating-and-starting-containers
+content_md: "# Docker Container Stop: Gracefully Stop Containers 🚀\n\n# Understanding docker stop: Graceful Container Shutdown\n\n    ## What is docker stop?\n    `docker stop` gracefully stops one or more running containers by sending signals to the main process. This is the proper way to stop containers, allowing them to clean up resources before shutting down.\n\n    ## Why Graceful Shutdown Matters\n    - **Data Integrity**: Allows databases to flush buffers to disk\n    - **Connection Cleanup**: Lets web servers close client connections properly\n    - **State Preservation**: Enables applications to save state before exit\n    - **Resource Release**: Properly releases locks, file handles, and network ports\n\n    ## Basic Syntax\n    ```bash\n    docker stop [OPTIONS] CONTAINER [CONTAINER...]\n    ```\n\n    ## How It Works: The Signal Dance\n\n    ```\n    docker stop container_name\n         │\n         ├─ Sends SIGTERM signal\n         │  (polite request to shut down)\n         │\n         ├─ Waits up to 10 seconds\n         │  (default grace period)\n         │\n         └─ If still running: sends SIGKILL\n            (forceful termination)\n    ```\n\n    ## Common Use Cases\n\n    ### 1. Stop a Single Container\n    ```bash\n    docker stop web-server\n    ```\n    Gracefully stops the container named \"web-server\".\n\n    ### 2. Stop Multiple Containers\n    ```bash\n    docker stop web-server database cache\n    ```\n    Stops all three containers in sequence.\n\n    ### 3. Custom Timeout\n    ```bash\n    docker stop -t 30 database\n    ```\n    Waits 30 seconds before force-killing (useful for databases).\n\n    ### 4. Stop All Running Containers\n    ```bash\n    docker stop \$(docker ps -q)\n    ```\n    Stops every running container on the system.\n\n    ## SIGTERM vs SIGKILL\n\n    **SIGTERM (Signal 15)**\n    - Polite request to terminate\n    - Application can catch and handle it\n    - Allows cleanup operations\n    - Default first signal sent\n\n    **SIGKILL (Signal 9)**\n    - Immediate, forceful termination\n    - Cannot be caught or ignored\n    - No cleanup possible\n    - Used as last resort\n\n    ## Timing Considerations\n\n    ```\n    Start: docker stop database\n         │\n         ├─ 0s: SIGTERM sent → app starts shutdown\n         ├─ 2s: closing connections...\n         ├─ 5s: flushing data to disk...\n         ├─ 8s: cleanup complete, exits gracefully ✓\n         │\n         └─ If took > 10s: SIGKILL sent ✗\n    ```\n\n    ## Stop vs Kill\n\n    | Command | Signal | Graceful | Use Case |\n    |---------|--------|----------|----------|\n    | \`docker stop\` | SIGTERM → SIGKILL | Yes | Normal operations |\n    | \`docker kill\` | SIGKILL immediately | No | Hung containers |\n\n    ## Common Patterns\n\n    ### Stop and Remove\n    ```bash\n    docker stop my-app && docker rm my-app\n    ```\n    Stops container then removes it.\n\n    ### Stop with Specific Timeout\n    ```bash\n    docker stop -t 60 production-db\n    ```\n    Gives database 60 seconds to shut down cleanly.\n\n    ### Emergency Stop All\n    ```bash\n    docker stop \$(docker ps -q) -t 1\n    ```\n    Quickly stops all containers (1 second timeout).\n\n    ## Common Mistakes to Avoid\n\n    1. **Using docker kill first**: Always try \`docker stop\` before \`docker kill\`\n    2. **Too short timeout**: Some apps need more than 10 seconds to shut down\n    3. **Not checking status**: Verify container actually stopped with \`docker ps\`\n    4. **Force-stopping databases**: Always use longer timeout for data services\n    5. **Stopping without checking dependencies**: Stop dependent services first\n\n    ## Container States After Stop\n\n    ```\n    Running → Stopping → Stopped (Exited)\n                │\n                ├─ Container remains on disk\n                ├─ Can be restarted with docker start\n                └─ Remove with docker rm\n    ```\n\n    ## Pro Tips\n\n    1. **Check logs before stopping**: \`docker logs container_name\`\n    2. **Use health checks**: Ensure graceful shutdown is working\n    3. **Set appropriate timeouts**: Match to application needs\n    4. **Script cleanup**: Create stop scripts for dependent services\n    5. **Monitor shutdown**: Watch logs during stop to catch issues\n\n    ## Restart vs Stop/Start\n\n    ```bash\n    # These are different:\n    docker stop web && docker start web  # Keeps same container\n    docker restart web                   # Equivalent to above\n    docker stop web && docker run web    # Creates NEW container\n    ```\n\n    ## When to Use docker stop\n\n    - Deploying new version (stop old, start new)\n    - Maintenance windows (controlled shutdown)\n    - Resource cleanup (free ports/memory)\n    - Before system reboot (clean shutdown)\n    - Troubleshooting (restart services)\n\n## Syntax/Command\n\n```bash\ndocker stop my-container\n```\n\n## Example\n\n  ```bash\ndocker stop container_name\n```\n\n## Key Points\n\n- Basic stop: docker stop <container-name>\n\n- Stop by ID: docker stop abc123\n\n- Custom timeout: docker stop -t 30 database"
+exercises:
+- type: terminal
+  sequence_order: 1
+  command: docker stop my-container
+  description: Gracefully stop the container named 'my-container'
+  hints:
+  - 'Basic stop: docker stop <container-name>'
+  - 'Custom timeout: docker stop -t 30 <container-name>'
+  - 'Stop multiple: docker stop container1 container2'
+  validation:
+    must_not_include:
+    - Error
+    - 'panic:'
+  timeout_sec: 60
+  require_pass: true
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: How can you customize the grace period for docker stop before it sends
+    SIGKILL?
+  options:
+  - Use the --time or -t flag to specify seconds to wait before sending SIGKILL (e.g.,
+    docker stop -t 30 myapp)
+  - Grace period cannot be customized
+  - Use docker stop --force to extend the timeout
+  - Grace period is always 60 seconds and cannot be changed
+  correct_answer: Use the --time or -t flag to specify seconds to wait before sending
+    SIGKILL (e.g., docker stop -t 30 myapp)
+  explanation: 'Docker stop provides configurable grace period allowing applications
+    sufficient time for cleanup before forceful termination. Default behavior: docker
+    stop myapp sends SIGTERM, waits 10 seconds, if process still running after 10s,
+    sends SIGKILL to force termination. This 10-second default may be too short for
+    complex applications. Customizing timeout: docker stop -t 30 myapp or docker stop
+    --time 30 myapp extends grace period to 30 seconds, giving application more time
+    for cleanup. Useful for large databases, applications with long-running transactions,
+    services with many connections to drain. Use cases by timeout length: Short timeout
+    (5s) - Simple stateless applications, microservices with quick cleanup, development
+    containers. Medium timeout (30s) - Web servers draining connections, applications
+    with moderate state, batch processors completing current job. Long timeout (60-120s)
+    - Large databases flushing to disk, data processing pipelines, applications with
+    complex shutdown procedures. Example scenarios: Postgres database: docker stop
+    -t 60 postgres-db allows 60 seconds for checkpoint to disk, active transactions
+    to complete, WAL files to sync. Without extended timeout, database might corrupt
+    on SIGKILL. Web application: docker stop -t 30 webapp gives time to complete
+    active HTTP requests (assume max 30s per request), close all database connections,
+    flush logs to disk. Message queue consumer: docker stop -t 120 consumer allows
+    finishing processing current message batch, acknowledging messages to prevent
+    reprocessing, gracefully disconnecting from broker. Real-world example: E-commerce
+    checkout service processes payment, docker stop without timeout might SIGKILL
+    during payment transaction, causes partial charge with no order created. docker
+    stop -t 45 ensures transaction completes or rolls back properly. Best practices:
+    Set timeout based on slowest operation in shutdown (measure in staging), add buffer
+    (if shutdown takes max 25s, set timeout 30-35s), monitor actual shutdown times
+    with logs, never set timeout too low risking data corruption. Container orchestration:
+    Kubernetes terminationGracePeriodSeconds setting similar to docker stop timeout,
+    defaults to 30 seconds, configurable per pod in spec.'
+  require_pass: true

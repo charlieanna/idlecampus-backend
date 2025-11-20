@@ -1,0 +1,486 @@
+slug: executing-commands-in-containers
+title: Executing Commands in Containers
+difficulty: easy
+sequence_order: 5
+estimated_minutes: 2
+key_concepts:
+- docker-exec
+prerequisites: []
+content_md: '# Executing Commands in Containers 🚀
+
+
+  ## What is docker exec?
+
+  The `docker exec` command runs new commands in running containers. It''s essential for debugging, inspecting, and managing containerized applications without stopping them. Think of it as SSH-ing into a running container.
+
+
+  ## Why It''s Important
+
+  - **Live Debugging**: Inspect running containers without restarting
+
+  - **Database Access**: Connect to database CLI for queries and management
+
+  - **Log Inspection**: Check files and configurations in real-time
+
+  - **Troubleshooting**: Diagnose issues in production without downtime
+
+  - **Maintenance Tasks**: Run scripts, updates, or cleanup operations
+
+
+  ## Basic Usage
+
+
+  ### Interactive Shell Access
+
+  ```bash
+
+  docker exec -it <container> sh
+
+  ```
+
+  Opens an interactive shell inside the container. Use `bash` if available, otherwise `sh`.
+
+
+  ### Run Single Command
+
+  ```bash
+
+  docker exec <container> ls /app
+
+  ```
+
+  Executes a single command and returns the output.
+
+
+  ### Run as Specific User
+
+  ```bash
+
+  docker exec -u postgres <container> psql
+
+  ```
+
+  Execute command as a different user inside the container.
+
+
+  ## Understanding the Flags
+
+
+  ### -i (Interactive)
+
+  Keeps STDIN open, allowing you to send input to the container.
+
+
+  ```bash
+
+  docker exec -i myapp cat > /tmp/config.txt
+
+  # Type content, then Ctrl+D to save
+
+  ```
+
+
+  ### -t (TTY)
+
+  Allocates a pseudo-terminal for better formatting and terminal features.
+
+
+  ```bash
+
+  docker exec -t myapp ls --color
+
+  ```
+
+
+  ### -it (Combined)
+
+  Most common combination for interactive shell sessions.
+
+
+  ```bash
+
+  docker exec -it myapp bash
+
+  ```
+
+
+  ## Common Use Cases
+
+
+  ### 1. Open Interactive Shell
+
+  ```bash
+
+  # Prefer bash if available
+
+  docker exec -it web-server bash
+
+
+  # Fall back to sh if bash not available
+
+  docker exec -it web-server sh
+
+  ```
+
+
+  ### 2. Database Access
+
+  ```bash
+
+  # PostgreSQL
+
+  docker exec -it postgres-db psql -U admin -d mydb
+
+
+  # MySQL
+
+  docker exec -it mysql-db mysql -u root -p
+
+
+  # MongoDB
+
+  docker exec -it mongo-db mongosh
+
+  ```
+
+
+  ### 3. View Logs and Files
+
+  ```bash
+
+  # Check application logs
+
+  docker exec myapp cat /var/log/app.log
+
+
+  # View configuration
+
+  docker exec myapp cat /etc/nginx/nginx.conf
+
+
+  # Check running processes
+
+  docker exec myapp ps aux
+
+  ```
+
+
+  ### 4. Debug Network Issues
+
+  ```bash
+
+  # Test connectivity
+
+  docker exec myapp ping google.com
+
+
+  # Check DNS resolution
+
+  docker exec myapp nslookup api.example.com
+
+
+  # View network configuration
+
+  docker exec myapp ip addr
+
+  ```
+
+
+  ### 5. Run Maintenance Scripts
+
+  ```bash
+
+  # Clear cache
+
+  docker exec myapp php artisan cache:clear
+
+
+  # Database migrations
+
+  docker exec myapp python manage.py migrate
+
+
+  # Restart service inside container
+
+  docker exec myapp supervisorctl restart worker
+
+  ```
+
+
+  ## docker exec vs docker run
+
+
+  | Aspect | docker exec | docker run |
+
+  |--------|-------------|------------|
+
+  | **Target** | Existing running container | Creates new container |
+
+  | **Use Case** | Debug/inspect live container | Start new process |
+
+  | **Container State** | Must be running | Creates from image |
+
+  | **Filesystem** | Shares container''s filesystem | Fresh filesystem |
+
+
+  Example:
+
+  ```bash
+
+  # exec: Runs in existing container
+
+  docker exec -it web-server bash
+
+
+  # run: Creates NEW container
+
+  docker run -it nginx:alpine bash
+
+  ```
+
+
+  ## Working Directory
+
+
+  ### Default Working Directory
+
+  ```bash
+
+  docker exec myapp pwd
+
+  # Output: /app (or wherever Dockerfile set WORKDIR)
+
+  ```
+
+
+  ### Custom Working Directory
+
+  ```bash
+
+  docker exec -w /tmp myapp ls
+
+  ```
+
+
+  ## Environment Variables
+
+
+  ### Use Container''s Environment
+
+  ```bash
+
+  docker exec myapp env
+
+  # Shows all environment variables in container
+
+  ```
+
+
+  ### Add Custom Environment Variables
+
+  ```bash
+
+  docker exec -e DEBUG=true myapp node app.js
+
+  ```
+
+
+  ## Troubleshooting Common Issues
+
+
+  ### Issue: Container Not Running
+
+  ```
+
+  Error: Container xyz is not running
+
+  ```
+
+  **Solution**: Start the container first
+
+  ```bash
+
+  docker start <container>
+
+  docker exec -it <container> bash
+
+  ```
+
+
+  ### Issue: Command Not Found
+
+  ```
+
+  Error: executable file not found in $PATH
+
+  ```
+
+  **Solution**: Use full path or check if command exists
+
+  ```bash
+
+  docker exec myapp which bash
+
+  docker exec myapp /bin/bash
+
+  ```
+
+
+  ### Issue: Permission Denied
+
+  ```
+
+  Error: permission denied
+
+  ```
+
+  **Solution**: Run as root user
+
+  ```bash
+
+  docker exec -u root myapp <command>
+
+  ```
+
+
+  ## Best Practices
+
+
+  1. **Prefer -it for shells**: Always use both flags for interactive sessions
+
+     ```bash
+
+     docker exec -it myapp bash   # Good
+
+     docker exec myapp bash        # Bad: no input/output
+
+     ```
+
+
+  2. **Check container is running**: Use `docker ps` first
+
+     ```bash
+
+     docker ps --filter "name=myapp"
+
+     docker exec -it myapp bash
+
+     ```
+
+
+  3. **Use --user for security**: Don''t run as root unless necessary
+
+     ```bash
+
+     docker exec -u appuser myapp whoami
+
+     ```
+
+
+  4. **Exit cleanly**: Type `exit` or press Ctrl+D to leave shell
+
+     ```bash
+
+     root@container:/# exit
+
+     ```
+
+
+  5. **One-off commands**: For single commands, skip -it
+
+     ```bash
+
+     docker exec myapp ls /app     # Cleaner output
+
+     ```
+
+
+  ## Pro Tips
+
+
+  1. **Quick container inspection**:
+
+     ```bash
+
+     docker exec myapp cat /etc/os-release
+
+     ```
+
+
+  2. **Copy files out** (alternative to docker cp):
+
+     ```bash
+
+     docker exec myapp cat /app/config.json > local-config.json
+
+     ```
+
+
+  3. **Monitor in real-time**:
+
+     ```bash
+
+     docker exec myapp tail -f /var/log/app.log
+
+     ```
+
+
+  4. **Multiple commands**:
+
+     ```bash
+
+     docker exec myapp sh -c "cd /app && npm test"
+
+     ```
+
+
+  ## Syntax/Command
+
+
+  ```bash
+
+  docker exec -it codesprout-web sh
+
+  ```
+
+
+  ## Key Points
+
+
+  - `docker exec` runs commands in **running** containers only
+
+  - Use `-it` flags for interactive shell sessions
+
+  - Use `-i` alone for piping input, `-t` alone for formatted output
+
+  - Container must be running; use `docker start` if needed
+
+  - Perfect for debugging, database access, and live troubleshooting'
+exercises:
+- type: terminal
+  problem_statement: Execute an interactive shell session inside the running 'codesprout-web' container to run commands and explore the container filesystem
+  expected_output: Interactive shell prompt inside the container where you can run commands
+  language: bash
+  starter_code: "# Execute interactive shell in container\n"
+  sequence_order: 1
+  command: docker exec -it codesprout-web sh
+  description: 'Practice the command: docker exec -it codesprout-web sh'
+  hints:
+  - Use -it for interactive terminals
+  validation:
+    must_not_include:
+    - Error
+    - 'panic:'
+  timeout_sec: 60
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What does -it stand for in docker exec?
+  options:
+  - Interactive + TTY
+  - Internal + Test
+  - Init + Terminal
+  - Immediate + TTY
+  correct_answer: Interactive + TTY
+  explanation: "The -it flags combine two options: -i (interactive) keeps STDIN open for input, and -t (TTY) allocates a pseudo-terminal. Together they enable interactive shell sessions inside containers. Without -i, you can't send input; without -t, you lose formatting and terminal features like colors and line editing."
+  require_pass: true

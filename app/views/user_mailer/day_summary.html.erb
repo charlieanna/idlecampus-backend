@@ -1,0 +1,22 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <p>Daily Summary</p>
+    <ul>
+    <% QuestionView.where(user_id: @user.user_id).each do |question_view| %>
+      <% question = Question.find_by(question_id:question_view.question_id) %>
+      <% if question %>
+      <li>
+         <%= question_view.views%>
+         <%= question.tags %>
+         <%= question.title %>
+      </li>
+      <% end %>
+    <% end %>
+   </ul>
+  </body>
+</html>

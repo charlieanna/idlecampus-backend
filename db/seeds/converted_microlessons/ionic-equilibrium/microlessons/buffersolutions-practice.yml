@@ -1,0 +1,58 @@
+slug: buffersolutions-practice
+title: buffer_solutions — Practice
+difficulty: medium
+sequence_order: 11
+estimated_minutes: 2
+key_concepts:
+- buffer_solutions
+prerequisites: []
+content_md: '# buffer_solutions — Practice 🚀
+
+
+  pH = pKa + log([Salt]/[Acid]) = 4.74 + log(0.2/0.1) = 4.74 + 0.30 = 5.04
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: 'Calculate the pH of a buffer containing 0.1 M CH₃COOH and 0.2 M CH₃COONa (pKa of CH₃COOH = 4.74) using Henderson-Hasselbalch equation.'
+  options:
+  - 4.44
+  - 4.74
+  - 5.04
+  - 5.34
+  require_pass: true
+  correct_answer: 5.04
+  explanation: 'Using Henderson-Hasselbalch equation: pH = pKa + log([Salt]/[Acid]) = pKa + log([A⁻]/[HA]). Given: pKa = 4.74, [CH₃COONa] = [A⁻] = 0.2 M, [CH₃COOH] = [HA] = 0.1 M. pH = 4.74 + log(0.2/0.1) = 4.74 + log(2) = 4.74 + 0.30 = 5.04. Key points: (1) When [Salt] > [Acid], pH > pKa (buffer is slightly basic relative to pKa), (2) When [Salt] = [Acid], pH = pKa (optimal buffering), (3) When [Salt] < [Acid], pH < pKa. This buffer can resist pH changes when small amounts of acid or base are added because: adding H⁺ reacts with CH₃COO⁻ to form CH₃COOH (shifts equilibrium), adding OH⁻ reacts with CH₃COOH to form CH₃COO⁻ (shifts equilibrium). Buffers are most effective when pH is within pKa ± 1 range.'
+- type: mcq
+  sequence_order: 2
+  question: 'Which combination can form an effective buffer solution?'
+  options:
+  - HCl + NaCl
+  - NaOH + NaCl
+  - CH₃COOH + CH₃COONa
+  - HCl + NaOH
+  require_pass: true
+  correct_answer: CH₃COOH + CH₃COONa
+  explanation: 'An effective buffer requires a weak acid and its conjugate base (or weak base and its conjugate acid). CH₃COOH (weak acid) + CH₃COONa (provides CH₃COO⁻, conjugate base) forms an acidic buffer. How it works: CH₃COOH ⇌ H⁺ + CH₃COO⁻. (1) When strong acid (H⁺) is added: CH₃COO⁻ + H⁺ → CH₃COOH (neutralizes H⁺), (2) When strong base (OH⁻) is added: CH₃COOH + OH⁻ → CH₃COO⁻ + H₂O (neutralizes OH⁻). Why other options fail: HCl + NaCl - both strong electrolytes, no equilibrium for buffering; NaOH + NaCl - strong base + salt, no weak acid/base pair; HCl + NaOH - neutralize each other completely, no buffer. Common buffer examples: Acidic buffers - CH₃COOH/CH₃COO⁻ (pH ~4.7), H₂PO₄⁻/HPO₄²⁻ (pH ~7.2); Basic buffers - NH₃/NH₄⁺ (pH ~9.3).'
+- type: mcq
+  sequence_order: 3
+  question: 'What happens to the pH of a buffer solution when a small amount of strong acid is added?'
+  options:
+  - pH increases significantly
+  - pH decreases significantly
+  - pH remains relatively constant
+  - pH becomes exactly 7
+  require_pass: true
+  correct_answer: pH remains relatively constant
+  explanation: 'The defining property of a buffer is that pH remains relatively constant when small amounts of strong acid or base are added. Mechanism for adding strong acid (H⁺): In CH₃COOH/CH₃COO⁻ buffer: CH₃COO⁻ + H⁺ → CH₃COOH. The conjugate base (CH₃COO⁻) neutralizes added H⁺ by converting to the weak acid. The pH decreases slightly but much less than it would in pure water. Example: Adding 0.01 mol HCl to 1 L of: Pure water (pH 7) → pH drops to 2 (large change); Buffer (pH 5, 0.1M each component) → pH drops to ~4.96 (small change of 0.04 units). Buffer capacity depends on: (1) Concentration of components (higher = better), (2) Ratio of [A⁻]/[HA] (1:1 is optimal), (3) Amount of acid/base added (buffer can be overwhelmed). Buffers maintain pH within ±1 of pKa most effectively.'

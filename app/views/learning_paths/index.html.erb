@@ -1,0 +1,73 @@
+<div class="container mx-auto px-4 py-8">
+  <h1 class="text-3xl font-bold mb-8">Learning Paths - <%= site_display_name %></h1>
+
+  <div class="bg-blue-50 border-l-4 border-blue-400 p-4 mb-8">
+    <p class="text-blue-700">
+      <strong>Start with the fundamentals!</strong> These learning paths are organized from basic to advanced concepts.
+      Begin with "Basic Networking" if you're new, or jump to your area of interest.
+    </p>
+  </div>
+
+  <% @fundamental_tags.each do |category, tags| %>
+    <% if tags.any? %>
+      <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+        <h2 class="text-xl font-bold mb-4 text-gray-800">
+          <%= category %>
+          <span class="text-sm font-normal text-gray-500 ml-2">(<%= tags.count %> topics)</span>
+        </h2>
+
+        <% if category == 'Basic Networking' %>
+          <p class="text-sm text-green-600 mb-3">📚 Start here if you're new to networking!</p>
+        <% elsif category == 'Routing & Switching' %>
+          <p class="text-sm text-blue-600 mb-3">🔀 Core infrastructure concepts</p>
+        <% elsif category == 'Network Security' %>
+          <p class="text-sm text-red-600 mb-3">🔒 Essential security knowledge</p>
+        <% elsif category == 'Troubleshooting' %>
+          <p class="text-sm text-orange-600 mb-3">🔧 Practical problem-solving skills</p>
+        <% end %>
+
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
+          <% tags.each do |tag| %>
+            <%= link_to learning_path_path(tag: tag),
+                class: "bg-gradient-to-r from-blue-50 to-indigo-50 hover:from-blue-100 hover:to-indigo-100 text-blue-700 px-4 py-2 rounded-lg text-center transition-all duration-200 font-medium border border-blue-200 hover:border-blue-300 hover:shadow-md" do %>
+              <span class="text-base"><%= tag %></span>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
+
+  <% if @tags.present? && @fundamental_tags.values.flatten.empty? %>
+    <!-- Fallback if no categorization matches -->
+    <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+      <h2 class="text-xl font-semibold mb-4">Available Topics</h2>
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        <% @tags.first(20).each do |tag| %>
+          <%= link_to learning_path_path(tag: tag),
+              class: "bg-blue-50 hover:bg-blue-100 text-blue-700 px-4 py-3 rounded-lg text-center transition-colors duration-200 font-medium" do %>
+            <span class="text-lg"><%= tag %></span>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="bg-gray-50 rounded-lg p-6">
+    <h3 class="text-lg font-semibold mb-3">How Learning Paths Work</h3>
+    <ul class="space-y-2 text-gray-700">
+      <li class="flex items-start">
+        <span class="text-blue-500 mr-2">1.</span>
+        <span><strong>Prerequisites:</strong> Start with foundational concepts that have minimal dependencies</span>
+      </li>
+      <li class="flex items-start">
+        <span class="text-blue-500 mr-2">2.</span>
+        <span><strong>Core Concepts:</strong> Build your understanding with essential topics</span>
+      </li>
+      <li class="flex items-start">
+        <span class="text-blue-500 mr-2">3.</span>
+        <span><strong>Advanced Topics:</strong> Explore complex concepts once you've mastered the basics</span>
+      </li>
+    </ul>
+  </div>
+</div>

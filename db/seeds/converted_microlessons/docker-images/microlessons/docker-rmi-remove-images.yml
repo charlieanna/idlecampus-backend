@@ -1,0 +1,90 @@
+slug: docker-rmi-remove-images
+title: 'Docker RMI: Remove Images'
+difficulty: easy
+sequence_order: 6
+estimated_minutes: 2
+key_concepts:
+- images
+- docker-rmi
+- cleanup
+- removal
+- disk-space
+prerequisites: []
+content_md: '# Docker RMI: Remove Images 🚀
+
+
+  Remove one or more images from local storage to free disk space. Cannot remove images
+  being used by containers unless forced.
+
+
+  ## Syntax/Command
+
+
+  ```bash
+
+  docker rmi myapp:1.0
+
+  ```
+
+
+  ## Example
+
+
+  ```bash
+
+  docker rmi -f myapp:old
+
+  ```
+
+
+  ## Key Points
+
+
+  - Remove image: docker rmi <image:tag>
+
+
+  - Force remove: docker rmi -f <image>
+
+
+  - Remove multiple: docker rmi image1 image2'
+exercises:
+- type: terminal
+  problem_statement: Remove the Docker image tagged myapp:1.0 from local storage using the docker rmi command
+  expected_output: Image removed successfully with untagged and deleted layer confirmations
+  language: bash
+  starter_code: "# Remove Docker image\n"
+  sequence_order: 1
+  command: docker rmi myapp:1.0
+  description: Remove unused images to reclaim disk space
+  hints:
+  - 'Remove image: docker rmi <image:tag>'
+  - 'Force remove: docker rmi -f <image>'
+  - 'Remove multiple: docker rmi image1 image2'
+  validation:
+    must_not_include:
+    - Error
+    - 'panic:'
+  timeout_sec: 60
+  require_pass: true
+- type: sandbox
+  sequence_order: 99
+  hints:
+  - Run under CPU pressure to surface leaks or races
+  - Keep commands idempotent in CI
+  validation:
+    must_not_include:
+    - Error
+    - 'panic:'
+  timeout_sec: 60
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: Can you remove an image that has a running container?
+  options:
+  - No, unless you use the -f flag to force removal
+  - Yes, Docker automatically stops the container first
+  - Yes, but the container will immediately fail
+  - No, it is never possible even with force
+  correct_answer: No, unless you use the -f flag to force removal
+  explanation: "By default, docker rmi will refuse to remove an image if it's being used by a running container, showing an error like 'image is being used by running container'. You must use -f (force) flag to remove it anyway. However, forcing removal is risky - the container keeps running but may fail if restarted."
+  require_pass: true

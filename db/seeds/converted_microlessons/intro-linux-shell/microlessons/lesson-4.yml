@@ -1,0 +1,146 @@
+slug: lesson-4
+title: Lesson 4
+difficulty: easy
+sequence_order: 4
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Process Management and Job Scheduling\n\
+  \n    ## Understanding Processes\n\n    A **process** is an instance of a running\
+  \ program. Every command you run creates at least one process.\n\n    ### Process\
+  \ Attributes\n\n    | Attribute | Description |\n    |-----------|-------------|\n\
+  \    | **PID** | Process ID (unique identifier) |\n    | **PPID** | Parent Process\
+  \ ID |\n    | **UID** | User ID (owner) |\n    | **CPU%** | CPU usage percentage\
+  \ |\n    | **MEM%** | Memory usage percentage |\n    | **STAT** | Process state\
+  \ |\n    | **TIME** | CPU time consumed |\n    | **CMD** | Command that started\
+  \ the process |\n\n    ### Process States\n\n    | State | Code | Meaning |\n  \
+  \  |-------|------|---------|\n    | Running | R | Currently executing |\n    |\
+  \ Sleeping | S | Waiting for event |\n    | Stopped | T | Suspended/paused |\n \
+  \   | Zombie | Z | Finished but parent hasn't read exit status |\n    | Defunct\
+  \ | D | Uninterruptible sleep (usually I/O) |\n\n    ## Viewing Processes\n\n  \
+  \  ### ps - Process Status\n\n    ```bash\n    # Current shell processes\n    ps\n\
+  \n    # All processes (BSD style)\n    ps aux\n\n    # All processes (System V style)\n\
+  \    ps -ef\n\n    # Process tree (parent-child relationships)\n    ps -ejH\n  \
+  \  pstree\n\n    # Find specific process\n    ps aux | grep nginx\n    ```\n\n \
+  \   **ps aux output:**\n    ```\n    USER  PID %CPU %MEM   VSZ  RSS TTY STAT START\
+  \ TIME COMMAND\n    root    1  0.0  0.1 16856 2048 ?   Ss   10:00 0:01 /sbin/init\n\
+  \    alice 1234  1.5  2.3 45678 8192 pts/0 S+ 10:30 0:05 python app.py\n    ```\n\
+  \n    ### top - Real-time Process Monitoring\n\n    ```bash\n    top           \
+  \ # Interactive process viewer\n    htop           # Enhanced version (if installed)\n\
+  \    ```\n\n    **top commands:**\n    - `q`: Quit\n    - `k`: Kill process (enter\
+  \ PID)\n    - `M`: Sort by memory\n    - `P`: Sort by CPU\n    - `u`: Filter by\
+  \ user\n    - `1`: Show individual CPU cores\n\n    ### Finding Processes\n\n  \
+  \  ```bash\n    # Find process by name\n    pgrep nginx\n    pgrep -u alice    \
+  \ # Processes owned by alice\n\n    # Find process with details\n    ps aux | grep\
+  \ nginx\n    pidof nginx        # PIDs of running program\n    ```\n\n    ## Foreground\
+  \ and Background Jobs\n\n    ### Foreground Processes\n\n    By default, commands\
+  \ run in the foreground and occupy your terminal:\n    ```bash\n    sleep 60   \
+  \        # Terminal blocked for 60 seconds\n    ```\n\n    ### Background Processes\n\
+  \n    Run processes in background with `&`:\n    ```bash\n    sleep 60 &       \
+  \  # Returns immediately\n    ping 8.8.8.8 > ping.log &\n    ```\n\n    ### Job\
+  \ Control\n\n    ```bash\n    # Suspend foreground process\n    Ctrl+Z         \
+  \    # Sends SIGTSTP (pause)\n\n    # Resume in background\n    bg             \
+  \    # Continue last suspended job\n    bg %1              # Continue job #1\n\n\
+  \    # Resume in foreground\n    fg                 # Bring last background job\
+  \ to foreground\n    fg %2              # Bring job #2 to foreground\n\n    # List\
+  \ jobs\n    jobs               # Show jobs in current shell\n    jobs -l       \
+  \     # Show with PIDs\n    ```\n\n    **Example workflow:**\n    ```bash\n    $\
+  \ ping 8.8.8.8 > ping.log\n    # Press Ctrl+Z\n    [1]+  Stopped    ping 8.8.8.8\
+  \ > ping.log\n\n    $ bg\n    [1]+ ping 8.8.8.8 > ping.log &\n\n    $ jobs\n   \
+  \ [1]+  Running    ping 8.8.8.8 > ping.log &\n    ```\n\n    ## Terminating Processes\n\
+  \n    ### Signals\n\n    Processes communicate via signals. Common signals:\n\n\
+  \    | Signal | Number | Meaning | Effect |\n    |--------|--------|---------|--------|\n\
+  \    | **SIGTERM** | 15 | Terminate (default) | Graceful shutdown |\n    | **SIGKILL**\
+  \ | 9 | Kill | Force kill (can't be caught) |\n    | **SIGHUP** | 1 | Hang up |\
+  \ Reload configuration |\n    | **SIGINT** | 2 | Interrupt (Ctrl+C) | Interrupt\
+  \ process |\n    | **SIGTSTP** | 20 | Stop (Ctrl+Z) | Suspend process |\n    | **SIGCONT**\
+  \ | 18 | Continue | Resume suspended process |\n\n    ### kill - Send Signal to\
+  \ Process\n\n    ```bash\n    # Terminate gracefully (SIGTERM)\n    kill PID\n \
+  \   kill 1234\n\n    # Force kill (SIGKILL)\n    kill -9 PID\n    kill -SIGKILL\
+  \ PID\n\n    # Reload configuration (SIGHUP)\n    kill -1 PID\n    kill -HUP PID\n\
+  \n    # List all signals\n    kill -l\n    ```\n\n    ### killall - Kill by Name\n\
+  \n    ```bash\n    # Kill all processes named \"firefox\"\n    killall firefox\n\
+  \n    # Force kill\n    killall -9 firefox\n\n    # Kill user's processes\n    killall\
+  \ -u alice\n    ```\n\n    ### pkill - Pattern-based Kill\n\n    ```bash\n    #\
+  \ Kill processes matching pattern\n    pkill nginx\n    pkill -9 python\n    pkill\
+  \ -u alice    # Kill all alice's processes\n    ```\n\n    **⚠️ Best Practice**:\
+  \ Always try SIGTERM first, use SIGKILL only if necessary.\n\n    ## Process Priorities\n\
+  \n    Linux scheduler assigns CPU time based on priority (niceness).\n\n    ###\
+  \ Nice Values\n\n    - Range: `-20` (highest priority) to `+19` (lowest priority)\n\
+  \    - Default: `0`\n    - Only root can set negative (higher priority) values\n\
+  \n    ### nice - Start Process with Priority\n\n    ```bash\n    # Start with lower\
+  \ priority (nice +10)\n    nice -n 10 command\n\n    # Start with higher priority\
+  \ (root only)\n    sudo nice -n -10 command\n\n    # Example: Run CPU-intensive\
+  \ task nicely\n    nice -n 15 gzip large_file.tar\n    ```\n\n    ### renice - Change\
+  \ Priority of Running Process\n\n    ```bash\n    # Make process nicer (lower priority)\n\
+  \    renice +5 -p PID\n\n    # Increase priority (root only)\n    sudo renice -10\
+  \ -p PID\n\n    # Renice all user's processes\n    renice +10 -u alice\n    ```\n\
+  \n    ## Job Scheduling with Cron\n\n    **cron** runs commands on a schedule automatically.\n\
+  \n    ### Cron Time Format\n\n    ```\n    * * * * * command\n    │ │ │ │ │\n  \
+  \  │ │ │ │ └─ Day of week (0-7, Sunday=0 or 7)\n    │ │ │ └─── Month (1-12)\n  \
+  \  │ │ └───── Day of month (1-31)\n    │ └─────── Hour (0-23)\n    └───────── Minute\
+  \ (0-59)\n    ```\n\n    ### Cron Examples\n\n    ```bash\n    # Every minute\n\
+  \    * * * * * /path/to/script.sh\n\n    # Every hour at minute 0\n    0 * * * *\
+  \ /path/to/script.sh\n\n    # Every day at 2:30 AM\n    30 2 * * * /path/to/backup.sh\n\
+  \n    # Every Monday at 9:00 AM\n    0 9 * * 1 /path/to/report.sh\n\n    # First\
+  \ day of every month at midnight\n    0 0 1 * * /path/to/monthly.sh\n\n    # Every\
+  \ 15 minutes\n    */15 * * * * /path/to/check.sh\n\n    # Every weekday at 6:00\
+  \ PM\n    0 18 * * 1-5 /path/to/end_day.sh\n    ```\n\n    ### Managing Cron Jobs\n\
+  \n    ```bash\n    # Edit crontab\n    crontab -e         # Current user's crontab\n\
+  \n    # List cron jobs\n    crontab -l\n\n    # Remove all cron jobs\n    crontab\
+  \ -r\n\n    # Edit another user's crontab (root only)\n    sudo crontab -e -u alice\n\
+  \    ```\n\n    ### Cron Special Strings\n\n    ```bash\n    @reboot     /path/to/script.sh\
+  \    # Run at system boot\n    @daily      /path/to/backup.sh    # Run once a day\
+  \ (midnight)\n    @hourly     /path/to/check.sh     # Run every hour\n    @weekly\
+  \     /path/to/report.sh    # Run once a week\n    @monthly    /path/to/monthly.sh\
+  \   # Run once a month\n    ```\n\n    ### Cron Environment\n\n    Cron jobs run\
+  \ with a limited environment:\n    - No terminal\n    - Limited PATH\n    - Different\
+  \ environment variables\n\n    **Best practices:**\n    ```bash\n    # Use absolute\
+  \ paths\n    0 2 * * * /usr/bin/python3 /home/user/script.py\n\n    # Set PATH in\
+  \ crontab\n    PATH=/usr/local/bin:/usr/bin:/bin\n    0 2 * * * backup.sh\n\n  \
+  \  # Redirect output to log\n    0 2 * * * /path/to/script.sh >> /var/log/backup.log\
+  \ 2>&1\n    ```\n\n    ### Cron Logs\n\n    ```bash\n    # View cron logs (Ubuntu/Debian)\n\
+  \    grep CRON /var/log/syslog\n\n    # View cron logs (RHEL/CentOS)\n    grep CRON\
+  \ /var/log/cron\n    ```\n\n    ## Summary\n\n    In this module, you learned:\n\
+  \    - Processes are running programs with PIDs, owners, and states\n    - Monitor\
+  \ processes with ps, top, htop\n    - Control jobs with fg, bg, jobs\n    - Terminate\
+  \ processes with kill, killall, pkill\n    - Adjust priorities with nice and renice\n\
+  \    - Schedule recurring tasks with cron\n    - Cron time format and best practices"
+exercises:
+- type: terminal
+  sequence_order: 1
+  command: ps aux
+  description: Display detailed information about all running processes
+  hints:
+  - 'Show all processes: ps aux'
+  - 'Show process tree: ps -ef'
+  - 'Show specific user: ps -u username'
+  validation:
+    must_not_include:
+    - Error
+  timeout_sec: 30
+  require_pass: true
+- type: terminal
+  sequence_order: 2
+  command: sleep 100 &
+  description: Start a background process that sleeps for 100 seconds
+  hints:
+  - 'Run in background: command &'
+  - 'List background jobs: jobs'
+  - 'Bring to foreground: fg %jobnumber'
+  validation:
+    must_not_include:
+    - Error
+  timeout_sec: 30
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: What does the cron expression '0 2 * * *' mean?
+  options:
+  - Run at 2:00 AM every day
+  - Run at midnight on the 2nd of every month
+  - Run every 2 hours
+  - Run twice a day
+  correct_answer: Run at 2:00 AM every day
+  explanation: "Cron format is: minute hour day month weekday. The expression '0 2 * * *' breaks down as: 0 = 0 minutes past the hour, 2 = 2 AM (hour 2), * = every day of month, * = every month, * = every day of week. So this runs at exactly 2:00 AM every single day. For comparison: '0 */2 * * *' would run every 2 hours, '0 0 2 * *' would run at midnight on the 2nd of each month."
+  require_pass: true

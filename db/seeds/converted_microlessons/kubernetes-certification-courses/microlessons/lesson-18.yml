@@ -1,0 +1,85 @@
+slug: lesson-18
+title: Lesson 18
+difficulty: easy
+sequence_order: 18
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Persistent Volumes Deep Dive\n\n    - PV\
+  \ lifecycle and reclaim policies\n    - Access modes and binding"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What are the three reclaim policies for PersistentVolumes in Kubernetes?
+  options:
+  - Keep, Delete, Archive
+  - Retain, Delete, Recycle
+  - Save, Remove, Reuse
+  - Persist, Erase, Restore
+  correct_answer: Retain, Delete, Recycle
+  explanation: 'Persistent Volumes support three reclaim policies that determine what
+    happens to the PV and its data when the bound PersistentVolumeClaim is deleted:
+    Retain (default for manually created PVs) preserves the PV and data after PVC
+    deletion. The PV status becomes ''Released'' but isn''t available for new claims
+    until an administrator manually reclaims it. This is the safest option for production
+    data - you can recover data, backup, and then delete the PV manually. Delete automatically
+    deletes both the PV and the underlying storage resource (like AWS EBS volume,
+    GCP Persistent Disk) when the PVC is deleted. This is default for dynamically
+    provisioned PVs and convenient for ephemeral or test environments, but dangerous
+    for production as data is permanently lost. Recycle (deprecated, use dynamic provisioning
+    instead) performs basic data scrubbing (''rm -rf /volume/*'') and makes the PV
+    available for new claims. It''s no longer recommended. The reclaim policy is set
+    in the PV spec: ''persistentVolumeReclaimPolicy: Retain|Delete|Recycle''. For
+    StorageClasses used in dynamic provisioning, set ''reclaimPolicy: Retain|Delete''.
+    To change policy on an existing PV: ''kubectl patch pv <pv-name> -p ''{"spec":{"persistentVolumeReclaimPolicy":"Retain"}}''.
+    Best practices: use Retain for production data to prevent accidental deletion,
+    use Delete for development/test environments for automatic cleanup, never use
+    Recycle (it''s deprecated), and implement backup solutions regardless of reclaim
+    policy. Understanding reclaim policies is critical for data safety - many production
+    incidents involve accidentally deleting PVCs with Delete policy, causing permanent
+    data loss.'
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What does the 'ReadWriteOnce' access mode mean for a PersistentVolume?
+  options:
+  - One pod can write, multiple pods can read
+  - The volume can be mounted as read-write by a single node (pods on that node can
+    access it)
+  - Only one pod ever, in read-write mode
+  - The volume can be written once and then becomes read-only
+  correct_answer: The volume can be mounted as read-write by a single node (pods on
+    that node can access it)
+  explanation: 'Access modes define how a PersistentVolume can be mounted by nodes.
+    ReadWriteOnce (RWO) means the volume can be mounted as read-write by a single
+    node. Multiple pods on the same node can access it, but pods on different nodes
+    cannot. This is the most common access mode, supported by most storage types (AWS
+    EBS, GCP Persistent Disk, Azure Disk, local volumes). ReadOnlyMany (ROX) allows
+    the volume to be mounted as read-only by multiple nodes simultaneously - useful
+    for shared configuration or assets. ReadWriteMany (RWX) allows the volume to be
+    mounted as read-write by multiple nodes simultaneously - required for shared file
+    systems accessed by multiple pods across nodes, supported by NFS, CephFS, GlusterFS,
+    and some cloud file storage (AWS EFS, Azure Files). A fourth mode, ReadWriteOncePod
+    (RWOP, introduced in Kubernetes v1.22, stable in v1.29), restricts access to a
+    single pod cluster-wide, ensuring only one pod can mount the volume read-write
+    even if multiple pods are on the same node. Access modes are specified in both
+    PV and PVC specs and must match for binding. For example, a PVC requesting RWX
+    won''t bind to an RWO PV. Common scenarios: RWO for databases (single-node attachment),
+    RWX for shared application code or user uploads accessed by multiple web servers,
+    and ROX for distributing static content. Storage provider capabilities limit which
+    access modes are available - for instance, AWS EBS only supports RWO. Understanding
+    access modes is essential for choosing appropriate storage solutions and avoiding
+    scheduling issues when pods require specific access patterns.'
+  require_pass: true
+- type: mcq
+  sequence_order: 1
+  question: What kubectl command checks if you can perform an action?
+  options:
+  - kubectl auth can-i create pods
+  - kubectl check permissions create pods
+  - kubectl verify action create pods
+  - kubectl test auth create pods
+  correct_answer_index: 0
+  explanation: kubectl auth can-i <action> <resource> checks if the current user has
+    permission to perform the specified action.
+  require_pass: true

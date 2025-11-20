@@ -1,0 +1,49 @@
+slug: lesson-10
+title: Lesson 10
+difficulty: easy
+sequence_order: 10
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Numbers Every Programmer Should Know\n\n\
+  \    Essential numbers for back-of-envelope calculations in system design.\n\n \
+  \   ## Latency Numbers (2024)\n\n    | Operation | Latency |\n    |-----------|---------|\n\
+  \    | L1 cache reference | 0.5 ns |\n    | Branch mispredict | 5 ns |\n    | L2\
+  \ cache reference | 7 ns |\n    | Mutex lock/unlock | 100 ns |\n    | Main memory\
+  \ reference | 100 ns |\n    | Compress 1KB with Snappy | 10,000 ns = 10 µs |\n \
+  \   | Send 2KB over 1 Gbps network | 20,000 ns = 20 µs |\n    | Read 1 MB sequentially\
+  \ from memory | 250,000 ns = 250 µs |\n    | Round trip within datacenter | 500,000\
+  \ ns = 500 µs |\n    | Disk seek | 10,000,000 ns = 10 ms |\n    | Read 1 MB sequentially\
+  \ from SSD | 1,000,000 ns = 1 ms |\n    | Read 1 MB sequentially from disk | 30,000,000\
+  \ ns = 30 ms |\n    | Send packet CA → Netherlands → CA | 150,000,000 ns = 150 ms\
+  \ |\n\n    ## Powers of 2\n\n    Essential for capacity planning:\n\n    | Power\
+  \ | Exact Value | Approx | Bytes |\n    |-------|-------------|--------|-------|\n\
+  \    | 2^10 | 1,024 | ~1 thousand | 1 KB |\n    | 2^20 | 1,048,576 | ~1 million\
+  \ | 1 MB |\n    | 2^30 | 1,073,741,824 | ~1 billion | 1 GB |\n    | 2^40 | 1,099,511,627,776\
+  \ | ~1 trillion | 1 TB |\n    | 2^50 | ~1.126 × 10^15 | ~1 quadrillion | 1 PB |\n\
+  \n    ## Time Units\n\n    | Unit | Value |\n    |------|-------|\n    | 1 second\
+  \ | 1,000 milliseconds |\n    | 1 millisecond | 1,000 microseconds |\n    | 1 microsecond\
+  \ | 1,000 nanoseconds |\n\n    ## Common Metrics\n\n    ### QPS (Queries Per Second)\n\
+  \    - **Low traffic**: 100-1,000 QPS\n    - **Medium traffic**: 1,000-10,000 QPS\n\
+  \    - **High traffic**: 10,000-100,000 QPS\n    - **Very high traffic**: 100,000+\
+  \ QPS\n\n    ### Daily Active Users (DAU)\n    - **Small app**: 1K-100K users\n\
+  \    - **Medium app**: 100K-1M users\n    - **Large app**: 1M-10M users\n    - **Massive\
+  \ app**: 10M+ users\n\n    ### Bandwidth Estimates\n    - **Text**: ~1-2 KB per\
+  \ message\n    - **Image**: ~200 KB - 2 MB\n    - **Video SD**: ~1-2 GB/hour\n \
+  \   - **Video HD**: ~3-5 GB/hour\n    - **Video 4K**: ~15-25 GB/hour\n\n    ## Storage\
+  \ Estimates\n\n    ### Database Storage\n    - **User profile**: ~1-2 KB\n    -\
+  \ **Tweet**: ~200-300 bytes\n    - **Photo metadata**: ~1 KB\n    - **Photo (compressed)**:\
+  \ ~200 KB\n    - **Video metadata**: ~1 KB\n    - **Video file**: Varies greatly\n\
+  \n    ## Key Principles\n\n    1. **Round numbers**: Use approximations (1M instead\
+  \ of 1,048,576)\n    2. **Write assumptions**: Make your assumptions explicit\n\
+  \    3. **Think in orders of magnitude**: Focus on 10x differences\n    4. **Use\
+  \ powers of 2**: Simplify calculations\n    5. **Sanity check**: Does the result\
+  \ make sense?\n\n    ## Example Calculation\n\n    **Question**: How much storage\
+  \ for 100M users posting 1 photo/day for 5 years?\n\n    **Calculation**:\n    ```\n\
+  \    Assumptions:\n    - 100M users\n    - 1 photo/day average\n    - Photo size:\
+  \ 200 KB\n    - Time: 5 years = 1,825 days\n\n    Total photos:\n    100M users\
+  \ × 1 photo/day × 1,825 days = 182.5B photos\n\n    Storage needed:\n    182.5B\
+  \ photos × 200 KB = 36.5 PB\n\n    With replication (3x):\n    36.5 PB × 3 = ~110\
+  \ PB\n    ```\n\n    **Sanity check**: 110 PB for 5 years of Instagram-like service?\
+  \ Reasonable!\n\n    Now practice with the System Design labs!"
+exercises: []

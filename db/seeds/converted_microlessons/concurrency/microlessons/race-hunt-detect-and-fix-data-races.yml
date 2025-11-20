@@ -1,0 +1,89 @@
+slug: race-hunt-detect-and-fix-data-races
+title: 'Race Hunt: Detect and Fix Data Races'
+difficulty: medium
+sequence_order: 5
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: '# Race Hunt: Detect and Fix Data Races 🚀
+
+
+  Use the Go race detector to find data races in concurrent code. Reproduce the race
+  using the UnsafeStore example, then refactor to a safe version (mutex or channel-based)
+  and confirm a clean `-race` run.
+
+
+  ## Strategy
+
+  - Identify shared state; choose ownership via channel or protection via mutex.
+
+  - Add tests that increase contention (more goroutines, loops) to make races reproducible.
+
+
+  ## Validate
+
+  ```bash
+
+  go test ./examples/go-concurrency-capstone/internal/racey -run TestRace_Reproduce
+  -race -count=1
+
+  ```
+
+
+  ## Key Points
+
+  - Shared mutable state needs synchronization
+
+  - Prefer channels to share ownership, or guard with sync.Mutex
+
+  - Race detector failure will fail tests; keep running until it is clean'
+exercises:
+- type: terminal
+  problem_statement: Run the race detector test to reproduce a data race in the TestRace_Reproduce test, then fix it so the race detector shows no warnings
+  expected_output: Test passes with no DATA RACE warnings from the race detector
+  language: bash
+  starter_code: "# Run race detector on specific test\n"
+  sequence_order: 1
+  command: go test ./examples/go-concurrency-capstone/internal/racey -run TestRace_Reproduce
+    -race -count=1
+  description: Reproduce and then eliminate a data race using the race detector.
+  hints:
+  - Shared mutable state needs synchronization
+  - Prefer channels to share ownership
+  - or guard with sync.Mutex
+  - Race detector failure will fail tests; keep running until it is clean
+  validation:
+    must_not_include:
+    - DATA RACE
+  timeout_sec: 60
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: Which option eliminates a write-write data race?
+  options:
+  - Guard writes with a sync.Mutex
+  - Add time.Sleep to stagger goroutines
+  - Increase GOMAXPROCS
+  - Ignore the race if tests pass
+  correct_answer: Guard writes with a sync.Mutex
+  explanation: "Write-write data races occur when multiple goroutines write to the same memory location concurrently. The proper solution is to use synchronization primitives like sync.Mutex to guard access, or use channels to serialize access. Adding sleeps or adjusting GOMAXPROCS doesn't eliminate races, just makes them less likely to occur."
+- type: code
+  problem_statement: Fix the data race in the following code by adding proper synchronization using sync.Mutex. Multiple goroutines are concurrently incrementing a shared counter.
+  language: go
+  starter_code: |
+    package main
+
+    import "sync"
+
+    type Counter struct {
+        value int
+        // TODO: Add mutex
+    }
+
+    func (c *Counter) Increment() {
+        // TODO: Add proper locking
+        c.value++
+    }
+  expected_output: Code with proper mutex locking that eliminates the data race
+  sequence_order: 3
+  require_pass: true

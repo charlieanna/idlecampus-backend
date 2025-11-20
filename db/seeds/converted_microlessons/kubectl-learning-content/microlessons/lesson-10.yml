@@ -1,0 +1,91 @@
+slug: lesson-10
+title: Lesson 10
+difficulty: easy
+sequence_order: 10
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Mastering Deployments\n\n      Deployments\
+  \ provide declarative updates for Pods and ReplicaSets, enabling rolling updates\
+  \ and rollbacks.\n\n      ## Creating Deployments\n\n      ```bash\n      # Imperative\
+  \ creation\n      kubectl create deployment nginx --image=nginx:1.25 --replicas=3\n\
+  \n      # With resource limits\n      kubectl create deployment nginx --image=nginx:1.25\
+  \ --replicas=3 \\\\\n        --requests=\"cpu=100m,memory=128Mi\" \\\\\n       \
+  \ --limits=\"cpu=200m,memory=256Mi\"\n\n      # Declarative creation from YAML\n\
+  \      kubectl apply -f deployment.yaml\n\n      # Create from existing deployment\
+  \ (dry-run)\n      kubectl create deployment nginx --image=nginx:1.25 --dry-run=client\
+  \ -o yaml > deployment.yaml\n      ```\n\n      ## Viewing Deployments\n\n     \
+  \ ```bash\n      # List deployments\n      kubectl get deployments\n      kubectl\
+  \ get deploy\n\n      # Describe deployment (shows events and status)\n      kubectl\
+  \ describe deployment nginx\n\n      # Get deployment YAML\n      kubectl get deployment\
+  \ nginx -o yaml\n\n      # Check deployment status\n      kubectl rollout status\
+  \ deployment/nginx\n      ```\n\n      ## Scaling Deployments\n\n      ```bash\n\
+  \      # Scale to specific number of replicas\n      kubectl scale deployment nginx\
+  \ --replicas=5\n\n      # Autoscale based on CPU usage\n      kubectl autoscale\
+  \ deployment nginx --min=2 --max=10 --cpu-percent=80\n\n      # View autoscalers\n\
+  \      kubectl get hpa\n      ```\n\n      ## Updating Deployments\n\n      ```bash\n\
+  \      # Update container image\n      kubectl set image deployment/nginx nginx=nginx:1.26\n\
+  \n      # Update multiple images\n      kubectl set image deployment/nginx nginx=nginx:1.26\
+  \ sidecar=busybox:1.36\n\n      # Update via editing\n      kubectl edit deployment\
+  \ nginx\n\n      # Update via applying modified YAML\n      kubectl apply -f deployment.yaml\n\
+  \n      # Patch deployment\n      kubectl patch deployment nginx -p '{\"spec\":{\"\
+  replicas\":4}}'\n      ```\n\n      ## Rollout Management\n\n      ```bash\n   \
+  \   # Pause rollout (stop updates)\n      kubectl rollout pause deployment/nginx\n\
+  \n      # Resume rollout\n      kubectl rollout resume deployment/nginx\n\n    \
+  \  # View rollout history\n      kubectl rollout history deployment/nginx\n\n  \
+  \    # View specific revision\n      kubectl rollout history deployment/nginx --revision=2\n\
+  \n      # Rollback to previous version\n      kubectl rollout undo deployment/nginx\n\
+  \n      # Rollback to specific revision\n      kubectl rollout undo deployment/nginx\
+  \ --to-revision=2\n\n      # Restart deployment (rolling restart)\n      kubectl\
+  \ rollout restart deployment/nginx\n      ```\n\n      ## ReplicaSets\n\n      Deployments\
+  \ manage ReplicaSets automatically, but you can inspect them:\n\n      ```bash\n\
+  \      # List replicasets\n      kubectl get replicasets\n      kubectl get rs\n\
+  \n      # Describe replicaset\n      kubectl describe rs nginx-deployment-5d59d67564\n\
+  \n      # Get replicaset for specific deployment\n      kubectl get rs -l app=nginx\n\
+  \      ```\n\n      ## Deployment Strategies\n\n      ### Rolling Update (Default)\n\
+  \      Gradually replaces old pods with new ones:\n\n      ```yaml\n      spec:\n\
+  \        strategy:\n          type: RollingUpdate\n          rollingUpdate:\n  \
+  \          maxSurge: 1        # Max pods above desired count\n            maxUnavailable:\
+  \ 0  # Max pods unavailable during update\n      ```\n\n      ### Recreate\n   \
+  \   Terminates all pods before creating new ones:\n\n      ```yaml\n      spec:\n\
+  \        strategy:\n          type: Recreate\n      ```\n\n      ## Useful Commands\n\
+  \n      ```bash\n      # Delete deployment\n      kubectl delete deployment nginx\n\
+  \n      # Delete deployment but keep pods\n      kubectl delete deployment nginx\
+  \ --cascade=orphan\n\n      # Export deployment to file\n      kubectl get deployment\
+  \ nginx -o yaml > nginx-deployment.yaml\n\n      # Create deployment from URL\n\
+  \      kubectl apply -f https://k8s.io/examples/application/deployment.yaml\n  \
+  \    ```\n\n      Practice deployment management in the labs!"
+exercises:
+  - type: multiple_choice_question
+    sequence_order: 1
+    question: "Which kubectl command would you use to view the history of all previous versions of a deployment for potential rollback?"
+    options:
+      - "kubectl get deployment nginx --show-history"
+      - "kubectl rollout history deployment/nginx"
+      - "kubectl describe deployment nginx"
+      - "kubectl logs deployment/nginx"
+    correct_answer: "kubectl rollout history deployment/nginx"
+    explanation: "The 'kubectl rollout history deployment/nginx' command displays the revision history of a deployment, showing all previous versions that can be used for rollback. This is essential for tracking changes and understanding what versions are available to roll back to if issues arise. You can also view details of a specific revision using '--revision=<number>' flag. The 'kubectl get deployment' command shows current deployment status but doesn't have a '--show-history' flag, 'kubectl describe' provides detailed information about the current state but not version history, and 'kubectl logs' is used to view container logs, not deployment history. When you update a deployment (changing image, replicas, or configuration), Kubernetes creates a new revision and keeps the history. The rollout history command helps you make informed decisions about which version to roll back to if the current deployment has issues. By default, Kubernetes retains the last 10 revisions, which can be configured using the 'revisionHistoryLimit' field in the deployment spec."
+    require_pass: true
+  - type: multiple_choice_question
+    sequence_order: 2
+    question: "In a Kubernetes deployment's rolling update strategy, what does the 'maxSurge' parameter control?"
+    options:
+      - "The maximum number of pods that can be unavailable during the update"
+      - "The maximum number of pods that can exist above the desired replica count during the update"
+      - "The maximum time in seconds before the update fails"
+      - "The maximum number of failed pods before rolling back"
+    correct_answer: "The maximum number of pods that can exist above the desired replica count during the update"
+    explanation: "The 'maxSurge' parameter in a rolling update strategy specifies the maximum number of pods that can be created above the desired number of replicas during the update process. For example, if you have 3 replicas and maxSurge is 1, Kubernetes can temporarily create a 4th pod while updating. This allows for zero-downtime deployments by ensuring new pods are ready before terminating old ones. The parameter can be specified as an absolute number (e.g., 1) or a percentage (e.g., 25%). The 'maxUnavailable' parameter (not maxSurge) controls how many pods can be unavailable during the update. Together, maxSurge and maxUnavailable determine the update speed and resource usage. A higher maxSurge means faster updates but requires more resources temporarily, while maxSurge=0 and maxUnavailable>0 means old pods are terminated before new ones are created, using fewer resources but risking temporary capacity reduction. Understanding these parameters is crucial for balancing deployment speed, resource usage, and availability requirements."
+    require_pass: true
+  - type: multiple_choice_question
+    sequence_order: 3
+    question: "What is the purpose of the '--cascade=orphan' flag when deleting a Kubernetes deployment?"
+    options:
+      - "It deletes the deployment and all associated resources immediately"
+      - "It deletes the deployment but keeps the pods running"
+      - "It marks the deployment for deletion after all pods are stopped"
+      - "It creates a backup of the deployment before deletion"
+    correct_answer: "It deletes the deployment but keeps the pods running"
+    explanation: "The '--cascade=orphan' flag when deleting a deployment removes the deployment resource itself but leaves the pods it created running without a controller managing them. This is useful in scenarios where you want to preserve running pods temporarily, such as during migration to a new deployment or when troubleshooting issues. The orphaned pods will continue running but won't be managed, scaled, or recreated if they fail. By default, deleting a deployment uses '--cascade=background' (or the older 'foreground' mode), which deletes the deployment and all its owned resources (ReplicaSets and Pods) either asynchronously or synchronously. This orphan behavior is different from simply deleting resources - it specifically maintains the pods while removing the management layer. This can be particularly useful when you need to examine pod state without the deployment controller interfering, or when transitioning workloads between different deployment configurations. However, remember that orphaned pods won't receive updates or be replaced if they fail, so this should be used carefully and typically as a temporary measure."
+    require_pass: true

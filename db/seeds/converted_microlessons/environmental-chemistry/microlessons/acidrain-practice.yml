@@ -1,0 +1,85 @@
+slug: acidrain-practice
+title: acid_rain — Practice
+difficulty: easy
+sequence_order: 9
+estimated_minutes: 2
+key_concepts:
+- acid_rain
+prerequisites: []
+content_md: '# acid_rain — Practice 🚀
+
+
+  Normal rain has pH ~5.6 because atmospheric CO₂ dissolves to form weak carbonic
+  acid: CO₂ + H₂O → H₂CO₃. Acid rain has pH < 5.6 due to SO₂ and NOₓ.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What is the approximate pH of normal rainwater?
+  options:
+  - '7.0'
+  - '5.6'
+  - '4.5'
+  - '8.0'
+  require_pass: true
+  correct_answer: '5.6'
+  explanation: 'Normal rainwater has a pH of approximately 5.6 (slightly acidic) because
+    atmospheric CO₂ dissolves in water to form weak carbonic acid (H₂CO₃): CO₂ +
+    H₂O ⇌ H₂CO₃ ⇌ H⁺ + HCO₃⁻. This natural acidity is NOT considered acid rain. Acid
+    rain has pH < 5.6 due to additional acidic pollutants like sulfur dioxide (SO₂)
+    and nitrogen oxides (NOₓ) from industrial emissions and vehicle exhaust. These
+    form strong acids: 2SO₂ + O₂ → 2SO₃; SO₃ + H₂O → H₂SO₄ (sulfuric acid), and 4NO₂
+    + O₂ + 2H₂O → 4HNO₃ (nitric acid). Acid rain causes environmental damage including
+    corrosion of buildings/monuments, acidification of lakes killing aquatic life,
+    and damage to vegetation/forests.'
+- type: mcq
+  sequence_order: 2
+  question: Which of the following gases are primarily responsible for acid rain?
+  options:
+  - CO₂ and O₂
+  - SO₂ and NOₓ
+  - CH₄ and CO
+  - N₂ and Ar
+  require_pass: true
+  correct_answer: SO₂ and NOₓ
+  explanation: 'Acid rain is primarily caused by sulfur dioxide (SO₂) and nitrogen
+    oxides (NOₓ, mainly NO and NO₂). **Sources of SO₂**: Coal and petroleum combustion
+    in power plants and industries (fossil fuels contain sulfur impurities), volcanic
+    eruptions. **Sources of NOₓ**: Vehicle exhaust (high-temperature combustion of
+    N₂ and O₂ in engines: N₂ + O₂ → 2NO), industrial processes, lightning. **Formation
+    of acid rain**: SO₂ oxidizes to SO₃ (2SO₂ + O₂ → 2SO₃), which reacts with water
+    to form sulfuric acid (SO₃ + H₂O → H₂SO₄). NO oxidizes to NO₂ (2NO + O₂ → 2NO₂),
+    which reacts with water to form nitric acid (4NO₂ + O₂ + 2H₂O → 4HNO₃). These
+    strong acids lower the pH of rainwater below 5.6.'
+- type: mcq
+  sequence_order: 3
+  question: What is the primary environmental effect of acid rain?
+  options:
+  - Increases soil fertility
+  - Acidifies water bodies and damages aquatic ecosystems
+  - Promotes plant growth
+  - Neutralizes alkaline pollutants
+  require_pass: true
+  correct_answer: Acidifies water bodies and damages aquatic ecosystems
+  explanation: 'Acid rain has several harmful environmental effects: **Aquatic ecosystems**:
+    Acidification of lakes and rivers (pH drops below 5) kills fish, amphibians,
+    and aquatic plants. Aluminum leaches from soil into water, becoming toxic to
+    fish. **Vegetation and forests**: Direct damage to leaves and needles, leaching
+    of essential nutrients (Ca²⁺, Mg²⁺, K⁺) from soil, mobilization of toxic Al³⁺
+    ions that damage roots. **Buildings and monuments**: Corrosion of limestone (CaCO₃),
+    marble, and metals. Famous example: Taj Mahal damage from Mathura refinery emissions.
+    Reaction: CaCO₃ + H₂SO₄ → CaSO₄ + H₂O + CO₂. **Soil**: Depletion of nutrients,
+    increased acidity affecting crop yields. Control measures include using low-sulfur
+    fuels, installing scrubbers in smokestacks, catalytic converters in vehicles,
+    and liming of acidified lakes.'

@@ -1,0 +1,494 @@
+slug: lesson-3
+title: Lesson 3
+difficulty: easy
+sequence_order: 3
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Advanced Deployment Patterns\n\n    Advanced\
+  \ deployment strategies minimize downtime and risk when releasing new versions.\n\
+  \n    ## Blue-Green Deployment\n\n    **Run two identical environments, switch traffic\
+  \ between them**\n\n    ### Concept\n\n    ```\n    Blue (Current):  v1.0 → 100%\
+  \ traffic\n    Green (New):     v2.0 → 0% traffic\n\n    Deploy to Green, test thoroughly\n\
+  \n    Switch:\n    Blue:  v1.0 → 0% traffic\n    Green: v2.0 → 100% traffic\n  \
+  \  ```\n\n    ### Benefits\n    - Instant rollback (switch back to blue)\n    -\
+  \ Zero downtime\n    - Full testing before switching\n    - Reduced risk\n\n   \
+  \ ### Implementation with AWS\n\n    ```yaml\n    # .github/workflows/blue-green.yml\n\
+  \    name: Blue-Green Deployment\n\n    on:\n      push:\n        branches: [main]\n\
+  \n    jobs:\n      deploy:\n        runs-on: ubuntu-latest\n        steps:\n   \
+  \       - name: Checkout code\n            uses: actions/checkout@v3\n\n       \
+  \   - name: Configure AWS credentials\n            uses: aws-actions/configure-aws-credentials@v2\n\
+  \            with:\n              aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID\
+  \ }}\n              aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}\n\
+  \              aws-region: us-east-1\n\n          # ========================================\n\
+  \          # Step 1: Determine current environment\n          # ========================================\n\
+  \          - name: Get current target group\n            id: current\n         \
+  \   run: |\n              LISTENER_ARN=\"${{ secrets.ALB_LISTENER_ARN }}\"\n\n \
+  \             # Get current target group\n              CURRENT_TG=$(aws elbv2 describe-listeners\
+  \ \\\\\n                --listener-arns $LISTENER_ARN \\\\\n                --query\
+  \ 'Listeners[0].DefaultActions[0].TargetGroupArn' \\\\\n                --output\
+  \ text)\n\n              # Determine which is active (blue or green)\n         \
+  \     if [[ \"$CURRENT_TG\" == *\"blue\"* ]]; then\n                echo \"active=blue\"\
+  \ >> $GITHUB_OUTPUT\n                echo \"inactive=green\" >> $GITHUB_OUTPUT\n\
+  \              else\n                echo \"active=green\" >> $GITHUB_OUTPUT\n \
+  \               echo \"inactive=blue\" >> $GITHUB_OUTPUT\n              fi\n\n \
+  \         # ========================================\n          # Step 2: Deploy\
+  \ to inactive environment\n          # ========================================\n\
+  \          - name: Deploy to ${{ steps.current.outputs.inactive }}\n           \
+  \ run: |\n              INACTIVE=\"${{ steps.current.outputs.inactive }}\"\n\n \
+  \             # Update ECS service in inactive environment\n              aws ecs\
+  \ update-service \\\\\n                --cluster production-cluster \\\\\n     \
+  \           --service myapp-$INACTIVE \\\\\n                --force-new-deployment\
+  \ \\\\\n                --desired-count 2\n\n              # Wait for deployment\
+  \ to stabilize\n              aws ecs wait services-stable \\\\\n              \
+  \  --cluster production-cluster \\\\\n                --services myapp-$INACTIVE\n\
+  \n          # ========================================\n          # Step 3: Run\
+  \ smoke tests\n          # ========================================\n          -\
+  \ name: Test ${{ steps.current.outputs.inactive }} environment\n            run:\
+  \ |\n              INACTIVE=\"${{ steps.current.outputs.inactive }}\"\n\n      \
+  \        # Get target group ARN\n              TG_ARN=$(aws elbv2 describe-target-groups\
+  \ \\\\\n                --names myapp-$INACTIVE \\\\\n                --query 'TargetGroups[0].TargetGroupArn'\
+  \ \\\\\n                --output text)\n\n              # Get target IPs\n     \
+  \         TARGETS=$(aws elbv2 describe-target-health \\\\\n                --target-group-arn\
+  \ $TG_ARN \\\\\n                --query 'TargetHealthDescriptions[*].Target.Id'\
+  \ \\\\\n                --output text)\n\n              # Test each target\n   \
+  \           for TARGET in $TARGETS; do\n                HEALTH=$(curl -f http://$TARGET/health\
+  \ || echo \"FAIL\")\n                if [[ \"$HEALTH\" == \"FAIL\" ]]; then\n  \
+  \                echo \"Health check failed for $TARGET\"\n                  exit\
+  \ 1\n                fi\n              done\n\n          # ========================================\n\
+  \          # Step 4: Switch traffic\n          # ========================================\n\
+  \          - name: Switch to ${{ steps.current.outputs.inactive }}\n           \
+  \ run: |\n              INACTIVE=\"${{ steps.current.outputs.inactive }}\"\n   \
+  \           LISTENER_ARN=\"${{ secrets.ALB_LISTENER_ARN }}\"\n\n              #\
+  \ Get new target group ARN\n              NEW_TG_ARN=$(aws elbv2 describe-target-groups\
+  \ \\\\\n                --names myapp-$INACTIVE \\\\\n                --query 'TargetGroups[0].TargetGroupArn'\
+  \ \\\\\n                --output text)\n\n              # Switch listener to new\
+  \ target group\n              aws elbv2 modify-listener \\\\\n                --listener-arn\
+  \ $LISTENER_ARN \\\\\n                --default-actions Type=forward,TargetGroupArn=$NEW_TG_ARN\n\
+  \n              echo \"Traffic switched to $INACTIVE environment\"\n\n         \
+  \ # ========================================\n          # Step 5: Monitor new environment\n\
+  \          # ========================================\n          - name: Monitor\
+  \ for 5 minutes\n            run: |\n              echo \"Monitoring production\
+  \ traffic...\"\n              sleep 300\n\n              # Check error rate\n  \
+  \            ERROR_RATE=$(aws cloudwatch get-metric-statistics \\\\\n          \
+  \      --namespace AWS/ApplicationELB \\\\\n                --metric-name HTTPCode_Target_5XX_Count\
+  \ \\\\\n                --start-time $(date -u -d '5 minutes ago' +%Y-%m-%dT%H:%M:%S)\
+  \ \\\\\n                --end-time $(date -u +%Y-%m-%dT%H:%M:%S) \\\\\n        \
+  \        --period 300 \\\\\n                --statistics Sum \\\\\n            \
+  \    --query 'Datapoints[0].Sum' \\\\\n                --output text)\n\n      \
+  \        if (( $(echo \"$ERROR_RATE > 10\" | bc -l) )); then\n                echo\
+  \ \"High error rate detected: $ERROR_RATE\"\n                echo \"Initiating rollback...\"\
+  \n                exit 1\n              fi\n\n          # ========================================\n\
+  \          # Step 6: Scale down old environment\n          # ========================================\n\
+  \          - name: Scale down ${{ steps.current.outputs.active }}\n            if:\
+  \ success()\n            run: |\n              ACTIVE=\"${{ steps.current.outputs.active\
+  \ }}\"\n\n              # Reduce old environment to minimum\n              aws ecs\
+  \ update-service \\\\\n                --cluster production-cluster \\\\\n     \
+  \           --service myapp-$ACTIVE \\\\\n                --desired-count 1\n\n\
+  \              echo \"Deployment complete! New active: {{ steps.current.outputs.inactive\
+  \ }}\"\n\n          # ========================================\n          # Rollback\
+  \ on failure\n          # ========================================\n          -\
+  \ name: Rollback on failure\n            if: failure()\n            run: |\n   \
+  \           ACTIVE=\"${{ steps.current.outputs.active }}\"\n              LISTENER_ARN=\"\
+  ${{ secrets.ALB_LISTENER_ARN }}\"\n\n              # Get original target group\n\
+  \              ORIGINAL_TG=$(aws elbv2 describe-target-groups \\\\\n           \
+  \     --names myapp-$ACTIVE \\\\\n                --query 'TargetGroups[0].TargetGroupArn'\
+  \ \\\\\n                --output text)\n\n              # Switch back\n        \
+  \      aws elbv2 modify-listener \\\\\n                --listener-arn $LISTENER_ARN\
+  \ \\\\\n                --default-actions Type=forward,TargetGroupArn=$ORIGINAL_TG\n\
+  \n              echo \"Rolled back to $ACTIVE environment\"\n    ```\n\n    ## Canary\
+  \ Deployment\n\n    **Gradually roll out to a small subset of users**\n\n    ###\
+  \ Concept\n\n    ```\n    v1.0: 100% traffic\n    v2.0: 0% traffic\n\n    Phase\
+  \ 1: v1.0 (95%) + v2.0 (5%)   → Monitor\n    Phase 2: v1.0 (80%) + v2.0 (20%)  →\
+  \ Monitor\n    Phase 3: v1.0 (50%) + v2.0 (50%)  → Monitor\n    Phase 4: v1.0 (0%)\
+  \  + v2.0 (100%) → Complete\n    ```\n\n    ### Benefits\n    - Detect issues with\
+  \ minimal user impact\n    - Gradual confidence building\n    - A/B testing capability\n\
+  \    - Easy rollback at any stage\n\n    ### Implementation with Kubernetes\n\n\
+  \    ```yaml\n    # canary-deployment.yml\n    apiVersion: v1\n    kind: Service\n\
+  \    metadata:\n      name: myapp\n    spec:\n      selector:\n        app: myapp\n\
+  \      ports:\n        - port: 80\n          targetPort: 3000\n    ---\n    # Stable\
+  \ deployment (v1.0)\n    apiVersion: apps/v1\n    kind: Deployment\n    metadata:\n\
+  \      name: myapp-stable\n    spec:\n      replicas: 9  # 90% of traffic\n    \
+  \  selector:\n        matchLabels:\n          app: myapp\n          version: stable\n\
+  \      template:\n        metadata:\n          labels:\n            app: myapp\n\
+  \            version: stable\n        spec:\n          containers:\n          -\
+  \ name: myapp\n            image: myapp:v1.0\n            ports:\n            -\
+  \ containerPort: 3000\n    ---\n    # Canary deployment (v2.0)\n    apiVersion:\
+  \ apps/v1\n    kind: Deployment\n    metadata:\n      name: myapp-canary\n    spec:\n\
+  \      replicas: 1  # 10% of traffic\n      selector:\n        matchLabels:\n  \
+  \        app: myapp\n          version: canary\n      template:\n        metadata:\n\
+  \          labels:\n            app: myapp\n            version: canary\n      \
+  \  spec:\n          containers:\n          - name: myapp\n            image: myapp:v2.0\n\
+  \            ports:\n            - containerPort: 3000\n    ```\n\n    ### Automated\
+  \ Canary with Flagger\n\n    ```yaml\n    # flagger-canary.yml\n    apiVersion:\
+  \ flagger.app/v1beta1\n    kind: Canary\n    metadata:\n      name: myapp\n    spec:\n\
+  \      targetRef:\n        apiVersion: apps/v1\n        kind: Deployment\n     \
+  \   name: myapp\n      service:\n        port: 80\n      analysis:\n        interval:\
+  \ 1m\n        threshold: 5\n        maxWeight: 50\n        stepWeight: 10\n    \
+  \    metrics:\n        - name: request-success-rate\n          thresholdRange:\n\
+  \            min: 99\n          interval: 1m\n        - name: request-duration\n\
+  \          thresholdRange:\n            max: 500\n          interval: 1m\n     \
+  \   webhooks:\n        - name: load-test\n          url: http://load-tester/\n \
+  \         timeout: 5s\n          metadata:\n            cmd: \"hey -z 1m -q 10 -c\
+  \ 2 http://myapp-canary/\"\n    ```\n\n    ### CI/CD Pipeline with Canary\n\n  \
+  \  ```yaml\n    # .github/workflows/canary.yml\n    name: Canary Deployment\n\n\
+  \    on:\n      push:\n        branches: [main]\n\n    jobs:\n      deploy:\n  \
+  \      runs-on: ubuntu-latest\n        steps:\n          - name: Checkout\n    \
+  \        uses: actions/checkout@v3\n\n          - name: Configure kubectl\n    \
+  \        uses: azure/k8s-set-context@v3\n            with:\n              method:\
+  \ kubeconfig\n              kubeconfig: ${{ secrets.KUBE_CONFIG }}\n\n         \
+  \ # ========================================\n          # Deploy canary\n      \
+  \    # ========================================\n          - name: Deploy canary\
+  \ (10%)\n            run: |\n              kubectl set image deployment/myapp-canary\
+  \ \\\\\n                myapp=myapp:${{ github.sha }}\n\n              kubectl scale\
+  \ deployment/myapp-stable --replicas=9\n              kubectl scale deployment/myapp-canary\
+  \ --replicas=1\n\n          - name: Wait and monitor (5 minutes)\n            run:\
+  \ sleep 300\n\n          - name: Check canary metrics\n            run: |\n    \
+  \          # Check error rate\n              ERROR_RATE=$(kubectl exec -n monitoring\
+  \ prometheus-0 -- \\\\\n                promtool query instant \\\\\n          \
+  \      'rate(http_requests_total{status=~\"5..\",version=\"canary\"}[5m])' \\\\\n\
+  \                | jq -r '.data.result[0].value[1]')\n\n              if (( $(echo\
+  \ \"$ERROR_RATE > 0.01\" | bc -l) )); then\n                echo \"Canary error\
+  \ rate too high: $ERROR_RATE\"\n                exit 1\n              fi\n\n   \
+  \       # ========================================\n          # Increase to 50%\n\
+  \          # ========================================\n          - name: Scale canary\
+  \ to 50%\n            if: success()\n            run: |\n              kubectl scale\
+  \ deployment/myapp-stable --replicas=5\n              kubectl scale deployment/myapp-canary\
+  \ --replicas=5\n\n          - name: Wait and monitor (10 minutes)\n            run:\
+  \ sleep 600\n\n          - name: Check canary metrics\n            run: |\n    \
+  \          ERROR_RATE=$(kubectl exec -n monitoring prometheus-0 -- \\\\\n      \
+  \          promtool query instant \\\\\n                'rate(http_requests_total{status=~\"\
+  5..\",version=\"canary\"}[10m])' \\\\\n                | jq -r '.data.result[0].value[1]')\n\
+  \n              if (( $(echo \"$ERROR_RATE > 0.01\" | bc -l) )); then\n        \
+  \        echo \"Canary error rate too high: $ERROR_RATE\"\n                exit\
+  \ 1\n              fi\n\n          # ========================================\n\
+  \          # Promote to 100%\n          # ========================================\n\
+  \          - name: Promote canary to stable\n            if: success()\n       \
+  \     run: |\n              # Update stable deployment to new version\n        \
+  \      kubectl set image deployment/myapp-stable \\\\\n                myapp=myapp:${{\
+  \ github.sha }}\n\n              kubectl scale deployment/myapp-stable --replicas=10\n\
+  \              kubectl scale deployment/myapp-canary --replicas=0\n\n          \
+  \    echo \"Canary promoted to stable!\"\n\n          # ========================================\n\
+  \          # Rollback on failure\n          # ========================================\n\
+  \          - name: Rollback canary\n            if: failure()\n            run:\
+  \ |\n              kubectl scale deployment/myapp-canary --replicas=0\n        \
+  \      kubectl scale deployment/myapp-stable --replicas=10\n\n              echo\
+  \ \"Canary rolled back\"\n    ```\n\n    ## Rolling Update\n\n    **Gradually replace\
+  \ old instances with new ones**\n\n    ### Concept\n\n    ```\n    Initial:  [v1.0]\
+  \ [v1.0] [v1.0] [v1.0]\n    Step 1:   [v2.0] [v1.0] [v1.0] [v1.0]\n    Step 2: \
+  \  [v2.0] [v2.0] [v1.0] [v1.0]\n    Step 3:   [v2.0] [v2.0] [v2.0] [v1.0]\n    Step\
+  \ 4:   [v2.0] [v2.0] [v2.0] [v2.0]\n    ```\n\n    ### Kubernetes Rolling Update\n\
+  \n    ```yaml\n    # deployment.yml\n    apiVersion: apps/v1\n    kind: Deployment\n\
+  \    metadata:\n      name: myapp\n    spec:\n      replicas: 10\n      strategy:\n\
+  \        type: RollingUpdate\n        rollingUpdate:\n          maxSurge: 2    \
+  \    # Can add 2 extra pods during update\n          maxUnavailable: 1  # Max 1\
+  \ pod can be unavailable\n      selector:\n        matchLabels:\n          app:\
+  \ myapp\n      template:\n        metadata:\n          labels:\n            app:\
+  \ myapp\n        spec:\n          containers:\n          - name: myapp\n       \
+  \     image: myapp:v2.0\n            ports:\n            - containerPort: 3000\n\
+  \n            # Readiness probe - pod receives traffic when ready\n            readinessProbe:\n\
+  \              httpGet:\n                path: /health\n                port: 3000\n\
+  \              initialDelaySeconds: 5\n              periodSeconds: 5\n\n      \
+  \      # Liveness probe - restart pod if unhealthy\n            livenessProbe:\n\
+  \              httpGet:\n                path: /health\n                port: 3000\n\
+  \              initialDelaySeconds: 15\n              periodSeconds: 10\n\n    \
+  \        # Lifecycle hooks\n            lifecycle:\n              preStop:\n   \
+  \             exec:\n                  command: [\"/bin/sh\", \"-c\", \"sleep 15\"\
+  ]  # Grace period\n    ```\n\n    ### CI/CD with Rolling Update\n\n    ```yaml\n\
+  \    # .github/workflows/rolling.yml\n    name: Rolling Update\n\n    on:\n    \
+  \  push:\n        branches: [main]\n\n    jobs:\n      deploy:\n        runs-on:\
+  \ ubuntu-latest\n        steps:\n          - name: Checkout\n            uses: actions/checkout@v3\n\
+  \n          - name: Configure kubectl\n            uses: azure/k8s-set-context@v3\n\
+  \            with:\n              method: kubeconfig\n              kubeconfig:\
+  \ ${{ secrets.KUBE_CONFIG }}\n\n          - name: Update deployment\n          \
+  \  run: |\n              # Update image\n              kubectl set image deployment/myapp\
+  \ \\\\\n                myapp=myapp:${{ github.sha }} \\\\\n                --record\n\
+  \n              # Watch rollout\n              kubectl rollout status deployment/myapp\
+  \ --timeout=10m\n\n          - name: Verify deployment\n            run: |\n   \
+  \           # Check all pods are ready\n              kubectl wait --for=condition=ready\
+  \ pod \\\\\n                -l app=myapp \\\\\n                --timeout=300s\n\n\
+  \              # Verify new version\n              POD=$(kubectl get pod -l app=myapp\
+  \ -o jsonpath='{.items[0].metadata.name}')\n              VERSION=$(kubectl exec\
+  \ $POD -- cat /app/version.txt)\n\n              if [[ \"$VERSION\" != \"${{ github.sha\
+  \ }}\" ]]; then\n                echo \"Version mismatch!\"\n                exit\
+  \ 1\n              fi\n\n          - name: Rollback on failure\n            if:\
+  \ failure()\n            run: |\n              kubectl rollout undo deployment/myapp\n\
+  \              kubectl rollout status deployment/myapp --timeout=5m\n          \
+  \    echo \"Deployment rolled back\"\n    ```\n\n    ## Feature Flags\n\n    **Control\
+  \ feature rollout without deploying code**\n\n    ### Benefits\n    - Decouple deployment\
+  \ from release\n    - Gradual rollout to user segments\n    - A/B testing\n    -\
+  \ Kill switch for problematic features\n    - Testing in production\n\n    ### Implementation\
+  \ with LaunchDarkly\n\n    ```javascript\n    // feature-flags.js\n    const LaunchDarkly\
+  \ = require('launchdarkly-node-server-sdk');\n\n    const client = LaunchDarkly.init(process.env.LAUNCHDARKLY_SDK_KEY);\n\
+  \n    async function checkFeature(userId, featureKey) {\n      const user = {\n\
+  \        key: userId,\n        email: 'user@example.com',\n        custom: {\n \
+  \         groups: ['beta-users']\n        }\n      };\n\n      await client.waitForInitialization();\n\
+  \      const showFeature = await client.variation(featureKey, user, false);\n\n\
+  \      return showFeature;\n    }\n\n    // Usage\n    app.get('/api/dashboard',\
+  \ async (req, res) => {\n      const newDashboard = await checkFeature(req.user.id,\
+  \ 'new-dashboard');\n\n      if (newDashboard) {\n        return res.json({ version:\
+  \ 'v2', data: getNewDashboard() });\n      } else {\n        return res.json({ version:\
+  \ 'v1', data: getOldDashboard() });\n      }\n    });\n    ```\n\n    ### Percentage\
+  \ Rollout\n\n    ```yaml\n    # Feature flag configuration\n    feature: new-checkout-flow\n\
+  \    enabled: true\n    rollout:\n      - percentage: 10\n        variation: true\n\
+  \        audience: beta-users\n      - percentage: 90\n        variation: false\n\
+  \        audience: all-users\n    ```\n\n    ### Kill Switch Pattern\n\n    ```javascript\n\
+  \    // kill-switch.js\n    async function processPayment(paymentData) {\n     \
+  \ const newPaymentEnabled = await checkFeature('new-payment-processor', false);\n\
+  \n      if (newPaymentEnabled) {\n        // New payment processor\n        return\
+  \ await stripePayment(paymentData);\n      } else {\n        // Fallback to old\
+  \ processor\n        return await legacyPayment(paymentData);\n      }\n    }\n\
+  \    ```\n\n    ## Rollback Strategies\n\n    ### 1. Immediate Rollback (Blue-Green)\n\
+  \n    ```bash\n    # Switch traffic back instantly\n    aws elbv2 modify-listener\
+  \ \\\\\n      --listener-arn $LISTENER_ARN \\\\\n      --default-actions Type=forward,TargetGroupArn=$BLUE_TG_ARN\n\
+  \    ```\n\n    ### 2. Gradual Rollback (Canary)\n\n    ```bash\n    # Reduce canary\
+  \ traffic\n    kubectl scale deployment/myapp-canary --replicas=0\n    kubectl scale\
+  \ deployment/myapp-stable --replicas=10\n    ```\n\n    ### 3. Version Rollback\
+  \ (Kubernetes)\n\n    ```bash\n    # Rollback to previous version\n    kubectl rollout\
+  \ undo deployment/myapp\n\n    # Rollback to specific revision\n    kubectl rollout\
+  \ undo deployment/myapp --to-revision=3\n\n    # Check rollout history\n    kubectl\
+  \ rollout history deployment/myapp\n    ```\n\n    ### 4. Database Migration Rollback\n\
+  \n    ```javascript\n    // migrations/20240101_add_user_field.js\n    exports.up\
+  \ = async (knex) => {\n      await knex.schema.table('users', (table) => {\n   \
+  \     table.string('phone_number');\n      });\n    };\n\n    exports.down = async\
+  \ (knex) => {\n      await knex.schema.table('users', (table) => {\n        table.dropColumn('phone_number');\n\
+  \      });\n    };\n\n    // Rollback migration\n    // npx knex migrate:rollback\n\
+  \    ```\n\n    ## Monitoring Deployments\n\n    ### Key Metrics to Track\n\n  \
+  \  ```yaml\n    metrics:\n      # Application metrics\n      - error_rate\n    \
+  \  - response_time (p50, p95, p99)\n      - requests_per_second\n      - cpu_usage\n\
+  \      - memory_usage\n\n      # Business metrics\n      - conversion_rate\n   \
+  \   - revenue_per_user\n      - active_users\n      - feature_usage\n    ```\n\n\
+  \    ### Alerting on Deployment Issues\n\n    ```yaml\n    # prometheus-alerts.yml\n\
+  \    groups:\n      - name: deployment\n        interval: 30s\n        rules:\n\
+  \          - alert: HighErrorRate\n            expr: |\n              rate(http_requests_total{status=~\"\
+  5..\"}[5m]) > 0.05\n            for: 2m\n            annotations:\n            \
+  \  summary: \"High error rate detected\"\n              description: \"Error rate\
+  \ is {{ $value }} (threshold: 0.05)\"\n\n          - alert: SlowResponseTime\n \
+  \           expr: |\n              histogram_quantile(0.95,\n                rate(http_request_duration_seconds_bucket[5m])\n\
+  \              ) > 1\n            for: 5m\n            annotations:\n          \
+  \    summary: \"Slow response time\"\n              description: \"P95 latency is\
+  \ {{ $value }}s\"\n\n          - alert: DeploymentFailed\n            expr: |\n\
+  \              kube_deployment_status_replicas_available !=\n              kube_deployment_spec_replicas\n\
+  \            for: 5m\n            annotations:\n              summary: \"Deployment\
+  \ has failed\"\n              description: \"{{ $labels.deployment }} has issues\"\
+  \n    ```\n\n    ### Deployment Dashboard\n\n    ```yaml\n    # grafana-dashboard.json\
+  \ (simplified)\n    {\n      \"dashboard\": {\n        \"title\": \"Deployment Monitoring\"\
+  ,\n        \"panels\": [\n          {\n            \"title\": \"Request Rate\",\n\
+  \            \"targets\": [\n              {\n                \"expr\": \"rate(http_requests_total[5m])\"\
+  \n              }\n            ]\n          },\n          {\n            \"title\"\
+  : \"Error Rate\",\n            \"targets\": [\n              {\n               \
+  \ \"expr\": \"rate(http_requests_total{status=~'5..'}[5m])\"\n              }\n\
+  \            ]\n          },\n          {\n            \"title\": \"Response Time\
+  \ (P95)\",\n            \"targets\": [\n              {\n                \"expr\"\
+  : \"histogram_quantile(0.95, rate(http_request_duration_seconds_bucket[5m]))\"\n\
+  \              }\n            ]\n          },\n          {\n            \"title\"\
+  : \"Pod Status\",\n            \"targets\": [\n              {\n               \
+  \ \"expr\": \"kube_pod_status_phase\"\n              }\n            ]\n        \
+  \  }\n        ]\n      }\n    }\n    ```\n\n    ## Complete Example: Progressive\
+  \ Deployment\n\n    ### Full workflow combining strategies\n\n    ```yaml\n    #\
+  \ .github/workflows/progressive-deployment.yml\n    name: Progressive Deployment\n\
+  \n    on:\n      push:\n        branches: [main]\n\n    jobs:\n      deploy:\n \
+  \       runs-on: ubuntu-latest\n        steps:\n          # ========================================\n\
+  \          # 1. Deploy to staging (rolling update)\n          # ========================================\n\
+  \          - name: Deploy to staging\n            run: |\n              kubectl\
+  \ set image deployment/myapp-staging \\\\\n                myapp=myapp:${{ github.sha\
+  \ }} \\\\\n                --namespace=staging\n\n              kubectl rollout\
+  \ status deployment/myapp-staging -n staging\n\n          - name: Run E2E tests\
+  \ on staging\n            run: npm run test:e2e:staging\n\n          # ========================================\n\
+  \          # 2. Enable feature flag for 5% of users\n          # ========================================\n\
+  \          - name: Enable for 5% of users\n            run: |\n              curl\
+  \ -X PATCH https://api.launchdarkly.com/api/v2/flags/default/new-version \\\\\n\
+  \                -H \"Authorization: ${{ secrets.LAUNCHDARKLY_TOKEN }}\" \\\\\n\
+  \                -H \"Content-Type: application/json\" \\\\\n                -d\
+  \ '{\n                  \"patch\": [\n                    {\n                  \
+  \    \"op\": \"replace\",\n                      \"path\": \"/environments/production/fallthrough/rollout/variations/0/weight\"\
+  ,\n                      \"value\": 5000\n                    }\n              \
+  \    ]\n                }'\n\n          - name: Monitor for 30 minutes\n       \
+  \     run: |\n              sleep 1800\n              # Check metrics\n        \
+  \      # If error rate > threshold, rollback flag\n\n          # ========================================\n\
+  \          # 3. Canary deployment (20% traffic)\n          # ========================================\n\
+  \          - name: Deploy canary\n            run: |\n              kubectl set\
+  \ image deployment/myapp-canary \\\\\n                myapp=myapp:${{ github.sha\
+  \ }}\n\n              kubectl scale deployment/myapp-stable --replicas=8\n     \
+  \         kubectl scale deployment/myapp-canary --replicas=2\n\n          - name:\
+  \ Monitor canary for 1 hour\n            run: |\n              sleep 3600\n    \
+  \          # Check canary metrics\n\n          # ========================================\n\
+  \          # 4. Increase to 50%\n          # ========================================\n\
+  \          - name: Scale to 50%\n            run: |\n              kubectl scale\
+  \ deployment/myapp-stable --replicas=5\n              kubectl scale deployment/myapp-canary\
+  \ --replicas=5\n\n          - name: Monitor for 2 hours\n            run: sleep\
+  \ 7200\n\n          # ========================================\n          # 5. Full\
+  \ rollout\n          # ========================================\n          - name:\
+  \ Complete rollout\n            run: |\n              # Update stable to new version\n\
+  \              kubectl set image deployment/myapp-stable \\\\\n                myapp=myapp:${{\
+  \ github.sha }}\n\n              kubectl rollout status deployment/myapp-stable\n\
+  \n              # Scale down canary\n              kubectl scale deployment/myapp-canary\
+  \ --replicas=0\n\n              # Enable feature flag for 100%\n              curl\
+  \ -X PATCH https://api.launchdarkly.com/api/v2/flags/default/new-version \\\\\n\
+  \                -H \"Authorization: ${{ secrets.LAUNCHDARKLY_TOKEN }}\" \\\\\n\
+  \                -d '{\"patch\": [{\"op\": \"replace\", \"path\": \"/environments/production/on\"\
+  , \"value\": true}]}'\n\n          - name: Notify team\n            run: |\n   \
+  \           curl -X POST ${{ secrets.SLACK_WEBHOOK }} \\\\\n                -H 'Content-Type:\
+  \ application/json' \\\\\n                -d '{\n                  \"text\": \"\U0001F680\
+  \ Production deployment complete!\",\n                  \"attachments\": [{\n  \
+  \                  \"color\": \"good\",\n                    \"fields\": [\n   \
+  \                   {\"title\": \"Version\", \"value\": \"${{ github.sha }}\", \"\
+  short\": true},\n                      {\"title\": \"Environment\", \"value\": \"\
+  Production\", \"short\": true}\n                    ]\n                  }]\n  \
+  \              }'\n    ```\n\n    ## Summary\n\n    **Deployment Strategies Comparison:**\n\
+  \n    | Strategy | Downtime | Rollback Speed | Resource Cost | Complexity |\n  \
+  \  |----------|----------|----------------|---------------|------------|\n    |\
+  \ **Blue-Green** | None | Instant | High (2x resources) | Medium |\n    | **Canary**\
+  \ | None | Fast | Low | High |\n    | **Rolling** | None | Medium | Low | Low |\n\
+  \    | **Feature Flags** | None | Instant | None | Medium |\n\n    **Best Practices:**\n\
+  \    1. **Start conservative** - Begin with small percentages\n    2. **Monitor\
+  \ closely** - Watch metrics during rollout\n    3. **Automate rollback** - Set thresholds\
+  \ for automatic rollback\n    4. **Test thoroughly** - Validate in staging first\n\
+  \    5. **Communicate** - Notify team of deployment status\n    6. **Document**\
+  \ - Keep runbooks for rollback procedures\n\n    **Choosing a Strategy:**\n    -\
+  \ **Blue-Green**: High-stakes releases, need instant rollback\n    - **Canary**:\
+  \ Gradual confidence building, risk mitigation\n    - **Rolling**: Standard updates,\
+  \ resource-constrained\n    - **Feature Flags**: A/B testing, gradual feature rollout\n\
+  \n    **Next Steps:**\n    - Practice each strategy in a test environment\n    -\
+  \ Set up monitoring and alerting\n    - Create runbooks for rollback scenarios\n\
+  \    - Implement automated health checks"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: In a Blue-Green deployment, what is the primary advantage and how does
+    instant rollback work?
+  options:
+  - Blue and Green are identical environments; switching traffic between them is instant,
+    and rollback simply switches back to the previous environment
+  - Blue-Green deployment is cheaper than other strategies
+  - Blue-Green requires only one environment
+  - Blue-Green deployment is slower than rolling updates
+  correct_answer: Blue and Green are identical environments; switching traffic between
+    them is instant, and rollback simply switches back to the previous environment
+  explanation: 'Blue-Green deployment maintains two identical production environments,
+    enabling zero-downtime deployments with instant rollback capability. How it works:
+    Blue environment runs current version (v1.0) receiving 100% production traffic,
+    Green environment runs new version (v2.0) receiving 0% traffic. Deploy new version
+    to Green, run smoke tests and validation on Green without affecting users, switch
+    load balancer/DNS to route traffic from Blue to Green (typically takes seconds),
+    Green now serves 100% traffic while Blue sits idle. Instant rollback: If issues
+    discovered after switch, simply point load balancer back to Blue environment,
+    rollback completes in seconds (same time as forward switch), no code redeployment
+    needed - Blue still has working v1.0 ready. Example with AWS: Application Load
+    Balancer has listener pointing to Blue target group (EC2 instances running v1.0),
+    deploy v2.0 to Green target group, test Green instances directly, modify listener
+    to point to Green target group (API call takes 1-2 seconds), traffic now flows
+    to v2.0. If errors spike, run single API call to switch listener back to Blue,
+    users back on v1.0 in 2 seconds. Advantages: Zero downtime (traffic switches instantly),
+    instant rollback (2 seconds vs 10+ minutes redeployment), full testing before
+    switch (Green tested with production data/load before going live), reduced risk
+    (worst case is quick switch back). Disadvantages: High resource cost (2x infrastructure
+    - two full production environments running simultaneously), database synchronization
+    complexity (both Blue and Green must use same database state), session management
+    (user sessions may break when switching environments). Cost example: Production
+    needs 10 EC2 instances. Normal operation: 10 instances. Blue-Green: 20 instances
+    (10 Blue + 10 Green). During 1-hour deployment window, paying for double infrastructure.
+    After validation, scale down Blue to minimal (1-2 instances for quick rollback).
+    Monthly cost: ~$1,500 normal vs ~$2,000 with Blue-Green (~33% increase) vs potential
+    $100K+ cost of prolonged production outage. Use cases: Mission-critical applications
+    where downtime unacceptable (e-commerce during sales, financial trading, healthcare
+    systems), applications where rollback speed critical (customer-facing services),
+    teams with budget for extra infrastructure. Not ideal for: Resource-constrained
+    environments, applications with complex database migrations, stateful applications
+    with sticky sessions.'
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: How does Canary deployment reduce risk compared to deploying directly to
+    all users?
+  options:
+  - Canary gradually rolls out to small percentage of users (5-10%), monitors metrics,
+    and only proceeds if healthy, limiting impact of bugs
+  - Canary deployment is faster than other methods
+  - Canary requires less infrastructure than other deployments
+  - Canary deployment skips the testing phase
+  correct_answer: Canary gradually rolls out to small percentage of users (5-10%),
+    monitors metrics, and only proceeds if healthy, limiting impact of bugs
+  explanation: 'Canary deployment mitigates risk by exposing new versions to progressively
+    larger user subsets while monitoring for issues at each stage. Named after "canary
+    in a coal mine" - early warning system for problems. How Canary works: Phase 1
+    (5% traffic): Deploy v2.0 alongside v1.0, route 5% users to v2.0 and 95% to v1.0
+    using load balancer weights, monitor for 30-60 minutes checking error rates, response
+    times, business metrics. If metrics healthy, proceed; if degraded, abort and route
+    100% back to v1.0. Phase 2 (20% traffic): If Phase 1 successful, increase to 20%
+    v2.0 / 80% v1.0, monitor for 1-2 hours. Phase 3 (50% traffic): Increase to 50/50
+    split, monitor for 2-4 hours. Phase 4 (100% traffic): Complete rollout to 100%
+    v2.0. Risk reduction: Bug in v2.0 only affects 5% of users initially (vs 100%
+    in traditional deployment), early detection with minimal impact (50,000 users
+    vs 1 million users affected), easy rollback before full rollout (just change traffic
+    split percentages), statistical significance from subset allows confident decisions.
+    Example scenario: E-commerce site with 1M daily users deploys new checkout flow.
+    Traditional deployment: Deploy to 100%, if bug exists all 1M users affected, potential
+    $500K lost revenue before discovery and fix. Canary deployment: Deploy to 5% (50K
+    users), bug detected within 1 hour due to monitoring, rollback to 0% canary, only
+    50K users affected for 1 hour, ~$25 lost revenue vs $500K. 20x risk reduction.
+    Implementation: Kubernetes with replica counts (1 canary pod + 9 stable pods =
+    10% canary), AWS ALB with weighted target groups (weight=5 for canary, weight=95
+    for stable), Service mesh like Istio with traffic splitting rules, Feature flags
+    (LaunchDarkly) for user-level canary (specific user IDs get new version). Metrics
+    to monitor: Error rate (if canary errors > baseline + 2%, rollback), Response
+    time (P95/P99 latency increases), Conversion rate (business metrics like checkout
+    completion), CPU/memory usage, Custom metrics (feature-specific like search results
+    quality). Automation: Tools like Flagger automate canary process - automatically
+    increase traffic percentage if metrics healthy, automatically rollback if metrics
+    degrade, integrate with Prometheus for metrics, support progressive delivery schedules.
+    Trade-offs: Slower deployment (hours vs minutes for full rollout), monitoring
+    infrastructure required (Prometheus, Grafana, alerts), complexity in traffic management,
+    both versions running simultaneously (resource overhead). Best for: User-facing
+    applications where gradual rollout acceptable, teams with good observability, applications
+    with measurable success metrics, high-risk changes needing validation.'
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: What is the purpose of feature flags and how do they differ from traditional
+    deployments?
+  options:
+  - Feature flags decouple code deployment from feature release, allowing features
+    to be turned on/off without redeploying code
+  - Feature flags make code faster
+  - Feature flags eliminate the need for testing
+  - Feature flags are only for frontend applications
+  correct_answer: Feature flags decouple code deployment from feature release, allowing
+    features to be turned on/off without redeploying code
+  explanation: 'Feature flags (feature toggles) separate deployment from release,
+    enabling runtime control over feature visibility without code changes. Traditional
+    approach: Write new checkout feature → test → deploy code → feature immediately
+    visible to all users. If bug found, must write fix → test → deploy new code (10-30
+    minutes minimum). Feature flag approach: Write checkout feature wrapped in flag
+    check: if (featureFlags.newCheckout) { showNewCheckout() } else { showOldCheckout()
+    }. Deploy code with flag disabled → feature deployed but invisible to users. Enable
+    flag for 10% users → test in production with real traffic. If issues, disable
+    flag instantly (milliseconds) without redeployment. Gradually increase to 100%
+    over days/weeks. Key benefits: (1) Instant kill switch - disable broken feature
+    in seconds vs 30 minutes for code redeployment, prevents prolonged outages, no
+    emergency deployment needed. (2) Gradual rollout - enable for beta users first,
+    A/B test variants (50% see version A, 50% version B), rollout by user segments
+    (region, subscription tier, device type). (3) Trunk-based development - merge
+    incomplete features to main branch (hidden behind flag), no long-lived feature
+    branches, continuous integration maintained. (4) Business alignment - coordinate
+    feature release with marketing/PR (deploy code weeks early, enable flag at announcement
+    time), test in production without user impact. Implementation: LaunchDarkly, Split.io,
+    Optimizely commercial platforms provide UI for flag management, real-time flag
+    updates (no app restart), user targeting rules, analytics integration. Code example:
+    const ldClient = LaunchDarkly.init(SDK_KEY); const showNewUI = await ldClient.variation(''new-ui'',
+    user, false); if (showNewUI) { render(<NewUI />) } else { render(<OldUI />) }.
+    Toggle flag in LaunchDarkly dashboard, change propagates to all app instances
+    within seconds. Use cases: (1) Circuit breaker - new payment processor having
+    issues → disable flag → traffic routes to old processor. (2) A/B testing - 50%
+    users see algorithm A, 50% see algorithm B, measure conversion rates. (3) Canary
+    testing - enable for 5% users → monitor → increase percentage. (4) Beta features
+    - enable only for opted-in beta users. Technical debt warning: Feature flags create
+    complexity - doubled code paths (if/else for every flag), flag proliferation (100+
+    flags becomes unmanageable), performance overhead (flag evaluation on every request).
+    Best practices: (1) Clean up flags after full rollout (remove flag and old code
+    path), (2) Flag lifecycle - temporary flags (experiments, rollouts) vs permanent
+    flags (ops toggles), (3) Flag naming convention (experiment-*, release-*, ops-*),
+    (4) Monitoring flag usage (alert if flag not touched in 90 days). Cost: LaunchDarkly
+    starts ~$10/month for small apps, scales to $1000s/month for enterprises. ROI:
+    Preventing single production outage ($100K+ potential loss) justifies annual cost.'
+  require_pass: true

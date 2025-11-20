@@ -1,0 +1,352 @@
+slug: configuration-management
+title: Configuration Management
+difficulty: easy
+sequence_order: 3
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Configuration Management \U0001F680\n\n# Configuration Management with\
+  \ Ansible\n\n    ## What is Configuration Management?\n\n    Configuration management\
+  \ automates the setup, configuration, and maintenance of servers and applications.\n\
+  \n    ### Problems with Manual Configuration\n    - **Time-consuming**: Manual steps\
+  \ for each server\n    - **Error-prone**: Human mistakes in complex setups\n   \
+  \ - **Inconsistent**: Different configurations across servers\n    - **Not repeatable**:\
+  \ Hard to replicate exact configurations\n    - **No audit trail**: Can't track\
+  \ who changed what\n    - **Scaling issues**: Managing 100s or 1000s of servers\
+  \ manually\n\n    ### Benefits of Configuration Management\n    1. **Automation**:\
+  \ Deploy and configure in minutes, not hours\n    2. **Consistency**: Identical\
+  \ configuration across all servers\n    3. **Repeatability**: Same playbook, same\
+  \ result every time\n    4. **Version control**: Track all configuration changes\n\
+  \    5. **Documentation**: Code documents the configuration\n    6. **Compliance**:\
+  \ Enforce security and operational standards\n    7. **Disaster recovery**: Quickly\
+  \ rebuild from code\n\n    ## Ansible Overview\n\n    Ansible is an agentless configuration\
+  \ management tool that uses SSH to configure systems.\n\n    ### Key Features\n\
+  \    - **Agentless**: No software to install on managed nodes\n    - **Simple**:\
+  \ Uses YAML for configuration (playbooks)\n    - **Powerful**: Manages complex multi-tier\
+  \ deployments\n    - **Idempotent**: Safe to run multiple times\n    - **Extensible**:\
+  \ 1000s of modules for different systems\n    - **Push-based**: Control node pushes\
+  \ configurations\n\n    ### Ansible Architecture\n\n    ```\n    Control Node (Your\
+  \ laptop/server)\n    ├── Ansible installed\n    ├── Inventory (list of servers)\n\
+  \    └── Playbooks (configuration code)\n         │\n         └─── SSH ───┐\n  \
+  \                   │\n    Managed Nodes    │\n    ├── web-1 ───────┘\n    ├── web-2\n\
+  \    ├── db-1\n    └── db-2\n    ```\n\n    ### Installation\n\n    ```bash\n  \
+  \  # macOS\n    brew install ansible\n\n    # Ubuntu/Debian\n    sudo apt update\n\
+  \    sudo apt install ansible\n\n    # CentOS/RHEL\n    sudo yum install ansible\n\
+  \n    # Using pip\n    pip install ansible\n\n    # Verify installation\n    ansible\
+  \ --version\n    ```\n\n    ## Ansible Inventory\n\n    The inventory defines hosts\
+  \ and groups of hosts.\n\n    ### Simple Inventory (INI format)\n    ```ini\n  \
+  \  # inventory.ini\n    [webservers]\n    web1.example.com\n    web2.example.com\n\
+  \    web3.example.com\n\n    [databases]\n    db1.example.com\n    db2.example.com\n\
+  \n    [loadbalancers]\n    lb1.example.com\n\n    [all:vars]\n    ansible_user=ubuntu\n\
+  \    ansible_ssh_private_key_file=~/.ssh/id_rsa\n    ```\n\n    ### YAML Inventory\n\
+  \    ```yaml\n    # inventory.yml\n    all:\n      children:\n        webservers:\n\
+  \          hosts:\n            web1.example.com:\n            web2.example.com:\n\
+  \            web3.example.com:\n          vars:\n            http_port: 80\n\n \
+  \       databases:\n          hosts:\n            db1.example.com:\n           \
+  \   ansible_host: 10.0.1.10\n            db2.example.com:\n              ansible_host:\
+  \ 10.0.1.11\n          vars:\n            db_port: 5432\n\n        loadbalancers:\n\
+  \          hosts:\n            lb1.example.com:\n      vars:\n        ansible_user:\
+  \ ubuntu\n        ansible_ssh_private_key_file: ~/.ssh/id_rsa\n    ```\n\n    ###\
+  \ Dynamic Inventory\n    ```bash\n    # AWS EC2\n    ansible-inventory -i aws_ec2.yml\
+  \ --list\n\n    # Script\n    ./dynamic_inventory.py --list\n    ```\n\n    ## Ad-Hoc\
+  \ Commands\n\n    Quick one-off commands without playbooks.\n\n    ```bash\n   \
+  \ # Ping all hosts\n    ansible all -i inventory.ini -m ping\n\n    # Run command\
+  \ on all web servers\n    ansible webservers -i inventory.ini -a \"uptime\"\n\n\
+  \    # Install package\n    ansible webservers -i inventory.ini -m apt -a \"name=nginx\
+  \ state=present\" --become\n\n    # Copy file\n    ansible webservers -i inventory.ini\
+  \ -m copy -a \"src=./app.conf dest=/etc/app/app.conf\"\n\n    # Restart service\n\
+  \    ansible webservers -i inventory.ini -m service -a \"name=nginx state=restarted\"\
+  \ --become\n\n    # Gather facts\n    ansible web1.example.com -i inventory.ini\
+  \ -m setup\n    ```\n\n    ## Ansible Playbooks\n\n    Playbooks are YAML files\
+  \ that describe automation jobs.\n\n    ### Basic Playbook Structure\n    ```yaml\n\
+  \    ---\n    - name: Configure web servers\n      hosts: webservers\n      become:\
+  \ yes\n\n      tasks:\n        - name: Install Nginx\n          apt:\n         \
+  \   name: nginx\n            state: present\n            update_cache: yes\n   \
+  \ ```\n\n    ### Complete Web Server Playbook\n\n    ```yaml\n    ---\n    # webserver.yml\n\
+  \    - name: Configure web servers\n      hosts: webservers\n      become: yes\n\
+  \n      vars:\n        http_port: 80\n        https_port: 443\n        app_user:\
+  \ webapp\n        app_dir: /var/www/myapp\n\n      tasks:\n        - name: Update\
+  \ apt cache\n          apt:\n            update_cache: yes\n            cache_valid_time:\
+  \ 3600\n\n        - name: Install required packages\n          apt:\n          \
+  \  name:\n              - nginx\n              - python3\n              - python3-pip\n\
+  \              - git\n              - ufw\n            state: present\n\n      \
+  \  - name: Create application user\n          user:\n            name: \"{{ app_user\
+  \ }}\"\n            shell: /bin/bash\n            create_home: yes\n\n        -\
+  \ name: Create application directory\n          file:\n            path: \"{{ app_dir\
+  \ }}\"\n            state: directory\n            owner: \"{{ app_user }}\"\n  \
+  \          group: \"{{ app_user }}\"\n            mode: '0755'\n\n        - name:\
+  \ Copy Nginx configuration\n          template:\n            src: templates/nginx.conf.j2\n\
+  \            dest: /etc/nginx/sites-available/myapp\n            owner: root\n \
+  \           group: root\n            mode: '0644'\n          notify: Restart Nginx\n\
+  \n        - name: Enable site\n          file:\n            src: /etc/nginx/sites-available/myapp\n\
+  \            dest: /etc/nginx/sites-enabled/myapp\n            state: link\n   \
+  \       notify: Restart Nginx\n\n        - name: Remove default site\n         \
+  \ file:\n            path: /etc/nginx/sites-enabled/default\n            state:\
+  \ absent\n          notify: Restart Nginx\n\n        - name: Configure firewall\n\
+  \          ufw:\n            rule: allow\n            port: \"{{ item }}\"\n   \
+  \         proto: tcp\n          loop:\n            - \"{{ http_port }}\"\n     \
+  \       - \"{{ https_port }}\"\n            - \"22\"\n\n        - name: Enable firewall\n\
+  \          ufw:\n            state: enabled\n            policy: deny\n\n      \
+  \  - name: Start and enable Nginx\n          service:\n            name: nginx\n\
+  \            state: started\n            enabled: yes\n\n      handlers:\n     \
+  \   - name: Restart Nginx\n          service:\n            name: nginx\n       \
+  \     state: restarted\n    ```\n\n    ### Nginx Template (templates/nginx.conf.j2)\n\
+  \    ```nginx\n    server {\n        listen {{ http_port }};\n        server_name\
+  \ {{ ansible_fqdn }};\n\n        root {{ app_dir }};\n        index index.html index.htm;\n\
+  \n        location / {\n            try_files $uri $uri/ =404;\n        }\n\n  \
+  \      location /api {\n            proxy_pass http://localhost:3000;\n        \
+  \    proxy_set_header Host $host;\n            proxy_set_header X-Real-IP $remote_addr;\n\
+  \        }\n\n        access_log /var/log/nginx/{{ ansible_hostname }}-access.log;\n\
+  \        error_log /var/log/nginx/{{ ansible_hostname }}-error.log;\n    }\n   \
+  \ ```\n\n    ### Run Playbook\n    ```bash\n    # Check syntax\n    ansible-playbook\
+  \ webserver.yml --syntax-check\n\n    # Dry run (check mode)\n    ansible-playbook\
+  \ -i inventory.ini webserver.yml --check\n\n    # Run playbook\n    ansible-playbook\
+  \ -i inventory.ini webserver.yml\n\n    # Verbose output\n    ansible-playbook -i\
+  \ inventory.ini webserver.yml -v\n\n    # Limit to specific hosts\n    ansible-playbook\
+  \ -i inventory.ini webserver.yml --limit web1.example.com\n\n    # Start at specific\
+  \ task\n    ansible-playbook -i inventory.ini webserver.yml --start-at-task=\"Install\
+  \ Nginx\"\n    ```\n\n    ## Ansible Roles\n\n    Roles organize playbooks into\
+  \ reusable components.\n\n    ### Role Structure\n    ```\n    roles/\n    └── webserver/\n\
+  \        ├── tasks/\n        │   └── main.yml\n        ├── handlers/\n        │\
+  \   └── main.yml\n        ├── templates/\n        │   └── nginx.conf.j2\n      \
+  \  ├── files/\n        │   └── index.html\n        ├── vars/\n        │   └── main.yml\n\
+  \        ├── defaults/\n        │   └── main.yml\n        ├── meta/\n        │ \
+  \  └── main.yml\n        └── README.md\n    ```\n\n    ### roles/webserver/tasks/main.yml\n\
+  \    ```yaml\n    ---\n    - name: Install Nginx\n      apt:\n        name: nginx\n\
+  \        state: present\n        update_cache: yes\n\n    - name: Copy configuration\n\
+  \      template:\n        src: nginx.conf.j2\n        dest: /etc/nginx/sites-available/default\n\
+  \      notify: Restart Nginx\n\n    - name: Start Nginx\n      service:\n      \
+  \  name: nginx\n        state: started\n        enabled: yes\n    ```\n\n    ###\
+  \ roles/webserver/handlers/main.yml\n    ```yaml\n    ---\n    - name: Restart Nginx\n\
+  \      service:\n        name: nginx\n        state: restarted\n    ```\n\n    ###\
+  \ roles/webserver/defaults/main.yml\n    ```yaml\n    ---\n    http_port: 80\n \
+  \   https_port: 443\n    worker_processes: auto\n    ```\n\n    ### Using Roles\
+  \ in Playbook\n    ```yaml\n    ---\n    - name: Configure web infrastructure\n\
+  \      hosts: webservers\n      become: yes\n\n      roles:\n        - common\n\
+  \        - webserver\n        - monitoring\n    ```\n\n    ### Ansible Galaxy\n\
+  \    Download community roles:\n\n    ```bash\n    # Install role from Galaxy\n\
+  \    ansible-galaxy install geerlingguy.nginx\n\n    # Install from requirements\
+  \ file\n    ansible-galaxy install -r requirements.yml\n    ```\n\n    requirements.yml:\n\
+  \    ```yaml\n    ---\n    - src: geerlingguy.nginx\n      version: 3.1.4\n\n  \
+  \  - src: geerlingguy.postgresql\n      version: 3.3.0\n    ```\n\n    ## Complete\
+  \ Web Server Provisioning Example\n\n    ### Project Structure\n    ```\n    ansible-webserver/\n\
+  \    ├── inventory/\n    │   ├── production.ini\n    │   └── staging.ini\n    ├──\
+  \ group_vars/\n    │   ├── all.yml\n    │   ├── webservers.yml\n    │   └── databases.yml\n\
+  \    ├── host_vars/\n    │   └── web1.example.com.yml\n    ├── roles/\n    │   ├──\
+  \ common/\n    │   ├── webserver/\n    │   └── database/\n    ├── playbooks/\n \
+  \   │   ├── site.yml\n    │   ├── webservers.yml\n    │   └── databases.yml\n  \
+  \  └── ansible.cfg\n    ```\n\n    ### ansible.cfg\n    ```ini\n    [defaults]\n\
+  \    inventory = inventory/production.ini\n    remote_user = ubuntu\n    private_key_file\
+  \ = ~/.ssh/id_rsa\n    host_key_checking = False\n    retry_files_enabled = False\n\
+  \    roles_path = ./roles\n\n    [privilege_escalation]\n    become = True\n   \
+  \ become_method = sudo\n    become_user = root\n    become_ask_pass = False\n  \
+  \  ```\n\n    ### group_vars/all.yml\n    ```yaml\n    ---\n    # Global variables\n\
+  \    ansible_python_interpreter: /usr/bin/python3\n\n    # Common packages\n   \
+  \ common_packages:\n      - vim\n      - curl\n      - wget\n      - htop\n    \
+  \  - git\n\n    # Timezone\n    timezone: America/New_York\n\n    # NTP servers\n\
+  \    ntp_servers:\n      - 0.pool.ntp.org\n      - 1.pool.ntp.org\n    ```\n\n \
+  \   ### group_vars/webservers.yml\n    ```yaml\n    ---\n    http_port: 80\n   \
+  \ https_port: 443\n    app_name: myapp\n    app_port: 3000\n    app_dir: /var/www/{{\
+  \ app_name }}\n\n    # SSL certificate\n    ssl_certificate: /etc/ssl/certs/{{ app_name\
+  \ }}.crt\n    ssl_certificate_key: /etc/ssl/private/{{ app_name }}.key\n    ```\n\
+  \n    ### playbooks/site.yml\n    ```yaml\n    ---\n    # Master playbook\n    -\
+  \ import_playbook: webservers.yml\n    - import_playbook: databases.yml\n    - import_playbook:\
+  \ monitoring.yml\n    ```\n\n    ### playbooks/webservers.yml\n    ```yaml\n   \
+  \ ---\n    - name: Configure web servers\n      hosts: webservers\n      become:\
+  \ yes\n\n      roles:\n        - common\n        - webserver\n        - { role:\
+  \ ssl, when: enable_ssl }\n        - monitoring-agent\n\n      tasks:\n        -\
+  \ name: Deploy application\n          git:\n            repo: https://github.com/myorg/myapp.git\n\
+  \            dest: \"{{ app_dir }}\"\n            version: \"{{ app_version | default('main')\
+  \ }}\"\n          notify: Restart application\n\n        - name: Install application\
+  \ dependencies\n          pip:\n            requirements: \"{{ app_dir }}/requirements.txt\"\
+  \n            virtualenv: \"{{ app_dir }}/venv\"\n\n        - name: Copy systemd\
+  \ service file\n          template:\n            src: templates/myapp.service.j2\n\
+  \            dest: /etc/systemd/system/myapp.service\n          notify:\n      \
+  \      - Reload systemd\n            - Restart application\n\n        - name: Start\
+  \ application\n          service:\n            name: myapp\n            state: started\n\
+  \            enabled: yes\n\n      handlers:\n        - name: Reload systemd\n \
+  \         systemd:\n            daemon_reload: yes\n\n        - name: Restart application\n\
+  \          service:\n            name: myapp\n            state: restarted\n   \
+  \ ```\n\n    ### Run Complete Provisioning\n    ```bash\n    # Deploy to staging\n\
+  \    ansible-playbook -i inventory/staging.ini playbooks/site.yml\n\n    # Deploy\
+  \ to production with specific version\n    ansible-playbook -i inventory/production.ini\
+  \ playbooks/site.yml -e \"app_version=v1.2.3\"\n\n    # Check what would change\n\
+  \    ansible-playbook -i inventory/production.ini playbooks/site.yml --check --diff\n\
+  \    ```\n\n    ## CloudFormation vs Terraform\n\n    ### AWS CloudFormation\n\n\
+  \    **Pros:**\n    - Native AWS service, deep integration\n    - No additional\
+  \ tools needed\n    - Direct support from AWS\n    - Free to use\n\n    **Cons:**\n\
+  \    - AWS-only (vendor lock-in)\n    - JSON/YAML can be verbose\n    - Slower to\
+  \ adopt new AWS features\n    - Limited reusability\n\n    ### Example CloudFormation\n\
+  \    ```yaml\n    AWSTemplateFormatVersion: '2010-09-09'\n    Resources:\n     \
+  \ MyEC2Instance:\n        Type: AWS::EC2::Instance\n        Properties:\n      \
+  \    InstanceType: t2.micro\n          ImageId: ami-0c55b159cbfafe1f0\n        \
+  \  Tags:\n            - Key: Name\n              Value: MyInstance\n    ```\n\n\
+  \    ### Terraform\n\n    **Pros:**\n    - Multi-cloud support\n    - Clean HCL\
+  \ syntax\n    - Strong community\n    - Better state management\n    - Modules for\
+  \ reusability\n\n    **Cons:**\n    - Additional tool to install\n    - State file\
+  \ management complexity\n    - May lag behind new AWS features\n\n    ### Same Example\
+  \ in Terraform\n    ```hcl\n    resource \"aws_instance\" \"web\" {\n      ami \
+  \          = \"ami-0c55b159cbfafe1f0\"\n      instance_type = \"t2.micro\"\n\n \
+  \     tags = {\n        Name = \"MyInstance\"\n      }\n    }\n    ```\n\n    ###\
+  \ When to Use What?\n\n    **Use CloudFormation if:**\n    - Exclusively using AWS\n\
+  \    - Want native AWS integration\n    - Using AWS-specific features\n    - Prefer\
+  \ AWS support\n\n    **Use Terraform if:**\n    - Multi-cloud environment\n    -\
+  \ Want cleaner syntax\n    - Need strong module ecosystem\n    - Value community\
+  \ tools\n\n    ## Pulumi - IaC with Programming Languages\n\n    Pulumi lets you\
+  \ use real programming languages (TypeScript, Python, Go, C#) for infrastructure.\n\
+  \n    ### Benefits\n    - Use familiar programming languages\n    - IDE autocomplete\
+  \ and type checking\n    - Standard programming constructs (loops, functions, classes)\n\
+  \    - Better abstraction and reusability\n    - Test with standard testing frameworks\n\
+  \n    ### Example: Python with Pulumi\n    ```python\n    import pulumi\n    import\
+  \ pulumi_aws as aws\n\n    # Create VPC\n    vpc = aws.ec2.Vpc('my-vpc',\n     \
+  \   cidr_block='10.0.0.0/16',\n        enable_dns_hostnames=True,\n        tags={'Name':\
+  \ 'my-vpc'})\n\n    # Create subnet\n    subnet = aws.ec2.Subnet('my-subnet',\n\
+  \        vpc_id=vpc.id,\n        cidr_block='10.0.1.0/24',\n        availability_zone='us-west-2a',\n\
+  \        tags={'Name': 'my-subnet'})\n\n    # Create instances using loop\n    instances\
+  \ = []\n    for i in range(3):\n        instance = aws.ec2.Instance(f'web-{i}',\n\
+  \            ami='ami-0c55b159cbfafe1f0',\n            instance_type='t2.micro',\n\
+  \            subnet_id=subnet.id,\n            tags={'Name': f'web-{i}'})\n    \
+  \    instances.append(instance)\n\n    # Export outputs\n    pulumi.export('vpc_id',\
+  \ vpc.id)\n    pulumi.export('instance_ids', [i.id for i in instances])\n    ```\n\
+  \n    ### Example: TypeScript with Pulumi\n    ```typescript\n    import * as pulumi\
+  \ from \"@pulumi/pulumi\";\n    import * as aws from \"@pulumi/aws\";\n\n    //\
+  \ Create S3 bucket\n    const bucket = new aws.s3.Bucket(\"my-bucket\", {\n    \
+  \    acl: \"private\",\n        versioning: {\n            enabled: true,\n    \
+  \    },\n    });\n\n    // Create multiple EC2 instances\n    const instances =\
+  \ Array.from({length: 3}, (_, i) =>\n        new aws.ec2.Instance(`web-${i}`, {\n\
+  \            ami: \"ami-0c55b159cbfafe1f0\",\n            instanceType: \"t2.micro\"\
+  ,\n            tags: {\n                Name: `web-${i}`,\n            },\n    \
+  \    })\n    );\n\n    // Export outputs\n    export const bucketName = bucket.id;\n\
+  \    export const instanceIds = instances.map(i => i.id);\n    ```\n\n    ## IaC\
+  \ Best Practices\n\n    ### 1. Version Control Everything\n    - All IaC code in\
+  \ Git\n    - Branch strategy for environments\n    - Code review for changes\n \
+  \   - Tag releases\n\n    ### 2. Modular and DRY\n    - Create reusable modules\n\
+  \    - Don't repeat yourself\n    - Parameterize configurations\n    - Use inheritance\
+  \ and composition\n\n    ### 3. Immutable Infrastructure\n    - Replace servers,\
+  \ don't modify\n    - Version everything\n    - Use blue-green deployments\n   \
+  \ - Treat servers as cattle, not pets\n\n    ### 4. Security\n    - Never commit\
+  \ secrets\n    - Use secret managers (AWS Secrets Manager, Vault)\n    - Encrypt\
+  \ state files\n    - Scan IaC for vulnerabilities\n    - Apply least privilege\n\
+  \n    ### 5. Testing\n    - Validate syntax before apply\n    - Test in non-production\
+  \ first\n    - Use automated testing (Terratest, InSpec)\n    - Integration tests\n\
+  \    - Security scanning\n\n    ### 6. Documentation\n    - README for each project\n\
+  \    - Document variables and outputs\n    - Diagram architecture\n    - Runbook\
+  \ for operations\n\n    ### 7. CI/CD Integration\n    ```yaml\n    # .github/workflows/terraform.yml\n\
+  \    name: Terraform\n\n    on:\n      push:\n        branches: [main]\n      pull_request:\n\
+  \        branches: [main]\n\n    jobs:\n      terraform:\n        runs-on: ubuntu-latest\n\
+  \n        steps:\n          - uses: actions/checkout@v2\n\n          - name: Setup\
+  \ Terraform\n            uses: hashicorp/setup-terraform@v1\n\n          - name:\
+  \ Terraform Init\n            run: terraform init\n\n          - name: Terraform\
+  \ Format\n            run: terraform fmt -check\n\n          - name: Terraform Validate\n\
+  \            run: terraform validate\n\n          - name: Terraform Plan\n     \
+  \       run: terraform plan\n\n          - name: Terraform Apply\n            if:\
+  \ github.ref == 'refs/heads/main'\n            run: terraform apply -auto-approve\n\
+  \    ```\n\n    ### 8. State Management\n    - Use remote state\n    - Enable state\
+  \ locking\n    - Regular backups\n    - State encryption\n    - Access control\n\
+  \n    ### 9. Monitoring and Alerts\n    - Monitor infrastructure changes\n    -\
+  \ Alert on drift detection\n    - Track cost changes\n    - Log all operations\n\
+  \n    ### 10. Disaster Recovery\n    - Test recovery procedures\n    - Document\
+  \ rollback steps\n    - Maintain backups\n    - Practice chaos engineering\n\n \
+  \   ## Summary\n\n    Configuration management and IaC tools enable:\n    - **Ansible**:\
+  \ Agentless configuration management with simple YAML\n    - **CloudFormation**:\
+  \ Native AWS infrastructure provisioning\n    - **Terraform**: Multi-cloud infrastructure\
+  \ with HCL\n    - **Pulumi**: Infrastructure using real programming languages\n\
+  \    - **Best practices**: Security, testing, CI/CD, and documentation\n\n    Choose\
+  \ tools based on your needs:\n    - Terraform for infrastructure provisioning\n\
+  \    - Ansible for configuration and application deployment\n    - Both together\
+  \ for complete automation"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What does it mean that Ansible is "agentless" and why is this beneficial?
+  options:
+  - Agentless means Ansible has no software agents - it uses SSH to manage nodes without
+    installing anything on them
+  - Agentless means Ansible works without configuration files
+  - Agentless means you don't need a control node
+  - Agentless is just marketing terminology with no technical meaning
+  correct_answer: Agentless means Ansible has no software agents - it uses SSH to
+    manage nodes without installing anything on them
+  explanation: 'Ansible being "agentless" means it requires NO software installation
+    on managed nodes (servers you want to configure). How it works: Ansible control
+    node connects via SSH, executes Python scripts remotely, removes scripts after
+    execution, no persistent agent running. Contrast with agent-based tools (Puppet,
+    Chef): Require installing agent software on every managed node, agents run continuously
+    (consuming resources), agents poll master server for configuration, version management
+    of agents across fleet is complex. Benefits of agentless: (1) Zero overhead -
+    No agent consuming CPU/memory on managed nodes, (2) Instant start - Manage any
+    server with SSH access immediately, no agent deployment, (3) Security - Smaller
+    attack surface (no agent to compromise), uses existing SSH infrastructure (already
+    secured), (4) Simplicity - No version mismatches between agent/master, no "agent
+    stopped working" debugging, (5) Resource efficiency - Important for embedded systems,
+    containers with limited resources. Requirements for Ansible: (1) SSH access to
+    managed nodes, (2) Python installed on managed nodes (usually pre-installed on
+    Linux), (3) Ansible installed only on control node (your laptop/CI server). Trade-offs:
+    Pull vs Push - Puppet/Chef agents pull configuration (works through firewall),
+    Ansible pushes (requires outbound SSH from control node). Best practices: Use
+    SSH key-based authentication (not passwords), Limit SSH access with specific keys
+    per environment, Use bastion/jump hosts for production access.'
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What does "idempotent" mean in the context of Ansible playbooks?
+  options:
+  - Idempotent means playbooks run very fast
+  - Idempotent means running a playbook multiple times produces the same result as
+    running it once - safe to re-run
+  - Idempotent means playbooks never fail
+  - Idempotent means playbooks can only run on one host at a time
+  correct_answer: Idempotent means running a playbook multiple times produces the
+    same result as running it once - safe to re-run
+  explanation: 'Idempotency is a fundamental Ansible principle: running the same playbook
+    multiple times on the same system produces the same end state, making playbooks
+    safe to re-run without causing problems. How Ansible achieves idempotency: Modules
+    check current state before making changes. apt module: checks if nginx already
+    installed → if yes, skip; if no, install. file module: checks if directory exists
+    with correct permissions → if yes, skip; if no, create/fix. service module: checks
+    if nginx running → if yes, skip; if no, start. Example demonstrating idempotency:
+    First run: - name: Install nginx (Changed: nginx installed), Second run: - name:
+    Install nginx (OK: nginx already installed, no change). Non-idempotent operations
+    (bad): shell: echo "test" >> /tmp/file adds line every run (grows file infinitely).
+    command: /usr/bin/update-db runs every time (may cause duplicates). Making shell
+    commands idempotent: shell: echo "test" > /tmp/file (overwrites, not appends).
+    command: /usr/bin/update-db args: creates: /tmp/update.done (runs once, creates
+    flag file). Benefits: (1) Safety - Run playbooks anytime without fear of breaking
+    things, (2) Convergence - Re-run playbook to fix configuration drift, (3) Recovery
+    - After failed run, just run again to complete, (4) Continuous enforcement - Run
+    playbook on schedule to ensure desired state. Handlers and idempotency: Tasks
+    notify handlers only when state changes. If nginx config unchanged → handler not
+    triggered → nginx not restarted (efficient).'
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: What is the purpose of handlers in Ansible playbooks and when are they
+    executed?
+  options:
+  - Handlers process errors when tasks fail
+  - Handlers are executed only when notified by tasks that made changes, and run once
+    at the end of the playbook
+  - Handlers run before every task to prepare the system
+  - Handlers automatically restart services every time
+  correct_answer: Handlers are executed only when notified by tasks that made changes,
+    and run once at the end of the playbook
+  explanation: 'Handlers are special tasks that run only when triggered by other tasks,
+    typically used for service restarts and similar operations that should happen
+    only when configuration changes. How handlers work: (1) Define handler in handlers
+    section: handlers: - name: Restart nginx, service: name=nginx state=restarted.
+    (2) Tasks notify handler when they change state: - name: Copy nginx config, template:
+    src=nginx.conf, notify: Restart nginx. (3) Handler runs ONCE at end of playbook
+    if notified at least once, even if multiple tasks notified it. Why handlers are
+    important: (1) Efficiency - Multiple config changes → single restart, not restart
+    after each change. Example: Copy 5 config files → nginx restarted once, not 5
+    times, (2) Proper ordering - Handlers run at end, ensuring all config is in place
+    before restart, (3) Idempotency - If no changes made → handler not triggered →
+    service not restarted unnecessarily. Handler execution flow: Task 1 changes config
+    → notifies handler (queued). Task 2 changes config → notifies same handler (still
+    queued once). Task 3 no change → doesn''t notify. Playbook finishes → handler
+    runs once. Force handlers on failure: ansible-playbook --force-handlers runs handlers
+    even if playbook fails (useful for partial deployments). Common handler patterns:
+    Restart services (nginx, postgresql), Reload configurations (systemctl reload),
+    Rebuild caches, Run validation tests. Handler limitations: Run only at end (can''t
+    restart mid-playbook), No return values (fire-and-forget).'
+  require_pass: true

@@ -1,0 +1,241 @@
+slug: heat-engines-carnot-cycle
+title: "Heat Engines and Carnot Cycle"
+difficulty: advanced
+sequence_order: 3
+estimated_minutes: 18
+key_concepts:
+- heat-engine
+- carnot-cycle
+- thermal-efficiency
+- refrigerator
+- second-law-thermodynamics
+prerequisites:
+- first-law-thermodynamics
+- second-law-entropy
+content_md: |
+  # Heat Engines and Carnot Cycle
+
+  ## Heat Engine
+
+  Device that converts heat into mechanical work by operating in cycles.
+
+  ```
+  Heat absorbed from hot reservoir: Q_H
+  Heat rejected to cold reservoir: Q_C
+  Work output: W = Q_H - Q_C
+
+  Efficiency: η = W/Q_H = (Q_H - Q_C)/Q_H = 1 - Q_C/Q_H
+  ```
+
+  ### Key Points:
+  - Works between two temperature reservoirs
+  - Operates in cycles (returns to initial state)
+  - Cannot convert all heat to work (second law)
+  - Q_H > W always
+
+  ## Second Law Implications
+
+  **Kelvin-Planck:** No engine can convert heat completely into work.
+
+  **Clausius:** Heat cannot spontaneously flow from cold to hot.
+
+  ## Carnot Engine
+
+  **Ideal reversible heat engine** operating between two temperatures.
+
+  ### Carnot Cycle (4 steps):
+
+  1. **Isothermal Expansion (A→B):**
+     ```
+     T = T_H (constant)
+     Q_H absorbed
+     W₁ = Q_H = nRT_H ln(V_B/V_A)
+     ```
+
+  2. **Adiabatic Expansion (B→C):**
+     ```
+     Q = 0
+     T drops from T_H to T_C
+     W₂ = nCᵥ(T_H - T_C)
+     ```
+
+  3. **Isothermal Compression (C→D):**
+     ```
+     T = T_C (constant)
+     Q_C rejected
+     W₃ = -Q_C = -nRT_C ln(V_C/V_D)
+     ```
+
+  4. **Adiabatic Compression (D→A):**
+     ```
+     Q = 0
+     T rises from T_C to T_H
+     W₄ = -nCᵥ(T_H - T_C)
+     ```
+
+  ## Carnot Efficiency
+
+  ```
+  η_Carnot = 1 - T_C/T_H = (T_H - T_C)/T_H
+
+  T must be in KELVIN!
+  ```
+
+  ### Important Results:
+  - **Maximum possible efficiency** between given temperatures
+  - **Independent of working substance**
+  - **η < 1** always (T_C > 0 in real world)
+  - **η = 1** only if T_C = 0 K (impossible)
+
+  ### Relation:
+  ```
+  Q_H/T_H = Q_C/T_C (for Carnot engine)
+
+  This leads to entropy concept!
+  ```
+
+  ## Efficiency Comparison
+
+  | Engine Type | Efficiency |
+  |-------------|------------|
+  | Carnot (ideal) | η = 1 - T_C/T_H |
+  | Real engine | η < η_Carnot |
+  | Perfect engine | η = 1 (impossible) |
+  | Typical car engine | ~25-30% |
+  | Power plant | ~35-40% |
+
+  ## Refrigerator (Heat Pump)
+
+  **Reverse heat engine** - transfers heat from cold to hot.
+
+  ```
+  Work input: W
+  Heat absorbed from cold: Q_C
+  Heat rejected to hot: Q_H = Q_C + W
+
+  Coefficient of Performance (COP):
+  β = Q_C/W = Q_C/(Q_H - Q_C)
+  ```
+
+  ### Carnot Refrigerator:
+  ```
+  β_Carnot = T_C/(T_H - T_C)
+
+  COP can be > 1 (unlike efficiency)!
+  ```
+
+  ### Heat Pump:
+  ```
+  COP_heating = Q_H/W = T_H/(T_H - T_C) = β + 1
+  ```
+
+  ## Real vs Ideal Engines
+
+  ### Why Real < Carnot:
+  1. **Friction** (irreversible)
+  2. **Finite temperature differences** for heat transfer
+  3. **Non-quasi-static processes**
+  4. **Heat losses** to surroundings
+
+  ### Irreversibility:
+  - Any irreversible process **reduces efficiency**
+  - Entropy increases in irreversible processes
+  - Real engines have η_real < η_Carnot
+
+  ## Otto Cycle (Gasoline Engine)
+
+  ```
+  Compression ratio: r = V_max/V_min
+
+  η_Otto = 1 - 1/r^(γ-1)
+
+  Higher compression ratio → higher efficiency
+  ```
+
+  ## Diesel Cycle
+
+  ```
+  η_Diesel = 1 - (1/r^(γ-1)) × [(ρ^γ - 1)/(γ(ρ-1))]
+
+  ρ = cut-off ratio = V₃/V₂
+  ```
+
+  ## Numerical Examples
+
+  **Example 1:** Carnot engine between 500 K and 300 K. Find efficiency.
+
+  **Solution:**
+  ```
+  η = 1 - T_C/T_H = 1 - 300/500 = 1 - 0.6 = 0.4 = 40%
+
+  Best possible efficiency between these temperatures!
+  No engine can do better than 40%.
+  ```
+
+  **Example 2:** Engine absorbs 1000 J from source at 500 K, rejects to sink at 300 K with Carnot efficiency. Find work and heat rejected.
+
+  **Solution:**
+  ```
+  η = 1 - 300/500 = 0.4
+  W = ηQ_H = 0.4 × 1000 = 400 J
+  Q_C = Q_H - W = 1000 - 400 = 600 J
+
+  OR using Q_H/T_H = Q_C/T_C:
+  Q_C = Q_H × (T_C/T_H) = 1000 × (300/500) = 600 J ✓
+  ```
+
+  **Example 3:** Refrigerator operates between -10°C and 27°C. Find maximum COP.
+
+  **Solution:**
+  ```
+  T_C = 273 - 10 = 263 K
+  T_H = 273 + 27 = 300 K
+
+  β_Carnot = T_C/(T_H - T_C) = 263/(300-263) = 263/37 ≈ 7.1
+
+  Can remove 7.1 J heat per 1 J work!
+  ```
+
+  ## JEE Key Points
+
+  1. **η = W/Q_H = 1 - Q_C/Q_H**
+  2. **Carnot: η = 1 - T_C/T_H** (maximum possible)
+  3. **Use Kelvin** for temperatures
+  4. **Q_H/T_H = Q_C/T_C** for Carnot
+  5. **Refrigerator COP** can exceed 1
+  6. **Real efficiency < Carnot** always
+
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: "A Carnot engine has efficiency 25%. If temperature of sink is decreased by 50 K keeping source same, efficiency becomes 50%. The temperature of source is:"
+  options:
+  - "100 K"
+  - "200 K"
+  - "300 K"
+  - "400 K"
+  correct_answer: "200 K"
+  explanation: "Initial: η₁ = 1 - T_C/T_H = 0.25, so T_C/T_H = 0.75, T_C = 0.75T_H. After decrease: η₂ = 1 - (T_C-50)/T_H = 0.50, so (T_C-50)/T_H = 0.50. From first equation: T_C = 0.75T_H. Substituting: (0.75T_H - 50)/T_H = 0.50. 0.75T_H - 50 = 0.50T_H. 0.25T_H = 50. T_H = 200 K. Check: T_C = 150 K. η₁ = 1 - 150/200 = 0.25 ✓. New T_C = 100 K. η₂ = 1 - 100/200 = 0.50 ✓. This problem tests understanding that small temperature changes can significantly affect efficiency."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: "A Carnot engine absorbs 1000 J at 400 K and rejects heat at 300 K. Work done is:"
+  options:
+  - "100 J"
+  - "250 J"
+  - "500 J"
+  - "750 J"
+  correct_answer: "250 J"
+  explanation: "η = 1 - T_C/T_H = 1 - 300/400 = 1 - 0.75 = 0.25. Work W = ηQ_H = 0.25 × 1000 = 250 J. Only 25% of absorbed heat converted to work! Remaining 750 J rejected to cold reservoir. This is fundamental limitation of heat engines - cannot convert all heat to work. Even this ideal Carnot engine with 100 K temperature difference achieves only 25% efficiency. Real engines perform worse. To improve: increase T_H (limited by material strength) or decrease T_C (limited by environment). Power plants use T_H ≈ 800 K, T_C ≈ 300 K giving η_max ≈ 63%, actual ≈ 40%."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: "For a Carnot refrigerator operating between 0°C and 27°C, coefficient of performance is:"
+  options:
+  - "0.1"
+  - "1.0"
+  - "10.1"
+  - "27"
+  correct_answer: "10.1"
+  explanation: "Convert to Kelvin: T_C = 273 K, T_H = 300 K. β = T_C/(T_H - T_C) = 273/(300-273) = 273/27 ≈ 10.1. This means: for every 1 J of work input, refrigerator can remove 10.1 J of heat from cold reservoir! Total heat rejected to hot side = 11.1 J (work converts to heat). COP > 1 is normal and desirable for refrigerators. Home refrigerators typically have COP of 2-3 (less than Carnot due to irreversibilities). Note: COP decreases as temperature difference increases. Deep freezer has lower COP than normal refrigerator. Air conditioner in summer (large ΔT) less efficient than mild weather."
+  require_pass: true

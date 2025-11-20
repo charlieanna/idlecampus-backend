@@ -1,0 +1,58 @@
+slug: electronicconfiguration-practice
+title: electronic_configuration — Practice
+difficulty: medium
+sequence_order: 14
+estimated_minutes: 2
+key_concepts:
+- electronic_configuration
+prerequisites: []
+content_md: '# electronic_configuration — Practice 🚀
+
+
+  All have 18 electrons: K⁺ (19-1=18), Ca²⁺ (20-2=18), Cl⁻ (17+1=18), S²⁻ (16+2=18)
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: 'Which of the following species are isoelectronic (have the same number of electrons)?'
+  options:
+  - 'K⁺, Ca²⁺, Cl⁻, S²⁻'
+  - 'Na⁺, Mg²⁺, Al³⁺, F⁻'
+  - 'O²⁻, F⁻, Ne, Na⁺'
+  - 'All of the above'
+  correct_answer: 'All of the above'
+  explanation: 'Isoelectronic species have the same number of electrons, regardless of their nuclear charge. Let us verify each set: SET A: K⁺ (19-1=18e⁻), Ca²⁺ (20-2=18e⁻), Cl⁻ (17+1=18e⁻), S²⁻ (16+2=18e⁻). All have 18 electrons (Ar configuration). SET B: Na⁺ (11-1=10e⁻), Mg²⁺ (12-2=10e⁻), Al³⁺ (13-3=10e⁻), F⁻ (9+1=10e⁻). All have 10 electrons (Ne configuration). SET C: O²⁻ (8+2=10e⁻), F⁻ (9+1=10e⁻), Ne (10e⁻), Na⁺ (11-1=10e⁻). All have 10 electrons (Ne configuration). Therefore, all three sets contain isoelectronic species. Important concepts: (1) Isoelectronic species have identical electron configurations but different nuclear charges. (2) Cations lose electrons (fewer e⁻ than protons). (3) Anions gain electrons (more e⁻ than protons). (4) Within an isoelectronic series, ionic radius decreases with increasing nuclear charge: S²⁻ > Cl⁻ > Ar > K⁺ > Ca²⁺ (all 18e⁻, but Ca²⁺ has highest Z=20, pulling electrons closer). (5) Common isoelectronic configurations: 2e⁻ (He): H⁻. 10e⁻ (Ne): O²⁻, F⁻, Ne, Na⁺, Mg²⁺, Al³⁺. 18e⁻ (Ar): S²⁻, Cl⁻, Ar, K⁺, Ca²⁺.'
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: 'What is the electronic configuration of Cr (Z=24)?'
+  options:
+  - '[Ar] 3d⁴ 4s²'
+  - '[Ar] 3d⁵ 4s¹'
+  - '[Ar] 3d⁶ 4s⁰'
+  - '[Ar] 4s² 3d⁴'
+  correct_answer: '[Ar] 3d⁵ 4s¹'
+  explanation: 'Chromium (Cr, Z=24) has an anomalous electronic configuration due to the extra stability of half-filled d orbitals. Expected configuration (by Aufbau): [Ar] 3d⁴ 4s². Actual configuration: [Ar] 3d⁵ 4s¹. Reason: The 3d⁵ 4s¹ configuration is more stable because: (1) Half-filled d subshell (d⁵) provides exchange energy stabilization. (2) All five 3d orbitals have one electron with parallel spins, maximizing exchange interactions. (3) This extra stability outweighs the slightly higher energy of promoting an electron from 4s to 3d. Similarly anomalous: Copper (Cu, Z=29): Expected [Ar] 3d⁹ 4s², Actual [Ar] 3d¹⁰ 4s¹ (fully filled d¹⁰ is stable). Molybdenum (Mo, Z=42): [Kr] 4d⁵ 5s¹ (half-filled d⁵). Silver (Ag, Z=47): [Kr] 4d¹⁰ 5s¹ (fully filled d¹⁰). General rules: (1) Follow Aufbau principle (1s, 2s, 2p, 3s, 3p, 4s, 3d, 4p...). (2) Exceptions occur for half-filled (d⁵, f⁷) and fully filled (d¹⁰, f¹⁴) subshells. (3) For transition metal cations, remove 4s electrons before 3d: Cr⁺ is [Ar] 3d⁵, Cr³⁺ is [Ar] 3d³. Writing order: Energy order for filling is 4s before 3d, but conventional notation writes 3d before 4s: [Ar] 3d⁵ 4s¹.'
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: 'Which element has the electronic configuration [Xe] 4f¹⁴ 5d¹⁰ 6s² 6p⁵?'
+  options:
+  - Iodine (I)
+  - Astatine (At)
+  - Bromine (Br)
+  - Tellurium (Te)
+  correct_answer: Astatine (At)
+  explanation: 'To identify the element, count the total electrons: [Xe] = 54 electrons (xenon core). 4f¹⁴ = 14 electrons. 5d¹⁰ = 10 electrons. 6s² = 2 electrons. 6p⁵ = 5 electrons. Total = 54 + 14 + 10 + 2 + 5 = 85 electrons. Element with Z=85 is Astatine (At). Verification: At is in Period 6, Group 17 (halogens). Configuration breakdown: Periods 1-5: [Xe] fills 54 electrons. Lanthanides (4f block): 4f¹⁴ fills 14 electrons (Ce to Lu). Transition metals (5d block): 5d¹⁰ fills 10 electrons (including Hf to Hg). Main group (6s and 6p): 6s² 6p⁵ = 7 valence electrons (Group 17 = halogen). Similar configurations: Bromine (Br, Z=35): [Ar] 3d¹⁰ 4s² 4p⁵ (Period 4 halogen). Iodine (I, Z=53): [Kr] 4d¹⁰ 5s² 5p⁵ (Period 5 halogen). Astatine (At, Z=85): [Xe] 4f¹⁴ 5d¹⁰ 6s² 6p⁵ (Period 6 halogen, after lanthanides). All halogens have ns² np⁵ valence configuration (7 valence electrons). The presence of 4f¹⁴ indicates the element comes after the lanthanide series, placing it in Period 6 or later.'
+  require_pass: true

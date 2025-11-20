@@ -1,0 +1,44 @@
+slug: lesson-47
+title: Lesson 47
+difficulty: easy
+sequence_order: 47
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Application Logging Strategies\n\n    -\
+  \ Write logs to stdout/stderr\n    - Use sidecar for log shipping\n    - Structured\
+  \ logs and correlation IDs"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: Why is it recommended for containerized applications to write logs to stdout/stderr?
+  options:
+  - It makes logs more secure
+  - It follows cloud-native patterns and allows Kubernetes to capture and manage logs centrally
+  - It reduces application memory usage
+  - It improves application performance
+  correct_answer: It follows cloud-native patterns and allows Kubernetes to capture and manage logs centrally
+  explanation: "Writing logs to stdout/stderr is a cloud-native best practice because it decouples log generation from log management. When applications write to stdout/stderr, the container runtime captures these streams, and Kubernetes makes them available via 'kubectl logs'. This approach allows log collection tools (like Fluentd, Filebeat, or Promtail running as DaemonSets) to consistently collect logs from all containers without requiring application-specific configuration. Applications don't need to know about log rotation, storage locations, or shipping mechanisms - they just write events to standard streams. This simplifies applications, makes them more portable, and enables centralized logging infrastructure to handle aggregation, retention, and analysis. Writing to files requires managing rotation, mounting volumes, and coordinating with log shippers, adding complexity that cloud-native patterns eliminate."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What is the advantage of using structured logging (JSON) over plain text logs?
+  options:
+  - JSON logs are smaller in size
+  - Structured logs enable easier parsing, filtering, and analysis in log aggregation systems
+  - JSON logs are more secure
+  - Structured logs require less CPU to generate
+  correct_answer: Structured logs enable easier parsing, filtering, and analysis in log aggregation systems
+  explanation: "Structured logging, typically using JSON format, makes log data much easier to parse, search, and analyze in log aggregation systems like Elasticsearch, Loki, or CloudWatch. Instead of parsing unstructured text with regex patterns (which is fragile and slow), structured logs provide key-value pairs that can be indexed and queried directly. For example, a JSON log like '{\"level\":\"error\",\"user\":\"alice\",\"action\":\"login\",\"duration_ms\":245}' allows you to efficiently query all errors for a specific user or analyze login durations. Structured logs also support rich data types (numbers, booleans, nested objects) that are lost in plain text. Most logging libraries (like Winston, Logrus, Zap, Serilog) support structured logging. Combine this with correlation IDs to trace requests across microservices, making debugging distributed systems much easier."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: In a sidecar logging pattern, what is the role of the sidecar container?
+  options:
+  - To generate application logs
+  - To collect logs from a shared volume and ship them to a central logging system
+  - To compress log files
+  - To delete old logs
+  correct_answer: To collect logs from a shared volume and ship them to a central logging system
+  explanation: "In the sidecar logging pattern, the main application container writes logs to a shared volume (typically an emptyDir), and a sidecar container reads those logs and forwards them to a centralized logging system. This pattern is useful when applications must write to files (legacy apps, specific log formats) or when you need application-specific log processing before shipping. The sidecar can transform, filter, or enrich logs before forwarding. For example, the main container might write to /var/log/app.log on a shared volume, while a Fluentd or Filebeat sidecar reads from that volume and ships to Elasticsearch. While the sidecar pattern works, the preferred cloud-native approach is writing to stdout/stderr and using node-level log collectors (DaemonSets) rather than per-pod sidecars, as it's more resource-efficient and simpler."
+  require_pass: true

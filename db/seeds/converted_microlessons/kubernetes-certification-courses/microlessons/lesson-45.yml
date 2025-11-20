@@ -1,0 +1,44 @@
+slug: lesson-45
+title: Lesson 45
+difficulty: easy
+sequence_order: 45
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Container Security Best Practices\n\n \
+  \   - Use non-root user\n    - Read-only root filesystem\n    - Pin image versions\n\
+  \    - Scan images for vulnerabilities\n    - Limit capabilities"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: Why is it important to run containers as a non-root user?
+  options:
+  - To improve container performance
+  - To reduce the attack surface if a container is compromised
+  - To enable better networking
+  - To reduce memory usage
+  correct_answer: To reduce the attack surface if a container is compromised
+  explanation: "Running containers as non-root users is a critical security best practice. If an attacker gains code execution inside a container running as root, they have root privileges within that container and potentially on the host if they can escape the container. By running as a non-root user, you limit what an attacker can do even if they compromise the container. In Kubernetes, you can enforce this using Pod Security Standards or by setting securityContext.runAsNonRoot: true in your pod spec, which prevents the container from running if the image tries to run as root. You should also set a specific UID using runAsUser to avoid using UID 0. Many official container images now support running as non-root users. This defense-in-depth approach significantly reduces risk without much overhead."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What is the benefit of setting a read-only root filesystem for a container?
+  options:
+  - It improves container startup time
+  - It prevents attackers from modifying binaries or installing malicious software in the container
+  - It reduces the container image size
+  - It improves network performance
+  correct_answer: It prevents attackers from modifying binaries or installing malicious software in the container
+  explanation: "A read-only root filesystem (set via securityContext.readOnlyRootFilesystem: true) prevents any writes to the container's filesystem, significantly limiting what an attacker can do if they compromise the container. They can't modify binaries, install backdoors, create malicious scripts, or persist changes. This forces applications to write temporary data to explicitly mounted volumes (like emptyDir for /tmp). While this requires applications to be designed with explicit writable paths, it's a powerful security control. Many applications work fine with read-only filesystems - they just need writable volumes for logs, temp files, and cache. This also makes containers more aligned with immutable infrastructure principles where containers are disposable and changes should come from new image versions, not runtime modifications."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: Why should you pin specific image versions (tags) rather than using 'latest' in production?
+  options:
+  - The 'latest' tag makes containers start slower
+  - Using specific versions ensures predictable, reproducible deployments and makes rollbacks easier
+  - The 'latest' tag is deprecated
+  - Specific versions use less disk space
+  correct_answer: Using specific versions ensures predictable, reproducible deployments and makes rollbacks easier
+  explanation: "Pinning image versions (like 'nginx:1.21.3' instead of 'nginx:latest') ensures that your deployments are predictable and reproducible. The 'latest' tag is mutable - it points to different images over time as new versions are released. If you deploy 'latest' today and scale up tomorrow, you might get different image versions on different nodes, leading to inconsistent behavior. Specific versions also make it clear what's running in each environment and enable easy rollbacks - you know exactly which version to roll back to. For security patching, you can update to a new specific version in a controlled manner rather than automatically pulling whatever is 'latest'. Use semantic versioning tags or image digests (immutable SHA256 hashes) for maximum reproducibility. This is especially critical for production environments."
+  require_pass: true

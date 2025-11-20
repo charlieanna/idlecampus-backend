@@ -1,0 +1,67 @@
+<div class="container py-4">
+  <div class="row mb-3">
+    <div class="col-12 d-flex align-items-center justify-content-between">
+      <h2 class="mb-0">Quick Practice Session</h2>
+      <span class="text-muted">Refresh to strengthen weak concepts</span>
+    </div>
+  </div>
+
+  <div class="row mb-3">
+    <div class="col-12">
+      <div class="progress" style="height: 16px;">
+        <div class="progress-bar" role="progressbar" 
+             style="width: <%= @session.progress_percentage %>%" 
+             aria-valuenow="<%= @session.progress_percentage %>" aria-valuemin="0" aria-valuemax="100">
+          <%= @session.progress_percentage %>%
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <% if @next_item && @item_type == 'unit' %>
+    <div class="card shadow-sm mb-4">
+      <div class="card-header bg-info text-white">
+        <h5 class="mb-0">Review: <%= @current_item.title %></h5>
+      </div>
+      <div class="card-body">
+        <div class="mb-3">
+          <p class="lead mb-2">Concept Brief</p>
+          <div class="border rounded p-3 bg-light" style="max-height: 260px; overflow:auto;">
+            <%= simple_format(@current_item.concept_explanation.to_s.truncate(1200)) %>
+          </div>
+        </div>
+        <%= button_to "Mark Reviewed", 
+            complete_item_course_remediation_session_path(@enrollment.course, item_type: 'InteractiveLearningUnit', item_id: @current_item.id), 
+            method: :post,
+            class: "btn btn-primary" %>
+      </div>
+    </div>
+  <% elsif @next_item && @item_type == 'question' %>
+    <div class="card shadow-sm mb-4">
+      <div class="card-header bg-primary text-white">
+        <h5 class="mb-0">Quick Quiz</h5>
+      </div>
+      <div class="card-body">
+        <p class="lead"><%= @current_item.question_text %></p>
+        <%= form_with url: complete_item_course_remediation_session_path(@enrollment.course), method: :post, local: true do |f| %>
+          <%= hidden_field_tag :item_type, 'QuizQuestion' %>
+          <%= hidden_field_tag :item_id, @current_item.id %>
+          <div class="mb-3">
+            <% options = (@current_item.options.is_a?(String) ? JSON.parse(@current_item.options) : @current_item.options) || [] %>
+            <% options.each_with_index do |opt, idx| %>
+              <div class="form-check mb-2">
+                <input class="form-check-input" type="radio" name="answer" id="opt_<%= idx %>" value="<%= opt.is_a?(Hash) ? opt['text'] : opt %>">
+                <label class="form-check-label" for="opt_<%= idx %>"><%= opt.is_a?(Hash) ? opt['text'] : opt %></label>
+              </div>
+            <% end %>
+          </div>
+          <%= f.submit "Submit & Next", class: "btn btn-success" %>
+        <% end %>
+      </div>
+    </div>
+  <% else %>
+    <div class="alert alert-info">No review items found.</div>
+  <% end %>
+</div>
+
+

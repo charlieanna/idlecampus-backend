@@ -1,0 +1,132 @@
+slug: docker-compose-up-start-multi-container-applications
+title: 'Docker Compose Up: Start Multi-Container Applications'
+difficulty: medium
+sequence_order: 1
+estimated_minutes: 2
+key_concepts:
+- docker-compose
+- orchestration
+- multi-container
+- deployment
+- services
+prerequisites: []
+content_md: "# Docker Compose Up: Start Multi-Container Applications \U0001F680\n\n\
+  # Mastering docker-compose up: Orchestrating Multi-Service Applications\n\n    ##\
+  \ What is docker-compose up?\n    `docker-compose up` reads your `docker-compose.yml`\
+  \ file and creates, starts, and connects all defined services in one command. It's\
+  \ the primary way to launch complete application stacks with all their dependencies,\
+  \ networks, and volumes configured automatically.\n\n    ## Why Compose Matters\n\
+  \    - **Simplicity**: Start complex stacks with one command\n    - **Reproducibility**:\
+  \ Same configuration works everywhere\n    - **Development Speed**: No manual container\
+  \ management\n    - **Service Dependencies**: Automatic service ordering and networking\n\
+  \    - **Configuration as Code**: docker-compose.yml is version-controlled\n\n \
+  \   ## Basic Syntax\n    ```bash\n    docker-compose up [OPTIONS] [SERVICE...]\n\
+  \    ```\n\n    ## Common Use Cases\n\n    ### 1. Start All Services\n    ```bash\n\
+  \    docker-compose up\n    ```\n    Starts all services in foreground, showing\
+  \ logs from all containers.\n\n    ### 2. Start in Background (Detached)\n    ```bash\n\
+  \    docker-compose up -d\n    ```\n    Most common for development - starts services\
+  \ in background.\n\n    ### 3. Rebuild Images Before Starting\n    ```bash\n   \
+  \ docker-compose up --build\n    ```\n    Forces rebuild of images defined with\
+  \ `build:` in compose file.\n\n    ### 4. Start Specific Services\n    ```bash\n\
+  \    docker-compose up web database\n    ```\n    Only starts web and database services\
+  \ (plus their dependencies).\n\n    ## How docker-compose up Works\n\n    ```\n\
+  \    1. Read docker-compose.yml\n       ↓\n    2. Create custom network (if not\
+  \ exists)\n       ↓\n    3. Create volumes (if not exists)\n       ↓\n    4. Pull/build\
+  \ images as needed\n       ↓\n    5. Create containers with configurations\n   \
+  \    ↓\n    6. Start services in dependency order\n       ↓\n    7. Attach to logs\
+  \ (unless -d used)\n    ```\n\n    ## Sample docker-compose.yml\n\n    ```yaml\n\
+  \    version: '3.8'\n    services:\n      web:\n        image: nginx:alpine\n  \
+  \      ports:\n          - \"8080:80\"\n        depends_on:\n          - api\n \
+  \     api:\n        build: ./api\n        environment:\n          - DB_HOST=database\n\
+  \        depends_on:\n          - database\n      database:\n        image: postgres:13\n\
+  \        environment:\n          - POSTGRES_PASSWORD=secret\n        volumes:\n\
+  \          - db-data:/var/lib/postgresql/data\n    volumes:\n      db-data:\n  \
+  \  ```\n\n    ## Service Dependencies\n\n    Compose respects `depends_on` to start\
+  \ services in correct order:\n    ```yaml\n    web:\n      depends_on:\n       \
+  \ - api\n        - cache\n    ```\n    Starts cache and api before web (but doesn't\
+  \ wait for \"ready\").\n\n    ## Common Options\n\n    | Option | Description |\
+  \ Example |\n    |--------|-------------|---------|\n    | `-d` | Detached mode\
+  \ | `docker-compose up -d` |\n    | `--build` | Force rebuild images | `docker-compose\
+  \ up --build` |\n    | `--force-recreate` | Recreate containers | `docker-compose\
+  \ up --force-recreate` |\n    | `--no-deps` | Don't start dependencies | `docker-compose\
+  \ up --no-deps web` |\n    | `--scale` | Scale services | `docker-compose up --scale\
+  \ api=3` |\n\n    ## Networking Magic\n\n    Compose creates a default network where\
+  \ services can reach each other by name:\n    ```yaml\n    api:\n      environment:\n\
+  \        - DB_HOST=database  # Uses service name as hostname!\n    ```\n\n    ##\
+  \ Watching Logs\n\n    ### Foreground Mode (Default)\n    ```bash\n    docker-compose\
+  \ up\n    ```\n    Shows interleaved logs from all services. Press Ctrl+C to stop.\n\
+  \n    ### Detached Mode\n    ```bash\n    docker-compose up -d\n    docker-compose\
+  \ logs -f  # Follow logs separately\n    ```\n\n    ## Incremental Changes\n\n \
+  \   Compose detects changes and only recreates affected containers:\n    ```bash\n\
+  \    # Edit docker-compose.yml\n    docker-compose up -d  # Only affected services\
+  \ restart!\n    ```\n\n    ## Common Mistakes to Avoid\n\n    1. **Forgetting -d\
+  \ in scripts**: Blocks terminal without detached mode\n    2. **Not rebuilding after\
+  \ code changes**: Use `--build` flag\n    3. **Wrong working directory**: Must be\
+  \ in directory with docker-compose.yml\n    4. **Port conflicts**: Ensure ports\
+  \ in compose file aren't already used\n    5. **Missing env files**: Create `.env`\
+  \ if compose references environment variables\n\n    ## Development Workflow\n\n\
+  \    ### First Time Setup\n    ```bash\n    docker-compose up --build  # Build and\
+  \ start\n    ```\n\n    ### Daily Development\n    ```bash\n    docker-compose up\
+  \ -d       # Start in background\n    docker-compose logs -f web # Watch specific\
+  \ service logs\n    ```\n\n    ### After Code Changes\n    ```bash\n    docker-compose\
+  \ up -d --build web  # Rebuild and restart only web\n    ```\n\n    ## Pro Tips\n\
+  \n    1. **Use detached mode for CI/CD**: `docker-compose up -d` doesn't block pipelines\n\
+  \    2. **Override compose files**: Use `-f` to stack configurations\n    3. **Health\
+  \ checks matter**: Add healthchecks in compose file for readiness\n    4. **Named\
+  \ volumes for data**: Don't lose database data between restarts\n    5. **Environment\
+  \ files**: Use `.env` for sensitive configuration\n    6. **Service names as hostnames**:\
+  \ Inter-service communication is seamless\n\n    ## When to Use docker-compose up\n\
+  \n    - Starting complete application stacks for development\n    - Running integration\
+  \ tests with all dependencies\n    - Demo environments with multiple services\n\
+  \    - Local replication of production architectures\n    - CI/CD pipeline test\
+  \ environments\n\n## Syntax/Command\n\n```bash\ndocker-compose up -d\n```\n\n##\
+  \ Example\n\n```bash\ndocker-compose up\n```\n\n## Key Points\n\n- Start all services:\
+  \ docker-compose up -d\n\n- With rebuild: docker-compose up --build -d\n\n- Specific\
+  \ services: docker-compose up -d web"
+exercises:
+- type: terminal
+  sequence_order: 1
+  command: docker-compose up -d
+  description: Start complete application stack with all services running in background
+  hints:
+  - 'Start all services: docker-compose up -d'
+  - 'With rebuild: docker-compose up --build -d'
+  - 'Specific services: docker-compose up -d web'
+  validation:
+    must_not_include:
+    - Error
+    - 'panic:'
+  timeout_sec: 60
+  require_pass: true
+- type: sandbox
+  sequence_order: 99
+  hints:
+  - Run under CPU pressure to surface leaks or races
+  - Keep commands idempotent in CI
+  validation:
+    must_not_include:
+    - Error
+    - 'panic:'
+  timeout_sec: 60
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What does docker-compose up create automatically?
+  options:
+  - Networks, volumes, and containers for all services
+  - Only containers, you must manually create networks
+  - Only networks, volumes require manual creation
+  - Nothing - all resources must be pre-created
+  require_pass: true
+  correct_answer: Networks, volumes, and containers for all services
+  explanation: 'When you run `docker-compose up`, it automatically creates several
+    resources defined in your docker-compose.yml: (1) **Networks**: Creates a default
+    network (project_default) where all services can communicate by service name,
+    (2) **Volumes**: Creates named volumes and anonymous volumes as defined, (3) **Containers**:
+    Creates and starts containers for each service with all configurations (ports,
+    environment variables, etc.). The beauty of Compose is this "infrastructure as
+    code" approach - one command sets up your entire multi-service stack. The automatic
+    networking is particularly powerful: services can reach each other using service
+    names as hostnames (e.g., api service can connect to database using DB_HOST=database).
+    Volumes persist data between container restarts unless explicitly removed with
+    `docker-compose down -v`.'

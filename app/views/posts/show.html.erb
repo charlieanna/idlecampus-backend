@@ -1,0 +1,280 @@
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-12">
+      <%= link_to "← Back", request.referrer || root_path, class: "btn btn-link p-0 mb-3" %>
+
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <!-- Post Header -->
+          <div class="d-flex justify-content-between align-items-start mb-4">
+            <div class="flex-grow-1">
+              <h1 class="h3 mb-3"><%= @post['title'] %></h1>
+
+              <!-- Post Metadata -->
+              <div class="text-muted small mb-3">
+                <span class="me-3">
+                  <i class="fas fa-globe"></i> Site: <%= @site.capitalize %>
+                </span>
+                <span class="me-3">
+                  <i class="fas fa-star"></i> Score: <%= @post['score'] %>
+                </span>
+                <span class="me-3">
+                  <i class="fas fa-eye"></i> Views: <%= @post['view_count'] %>
+                </span>
+                <% if @post['answer_count'] %>
+                  <span class="me-3">
+                    <i class="fas fa-comments"></i> Answers: <%= @post['answer_count'] %>
+                  </span>
+                <% end %>
+              </div>
+
+              <!-- Tags -->
+              <% if @post['tags'] && @post['tags'].any? %>
+                <div class="mb-3">
+                  <% @post['tags'].each do |tag| %>
+                    <%= link_to tag, learning_path_path(tag: tag, site: @site),
+                        class: "badge bg-secondary text-decoration-none me-2" %>
+                  <% end %>
+                </div>
+              <% end %>
+            </div>
+
+            <!-- View on Stack Exchange Button -->
+            <div>
+              <a href="<%= @post['external_url'] %>" target="_blank"
+                 class="btn btn-primary">
+                <i class="fas fa-external-link-alt"></i> View on Stack Exchange
+              </a>
+            </div>
+          </div>
+
+          <!-- Graph Metrics from Dataset -->
+          <% if @post['graph_metrics'] %>
+            <div class="row mb-4">
+              <div class="col-12">
+                <div class="card border-info">
+                  <div class="card-header bg-info text-white">
+                    <i class="fas fa-chart-network"></i> Post Network Statistics (from dataset)
+                  </div>
+                  <div class="card-body">
+                    <div class="row text-center">
+                      <div class="col-md-3">
+                        <h4 class="text-info"><%= @post['in_degree'] %></h4>
+                        <small class="text-muted">Posts referencing this</small>
+                      </div>
+                      <div class="col-md-3">
+                        <h4 class="text-warning"><%= @post['out_degree'] %></h4>
+                        <small class="text-muted">Posts this references</small>
+                      </div>
+                      <div class="col-md-3">
+                        <h4 class="text-success"><%= @post['score'] %></h4>
+                        <small class="text-muted">Community Score</small>
+                      </div>
+                      <div class="col-md-3">
+                        <h4 class="text-primary"><%= @post['graph_metrics']['total_connections'] %></h4>
+                        <small class="text-muted">Total Connections</small>
+                      </div>
+                    </div>
+
+                    <% if @post['graph_metrics']['is_foundational'] %>
+                      <div class="alert alert-success mt-3 mb-0">
+                        <i class="fas fa-foundation"></i> <strong>Foundational Post:</strong>
+                        Many posts reference this one (<%= @post['in_degree'] %> references) but it doesn't reference others,
+                        indicating it covers fundamental concepts.
+                      </div>
+                    <% elsif @post['graph_metrics']['is_hub'] %>
+                      <div class="alert alert-primary mt-3 mb-0">
+                        <i class="fas fa-hub"></i> <strong>Knowledge Hub:</strong>
+                        This post is heavily referenced by <%= @post['in_degree'] %> other posts in the network.
+                      </div>
+                    <% elsif @post['graph_metrics']['is_bridge'] %>
+                      <div class="alert alert-warning mt-3 mb-0">
+                        <i class="fas fa-bridge"></i> <strong>Bridge Post:</strong>
+                        This post both references others and is referenced, connecting different parts of the knowledge network.
+                      </div>
+                    <% end %>
+                  </div>
+                </div>
+              </div>
+            </div>
+          <% end %>
+
+          <!-- Posts with Similar Tags (from dataset) -->
+          <% if @post['related_by_tags'] && @post['related_by_tags'].any? %>
+            <div class="card mb-4">
+              <div class="card-header">
+                <i class="fas fa-tags"></i> Posts with Similar Tags
+              </div>
+              <div class="card-body p-0">
+                <div class="list-group list-group-flush">
+                  <% @post['related_by_tags'].first(5).each do |related| %>
+                    <%= link_to post_path(id: related['id'], site: @site),
+                        class: "list-group-item list-group-item-action" do %>
+                      <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                          <h6 class="mb-1"><%= related['title'] %></h6>
+                          <small class="text-muted">
+                            <i class="fas fa-tags"></i> <%= related['tag_overlap'] %> tags in common •
+                            Score: <%= related['score'] %>
+                          </small>
+                        </div>
+                        <i class="fas fa-chevron-right text-muted"></i>
+                      </div>
+                    <% end %>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+          <% end %>
+
+          <!-- Network Connections -->
+          <div class="row mb-4">
+            <!-- Inlinks (Posts referencing this) -->
+            <% if @post['inlinks'] && @post['inlinks'].any? %>
+              <div class="col-md-6 mb-3">
+                <div class="card h-100 border-info">
+                  <div class="card-header bg-info text-white">
+                    <i class="fas fa-arrow-down"></i> Referenced By
+                    <span class="badge bg-white text-info float-end"><%= @post['inlinks'].length %> posts</span>
+                  </div>
+                  <div class="card-body p-0">
+                    <div class="list-group list-group-flush">
+                      <% @post['inlinks'].first(5).each do |inlink| %>
+                        <%= link_to post_path(id: inlink['id'], site: @site),
+                            class: "list-group-item list-group-item-action" do %>
+                          <div class="d-flex justify-content-between align-items-start">
+                            <div class="text-truncate" style="max-width: 85%;">
+                              <small><%= inlink['title'] %></small>
+                            </div>
+                            <span class="badge bg-secondary"><%= inlink['score'] %></span>
+                          </div>
+                        <% end %>
+                      <% end %>
+                      <% if @post['inlinks'].length > 5 %>
+                        <div class="list-group-item text-muted text-center small">
+                          +<%= @post['inlinks'].length - 5 %> more
+                        </div>
+                      <% end %>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            <% end %>
+
+            <!-- Outlinks (Posts this references) -->
+            <% if @post['outlinks'] && @post['outlinks'].any? %>
+              <div class="col-md-6 mb-3">
+                <div class="card h-100 border-warning">
+                  <div class="card-header bg-warning text-dark">
+                    <i class="fas fa-arrow-up"></i> References
+                    <span class="badge bg-white text-warning float-end"><%= @post['outlinks'].length %> posts</span>
+                  </div>
+                  <div class="card-body p-0">
+                    <div class="list-group list-group-flush">
+                      <% @post['outlinks'].first(5).each do |outlink| %>
+                        <%= link_to post_path(id: outlink['id'], site: @site),
+                            class: "list-group-item list-group-item-action" do %>
+                          <div class="d-flex justify-content-between align-items-start">
+                            <div class="text-truncate" style="max-width: 85%;">
+                              <small><%= outlink['title'] %></small>
+                            </div>
+                            <span class="badge bg-secondary"><%= outlink['score'] %></span>
+                          </div>
+                        <% end %>
+                      <% end %>
+                      <% if @post['outlinks'].length > 5 %>
+                        <div class="list-group-item text-muted text-center small">
+                          +<%= @post['outlinks'].length - 5 %> more
+                        </div>
+                      <% end %>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            <% end %>
+          </div>
+
+          <!-- Post Body (if available) -->
+          <% if @post['body'] %>
+            <div class="card bg-light mb-4">
+              <div class="card-body">
+                <h5 class="card-title">Question Details</h5>
+                <div class="post-content">
+                  <%= sanitize @post['body'], tags: %w[p br strong em ul ol li code pre blockquote a h1 h2 h3 h4 h5 h6],
+                       attributes: %w[href target rel class] %>
+                </div>
+              </div>
+            </div>
+          <% end %>
+
+          <!-- Accepted Answer -->
+          <% if @post['accepted_answer'] %>
+            <div class="card border-success mb-4">
+              <div class="card-header bg-success text-white">
+                <i class="fas fa-check-circle"></i> Accepted Answer
+              </div>
+              <div class="card-body">
+                <div class="post-content">
+                  <%= sanitize @post['accepted_answer'], tags: %w[p br strong em ul ol li code pre blockquote a h1 h2 h3 h4 h5 h6],
+                       attributes: %w[href target rel class] %>
+                </div>
+              </div>
+            </div>
+          <% end %>
+
+          <!-- Related Posts -->
+          <% if @post['related_posts'] && @post['related_posts'].any? %>
+            <div class="mt-5">
+              <h4 class="mb-3">Related Questions</h4>
+              <div class="list-group">
+                <% @post['related_posts'].each do |related| %>
+                  <%= link_to post_path(id: related['id'], site: @site),
+                      class: "list-group-item list-group-item-action" do %>
+                    <div class="d-flex justify-content-between align-items-start">
+                      <div>
+                        <h6 class="mb-1"><%= related['title'] %></h6>
+                        <small class="text-muted">
+                          Score: <%= related['score'] %> •
+                          Views: <%= related['view_count'] %>
+                        </small>
+                      </div>
+                      <i class="fas fa-chevron-right text-muted"></i>
+                    </div>
+                  <% end %>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .post-content {
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .post-content pre {
+    background-color: #f4f4f4;
+    padding: 10px;
+    border-radius: 4px;
+    overflow-x: auto;
+  }
+
+  .post-content code {
+    background-color: #f4f4f4;
+    padding: 2px 4px;
+    border-radius: 3px;
+    font-family: 'Courier New', monospace;
+  }
+
+  .post-content blockquote {
+    border-left: 4px solid #ddd;
+    padding-left: 15px;
+    color: #666;
+    margin: 10px 0;
+  }
+</style>

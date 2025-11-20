@@ -1,0 +1,214 @@
+slug: first-law-thermodynamics
+title: "First Law of Thermodynamics"
+difficulty: intermediate
+sequence_order: 6
+estimated_minutes: 18
+key_concepts:
+- energy-conservation
+- heat
+- work
+- internal-energy
+- thermodynamic-processes
+prerequisites:
+- calorimetry-specific-heat
+- kinetic-theory-gases
+content_md: |
+  # First Law of Thermodynamics
+
+  ## Statement
+
+  **"Energy can neither be created nor destroyed, only converted from one form to another."**
+
+  **Mathematical Form:**
+  ```
+  ΔQ = ΔU + ΔW
+
+  or
+
+  dQ = dU + dW
+  ```
+
+  Where:
+  - ΔQ = Heat added to system
+  - ΔU = Change in internal energy
+  - ΔW = Work done BY system
+
+  ## Sign Convention (Important!)
+
+  | Quantity | Positive | Negative |
+  |----------|----------|----------|
+  | ΔQ | Heat absorbed | Heat released |
+  | ΔU | Temperature increases | Temperature decreases |
+  | ΔW | Work done BY system | Work done ON system |
+
+  ## Internal Energy (U)
+
+  - **State function** (depends only on state)
+  - For ideal gas: **U = nCᵥT = (f/2)nRT**
+  - **f** = degrees of freedom
+    - Monoatomic: f = 3
+    - Diatomic: f = 5
+    - Polyatomic: f = 6
+
+  ```
+  ΔU = nCᵥΔT (always, regardless of process)
+  ```
+
+  ## Work Done
+
+  ```
+  W = ∫PdV (area under P-V curve)
+  ```
+
+  For different processes:
+  - **Isochoric**: W = 0 (no volume change)
+  - **Isobaric**: W = PΔV = nRΔT
+  - **Isothermal**: W = nRT ln(V₂/V₁) = nRT ln(P₁/P₂)
+  - **Adiabatic**: W = (P₁V₁ - P₂V₂)/(γ-1) = nCᵥΔT
+
+  ## Heat (Q)
+
+  ```
+  Q = nCΔT
+  ```
+
+  Where C = molar specific heat:
+  - **Cᵥ** (constant volume) = (f/2)R
+  - **Cₚ** (constant pressure) = ((f+2)/2)R
+  - **Cₚ - Cᵥ = R** (Mayer's relation)
+  - **γ = Cₚ/Cᵥ** (adiabatic exponent)
+
+  ## Thermodynamic Processes
+
+  ### 1. Isothermal Process (ΔT = 0)
+  ```
+  PV = constant (Boyle's Law)
+  ΔU = 0
+  Q = W = nRT ln(V₂/V₁)
+  ```
+
+  ### 2. Isobaric Process (ΔP = 0)
+  ```
+  V/T = constant (Charles's Law)
+  W = PΔV = nRΔT
+  Q = nCₚΔT
+  ΔU = nCᵥΔT
+  ```
+
+  ### 3. Isochoric Process (ΔV = 0)
+  ```
+  P/T = constant (Gay-Lussac's Law)
+  W = 0
+  Q = ΔU = nCᵥΔT
+  ```
+
+  ### 4. Adiabatic Process (Q = 0)
+  ```
+  PVᵞ = constant
+  TVᵞ⁻¹ = constant
+  TP⁻ᵞ/(ᵞ⁻¹) = constant
+
+  ΔU = -W = nCᵥΔT
+  W = nCᵥ(T₁ - T₂)
+  ```
+
+  ## Comparison Table
+
+  | Process | Q | W | ΔU |
+  |---------|---|---|-----|
+  | Isothermal | nRT ln(V₂/V₁) | nRT ln(V₂/V₁) | 0 |
+  | Isobaric | nCₚΔT | nRΔT | nCᵥΔT |
+  | Isochoric | nCᵥΔT | 0 | nCᵥΔT |
+  | Adiabatic | 0 | -nCᵥΔT | nCᵥΔT |
+
+  ## Polytropic Process
+
+  ```
+  PVⁿ = constant (n ≠ γ)
+
+  C = Cᵥ(γ-n)/(1-n)
+  W = nR(T₁-T₂)/(n-1)
+  ```
+
+  Special cases:
+  - n = 0: Isobaric
+  - n = 1: Isothermal
+  - n = γ: Adiabatic
+  - n = ∞: Isochoric
+
+  ## Cyclic Process
+
+  For complete cycle:
+  ```
+  ΔU = 0 (returns to initial state)
+  Q_net = W_net = Area enclosed in P-V diagram
+  ```
+
+  - **Clockwise cycle**: W > 0 (heat engine)
+  - **Anticlockwise cycle**: W < 0 (refrigerator)
+
+  ## Numerical Examples
+
+  **Example 1:** 2 moles of ideal gas at 27°C expands isothermally to double its volume. Find Q, W, ΔU.
+
+  **Solution:**
+  ```
+  T = 300 K, n = 2, V₂/V₁ = 2
+  ΔU = 0 (isothermal)
+  W = nRT ln(V₂/V₁) = 2 × 8.314 × 300 × ln(2)
+  W = 4988.4 × 0.693 = 3457 J ≈ 3.46 kJ
+  Q = W = 3.46 kJ
+  ```
+
+  **Example 2:** In an isobaric process, 5 kJ heat is given to gas. If Cₚ/Cᵥ = 1.4, find work done.
+
+  **Solution:**
+  ```
+  For isobaric: Q = nCₚΔT, W = nRΔT
+  W/Q = R/Cₚ = (Cₚ-Cᵥ)/Cₚ = 1 - Cᵥ/Cₚ = 1 - 1/γ
+  W/Q = 1 - 1/1.4 = 0.286
+  W = 0.286 × 5000 = 1430 J ≈ 1.43 kJ
+  ```
+
+  ## JEE Important Points
+
+  1. **First law is energy conservation** for thermodynamic systems
+  2. **ΔU depends only on initial and final states**
+  3. **Q and W are path-dependent** (not state functions)
+  4. **For cyclic process**: Net work = Area of cycle
+  5. **Free expansion**: W = 0, Q = 0, ΔU = 0 (if ideal gas)
+
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: "In an isothermal expansion of an ideal gas, which is correct?"
+  options:
+  - "ΔU > 0 and Q > 0"
+  - "ΔU = 0 and Q = W > 0"
+  - "ΔU < 0 and W < 0"
+  - "ΔU = 0 and Q = 0"
+  correct_answer: "ΔU = 0 and Q = W > 0"
+  explanation: "For isothermal process: ΔT = 0, so ΔU = nCᵥΔT = 0 (internal energy unchanged). From first law: Q = ΔU + W = 0 + W = W. For expansion: V₂ > V₁, so W = nRT ln(V₂/V₁) > 0. Therefore Q > 0, meaning gas absorbs heat. The absorbed heat is entirely converted to work done by gas (no temperature change means no energy stored). This is why isothermal expansion requires heat input - to maintain constant temperature while doing work."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: "1 mole of diatomic ideal gas undergoes an isobaric expansion where temperature increases from 300K to 400K. The work done by gas is: (R = 8.314 J/mol·K)"
+  options:
+  - "831.4 J"
+  - "1662.8 J"
+  - "2078.5 J"
+  - "4157 J"
+  correct_answer: "831.4 J"
+  explanation: "For isobaric process: W = PΔV = nRΔT = 1 × 8.314 × (400-300) = 8.314 × 100 = 831.4 J. This is independent of whether gas is monoatomic or diatomic! The type of gas only affects ΔU and Q. Note: ΔU = nCᵥΔT = 1 × (5R/2) × 100 = 2078.5 J (for diatomic). Q = nCₚΔT = 1 × (7R/2) × 100 = 2909.9 J. Verify: Q = ΔU + W = 2078.5 + 831.4 = 2909.9 J ✓"
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: "A gas undergoes cyclic process ABCA as shown. If work done in AB is 500 J and heat absorbed in CA is 300 J, then heat absorbed in BC is: (AB is isochoric, BC is isobaric, CA is isothermal)"
+  options:
+  - "This is not possible"
+  - "200 J"
+  - "-200 J"
+  - "500 J"
+  correct_answer: "This is not possible"
+  explanation: "For isochoric process AB: W_AB = 0 (not 500 J as given). This contradicts the problem statement. If AB is truly isochoric, work must be zero since volume doesn't change. The question contains an inconsistency. In JEE, if data is contradictory, identify the impossibility. Correct scenario: If AB is isochoric, W_AB = 0, Q_AB = ΔU_AB. For cyclic process: ΔU_cycle = 0, so Q_cycle = W_cycle. W_cycle = W_AB + W_BC + W_CA = 0 + W_BC + W_CA. The question as stated is physically impossible."
+  require_pass: true

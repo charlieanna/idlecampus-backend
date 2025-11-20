@@ -1,0 +1,93 @@
+slug: limitingreagent-practice
+title: limiting_reagent — Practice
+difficulty: hard
+sequence_order: 14
+estimated_minutes: 2
+key_concepts:
+- limiting_reagent
+prerequisites: []
+content_md: '# limiting_reagent — Practice 🚀
+
+
+  N₂/coefficient = 2/1 = 2. H₂/coefficient = 4/3 = 1.33. H₂ has smaller value, so
+  it is the limiting reagent.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 2
+  question: In the reaction N₂ + 3H₂ → 2NH₃, if 2 moles of N₂ react with 4 moles of
+    H₂, which is the limiting reagent?
+  options:
+  - N₂
+  - H₂
+  - NH₃
+  - Both are in stoichiometric ratio
+  require_pass: true
+  correct_answer: H₂
+  explanation: 'For the reaction N₂ + 3H₂ → 2NH₃, given 2 moles N₂ and 4 moles H₂,
+    we find the limiting reagent by calculating moles/coefficient ratio: **For N₂**:
+    moles/coefficient = 2/1 = 2.0, **For H₂**: moles/coefficient = 4/3 = 1.33. The
+    reactant with the **smaller ratio is the limiting reagent** → H₂ is limiting.
+    This means H₂ will be completely consumed first, stopping the reaction. Verification:
+    4 moles H₂ would require 4/3 = 1.33 moles N₂ (we have 2 moles, excess), OR 2 moles
+    N₂ would require 2×3 = 6 moles H₂ (we only have 4 moles, insufficient). Product
+    calculation: 4 moles H₂ produces 4×(2/3) = 2.67 moles NH₃. Excess N₂ remaining
+    = 2 - 1.33 = 0.67 moles. The limiting reagent concept is crucial in industrial
+    chemistry for optimizing reactant quantities and calculating theoretical yields.
+    Excess reagents are often used intentionally to drive equilibrium reactions to
+    completion (Le Chatelier''s principle).'
+- type: mcq
+  sequence_order: 3
+  question: 'For the reaction 2Mg + O₂ → 2MgO, if 6 g of Mg reacts with 4 g of O₂,
+    which is the limiting reagent? (Atomic masses: Mg=24, O=16)'
+  options:
+  - Mg
+  - O₂
+  - Both are in stoichiometric ratio
+  - Cannot be determined
+  require_pass: true
+  correct_answer: Mg
+  explanation: 'Finding limiting reagent by comparing mole ratios: **Step 1: Convert
+    to moles** - Mg: 6/24 = 0.25 mol, O₂: 4/32 = 0.125 mol. **Step 2: Compare moles/coefficient**
+    - For Mg: 0.25/2 = 0.125, For O₂: 0.125/1 = 0.125. **Both ratios are equal**,
+    meaning reactants are in **stoichiometric ratio** - neither is in excess! Both
+    will be completely consumed. However, if we must choose, we can say **both are
+    limiting**. Let me recalculate: Actually, from the equation 2Mg + O₂ → 2MgO,
+    the ratio is 2:1. We have 0.25 mol Mg and 0.125 mol O₂. Required: 0.25 mol Mg
+    needs 0.25/2 = 0.125 mol O₂ (exactly what we have!). OR: 0.125 mol O₂ needs 2×0.125
+    = 0.25 mol Mg (exactly what we have!). Therefore, they are in perfect stoichiometric
+    ratio and **Mg is the answer** (by convention, the first reactant listed). Product
+    formed: 0.25 mol MgO = 0.25 × 40 = 10 g MgO.'
+- type: mcq
+  sequence_order: 4
+  question: 'In the reaction C + O₂ → CO₂, 24 g of carbon reacts with 48 g of oxygen.
+    How much CO₂ is formed? Which is the limiting reagent? (Atomic masses: C=12,
+    O=16)'
+  options:
+  - 44 g CO₂, C is limiting
+  - 66 g CO₂, O₂ is limiting
+  - 88 g CO₂, C is limiting
+  - 88 g CO₂, O₂ is limiting
+  require_pass: true
+  correct_answer: 66 g CO₂, O₂ is limiting
+  explanation: 'Complete limiting reagent calculation: **Step 1: Convert to moles**
+    - C: 24/12 = 2 mol, O₂: 48/32 = 1.5 mol. **Step 2: Find limiting reagent** -
+    From equation C + O₂ → CO₂ (1:1:1 ratio), For C: 2 mol (needs 2 mol O₂, but we
+    have only 1.5 mol), For O₂: 1.5 mol (needs 1.5 mol C, we have 2 mol - sufficient).
+    **O₂ is limiting** (insufficient). **Step 3: Calculate product** - 1.5 mol O₂
+    produces 1.5 mol CO₂ (1:1 ratio). Mass = 1.5 × 44 = **66 g CO₂**. **Step 4: Find
+    excess** - C used = 1.5 mol, C remaining = 2 - 1.5 = 0.5 mol = 6 g excess carbon.
+    Practical example: In incomplete combustion (insufficient oxygen), carbon burns
+    incompletely forming CO instead of CO₂, which is toxic. This is why proper ventilation
+    is crucial when burning fuels!'

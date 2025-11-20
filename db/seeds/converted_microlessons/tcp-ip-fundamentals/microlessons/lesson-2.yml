@@ -1,0 +1,103 @@
+slug: lesson-2
+title: Lesson 2
+difficulty: easy
+sequence_order: 2
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# DNS Fundamentals\n\n    Domain Name System\
+  \ translates human-readable names to IP addresses.\n\n    ## What is DNS?\n\n  \
+  \  **DNS**: Distributed database mapping domain names → IP addresses.\n\n    Example:\n\
+  \    ```\n    google.com → 142.250.80.46\n    ```\n\n    Without DNS, you'd need\
+  \ to remember IP addresses for every website!\n\n    ## DNS Hierarchy\n\n    ```\n\
+  \    Root (.)\n    ├── .com\n    │   ├── google.com\n    │   │   ├── www.google.com\n\
+  \    │   │   └── mail.google.com\n    │   └── amazon.com\n    ├── .org\n    │  \
+  \ └── wikipedia.org\n    └── .net\n        └── example.net\n    ```\n\n    ### DNS\
+  \ Components\n\n    **1. Root Servers**\n    - 13 root server clusters (a.root-servers.net\
+  \ to m.root-servers.net)\n    - Top of DNS hierarchy\n    - Operated by different\
+  \ organizations\n\n    **2. TLD Servers** (Top-Level Domain)\n    - `.com`, `.org`,\
+  \ `.net`, `.edu`\n    - Country codes: `.uk`, `.jp`, `.de`\n    - New TLDs: `.app`,\
+  \ `.dev`, `.cloud`\n\n    **3. Authoritative Name Servers**\n    - Store DNS records\
+  \ for domains\n    - Answer queries with actual data\n\n    **4. Recursive Resolvers**\n\
+  \    - Query on behalf of clients\n    - Cache responses\n    - Usually your ISP\
+  \ or 8.8.8.8 (Google), 1.1.1.1 (Cloudflare)\n\n    ## DNS Resolution Process\n\n\
+  \    **Query: www.example.com**\n\n    ```\n    1. Client → Recursive Resolver:\
+  \ \"What's www.example.com?\"\n    2. Resolver → Root Server: \"Where's .com?\"\n\
+  \    3. Root → Resolver: \"Ask TLD server at 192.x.x.x\"\n    4. Resolver → TLD\
+  \ Server: \"Where's example.com?\"\n    5. TLD → Resolver: \"Ask authoritative server\
+  \ at 93.x.x.x\"\n    6. Resolver → Authoritative: \"What's www.example.com?\"\n\
+  \    7. Authoritative → Resolver: \"It's 93.184.216.34\"\n    8. Resolver → Client:\
+  \ \"www.example.com is 93.184.216.34\"\n    ```\n\n    ## DNS Record Types\n\n \
+  \   ### A Record (Address)\n    Map domain to IPv4 address.\n\n    ```\n    example.com.\
+  \  IN  A  93.184.216.34\n    ```\n\n    ### AAAA Record\n    Map domain to IPv6\
+  \ address.\n\n    ```\n    example.com.  IN  AAAA  2606:2800:220:1:248:1893:25c8:1946\n\
+  \    ```\n\n    ### CNAME Record (Canonical Name)\n    Alias one domain to another.\n\
+  \n    ```\n    www.example.com.  IN  CNAME  example.com.\n    blog.example.com.\
+  \ IN  CNAME  example.com.\n    ```\n\n    Use when: Multiple names point to same\
+  \ destination.\n\n    ### MX Record (Mail Exchange)\n    Specify mail servers.\n\
+  \n    ```\n    example.com.  IN  MX  10  mail1.example.com.\n    example.com.  IN\
+  \  MX  20  mail2.example.com.\n    ```\n\n    Priority: Lower number = higher priority.\n\
+  \n    ### TXT Record\n    Store arbitrary text (SPF, DKIM, verification).\n\n  \
+  \  ```\n    example.com.  IN  TXT  \"v=spf1 mx -all\"\n    _dmarc.example.com. \
+  \ IN  TXT  \"v=DMARC1; p=reject\"\n    ```\n\n    ### NS Record (Name Server)\n\
+  \    Delegate subdomain to name servers.\n\n    ```\n    example.com.  IN  NS  ns1.example.com.\n\
+  \    example.com.  IN  NS  ns2.example.com.\n    ```\n\n    ### PTR Record (Pointer)\n\
+  \    Reverse DNS (IP → domain).\n\n    ```\n    34.216.184.93.in-addr.arpa.  IN\
+  \  PTR  example.com.\n    ```\n\n    ### SRV Record (Service)\n    Specify service\
+  \ location.\n\n    ```\n    _http._tcp.example.com.  IN  SRV  10 5 80 www.example.com.\n\
+  \    ```\n\n    ## DNS Commands\n\n    ### dig (Domain Information Groper)\n   \
+  \ ```bash\n    # Basic query\n    dig example.com\n\n    # Query specific record\
+  \ type\n    dig example.com MX\n    dig example.com AAAA\n\n    # Query specific\
+  \ DNS server\n    dig @8.8.8.8 example.com\n\n    # Short answer only\n    dig +short\
+  \ example.com\n\n    # Trace resolution path\n    dig +trace example.com\n\n   \
+  \ # Reverse DNS lookup\n    dig -x 93.184.216.34\n    ```\n\n    ### nslookup\n\
+  \    ```bash\n    # Basic query\n    nslookup example.com\n\n    # Query specific\
+  \ server\n    nslookup example.com 8.8.8.8\n\n    # Interactive mode\n    nslookup\n\
+  \    > set type=MX\n    > example.com\n    ```\n\n    ### host\n    ```bash\n  \
+  \  # Basic query\n    host example.com\n\n    # Query MX records\n    host -t MX\
+  \ example.com\n\n    # Query all records\n    host -a example.com\n    ```\n\n \
+  \   ## DNS Caching\n\n    **TTL** (Time To Live): How long to cache a record.\n\n\
+  \    ```\n    example.com.  300  IN  A  93.184.216.34\n                  ^^^\n \
+  \                 TTL in seconds (5 minutes)\n    ```\n\n    **Cache Levels**:\n\
+  \    1. Browser cache (~1 minute)\n    2. OS cache (~1 minute)\n    3. Recursive\
+  \ resolver cache (TTL value)\n\n    ## DNS Security\n\n    ### DNSSEC (DNS Security\
+  \ Extensions)\n    Cryptographically sign DNS records.\n\n    **Prevents**:\n  \
+  \  - DNS cache poisoning\n    - Man-in-the-middle attacks\n\n    **Check DNSSEC**:\n\
+  \    ```bash\n    dig example.com +dnssec\n    ```\n\n    ### DNS over HTTPS (DoH)\n\
+  \    Encrypt DNS queries over HTTPS.\n\n    Providers:\n    - Cloudflare: https://1.1.1.1/dns-query\n\
+  \    - Google: https://dns.google/dns-query\n\n    ### DNS over TLS (DoT)\n    Encrypt\
+  \ DNS queries over TLS (port 853).\n\n    ## Common DNS Problems\n\n    ### 1. DNS\
+  \ Propagation Delay\n    Changes take time to spread (up to 48 hours).\n\n    **Solution**:\
+  \ Lower TTL before making changes.\n\n    ### 2. Negative Caching\n    Failed lookups\
+  \ also cached.\n\n    **Check**:\n    ```bash\n    dig example.com +norecurse\n\
+  \    ```\n\n    ### 3. DNS Amplification Attacks\n    Attackers use DNS to amplify\
+  \ DDoS attacks.\n\n    **Mitigation**: Rate limiting, response rate limiting (RRL).\n\
+  \n    ## Best Practices\n\n    1. **Use multiple name servers**: Redundancy (ns1,\
+  \ ns2)\n    2. **Set appropriate TTLs**: Lower before changes, higher for stability\n\
+  \    3. **Monitor DNS**: Alert on resolution failures\n    4. **Use DNSSEC**: When\
+  \ possible\n    5. **Geo-DNS**: Serve different IPs by location\n    6. **Load balancing**:\
+  \ Multiple A records for same domain\n\n    **Practice**: Try the DNS resolution\
+  \ lab!"
+exercises:
+  - type: multiple_choice
+    sequence_order: 1
+    question: "What is the primary purpose of DNS (Domain Name System)?"
+    options:
+      - "To encrypt web traffic"
+      - "To translate human-readable domain names into IP addresses"
+      - "To route packets between networks"
+      - "To compress data for faster transmission"
+    correct_answer: "To translate human-readable domain names into IP addresses"
+    explanation: "DNS is essentially the internet's phone book, translating domain names that humans can remember (like google.com) into IP addresses that computers use for routing (like 142.250.80.46). Without DNS, you would need to remember numerical IP addresses for every website you visit. The DNS system is hierarchical and distributed, with root servers at the top, TLD (Top-Level Domain) servers for extensions like .com and .org, and authoritative name servers that hold the actual DNS records for domains. When you type a URL, your computer queries a recursive resolver (usually your ISP's or a public one like 8.8.8.8), which navigates this hierarchy to find the IP address. DNS caching at multiple levels (browser, OS, resolver) makes this process fast by storing recent lookups. Understanding DNS is crucial for web development, network troubleshooting, and security - many cyber attacks exploit DNS vulnerabilities."
+    require_pass: true
+  - type: multiple_choice
+    sequence_order: 2
+    question: "What is the difference between an A record and a CNAME record in DNS?"
+    options:
+      - "A records are faster than CNAME records"
+      - "A records map a domain name directly to an IP address, while CNAME records create an alias pointing to another domain name"
+      - "CNAME records are only used for email servers"
+      - "A records work with IPv6, CNAME records work with IPv4"
+    correct_answer: "A records map a domain name directly to an IP address, while CNAME records create an alias pointing to another domain name"
+    explanation: "A records and CNAME records serve different purposes in DNS. An A (Address) record directly maps a domain name to an IPv4 address - for example, 'example.com IN A 93.184.216.34'. This is a direct, final answer to 'what IP address should I use for this domain?' In contrast, a CNAME (Canonical Name) record creates an alias that points to another domain name, which then resolves to an IP via its own A record. For example, 'www.example.com IN CNAME example.com' means www.example.com is an alias for example.com, and the resolver must then look up example.com's A record. CNAMEs are useful when multiple domain names should point to the same destination - you only need to update the IP in one place (the target A record) rather than updating multiple A records. However, CNAMEs have restrictions: you can't use them for the root domain, and they add an extra DNS lookup. Understanding when to use each record type is important for efficient DNS configuration."
+    require_pass: true

@@ -1,0 +1,23 @@
+course:
+  slug: jee-physics-fluid-mechanics
+  title: "JEE Physics: Fluid Mechanics"
+  description: "Fluid statics, pressure, buoyancy, Bernoulli's theorem, and viscosity for IIT JEE"
+  estimated_hours: 12
+  level: intermediate
+modules:
+- slug: fluid-statics
+  title: Fluid Statics
+  lessons:
+  - pressure-pascals-law
+  - hydrostatic-pressure-depth
+  - atmospheric-pressure-barometer
+  - archimedes-principle-buoyancy
+  - surface-tension-capillarity
+- slug: fluid-dynamics
+  title: Fluid Dynamics
+  lessons:
+  - equation-of-continuity
+  - bernoullis-theorem-applications
+  - venturimeter-pitot-tube
+  - viscosity-stokes-law
+  - reynolds-number-turbulence

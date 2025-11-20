@@ -1,0 +1,24 @@
+<% if @tag_questions %>
+  <div class="tag-questions">
+    <% @tag_questions.each do |tag, questions| %>
+      <h2><%= tag %></h2>
+      <ul class="questions-list">
+        <% questions.each do |question| %>
+          <li>
+            <% if question['database'] == 'stackoverflow' %>
+                <%= link_to question['title'], "https://stackoverflow.com/questions/#{question['id']}", target: "_blank" %>
+            <% else %>
+                <%= link_to question['title'], "https://#{question['site']}/questions/#{question['id']}", target: "_blank" %>
+            <% end %>
+            <span><%= question['tags'] %></span>  
+            <span><%= question['score'] %></span>
+            <span><%= link_to question['in_degree'], level_show_path(question['id'], question['database']), target: "_blank" %></span>
+            <span><%= link_to question['out_degree'], rlevel_show_path(question['id'], question['database']), target: "_blank" %></span>
+          </li>
+        <% end %>
+      </ul>
+    <% end %>
+  </div>
+<% else %>
+  <p>No questions found for the given tags.</p>
+<% end %>

@@ -1,0 +1,86 @@
+slug: lesson-24
+title: Lesson 24
+difficulty: easy
+sequence_order: 24
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# CoreDNS and Service Discovery\n\n    -\
+  \ Server blocks and stub domains\n    - Service discovery patterns"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What are stub domains in CoreDNS configuration?
+  options:
+  - Placeholder domains for testing
+  - Custom DNS zones where queries for specific domains are forwarded to different
+    DNS servers
+  - Domains that are blocked from resolution
+  - Backup domains used during failures
+  correct_answer: Custom DNS zones where queries for specific domains are forwarded
+    to different DNS servers
+  explanation: 'Stub domains in CoreDNS allow you to configure custom DNS resolution
+    for specific domain suffixes, forwarding queries to designated DNS servers instead
+    of the default upstream resolvers. This is essential for hybrid environments where
+    some domains resolve internally (on-premises DNS) and others resolve externally
+    (public DNS). Stub domains are configured in the CoreDNS ConfigMap Corefile. For
+    example, to forward queries for ''company.internal'' to internal DNS servers 10.0.0.1
+    and 10.0.0.2: ''company.internal:53 { errors, cache 30, forward . 10.0.0.1 10.0.0.2
+    }''. Now, queries like ''database.company.internal'' are forwarded to those servers,
+    while ''google.com'' uses the default forwarding. Multiple stub domains can be
+    configured for different zones. Use cases: Hybrid cloud - resolve on-premises
+    services from Kubernetes (''*.onprem.company.com'' -> on-prem DNS). Multi-cluster
+    - resolve services in other Kubernetes clusters (''*.cluster2.local'' -> cluster2''s
+    DNS). Legacy systems - integrate with existing DNS infrastructure. Geographic
+    regions - different DNS servers per region. Service discovery - external service
+    registries (Consul DNS). The configuration is part of the Corefile in the ''kube-system/coredns''
+    ConfigMap. To modify: ''kubectl edit configmap coredns -n kube-system'', add stub
+    domain block, save, and CoreDNS automatically reloads. Verify with: ''kubectl
+    run -it --rm debug --image=busybox --restart=Never -- nslookup database.company.internal''.
+    Stub domains provide flexibility for complex DNS requirements without changing
+    application code, enabling seamless integration between Kubernetes and external
+    infrastructure. Related concept: conditional forwarding for specific domains without
+    being authoritative for those zones.'
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What service discovery pattern does Kubernetes DNS provide by default?
+  options:
+  - Only IP-based discovery
+  - 'DNS-based service discovery with predictable naming: <service>.<namespace>.svc.cluster.local'
+  - Random DNS names for security
+  - No service discovery by default
+  correct_answer: 'DNS-based service discovery with predictable naming: <service>.<namespace>.svc.cluster.local'
+  explanation: 'Kubernetes provides built-in DNS-based service discovery through CoreDNS,
+    creating predictable DNS names for Services automatically. Every Service gets
+    DNS records following the pattern: Fully Qualified Domain Name (FQDN): ''<service-name>.<namespace>.svc.cluster.local''.
+    For example, a Service ''api'' in namespace ''production'' is accessible at ''api.production.svc.cluster.local''.
+    Short forms work within the same namespace: ''api'' or ''api.production''. This
+    DNS-based discovery enables: Location transparency - applications use DNS names
+    instead of IP addresses, allowing Services to move without code changes. Environment
+    portability - the same code works in dev/staging/prod by using the same DNS names.
+    Service decoupling - backend services can scale/move independently. Multi-namespace
+    communication - services in different namespaces communicate using DNS. For headless
+    Services (clusterIP: None), DNS returns individual Pod IPs instead of a single
+    Service IP. StatefulSets get additional DNS records: ''<pod-name>.<service-name>.<namespace>.svc.cluster.local'',
+    enabling addressing specific pods (e.g., ''mysql-0.mysql.database.svc.cluster.local'').
+    Pods also get DNS records (if enabled): ''<pod-ip-dashes>.<namespace>.pod.cluster.local''
+    (e.g., ''10-244-1-5.default.pod.cluster.local''). The DNS resolver configuration
+    in each pod (/etc/resolv.conf) includes search domains enabling short name resolution.
+    This service discovery pattern is fundamental to Kubernetes architecture, enabling
+    microservices to find each other without service registries, hardcoded IPs, or
+    complex configuration. It''s one of Kubernetes'' key features that simplifies
+    distributed system development.'
+  require_pass: true
+- type: mcq
+  sequence_order: 1
+  question: What is the default service type in Kubernetes?
+  options:
+  - ClusterIP
+  - NodePort
+  - LoadBalancer
+  - ExternalName
+  correct_answer_index: 0
+  explanation: ClusterIP is the default service type. It exposes the service on an
+    internal cluster IP, making it only reachable within the cluster.
+  require_pass: true

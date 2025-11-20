@@ -1,0 +1,248 @@
+slug: capacitance-parallel-plate
+title: "Capacitance and Parallel Plate Capacitors"
+difficulty: intermediate
+sequence_order: 8
+estimated_minutes: 18
+key_concepts:
+- capacitance
+- parallel-plate-capacitor
+- charge-storage
+- dielectric
+- energy-storage
+prerequisites:
+- gauss-law-applications
+- electric-potential-work-done
+content_md: |
+  # Capacitance and Parallel Plate Capacitors
+
+  ## Definition of Capacitance
+
+  **Capacitance** is the ability of a conductor to store electric charge.
+
+  ```
+  C = Q/V
+
+  Unit: Farad (F) = Coulomb/Volt
+  ```
+
+  ### Properties:
+  - Depends only on geometry (size, shape, separation)
+  - Independent of Q and V (for given geometry)
+  - 1 F is very large; common: μF, nF, pF
+
+  ## Parallel Plate Capacitor
+
+  Two parallel conducting plates separated by distance d.
+
+  ### Electric Field Between Plates:
+  ```
+  E = σ/ε₀ = Q/(ε₀A)
+  ```
+
+  ### Potential Difference:
+  ```
+  V = Ed = Qd/(ε₀A)
+  ```
+
+  ### Capacitance:
+  ```
+  C = Q/V = ε₀A/d
+
+  For vacuum/air: C = ε₀A/d
+  With dielectric K: C = Kε₀A/d = ε₀εᵣA/d
+  ```
+
+  ## Effect of Parameters
+
+  | Change | Effect on C |
+  |--------|------------|
+  | Increase Area (A) | C increases (∝ A) |
+  | Increase Separation (d) | C decreases (∝ 1/d) |
+  | Insert Dielectric (K > 1) | C increases (×K) |
+
+  ## Capacitors in Series
+
+  ```
+  1/C_eq = 1/C₁ + 1/C₂ + 1/C₃ + ...
+
+  For two capacitors:
+  C_eq = C₁C₂/(C₁ + C₂)
+  ```
+
+  ### Properties:
+  - Same charge on all capacitors (Q = constant)
+  - Voltage divides: V = V₁ + V₂ + V₃
+  - Equivalent capacitance < smallest individual
+  - V₁/V₂ = C₂/C₁ (inverse ratio)
+
+  ## Capacitors in Parallel
+
+  ```
+  C_eq = C₁ + C₂ + C₃ + ...
+  ```
+
+  ### Properties:
+  - Same voltage across all (V = constant)
+  - Charge divides: Q = Q₁ + Q₂ + Q₃
+  - Equivalent capacitance > largest individual
+  - Q₁/Q₂ = C₁/C₂ (direct ratio)
+
+  ## Energy Stored in Capacitor
+
+  ```
+  U = ½CV² = ½QV = Q²/(2C)
+  ```
+
+  ### Energy Density:
+  ```
+  u = ε₀E²/2 (energy per unit volume)
+  ```
+
+  ### Total Energy:
+  ```
+  U = ½ε₀E²(Ad) = ε₀E²V_volume/2
+  ```
+
+  ## Dielectric in Capacitor
+
+  ### With Battery Connected:
+  - V remains constant (maintained by battery)
+  - C increases by factor K
+  - Q increases by factor K
+  - E decreases by factor K (E = V/d constant? No wait...)
+  - Actually: V constant, C→KC, Q→KQ, E stays same (V/d)
+  - U = ½CV² increases by factor K
+
+  ### With Battery Disconnected:
+  - Q remains constant (no charge path)
+  - C increases by factor K
+  - V decreases by factor K
+  - E decreases by factor K
+  - U = Q²/(2C) decreases by factor K
+
+  ## Partially Filled Dielectric
+
+  ### Dielectric Parallel to Plates:
+  ```
+  C = ε₀A/(d-t+t/K)
+
+  If metal sheet: K→∞
+  C = ε₀A/(d-t)
+  ```
+
+  ### Dielectric Perpendicular to Plates:
+  Treat as capacitors in parallel:
+  ```
+  C = K₁ε₀A₁/d + K₂ε₀A₂/d = ε₀(K₁A₁ + K₂A₂)/d
+  ```
+
+  ## Force on Capacitor Plates
+
+  ```
+  F = Q²/(2ε₀A) = ε₀E²A/2 = QE/2
+  ```
+
+  The factor of ½ appears because field is due to both plates.
+
+  ## Common Capacitor Configurations
+
+  ### 1. Spherical Capacitor:
+  ```
+  C = 4πε₀ab/(b-a)
+
+  Inner radius a, outer radius b
+  ```
+
+  ### 2. Cylindrical Capacitor:
+  ```
+  C = 2πε₀L/ln(b/a)
+
+  Length L, inner radius a, outer radius b
+  ```
+
+  ### 3. Isolated Sphere:
+  ```
+  C = 4πε₀R
+
+  Earth (R ≈ 6400 km): C ≈ 710 μF
+  ```
+
+  ## Numerical Examples
+
+  **Example 1:** Parallel plate capacitor: A = 100 cm², d = 1 mm, K = 5. Find C.
+
+  **Solution:**
+  ```
+  A = 100 cm² = 100×10⁻⁴ m² = 10⁻² m²
+  d = 1 mm = 10⁻³ m
+
+  C = Kε₀A/d = 5(8.85×10⁻¹²)(10⁻²)/(10⁻³)
+  C = 5 × 8.85×10⁻¹¹
+  C ≈ 4.43×10⁻¹⁰ F = 443 pF
+  ```
+
+  **Example 2:** Two capacitors 4μF and 6μF in series charged to 100V. Find charge and voltage on each.
+
+  **Solution:**
+  ```
+  C_eq = (4×6)/(4+6) = 24/10 = 2.4 μF
+  Q = C_eq × V = 2.4×10⁻⁶ × 100 = 240 μC
+
+  Same charge on both (series):
+  V₁ = Q/C₁ = 240/4 = 60 V
+  V₂ = Q/C₂ = 240/6 = 40 V
+
+  Check: 60 + 40 = 100 V ✓
+  ```
+
+  **Example 3:** 10 μF capacitor charged to 100 V. Find energy stored.
+
+  **Solution:**
+  ```
+  U = ½CV² = ½(10×10⁻⁶)(100)²
+  U = 5×10⁻⁶ × 10⁴ = 0.05 J = 50 mJ
+  ```
+
+  ## JEE Important Points
+
+  1. **C depends on geometry**, not charge or voltage
+  2. **Series: Q same, V adds**
+  3. **Parallel: V same, Q adds**
+  4. **Dielectric increases C** by factor K
+  5. **Energy = ½CV²** = ½QV = Q²/(2C)
+  6. **Battery connected vs disconnected** - crucial distinction
+
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: "A parallel plate capacitor has capacitance C. If plate separation is doubled and plate area is halved, new capacitance is:"
+  options:
+  - "C"
+  - "C/2"
+  - "C/4"
+  - "2C"
+  correct_answer: "C/4"
+  explanation: "C = ε₀A/d. New capacitance: C' = ε₀(A/2)/(2d) = ε₀A/(4d) = C/4. Doubling separation halves C, halving area also halves C, combined effect is C/4. This shows strong dependence on geometry. In practice: To increase capacitance, increase area (multiple plates) or decrease separation (thin dielectric). Modern capacitors achieve μF to mF by using very thin dielectric films and large effective areas through rolled configurations."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: "Two capacitors of 2μF and 3μF are connected in parallel and charged to 20V. Total energy stored is:"
+  options:
+  - "1 mJ"
+  - "0.5 mJ"
+  - "2 mJ"
+  - "0.25 mJ"
+  correct_answer: "1 mJ"
+  explanation: "For parallel connection: C_eq = 2 + 3 = 5 μF. Energy U = ½C_eqV² = ½(5×10⁻⁶)(20)² = ½ × 5×10⁻⁶ × 400 = 10⁻³ J = 1 mJ. Alternatively: U₁ = ½(2μF)(20)² = 400 μJ, U₂ = ½(3μF)(20)² = 600 μJ. Total = 1000 μJ = 1 mJ. In parallel, both have same voltage (20V), and energies simply add. Note: Same capacitors in series would store less energy because effective capacitance is lower."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: "A capacitor is charged and then disconnected from battery. If a dielectric of K=3 is inserted, the energy stored:"
+  options:
+  - "Increases 3 times"
+  - "Decreases to 1/3"
+  - "Remains same"
+  - "Increases 9 times"
+  correct_answer: "Decreases to 1/3"
+  explanation: "Battery disconnected means Q is constant (charge conserved). With dielectric: C' = 3C. Energy U' = Q²/(2C') = Q²/(2×3C) = (1/3) × Q²/(2C) = U/3. Energy decreases by factor of 3. Where does energy go? Work is done pulling dielectric INTO the capacitor (it gets pulled in due to field). This mechanical work equals the decrease in electrical energy. Contrast: If battery remained connected, V constant, C increases, so U = ½CV² would increase 3 times."
+  require_pass: true

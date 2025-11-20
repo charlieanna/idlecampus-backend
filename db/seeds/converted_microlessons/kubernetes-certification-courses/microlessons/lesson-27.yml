@@ -1,0 +1,85 @@
+slug: lesson-27
+title: Lesson 27
+difficulty: easy
+sequence_order: 27
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Network Policies Advanced\n\n    - Egress\
+  \ rules and namespace scoping\n    - Common patterns and testing"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What do egress rules in NetworkPolicy control?
+  options:
+  - Incoming traffic to selected pods
+  - Outgoing traffic from selected pods to specified destinations
+  - Pod creation and deletion
+  - Resource limits on pods
+  correct_answer: Outgoing traffic from selected pods to specified destinations
+  explanation: 'Egress rules in NetworkPolicy control outbound traffic from the selected
+    pods to specific destinations. While ingress rules control what can connect to
+    your pods, egress rules control what your pods can connect to - providing defense-in-depth
+    by limiting potential data exfiltration or lateral movement after compromise.
+    By default, when you create a NetworkPolicy selecting pods with no egress rules
+    specified, all egress traffic is allowed. However, if you specify ''policyTypes:
+    [Egress]'' with empty egress rules, all outbound traffic is blocked. Egress rules
+    can specify destinations using: podSelector (allow traffic to pods with specific
+    labels), namespaceSelector (allow traffic to pods in specific namespaces), ipBlock
+    (allow traffic to specific IP ranges/CIDR blocks), and ports (restrict to specific
+    ports/protocols). For example, to allow a web app to only access a database in
+    the same namespace and external HTTPS (port 443): ''egress: - to: - podSelector:
+    matchLabels: app: database, ports: - protocol: TCP, port: 5432; - to: - ipBlock:
+    cidr: 0.0.0.0/0, ports: - protocol: TCP, port: 443''. This prevents the app from
+    making unexpected connections, limiting the blast radius if compromised. Common
+    patterns: allow DNS only (port 53 to kube-dns), allow specific APIs, block all
+    internet access, or allow internal cluster communication only. Egress rules are
+    particularly important for: compliance requirements (prevent unauthorized data
+    transfer), zero-trust security (explicit allowlist approach), isolating sensitive
+    workloads (payment processing, PII handling), and preventing compromised containers
+    from calling home to command-and-control servers.'
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: How do namespaceSelector and podSelector interact in NetworkPolicy rules?
+  options:
+  - They are mutually exclusive and cannot be used together
+  - When both are specified, traffic is allowed from pods matching podSelector in
+    namespaces matching namespaceSelector (AND logic)
+  - When both are specified, traffic is allowed from either (OR logic)
+  - namespaceSelector always overrides podSelector
+  correct_answer: When both are specified, traffic is allowed from pods matching podSelector
+    in namespaces matching namespaceSelector (AND logic)
+  explanation: 'In NetworkPolicy rules, when both namespaceSelector and podSelector
+    are specified in the same ''from'' or ''to'' block, they use AND logic - traffic
+    is allowed from/to pods that match the podSelector within namespaces that match
+    the namespaceSelector. This enables precise cross-namespace communication control.
+    For example, ''ingress: - from: - namespaceSelector: matchLabels: env: prod, podSelector:
+    matchLabels: app: frontend'' allows traffic only from pods labeled ''app: frontend''
+    in namespaces labeled ''env: prod'', not from frontend pods in other namespaces
+    or other pods in prod namespaces. If you specify them as separate elements in
+    the array, it''s OR logic: ''ingress: - from: - namespaceSelector: matchLabels:
+    env: prod - podSelector: matchLabels: app: frontend'' allows traffic from all
+    pods in prod namespaces OR frontend pods in any namespace (including the local
+    namespace). To allow traffic from any pod in specific namespaces, use only namespaceSelector:
+    ''from: - namespaceSelector: matchLabels: env: prod''. To allow traffic only from
+    specific pods in the same namespace, use only podSelector: ''from: - podSelector:
+    matchLabels: app: frontend''. An empty namespaceSelector ''{}'' matches all namespaces.
+    Common patterns: Cross-namespace services: allow backend in prod namespace to
+    accept from frontend in prod namespace. Multi-tier apps: allow middle-tier to
+    access database, both in matching namespaces. Shared services: monitoring namespace
+    pods can scrape metrics from all namespaces. Understanding this AND/OR logic is
+    crucial for designing secure, flexible NetworkPolicies.'
+  require_pass: true
+- type: mcq
+  sequence_order: 1
+  question: What kubectl command checks if you can perform an action?
+  options:
+  - kubectl auth can-i create pods
+  - kubectl check permissions create pods
+  - kubectl verify action create pods
+  - kubectl test auth create pods
+  correct_answer_index: 0
+  explanation: kubectl auth can-i <action> <resource> checks if the current user has
+    permission to perform the specified action.
+  require_pass: true

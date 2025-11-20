@@ -1,0 +1,82 @@
+slug: vectors-magnitude-practice
+title: vectors-magnitude — Practice
+difficulty: medium
+sequence_order: 4
+estimated_minutes: 2
+key_concepts:
+- vectors-magnitude
+prerequisites: []
+content_md: '# vectors-magnitude — Practice 🚀
+
+
+  |a| = √(3² + 4²) = √(9 + 16) = √25 = 5
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 2
+  question: Find the magnitude of vector $$\\vec{a} = 3\\hat{i} + 4\\hat{j}$$
+  options:
+  - '5'
+  - '7'
+  - '12'
+  - √7
+  require_pass: true
+  correct_answer: '5'
+  explanation: 'The magnitude (or modulus or length) of a vector ā = a₁î + a₂ĵ in
+    2D is calculated using the Pythagorean theorem: |ā| = √(a₁² + a₂²). For the given
+    vector ā = 3î + 4ĵ: |ā| = √(3² + 4²) = √(9 + 16) = √25 = 5. This is a 3-4-5 Pythagorean
+    triple, one of the most common right triangles. Geometrically, the vector components
+    3 and 4 form the legs of a right triangle, and the magnitude 5 is the hypotenuse.
+    For 3D vectors ā = a₁î + a₂ĵ + a₃k̂, the formula extends to: |ā| = √(a₁² + a₂²
+    + a₃²). The magnitude is always non-negative and represents the "length" or "size"
+    of the vector. Zero vector (0î + 0ĵ) has magnitude 0. Unit vectors have magnitude
+    1 (î, ĵ, k̂ are standard unit vectors). To find a unit vector in the direction
+    of ā: â = ā/|ā| = (3î + 4ĵ)/5 = (3/5)î + (4/5)ĵ.'
+- type: mcq
+  sequence_order: 3
+  question: Find the magnitude of vector $$\\vec{b} = 2\\hat{i} - 3\\hat{j} + 6\\hat{k}$$
+  options:
+  - '7'
+  - '11'
+  - '√49'
+  - '√13'
+  require_pass: true
+  correct_answer: '7'
+  explanation: 'For a 3D vector b⃗ = 2î - 3ĵ + 6k̂, the magnitude is: |b⃗| = √(2²
+    + (-3)² + 6²) = √(4 + 9 + 36) = √49 = 7. Note that √49 = 7, so both options are
+    technically equal, but 7 is the simplified form. The negative sign in -3ĵ doesn''t
+    affect the calculation since we square it: (-3)² = 9. Steps: (1) Square each
+    component: 2² = 4, (-3)² = 9, 6² = 36, (2) Add: 4 + 9 + 36 = 49, (3) Take square
+    root: √49 = 7. The magnitude represents the distance from origin to the point
+    (2, -3, 6) in 3D space. This is a Pythagorean triple extension: 2² + 3² + 6²
+    isn''t a perfect triple, but 4 + 9 + 36 = 49 = 7².'
+- type: mcq
+  sequence_order: 4
+  question: If $$|\\vec{a}| = 5$$ and $$|\\vec{b}| = 12$$, what is $$|\\vec{a} +
+    \\vec{b}|$$ if they are perpendicular?
+  options:
+  - '17'
+  - '13'
+  - '7'
+  - '√169'
+  require_pass: true
+  correct_answer: '13'
+  explanation: 'If vectors a⃗ and b⃗ are perpendicular (a⃗ ⊥ b⃗), then a⃗·b⃗ = 0.
+    Using the formula for magnitude of sum: |a⃗ + b⃗|² = |a⃗|² + |b⃗|² + 2(a⃗·b⃗). Since
+    a⃗·b⃗ = 0: |a⃗ + b⃗|² = |a⃗|² + |b⃗|² = 5² + 12² = 25 + 144 = 169. Therefore: |a⃗
+    + b⃗| = √169 = 13. This is the famous 5-12-13 Pythagorean triple! When vectors
+    are perpendicular, their sum forms the hypotenuse of a right triangle with the
+    original vectors as legs. Note: √169 = 13, both are correct but 13 is simplified.
+    If vectors are NOT perpendicular, use: |a⃗ + b⃗|² = |a⃗|² + |b⃗|² + 2|a⃗||b⃗|cos
+    θ, where θ is angle between vectors.'

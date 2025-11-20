@@ -1,0 +1,17 @@
+# Test fixtures for docker_commands
+basic_run:
+  id: 1
+  command: "docker run"
+  explanation: "Run a command in a new container"
+  difficulty: "easy"
+  category: "basics"
+  exam_frequency: 10
+
+advanced_network:
+  id: 2
+  command: "docker network create"
+  explanation: "Create a custom network"
+  difficulty: "medium"
+  category: "networking"
+  exam_frequency: 7
+

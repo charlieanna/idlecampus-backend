@@ -1,0 +1,23 @@
+course:
+  slug: jee-physics-magnetism
+  title: "JEE Physics: Magnetism"
+  description: "Magnetic fields, Biot-Savart law, Ampere's law, and magnetic properties of matter for IIT JEE"
+  estimated_hours: 14
+  level: advanced
+modules:
+- slug: magnetic-effects-current
+  title: Magnetic Effects of Current
+  lessons:
+  - magnetic-field-moving-charges
+  - biot-savart-law-applications
+  - amperes-circuital-law
+  - force-on-current-carrying-conductor
+  - moving-coil-galvanometer
+- slug: magnetism-matter
+  title: Magnetism and Matter
+  lessons:
+  - magnetic-dipole-moment
+  - earth-magnetism-elements
+  - diamagnetic-paramagnetic-ferromagnetic
+  - hysteresis-loop
+  - magnetic-field-solenoid-toroid

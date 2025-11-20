@@ -1,0 +1,80 @@
+slug: heavywater-practice
+title: heavy_water — Practice
+difficulty: easy
+sequence_order: 9
+estimated_minutes: 2
+key_concepts:
+- heavy_water
+prerequisites: []
+content_md: '# heavy_water — Practice 🚀
+
+
+  Heavy water (D₂O) has a boiling point of 101.4°C, which is higher than normal water
+  (100°C) due to stronger hydrogen bonding caused by the heavier deuterium atoms.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What is the boiling point of heavy water (D₂O)?
+  options:
+  - 98.5°C
+  - 100.0°C
+  - 101.4°C
+  - 105.0°C
+  require_pass: true
+  correct_answer: 101.4°C
+  explanation: 'Heavy water (D₂O) has a boiling point of 101.4°C, which is higher
+    than normal water (100°C). This is due to stronger hydrogen bonding in D₂O caused
+    by the heavier deuterium atoms. Deuterium has mass 2 amu compared to protium (1
+    amu), so D₂O molecules have greater mass and stronger intermolecular forces. Other
+    properties of D₂O vs H₂O: Melting point: 3.82°C vs 0°C, Density: 1.11 g/mL vs
+    1.00 g/mL, Maximum density at: 11.6°C vs 4°C. The differences arise from the mass
+    difference between isotopes affecting zero-point vibrational energy and bond strength.'
+- type: mcq
+  sequence_order: 2
+  question: Heavy water (D₂O) is primarily used in which application?
+  options:
+  - As drinking water
+  - As a moderator in nuclear reactors
+  - As a catalyst in organic reactions
+  - As a refrigerant
+  require_pass: true
+  correct_answer: As a moderator in nuclear reactors
+  explanation: 'Heavy water (D₂O) is primarily used as a moderator in nuclear reactors
+    to slow down fast neutrons without absorbing them. D₂O is better than H₂O because
+    deuterium has very low neutron absorption cross-section, allowing more neutrons
+    to be available for fission. Process: Fast neutrons from fission collide with
+    D₂O molecules, losing kinetic energy and becoming thermal neutrons that can sustain
+    chain reaction. CANDU reactors use D₂O moderator. Other uses: Tracer in chemical/biological
+    studies, NMR spectroscopy solvent. D₂O is toxic to living organisms - replaces
+    H₂O in cells, disrupting metabolism.'
+- type: mcq
+  sequence_order: 3
+  question: How is heavy water (D₂O) commercially produced?
+  options:
+  - Electrolysis of water
+  - Fractional distillation of ordinary water
+  - Girdler sulfide process
+  - Direct synthesis from D₂ and O₂
+  require_pass: true
+  correct_answer: Girdler sulfide process
+  explanation: 'Heavy water is commercially produced by the Girdler sulfide (GS) process,
+    which exploits the different exchange equilibria of hydrogen isotopes between
+    H₂S and H₂O at different temperatures. The process uses two-temperature exchange:
+    Cold tower (30°C) and hot tower (130°C). Deuterium preferentially concentrates
+    in H₂O in cold tower and in H₂S in hot tower. By cycling H₂S between towers,
+    D₂O is gradually enriched. Natural abundance of D is only 0.015% in water, so
+    large amounts of H₂O must be processed. Other methods: Electrolysis (water containing
+    D₂O is harder to electrolyze, so D₂O concentrates), Fractional distillation (based
+    on b.p. difference, but inefficient). Modern plants produce 99.8% pure D₂O.'

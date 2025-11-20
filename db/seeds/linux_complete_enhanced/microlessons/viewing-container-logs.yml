@@ -1,0 +1,110 @@
+slug: viewing-container-logs
+title: Viewing Container Logs
+sequence_order: 8
+estimated_minutes: 2
+difficulty: easy
+key_concepts:
+- docker-logs
+- debugging
+- troubleshooting
+- monitoring
+content_md: "# Viewing Container Logs \U0001F680\n\n**Debugging Application Issues**\
+  \ \U0001F50E\n\n    Your DevOps lead reports:\n\n    > \"The codesprout-web container\
+  \ is running, but users are reporting errors.\n    > Can you check the logs to see\
+  \ what's happening inside?\"\n\n    ### The Problem\n    When applications run inside\
+  \ containers, their output (stdout/stderr) isn't directly visible.\n    You can't\
+  \ just SSH in and tail log files. You need `docker logs` to see what the container\
+  \ is doing.\n\n    ### docker logs Explained\n    The `docker logs` command shows\
+  \ the output from a container's main process:\n\n    ```bash\n    docker logs [OPTIONS]\
+  \ CONTAINER\n    ```\n\n    - **CONTAINER** → Container name or ID\n    - Shows\
+  \ everything written to stdout and stderr\n    - Works on both running and stopped\
+  \ containers\n\n    ### Common Options\n\n    **1. View all logs:**\n    ```bash\n\
+  \    docker logs codesprout-web\n    ```\n    Dumps all historical logs to your\
+  \ terminal.\n\n    **2. Follow logs in real-time:**\n    ```bash\n    docker logs\
+  \ -f codesprout-web\n    ```\n    Like `tail -f`, keeps streaming new log entries\
+  \ as they appear.\n\n    **3. Show recent entries:**\n    ```bash\n    docker logs\
+  \ --tail 50 codesprout-web\n    ```\n    Only show the last 50 lines.\n\n    **4.\
+  \ Add timestamps:**\n    ```bash\n    docker logs -t codesprout-web\n    ```\n \
+  \   Prefix each log line with a timestamp.\n\n    **5. Show logs since a time:**\n\
+  \    ```bash\n    docker logs --since 30m codesprout-web     # Last 30 minutes\n\
+  \    docker logs --since 2025-01-15T10:00:00 codesprout-web  # Since specific time\n\
+  \    ```\n\n    ### Visual Example\n\n    ```\n    Your Terminal\n         │\n \
+  \        ├─ docker logs codesprout-web\n         │\n         └─> Shows Container\
+  \ Output\n              ├─ \"Starting nginx...\"\n              ├─ \"Listening on\
+  \ port 80\"\n              ├─ \"GET /index.html 200\"\n              └─ \"ERROR:\
+  \ Cannot connect to database\"\n    ```\n\n    ### Real-World Debugging Scenario\n\
+  \n    **Scenario**: Application crashes on startup\n\n    ```bash\n    # Step 1:\
+  \ Check if container is running\n    docker ps -a | grep myapp\n    # Output: myapp\
+  \   Exited (1) 2 seconds ago\n\n    # Step 2: View logs to see why it crashed\n\
+  \    docker logs myapp\n    # Output: \n    # Starting application...\n    # ERROR:\
+  \ Database connection failed: Connection refused\n    # FATAL: Cannot start without\
+  \ database\n\n    # Step 3: Fix the issue (start database, check config, etc.)\n\
+  \    ```\n\n    ### Combining Options\n\n    **Follow last 20 lines with timestamps:**\n\
+  \    ```bash\n    docker logs -f --tail 20 -t codesprout-web\n    ```\n\n    **Monitor\
+  \ errors in real-time:**\n    ```bash\n    docker logs -f codesprout-web 2>&1 |\
+  \ grep -i error\n    ```\n\n    ### Common Mistakes\n\n    1. **Logs Too Large**:\
+  \ Running `docker logs` on a long-running container can dump thousands of lines.\
+  \ Use `--tail`.\n    2. **Forgetting -f**: If you want to monitor in real-time,\
+  \ remember the `-f` flag.\n    3. **Container Must Exist**: You can view logs from\
+  \ stopped containers, but not deleted ones.\n    4. **Application Logs to Files**:\
+  \ If the app writes logs to files inside the container (not stdout), `docker logs`\
+  \ won't show them.\n\n    ### When Logs Aren't Enough\n\n    If logs don't show\
+  \ the issue:\n    - Use `docker exec` to enter the container and investigate\n \
+  \   - Check application-specific log files: `docker exec myapp cat /var/log/app.log`\n\
+  \    - Inspect container configuration: `docker inspect myapp`\n\n    ### Pro Tips\n\
+  \n    **Save logs to file:**\n    ```bash\n    docker logs codesprout-web > logs.txt\n\
+  \    ```\n\n    **Search logs:**\n    ```bash\n    docker logs codesprout-web |\
+  \ grep \"ERROR\"\n    ```\n\n    **Clear logs** (by restarting):\n    ```bash\n\
+  \    # Docker doesn't have \"clear logs\", but you can restart the container\n \
+  \   docker restart codesprout-web\n    ```\n\n## Syntax/Command\n\n```bash\ndocker\
+  \ logs codesprout-web\n```\n\n## Example\n\n```bash\n# View all logs\ndocker logs\
+  \ codesprout-web\n\n# Follow logs in real-time\ndocker logs -f codesprout-web\n\n\
+  # Show last 50 lines with timestamps\ndocker logs --tail 50 -t codesprout-web\n\
+  ```\n\n## Key Points\n\n- Use docker logs to view container output (stdout/stderr)\n\
+  \n- Add -f to follow logs in real-time like tail -f\n\n- Use --tail N to limit output\
+  \ to recent entries"
+exercises:
+- type: terminal
+  sequence_order: 1
+  command: docker logs codesprout-web
+  description: View the output and logs from the codesprout-web container
+  hints:
+  - Use -f to follow logs in real-time
+  - Use --tail 50 to see just the last 50 lines
+  timeout_sec: 60
+  require_pass: true
+  validation:
+    must_not_include:
+    - Error
+    - 'panic:'
+- type: mcq
+  sequence_order: 2
+  question: Which flag follows logs as they are written in real-time?
+  options:
+  - -f
+  - -t
+  - --tail 100
+  - -F
+  correct_answer_index: 0
+  explanation: The -f (follow) flag streams logs as they are written, similar to tail
+    -f for regular files
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: How do you view only the last 100 lines of container logs?
+  options:
+  - docker logs --tail 100 container_name
+  - docker logs -n 100 container_name
+  - docker logs --last 100 container_name
+  - docker logs -l 100 container_name
+  correct_answer_index: 0
+  explanation: The --tail flag limits output to the specified number of recent log
+    lines
+  require_pass: true
+objectives:
+- View container logs with docker logs
+- Follow logs in real-time with -f flag
+- Debug containerized applications using log output
+next_recommended:
+- executing-commands-in-containers
+- docker-stop-gracefully-stopping-containers

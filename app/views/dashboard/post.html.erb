@@ -1,0 +1,59 @@
+<div class="container">
+  <div class="row">
+      <div class="col-sm-4">
+        <% unless @json_response["outlinks"].nil? %>
+          <% @json_response["outlinks"].each do |question| %>
+            <div class="well well-large">
+              <dl>
+                <% if question['service'].to_s == "stackoverflow" %>
+                  <div><%= link_to question['title'], "http://#{question['service']}.com/questions/#{question['id']}", target: "_blank" %></div>
+                <% else %>
+                  <div><%= link_to question['title'], "http://#{question['service']}.stackexchange.com/questions/#{question['id']}", target: "_blank" %></div>
+                <% end %>
+                <dt>Tags: <%= question['tag_names'].split(">").each { |el|  el.sub!("<", '')  } if question['tag_names'] %></dt>
+                <dt>inlinks: <%= question['inlinks'] %>
+              </dl>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+      <div class="col-sm-5">
+        <% unless @json_response["paths"].nil? %>
+          <% @json_response["paths"].each do |question| %>
+            <div class="well well-large">
+              <dl>
+                <% if question[7].to_s == "stackoverflow" %>
+                  <div><%= link_to question[1], "http://#{question[7]}.com/questions/#{question[0]}", target: "_blank" %></div>
+                <% else %>
+                  <div><%= link_to question[1], "http://#{question[7]}.stackexchange.com/questions/#{question[0]}", target: "_blank" %></div>
+                <% end %>
+                <dt>Tags: <%= question[2].split(">").each { |el|  el.sub!("<", '')  } if question[2] %></dt>
+                <dt>inlinks: <%= question[3] %> outlinks: <%= question[4] %> score: <%= question[5] %> dist: <%= question[6] %></dt>
+              </dl>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+      <div class="col-sm-3">
+        <% unless @json_response["links_hash"].nil? %>
+          <% @json_response['links_hash'].each do |link| %>
+            <% if link["score"] > 0 %>
+              <li class="list-group-item"><%= link_to link["link"], link["link"] %></li>
+            <% end %>
+          <% end %>
+        <% end %>
+      </div>
+</div>
+
+<ul>
+<% @json_response['sinks'].each do |question| %>
+  <li>
+    <% if question['service'].to_s == "stackoverflow" %>
+      <div><%= link_to question['title'], "http://#{question['service']}.com/questions/#{question['id']}", target: "_blank" %></div>
+    <% else %>
+      <div><%= link_to question['title'], "http://#{question['service']}.stackexchange.com/questions/#{question['id']}", target: "_blank" %></div>
+    <% end %>
+    <%= question['score'] %>
+  </li>
+<% end %>
+</ul>

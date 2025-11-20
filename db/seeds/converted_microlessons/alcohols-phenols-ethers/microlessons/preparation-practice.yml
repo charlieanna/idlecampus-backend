@@ -1,0 +1,59 @@
+slug: preparation-practice
+title: preparation — Practice
+difficulty: medium
+sequence_order: 11
+estimated_minutes: 2
+key_concepts:
+- preparation
+prerequisites: []
+content_md: '# preparation — Practice 🚀
+
+
+  Reducing agents for ketones: (1) LiAlH₄ - strong ✓, (2) NaBH₄ - mild ✓. K₂Cr₂O₇
+  and PCC are oxidizing agents, not reducing agents.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: 'Which reagents can reduce ketones to secondary alcohols?'
+  options:
+  - LiAlH₄ and NaBH₄
+  - K₂Cr₂O₇ and KMnO₄
+  - PCC and PDC
+  - H₂SO₄ and HCl
+  require_pass: true
+  correct_answer: LiAlH₄ and NaBH₄
+  explanation: 'Ketones (R-CO-R'') are reduced to secondary alcohols (R-CHOH-R'') using reducing agents that donate hydride ions (H⁻). The two main reducing agents are: (1) Lithium aluminum hydride (LiAlH₄) - a strong reducing agent that works in dry ether, and (2) Sodium borohydride (NaBH₄) - a milder, more selective reducing agent that can be used in aqueous or alcoholic solutions. Both reagents donate H⁻ to the carbonyl carbon, converting C=O to C-OH. K₂Cr₂O₇ and KMnO₄ are oxidizing agents (not reducing), used to oxidize alcohols to carbonyls. PCC (pyridinium chlorochromate) and PDC (pyridinium dichromate) are also oxidizing agents. H₂SO₄ and HCl are acids, not reducing agents. The reduction mechanism involves nucleophilic addition of H⁻ to the electrophilic carbonyl carbon.'
+- type: mcq
+  sequence_order: 2
+  question: 'Which method is commonly used to prepare primary alcohols from aldehydes?'
+  options:
+  - Oxidation with K₂Cr₂O₇
+  - Reduction with LiAlH₄ or NaBH₄
+  - Dehydration with H₂SO₄
+  - Halogenation with Br₂
+  require_pass: true
+  correct_answer: Reduction with LiAlH₄ or NaBH₄
+  explanation: 'Primary alcohols (R-CH₂OH) can be prepared by reducing aldehydes (R-CHO) using metal hydride reducing agents like LiAlH₄ or NaBH₄. The reduction adds two hydrogen atoms across the C=O double bond: R-CHO + 2[H] → R-CH₂OH. LiAlH₄ is a strong reducing agent that requires anhydrous conditions (dry ether) and is more reactive but less selective. NaBH₄ is milder and more selective, and can be used in protic solvents like water or ethanol. Both work by delivering hydride ions (H⁻) to the electrophilic carbonyl carbon. Oxidation with K₂Cr₂O₇ would convert aldehydes to carboxylic acids, not alcohols. Dehydration removes water from alcohols to form alkenes. Halogenation is not a reduction reaction. Other methods to prepare primary alcohols include: hydroboration-oxidation of alkenes, and reduction of esters or carboxylic acids with LiAlH₄.'
+- type: mcq
+  sequence_order: 3
+  question: 'What is the product when an ester (RCOOR'') is reduced with LiAlH₄?'
+  options:
+  - Carboxylic acid and alcohol
+  - Two molecules of aldehyde
+  - Two molecules of alcohol (RCH₂OH and R''OH)
+  - Ketone and alcohol
+  require_pass: true
+  correct_answer: Two molecules of alcohol (RCH₂OH and R''OH)
+  explanation: 'When esters (R-COO-R'') are reduced with LiAlH₄ (a strong reducing agent), they undergo complete reduction to produce two alcohol molecules. The carbonyl portion is reduced to a primary alcohol (R-CH₂OH), and the alkoxy portion is cleaved to give another alcohol (R''-OH). For example: CH₃-COO-CH₂CH₃ (ethyl acetate) + LiAlH₄ → CH₃-CH₂OH (ethanol) + CH₃CH₂OH (ethanol). This is different from ester hydrolysis, which produces a carboxylic acid and alcohol. NaBH₄ cannot reduce esters - it''s not strong enough. Only LiAlH₄ (or other strong reducing agents like LiAlH₄ or DIBAL-H) can reduce esters. The reaction proceeds through formation of a hemiacetal intermediate that is further reduced. This is a useful method for preparing alcohols, especially when the ester is more accessible than the corresponding aldehyde.'

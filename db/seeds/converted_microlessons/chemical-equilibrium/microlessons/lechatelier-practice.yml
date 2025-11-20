@@ -1,0 +1,59 @@
+slug: lechatelier-practice
+title: le_chatelier — Practice
+difficulty: easy
+sequence_order: 11
+estimated_minutes: 2
+key_concepts:
+- le_chatelier
+prerequisites: []
+content_md: '# le_chatelier — Practice 🚀
+
+
+  FALSE. A catalyst speeds up both forward and backward reactions equally, helping
+  reach equilibrium faster but NOT changing the equilibrium constant or position.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: Does a catalyst change the equilibrium constant K of a reaction?
+  options:
+  - 'True'
+  - 'False'
+  - Only for exothermic reactions
+  - Only at high temperatures
+  require_pass: true
+  correct_answer: 'False'
+  explanation: 'FALSE. A catalyst does NOT change the equilibrium constant K or the equilibrium position. A catalyst speeds up both the forward and backward reactions equally by lowering the activation energy for both directions, allowing the system to reach equilibrium faster, but it does not affect the final equilibrium concentrations or K value. Think of it as helping the reaction get to its destination faster, but not changing the destination itself. For example, in N₂ + 3H₂ ⇌ 2NH₃, adding an iron catalyst speeds up NH₃ production, but also speeds up NH₃ decomposition equally. The equilibrium is reached in minutes instead of months, but the final [NH₃]/[N₂][H₂]³ ratio (K) remains the same. Only temperature changes K. Catalysts are crucial in industry for making reactions reach equilibrium in practical timeframes without requiring extreme temperatures that would shift K unfavorably.'
+- type: mcq
+  sequence_order: 2
+  question: For the exothermic reaction N₂(g) + 3H₂(g) ⇌ 2NH₃(g) + heat, what happens if temperature is increased?
+  options:
+  - Equilibrium shifts right (more NH₃ forms)
+  - Equilibrium shifts left (NH₃ decomposes)
+  - No change in equilibrium position
+  - NH₃ concentration doubles
+  require_pass: true
+  correct_answer: Equilibrium shifts left (NH₃ decomposes)
+  explanation: 'Equilibrium shifts left (toward reactants, decomposing NH₃) when temperature increases. According to Le Chatelier''s principle, when you add heat to an exothermic reaction (which releases heat), the system shifts to consume that added heat - it shifts in the endothermic direction (backward/left). For N₂ + 3H₂ ⇌ 2NH₃ + 92 kJ, the forward reaction releases heat (exothermic, ΔH < 0), so the reverse reaction absorbs heat (endothermic). Increasing T shifts left, decreasing [NH₃] and increasing [N₂] and [H₂]. This is why the Haber process uses moderate temperatures (400-500°C) - higher T would favor reactants despite faster kinetics. Conversely, decreasing temperature shifts right, favoring NH₃ formation. For endothermic reactions, increasing T shifts right (toward products). Temperature changes both shift equilibrium AND change K.'
+- type: mcq
+  sequence_order: 3
+  question: For the equilibrium 2NO₂(g) ⇌ N₂O₄(g), what happens when pressure is increased by decreasing volume?
+  options:
+  - Shifts right (toward N₂O₄, fewer moles of gas)
+  - Shifts left (toward NO₂, more moles of gas)
+  - No shift (Kc remains constant)
+  - N₂O₄ decomposes completely
+  require_pass: true
+  correct_answer: Shifts right (toward N₂O₄, fewer moles of gas)
+  explanation: 'Equilibrium shifts right toward N₂O₄ when pressure increases. According to Le Chatelier''s principle, when pressure increases (by decreasing volume), the system shifts to the side with fewer moles of gas to reduce pressure. For 2NO₂(g) ⇌ N₂O₄(g), the left side has 2 moles of gas and the right side has 1 mole. Increasing pressure favors the right (1 mole), producing more N₂O₄. The brown color of NO₂ fades as colorless N₂O₄ forms. Quantitatively: if volume is halved, concentrations double initially, but then the system shifts right to partially relieve the pressure increase. Note: Kc stays constant (only T changes K), but the equilibrium position shifts. For reactions with Δn = 0 (equal moles of gas on both sides), pressure changes don''t shift equilibrium. Adding an inert gas at constant volume also doesn''t shift equilibrium.'

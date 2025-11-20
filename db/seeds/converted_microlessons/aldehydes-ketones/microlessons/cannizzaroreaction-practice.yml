@@ -1,0 +1,66 @@
+slug: cannizzaroreaction-practice
+title: cannizzaro_reaction — Practice
+difficulty: easy
+sequence_order: 12
+estimated_minutes: 2
+key_concepts:
+- cannizzaro_reaction
+prerequisites: []
+content_md: '# cannizzaro_reaction — Practice 🚀
+
+
+  Cannizzaro: Aldehydes WITHOUT α-H undergo disproportionation. HCHO, C₆H₅CHO, (CH₃)₃C-CHO
+  give Cannizzaro. One molecule → alcohol, one → acid.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 2
+  question: 'Cannizzaro reaction is given by:'
+  options:
+  - Aldehydes with α-hydrogen
+  - Aldehydes without α-hydrogen
+  - All ketones
+  - Carboxylic acids
+  require_pass: true
+  correct_answer: Aldehydes without α-hydrogen
+  explanation: 'The Cannizzaro reaction is a disproportionation reaction that occurs
+    only with aldehydes that lack α-hydrogen atoms (no hydrogen on the carbon adjacent
+    to carbonyl). When such aldehydes are treated with concentrated base (NaOH or
+    KOH), one molecule is oxidized to carboxylic acid/salt and another is reduced
+    to alcohol. Examples: formaldehyde (HCHO), benzaldehyde (C₆H₅CHO), and trimethylacetaldehyde
+    ((CH₃)₃C-CHO) undergo Cannizzaro reaction because they have no α-H. Aldehydes
+    with α-hydrogen prefer aldol condensation instead. The mechanism involves nucleophilic
+    attack by OH⁻, followed by hydride transfer from one aldehyde molecule to another.'
+- type: mcq
+  sequence_order: 3
+  question: 'Which aldehyde will NOT undergo Cannizzaro reaction?'
+  options:
+  - Formaldehyde (HCHO)
+  - Benzaldehyde (C₆H₅CHO)
+  - Acetaldehyde (CH₃CHO)
+  - Trimethylacetaldehyde ((CH₃)₃C-CHO)
+  require_pass: true
+  correct_answer: Acetaldehyde (CH₃CHO)
+  explanation: 'Acetaldehyde (CH₃CHO) will NOT undergo Cannizzaro reaction because it has α-hydrogen atoms (the three H atoms on the CH₃ group adjacent to carbonyl). Aldehydes with α-hydrogen undergo aldol condensation instead of Cannizzaro when treated with base. The other three aldehydes lack α-hydrogen: formaldehyde (HCHO) has no carbon adjacent to carbonyl, benzaldehyde (C₆H₅CHO) has a phenyl group with no α-H, and trimethylacetaldehyde ((CH₃)₃C-CHO) has a quaternary carbon with no H atoms. All three undergo Cannizzaro reaction, giving one molecule of alcohol and one of carboxylic acid/salt.'
+- type: mcq
+  sequence_order: 4
+  question: 'In Cannizzaro reaction, what happens to the two aldehyde molecules?'
+  options:
+  - Both are oxidized
+  - Both are reduced
+  - One is oxidized to acid, one is reduced to alcohol
+  - Both form ketones
+  require_pass: true
+  correct_answer: One is oxidized to acid, one is reduced to alcohol
+  explanation: 'In Cannizzaro reaction, one aldehyde molecule is oxidized to carboxylic acid (or its salt) and another aldehyde molecule is reduced to alcohol. This is called disproportionation - a redox reaction where the same compound acts as both oxidizing and reducing agent. For example, with benzaldehyde: 2C₆H₅CHO + NaOH → C₆H₅CH₂OH (benzyl alcohol) + C₆H₅COONa (sodium benzoate). The mechanism involves hydride (H⁻) transfer from one aldehyde to another. The aldehyde donating H⁻ gets oxidized (loses H, gains O oxidation state), while the aldehyde receiving H⁻ gets reduced (gains H). This simultaneous oxidation-reduction of the same compound is characteristic of Cannizzaro reaction.'

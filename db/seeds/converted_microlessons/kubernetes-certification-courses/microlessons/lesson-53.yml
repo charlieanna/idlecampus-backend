@@ -1,0 +1,68 @@
+slug: lesson-53
+title: Lesson 53
+difficulty: easy
+sequence_order: 53
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Ingress Controllers and Rules\n\n    -\
+  \ path vs host rules, pathType\n    - TLS termination\n    - common controllers\
+  \ (nginx, traefik)"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What is the primary purpose of an Ingress in Kubernetes?
+  options:
+  - To provide persistent storage for pods
+  - To expose HTTP and HTTPS routes from outside the cluster to services within the
+    cluster
+  - To manage pod-to-pod communication
+  - To schedule pods on nodes
+  correct_answer: To expose HTTP and HTTPS routes from outside the cluster to services
+    within the cluster
+  explanation: Ingress is a Kubernetes resource that manages external HTTP/HTTPS access
+    to services within the cluster. It provides HTTP routing rules based on hostnames
+    and paths, allowing you to expose multiple services through a single IP address
+    or load balancer. For example, you can route 'api.example.com' to an API service
+    and 'web.example.com' to a web frontend service, both through the same Ingress.
+    Ingress supports features like TLS termination, path-based routing, virtual hosting,
+    and load balancing. Unlike LoadBalancer Services (which require one external IP
+    per service), Ingress consolidates external access, reducing costs and complexity.
+    However, Ingress is just a configuration resource - you need an Ingress Controller
+    (like nginx-ingress, Traefik, or Istio Gateway) actually running in the cluster
+    to implement the Ingress rules and route traffic accordingly.
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What is the difference between pathType Prefix and Exact in Ingress rules?
+  options:
+  - Prefix matches only the root path; Exact matches all paths
+  - Prefix matches the path and all subpaths; Exact matches only the specific path
+  - There is no difference
+  - Prefix is case-sensitive; Exact is case-insensitive
+  correct_answer: Prefix matches the path and all subpaths; Exact matches only the
+    specific path
+  explanation: 'The pathType field in Ingress rules determines how paths are matched.
+    ''Exact'' matches only the specific path - ''/app'' matches only ''/app'', not
+    ''/app/page'' or ''/application''. ''Prefix'' matches the path and all subpaths
+    - ''/app'' matches ''/app'', ''/app/page'', ''/app/foo/bar'', etc. There''s also
+    ''ImplementationSpecific'' which delegates matching to the Ingress Controller.
+    For example, if you want to route all API calls starting with ''/api/'' to an
+    API service, use pathType: Prefix with path: ''/api''. If you want to route only
+    exactly ''/api'' (perhaps for a health check endpoint), use pathType: Exact. Prefix
+    matching uses path segment boundaries, so ''/app'' with Prefix matches ''/app/page''
+    but not ''/application'' (different segment). This distinction is important for
+    correctly routing traffic in microservices architectures.'
+  require_pass: true
+- type: mcq
+  sequence_order: 1
+  question: What kubectl command checks if you can perform an action?
+  options:
+  - kubectl auth can-i create pods
+  - kubectl check permissions create pods
+  - kubectl verify action create pods
+  - kubectl test auth create pods
+  correct_answer_index: 0
+  explanation: kubectl auth can-i <action> <resource> checks if the current user has
+    permission to perform the specified action.
+  require_pass: true

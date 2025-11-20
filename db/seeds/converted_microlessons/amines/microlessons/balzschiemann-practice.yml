@@ -1,0 +1,59 @@
+slug: balzschiemann-practice
+title: balz_schiemann — Practice
+difficulty: easy
+sequence_order: 12
+estimated_minutes: 2
+key_concepts:
+- balz_schiemann
+prerequisites: []
+content_md: '# balz_schiemann — Practice 🚀
+
+
+  Balz-Schiemann: C₆H₅N₂⁺BF₄⁻ → [heat] → C₆H₅F + N₂ + BF₃. Best method for fluorobenzene.
+  Sandmeyer does not work for F.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: Which reaction converts benzenediazonium salt to fluorobenzene?
+  options:
+  - Balz-Schiemann reaction
+  - Sandmeyer reaction
+  - Gattermann reaction
+  - Cannizzaro reaction
+  require_pass: true
+  correct_answer: Balz-Schiemann reaction
+  explanation: 'The Balz-Schiemann reaction is the specific method for converting benzenediazonium salt to fluorobenzene. The reaction involves: (1) First, converting benzenediazonium chloride to benzenediazonium fluoroborate by treating with fluoroboric acid (HBF₄), (2) Then heating the dry diazonium fluoroborate salt to decompose it: C₆H₅N₂⁺BF₄⁻ → [heat] → C₆H₅F + N₂ + BF₃. This is the best and most reliable method for introducing fluorine into an aromatic ring. The Sandmeyer reaction works for Cl, Br, and CN, but NOT for F. This makes Balz-Schiemann unique and important for synthesizing fluoroarenes.'
+- type: mcq
+  sequence_order: 2
+  question: 'Why doesn''t the Sandmeyer reaction work for preparing fluorobenzene?'
+  options:
+  - Copper(I) fluoride (CuF) is not effective as catalyst
+  - Fluorine is too electronegative
+  - Benzene ring cannot accommodate fluorine
+  - Fluorine forms unstable products
+  require_pass: true
+  correct_answer: Copper(I) fluoride (CuF) is not effective as catalyst
+  explanation: 'The Sandmeyer reaction uses copper(I) halides (CuCl, CuBr) or CuCN as catalysts to replace the diazonium group with Cl, Br, or CN respectively. However, copper(I) fluoride (CuF) is not effective for this purpose - it doesn''t catalyze the replacement of -N₂⁺ with F. This is why a different method, the Balz-Schiemann reaction, was developed specifically for fluorination. In Balz-Schiemann, the fluoride is introduced via the tetrafluoroborate counterion (BF₄⁻) rather than through copper catalysis. The thermal decomposition of the diazonium fluoroborate releases highly reactive fluorine species that substitutes the diazonium group, giving fluorobenzene.'
+- type: mcq
+  sequence_order: 3
+  question: 'What intermediate is formed when benzenediazonium chloride is treated with HBF₄?'
+  options:
+  - Benzenediazonium fluoroborate (C₆H₅N₂⁺BF₄⁻)
+  - Fluorobenzene directly
+  - Benzene
+  - Phenol
+  require_pass: true
+  correct_answer: Benzenediazonium fluoroborate (C₆H₅N₂⁺BF₄⁻)
+  explanation: 'When benzenediazonium chloride (C₆H₅N₂⁺Cl⁻) is treated with fluoroboric acid (HBF₄), it forms benzenediazonium fluoroborate (C₆H₅N₂⁺BF₄⁻) as an isolable crystalline intermediate: C₆H₅N₂⁺Cl⁻ + HBF₄ → C₆H₅N₂⁺BF₄⁻ + HCl. This intermediate is relatively stable and can be isolated as a solid. The key advantage is that the BF₄⁻ counterion provides fluoride during thermal decomposition. When heated (typically to about 100-150°C), the diazonium fluoroborate decomposes to give fluorobenzene: C₆H₅N₂⁺BF₄⁻ → C₆H₅F + N₂ + BF₃. This two-step process allows controlled introduction of fluorine into aromatic compounds.'

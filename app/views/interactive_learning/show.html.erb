@@ -1,0 +1,41 @@
+<% content_for :title, @unit.title %>
+
+<div class="container mt-4">
+  <%= react_component("InteractiveLearningFlow", {
+    unit: {
+      slug: @unit.slug,
+      title: @unit.title,
+      concept_explanation: @unit.concept_explanation,
+      scenario_narrative: @unit.scenario_narrative,
+      problem_statement: @unit.problem_statement,
+      command_to_learn: @unit.command_to_learn,
+      command_variations: @unit.command_variations || [],
+      practice_hints: @unit.practice_hints || [],
+      scenario_description: @unit.scenario_description,
+      scenario_steps: @unit.scenario_steps || [],
+      code_examples: @unit.code_examples || [],
+      visual_aid_url: @unit.visual_aid_url,
+      quiz_question_text: @unit.quiz_question_text,
+      quiz_question_type: @unit.quiz_question_type,
+      quiz_options: @unit.quiz_options || [],
+      quiz_explanation: @unit.quiz_explanation,
+      difficulty_level: @unit.difficulty_level,
+      estimated_minutes: @unit.estimated_minutes,
+      learning_objectives: @unit.learning_objectives || [],
+      next_unit: @next_unit ? { slug: @next_unit.slug, title: @next_unit.title } : nil
+    },
+    initialProgress: {
+      explanation_read: @progress.explanation_read,
+      practice_completed: @progress.practice_completed,
+      quiz_answered: @progress.quiz_answered,
+      scenario_completed: @progress.scenario_completed,
+      completed: @progress.completed,
+      completion_percentage: @progress.completion_percentage,
+      mastery_score: @progress.mastery_score,
+      practice_attempts: @progress.practice_attempts,
+      quiz_attempts: @progress.quiz_attempts
+    },
+    csrfToken: form_authenticity_token
+  }) %>
+</div>
+

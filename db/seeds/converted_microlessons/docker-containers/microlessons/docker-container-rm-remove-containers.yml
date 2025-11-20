@@ -1,0 +1,84 @@
+slug: docker-container-rm-remove-containers
+title: 'Docker Container RM: Remove Containers'
+difficulty: easy
+sequence_order: 16
+estimated_minutes: 2
+key_concepts:
+- containers
+- docker-rm
+- cleanup
+- lifecycle
+prerequisites: []
+content_md: '# Docker Container RM: Remove Containers 🚀
+
+
+  Permanently delete stopped containers to free disk space and names.
+
+
+  ## Syntax/Command
+
+
+  ```bash
+
+  docker container rm my-container
+
+  ```
+
+
+  ## Example
+
+
+  ```bash
+
+  docker container rm -f container
+
+  ```
+
+
+  ## Key Points
+
+
+  - Remove: docker container rm <name>
+
+
+  - Force: docker container rm -f <name>'
+exercises:
+- type: terminal
+  problem_statement: Remove a stopped container named 'my-container'
+  expected_output: Container ID or name confirming deletion
+  language: bash
+  starter_code: "# Remove a container\n"
+  sequence_order: 1
+  command: docker container rm my-container
+  description: Remove stopped containers including their volumes
+  hints:
+  - 'Remove: docker container rm <name>'
+  - 'Force: docker container rm -f <name>'
+  validation:
+    must_not_include:
+    - Error
+    - 'panic:'
+  timeout_sec: 60
+  require_pass: true
+- type: sandbox
+  sequence_order: 99
+  hints:
+  - Run under CPU pressure to surface leaks or races
+  - Keep commands idempotent in CI
+  validation:
+    must_not_include:
+    - Error
+    - 'panic:'
+  timeout_sec: 60
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: Can you remove a running container without -f flag?
+  options:
+  - No, you must stop the container first or use -f to force removal
+  - Yes, docker rm works on running containers by default
+  - Only if the container has no volumes attached
+  - Only if you have root privileges
+  correct_answer: No, you must stop the container first or use -f to force removal
+  explanation: "docker container rm requires the container to be stopped first. Attempting to remove a running container will fail unless you use the -f (--force) flag, which forcefully stops and removes it."
+  require_pass: true

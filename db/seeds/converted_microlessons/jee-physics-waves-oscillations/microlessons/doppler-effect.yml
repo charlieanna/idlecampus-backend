@@ -1,0 +1,235 @@
+slug: doppler-effect
+title: "Doppler Effect in Sound Waves"
+difficulty: advanced
+sequence_order: 9
+estimated_minutes: 18
+key_concepts:
+- doppler-effect
+- apparent-frequency
+- source-observer-motion
+- sound-waves
+- relative-velocity
+prerequisites:
+- wave-equation-properties
+- superposition-interference
+content_md: |
+  # Doppler Effect in Sound Waves
+
+  ## What is Doppler Effect?
+
+  **Apparent change in frequency** due to relative motion between source and observer.
+
+  ## General Formula
+
+  ```
+  f' = f × (v ± vₒ)/(v ∓ vₛ)
+
+  f' = apparent frequency
+  f = actual source frequency
+  v = speed of sound in medium
+  vₒ = observer velocity
+  vₛ = source velocity
+  ```
+
+  ### Sign Convention:
+  - **Towards each other**: f' > f (frequency increases)
+  - **Away from each other**: f' < f (frequency decreases)
+
+  ## Different Cases
+
+  ### Case 1: Source Moving, Observer Stationary
+
+  **Towards observer:**
+  ```
+  f' = f × v/(v - vₛ) > f
+  ```
+
+  **Away from observer:**
+  ```
+  f' = f × v/(v + vₛ) < f
+  ```
+
+  ### Case 2: Observer Moving, Source Stationary
+
+  **Towards source:**
+  ```
+  f' = f × (v + vₒ)/v > f
+  ```
+
+  **Away from source:**
+  ```
+  f' = f × (v - vₒ)/v < f
+  ```
+
+  ### Case 3: Both Moving
+
+  **Approaching:**
+  ```
+  f' = f × (v + vₒ)/(v - vₛ)
+  ```
+
+  **Receding:**
+  ```
+  f' = f × (v - vₒ)/(v + vₛ)
+  ```
+
+  ## Easy Memory Trick
+
+  **"Upper O, Lower S"**
+  - Observer terms in numerator
+  - Source terms in denominator
+  - Add (+) when moving towards sound (increases f')
+  - Subtract (-) when moving away from sound (decreases f')
+
+  ## Apparent Wavelength
+
+  ```
+  λ' = λ × (v ∓ vₛ)/v
+
+  Only source motion affects wavelength!
+  Observer motion doesn't change wavelength.
+  ```
+
+  ## Special Cases
+
+  ### 1. Source Approaching Observer:
+  ```
+  f' = fv/(v - vₛ)
+  λ' = λ(v - vₛ)/v (wavelength compressed)
+  ```
+
+  ### 2. Source Receding:
+  ```
+  f' = fv/(v + vₛ)
+  λ' = λ(v + vₛ)/v (wavelength stretched)
+  ```
+
+  ### 3. Observer Approaching Stationary Source:
+  ```
+  f' = f(v + vₒ)/v
+  λ' = λ (wavelength unchanged)
+  ```
+
+  ### 4. Source Moving with Speed of Sound:
+  ```
+  If vₛ = v, f' → ∞ (Mach cone, sonic boom)
+  ```
+
+  ## Applications
+
+  ### 1. Police Radar
+  Uses electromagnetic Doppler (different formula)
+
+  ### 2. Medical Ultrasound
+  Blood flow velocity measurement
+
+  ### 3. Astronomy (Redshift/Blueshift)
+  - Star approaching: Blue shift (higher f)
+  - Star receding: Red shift (lower f)
+
+  ### 4. Bat Echolocation
+  Detects prey motion by frequency shift
+
+  ## Numerical Examples
+
+  **Example 1:** Source (f = 500 Hz) moves at 20 m/s towards stationary observer. v = 340 m/s. Find apparent frequency.
+
+  **Solution:**
+  ```
+  f' = fv/(v - vₛ) = 500 × 340/(340 - 20)
+  f' = 170000/320 = 531.25 Hz
+
+  Frequency increases (approaches)
+  ```
+
+  **Example 2:** Observer moves at 34 m/s towards stationary source (f = 1000 Hz). Find f'.
+
+  **Solution:**
+  ```
+  f' = f(v + vₒ)/v = 1000(340 + 34)/340
+  f' = 1000 × 374/340 = 1100 Hz
+
+  10% increase in frequency
+  ```
+
+  **Example 3:** Source (400 Hz) and observer both move towards each other at 17 m/s. v = 340 m/s.
+
+  **Solution:**
+  ```
+  f' = f(v + vₒ)/(v - vₛ) = 400(340 + 17)/(340 - 17)
+  f' = 400 × 357/323 = 442.1 Hz
+
+  About 10.5% increase
+  ```
+
+  ## Doppler Shift Percentage
+
+  ```
+  Δf/f = (vₒ ± vₛ)/(v ∓ vₛ) - 1
+  ```
+
+  For small velocities (vₛ << v):
+  ```
+  Δf/f ≈ (vₒ + vₛ)/v (approaching)
+  ```
+
+  ## Echo and Reflection
+
+  When sound reflects off moving surface:
+  ```
+  f'' = f' × (v ± vwall)/(v ∓ vwall)
+
+  Double Doppler effect
+  ```
+
+  ## JEE Important Points
+
+  1. **Doppler effect for sound** depends on medium
+  2. **Doppler effect for light** depends only on relative velocity
+  3. **Wavelength changes only** with source motion
+  4. **Frequency appears to change** with both motions
+  5. **Wind affects** all velocities equally (add/subtract)
+  6. **At right angles**: No Doppler effect (perpendicular motion)
+
+  ## With Wind
+
+  If wind blows with velocity w:
+  ```
+  Replace v with (v + w) if wind is from source to observer
+  Replace v with (v - w) if wind is opposite
+  ```
+
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: "A source of sound moves towards a stationary observer with velocity v/10. The apparent increase in frequency is:"
+  options:
+  - "10%"
+  - "11.1%"
+  - "9%"
+  - "5%"
+  correct_answer: "11.1%"
+  explanation: "f' = fv/(v - vₛ) = fv/(v - v/10) = fv/(9v/10) = 10f/9. Percentage increase = (f' - f)/f × 100 = (10/9 - 1) × 100 = (1/9) × 100 = 11.1%. Note: This is NOT 10% because Doppler effect is non-linear. When source approaches, denominator decreases, making the effect slightly larger. Common JEE trap: Students often mistakenly calculate as 10% by just using the velocity ratio."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: "A source emitting sound of 200 Hz moves away from stationary observer at 40 m/s. If sound velocity is 340 m/s, apparent frequency is:"
+  options:
+  - "178.9 Hz"
+  - "221.1 Hz"
+  - "200 Hz"
+  - "160 Hz"
+  correct_answer: "178.9 Hz"
+  explanation: "Source moving away: f' = fv/(v + vₛ) = 200 × 340/(340 + 40) = 68000/380 ≈ 178.9 Hz. Frequency decreases when source moves away (makes sense intuitively). The wavelength stretches behind the moving source. Verify: λ' = λ(v + vₛ)/v = λ × 380/340 ≈ 1.118λ. Longer wavelength means lower frequency. This is the 'red shift' concept - moving away causes lower frequency (longer wavelength, redder light in astronomy)."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: "Both source (f = 500 Hz) and observer move in same direction with same speed 50 m/s. Apparent frequency heard is:"
+  options:
+  - "550 Hz"
+  - "450 Hz"
+  - "500 Hz"
+  - "Depends on speed of sound"
+  correct_answer: "500 Hz"
+  explanation: "If both move in same direction with same speed, their separation remains constant. Using formula: f' = f(v - vₒ)/(v - vₛ) = f(v - 50)/(v - 50) = f. Apparent frequency = actual frequency = 500 Hz. This makes physical sense: no relative motion means no Doppler effect. Compare: If they move towards each other, f' > f. If they move apart, f' < f. When both move together, it's like both are stationary - no change in frequency perceived."
+  require_pass: true

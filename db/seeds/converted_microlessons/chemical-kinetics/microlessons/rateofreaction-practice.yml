@@ -1,0 +1,52 @@
+slug: rateofreaction-practice
+title: rate_of_reaction — Practice
+difficulty: easy
+sequence_order: 7
+estimated_minutes: 2
+key_concepts:
+- rate_of_reaction
+prerequisites: []
+content_md: '# rate_of_reaction — Practice 🚀
+
+
+  Rate = -1/2 × d[N₂O₅]/dt = -1/2 × (-0.008) = 0.004 M/s
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: 'For the reaction: aA + bB → cC + dD, what is the general expression for the rate of reaction?'
+  options:
+  - Rate = -d[A]/dt = -d[B]/dt = d[C]/dt = d[D]/dt
+  - Rate = -1/a × d[A]/dt = -1/b × d[B]/dt = 1/c × d[C]/dt = 1/d × d[D]/dt
+  - Rate = a × d[A]/dt = b × d[B]/dt = c × d[C]/dt = d × d[D]/dt
+  - Rate = d[A]/dt + d[B]/dt - d[C]/dt - d[D]/dt
+  correct_answer: Rate = -1/a × d[A]/dt = -1/b × d[B]/dt = 1/c × d[C]/dt = 1/d × d[D]/dt
+  explanation: 'The rate of reaction must account for the stoichiometric coefficients to ensure a single, unique rate value regardless of which species you monitor. For aA + bB → cC + dD, the rate is defined as: Rate = -1/a × d[A]/dt = -1/b × d[B]/dt = 1/c × d[C]/dt = 1/d × d[D]/dt. Key points: (1) NEGATIVE sign for reactants (concentration decreasing). (2) POSITIVE sign for products (concentration increasing). (3) Division by stoichiometric coefficient ensures all expressions give the SAME rate value. Example: For 2N₂O₅ → 4NO₂ + O₂, Rate = -1/2 × d[N₂O₅]/dt = 1/4 × d[NO₂]/dt = 1/1 × d[O₂]/dt. If d[N₂O₅]/dt = -0.4 M/s, then Rate = -1/2 × (-0.4) = 0.2 M/s. Check: If Rate = 0.2 M/s, then d[NO₂]/dt = 4 × 0.2 = 0.8 M/s (NO₂ forms 4 times faster than rate) and d[O₂]/dt = 1 × 0.2 = 0.2 M/s. Without the stoichiometric coefficients, you would get different "rates" depending on which species you measured, which would be confusing and inconsistent.'
+  require_pass: true
+- type: short_answer
+  sequence_order: 2
+  question: For 2N₂O₅ → 4NO₂ + O₂, if d[N₂O₅]/dt = -0.008 M/s, find rate of reaction
+    in M/s.
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: 'For the reaction N₂(g) + 3H₂(g) → 2NH₃(g), if the rate of formation of NH₃ is 0.06 M/s, what is the rate of consumption of H₂?'
+  options:
+  - 0.02 M/s
+  - 0.03 M/s
+  - 0.06 M/s
+  - 0.09 M/s
+  correct_answer: 0.09 M/s
+  explanation: 'Using the relationship between rates for different species based on stoichiometry: Rate = -1/1 × d[N₂]/dt = -1/3 × d[H₂]/dt = 1/2 × d[NH₃]/dt. Given: d[NH₃]/dt = +0.06 M/s (formation rate, positive). We need: -d[H₂]/dt (consumption rate of H₂). From the rate expression: -1/3 × d[H₂]/dt = 1/2 × d[NH₃]/dt → -1/3 × d[H₂]/dt = 1/2 × 0.06 = 0.03 M/s. Solving for d[H₂]/dt: d[H₂]/dt = -3 × 0.03 = -0.09 M/s. The rate of consumption of H₂ is the absolute value: |-0.09| = 0.09 M/s. Physical interpretation: For every 2 moles of NH₃ formed, 3 moles of H₂ are consumed. The ratio is 3:2 = 1.5:1. Therefore, H₂ is consumed 1.5 times faster than NH₃ is formed. Check: 0.09/0.06 = 1.5 ✓. Similarly, the rate of consumption of N₂ would be: -d[N₂]/dt = 1 × Rate = 1 × 0.03 = 0.03 M/s. This makes sense: for every 1 mole of N₂ consumed, 2 moles of NH₃ are formed (ratio 1:2).'
+  require_pass: true

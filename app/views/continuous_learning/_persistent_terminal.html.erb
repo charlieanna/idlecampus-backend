@@ -1,0 +1,311 @@
+<!-- Persistent Terminal Panel - Stays visible across all lessons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/xterm@5.3.0/css/xterm.min.css">
+
+<div class="persistent-terminal-container">
+  <div class="terminal-section">
+    <div class="terminal-header">
+      <div class="terminal-controls">
+        <span class="terminal-dot red"></span>
+        <span class="terminal-dot yellow"></span>
+        <span class="terminal-dot green"></span>
+      </div>
+      <div class="terminal-title">Docker Terminal</div>
+      <div class="terminal-actions">
+        <span class="terminal-status"><span class="status-dot"></span> <span id="terminal-status-text">Lab environment ready</span></span>
+      </div>
+    </div>
+
+    <div id="xterm-container" style="padding: 10px; background: #1E1E1E; height: calc(100vh - 250px);"></div>
+  </div>
+
+  <div id="labFeedback" class="lab-feedback"></div>
+
+  <div class="hints-section" id="hintsSection" style="display: none;">
+    <h4>💡 Hint</h4>
+    <p id="hintText"></p>
+  </div>
+</div>
+
+<!-- Load xterm.js from CDN -->
+<script src="https://cdn.jsdelivr.net/npm/xterm@5.3.0/lib/xterm.min.js"></script>
+
+<script>
+// Persistent Terminal - Initialize once and reuse across lesson changes
+(function() {
+  // Check if terminal already exists
+  if (window.persistentTerminal) {
+    console.log('Terminal already initialized, reusing existing instance');
+    return;
+  }
+
+  const term = new Terminal({
+    cursorBlink: true,
+    cursorStyle: 'block',
+    fontFamily: 'Monaco, Menlo, "Courier New", monospace',
+    fontSize: 14,
+    theme: {
+      background: '#1E1E1E',
+      foreground: '#e5e7eb',
+      cursor: '#00ff00',
+      cursorAccent: '#1E1E1E',
+      selection: '#374151',
+      black: '#000000',
+      red: '#ff6b6b',
+      green: '#00ff00',
+      yellow: '#fdcb6e',
+      blue: '#74b9ff',
+      magenta: '#a29bfe',
+      cyan: '#81ecec',
+      white: '#e5e7eb',
+      brightBlack: '#636e72',
+      brightRed: '#ff7675',
+      brightGreen: '#55efc4',
+      brightYellow: '#ffeaa7',
+      brightBlue: '#74b9ff',
+      brightMagenta: '#fd79a8',
+      brightCyan: '#81ecec',
+      brightWhite: '#ffffff'
+    },
+    rows: 25,
+    cols: 90,
+    scrollback: 2000,
+    allowProposedApi: true
+  });
+
+  const container = document.getElementById('xterm-container');
+  if (container) {
+    term.open(container);
+
+    let currentLine = '';
+    let commandHistory = [];
+    let historyIndex = -1;
+
+    // Restore command history from sessionStorage
+    try {
+      const savedHistory = sessionStorage.getItem('terminalCommandHistory');
+      if (savedHistory) {
+        commandHistory = JSON.parse(savedHistory);
+      }
+
+      // Restore terminal output from sessionStorage
+      const savedOutput = sessionStorage.getItem('terminalOutput');
+      if (savedOutput) {
+        term.write(savedOutput);
+      }
+    } catch (e) {
+      console.error('Error restoring terminal state:', e);
+    }
+
+    // Show lesson change notification if this is a new lesson
+    const currentLessonElement = document.querySelector('.breadcrumb-item.current-lesson');
+    const currentLesson = currentLessonElement?.textContent?.trim() || '';
+    const lastLesson = sessionStorage.getItem('lastLessonName');
+
+    // Update terminal status bar
+    const statusText = document.getElementById('terminal-status-text');
+    if (statusText && currentLesson) {
+      statusText.textContent = 'Learning: ' + currentLesson.replace(/📘|🔄|🧪/g, '').trim();
+    }
+
+    if (currentLesson && lastLesson && currentLesson !== lastLesson) {
+      term.write('\r\n\x1b[36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\r\n');
+      term.write('\x1b[36m→ Switched to: ' + currentLesson.replace(/📘|🔄|🧪/g, '').trim() + '\x1b[0m\r\n');
+      term.write('\x1b[36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\r\n');
+    } else if (currentLesson && !lastLesson) {
+      // First time loading
+      term.write('\r\n\x1b[36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\r\n');
+      term.write('\x1b[36m→ Welcome! Starting: ' + currentLesson.replace(/📘|🔄|🧪/g, '').trim() + '\x1b[0m\r\n');
+      term.write('\x1b[36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\r\n');
+    }
+
+    // Save current lesson name
+    if (currentLesson) {
+      sessionStorage.setItem('lastLessonName', currentLesson);
+    }
+
+    // Show prompt
+    term.write('\r\n\x1b[32mroot@docker:~$\x1b[0m ');
+
+    // Handle keyboard input
+    term.onData(data => {
+      const code = data.charCodeAt(0);
+
+      // Enter key
+      if (code === 13) {
+        const command = currentLine.trim();
+        if (command) {
+          term.write('\r\n');
+          executeCommand(command);
+          commandHistory.unshift(command);
+          historyIndex = -1;
+
+          // Save command history to sessionStorage
+          try {
+            sessionStorage.setItem('terminalCommandHistory', JSON.stringify(commandHistory.slice(0, 50)));
+          } catch (e) {
+            console.error('Error saving command history:', e);
+          }
+        } else {
+          term.write('\r\n\x1b[32mroot@docker:~$\x1b[0m ');
+        }
+        currentLine = '';
+      }
+      // Backspace
+      else if (code === 127) {
+        if (currentLine.length > 0) {
+          currentLine = currentLine.slice(0, -1);
+          term.write('\b \b');
+        }
+      }
+      // Ctrl+C
+      else if (code === 3) {
+        term.write('^C');
+        currentLine = '';
+        term.write('\r\n\x1b[32mroot@docker:~$\x1b[0m ');
+      }
+      // Ctrl+L (clear screen)
+      else if (code === 12) {
+        term.clear();
+        term.write('\x1b[32mroot@docker:~$\x1b[0m ');
+        currentLine = '';
+      }
+      // Ctrl+V (block paste)
+      else if (code === 22) {
+        term.write('\r\n\x1b[31m⚠ Paste disabled - type the command to learn!\x1b[0m\r\n');
+        term.write('\x1b[32mroot@docker:~$\x1b[0m ');
+        if (currentLine) {
+          term.write(currentLine);
+        }
+      }
+      // Arrow up (history)
+      else if (data === '\x1b[A') {
+        if (commandHistory.length > 0 && historyIndex < commandHistory.length - 1) {
+          historyIndex++;
+          // Clear current line
+          term.write('\r\x1b[K');
+          term.write('\x1b[32mroot@docker:~$\x1b[0m ');
+          currentLine = commandHistory[historyIndex];
+          term.write(currentLine);
+        }
+      }
+      // Arrow down (history)
+      else if (data === '\x1b[B') {
+        if (historyIndex > 0) {
+          historyIndex--;
+          // Clear current line
+          term.write('\r\x1b[K');
+          term.write('\x1b[32mroot@docker:~$\x1b[0m ');
+          currentLine = commandHistory[historyIndex];
+          term.write(currentLine);
+        } else if (historyIndex === 0) {
+          historyIndex = -1;
+          // Clear current line
+          term.write('\r\x1b[K');
+          term.write('\x1b[32mroot@docker:~$\x1b[0m ');
+          currentLine = '';
+        }
+      }
+      // Regular character
+      else if (code >= 32 && code < 127) {
+        currentLine += data;
+        term.write(data);
+      }
+    });
+
+    // Execute command function
+    function executeCommand(command) {
+      const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content;
+      const executeUrl = '/docker/learn/execute';
+
+      fetch(executeUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-Token': csrfToken
+        },
+        body: JSON.stringify({ command: command })
+      })
+      .then(response => response.json())
+      .then(result => {
+        // Show output with proper formatting
+        if (result.output) {
+          const lines = result.output.split('\n');
+          lines.forEach((line, index) => {
+            // Skip empty first/last lines
+            if (line.trim() === '' && (index === 0 || index === lines.length - 1)) {
+              return;
+            }
+            // Color bash errors in red
+            if (line.startsWith('bash:') || line.includes('command not found')) {
+              term.write('\x1b[31m' + line + '\x1b[0m\r\n');
+            } else if (line.trim() !== '') {
+              term.write(line + '\r\n');
+            }
+          });
+        }
+
+        // Show feedback if present
+        if (result.feedback) {
+          const feedbackArea = document.getElementById('labFeedback');
+          if (feedbackArea) {
+            feedbackArea.innerHTML = `
+              <div class="feedback-message feedback-${result.correct ? 'success' : 'error'} feedback-bounce">
+                <span class="feedback-icon">${result.correct ? '🎉' : '🤔'}</span>
+                <span class="feedback-text">${result.feedback}</span>
+              </div>
+            `;
+          }
+        }
+
+        // Show hint if incorrect
+        if (!result.correct && result.hint) {
+          const hintsSection = document.getElementById('hintsSection');
+          const hintText = document.getElementById('hintText');
+          if (hintsSection && hintText) {
+            hintText.textContent = result.hint;
+            hintsSection.style.display = 'block';
+          }
+        }
+
+        // If correct and advance, show success
+        if (result.advance_to_next) {
+          term.write('\r\n\x1b[32m✓ Success! Moving to next lesson...\x1b[0m\r\n');
+          setTimeout(() => {
+            if (window.ContinuousLearning && window.ContinuousLearning.showSuccessModal) {
+              window.ContinuousLearning.showSuccessModal();
+            }
+          }, 1000);
+        }
+
+        // Show new prompt on a fresh line
+        term.write('\r\n\x1b[32mroot@docker:~$\x1b[0m ');
+      })
+      .catch(error => {
+        term.write('\r\n\x1b[31mError: ' + error.message + '\x1b[0m\r\n');
+        term.write('\x1b[32mroot@docker:~$\x1b[0m ');
+      });
+    }
+
+    // Focus terminal on click
+    container.addEventListener('click', () => {
+      term.focus();
+    });
+
+    // Auto-focus terminal after a short delay
+    setTimeout(() => term.focus(), 500);
+
+    // Store terminal instance globally for reuse
+    window.persistentTerminal = {
+      term: term,
+      executeCommand: executeCommand,
+      commandHistory: commandHistory,
+      showLessonChangeNotification: function(lessonName) {
+        term.write(`\r\n\x1b[36m→ Switched to: ${lessonName}\x1b[0m\r\n`);
+        term.write('\x1b[32mroot@docker:~$\x1b[0m ');
+      }
+    };
+
+    console.log('Persistent terminal initialized successfully');
+  }
+})();
+</script>

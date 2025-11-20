@@ -1,0 +1,79 @@
+slug: coordinate-distance-practice
+title: coordinate-distance — Practice
+difficulty: medium
+sequence_order: 3
+estimated_minutes: 2
+key_concepts:
+- coordinate-distance
+prerequisites: []
+content_md: '# coordinate-distance — Practice 🚀
+
+
+  Distance = √[(x₂-x₁)² + (y₂-y₁)²] = √[9 + 16] = √25 = 5
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: 'Find the distance between points A(1, 2) and B(4, 6).'
+  options:
+  - '3'
+  - '4'
+  - '5'
+  - '7'
+  require_pass: true
+  correct_answer: '5'
+  explanation: 'Use the **distance formula**: d = √[(x₂-x₁)² + (y₂-y₁)²]. For A(1,
+    2) and B(4, 6): d = √[(4-1)² + (6-2)²] = √[3² + 4²] = √[9 + 16] = √25 = 5. This
+    is a 3-4-5 right triangle (Pythagorean triple). **Distance formula derivation**:
+    Uses the Pythagorean theorem. Horizontal distance = |x₂-x₁|, vertical distance
+    = |y₂-y₁|, hypotenuse = √[(x₂-x₁)² + (y₂-y₁)²]. **Common Pythagorean triples**:
+    3-4-5, 5-12-13, 8-15-17, 7-24-25. **Examples**: Distance from (0,0) to (3,4)
+    = 5, distance from (-1,2) to (2,6) = √[(3)² + (4)²] = 5. The distance formula
+    works in all quadrants and for any two points in the coordinate plane.'
+- type: mcq
+  sequence_order: 2
+  question: 'Find the midpoint of the line segment connecting (2, 3) and (8, 7).'
+  options:
+  - (5, 5)
+  - (4, 5)
+  - (6, 5)
+  - (5, 4)
+  require_pass: true
+  correct_answer: (5, 5)
+  explanation: 'The **midpoint formula** is: M = ((x₁+x₂)/2, (y₁+y₂)/2). For points
+    (2, 3) and (8, 7): M = ((2+8)/2, (3+7)/2) = (10/2, 10/2) = (5, 5). **Concept**:
+    The midpoint is the average of the x-coordinates and the average of the y-coordinates.
+    It''s the point exactly halfway between the two endpoints. **Verification**: Distance
+    from (2,3) to (5,5) = √[9+4] = √13. Distance from (5,5) to (8,7) = √[9+4] =
+    √13 ✓ (equal distances). **Applications**: Finding center of a line segment,
+    bisecting segments, geometry problems. **Example**: Midpoint of (0,0) and (6,8)
+    = (3,4).'
+- type: mcq
+  sequence_order: 3
+  question: 'What is the distance between point P(3, -4) and the origin O(0, 0)?'
+  options:
+  - '3'
+  - '4'
+  - '5'
+  - '7'
+  require_pass: true
+  correct_answer: '5'
+  explanation: 'Distance from any point (x, y) to the origin (0, 0) is: d = √[x²
+    + y²]. For P(3, -4): d = √[3² + (-4)²] = √[9 + 16] = √25 = 5. **Note**: The
+    negative y-coordinate becomes positive when squared, so (-4)² = 16. This is another
+    3-4-5 right triangle. **Polar coordinates**: This distance √[x² + y²] is called
+    the radius r in polar coordinates. **Circle equation**: Points at distance r from
+    origin satisfy x² + y² = r². For r=5: x² + y² = 25. Point (3,-4) lies on this
+    circle. **Examples**: Distance from (5,12) to origin = √[25+144] = √169 = 13,
+    distance from (-6,8) to origin = √[36+64] = √100 = 10.'

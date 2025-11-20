@@ -1,0 +1,94 @@
+slug: lesson-16
+title: Lesson 16
+sequence_order: 16
+estimated_minutes: 2
+difficulty: easy
+key_concepts: []
+content_md: "# Microlesson \U0001F680\n\n# Tuples and Sets\n\n    ## Tuples: Immutable\
+  \ Lists\n\n    **Tuples** are like lists but cannot be changed after creation.\n\
+  \n    ### Creating Tuples\n\n    ```python\n    # With parentheses\n    point =\
+  \ (10, 20)\n    person = (\"Alice\", 25, \"NYC\")\n\n    # Without parentheses (tuple\
+  \ packing)\n    coordinates = 10, 20, 30\n\n    # Single element tuple (note the\
+  \ comma!)\n    single = (42,)\n\n    # Empty tuple\n    empty = ()\n    ```\n\n\
+  \    ### Accessing Tuple Elements\n\n    ```python\n    point = (10, 20, 30)\n \
+  \   print(point[0])   # 10\n    print(point[-1])  # 30\n    print(point[1:])  #\
+  \ (20, 30)\n    ```\n\n    ### Tuple Unpacking\n\n    ```python\n    point = (10,\
+  \ 20)\n    x, y = point\n    print(x)  # 10\n    print(y)  # 20\n\n    # Swap variables\n\
+  \    a, b = 1, 2\n    a, b = b, a  # Now a=2, b=1\n\n    # Multiple return values\n\
+  \    def get_user():\n        return \"Alice\", 25, \"NYC\"\n\n    name, age, city\
+  \ = get_user()\n    ```\n\n    ### Why Use Tuples?\n\n    - **Immutable**: Can't\
+  \ be accidentally modified\n    - **Hashable**: Can be used as dictionary keys\n\
+  \    - **Faster**: Slightly faster than lists\n    - **Multiple returns**: Natural\
+  \ for returning multiple values\n\n    ```python\n    # Tuple as dictionary key\n\
+  \    locations = {\n        (0, 0): \"origin\",\n        (1, 2): \"point A\",\n\
+  \        (3, 4): \"point B\"\n    }\n    ```\n\n    ## Sets: Unique Collections\n\
+  \n    **Sets** store unique values with fast membership testing.\n\n    ### Creating\
+  \ Sets\n\n    ```python\n    # With curly braces\n    fruits = {\"apple\", \"banana\"\
+  , \"cherry\"}\n\n    # From list (removes duplicates)\n    numbers = set([1, 2,\
+  \ 2, 3, 3, 3])  # {1, 2, 3}\n\n    # Empty set (must use set(), not {})\n    empty\
+  \ = set()\n    ```\n\n    ### Set Operations\n\n    ```python\n    fruits = {\"\
+  apple\", \"banana\", \"cherry\"}\n\n    # Add element\n    fruits.add(\"orange\"\
+  )\n\n    # Remove element\n    fruits.remove(\"banana\")  # Error if not found\n\
+  \    fruits.discard(\"mango\")  # No error if not found\n\n    # Check membership\n\
+  \    if \"apple\" in fruits:\n        print(\"Found!\")\n\n    # Length\n    print(len(fruits))\n\
+  \    ```\n\n    ### Set Math\n\n    ```python\n    a = {1, 2, 3, 4}\n    b = {3,\
+  \ 4, 5, 6}\n\n    # Union (all unique elements)\n    print(a | b)  # {1, 2, 3, 4,\
+  \ 5, 6}\n    print(a.union(b))\n\n    # Intersection (common elements)\n    print(a\
+  \ & b)  # {3, 4}\n    print(a.intersection(b))\n\n    # Difference (in a but not\
+  \ in b)\n    print(a - b)  # {1, 2}\n    print(a.difference(b))\n\n    # Symmetric\
+  \ difference (in either but not both)\n    print(a ^ b)  # {1, 2, 5, 6}\n    print(a.symmetric_difference(b))\n\
+  \    ```\n\n    ### Common Use Cases\n\n    #### Remove duplicates\n    ```python\n\
+  \    numbers = [1, 2, 2, 3, 3, 3, 4]\n    unique = list(set(numbers))  # [1, 2,\
+  \ 3, 4]\n    ```\n\n    #### Fast membership testing\n    ```python\n    # Much\
+  \ faster than list for large collections\n    allowed_users = {\"alice\", \"bob\"\
+  , \"charlie\"}\n    if username in allowed_users:\n        print(\"Access granted\"\
+  )\n    ```\n\n    #### Find common elements\n    ```python\n    list1 = [1, 2, 3,\
+  \ 4]\n    list2 = [3, 4, 5, 6]\n    common = set(list1) & set(list2)  # {3, 4}\n\
+  \    ```\n\n    ## Summary\n\n    | Type | Mutable? | Ordered? | Duplicates? | Syntax\
+  \ |\n    |------|----------|----------|-------------|--------|\n    | List | Yes\
+  \ | Yes | Yes | `[1, 2, 3]` |\n    | Tuple | No | Yes | Yes | `(1, 2, 3)` |\n  \
+  \  | Set | Yes | No | No | `{1, 2, 3}` |\n    | Dict | Yes | Yes* | No (keys) |\
+  \ `{'a': 1}` |\n\n    *Python 3.7+ maintains insertion order for dictionaries\n\n\
+  \    **Practice:** Try the Data Structures lab!"
+exercises:
+- type: mcq
+  slug: lesson-16-mcq-1
+  sequence_order: 1
+  question: What is the difference between a list and a tuple in Python?
+  options:
+  - Lists are mutable (can be modified), tuples are immutable (cannot be changed)
+  - Lists are faster than tuples
+  - Tuples can only store strings
+  - Lists use less memory
+  correct_answer_index: 0
+  explanation: Lists are mutable - you can add, remove, or modify elements after creation using methods like append(), remove(), etc. Tuples are immutable - once created, they cannot be modified. Tuples are slightly faster and use less memory, making them ideal for fixed collections of data.
+- type: mcq
+  slug: lesson-16-mcq-2
+  sequence_order: 2
+  question: What is a list comprehension in Python?
+  options:
+  - A concise way to create lists using a single line of code with optional filtering
+  - A method to compress lists
+  - A way to compare two lists
+  - A list sorting algorithm
+  correct_answer_index: 0
+  explanation: List comprehensions provide a concise syntax to create lists: [expression for item in iterable if condition]. For example, [x**2 for x in range(10) if x % 2 == 0] creates a list of squares of even numbers. This is more readable and often faster than traditional loops.
+- type: mcq
+  slug: lesson-16-mcq-3
+  sequence_order: 3
+  question: What does the try-except block do in Python?
+  options:
+  - Handles exceptions (errors) gracefully without crashing the program
+  - Tries to optimize code performance
+  - Tests if code syntax is correct
+  - Executes code multiple times until it succeeds
+  correct_answer_index: 0
+  explanation: try-except blocks catch and handle exceptions, preventing program crashes. Code in the try block is executed, and if an exception occurs, the except block handles it. For example, catching ValueError when converting user input to int prevents crashes from invalid input.
+objectives:
+- Understand core concepts of Tuples and Sets
+- Apply learned concepts in practical scenarios
+- Identify best practices and common patterns
+- Recognize trade-offs in different approaches
+next_recommended:
+- control
+- data-structures

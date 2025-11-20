@@ -1,0 +1,81 @@
+slug: heavywaterproperties-practice
+title: heavy_water_properties — Practice
+difficulty: hard
+sequence_order: 15
+estimated_minutes: 2
+key_concepts:
+- heavy_water_properties
+prerequisites: []
+content_md: '# heavy_water_properties — Practice 🚀
+
+
+  D₂O is used as a moderator in nuclear reactors (slows neutrons), has higher density
+  (1.11 g/mL) than H₂O (1.0 g/mL), is toxic to living organisms, and reacts slower
+  than H₂O due to kinetic isotope effect.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What is the density of heavy water (D₂O) at room temperature?
+  options:
+  - 0.92 g/mL
+  - 1.00 g/mL
+  - 1.11 g/mL
+  - 1.25 g/mL
+  require_pass: true
+  correct_answer: 1.11 g/mL
+  explanation: 'Heavy water (D₂O) has a density of 1.11 g/mL at 25°C, which is about
+    11% higher than normal water (1.00 g/mL). This is because deuterium atoms (mass
+    = 2 amu) are twice as heavy as protium atoms (mass = 1 amu), making D₂O molecules
+    heavier. Molecular weight: D₂O = 20 g/mol vs H₂O = 18 g/mol. The higher density
+    causes ice made from D₂O to sink in normal water (unusual property). Other physical
+    properties affected by mass: Temperature of maximum density (11.6°C vs 4°C), Viscosity
+    (higher for D₂O), Refractive index (slightly different).'
+- type: mcq
+  sequence_order: 2
+  question: Why does heavy water (D₂O) react slower than normal water (H₂O)?
+  options:
+  - D₂O has lower density
+  - Kinetic isotope effect - D-O bonds are stronger
+  - D₂O has weaker hydrogen bonding
+  - D₂O is less polar than H₂O
+  require_pass: true
+  correct_answer: Kinetic isotope effect - D-O bonds are stronger
+  explanation: 'D₂O reacts slower than H₂O due to the kinetic isotope effect. D-O
+    bonds are stronger and have lower zero-point vibrational energy than H-O bonds
+    because deuterium is heavier. Breaking D-O bonds requires more energy, so reactions
+    involving bond cleavage are slower. The rate ratio k(H₂O)/k(D₂O) can be 2-10
+    for reactions involving O-H/O-D bond breaking. Examples: Deuterolysis (reaction
+    with D₂O) is slower than hydrolysis, Acid-base reactions in D₂O are slower. This
+    property is useful in mechanistic studies - if replacing H with D significantly
+    slows reaction, it indicates H is involved in rate-determining step.'
+- type: mcq
+  sequence_order: 3
+  question: Which statement about heavy water (D₂O) toxicity is correct?
+  options:
+  - D₂O is completely safe for human consumption
+  - D₂O is toxic because it disrupts cellular processes
+  - D₂O is more toxic than cyanide
+  - D₂O has no biological effects
+  require_pass: true
+  correct_answer: D₂O is toxic because it disrupts cellular processes
+  explanation: 'Heavy water (D₂O) is toxic to living organisms because it disrupts
+    cellular processes when it replaces normal water (H₂O) in cells. Effects: (1)
+    Enzyme reactions slow down due to kinetic isotope effect, (2) DNA replication
+    and cell division are affected, (3) Metabolic pathways are disrupted. Toxicity
+    depends on concentration: 25% D₂O replacement - noticeable effects on cell division,
+    50% D₂O - severe metabolic disruption in mammals, >70% D₂O - can be lethal. Small
+    amounts are not immediately harmful - a glass of D₂O won''t kill you, but it''s
+    not recommended. Eukaryotic cells are more sensitive than prokaryotes. D₂O is
+    used in research to study metabolic processes and cell division.'

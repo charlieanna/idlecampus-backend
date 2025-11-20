@@ -1,0 +1,58 @@
+slug: thermodynamicscells-practice
+title: thermodynamics_cells — Practice
+difficulty: medium
+sequence_order: 9
+estimated_minutes: 2
+key_concepts:
+- thermodynamics_cells
+prerequisites: []
+content_md: '# thermodynamics_cells — Practice 🚀
+
+
+  ΔG° = -nFE° = -2 × 96,500 × 1.10 = -212,300 J = -212.3 kJ
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: 'For a cell with E° = 1.10 V and n = 2, calculate ΔG° in kJ. Use F = 96,500 C/mol.'
+  options:
+  - '-212.3 kJ'
+  - '+212.3 kJ'
+  - '-106.15 kJ'
+  - '-424.6 kJ'
+  correct_answer: '-212.3 kJ'
+  explanation: "Using the relationship ΔG° = -nFE°, where n = 2 moles of electrons, F = 96,500 C/mol (Faraday constant), and E° = 1.10 V: ΔG° = -2 × 96,500 × 1.10 = -212,300 J = -212.3 kJ. The negative value indicates the reaction is spontaneous (as expected since E° is positive). Note: 1 volt = 1 joule per coulomb, so the units work out: mol × (C/mol) × V = C × V = J."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: 'What is the relationship between Gibbs free energy (ΔG°) and standard cell potential (E°)?'
+  options:
+  - ΔG° = -nFE°
+  - ΔG° = nFE°
+  - ΔG° = -nE°/F
+  - ΔG° = nF/E°
+  correct_answer: ΔG° = -nFE°
+  explanation: "The fundamental relationship is ΔG° = -nFE°, where ΔG° is standard Gibbs free energy change, n is moles of electrons transferred, F is Faraday's constant (96,500 C/mol), and E° is standard cell potential. The negative sign indicates that: when E° > 0 (spontaneous cell), ΔG° < 0 (spontaneous reaction); when E° < 0 (non-spontaneous cell), ΔG° > 0 (non-spontaneous reaction). At equilibrium, ΔG° = 0 and E° = 0."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: 'If ΔG° for a cell reaction is -150 kJ and n = 3, what is E°? (F = 96,500 C/mol)'
+  options:
+  - '+0.518 V'
+  - '-0.518 V'
+  - '+1.554 V'
+  - '-1.554 V'
+  correct_answer: '+0.518 V'
+  explanation: "Using ΔG° = -nFE°, we can solve for E°: E° = -ΔG°/(nF). Given ΔG° = -150 kJ = -150,000 J, n = 3, F = 96,500 C/mol: E° = -(-150,000)/(3 × 96,500) = 150,000/289,500 = 0.518 V. The positive E° value indicates a spontaneous reaction, which is consistent with the negative ΔG° value. Remember: negative ΔG° corresponds to positive E° for galvanic (spontaneous) cells."
+  require_pass: true

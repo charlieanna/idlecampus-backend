@@ -1,0 +1,45 @@
+slug: lesson-98
+title: Lesson 98
+difficulty: easy
+sequence_order: 98
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# StatefulSets for Stateful Applications\n\
+  \n    Provide stable network IDs and storage for stateful workloads.\n    - Ordered,\
+  \ graceful deployment and scaling\n    - Persistent volume claims per replica\n\
+  \    - Headless services for DNS"
+exercises:
+  - type: mcq
+    sequence_order: 1
+    question: "What is the primary difference between a Deployment and a StatefulSet in Kubernetes?"
+    options:
+      - "Deployments are for web applications while StatefulSets are for databases only"
+      - "StatefulSets provide stable network identities and persistent storage for each pod, while Deployments treat pods as interchangeable"
+      - "StatefulSets are faster than Deployments"
+      - "Deployments cannot use persistent storage"
+    correct_answer: "StatefulSets provide stable network identities and persistent storage for each pod, while Deployments treat pods as interchangeable"
+    explanation: "The fundamental difference between Deployments and StatefulSets lies in how they treat pod identity and state. Deployments are designed for stateless applications where pods are interchangeable - they can be replaced, rescheduled, or scaled in any order without concern for individual identity. Each pod gets a random name and if recreated, gets a completely new identity. StatefulSets, conversely, are designed for stateful applications that require stable, persistent identities. Each pod in a StatefulSet gets a predictable, stable name (like web-0, web-1, web-2), a stable network identity (DNS name that persists across restarts), and can be associated with its own persistent volume that follows it through rescheduling. StatefulSets also guarantee ordered, graceful deployment and scaling - pods are created sequentially (0, then 1, then 2) and deleted in reverse order. This makes StatefulSets suitable for applications like databases, message queues, or any workload requiring stable network identity or persistent storage per instance. While StatefulSets are commonly used for databases, they're not limited to that use case, and Deployments can use shared persistent storage (just not per-pod persistent storage)."
+    require_pass: true
+  - type: mcq
+    sequence_order: 2
+    question: "How does a StatefulSet ensure that each replica has its own persistent storage?"
+    options:
+      - "By manually creating a PersistentVolume for each pod"
+      - "Using volumeClaimTemplates to automatically create a unique PersistentVolumeClaim for each pod"
+      - "By sharing a single volume among all pods"
+      - "StatefulSets cannot use persistent storage"
+    correct_answer: "Using volumeClaimTemplates to automatically create a unique PersistentVolumeClaim for each pod"
+    explanation: "StatefulSets use volumeClaimTemplates to automatically create and manage unique PersistentVolumeClaims (PVCs) for each pod replica. When you define a volumeClaimTemplate in a StatefulSet spec, Kubernetes automatically creates a separate PVC for each pod based on that template. For example, if you have a StatefulSet named 'database' with 3 replicas and a volumeClaimTemplate named 'data', Kubernetes creates PVCs named 'data-database-0', 'data-database-1', and 'data-database-2'. Each pod binds to its corresponding PVC, and critically, this binding is stable - if pod database-0 is deleted and recreated, it will reattach to the same PVC 'data-database-0', preserving its data. When you scale the StatefulSet up, new pods get new PVCs; when you scale down, the PVCs persist (not deleted automatically) so data is preserved if you scale back up. This mechanism ensures each stateful application instance has its own persistent storage that survives pod restarts, rescheduling, and scaling operations. This is fundamentally different from Deployments which typically share a single volume or rely on ephemeral storage."
+    require_pass: true
+  - type: mcq
+    sequence_order: 3
+    question: "What role does a headless service play in StatefulSet networking?"
+    options:
+      - "It provides load balancing across all StatefulSet pods"
+      - "It creates stable DNS names for each individual pod in the StatefulSet"
+      - "It prevents external access to the StatefulSet"
+      - "It encrypts network traffic between pods"
+    correct_answer: "It creates stable DNS names for each individual pod in the StatefulSet"
+    explanation: "A headless service (a service with clusterIP: None) is essential for StatefulSet networking because it creates stable, predictable DNS names for each individual pod. When you create a headless service that selects a StatefulSet's pods, each pod gets a DNS entry in the format: <pod-name>.<service-name>.<namespace>.svc.cluster.local. For example, with a StatefulSet named 'database' and headless service 'database-svc', pods get DNS names like database-0.database-svc.default.svc.cluster.local. These DNS names remain stable even if the pod is rescheduled to a different node - the DNS entry updates to point to the new IP, but the name stays the same. This is crucial for stateful applications where other components need to connect to specific instances (like connecting to a specific database replica or coordinating with a specific member of a distributed system). Unlike regular services that provide a single IP for load balancing, headless services don't perform load balancing - they return all pod IPs for the service and enable direct pod-to-pod communication using stable DNS names. This doesn't prevent external access or encrypt traffic - those are separate concerns handled by other mechanisms."
+    require_pass: true

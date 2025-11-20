@@ -1,0 +1,59 @@
+slug: colloids-practice
+title: colloids — Practice
+difficulty: easy
+sequence_order: 19
+estimated_minutes: 2
+key_concepts:
+- colloids
+prerequisites: []
+content_md: '# colloids — Practice 🚀
+
+
+  Colloidal particles have size in the range of 1-1000 nm (typically 1-100 nm), which
+  is intermediate between true solutions (<1 nm) and suspensions (>1000 nm).
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 2
+  question: 'The particle size range of colloidal solutions is:'
+  options:
+  - 1-1000 nm
+  - 0.1-1 nm
+  - 1000-10000 nm
+  - 10-100 μm
+  correct_answer: 1-1000 nm
+  explanation: "Colloidal particles have a size range of 1-1000 nm (nanometers), which is intermediate between true solutions and suspensions. True solutions have particles smaller than 1 nm, while suspensions have particles larger than 1000 nm (1 μm). This intermediate size gives colloids their unique properties like Tyndall effect, Brownian motion, and the ability to pass through filter paper but not through semipermeable membranes."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: 'Which property distinguishes colloids from true solutions and suspensions?'
+  options:
+  - Colloidal particles pass through filter paper but not semipermeable membranes
+  - Colloidal particles are visible to naked eye
+  - Colloidal particles settle rapidly
+  - Colloidal particles are smaller than molecules
+  correct_answer: Colloidal particles pass through filter paper but not semipermeable membranes
+  explanation: "Colloidal particles (1-1000 nm) are intermediate in size, giving them unique filtration properties: (1) They pass through ordinary filter paper (pore size ~10 μm) like true solution particles, (2) They do NOT pass through semipermeable membranes (like cellophane), which can be used for dialysis to purify colloids. True solution particles pass through both, while suspension particles don't pass through filter paper. Colloidal particles are NOT visible to the naked eye but can be seen with an ultramicroscope."
+  require_pass: false
+- type: mcq
+  sequence_order: 4
+  question: 'A colloidal solution differs from a true solution in that:'
+  options:
+  - It shows Tyndall effect and has larger particles
+  - It is always colored
+  - It cannot be filtered
+  - It has lower viscosity
+  correct_answer: It shows Tyndall effect and has larger particles
+  explanation: "The key differences between colloidal and true solutions are: (1) Particle size - colloids: 1-1000 nm, true solutions: < 1 nm, (2) Tyndall effect - colloids show it (light scattering), true solutions don't, (3) Visibility - colloidal particles visible under ultramicroscope, true solution particles aren't, (4) Filtration - colloids can be separated by ultra-filtration, true solutions can't, (5) Brownian motion - observable in colloids. Both can be clear or colored depending on composition."
+  require_pass: false

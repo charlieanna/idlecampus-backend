@@ -1,0 +1,59 @@
+slug: groupseparation-practice
+title: group_separation — Practice
+difficulty: medium
+sequence_order: 8
+estimated_minutes: 2
+key_concepts:
+- group_separation
+prerequisites: []
+content_md: '# group_separation — Practice 🚀
+
+
+  NH₄Cl acts as a buffer and suppresses excess OH⁻ concentration (common ion effect),
+  preventing premature precipitation of Group IV cations.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: 'NH₄Cl is added along with NH₄OH during Group III precipitation to:'
+  options:
+  - Prevent precipitation of Group IV (suppress [OH⁻])
+  - Increase pH of solution
+  - Help dissolve Group II sulfides
+  - Act as a catalyst
+  correct_answer: Prevent precipitation of Group IV (suppress [OH⁻])
+  explanation: "NH₄Cl provides NH₄⁺ ions which suppress the dissociation of NH₄OH through common ion effect: NH₄OH ⇌ NH₄⁺ + OH⁻. This keeps [OH⁻] low enough to precipitate only Group III hydroxides (Fe³⁺, Al³⁺, Cr³⁺ with lower Ksp) but not Group IV (Ca²⁺, Ba²⁺, Sr²⁺ with higher Ksp)."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: How is Group II (sulfide group) separated into subgroups?
+  options:
+  - Using dilute HNO₃ (dissolves As₂S₃, Sb₂S₃, SnS₂)
+  - Using aqua regia
+  - Using NaOH
+  - Using HCl
+  correct_answer: Using dilute HNO₃ (dissolves As₂S₃, Sb₂S₃, SnS₂)
+  explanation: "Group II is separated into two subgroups: (1) Group IIA (Cu²⁺, Hg²⁺, Cd²⁺, Bi³⁺ sulfides) - insoluble in dilute HNO₃, (2) Group IIB (As³⁺, Sb³⁺, Sn²⁺ sulfides) - soluble in dilute HNO₃. This separation is based on the oxidizing action of dilute HNO₃ which dissolves As₂S₃, Sb₂S₃, and SnS₂."
+  require_pass: false
+- type: mcq
+  sequence_order: 3
+  question: What is used to separate Pb²⁺ from Group I precipitate?
+  options:
+  - Hot water (PbCl₂ is soluble in hot water)
+  - Cold water
+  - NH₄OH
+  - HNO₃
+  correct_answer: Hot water (PbCl₂ is soluble in hot water)
+  explanation: "PbCl₂ is soluble in hot water while AgCl and Hg₂Cl₂ are not. Therefore, the Group I precipitate is washed with hot water to dissolve PbCl₂, separating Pb²⁺ from Ag⁺ and Hg₂²⁺. On cooling, PbCl₂ recrystallizes as white needle-shaped crystals."
+  require_pass: false

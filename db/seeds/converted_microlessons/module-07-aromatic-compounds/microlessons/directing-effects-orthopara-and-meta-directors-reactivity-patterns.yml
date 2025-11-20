@@ -1,0 +1,151 @@
+slug: directing-effects-orthopara-and-meta-directors-reactivity-patterns
+title: Directing Effects - Ortho/Para and Meta Directors, Reactivity Patterns
+difficulty: easy
+sequence_order: 6
+estimated_minutes: 2
+key_concepts:
+- Ortho/Para directing groups
+- Meta directing groups
+- Activating vs deactivating groups
+- Explanation using resonance and inductive effects
+- Orientation in disubstituted benzenes
+prerequisites: []
+content_md: "# Directing Effects - Ortho/Para and Meta Directors, Reactivity Patterns\
+  \ \U0001F680\n\n# Directing Effects in Aromatic Substitution\n\n    ## 1. Introduction\
+  \ to Directing Effects\n\n    ### Substituents Influence EAS\n    When benzene already\
+  \ has one substituent, it affects:\n    1. **Reactivity:** How fast EAS occurs (activating/deactivating)\n\
+  \    2. **Orientation:** Where the next substituent goes (ortho/para or meta)\n\n\
+  \    ### Three Possible Positions\n    ```\n          Y (existing substituent)\n\
+  \          |\n      ⬡\n     /  \\\\\n    |    |  (where does new substituent go?)\n\
+  \     \\\\  /\n      ⬡\n\n    Ortho: Positions 2 and 6 (adjacent to Y)\n    Meta:\
+  \ Positions 3 and 5 (one carbon away)\n    Para: Position 4 (opposite to Y)\n  \
+  \  ```\n\n    ---\n\n    ## 2. Types of Directors\n\n    ### A. Ortho/Para Directors\n\
+  \    Direct incoming electrophile to **ortho and para positions**.\n\n    **Examples:**\n\
+  \    - **Activating (increase reactivity):**\n      - -OH, -OR (alkoxy)\n      -\
+  \ -NH₂, -NHR, -NR₂ (amino)\n      - -NHCOCH₃ (acetamido)\n      - Alkyl groups:\
+  \ -CH₃, -C₂H₅, etc.\n\n    - **Deactivating (decrease reactivity):**\n      - Halogens:\
+  \ -F, -Cl, -Br, -I\n\n    ### B. Meta Directors\n    Direct incoming electrophile\
+  \ to **meta position**.\n\n    **All are deactivating (decrease reactivity):**\n\
+  \    - -NO₂ (nitro)\n    - -CN (cyano)\n    - -CHO (aldehyde)\n    - -COR (ketone)\n\
+  \    - -COOH (carboxylic acid)\n    - -COOR (ester)\n    - -SO₃H (sulfonic acid)\n\
+  \    - -CF₃ (trifluoromethyl)\n    - -NR₃⁺ (quaternary ammonium)\n\n    ---\n\n\
+  \    ## 3. Summary Table\n\n    | Group | Type | Orientation | Reactivity | Effect\
+  \ |\n    |-------|------|-------------|------------|--------|\n    | **-NH₂, -OH,\
+  \ -OR** | Strong activating | o/p | Very fast | +M >> -I |\n    | **-NHCOCH₃** |\
+  \ Moderate activating | o/p | Moderate | +M > -I |\n    | **-CH₃, alkyl** | Weak\
+  \ activating | o/p | Slightly fast | +I |\n    | **-F, -Cl, -Br, -I** | Weak deactivating\
+  \ | o/p | Slow | -I > +M |\n    | **-NO₂, -CN, -CHO, -COOH, -SO₃H** | Strong deactivating\
+  \ | m | Very slow | -M, -I |\n\n    ---\n\n    ## 4. Why Ortho/Para Direction?\n\
+  \n    ### Electron-Donating Groups (+M, +I)\n    Stabilize σ-complex at **ortho\
+  \ and para** positions through resonance.\n\n    #### Example: Aniline (-NH₂)\n\n\
+  \    **Ortho attack:**\n    ```\n         NH₂           NH₂⁺          NH₂⁺     \
+  \     NH₂\n         |             |             |             |\n     ⬡        \
+  \   ⟷ ⬡           ⟷ ⬡           ⟷ ⬡\n        \\\\               \\\\           \
+  \    \\\\              \\\\\n         E⁺              E              E         \
+  \     E\n\n    Resonance structure with + charge on N\n    → Extra stability (N\
+  \ can donate lone pair)\n    ```\n\n    **Para attack:**\n    ```\n         NH₂\
+  \           NH₂⁺          NH₂⁺          NH₂\n         |             |          \
+  \   |             |\n     ⬡           ⟷ ⬡           ⟷ ⬡           ⟷ ⬡\n     |  \
+  \              |                |               |\n     E⁺               E     \
+  \           E               E\n\n    Resonance structure with + charge on N\n  \
+  \  → Extra stability\n    ```\n\n    **Meta attack:**\n    ```\n         NH₂   \
+  \        NH₂           NH₂           NH₂\n         |             |             |\
+  \             |\n     ⬡           ⟷ ⬡           ⟷ ⬡           ⟷ ⬡\n       \\\\ \
+  \             \\\\              \\\\             \\\\\n        E⁺             E\
+  \              E              E\n\n    No resonance structure with + charge on N\n\
+  \    → Less stability\n    ```\n\n    **Conclusion:** o/p attack is favored because\
+  \ lone pair on N stabilizes σ-complex.\n\n    ### Alkyl Groups (+I Effect)\n   \
+  \ - **+I effect:** Donates electron density\n    - Stabilizes positive charge at\
+  \ **o/p positions** more than meta\n    - Example: Toluene (-CH₃ group)\n\n    ---\n\
+  \n    ## 5. Why Meta Direction?\n\n    ### Electron-Withdrawing Groups (-M, -I)\n\
+  \    Destabilize σ-complex at **ortho and para** positions but meta is least destabilized.\n\
+  \n    #### Example: Nitrobenzene (-NO₂)\n\n    **Ortho attack:**\n    ```\n    \
+  \     NO₂           NO₂           NO₂⁺          NO₂\n         |             |  \
+  \           |             |\n     ⬡           ⟷ ⬡           ⟷ ⬡           ⟷ ⬡\n\
+  \        \\\\               \\\\               \\\\              \\\\\n        \
+  \ E⁺              E              E              E\n\n    Resonance structure with\
+  \ + charge adjacent to NO₂\n    → Highly unstable (two + charges close)\n    ```\n\
+  \n    **Para attack:**\n    ```\n         NO₂           NO₂           NO₂⁺     \
+  \     NO₂\n         |             |             |             |\n     ⬡        \
+  \   ⟷ ⬡           ⟷ ⬡           ⟷ ⬡\n     |                |                |  \
+  \             |\n     E⁺               E                E               E\n\n  \
+  \  Resonance structure with + charge on carbon bearing NO₂\n    → Highly unstable\n\
+  \    ```\n\n    **Meta attack:**\n    ```\n         NO₂           NO₂          \
+  \ NO₂           NO₂\n         |             |             |             |\n    \
+  \ ⬡           ⟷ ⬡           ⟷ ⬡           ⟷ ⬡\n       \\\\              \\\\   \
+  \           \\\\             \\\\\n        E⁺             E              E     \
+  \         E\n\n    No resonance structure with + charge adjacent to NO₂\n    → Least\
+  \ destabilized (relatively)\n    ```\n\n    **Conclusion:** Meta attack is favored\
+  \ because it avoids placing + charge adjacent to electron-withdrawing group.\n\n\
+  \    ---\n\n    ## 6. Special Case: Halogens\n\n    ### Ortho/Para Directors but\
+  \ Deactivating\n\n    **Why o/p directing?**\n    - **+M effect (lone pair donation)**\
+  \ stabilizes o/p positions\n    - Resonance effect dominates for **orientation**\n\
+  \n    **Why deactivating?**\n    - **-I effect (electronegativity)** withdraws electrons\
+  \ through σ bonds\n    - Inductive effect dominates for **reactivity**\n\n    **Net\
+  \ result:**\n    - -I > +M → **Deactivating** (slower than benzene)\n    - +M effect\
+  \ still operates → **o/p directing**\n\n    **Order of reactivity:**\n    ```\n\
+  \    -F is most deactivating (strongest -I, weakest +M)\n    -I is least deactivating\
+  \ (weakest -I, strongest +M)\n\n    Order: -F > -Cl > -Br > -I (deactivation)\n\
+  \    ```\n\n    ---\n\n    ## 7. Activating vs Deactivating Groups\n\n    ### Activating\
+  \ Groups\n    - **Make benzene MORE reactive** than unsubstituted benzene\n    -\
+  \ **Stabilize σ-complex** (lower activation energy)\n    - All are **ortho/para\
+  \ directors** (except none)\n\n    **Order of activation:**\n    ```\n    -O⁻ >\
+  \ -NH₂ > -OH > -OR > -NHCOCH₃ > -CH₃ > -H (benzene)\n    (strongest)           \
+  \                         (reference)\n    ```\n\n    ### Deactivating Groups\n\
+  \    - **Make benzene LESS reactive** than unsubstituted benzene\n    - **Destabilize\
+  \ σ-complex** (higher activation energy)\n    - Most are **meta directors**\n  \
+  \  - Exception: **Halogens are o/p directors** but deactivating\n\n    **Order of\
+  \ deactivation:**\n    ```\n    -H (benzene) > -F > -Cl > -Br > -I > -COOH > -CHO\
+  \ > -NO₂ > -NR₃⁺\n    (reference)                                              (strongest)\n\
+  \    ```\n\n    ---\n\n    ## 8. Orientation in Disubstituted Benzenes\n\n    ###\
+  \ Rule 1: Activating Group Wins\n    When two groups compete, the **more activating\
+  \ group** controls orientation.\n\n    **Example:** p-Nitrotoluene\n    ```\n  \
+  \       CH₃ (o/p, activating)\n          |\n      ⬡\n          |\n         NO₂ (m,\
+  \ deactivating)\n\n    -CH₃ is more activating → controls orientation\n    → Electrophile\
+  \ goes ortho to -CH₃ (meta to -NO₂)\n    ```\n\n    ### Rule 2: When Both Are Activating\n\
+  \    If both are activating, **both direct** (may give mixture).\n\n    **Example:**\
+  \ p-Cresol (p-methylphenol)\n    ```\n         OH (o/p, strong activating)\n   \
+  \      |\n     ⬡\n         |\n         CH₃ (o/p, weak activating)\n\n    Both are\
+  \ activating, -OH is stronger\n    → Major product: ortho and meta to -OH (ortho\
+  \ to -CH₃)\n    ```\n\n    ### Rule 3: Steric Effects\n    - **Ortho position**\
+  \ to bulky groups is disfavored (steric hindrance)\n    - **Para product** is often\
+  \ major when ortho is hindered\n\n    ### Rule 4: When Both Are Deactivating\n \
+  \   - **Less deactivating group** controls\n    - Reaction is very slow\n\n    ---\n\
+  \n    ## 9. Predicting Products\n\n    ### Strategy\n    1. **Identify existing\
+  \ substituent(s)**\n    2. **Classify:** Activating/deactivating, o/p or meta directing\n\
+  \    3. **Apply rules:**\n       - Activating group wins\n       - o/p directors\
+  \ → ortho and para products\n       - meta directors → meta products\n    4. **Consider\
+  \ steric effects** (para favored if ortho is crowded)\n\n    ### Example 1: Bromination\
+  \ of Toluene\n    ```\n    Toluene (-CH₃, o/p directing, activating)\n    + Br₂/FeBr₃\n\
+  \    →\n    Major products: o-Bromotoluene + p-Bromotoluene\n    (ortho and para\
+  \ to -CH₃)\n    ```\n\n    ### Example 2: Nitration of Benzoic Acid\n    ```\n \
+  \   Benzoic acid (-COOH, m directing, deactivating)\n    + HNO₃/H₂SO₄\n    →\n \
+  \   Major product: m-Nitrobenzoic acid\n    (meta to -COOH)\n    ```\n\n    ###\
+  \ Example 3: Nitration of Chlorobenzene\n    ```\n    Chlorobenzene (-Cl, o/p directing,\
+  \ deactivating)\n    + HNO₃/H₂SO₄\n    →\n    Major products: o-Nitrochlorobenzene\
+  \ + p-Nitrochlorobenzene\n    (ortho and para to -Cl, but reaction is slower than\
+  \ benzene)\n    ```\n\n    ---\n\n    ## 10. Blocking Positions\n\n    ### Strategy\
+  \ for Selective Substitution\n    Sometimes we need to \"block\" certain positions\
+  \ to control orientation.\n\n    **Example: Synthesis of m-Bromonitrobenzene**\n\
+  \n    **Wrong approach:**\n    ```\n    Benzene → Nitration → Nitrobenzene → Bromination\
+  \ → m-Bromonitrobenzene (✓)\n    (NO₂ directs meta)\n    ```\n\n    **Right approach:**\n\
+  \    ```\n    Benzene → Bromination → Bromobenzene → Nitration → o/p-Bromonitrobenzene\
+  \ (✗)\n    (Br directs ortho/para, not meta!)\n    ```\n\n    **To get meta product:**\
+  \ Introduce meta-director FIRST.\n\n    ---\n\n    ## Important Points for IIT JEE\n\
+  \n    1. **Memorize directors:**\n       - o/p activating: -OH, -OR, -NH₂, -NHR,\
+  \ -CH₃\n       - o/p deactivating: -F, -Cl, -Br, -I\n       - m deactivating: -NO₂,\
+  \ -CHO, -COOH, -CN, -SO₃H\n\n    2. **Orientation explanation:**\n       - o/p directors\
+  \ stabilize σ-complex at o/p via +M or +I\n       - m directors destabilize o/p\
+  \ more than meta via -M or -I\n\n    3. **Halogens are special:**\n       - o/p\
+  \ directing (due to +M)\n       - But deactivating (due to -I > +M)\n\n    4. **Reactivity\
+  \ order:**\n       - Activated benzene > Benzene > Deactivated benzene\n       -\
+  \ More activating = faster reaction\n\n    5. **Disubstituted benzenes:**\n    \
+  \   - More activating group controls orientation\n       - Steric effects favor\
+  \ para over ortho\n\n    ---\n\n    ## Practice Questions\n\n    1. Predict the\
+  \ major product of nitration of anisole (methoxybenzene).\n    2. Why is chlorobenzene\
+  \ less reactive than benzene in EAS?\n    3. Arrange in order of reactivity toward\
+  \ EAS: benzene, toluene, nitrobenzene.\n    4. Explain why halogens are o/p directors\
+  \ but deactivating.\n    5. How would you synthesize m-nitrochlorobenzene from benzene?\n\
+  \n## Key Points\n\n- Ortho/Para directing groups\n\n- Meta directing groups\n\n\
+  - Activating vs deactivating groups"
+exercises: []

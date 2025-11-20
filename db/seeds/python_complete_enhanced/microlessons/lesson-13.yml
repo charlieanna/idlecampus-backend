@@ -1,0 +1,79 @@
+slug: lesson-13
+title: Lesson 13
+sequence_order: 13
+estimated_minutes: 2
+difficulty: easy
+key_concepts: []
+content_md: "# Microlesson \U0001F680\n\n# Loops: For and While\n\n    **Loops** let\
+  \ you repeat code multiple times automatically.\n\n    ## For Loops\n\n    ### Loop\
+  \ through a range\n    ```python\n    for i in range(5):\n        print(i)\n   \
+  \ # Output: 0, 1, 2, 3, 4\n    ```\n\n    ### Loop through a list\n    ```python\n\
+  \    fruits = [\"apple\", \"banana\", \"cherry\"]\n    for fruit in fruits:\n  \
+  \      print(fruit)\n    ```\n\n    ### Loop with index using enumerate\n    ```python\n\
+  \    for index, fruit in enumerate(fruits):\n        print(f\"{index}: {fruit}\"\
+  )\n    # Output:\n    # 0: apple\n    # 1: banana\n    # 2: cherry\n    ```\n\n\
+  \    ### Range with start, stop, step\n    ```python\n    for i in range(1, 10,\
+  \ 2):\n        print(i)\n    # Output: 1, 3, 5, 7, 9\n    ```\n\n    ## While Loops\n\
+  \n    Loop while a condition is true:\n\n    ```python\n    count = 0\n    while\
+  \ count < 5:\n        print(count)\n        count += 1\n    ```\n\n    ### Infinite\
+  \ loop with break\n    ```python\n    while True:\n        answer = input(\"Type\
+  \ 'quit' to exit: \")\n        if answer == 'quit':\n            break\n       \
+  \ print(f\"You typed: {answer}\")\n    ```\n\n    ## Loop Control Statements\n\n\
+  \    ### Break - Exit the loop\n    ```python\n    for i in range(10):\n       \
+  \ if i == 5:\n            break\n        print(i)\n    # Output: 0, 1, 2, 3, 4\n\
+  \    ```\n\n    ### Continue - Skip to next iteration\n    ```python\n    for i\
+  \ in range(5):\n        if i == 2:\n            continue\n        print(i)\n   \
+  \ # Output: 0, 1, 3, 4\n    ```\n\n    ### Else clause\n    ```python\n    for i\
+  \ in range(5):\n        print(i)\n    else:\n        print(\"Loop completed!\")\n\
+  \    # The else runs if loop wasn't broken\n    ```\n\n    ## Nested Loops\n\n \
+  \   ```python\n    for i in range(3):\n        for j in range(3):\n            print(f\"\
+  i={i}, j={j}\")\n    ```\n\n    ## Common Patterns\n\n    ### Sum of numbers\n \
+  \   ```python\n    total = 0\n    for i in range(1, 11):\n        total += i\n \
+  \   print(total)  # 55\n    ```\n\n    ### Finding in a list\n    ```python\n  \
+  \  numbers = [10, 20, 30, 40, 50]\n    found = False\n    for num in numbers:\n\
+  \        if num == 30:\n            found = True\n            break\n    ```\n\n\
+  \    ### Countdown\n    ```python\n    for i in range(10, 0, -1):\n        print(i)\n\
+  \    print(\"Blast off!\")\n    ```\n\n    **Practice:** Try the Loops lab to master\
+  \ iteration!"
+exercises:
+- type: mcq
+  slug: lesson-13-mcq-1
+  sequence_order: 1
+  question: What is the difference between a list and a tuple in Python?
+  options:
+  - Lists are mutable (can be modified), tuples are immutable (cannot be changed)
+  - Lists are faster than tuples
+  - Tuples can only store strings
+  - Lists use less memory
+  correct_answer_index: 0
+  explanation: Lists are mutable - you can add, remove, or modify elements after creation using methods like append(), remove(), etc. Tuples are immutable - once created, they cannot be modified. Tuples are slightly faster and use less memory, making them ideal for fixed collections of data.
+- type: mcq
+  slug: lesson-13-mcq-2
+  sequence_order: 2
+  question: What is a list comprehension in Python?
+  options:
+  - A concise way to create lists using a single line of code with optional filtering
+  - A method to compress lists
+  - A way to compare two lists
+  - A list sorting algorithm
+  correct_answer_index: 0
+  explanation: List comprehensions provide a concise syntax to create lists: [expression for item in iterable if condition]. For example, [x**2 for x in range(10) if x % 2 == 0] creates a list of squares of even numbers. This is more readable and often faster than traditional loops.
+- type: mcq
+  slug: lesson-13-mcq-3
+  sequence_order: 3
+  question: What does the try-except block do in Python?
+  options:
+  - Handles exceptions (errors) gracefully without crashing the program
+  - Tries to optimize code performance
+  - Tests if code syntax is correct
+  - Executes code multiple times until it succeeds
+  correct_answer_index: 0
+  explanation: try-except blocks catch and handle exceptions, preventing program crashes. Code in the try block is executed, and if an exception occurs, the except block handles it. For example, catching ValueError when converting user input to int prevents crashes from invalid input.
+objectives:
+- Understand core concepts of Loops: For and While
+- Apply learned concepts in practical scenarios
+- Identify best practices and common patterns
+- Recognize trade-offs in different approaches
+next_recommended:
+- control
+- data-structures

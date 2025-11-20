@@ -1,0 +1,2 @@
+class QuestionTab < ApplicationRecord
+end

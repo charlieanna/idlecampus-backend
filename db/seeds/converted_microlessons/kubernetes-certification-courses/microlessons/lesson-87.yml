@@ -1,0 +1,43 @@
+slug: lesson-87
+title: Lesson 87
+difficulty: easy
+sequence_order: 87
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# CNI and Network Plugins\n\n    - CNI basics\
+  \ and plugin architecture\n    - Popular CNIs (Calico, Cilium, Weave)"
+exercises:
+  - type: mcq
+    sequence_order: 1
+    question: "What does CNI (Container Network Interface) provide in a Kubernetes cluster?"
+    options:
+      - "A standardized interface for configuring network connectivity for containers"
+      - "A built-in load balancer for services"
+      - "A firewall for pod-to-pod communication"
+      - "A DNS server for service discovery"
+    correct_answer: "A standardized interface for configuring network connectivity for containers"
+    explanation: "CNI (Container Network Interface) is a specification and set of libraries that provides a standardized way to configure network interfaces for containers in Linux environments. In Kubernetes, CNI plugins are responsible for allocating IP addresses to pods, setting up network interfaces, and establishing connectivity between pods across nodes. The CNI specification defines how container runtimes should invoke network plugins during pod creation and deletion. This abstraction allows Kubernetes to work with various networking solutions without being tightly coupled to any specific implementation. When a pod is created, the kubelet calls the configured CNI plugin to set up networking for the pod's containers. The plugin then configures the network namespace, assigns IP addresses, and sets up routing rules according to the cluster's network design. CNI is not a load balancer, firewall, or DNS server itself, but rather the framework that enables these networking capabilities through various plugin implementations."
+    require_pass: true
+  - type: mcq
+    sequence_order: 2
+    question: "Which CNI plugin is known for providing advanced network security features including identity-based security policies and eBPF-based networking?"
+    options:
+      - "Calico"
+      - "Cilium"
+      - "Weave Net"
+      - "Flannel"
+    correct_answer: "Cilium"
+    explanation: "Cilium is a CNI plugin that leverages eBPF (extended Berkeley Packet Filter) technology to provide advanced networking, security, and observability capabilities. Cilium uses eBPF to implement efficient packet processing directly in the Linux kernel, enabling high-performance networking with low overhead. Its standout features include identity-based network security policies (rather than just IP-based), API-aware network visibility and filtering (Layer 7 policies), transparent encryption, and advanced load balancing. Cilium's eBPF-based approach allows it to intercept and control network traffic with minimal performance impact, making it ideal for modern cloud-native applications requiring sophisticated security and observability. While Calico is excellent for network policies and supports various data planes, Weave Net focuses on simplicity and mesh networking, and Flannel provides basic overlay networking, Cilium specifically stands out for its eBPF foundation and identity-based security model that can enforce policies based on service identity rather than IP addresses."
+    require_pass: true
+  - type: mcq
+    sequence_order: 3
+    question: "What is a key architectural difference between overlay network CNI plugins (like Flannel) and routing-based CNI plugins (like Calico in BGP mode)?"
+    options:
+      - "Overlay networks encrypt all traffic, while routing-based networks do not"
+      - "Overlay networks encapsulate pod traffic in additional network headers, while routing-based networks route pod IPs directly"
+      - "Overlay networks only work in cloud environments, while routing-based networks work on-premises"
+      - "Overlay networks are faster than routing-based networks"
+    correct_answer: "Overlay networks encapsulate pod traffic in additional network headers, while routing-based networks route pod IPs directly"
+    explanation: "The fundamental architectural difference between overlay and routing-based CNI implementations lies in how they handle inter-pod communication across nodes. Overlay networks (like Flannel's VXLAN mode or Weave) encapsulate pod packets within additional network protocol headers (like VXLAN or UDP) to tunnel traffic across the underlying network infrastructure. This allows pod IP addresses to exist in a separate, virtual network space independent of the physical network. In contrast, routing-based solutions (like Calico in BGP mode) make pod IP addresses routable on the physical network by distributing routing information to network devices using protocols like BGP. This means pod traffic travels without additional encapsulation. Both approaches have trade-offs: overlays provide network independence and easier deployment but add packet overhead and slight performance costs; routing-based networks offer better performance and simpler packet inspection but require more network infrastructure integration. Neither approach is inherently more secure, faster, or limited to specific environments - the choice depends on network architecture requirements and constraints."
+    require_pass: true

@@ -1,0 +1,79 @@
+slug: integration-trig-practice
+title: integration-trig — Practice
+difficulty: medium
+sequence_order: 2
+estimated_minutes: 2
+key_concepts:
+- integration-trig
+prerequisites: []
+content_md: '# integration-trig — Practice 🚀
+
+
+  Solution uses substitution or integration by parts
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: 'Evaluate: ∫ sin(x) dx'
+  options:
+  - -cos(x) + C
+  - cos(x) + C
+  - sin(x) + C
+  - -sin(x) + C
+  require_pass: true
+  correct_answer: -cos(x) + C
+  explanation: '**Integration formula**: ∫ sin(x) dx = -cos(x) + C. This can be verified
+    by differentiation: d/dx[-cos(x)] = sin(x) ✓. **Key trigonometric integrals**:
+    ∫ sin(x) dx = -cos(x) + C, ∫ cos(x) dx = sin(x) + C, ∫ sec²(x) dx = tan(x) +
+    C, ∫ csc²(x) dx = -cot(x) + C, ∫ sec(x)tan(x) dx = sec(x) + C, ∫ csc(x)cot(x)
+    dx = -csc(x) + C. **For modified arguments**: ∫ sin(ax) dx = -(1/a)cos(ax) +
+    C, ∫ cos(ax) dx = (1/a)sin(ax) + C. **Example**: ∫ sin(3x) dx = -(1/3)cos(3x)
+    + C. Always include the constant of integration C for indefinite integrals. Remember:
+    Integration is the reverse of differentiation.'
+- type: mcq
+  sequence_order: 2
+  question: 'Evaluate: ∫ cos(2x) dx'
+  options:
+  - sin(2x) + C
+  - (1/2)sin(2x) + C
+  - 2sin(2x) + C
+  - -sin(2x) + C
+  require_pass: true
+  correct_answer: (1/2)sin(2x) + C
+  explanation: '**General formula**: ∫ cos(ax) dx = (1/a)sin(ax) + C. For a = 2:
+    ∫ cos(2x) dx = (1/2)sin(2x) + C. **Verification by differentiation**: d/dx[(1/2)sin(2x)]
+    = (1/2)·2cos(2x) = cos(2x) ✓. **Method - Substitution**: Let u = 2x, then du
+    = 2dx, so dx = du/2. ∫ cos(2x) dx = ∫ cos(u)·(du/2) = (1/2)∫ cos(u) du = (1/2)sin(u)
+    + C = (1/2)sin(2x) + C. **Common mistake**: Forgetting the (1/a) factor when
+    integrating functions with modified arguments. **Examples**: ∫ sin(5x) dx = -(1/5)cos(5x)
+    + C, ∫ cos(πx) dx = (1/π)sin(πx) + C. Always check your answer by differentiation!'
+- type: mcq
+  sequence_order: 3
+  question: 'Evaluate: ∫ sin²(x) dx'
+  options:
+  - (1/2)(x - sin(x)cos(x)) + C
+  - x - sin(2x) + C
+  - (1/2)x - (1/4)sin(2x) + C
+  - -cos²(x) + C
+  require_pass: true
+  correct_answer: (1/2)x - (1/4)sin(2x) + C
+  explanation: '∫ sin²(x) dx requires the **power-reduction identity**: sin²(x) =
+    (1 - cos(2x))/2. **Solution**: ∫ sin²(x) dx = ∫ [(1 - cos(2x))/2] dx = (1/2)∫
+    [1 - cos(2x)] dx = (1/2)[x - (1/2)sin(2x)] + C = (1/2)x - (1/4)sin(2x) + C.
+    **Alternative form**: Using sin(2x) = 2sin(x)cos(x), we can write: (1/2)x -
+    (1/4)sin(2x) = (1/2)[x - sin(x)cos(x)] (both forms are equivalent). **Similarly**:
+    ∫ cos²(x) dx = (1/2)x + (1/4)sin(2x) + C, using cos²(x) = (1 + cos(2x))/2. **Other
+    useful identities**: sin²(x) + cos²(x) = 1, tan²(x) + 1 = sec²(x), 1 + cot²(x)
+    = csc²(x). For higher powers like ∫ sin³(x) dx or ∫ cos⁴(x) dx, use substitution
+    or reduction formulas.'

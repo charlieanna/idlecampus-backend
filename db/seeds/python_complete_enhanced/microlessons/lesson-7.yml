@@ -1,0 +1,89 @@
+slug: lesson-7
+title: Lesson 7
+sequence_order: 7
+estimated_minutes: 2
+difficulty: easy
+key_concepts: []
+content_md: "# Microlesson \U0001F680\n\n# Functions Basics\n\n    **Functions** are\
+  \ reusable blocks of code that perform specific tasks.\n\n    ## Defining Functions\n\
+  \n    ```python\n    def greet():\n        print(\"Hello!\")\n\n    # Call the function\n\
+  \    greet()  # Output: Hello!\n    ```\n\n    ## Parameters and Arguments\n\n \
+  \   ```python\n    # Function with parameters\n    def greet(name):\n        print(f\"\
+  Hello, {name}!\")\n\n    greet(\"Alice\")  # Output: Hello, Alice!\n\n    # Multiple\
+  \ parameters\n    def add(a, b):\n        return a + b\n\n    result = add(5, 3)\
+  \  # 8\n    ```\n\n    ## Return Values\n\n    ```python\n    def square(x):\n \
+  \       return x ** 2\n\n    result = square(5)  # 25\n\n    # Multiple return values\n\
+  \    def get_user():\n        return \"Alice\", 25\n\n    name, age = get_user()\n\
+  \    ```\n\n    ## Default Parameters\n\n    ```python\n    def greet(name=\"Guest\"\
+  ):\n        print(f\"Hello, {name}!\")\n\n    greet()          # Hello, Guest!\n\
+  \    greet(\"Alice\")   # Hello, Alice!\n    ```\n\n    ## Keyword Arguments\n\n\
+  \    ```python\n    def create_user(name, age, city):\n        print(f\"{name},\
+  \ {age}, {city}\")\n\n    # Call with keyword arguments (order doesn't matter)\n\
+  \    create_user(age=25, city=\"NYC\", name=\"Alice\")\n    ```\n\n    ## *args\
+  \ and **kwargs\n\n    ### *args - Variable number of arguments\n    ```python\n\
+  \    def sum_all(*numbers):\n        return sum(numbers)\n\n    print(sum_all(1,\
+  \ 2, 3, 4))  # 10\n    ```\n\n    ### **kwargs - Variable keyword arguments\n  \
+  \  ```python\n    def print_info(**info):\n        for key, value in info.items():\n\
+  \            print(f\"{key}: {value}\")\n\n    print_info(name=\"Alice\", age=25,\
+  \ city=\"NYC\")\n    ```\n\n    ## Lambda Functions\n\n    Anonymous functions for\
+  \ simple operations:\n\n    ```python\n    # Regular function\n    def square(x):\n\
+  \        return x ** 2\n\n    # Lambda equivalent\n    square = lambda x: x ** 2\n\
+  \n    # Common use: with map, filter\n    numbers = [1, 2, 3, 4]\n    squared =\
+  \ list(map(lambda x: x ** 2, numbers))\n    # [1, 4, 9, 16]\n\n    evens = list(filter(lambda\
+  \ x: x % 2 == 0, numbers))\n    # [2, 4]\n    ```\n\n    ## Scope\n\n    ```python\n\
+  \    # Global variable\n    x = 10\n\n    def modify():\n        # Local variable\n\
+  \        x = 20\n        print(x)  # 20\n\n    modify()\n    print(x)  # 10 (global\
+  \ unchanged)\n\n    # Modify global\n    def modify_global():\n        global x\n\
+  \        x = 20\n\n    modify_global()\n    print(x)  # 20\n    ```\n\n    ## Docstrings\n\
+  \n    Document your functions:\n\n    ```python\n    def calculate_area(radius):\n\
+  \        \"\"\"\n        Calculate the area of a circle.\n\n        Args:\n    \
+  \        radius (float): The radius of the circle\n\n        Returns:\n        \
+  \    float: The area of the circle\n        \"\"\"\n        return 3.14159 * radius\
+  \ ** 2\n\n    # Access docstring\n    print(calculate_area.__doc__)\n    ```\n\n\
+  \    ## Best Practices\n\n    1. **One purpose**: Each function should do one thing\
+  \ well\n    2. **Clear names**: Use descriptive function names\n    3. **Document**:\
+  \ Add docstrings for complex functions\n    4. **Default values**: Use defaults\
+  \ for optional parameters\n    5. **Return values**: Prefer return over print\n\n\
+  \    **Practice:** Try the Functions lab!"
+exercises:
+- type: mcq
+  slug: lesson-7-mcq-1
+  sequence_order: 1
+  question: What is the difference between a list and a tuple in Python?
+  options:
+  - Lists are mutable (can be modified), tuples are immutable (cannot be changed)
+  - Lists are faster than tuples
+  - Tuples can only store strings
+  - Lists use less memory
+  correct_answer_index: 0
+  explanation: Lists are mutable - you can add, remove, or modify elements after creation using methods like append(), remove(), etc. Tuples are immutable - once created, they cannot be modified. Tuples are slightly faster and use less memory, making them ideal for fixed collections of data.
+- type: mcq
+  slug: lesson-7-mcq-2
+  sequence_order: 2
+  question: What is a list comprehension in Python?
+  options:
+  - A concise way to create lists using a single line of code with optional filtering
+  - A method to compress lists
+  - A way to compare two lists
+  - A list sorting algorithm
+  correct_answer_index: 0
+  explanation: List comprehensions provide a concise syntax to create lists: [expression for item in iterable if condition]. For example, [x**2 for x in range(10) if x % 2 == 0] creates a list of squares of even numbers. This is more readable and often faster than traditional loops.
+- type: mcq
+  slug: lesson-7-mcq-3
+  sequence_order: 3
+  question: What does the try-except block do in Python?
+  options:
+  - Handles exceptions (errors) gracefully without crashing the program
+  - Tries to optimize code performance
+  - Tests if code syntax is correct
+  - Executes code multiple times until it succeeds
+  correct_answer_index: 0
+  explanation: try-except blocks catch and handle exceptions, preventing program crashes. Code in the try block is executed, and if an exception occurs, the except block handles it. For example, catching ValueError when converting user input to int prevents crashes from invalid input.
+objectives:
+- Understand core concepts of Functions Basics
+- Apply learned concepts in practical scenarios
+- Identify best practices and common patterns
+- Recognize trade-offs in different approaches
+next_recommended:
+- control
+- data-structures

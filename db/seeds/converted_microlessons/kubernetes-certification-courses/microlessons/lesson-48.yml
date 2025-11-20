@@ -1,0 +1,44 @@
+slug: lesson-48
+title: Lesson 48
+difficulty: easy
+sequence_order: 48
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Monitoring Fundamentals\n\n    - Metrics\
+  \ collection (Prometheus)\n    - Alerting and recording rules\n    - ServiceMonitor/PodMonitor\
+  \ basics"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What is the primary purpose of Prometheus in Kubernetes monitoring?
+  options:
+  - To collect and store metrics from applications and infrastructure
+  - To aggregate application logs
+  - To deploy applications
+  - To manage secrets
+  correct_answer: To collect and store metrics from applications and infrastructure
+  explanation: "Prometheus is an open-source monitoring and alerting toolkit designed for reliability and scalability in dynamic environments like Kubernetes. It collects time-series metrics by scraping HTTP endpoints that expose metrics in Prometheus format. Prometheus pulls metrics from targets (rather than having targets push to it), stores them in a time-series database, and provides a powerful query language (PromQL) for analyzing metrics. In Kubernetes, Prometheus typically scrapes metrics from: the API server, kubelet, cAdvisor (for container metrics), kube-state-metrics (for cluster object state), and application-specific exporters. It's excellent for understanding system behavior, capacity planning, and triggering alerts. Prometheus differs from logging systems (like ELK or Loki) which handle event logs, and tracing systems (like Jaeger) which track request flows."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What is the purpose of a ServiceMonitor in Prometheus Operator?
+  options:
+  - To monitor the health of Kubernetes Services
+  - To define which Services should be scraped for metrics by Prometheus
+  - To create new Services automatically
+  - To load balance traffic to monitoring systems
+  correct_answer: To define which Services should be scraped for metrics by Prometheus
+  explanation: "A ServiceMonitor is a custom resource provided by the Prometheus Operator that declaratively specifies how groups of Kubernetes Services should be monitored by Prometheus. Instead of manually configuring Prometheus scrape configs, you create a ServiceMonitor that uses label selectors to identify which Services to scrape, which ports/endpoints to use, and what scrape interval to apply. The Prometheus Operator watches for ServiceMonitor objects and automatically updates the Prometheus configuration to scrape those targets. For example, a ServiceMonitor might select all Services with label 'app: myapp' and scrape their '/metrics' endpoint every 30 seconds. This approach makes Prometheus configuration dynamic and Kubernetes-native. PodMonitor is similar but selects pods directly rather than through Services, useful for applications without Services like DaemonSets."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: What is the difference between alerting rules and recording rules in Prometheus?
+  options:
+  - Alerting rules trigger notifications when conditions are met; recording rules precompute frequently used queries
+  - Alerting rules store metrics; recording rules delete old metrics
+  - Alerting rules run on the server; recording rules run on clients
+  - There is no difference
+  correct_answer: Alerting rules trigger notifications when conditions are met; recording rules precompute frequently used queries
+  explanation: "Prometheus has two types of rules. Alerting rules define conditions that trigger alerts when met - for example, 'alert if CPU usage > 90% for 5 minutes'. When an alerting rule condition is true, Prometheus fires the alert to Alertmanager, which handles notification routing (email, Slack, PagerDuty, etc.). Recording rules precompute expensive queries and store the results as new time series, improving query performance. For example, you might have a recording rule that computes '95th percentile request latency per service' every minute, storing the result so dashboards can query it instantly instead of recomputing. Recording rules are especially valuable for dashboard performance and for computing metrics from high-cardinality data. Both rule types are defined in YAML and evaluated periodically by Prometheus."
+  require_pass: true

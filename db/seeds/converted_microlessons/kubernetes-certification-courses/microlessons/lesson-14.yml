@@ -1,0 +1,92 @@
+slug: lesson-14
+title: Lesson 14
+difficulty: easy
+sequence_order: 14
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# RBAC Deep Dive\n\n    - Roles vs ClusterRoles\n\
+  \    - RoleBinding and ClusterRoleBinding\n    - Aggregated roles"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: Can a RoleBinding reference a ClusterRole, and if so, what permissions
+    does it grant?
+  options:
+  - No, RoleBindings can only reference Roles
+  - Yes, but it grants permissions only within the RoleBinding's namespace, not cluster-wide
+  - Yes, and it automatically grants cluster-wide permissions
+  - RoleBindings and ClusterRoles cannot interact
+  correct_answer: Yes, but it grants permissions only within the RoleBinding's namespace,
+    not cluster-wide
+  explanation: 'A RoleBinding can reference either a Role or a ClusterRole, but it
+    always grants permissions only within the RoleBinding''s namespace, regardless
+    of which it references. This is a powerful feature that enables reusable permission
+    templates. When a RoleBinding references a ClusterRole, it grants those permissions
+    scoped to the namespace. For example, you might create a ClusterRole ''pod-reader''
+    with permissions to get/list/watch pods. Then create RoleBindings in multiple
+    namespaces (dev, staging, prod), each referencing this same ClusterRole. Users
+    bound in ''dev'' can only read pods in ''dev'', users bound in ''staging'' only
+    in ''staging'', etc. This pattern provides: permission template reuse (define
+    once, apply many times), consistent permission sets across namespaces, simplified
+    management (update the ClusterRole to update all bindings), and namespace isolation
+    (users can''t access other namespaces despite the ClusterRole being cluster-wide).
+    The binding type, not the role type, determines scope: RoleBinding (namespace-scoped)
+    limits permissions to its namespace whether it references a Role or ClusterRole.
+    ClusterRoleBinding (cluster-wide) must reference a ClusterRole and grants permissions
+    cluster-wide or to cluster-scoped resources. Common pattern: create ClusterRoles
+    for standard permission sets (viewer: read-only, editor: read-write, admin: full
+    access), use RoleBindings to grant them per-namespace, and use ClusterRoleBindings
+    sparingly for truly cluster-wide access (like cluster monitoring). This architecture
+    enables both reusability and least-privilege namespace isolation. Use ''kubectl
+    create rolebinding my-binding --clusterrole=pod-reader --user=jane --namespace=dev''
+    to bind a ClusterRole with namespace scope.'
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What are aggregated ClusterRoles in Kubernetes RBAC?
+  options:
+  - ClusterRoles that are automatically deleted after use
+  - ClusterRoles that combine permissions from multiple ClusterRoles based on label
+    selectors
+  - ClusterRoles with compressed permission sets
+  - ClusterRoles shared across multiple clusters
+  correct_answer: ClusterRoles that combine permissions from multiple ClusterRoles
+    based on label selectors
+  explanation: 'Aggregated ClusterRoles are ClusterRoles that automatically combine
+    permissions from other ClusterRoles based on label selectors. They enable modular,
+    extensible RBAC configurations where multiple components can contribute permissions
+    to a role without modifying it directly. This is particularly useful for custom
+    resource definitions (CRDs) and extensions. An aggregated ClusterRole defines
+    an ''aggregationRule'' with label selectors, and the Kubernetes RBAC controller
+    automatically aggregates matching ClusterRoles'' rules into it. For example, the
+    built-in ''admin'' ClusterRole uses aggregation: ''aggregationRule: clusterRoleSelectors:
+    - matchLabels: rbac.authorization.k8s.io/aggregate-to-admin: "true"''. Any ClusterRole
+    with this label automatically has its rules added to ''admin''. When you install
+    a CRD (like cert-manager), it can create ClusterRoles labeled for aggregation:
+    ''labels: rbac.authorization.k8s.io/aggregate-to-admin: "true"'' with permissions
+    for the new resources. Existing ''admin'' RoleBindings automatically gain these
+    permissions without reconfiguration. This pattern: enables extensibility (new
+    components add permissions declaratively), maintains separation (component owns
+    its permission definition), prevents conflicts (no direct editing of central roles),
+    and supports GitOps (each component''s permissions in its manifest). Kubernetes
+    uses aggregation for default roles: ''view'' aggregates read-only permissions,
+    ''edit'' aggregates read-write permissions, ''admin'' aggregates namespace-admin
+    permissions, and ''cluster-admin'' has all permissions. Best practices: use aggregation
+    for creating extensible roles, label your ClusterRoles to aggregate into standard
+    roles, prefer aggregation over modifying default ClusterRoles directly, and document
+    aggregation relationships. Check aggregated results with ''kubectl describe clusterrole
+    admin'' to see the combined rules.'
+  require_pass: true
+- type: mcq
+  sequence_order: 1
+  question: What kubectl command checks if you can perform an action?
+  options:
+  - kubectl auth can-i create pods
+  - kubectl check permissions create pods
+  - kubectl verify action create pods
+  - kubectl test auth create pods
+  correct_answer_index: 0
+  explanation: kubectl auth can-i <action> <resource> checks if the current user has
+    permission to perform the specified action.
+  require_pass: true

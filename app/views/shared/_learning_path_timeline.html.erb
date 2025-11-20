@@ -1,0 +1,281 @@
+<%
+  # Generate learning path based on user level and progress
+  docker_enrollment = user.course_enrollments.joins(:course).find_by(courses: { slug: 'docker-fundamentals' })
+  ckad_enrollment = user.course_enrollments.joins(:course).find_by('courses.title LIKE ?', '%CKAD%')
+  
+  # Define path steps based on skill level
+  path_steps = []
+  
+  if user.diagnostic_skill_level == 'beginner'
+    # Beginner path - Docker focus
+    path_steps = [
+      {
+        title: "Complete Docker Basics Module",
+        description: "Learn what containers are and why they matter",
+        icon: "fab fa-docker",
+        status: docker_enrollment&.module_progresses&.find_by(course_module: CourseModule.find_by(slug: 'container-basics'))&.completed? ? 'completed' : 'current',
+        action_path: docker_enrollment ? course_module_path('docker-fundamentals', 'container-basics') : courses_path,
+        action_text: docker_enrollment ? 'Continue Module' : 'Start Course'
+      },
+      {
+        title: "Build Your First Image",
+        description: "Create custom Docker images with Dockerfiles",
+        icon: "fas fa-cube",
+        status: docker_enrollment&.module_progresses&.find_by(course_module: CourseModule.find_by(slug: 'images-dockerfiles'))&.completed? ? 'completed' : 'upcoming',
+        action_path: hands_on_labs_path(difficulty: 'easy'),
+        action_text: 'Practice Lab'
+      },
+      {
+        title: "Complete 5 Docker Labs",
+        description: "Get hands-on practice with real scenarios",
+        icon: "fas fa-flask",
+        status: user.lab_sessions.where(status: 'completed').joins(:hands_on_lab).where('hands_on_labs.lab_type = ?', 'docker').count >= 5 ? 'completed' : 'upcoming',
+        action_path: hands_on_labs_path,
+        action_text: 'View Labs',
+        progress: "#{user.lab_sessions.where(status: 'completed').joins(:hands_on_lab).where('hands_on_labs.lab_type = ?', 'docker').count}/5"
+      },
+      {
+        title: "Pass Docker Assessment",
+        description: "Test your knowledge with a practice quiz",
+        icon: "fas fa-clipboard-check",
+        status: 'upcoming',
+        action_path: docker_enrollment ? quizzes_course_path('docker-fundamentals') : '#',
+        action_text: 'Take Quiz'
+      },
+      {
+        title: "Learn Docker Compose",
+        description: "Orchestrate multi-container applications",
+        icon: "fas fa-layer-group",
+        status: 'upcoming',
+        action_path: '#',
+        action_text: 'Start Learning'
+      },
+      {
+        title: "Prepare for DCA Exam",
+        description: "Take practice exams and review weak areas",
+        icon: "fas fa-certificate",
+        status: 'upcoming',
+        action_path: exam_simulations_path,
+        action_text: 'Practice Exams'
+      }
+    ]
+  else
+    # Novice path - Quick Docker review then Kubernetes
+    path_steps = [
+      {
+        title: "Docker Refresher",
+        description: "Review Docker networking and volumes",
+        icon: "fab fa-docker",
+        status: docker_enrollment&.completion_percentage.to_i >= 50 ? 'completed' : 'current',
+        action_path: adaptive_practice_path,
+        action_text: 'Practice Docker'
+      },
+      {
+        title: "Start Kubernetes Journey",
+        description: "Begin with CKAD course for app developers",
+        icon: "fas fa-dharmachakra",
+        status: ckad_enrollment ? 'completed' : 'current',
+        action_path: courses_path,
+        action_text: 'Browse Courses'
+      },
+      {
+        title: "Master Pods & Deployments",
+        description: "Core Kubernetes workload resources",
+        icon: "fas fa-cubes",
+        status: ckad_enrollment&.module_progresses&.any? ? 'current' : 'upcoming',
+        action_path: ckad_enrollment ? continue_course_path(ckad_enrollment.course) : '#',
+        action_text: 'Continue Learning'
+      },
+      {
+        title: "ConfigMaps & Secrets",
+        description: "Application configuration in Kubernetes",
+        icon: "fas fa-key",
+        status: 'upcoming',
+        action_path: '#',
+        action_text: 'Learn More'
+      },
+      {
+        title: "Services & Networking",
+        description: "Connect and expose your applications",
+        icon: "fas fa-network-wired",
+        status: 'upcoming',
+        action_path: '#',
+        action_text: 'Study Topic'
+      },
+      {
+        title: "CKAD Certification",
+        description: "Pass the CKAD exam",
+        icon: "fas fa-award",
+        status: 'upcoming',
+        action_path: start_exam_simulations_path('ckad'),
+        action_text: 'Exam Practice'
+      }
+    ]
+  end
+  
+  # Calculate current step
+  current_step_index = path_steps.find_index { |s| s[:status] == 'current' } || 0
+%>
+
+<div class="learning-path-timeline">
+  <% path_steps.each_with_index do |step, index| %>
+    <div class="timeline-step <%= step[:status] %> <%= index == current_step_index ? 'active' : '' %>">
+      <div class="step-connector <%= index == 0 ? 'first' : '' %> <%= index == path_steps.length - 1 ? 'last' : '' %>"></div>
+      
+      <div class="step-marker">
+        <% if step[:status] == 'completed' %>
+          <i class="fas fa-check"></i>
+        <% elsif step[:status] == 'current' %>
+          <i class="<%= step[:icon] %>"></i>
+        <% else %>
+          <span><%= index + 1 %></span>
+        <% end %>
+      </div>
+      
+      <div class="step-content">
+        <h6 class="step-title">
+          <%= step[:title] %>
+          <% if step[:progress] %>
+            <span class="badge badge-secondary float-right"><%= step[:progress] %></span>
+          <% end %>
+        </h6>
+        <p class="step-description text-muted mb-2"><%= step[:description] %></p>
+        
+        <% if step[:status] == 'current' || (step[:status] == 'upcoming' && index == current_step_index + 1) %>
+          <%= link_to step[:action_text], step[:action_path], 
+              class: "btn btn-sm btn-#{step[:status] == 'current' ? 'primary' : 'outline-primary'}" %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+  
+  <!-- Completion Message -->
+  <div class="text-center mt-4">
+    <% completed_count = path_steps.count { |s| s[:status] == 'completed' } %>
+    <div class="progress mb-3" style="height: 8px;">
+      <div class="progress-bar bg-success" 
+           role="progressbar" 
+           style="width: <%= (completed_count.to_f / path_steps.count * 100).round %>%">
+      </div>
+    </div>
+    <p class="text-muted">
+      <strong><%= completed_count %> of <%= path_steps.count %></strong> milestones completed
+      <% if completed_count == path_steps.count %>
+        <br><span class="text-success"><i class="fas fa-trophy"></i> Congratulations! You've completed this learning path!</span>
+      <% end %>
+    </p>
+  </div>
+</div>
+
+<style>
+  .learning-path-timeline {
+    position: relative;
+    padding: 20px 0;
+  }
+  
+  .timeline-step {
+    display: flex;
+    align-items: start;
+    margin-bottom: 30px;
+    position: relative;
+  }
+  
+  .step-connector {
+    position: absolute;
+    left: 19px;
+    top: 40px;
+    bottom: -30px;
+    width: 2px;
+    background: #dee2e6;
+  }
+  
+  .timeline-step.completed .step-connector {
+    background: #28a745;
+  }
+  
+  .timeline-step.current .step-connector {
+    background: linear-gradient(to bottom, #007bff 50%, #dee2e6 50%);
+  }
+  
+  .step-connector.last {
+    display: none;
+  }
+  
+  .step-marker {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #e9ecef;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 20px;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+    font-weight: bold;
+    color: #6c757d;
+  }
+  
+  .timeline-step.completed .step-marker {
+    background: #28a745;
+    color: white;
+  }
+  
+  .timeline-step.current .step-marker {
+    background: #007bff;
+    color: white;
+    box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.25);
+    animation: pulse 2s infinite;
+  }
+  
+  .step-content {
+    flex-grow: 1;
+    padding-bottom: 10px;
+  }
+  
+  .step-title {
+    margin-bottom: 5px;
+    color: #495057;
+  }
+  
+  .timeline-step.completed .step-title {
+    text-decoration: line-through;
+    color: #6c757d;
+  }
+  
+  .timeline-step.current .step-title {
+    color: #007bff;
+    font-weight: 600;
+  }
+  
+  .step-description {
+    font-size: 0.875rem;
+    margin-bottom: 10px;
+  }
+  
+  @keyframes pulse {
+    0% {
+      box-shadow: 0 0 0 0 rgba(0, 123, 255, 0.4);
+    }
+    70% {
+      box-shadow: 0 0 0 10px rgba(0, 123, 255, 0);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba(0, 123, 255, 0);
+    }
+  }
+  
+  /* Mobile responsive */
+  @media (max-width: 768px) {
+    .step-marker {
+      width: 35px;
+      height: 35px;
+      margin-right: 15px;
+    }
+    
+    .step-connector {
+      left: 16px;
+    }
+  }
+</style>

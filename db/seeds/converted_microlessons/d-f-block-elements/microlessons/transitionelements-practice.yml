@@ -1,0 +1,95 @@
+slug: transitionelements-practice
+title: transition_elements — Practice
+difficulty: medium
+sequence_order: 6
+estimated_minutes: 2
+key_concepts:
+- transition_elements
+prerequisites: []
+content_md: '# transition_elements — Practice 🚀
+
+
+  Zn (3d¹⁰ 4s²) and Cd (4d¹⁰ 5s²) are not transition elements because they have fully
+  filled d-orbitals in both ground state and common oxidation states (+2). Sc and
+  Fe have partially filled d-orbitals.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 2
+  question: Which of the following are NOT considered transition elements?
+  options:
+  - Sc and Fe
+  - Zn and Cd
+  - Ti and V
+  - Mn and Co
+  require_pass: true
+  correct_answer: Zn and Cd
+  explanation: 'Zinc (Zn) and Cadmium (Cd) are NOT considered transition elements
+    because they have fully filled d-orbitals in both their ground state and common
+    oxidation states. **Zn**: Ground state [Ar] 3d¹⁰ 4s², common ion Zn²⁺ has 3d¹⁰
+    (fully filled). **Cd**: Ground state [Kr] 4d¹⁰ 5s², common ion Cd²⁺ has 4d¹⁰
+    (fully filled). The definition of transition elements requires partially filled
+    d-orbitals in the ground state or in at least one common oxidation state. Since
+    Zn²⁺ and Cd²⁺ have d¹⁰ configurations with no partially filled d-orbitals, these
+    elements don''t exhibit typical transition metal properties like variable oxidation
+    states, colored compounds, or catalytic activity. In contrast: **Sc** ([Ar] 3d¹
+    4s²) and **Fe** ([Ar] 3d⁶ 4s²) have partially filled d-orbitals. **Ti, V, Mn,
+    Co** all have partially filled d-orbitals. Similarly, Hg (5d¹⁰ 6s²) is also not
+    a transition element. However, Cu is considered a transition element because
+    Cu²⁺ has d⁹ (partially filled).'
+- type: mcq
+  sequence_order: 3
+  question: What is the defining characteristic of transition elements?
+  options:
+  - Fully filled d-orbitals in all oxidation states
+  - Partially filled d-orbitals in ground state or common oxidation states
+  - Completely empty d-orbitals
+  - Only s-electrons in the valence shell
+  require_pass: true
+  correct_answer: Partially filled d-orbitals in ground state or common oxidation
+    states
+  explanation: 'The defining characteristic of transition elements is having partially
+    filled d-orbitals (d¹ to d⁹) in the ground state OR in at least one common oxidation
+    state. This definition explains: (1) **Why Sc to Cu are transition elements**:
+    They have d¹-d⁹ configurations in ground state or ions. Example: Fe has 3d⁶,
+    Fe²⁺ has 3d⁶, Fe³⁺ has 3d⁵ (all partially filled). (2) **Why Zn is NOT**: Zn
+    has 3d¹⁰ 4s², Zn²⁺ has 3d¹⁰ (both fully filled). (3) **Why Cu IS**: Cu has 3d¹⁰
+    4s¹ (fully filled), but Cu²⁺ has 3d⁹ (partially filled). The partially filled
+    d-orbitals are responsible for characteristic properties of transition elements:
+    **Variable oxidation states**: Multiple d-electrons available for bonding. **Colored
+    compounds**: d-d electronic transitions absorb visible light. **Paramagnetic
+    nature**: Unpaired d-electrons. **Catalytic activity**: Ability to provide electrons
+    from d-orbitals. **Complex formation**: d-orbitals available for coordinate bonding.
+    Elements with d⁰ (Sc³⁺) or d¹⁰ (Zn²⁺) don''t show these properties fully.'
+- type: mcq
+  sequence_order: 4
+  question: Which of the following ions has a d¹⁰ configuration?
+  options:
+  - Fe²⁺
+  - Cu²⁺
+  - Zn²⁺
+  - Ni²⁺
+  require_pass: true
+  correct_answer: Zn²⁺
+  explanation: 'Zn²⁺ has a d¹⁰ configuration (fully filled d-orbitals). Let''s verify:
+    **Zn (Z=30)**: Ground state [Ar] 3d¹⁰ 4s². **Zn²⁺**: Loses two 4s electrons,
+    giving [Ar] 3d¹⁰ (fully filled, 10 d-electrons). This fully filled d¹⁰ configuration
+    makes Zn²⁺ colorless, diamagnetic, and non-catalytic. The other ions: **Fe²⁺**:
+    Fe (Z=26) is [Ar] 3d⁶ 4s². Fe²⁺ loses two 4s electrons → 3d⁶ (6 d-electrons,
+    4 unpaired). **Cu²⁺**: Cu (Z=29) is [Ar] 3d¹⁰ 4s¹. Cu²⁺ loses one 4s and one
+    3d electron → 3d⁹ (9 d-electrons, 1 unpaired). **Ni²⁺**: Ni (Z=28) is [Ar] 3d⁸
+    4s². Ni²⁺ loses two 4s electrons → 3d⁸ (8 d-electrons, 2 unpaired). Other d¹⁰
+    ions include: **Cu⁺**: [Ar] 3d¹⁰ (colorless, diamagnetic). **Ag⁺**: [Kr] 4d¹⁰
+    (colorless). **Au⁺**: [Xe] 4f¹⁴ 5d¹⁰ (colorless). Note: When transition metals
+    form ions, electrons are lost first from s-orbital, then from d-orbitals.'

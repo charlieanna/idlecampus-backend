@@ -1,0 +1,94 @@
+slug: lesson-5
+title: Lesson 5
+difficulty: easy
+sequence_order: 5
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Introduction to Linux and the Shell\n\n\
+  \    ## Linux Overview\n\n    Linux is an open-source operating system kernel created\
+  \ by Linus Torvalds in 1991. Today, it powers the majority of web servers, cloud\
+  \ infrastructure, containers, and embedded systems worldwide.\n\n    ### Brief History\n\
+  \    - **1969**: Unix developed at AT&T Bell Labs\n    - **1991**: Linus Torvalds\
+  \ creates Linux kernel\n    - **Today**: Powers billions of devices from smartphones\
+  \ to supercomputers\n\n    ### Why Linux Matters for Containers\n    Docker and\
+  \ Kubernetes are built on Linux kernel features:\n    - **Namespaces**: Process\
+  \ isolation\n    - **Cgroups**: Resource management\n    - **Union filesystems**:\
+  \ Efficient container layers\n\n    Understanding Linux is critical since Kubernetes\
+  \ nodes usually run Linux.\n\n    ### Open Source Philosophy\n    - Free to use,\
+  \ modify, and distribute\n    - Community-driven development\n    - Transparent\
+  \ security (anyone can audit code)\n    - Thousands of distributions for different\
+  \ needs\n\n    ### Common Linux Distributions\n    | Distribution | Use Case | Package\
+  \ Manager |\n    |-------------|----------|----------------|\n    | **Ubuntu** |\
+  \ Servers, desktops, beginners | apt |\n    | **Red Hat Enterprise Linux (RHEL)**\
+  \ | Enterprise servers | yum/dnf |\n    | **CentOS** | RHEL clone for servers |\
+  \ yum/dnf |\n    | **Debian** | Stable servers | apt |\n    | **Alpine** | Minimal\
+  \ Docker images | apk |\n    | **Amazon Linux** | AWS-optimized | yum |\n\n    ##\
+  \ The Linux Kernel vs. The Shell\n\n    ### The Kernel\n    The kernel is the core\
+  \ of Linux that:\n    - Manages hardware resources (CPU, memory, storage, network)\n\
+  \    - Handles process scheduling\n    - Controls file systems\n    - Manages security\
+  \ and permissions\n    - Provides system calls for applications\n\n    ### The Shell\n\
+  \    The shell is a command-line interface that allows users to communicate with\
+  \ the kernel:\n    - **bash** (Bourne Again Shell): Most common default shell\n\
+  \    - **sh** (Bourne Shell): Basic POSIX-compliant shell\n    - **zsh**: Enhanced\
+  \ shell with advanced features\n    - **fish**: User-friendly shell with auto-suggestions\n\
+  \n    ## Linux Boot Process\n\n    Understanding the boot process helps with troubleshooting:\n\
+  \n    1. **BIOS/UEFI**: Hardware initialization, finds bootloader\n    2. **Bootloader\
+  \ (GRUB)**: Loads Linux kernel into memory\n    3. **Kernel Initialization**: Mounts\
+  \ root filesystem, starts init\n    4. **Init System (systemd)**: Starts system\
+  \ services and daemons\n    5. **Login Prompt**: System ready for user login\n\n\
+  \    ## Linux Filesystem Hierarchy\n\n    Linux uses a single inverted tree structure\
+  \ starting at root `/`:\n\n    ```\n    /\n    ├── bin/     # Essential user binaries\
+  \ (ls, cp, mv)\n    ├── boot/    # Boot loader files, kernel\n    ├── dev/     #\
+  \ Device files (disks, terminals)\n    ├── etc/     # System configuration files\n\
+  \    ├── home/    # User home directories\n    ├── lib/     # Shared libraries\n\
+  \    ├── opt/     # Optional software packages\n    ├── proc/    # Process and kernel\
+  \ info (virtual)\n    ├── root/    # Root user home directory\n    ├── sbin/   \
+  \ # System administration binaries\n    ├── tmp/     # Temporary files\n    ├──\
+  \ usr/     # User programs and data\n    └── var/     # Variable data (logs, databases)\n\
+  \    ```\n\n    ## Shell Basics\n\n    ### The Shell Prompt\n    ```bash\n    user@hostname:~$\n\
+  \    ```\n    - `user`: Current username\n    - `hostname`: Machine name\n    -\
+  \ `~`: Current directory (~ means home)\n    - `$`: Regular user (# for root)\n\n\
+  \    ### Command Structure\n    ```\n    command [options] [arguments]\n    ```\n\
+  \n    Example:\n    ```bash\n    ls -la /home\n    ```\n    - `ls`: Command (list\
+  \ directory contents)\n    - `-la`: Options (long format + all files)\n    - `/home`:\
+  \ Argument (directory to list)\n\n    ### Essential Navigation Commands\n\n    |\
+  \ Command | Description | Example |\n    |---------|-------------|---------|\n \
+  \   | `pwd` | Print working directory | `pwd` |\n    | `ls` | List directory contents\
+  \ | `ls -l` |\n    | `cd` | Change directory | `cd /etc` |\n    | `whoami` | Display\
+  \ current user | `whoami` |\n    | `uname` | System information | `uname -a` |\n\
+  \n    ### Shell Features\n    - **Tab Completion**: Press Tab to auto-complete commands/paths\n\
+  \    - **Command History**: Up/Down arrows to recall previous commands\n    - **Command\
+  \ History Search**: `Ctrl+R` to search history\n    - **Clear Screen**: `Ctrl+L`\
+  \ or `clear` command\n    - **Stop Command**: `Ctrl+C` to interrupt running command\n\
+  \n    ## Using Help & Manual Pages\n\n    ### The `man` Command\n    Linux has built-in\
+  \ documentation called \"man pages\" (manual pages):\n\n    ```bash\n    man ls\
+  \        # View manual for ls command\n    man passwd    # View manual for passwd\
+  \ command\n    man man       # View manual for man itself\n    ```\n\n    **Navigation\
+  \ in man pages:**\n    - Space: Next page\n    - b: Previous page\n    - /pattern:\
+  \ Search forward\n    - n: Next search result\n    - q: Quit\n\n    ### The `--help`\
+  \ Option\n    Most commands support `--help` for quick reference:\n\n    ```bash\n\
+  \    ls --help\n    cp --help\n    mkdir --help\n    ```\n\n    ### The `info` Command\n\
+  \    Some programs have more detailed info pages:\n\n    ```bash\n    info coreutils\n\
+  \    ```\n\n    ## Environment Variables\n\n    Environment variables affect how\
+  \ commands execute:\n\n    ```bash\n    # View all environment variables\n    env\n\
+  \n    # View specific variable\n    echo $HOME      # User home directory\n    echo\
+  \ $PATH      # Command search path\n    echo $USER      # Current username\n   \
+  \ echo $SHELL     # Current shell\n\n    # Set environment variable\n    export\
+  \ MY_VAR=\"hello\"\n    echo $MY_VAR\n    ```\n\n    ### Important Environment Variables\n\
+  \    - **PATH**: Directories to search for commands\n    - **HOME**: User's home\
+  \ directory\n    - **USER**: Current username\n    - **SHELL**: Current shell program\n\
+  \    - **PWD**: Current working directory\n\n    ## Text Editors in Linux\n\n  \
+  \  You'll need a text editor for configuration files and scripts:\n\n    ### nano\
+  \ (Beginner-friendly)\n    ```bash\n    nano filename.txt\n    ```\n    - `Ctrl+O`:\
+  \ Save (Write Out)\n    - `Ctrl+X`: Exit\n    - `Ctrl+K`: Cut line\n    - `Ctrl+U`:\
+  \ Paste\n\n    ### vi/vim (Powerful but steep learning curve)\n    ```bash\n   \
+  \ vi filename.txt\n    ```\n    - Press `i` to enter INSERT mode\n    - Press `Esc`\
+  \ to return to COMMAND mode\n    - `:w` to save\n    - `:q` to quit\n    - `:wq`\
+  \ to save and quit\n\n    ## Summary\n\n    In this module, you learned:\n    -\
+  \ Linux is an open-source kernel powering servers, containers, and cloud\n    -\
+  \ The kernel manages hardware; the shell is your interface\n    - Linux uses a hierarchical\
+  \ filesystem starting at /\n    - Basic commands: pwd, ls, cd, whoami, uname\n \
+  \   - How to use man pages and --help for documentation\n    - Environment variables\
+  \ like $PATH affect command execution"
+exercises: []

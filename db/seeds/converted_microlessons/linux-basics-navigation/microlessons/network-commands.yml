@@ -1,0 +1,96 @@
+slug: network-commands
+title: Network Commands
+difficulty: easy
+sequence_order: 8
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Network Commands \U0001F680\n\n# Essential Network Commands\n\n   \
+  \ ## Testing Connectivity\n\n    ```bash\n    # Ping host\n    ping google.com\n\
+  \    ping -c 4 8.8.8.8  # Send 4 packets\n\n    # Test HTTP connectivity\n    curl\
+  \ https://example.com\n\n    # Show response headers\n    curl -I https://example.com\n\
+  \n    # Download file\n    curl -O https://example.com/file.zip\n    wget https://example.com/file.zip\n\
+  \n    # DNS lookup\n    nslookup example.com\n    dig example.com\n    host example.com\n\
+  \    ```\n\n    ## Network Configuration\n\n    ```bash\n    # Show network interfaces\
+  \ (modern)\n    ip addr show\n    ip a\n\n    # Show specific interface\n    ip\
+  \ addr show eth0\n\n    # Show routing table\n    ip route show\n\n    # Show network\
+  \ statistics\n    netstat -i\n    ```\n\n    ## Checking Ports\n\n    ```bash\n\
+  \    # Show listening ports\n    netstat -tuln\n    ss -tuln  # Modern alternative\n\
+  \n    # Show which process is using a port\n    sudo lsof -i :80\n    sudo netstat\
+  \ -tulpn | grep :80\n\n    # Test specific port\n    telnet example.com 80\n   \
+  \ nc -zv example.com 80\n    ```\n\n    ## File Transfer\n\n    ```bash\n    # Copy\
+  \ file to remote server\n    scp file.txt user@server:/path/\n\n    # Copy from\
+  \ remote to local\n    scp user@server:/path/file.txt .\n\n    # Copy directory\
+  \ recursively\n    scp -r directory/ user@server:/path/\n\n    # Sync directories\
+  \ (more efficient)\n    rsync -avz source/ user@server:/destination/\n\n    # Sync\
+  \ with progress\n    rsync -avz --progress source/ dest/\n    ```\n\n    ## Common\
+  \ Ports\n\n    | Port | Service |\n    |------|---------|\n    | 22 | SSH |\n  \
+  \  | 80 | HTTP |\n    | 443 | HTTPS |\n    | 3306 | MySQL |\n    | 5432 | PostgreSQL\
+  \ |\n    | 6379 | Redis |\n    | 27017 | MongoDB |"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What is the difference between ping and curl for testing connectivity?
+  options:
+  - ping tests HTTP connectivity, curl tests ICMP connectivity
+  - ping tests ICMP network-layer connectivity, curl tests HTTP application-layer
+    connectivity
+  - They are identical and interchangeable
+  - curl is faster than ping for connectivity tests
+  correct_answer: ping tests ICMP network-layer connectivity, curl tests HTTP application-layer
+    connectivity
+  explanation: 'ping and curl test different network layers. ping uses ICMP (Internet
+    Control Message Protocol) to test basic network connectivity at Layer 3 (network
+    layer) - it checks if a host is reachable and measures round-trip time (RTT).
+    Example: ping -c 4 google.com sends 4 ICMP echo requests. curl tests HTTP/HTTPS
+    connectivity at Layer 7 (application layer) - it verifies that a web server is
+    responding and can fetch actual content. Example: curl https://example.com tests
+    full web stack (DNS, TCP, TLS, HTTP). Use cases: (1) ping for basic network troubleshooting
+    (is server reachable?), (2) curl for web service testing (is HTTP server working?).
+    A server might respond to curl but not ping if ICMP is blocked by firewall. curl
+    -I shows HTTP headers without downloading full content.'
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What does the command "netstat -tuln" show?
+  options:
+  - All active network connections with process names
+  - Listening TCP and UDP ports with numeric addresses (no DNS resolution)
+  - Network transfer statistics and bandwidth usage
+  - Currently connected users and their IP addresses
+  correct_answer: Listening TCP and UDP ports with numeric addresses (no DNS resolution)
+  explanation: 'The netstat -tuln command shows listening network ports. Breaking
+    down the flags: (1) -t: TCP ports, (2) -u: UDP ports, (3) -l: Listening ports
+    only (not established connections), (4) -n: Numeric output (show IP addresses
+    and port numbers, don''t resolve hostnames/service names - faster). Output example:
+    0.0.0.0:80 (HTTP server listening on all interfaces), 127.0.0.1:5432 (PostgreSQL
+    on localhost). This is crucial for: Security audits (what services are exposed?),
+    troubleshooting (is my server listening?), finding port conflicts. Modern alternative:
+    ss -tuln (faster, more features). To see which process owns a port: netstat -tulpn
+    or sudo lsof -i :80. Common scenario: Application won''t start because port is
+    already in use - use netstat -tuln | grep :8080 to find what''s using port 8080.'
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: What is the key difference between scp and rsync for file transfers?
+  options:
+  - scp is for remote transfers, rsync is for local transfers only
+  - rsync is more efficient as it only transfers changed parts of files and can resume
+    interrupted transfers
+  - scp is faster because it uses compression by default
+  - rsync requires root privileges, scp does not
+  correct_answer: rsync is more efficient as it only transfers changed parts of files
+    and can resume interrupted transfers
+  explanation: 'rsync is superior to scp for most file transfer scenarios because
+    it uses delta-transfer algorithm: only transfers the changed portions of files,
+    not entire files. scp (Secure Copy) always copies entire files, even if only 1
+    byte changed. Key differences: (1) Efficiency: rsync detects existing files and
+    skips or updates only changed parts; scp always copies everything, (2) Resume:
+    rsync can resume interrupted transfers; scp starts from scratch, (3) Features:
+    rsync has --delete (mirror directories), --exclude (skip patterns), --progress
+    (show transfer status), (4) Speed: rsync is faster for incremental backups. Use
+    cases: scp for one-time small file copies: scp file.txt user@server:/path/. rsync
+    for syncing directories: rsync -avz --progress source/ user@server:/dest/ (a=archive
+    mode preserves permissions, v=verbose, z=compress during transfer). For backups
+    and synchronization, always prefer rsync over scp.'
+  require_pass: true

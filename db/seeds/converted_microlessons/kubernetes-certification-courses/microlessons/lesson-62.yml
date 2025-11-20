@@ -1,0 +1,152 @@
+slug: lesson-62
+title: Lesson 62
+difficulty: easy
+sequence_order: 62
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# RBAC and Authentication in Kubernetes\n\
+  \n    ## Role-Based Access Control (RBAC)\n\n    ### Key Concepts\n\n    - **Subjects**:\
+  \ Users, Groups, ServiceAccounts\n    - **Resources**: Pods, Services, Deployments,\
+  \ etc.\n    - **Verbs**: get, list, create, update, delete, watch\n\n    ### Roles\
+  \ and ClusterRoles\n\n    **Role** (namespace-scoped):\n    ```yaml\n    apiVersion:\
+  \ rbac.authorization.k8s.io/v1\n    kind: Role\n    metadata:\n      namespace:\
+  \ development\n      name: pod-reader\n    rules:\n    - apiGroups: [\"\"]\n   \
+  \   resources: [\"pods\"]\n      verbs: [\"get\", \"list\"]\n    ```\n\n    **ClusterRole**\
+  \ (cluster-wide):\n    ```yaml\n    apiVersion: rbac.authorization.k8s.io/v1\n \
+  \   kind: ClusterRole\n    metadata:\n      name: secret-reader\n    rules:\n  \
+  \  - apiGroups: [\"\"]\n      resources: [\"secrets\"]\n      verbs: [\"get\", \"\
+  list\"]\n    ```\n\n    ### RoleBindings and ClusterRoleBindings\n\n    **RoleBinding**:\n\
+  \    ```yaml\n    apiVersion: rbac.authorization.k8s.io/v1\n    kind: RoleBinding\n\
+  \    metadata:\n      name: read-pods\n      namespace: development\n    subjects:\n\
+  \    - kind: User\n      name: jane\n      apiGroup: rbac.authorization.k8s.io\n\
+  \    roleRef:\n      kind: Role\n      name: pod-reader\n      apiGroup: rbac.authorization.k8s.io\n\
+  \    ```\n\n    **ClusterRoleBinding**:\n    ```yaml\n    apiVersion: rbac.authorization.k8s.io/v1\n\
+  \    kind: ClusterRoleBinding\n    metadata:\n      name: read-secrets-global\n\
+  \    subjects:\n    - kind: Group\n      name: admins\n      apiGroup: rbac.authorization.k8s.io\n\
+  \    roleRef:\n      kind: ClusterRole\n      name: secret-reader\n      apiGroup:\
+  \ rbac.authorization.k8s.io\n    ```\n\n    ## Authentication Methods\n\n    ###\
+  \ 1. X.509 Client Certificates\n    ```bash\n    # Create private key\n    openssl\
+  \ genrsa -out jane.key 2048\n\n    # Create certificate signing request\n    openssl\
+  \ req -new -key jane.key -out jane.csr -subj \"/CN=jane/O=developers\"\n\n    #\
+  \ Sign with cluster CA\n    openssl x509 -req -in jane.csr -CA /etc/kubernetes/pki/ca.crt\
+  \ \\\n      -CAkey /etc/kubernetes/pki/ca.key -CAcreateserial \\\n      -out jane.crt\
+  \ -days 365\n    ```\n\n    ### 2. Service Account Tokens\n    ```yaml\n    apiVersion:\
+  \ v1\n    kind: ServiceAccount\n    metadata:\n      name: build-bot\n      namespace:\
+  \ ci-cd\n    ```\n\n    ```bash\n    # Get token\n    kubectl create token build-bot\
+  \ -n ci-cd\n    ```\n\n    ### 3. OpenID Connect (OIDC)\n    Configure in kube-apiserver:\n\
+  \    ```\n    --oidc-issuer-url=https://accounts.google.com\n    --oidc-client-id=kubernetes\n\
+  \    --oidc-username-claim=email\n    --oidc-groups-claim=groups\n    ```\n\n  \
+  \  ## Checking Permissions\n\n    ```bash\n    # Check if you can create deployments\n\
+  \    kubectl auth can-i create deployments --namespace=production\n\n    # Check\
+  \ permissions for another user\n    kubectl auth can-i list pods --as=jane --namespace=development\n\
+  \n    # List all permissions for a user\n    kubectl auth can-i --list --as=jane\
+  \ --namespace=development\n    ```\n\n    ## Best Practices\n\n    1. **Principle\
+  \ of Least Privilege**: Grant minimum necessary permissions\n    2. **Use ServiceAccounts**:\
+  \ For pod authentication\n    3. **Avoid Wildcards**: Be specific with resources\
+  \ and verbs\n    4. **Regular Audits**: Review and update RBAC policies\n    5.\
+  \ **Separate Namespaces**: Isolate workloads\n    6. **Use Groups**: Manage permissions\
+  \ via groups, not individual users\n\n    ## Common RBAC Patterns\n\n    ### Read-Only\
+  \ Access\n    ```yaml\n    rules:\n    - apiGroups: [\"\", \"apps\", \"batch\"]\n\
+  \      resources: [\"*\"]\n      verbs: [\"get\", \"list\", \"watch\"]\n    ```\n\
+  \n    ### Developer Access\n    ```yaml\n    rules:\n    - apiGroups: [\"\", \"\
+  apps\"]\n      resources: [\"pods\", \"deployments\", \"services\"]\n      verbs:\
+  \ [\"get\", \"list\", \"create\", \"update\", \"delete\"]\n    - apiGroups: [\"\"\
+  ]\n      resources: [\"pods/log\"]\n      verbs: [\"get\"]\n    ```\n\n    ### Cluster\
+  \ Admin\n    ```yaml\n    rules:\n    - apiGroups: [\"*\"]\n      resources: [\"\
+  *\"]\n      verbs: [\"*\"]\n    ```"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What is the difference between a Role and a ClusterRole in Kubernetes
+    RBAC?
+  options:
+  - Roles are for users, ClusterRoles are for service accounts
+  - Roles are namespace-scoped, ClusterRoles are cluster-wide
+  - ClusterRoles have more permissions than Roles
+  - There is no difference
+  correct_answer: Roles are namespace-scoped, ClusterRoles are cluster-wide
+  explanation: 'Roles are namespace-scoped and grant permissions to resources within
+    a specific namespace. ClusterRoles are cluster-wide and can grant permissions
+    to cluster-scoped resources (like nodes, namespaces) or namespace-scoped resources
+    across all namespaces. For example, a Role in namespace ''production'' can grant
+    permission to list pods in production only. A ClusterRole can grant permission
+    to list pods in all namespaces, or to manage cluster-scoped resources like PersistentVolumes.
+    ClusterRoles can also be bound at namespace level using RoleBinding (not ClusterRoleBinding),
+    which grants the permissions only in that namespace - this is useful for reusing
+    common permission sets. The key distinction is scope: Roles exist within a namespace,
+    ClusterRoles exist at cluster level. Both define what actions (verbs) can be performed
+    on which resources.'
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What are the common RBAC verbs in Kubernetes?
+  options:
+  - read, write, execute
+  - get, list, watch, create, update, patch, delete
+  - select, insert, update, delete
+  - start, stop, restart
+  correct_answer: get, list, watch, create, update, patch, delete
+  explanation: 'The standard RBAC verbs in Kubernetes represent API operations: ''get''
+    (read a single resource), ''list'' (list resources), ''watch'' (watch for changes),
+    ''create'' (create new resources), ''update'' (replace entire resource), ''patch''
+    (modify parts of resource), ''delete'' (delete resource), and ''deletecollection''
+    (delete multiple resources). There''s also the wildcard ''*'' representing all
+    verbs. These verbs map to HTTP methods: get→GET, list→GET (collection), create→POST,
+    update→PUT, patch→PATCH, delete→DELETE. When defining Roles, you specify which
+    verbs are allowed on which resources. For example, allowing ''get'' and ''list''
+    on ''pods'' lets someone view pods but not modify them. ''Watch'' is often granted
+    with ''list'' for monitoring tools that need to watch resource changes. Understanding
+    these verbs is essential for implementing least-privilege access control.'
+  require_pass: true
+- type: terminal
+  sequence_order: 1
+  command: kubectl create token build-bot -n ci-cd
+  description: 'Practice the command: kubectl create token build-bot -n ci-cd'
+  hints:
+  - 'Try: kubectl create token build-bot -n ci-cd'
+  - Use kubectl --help if you need help
+  timeout_sec: 60
+  require_pass: true
+- type: terminal
+  sequence_order: 2
+  command: kubectl auth can-i create deployments --namespace=production
+  description: 'Practice the command: kubectl auth can-i create deployments --namespace=production'
+  hints:
+  - 'Try: kubectl auth can-i create deployments --namespace=production'
+  - Use kubectl --help if you need help
+  timeout_sec: 60
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: Which command creates a deployment with 3 replicas?
+  options:
+  - kubectl create deployment nginx --image=nginx --replicas=3
+  - kubectl make deployment nginx replicas=3
+  - kubectl deploy nginx --count=3
+  - kubectl new deployment nginx x3
+  correct_answer_index: 0
+  explanation: kubectl create deployment creates a deployment. The --replicas flag
+    specifies the number of pod replicas.
+  require_pass: true
+- type: code
+  sequence_order: 4
+  language: yaml
+  question: Create a deployment with 3 replicas of nginx
+  starter_code: '# Write your deployment YAML here
+
+    apiVersion: apps/v1
+
+    kind: Deployment
+
+    '
+  solution_code: "apiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: nginx-deployment\n\
+    spec:\n  replicas: 3\n  selector:\n    matchLabels:\n      app: nginx\n  template:\n\
+    \    metadata:\n      labels:\n        app: nginx\n    spec:\n      containers:\n\
+    \      - name: nginx\n        image: nginx:1.25\n        ports:\n        - containerPort:\
+    \ 80"
+  hints:
+  - 'Use apiVersion: apps/v1 for Deployments'
+  - Set spec.replicas to 3
+  - Define selector.matchLabels to match template.metadata.labels
+  require_pass: true

@@ -1,0 +1,91 @@
+slug: aluminumextraction-practice
+title: aluminum_extraction — Practice
+difficulty: medium
+sequence_order: 11
+estimated_minutes: 2
+key_concepts:
+- aluminum_extraction
+prerequisites: []
+content_md: '# aluminum_extraction — Practice 🚀
+
+
+  Cryolite lowers the melting point of Al₂O₃ from 2050°C to ~950°C and increases electrical
+  conductivity of the electrolyte, making the electrolytic process more economical.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 2
+  question: Why is cryolite (Na₃AlF₆) added to alumina (Al₂O₃) in the Hall-Heroult
+    process?
+  options:
+  - To increase the melting point of alumina
+  - To decrease the melting point and increase electrical conductivity
+  - To act as a reducing agent
+  - To prevent oxidation of aluminum
+  require_pass: true
+  correct_answer: To decrease the melting point and increase electrical conductivity
+  explanation: 'Cryolite (Na₃AlF₆) serves two critical functions in aluminum extraction:
+    (1) **Lowers melting point**: Pure Al₂O₃ melts at 2050°C, but with cryolite it
+    melts at ~950°C, saving enormous energy. (2) **Increases electrical conductivity**:
+    Makes the electrolyte more conductive, improving electrolysis efficiency. The
+    Hall-Heroult process: Purified alumina (Al₂O₃) dissolved in molten cryolite undergoes
+    electrolysis. At cathode (−): Al³⁺ + 3e⁻ → Al (aluminum deposited), At anode
+    (+): 2O²⁻ → O₂ + 4e⁻ (oxygen released, reacts with carbon anode forming CO₂).
+    Overall: 2Al₂O₃ + 3C → 4Al + 3CO₂. The carbon anodes are continuously consumed
+    and must be replaced. Modern plants also add AlF₃ to further lower melting point.
+    This process consumes massive electricity (~15,000 kWh per ton of Al), making
+    aluminum production energy-intensive. Recycling aluminum saves 95% of this energy!'
+- type: mcq
+  sequence_order: 3
+  question: What is the role of carbon (graphite) electrodes in the Hall-Heroult process?
+  options:
+  - They act as cathode where Al is deposited
+  - They act as anode and get oxidized to CO₂
+  - They act as reducing agent for Al₂O₃
+  - They increase electrical resistance
+  require_pass: true
+  correct_answer: They act as anode and get oxidized to CO₂
+  explanation: 'In the Hall-Heroult process for aluminum extraction, **carbon (graphite)
+    rods serve as anodes** (positive electrodes): (1) Oxygen ions (O²⁻) migrate to
+    anode, (2) Get discharged: 2O²⁻ → O₂ + 4e⁻, (3) **Oxygen immediately reacts with
+    carbon anode**: C + O₂ → CO₂ (or 2C + O₂ → 2CO at high temp). This means **anodes
+    are continuously consumed** and need regular replacement (every 2-3 weeks). The
+    cathode is the steel lining at the bottom of the cell where molten aluminum collects.
+    Why graphite? High melting point (3600°C), good electrical conductor, relatively
+    inexpensive. Disadvantage: Anode consumption produces CO₂ (greenhouse gas). Research
+    focuses on developing "inert anodes" (non-consumable) that would release only
+    O₂, making aluminum production more environmentally friendly. Currently, ~1.5
+    kg of carbon is consumed per kg of aluminum produced.'
+- type: mcq
+  sequence_order: 4
+  question: 'Which statement about the Hall-Heroult process is INCORRECT?'
+  options:
+  - Molten aluminum sinks to the bottom as it is denser than cryolite
+  - The process operates at approximately 950°C
+  - Oxygen is released at the cathode
+  - The process consumes large amounts of electricity
+  require_pass: true
+  correct_answer: Oxygen is released at the cathode
+  explanation: 'Analyzing each statement about aluminum extraction: **(A) TRUE**:
+    Molten aluminum (density ~2.3 g/cm³) sinks to the bottom, being denser than the
+    cryolite-alumina mixture (~2.1 g/cm³). It''s collected from the bottom. **(B)
+    TRUE**: Operating temperature is ~950-970°C, much lower than Al₂O₃ melting point
+    (2050°C) thanks to cryolite. **(C) FALSE**: **Oxygen is released at the ANODE
+    (positive), not cathode**. At anode: O²⁻ → O₂ (then O₂ + C → CO₂). At cathode:
+    Al³⁺ + 3e⁻ → Al. This is a common misconception! **(D) TRUE**: The process is
+    extremely energy-intensive (~15,000 kWh per ton of Al). This is why aluminum
+    plants are often built near cheap hydroelectric power sources. Electrolysis basics:
+    Anions (negative ions like O²⁻) go to anode (+), Cations (positive ions like
+    Al³⁺) go to cathode (−). Remember: "Anions to Anodes" and "Cations to Cathodes"
+    (alphabetical order).'

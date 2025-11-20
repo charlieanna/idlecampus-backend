@@ -1,0 +1,89 @@
+slug: lesson-30
+title: Lesson 30
+difficulty: easy
+sequence_order: 30
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Node Selectors and Affinity\n\n    - nodeSelector\
+  \ vs nodeAffinity\n    - requiredDuringScheduling vs preferredDuringScheduling"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What is the difference between nodeSelector and nodeAffinity?
+  options:
+  - They are identical features with different names
+  - nodeSelector provides simple key-value matching; nodeAffinity offers more expressive
+    selection with operators and preferences
+  - nodeSelector is deprecated and should not be used
+  - nodeAffinity only works with taints
+  correct_answer: nodeSelector provides simple key-value matching; nodeAffinity offers
+    more expressive selection with operators and preferences
+  explanation: 'nodeSelector and nodeAffinity both control which nodes can run a pod,
+    but nodeAffinity is more powerful and expressive. nodeSelector is the simplest
+    form - just key-value label matching: ''nodeSelector: disktype: ssd'' schedules
+    the pod only on nodes labeled ''disktype=ssd''. It''s an AND operation - all specified
+    labels must match. This is sufficient for simple cases but limited. nodeAffinity
+    provides advanced selection with: operator-based matching (In, NotIn, Exists,
+    DoesNotExist, Gt, Lt), multiple terms with OR logic, required vs. preferred rules,
+    and weight-based preferences. For example, ''requiredDuringSchedulingIgnoredDuringExecution:
+    nodeSelectorTerms: - matchExpressions: - key: disktype, operator: In, values:
+    [ssd, nvme]'' requires nodes with disktype ssd OR nvme. You can also express preferences:
+    ''preferredDuringSchedulingIgnoredDuringExecution: - weight: 80, preference: matchExpressions:
+    - key: zone, operator: In, values: [us-west-1a]'' prefers us-west-1a but allows
+    other zones if necessary. Required affinity (''requiredDuringScheduling...'')
+    works like nodeSelector - pod won''t schedule if no nodes match. Preferred affinity
+    (''preferredDuringScheduling...'') is a soft preference - scheduler tries to honor
+    it but can ignore if needed. Weights (1-100) let you express relative importance
+    of multiple preferences. The ''IgnoredDuringExecution'' part means if node labels
+    change after pod is scheduled, the pod isn''t evicted. nodeSelector remains useful
+    for simple cases due to conciseness, but nodeAffinity is recommended for complex
+    requirements. Use nodeSelector for straightforward constraints, nodeAffinity for
+    advanced logic and preferences.'
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What does 'requiredDuringSchedulingIgnoredDuringExecution' mean in node
+    affinity?
+  options:
+  - The rule is required during both scheduling and execution
+  - The rule must be satisfied for scheduling, but if node labels change later, the
+    pod is not evicted
+  - The rule is optional during scheduling
+  - The rule is ignored entirely
+  correct_answer: The rule must be satisfied for scheduling, but if node labels change
+    later, the pod is not evicted
+  explanation: 'The long affinity rule name ''requiredDuringSchedulingIgnoredDuringExecution''
+    describes behavior in two lifecycle phases: ''requiredDuringScheduling'' means
+    the pod cannot be scheduled unless a node satisfies the affinity rules - it''s
+    a hard requirement. If no nodes match, the pod stays Pending, similar to nodeSelector
+    behavior. ''IgnoredDuringExecution'' means if node labels change after the pod
+    is running, the affinity rule is not re-evaluated and the pod is not evicted.
+    For example, if a pod requires ''zone: us-west-1a'' and is scheduled to a matching
+    node, then later an admin removes that label, the pod continues running - it''s
+    not automatically terminated or rescheduled. This design balances stability (pods
+    aren''t evicted on label changes) with scheduling correctness (pods only schedule
+    to appropriate nodes initially). In contrast, ''preferredDuringSchedulingIgnoredDuringExecution''
+    makes the rule a soft preference during scheduling - the scheduler tries to satisfy
+    it but can place the pod elsewhere if needed. The scheduler uses weights (1-100)
+    to rank nodes by how well they match preferences. Currently, Kubernetes only supports
+    ''IgnoredDuringExecution'' behavior. Future versions may support ''RequiredDuringExecution''
+    (evict pods if affinity violations occur after scheduling), but this is not yet
+    implemented. Understanding these semantics is important for: designing resilient
+    scheduling constraints, knowing when pods might stay on ''wrong'' nodes after
+    label changes, and planning node maintenance (changing labels won''t evict running
+    pods). For strict enforcement, use admission controllers or external operators
+    to prevent label changes that would violate running pods'' affinity rules.'
+  require_pass: true
+- type: mcq
+  sequence_order: 1
+  question: What kubectl command checks if you can perform an action?
+  options:
+  - kubectl auth can-i create pods
+  - kubectl check permissions create pods
+  - kubectl verify action create pods
+  - kubectl test auth create pods
+  correct_answer_index: 0
+  explanation: kubectl auth can-i <action> <resource> checks if the current user has
+    permission to perform the specified action.
+  require_pass: true

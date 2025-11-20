@@ -1,0 +1,102 @@
+slug: lesson-3
+title: Lesson 3
+difficulty: easy
+sequence_order: 3
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Routing Fundamentals\n\n    Learn how packets\
+  \ find their way across networks.\n\n    ## What is Routing?\n\n    **Routing**:\
+  \ Forwarding packets from source to destination across multiple networks.\n\n  \
+  \  **Router**: Device that forwards packets between networks.\n\n    ## Routing\
+  \ Table\n\n    Database of routes to destinations.\n\n    ### View Routing Table\n\
+  \n    **Linux/Mac**:\n    ```bash\n    ip route show\n    route -n\n    netstat\
+  \ -rn\n    ```\n\n    **Output Example**:\n    ```\n    default via 192.168.1.1\
+  \ dev eth0\n    192.168.1.0/24 dev eth0 proto kernel scope link src 192.168.1.100\n\
+  \    ```\n\n    ### Routing Table Entries\n\n    | Destination | Gateway | Interface\
+  \ | Metric |\n    |-------------|---------|-----------|--------|\n    | 0.0.0.0/0\
+  \ | 192.168.1.1 | eth0 | 100 |\n    | 192.168.1.0/24 | 0.0.0.0 | eth0 | 0 |\n  \
+  \  | 10.0.0.0/8 | 192.168.1.254 | eth0 | 50 |\n\n    **Columns**:\n    - **Destination**:\
+  \ Target network\n    - **Gateway**: Next hop router (0.0.0.0 = directly connected)\n\
+  \    - **Interface**: Outgoing network interface\n    - **Metric**: Cost of route\
+  \ (lower = better)\n\n    ## Static Routing\n\n    Manually configured routes.\n\
+  \n    ### Add Static Route\n\n    **Linux**:\n    ```bash\n    # Add route to 10.0.0.0/8\
+  \ via 192.168.1.254\n    sudo ip route add 10.0.0.0/8 via 192.168.1.254\n\n    #\
+  \ Delete route\n    sudo ip route del 10.0.0.0/8\n\n    # Add default route\n  \
+  \  sudo ip route add default via 192.168.1.1\n    ```\n\n    **Pros**: Simple, predictable,\
+  \ secure\n    **Cons**: Doesn't adapt to failures, manual configuration\n\n    ##\
+  \ Dynamic Routing\n\n    Routers automatically share route information.\n\n    ###\
+  \ Interior Gateway Protocols (IGP)\n\n    Within a single organization.\n\n    **RIP\
+  \ (Routing Information Protocol)**:\n    - Distance-vector protocol\n    - Uses\
+  \ hop count as metric\n    - Max 15 hops\n    - Simple but slow convergence\n\n\
+  \    **OSPF (Open Shortest Path First)**:\n    - Link-state protocol\n    - Uses\
+  \ cost as metric (based on bandwidth)\n    - Fast convergence\n    - Scalable\n\
+  \    - Industry standard for enterprises\n\n    **EIGRP (Enhanced Interior Gateway\
+  \ Routing Protocol)**:\n    - Cisco proprietary (now open)\n    - Advanced distance-vector\n\
+  \    - Fast convergence\n    - Supports unequal-cost load balancing\n\n    ### Exterior\
+  \ Gateway Protocol (EGP)\n\n    Between different organizations (ASes).\n\n    **BGP\
+  \ (Border Gateway Protocol)**:\n    - The routing protocol of the internet\n   \
+  \ - Path-vector protocol\n    - Policy-based routing\n    - Highly scalable\n\n\
+  \    ## BGP (Border Gateway Protocol)\n\n    ### Autonomous Systems (AS)\n\n   \
+  \ **AS**: Collection of IP networks under single administrative control.\n\n   \
+  \ - AS Numbers: 16-bit (1-65535) or 32-bit\n    - Examples:\n      - AS15169: Google\n\
+  \      - AS16509: Amazon\n      - AS32934: Facebook\n\n    ### BGP Basics\n\n  \
+  \  ```\n    AS 100 ←→ AS 200 ←→ AS 300\n    (You)     (ISP)     (Internet)\n   \
+  \ ```\n\n    **eBGP**: Between different ASes\n    **iBGP**: Within same AS\n\n\
+  \    ### BGP Attributes\n\n    **AS Path**: List of ASes packet traversed\n    ```\n\
+  \    Path: AS100 → AS200 → AS300\n    ```\n\n    **Next Hop**: Next router to forward\
+  \ to\n\n    **Local Preference**: Prefer certain paths (higher = better)\n\n   \
+  \ **MED** (Multi-Exit Discriminator): Suggest path to neighbor AS\n\n    ### BGP\
+  \ Route Selection\n\n    1. Highest Local Preference\n    2. Shortest AS Path\n\
+  \    3. Lowest Origin Type\n    4. Lowest MED\n    5. eBGP over iBGP\n    6. Lowest\
+  \ IGP metric to next hop\n    7. Lowest Router ID\n\n    ### BGP Commands\n\n  \
+  \  ```bash\n    # Show BGP summary\n    show ip bgp summary\n\n    # Show BGP routes\n\
+  \    show ip bgp\n\n    # Show specific route\n    show ip bgp 8.8.8.8\n    ```\n\
+  \n    ## Packet Forwarding\n\n    ### How Routing Works\n\n    ```\n    1. Packet\
+  \ arrives at router\n    2. Router examines destination IP\n    3. Router checks\
+  \ routing table\n    4. Router finds longest prefix match\n    5. Router forwards\
+  \ to next hop\n    6. TTL decremented\n    7. Repeat until destination reached\n\
+  \    ```\n\n    ### Longest Prefix Match\n\n    Most specific route wins.\n\n  \
+  \  **Example Routes**:\n    - 0.0.0.0/0 (default)\n    - 10.0.0.0/8\n    - 10.1.0.0/16\n\
+  \    - 10.1.2.0/24\n\n    **Packet to 10.1.2.5**: Matches 10.1.2.0/24 (most specific)\n\
+  \n    ## Network Address Translation (NAT)\n\n    Translate private IPs to public\
+  \ IPs.\n\n    ### Why NAT?\n\n    - Conserve public IPv4 addresses\n    - Security\
+  \ (hide internal IPs)\n    - Flexibility (change ISP without renumbering)\n\n  \
+  \  ### NAT Types\n\n    **Static NAT**: One-to-one mapping\n    ```\n    192.168.1.10\
+  \ → 203.0.113.5\n    ```\n\n    **Dynamic NAT**: Pool of public IPs\n    ```\n \
+  \   192.168.1.0/24 → {203.0.113.1-10}\n    ```\n\n    **PAT** (Port Address Translation\
+  \ / NAT Overload):\n    Many private IPs → One public IP (different ports)\n   \
+  \ ```\n    192.168.1.10:5000 → 203.0.113.1:50001\n    192.168.1.20:6000 → 203.0.113.1:50002\n\
+  \    ```\n\n    ### NAT Commands\n\n    **Linux (iptables)**:\n    ```bash\n   \
+  \ # Enable NAT (masquerade)\n    sudo iptables -t nat -A POSTROUTING -o eth0 -j\
+  \ MASQUERADE\n\n    # Port forwarding (forward port 80 to 192.168.1.10:80)\n   \
+  \ sudo iptables -t nat -A PREROUTING -p tcp --dport 80 -j DNAT --to-destination\
+  \ 192.168.1.10:80\n    ```\n\n    ## Traffic Shaping\n\n    Control bandwidth and\
+  \ prioritize traffic.\n\n    ### tc (Traffic Control)\n\n    **Linux command for\
+  \ traffic shaping**.\n\n    ```bash\n    # Limit bandwidth to 1 Mbps\n    sudo tc\
+  \ qdisc add dev eth0 root tbf rate 1mbit burst 32kbit latency 400ms\n\n    # Add\
+  \ latency (simulate slow network)\n    sudo tc qdisc add dev eth0 root netem delay\
+  \ 100ms\n\n    # Add packet loss (simulate unreliable network)\n    sudo tc qdisc\
+  \ add dev eth0 root netem loss 5%\n\n    # Combine: 100ms delay + 5% loss\n    sudo\
+  \ tc qdisc add dev eth0 root netem delay 100ms loss 5%\n\n    # Remove rules\n \
+  \   sudo tc qdisc del dev eth0 root\n    ```\n\n    ### QoS (Quality of Service)\n\
+  \n    Prioritize important traffic.\n\n    **Traffic Classes**:\n    1. Real-time\
+  \ (VoIP, video conferencing)\n    2. Interactive (SSH, gaming)\n    3. Bulk (file\
+  \ transfers, backups)\n    4. Best effort (everything else)\n\n    **QoS Mechanisms**:\n\
+  \    - **Priority queuing**: High priority first\n    - **Weighted fair queuing**:\
+  \ Allocate bandwidth proportionally\n    - **Token bucket**: Rate limiting\n\n \
+  \   ## Troubleshooting Tools\n\n    ### ping\n    Test connectivity.\n\n    ```bash\n\
+  \    ping -c 4 google.com\n    ```\n\n    ### traceroute / tracepath\n    Show route\
+  \ to destination.\n\n    ```bash\n    traceroute google.com\n    ```\n\n    ###\
+  \ mtr\n    Combines ping and traceroute.\n\n    ```bash\n    mtr google.com\n  \
+  \  ```\n\n    ### tcpdump\n    Capture packets.\n\n    ```bash\n    # Capture on\
+  \ interface\n    sudo tcpdump -i eth0\n\n    # Capture HTTP traffic\n    sudo tcpdump\
+  \ -i eth0 port 80\n\n    # Write to file\n    sudo tcpdump -i eth0 -w capture.pcap\n\
+  \n    # Read from file\n    tcpdump -r capture.pcap\n    ```\n\n    ### Wireshark\n\
+  \    GUI packet analyzer (uses tcpdump/libpcap).\n\n    ## Best Practices\n\n  \
+  \  1. **Use dynamic routing**: For resilience and scalability\n    2. **Monitor\
+  \ BGP**: Critical for internet connectivity\n    3. **Implement QoS**: Prioritize\
+  \ important traffic\n    4. **Document static routes**: Keep inventory\n    5. **Test\
+  \ failover**: Ensure redundancy works\n    6. **Use longest prefix match**: Most\
+  \ specific routes\n\n    **Practice**: Try the Routing and Traffic Control lab!"
+exercises: []

@@ -1,0 +1,68 @@
+slug: lesson-66
+title: Lesson 66
+difficulty: easy
+sequence_order: 66
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Operating System Upgrades\n\n    - Node\
+  \ image updates\n    - Kernel and container runtime considerations"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What is the safest way to perform an OS upgrade on a Kubernetes worker
+    node?
+  options:
+  - Perform the upgrade while pods are running
+  - Use kubectl drain to evict pods, upgrade the OS, then uncordon the node
+  - Delete the node and create a new one
+  - Disable the kubelet service temporarily
+  correct_answer: Use kubectl drain to evict pods, upgrade the OS, then uncordon the
+    node
+  explanation: 'The recommended approach for OS upgrades on Kubernetes nodes is the
+    drain-upgrade-uncordon workflow: (1) kubectl drain <node> safely evicts all pods,
+    respecting PodDisruptionBudgets and grace periods, (2) perform the OS upgrade
+    (kernel, packages, container runtime), which often requires a reboot, (3) kubectl
+    uncordon <node> to mark it schedulable again. This ensures zero downtime as Kubernetes
+    reschedules evicted pods to healthy nodes before the maintenance begins. Always
+    verify compatibility between the new OS/kernel version and the container runtime
+    before upgrading. For managed services, check if the cloud provider recommends
+    specific node image versions. The drain process is production-safe because it
+    integrates with Kubernetes scheduling and maintains application availability throughout
+    the maintenance window.'
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: When upgrading the container runtime on a node, what must you verify for
+    compatibility?
+  options:
+  - Only the kernel version
+  - The kubelet version and Kubernetes version against the container runtime version
+  - Only the pod workloads
+  - Nothing, all versions are compatible
+  correct_answer: The kubelet version and Kubernetes version against the container
+    runtime version
+  explanation: Before upgrading a container runtime (containerd, CRI-O, Docker), you
+    must verify compatibility with both the kubelet version and the overall Kubernetes
+    version. The kubelet communicates with the container runtime via the Container
+    Runtime Interface (CRI), and not all runtime versions support all Kubernetes versions.
+    Consult the Kubernetes compatibility matrix and runtime documentation to ensure
+    the versions work together. Incompatibilities can cause pod failures, image pull
+    issues, or complete node failures. Additionally, verify that the runtime configuration
+    is preserved during the upgrade and test the upgrade on non-production nodes first.
+    Different Kubernetes versions may deprecate certain runtime features or require
+    specific CRI versions, making this compatibility check essential for stable cluster
+    operation.
+  require_pass: true
+- type: mcq
+  sequence_order: 1
+  question: What kubectl command checks if you can perform an action?
+  options:
+  - kubectl auth can-i create pods
+  - kubectl check permissions create pods
+  - kubectl verify action create pods
+  - kubectl test auth create pods
+  correct_answer_index: 0
+  explanation: kubectl auth can-i <action> <resource> checks if the current user has
+    permission to perform the specified action.
+  require_pass: true

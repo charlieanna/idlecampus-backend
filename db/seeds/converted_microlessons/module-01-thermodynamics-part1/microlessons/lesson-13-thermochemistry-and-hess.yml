@@ -1,0 +1,244 @@
+slug: lesson-13-thermochemistry-and-hess
+title: "Lesson 1.3: Thermochemistry and Hess's Law"
+difficulty: medium
+sequence_order: 3
+estimated_minutes: 16
+key_concepts:
+  - Enthalpy change
+  - Hess's Law
+  - Standard enthalpy of formation
+  - Enthalpy calculations
+  - Thermochemical equations
+prerequisites:
+  - lesson-12-first-law-of-thermodynamics
+content_md: |
+  # Thermochemistry and Hess's Law
+
+  ## Introduction
+
+  **Thermochemistry** is the study of heat changes during chemical reactions. Understanding energy changes helps predict reaction spontaneity, calculate energy requirements, and design efficient processes.
+
+  ## Enthalpy (H)
+
+  **Enthalpy** is the heat content of a system at constant pressure.
+
+  **Change in enthalpy:**
+  ΔH = H_products - H_reactants
+
+  - **ΔH < 0**: Exothermic (heat released)
+  - **ΔH > 0**: Endothermic (heat absorbed)
+
+  **Relationship to internal energy:**
+  ΔH = ΔU + PΔV
+
+  At constant pressure: ΔH = Q_p (heat at constant pressure)
+
+  ## Thermochemical Equations
+
+  Chemical equations that include enthalpy changes.
+
+  **Examples:**
+  ```
+  C(s) + O₂(g) → CO₂(g)     ΔH = -393.5 kJ
+  N₂(g) + 3H₂(g) → 2NH₃(g)  ΔH = -92.4 kJ
+  H₂O(l) → H₂O(g)           ΔH = +44.0 kJ
+  ```
+
+  **Important notes:**
+  - ΔH depends on:
+    - States of matter (s, l, g, aq)
+    - Temperature and pressure (usually 25°C, 1 atm)
+    - Amount of substance (coefficients matter!)
+
+  ## Types of Enthalpy Changes
+
+  ### 1. Enthalpy of Formation (ΔH_f°)
+
+  Heat change when 1 mole of compound is formed from its elements in standard states.
+
+  **Standard state:** Pure form at 1 atm, 25°C
+
+  **Examples:**
+  ```
+  C(s) + O₂(g) → CO₂(g)           ΔH_f° = -393.5 kJ/mol
+  H₂(g) + ½O₂(g) → H₂O(l)         ΔH_f° = -285.8 kJ/mol
+  ½N₂(g) + ³⁄₂H₂(g) → NH₃(g)      ΔH_f° = -46.1 kJ/mol
+  ```
+
+  **Note:** ΔH_f° for elements in standard state = 0
+  (e.g., O₂(g), N₂(g), H₂(g), C(s, graphite))
+
+  ### 2. Enthalpy of Combustion (ΔH_c°)
+
+  Heat released when 1 mole of substance undergoes complete combustion.
+
+  **Examples:**
+  ```
+  CH₄(g) + 2O₂(g) → CO₂(g) + 2H₂O(l)  ΔH_c° = -890.3 kJ/mol
+  C₆H₁₂O₆(s) + 6O₂(g) → 6CO₂(g) + 6H₂O(l)  ΔH_c° = -2808 kJ/mol
+  ```
+
+  ### 3. Enthalpy of Neutralization (ΔH_n°)
+
+  Heat change when an acid and base react to form 1 mole of water.
+
+  **Example:**
+  ```
+  HCl(aq) + NaOH(aq) → NaCl(aq) + H₂O(l)  ΔH_n° = -57.3 kJ/mol
+  ```
+
+  For strong acid + strong base: ΔH_n° ≈ -57 kJ/mol (constant)
+
+  ## Hess's Law
+
+  **Statement:** The total enthalpy change for a reaction is the same, regardless of the pathway taken.
+
+  **Principle:** Enthalpy is a state function - depends only on initial and final states, not the path.
+
+  ### Why Hess's Law Works
+
+  If a reaction can occur by multiple routes:
+  ```
+  Route 1: A → B directly        ΔH₁
+  Route 2: A → C → B             ΔH₂ + ΔH₃
+  ```
+
+  Then: **ΔH₁ = ΔH₂ + ΔH₃**
+
+  ### Using Hess's Law
+
+  **Rules for manipulating thermochemical equations:**
+
+  1. **Reverse equation:** Change sign of ΔH
+     ```
+     If: A → B    ΔH = x
+     Then: B → A  ΔH = -x
+     ```
+
+  2. **Multiply equation:** Multiply ΔH by same factor
+     ```
+     If: A → B       ΔH = x
+     Then: 2A → 2B   ΔH = 2x
+     ```
+
+  3. **Add equations:** Add ΔH values
+     ```
+     A → B   ΔH₁ = x
+     B → C   ΔH₂ = y
+     _______________
+     A → C   ΔH = x + y
+     ```
+
+  ## Hess's Law Example
+
+  **Problem:** Calculate ΔH for: C(s) + ½O₂(g) → CO(g)
+
+  **Given:**
+  ```
+  (1) C(s) + O₂(g) → CO₂(g)        ΔH₁ = -393.5 kJ
+  (2) CO(g) + ½O₂(g) → CO₂(g)      ΔH₂ = -283.0 kJ
+  ```
+
+  **Solution:**
+  - Keep equation (1) as is
+  - Reverse equation (2):  CO₂(g) → CO(g) + ½O₂(g)   ΔH = +283.0 kJ
+  - Add:
+  ```
+  C(s) + O₂(g) → CO₂(g)              ΔH = -393.5 kJ
+  CO₂(g) → CO(g) + ½O₂(g)            ΔH = +283.0 kJ
+  ________________________________
+  C(s) + ½O₂(g) → CO(g)              ΔH = -110.5 kJ
+  ```
+
+  ## Calculating ΔH from Formation Enthalpies
+
+  **Formula:**
+  ΔH°_reaction = Σ ΔH_f°(products) - Σ ΔH_f°(reactants)
+
+  **Example:** Calculate ΔH for:
+  ```
+  CH₄(g) + 2O₂(g) → CO₂(g) + 2H₂O(l)
+  ```
+
+  **Given:**
+  - ΔH_f°[CH₄(g)] = -74.8 kJ/mol
+  - ΔH_f°[CO₂(g)] = -393.5 kJ/mol
+  - ΔH_f°[H₂O(l)] = -285.8 kJ/mol
+  - ΔH_f°[O₂(g)] = 0 (element)
+
+  **Solution:**
+  ```
+  ΔH° = [1(-393.5) + 2(-285.8)] - [1(-74.8) + 2(0)]
+      = [-393.5 - 571.6] - [-74.8]
+      = -965.1 + 74.8
+      = -890.3 kJ
+  ```
+
+  ## Practical Applications
+
+  1. **Predicting reaction energies** when direct measurement is difficult
+  2. **Calculating formation enthalpies** of unstable compounds
+  3. **Fuel efficiency** calculations
+  4. **Industrial process optimization**
+  5. **Biochemical reactions** (metabolism, photosynthesis)
+
+  ## Born-Haber Cycle
+
+  Special application of Hess's Law for ionic compound formation.
+
+  **Example: Formation of NaCl**
+  ```
+  Na(s) + ½Cl₂(g) → NaCl(s)  ΔH_f°
+
+  Can be broken down into:
+  Na(s) → Na(g)                 (sublimation)
+  Na(g) → Na⁺(g) + e⁻           (ionization)
+  ½Cl₂(g) → Cl(g)               (bond dissociation)
+  Cl(g) + e⁻ → Cl⁻(g)           (electron affinity)
+  Na⁺(g) + Cl⁻(g) → NaCl(s)     (lattice energy)
+  ```
+
+  ## Key Points
+
+  1. **Enthalpy is a state function** - path independent
+  2. **Hess's Law** allows calculation of unmeasurable ΔH values
+  3. **Standard enthalpies of formation** are reference values
+  4. **Thermochemical equations** must include states and conditions
+  5. **Conservation of energy** underlies all calculations
+
+  ## Common Mistakes to Avoid
+
+  1. Forgetting to reverse ΔH when reversing equations
+  2. Not multiplying ΔH when scaling equations
+  3. Ignoring states of matter
+  4. Forgetting that ΔH_f° for elements = 0
+  5. Sign errors in calculations
+
+exercises:
+  - type: mcq
+    question: "What happens to ΔH when a thermochemical equation is reversed?"
+    options:
+      - "ΔH stays the same"
+      - "ΔH changes sign"
+      - "ΔH doubles"
+      - "ΔH becomes zero"
+    correct_answer: "ΔH changes sign"
+    explanation: "When you reverse a reaction, the sign of ΔH changes. If a forward reaction is exothermic (ΔH < 0), the reverse is endothermic (ΔH > 0)."
+    sequence_order: 1
+
+  - type: mcq
+    question: "According to Hess's Law, what determines the total enthalpy change of a reaction?"
+    options:
+      - "The reaction pathway taken"
+      - "The speed of the reaction"
+      - "Only the initial and final states"
+      - "The catalyst used"
+    correct_answer: "Only the initial and final states"
+    explanation: "Hess's Law states that enthalpy is a state function, meaning it depends only on initial and final states, not the path taken."
+    sequence_order: 2
+
+  - type: short_answer
+    question: "If equation A has ΔH = -50 kJ and equation B has ΔH = +30 kJ, what is ΔH when both equations are added together?"
+    expected_answer: "-20 kJ"
+    explanation: "When adding thermochemical equations, you add their ΔH values: -50 kJ + 30 kJ = -20 kJ."
+    sequence_order: 3

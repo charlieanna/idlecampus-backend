@@ -1,0 +1,85 @@
+slug: working-with-certificates
+title: Working with Certificates
+sequence_order: 4
+estimated_minutes: 2
+difficulty: easy
+content_md: "# Working with Certificates \U0001F680\n\n# Working with Certificates\n\
+  \n    ## Generating Self-Signed Certificates\n\n    ### Quick Self-Signed Certificate\n\
+  \    ```bash\n    # Generate private key and certificate in one command\n    openssl\
+  \ req -x509 -newkey rsa:4096 -nodes \\\\\n      -keyout server.key \\\\\n      -out\
+  \ server.crt \\\\\n      -days 365 \\\\\n      -subj \"/CN=localhost\"\n    ```\n\
+  \n    ### Step-by-Step Certificate Generation\n\n    ```bash\n    # 1. Generate\
+  \ private key\n    openssl genrsa -out server.key 2048\n\n    # 2. Create certificate\
+  \ signing request (CSR)\n    openssl req -new -key server.key -out server.csr \\\
+  \\\n      -subj \"/C=US/ST=CA/L=SF/O=MyOrg/CN=example.com\"\n\n    # 3. Self-sign\
+  \ the certificate\n    openssl x509 -req -days 365 \\\\\n      -in server.csr \\\
+  \\\n      -signkey server.key \\\\\n      -out server.crt\n    ```\n\n    ## Inspecting\
+  \ Certificates\n\n    ### View Certificate Details\n    ```bash\n    # View certificate\
+  \ contents\n    openssl x509 -in server.crt -text -noout\n\n    # Check certificate\
+  \ dates\n    openssl x509 -in server.crt -noout -dates\n\n    # View subject and\
+  \ issuer\n    openssl x509 -in server.crt -noout -subject -issuer\n\n    # Check\
+  \ certificate fingerprint\n    openssl x509 -in server.crt -noout -fingerprint -sha256\n\
+  \    ```\n\n    ### View Remote Server Certificate\n    ```bash\n    # Check server's\
+  \ certificate\n    openssl s_client -connect example.com:443 -servername example.com\n\
+  \n    # Get certificate expiry\n    echo | openssl s_client -connect example.com:443\
+  \ 2>/dev/null | \\\\\n      openssl x509 -noout -dates\n    ```\n\n    ## Certificate\
+  \ Formats\n\n    ### PEM (Privacy Enhanced Mail)\n    ```\n    -----BEGIN CERTIFICATE-----\n\
+  \    Base64 encoded data\n    -----END CERTIFICATE-----\n    ```\n    - Most common\
+  \ format\n    - Text-based\n    - Extensions: `.pem`, `.crt`, `.cer`, `.key`\n\n\
+  \    ### DER (Distinguished Encoding Rules)\n    - Binary format\n    - Extensions:\
+  \ `.der`, `.cer`\n\n    ```bash\n    # Convert PEM to DER\n    openssl x509 -in\
+  \ cert.pem -outform DER -out cert.der\n\n    # Convert DER to PEM\n    openssl x509\
+  \ -in cert.der -inform DER -out cert.pem\n    ```\n\n    ### PKCS#12 / PFX\n   \
+  \ - Bundle: certificate + private key + chain\n    - Password protected\n    - Extension:\
+  \ `.p12`, `.pfx`\n\n    ```bash\n    # Create PKCS#12 bundle\n    openssl pkcs12\
+  \ -export \\\\\n      -in server.crt \\\\\n      -inkey server.key \\\\\n      -out\
+  \ server.p12 \\\\\n      -name \"My Server Cert\"\n\n    # Extract from PKCS#12\n\
+  \    openssl pkcs12 -in server.p12 -out server.pem -nodes\n    ```\n\n    ## Testing\
+  \ HTTPS\n\n    ### Using curl\n    ```bash\n    # Test HTTPS endpoint\n    curl\
+  \ https://example.com\n\n    # Show certificate details\n    curl -vI https://example.com\n\
+  \n    # Ignore certificate validation (testing only!)\n    curl -k https://localhost:8443\n\
+  \n    # Use specific CA certificate\n    curl --cacert custom-ca.crt https://internal.example.com\n\
+  \    ```\n\n    ### Using wget\n    ```bash\n    # Download over HTTPS\n    wget\
+  \ https://example.com/file.txt\n\n    # Ignore certificate (testing only!)\n   \
+  \ wget --no-check-certificate https://localhost:8443/file.txt\n    ```\n\n    ##\
+  \ Common Certificate Errors\n\n    ### 1. Certificate Expired\n    ```\n    ERROR:\
+  \ certificate has expired\n    ```\n    - Certificate validity period has passed\n\
+  \    - Renew certificate\n\n    ### 2. Hostname Mismatch\n    ```\n    ERROR: certificate\
+  \ subject name does not match target host name\n    ```\n    - Certificate CN/SAN\
+  \ doesn't match domain\n    - Need new certificate for correct domain\n\n    ###\
+  \ 3. Self-Signed Certificate\n    ```\n    ERROR: self signed certificate\n    ```\n\
+  \    - Certificate not signed by trusted CA\n    - Add certificate to trust store,\
+  \ or use --insecure (dev only)\n\n    ### 4. Untrusted CA\n    ```\n    ERROR: unable\
+  \ to get local issuer certificate\n    ```\n    - Issuing CA not in trust store\n\
+  \    - Add CA certificate to system trust store\n\n    ## Certificate Best Practices\n\
+  \n    1. **Use 2048-bit or higher** RSA keys (or Ed25519)\n    2. **Keep private\
+  \ keys secure** - never commit to git, use 600 permissions\n    3. **Use strong\
+  \ Subject Alternative Names (SANs)** for multiple domains\n    4. **Set appropriate\
+  \ validity periods** (90 days recommended with auto-renewal)\n    5. **Use Let's\
+  \ Encrypt** for public-facing services\n    6. **Monitor expiration dates** - automate\
+  \ renewals\n    7. **Use TLS 1.2 or 1.3 only** - disable older versions"
+exercises:
+- type: mcq
+  slug: working-with-certificates-mcq
+  sequence_order: 1
+  question: What is the difference between a self-signed certificate and a CA-signed
+    certificate?
+  options:
+  - Self-signed certificates are signed by the server itself and trigger browser warnings,
+    while CA-signed certificates are trusted by browsers because they're signed by
+    trusted Certificate Authorities
+  - Self-signed certificates are more secure than CA-signed certificates
+  - Self-signed certificates work for all domains, CA-signed only for one
+  - Self-signed certificates never expire, CA-signed certificates do
+  correct_answer_index: 0
+  explanation: A self-signed certificate is signed by the same entity that uses it,
+    not a trusted third party. Browsers don't trust them by default and show security
+    warnings. CA-signed certificates are validated and signed by trusted Certificate
+    Authorities (like Let's Encrypt, DigiCert) that browsers trust, so they work without
+    warnings. Self-signed certificates are fine for development/testing or internal
+    services, but public websites need CA-signed certificates for user trust.
+objectives:
+- Explain PKI/TLS
+- Harden HTTPS
+- Rotate/renew certs
+next_recommended: []

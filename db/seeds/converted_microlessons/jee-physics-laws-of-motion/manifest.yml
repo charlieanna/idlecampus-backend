@@ -1,0 +1,23 @@
+course:
+  slug: jee-physics-laws-of-motion
+  title: "JEE Physics: Laws of Motion"
+  description: "Newton's laws, friction, circular motion dynamics, and constraint equations for IIT JEE"
+  estimated_hours: 15
+  level: intermediate
+modules:
+- slug: newtons-laws
+  title: Newton's Laws of Motion
+  lessons:
+  - newtons-first-law-inertia
+  - newtons-second-law-force-momentum
+  - newtons-third-law-action-reaction
+  - free-body-diagrams
+  - constraint-equations
+- slug: friction-dynamics
+  title: Friction and Applications
+  lessons:
+  - static-kinetic-friction
+  - friction-on-inclined-plane
+  - pulley-systems-constraints
+  - circular-motion-dynamics
+  - pseudo-forces-non-inertial-frames

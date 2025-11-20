@@ -1,0 +1,70 @@
+slug: lesson-90
+title: Lesson 90
+difficulty: easy
+sequence_order: 90
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# IPv6 and Dual-Stack\n\n    - Dual-stack\
+  \ service/pod CIDRs\n    - Caveats and controller support"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What does dual-stack networking in Kubernetes enable?
+  options:
+  - Running two separate Kubernetes clusters on the same infrastructure
+  - Supporting both IPv4 and IPv6 addresses simultaneously for pods and services
+  - Using two different CNI plugins at the same time
+  - Maintaining two separate network policies for redundancy
+  correct_answer: Supporting both IPv4 and IPv6 addresses simultaneously for pods
+    and services
+  explanation: Dual-stack networking in Kubernetes enables pods and services to be
+    assigned both IPv4 and IPv6 addresses simultaneously, allowing them to communicate
+    using either protocol. This is essential for organizations transitioning from
+    IPv4 to IPv6 or operating in hybrid network environments. In a dual-stack cluster,
+    each pod gets two IP addresses (one IPv4 and one IPv6), and services can be configured
+    to be accessible via both protocols. The cluster must be configured with dual-stack
+    CIDR ranges for both pods (--pod-network-cidr) and services (--service-cluster-ip-range),
+    specifying one IPv4 and one IPv6 CIDR for each. Dual-stack support requires that
+    the underlying network infrastructure, CNI plugin, and kube-proxy all support
+    dual-stack operation. This capability is not about running multiple clusters,
+    using multiple CNI plugins simultaneously, or duplicating network policies - it's
+    specifically about enabling both IP protocol versions within a single cluster
+    to ensure compatibility and gradual migration paths.
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: When configuring a dual-stack Kubernetes cluster, which component configurations
+    must specify both IPv4 and IPv6 CIDR ranges?
+  options:
+  - Only the CNI plugin configuration
+  - Pod network CIDR and Service cluster IP range
+  - Only the kube-proxy configuration
+  - Only the kubelet configuration
+  correct_answer: Pod network CIDR and Service cluster IP range
+  explanation: For dual-stack operation, both the pod network CIDR and service cluster
+    IP range must be configured with dual CIDR blocks - one for IPv4 and one for IPv6.
+    The pod network CIDR (specified via --pod-network-cidr in the cluster configuration)
+    determines the IP ranges from which pod IPs are allocated, and in dual-stack mode,
+    you must provide two ranges, such as 10.244.0.0/16 for IPv4 and fd00::/64 for
+    IPv6. Similarly, the service cluster IP range (--service-cluster-ip-range) must
+    include both IPv4 and IPv6 ranges, like 10.96.0.0/12 and fd00:1234::/112. These
+    configurations tell the cluster control plane to allocate addresses from both
+    protocol families. The CNI plugin, kube-proxy, and kubelet must all support dual-stack,
+    but the fundamental requirement is defining these dual CIDR ranges at the cluster
+    level. Without properly configured CIDRs for both protocols, the cluster cannot
+    assign dual addresses to pods and services, making this a critical configuration
+    step for dual-stack functionality.
+  require_pass: true
+- type: mcq
+  sequence_order: 1
+  question: What command lists all pods in all namespaces?
+  options:
+  - kubectl get pods -A
+  - kubectl list pods --all
+  - kubectl get pods --everywhere
+  - kubectl pods list -A
+  correct_answer_index: 0
+  explanation: kubectl get pods -A (or --all-namespaces) lists pods across all namespaces.
+    The -A flag is shorthand for --all-namespaces.
+  require_pass: true

@@ -1,0 +1,342 @@
+slug: lesson-3
+title: Lesson 3
+difficulty: easy
+sequence_order: 3
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Advanced Performance Techniques\n\n   \
+  \ Advanced optimization techniques can dramatically improve performance through\
+  \ caching, CDNs, and modern protocols.\n\n    ## HTTP Caching Strategies\n\n   \
+  \ Effective caching reduces server load and improves load times for returning visitors.\n\
+  \n    ### Cache-Control Headers\n\n    ```javascript\n    // Express.js caching\
+  \ examples\n    const express = require('express');\n    const app = express();\n\
+  \n    // Immutable static assets (versioned files)\n    app.use('/static', express.static('public',\
+  \ {\n      maxAge: '1y',\n      immutable: true,\n      setHeaders: (res, path)\
+  \ => {\n        res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');\n\
+  \      }\n    }));\n\n    // HTML - no cache (always validate)\n    app.get('/',\
+  \ (req, res) => {\n      res.setHeader('Cache-Control', 'no-cache, must-revalidate');\n\
+  \      res.sendFile('index.html');\n    });\n\n    // API responses - short cache\n\
+  \    app.get('/api/data', (req, res) => {\n      res.setHeader('Cache-Control',\
+  \ 'public, max-age=300'); // 5 minutes\n      res.json({ data: 'response' });\n\
+  \    });\n\n    // User-specific data - no store\n    app.get('/api/user', (req,\
+  \ res) => {\n      res.setHeader('Cache-Control', 'private, no-store');\n      res.json({\
+  \ user: 'data' });\n    });\n    ```\n\n    ### Cache-Control Directives\n\n   \
+  \ ```\n    Cache-Control: public               # Can be cached by browsers and CDNs\n\
+  \    Cache-Control: private              # Only browser cache (not CDN)\n    Cache-Control:\
+  \ no-cache             # Validate before using cached version\n    Cache-Control:\
+  \ no-store             # Never cache\n    Cache-Control: max-age=3600         #\
+  \ Cache for 1 hour\n    Cache-Control: s-maxage=7200        # CDN cache for 2 hours\n\
+  \    Cache-Control: must-revalidate      # Validate after expiry\n    Cache-Control:\
+  \ immutable            # Never revalidate (versioned assets)\n    ```\n\n    ###\
+  \ ETag and Last-Modified\n\n    ```javascript\n    // Server: Set ETag and Last-Modified\n\
+  \    app.get('/api/data', async (req, res) => {\n      const data = await fetchData();\n\
+  \      const etag = generateETag(data);\n      const lastModified = data.updatedAt;\n\
+  \n      // Check if client has current version\n      if (req.headers['if-none-match']\
+  \ === etag) {\n        return res.status(304).end(); // Not Modified\n      }\n\n\
+  \      res.setHeader('ETag', etag);\n      res.setHeader('Last-Modified', lastModified.toUTCString());\n\
+  \      res.setHeader('Cache-Control', 'public, max-age=0, must-revalidate');\n \
+  \     res.json(data);\n    });\n\n    function generateETag(data) {\n      const\
+  \ crypto = require('crypto');\n      return crypto\n        .createHash('md5')\n\
+  \        .update(JSON.stringify(data))\n        .digest('hex');\n    }\n    ```\n\
+  \n    ### Versioned Assets Pattern\n\n    ```javascript\n    // webpack.config.js\
+  \ - Add content hash to filenames\n    module.exports = {\n      output: {\n   \
+  \     filename: '[name].[contenthash].js',\n        chunkFilename: '[name].[contenthash].chunk.js'\n\
+  \      },\n      plugins: [\n        new MiniCssExtractPlugin({\n          filename:\
+  \ '[name].[contenthash].css'\n        })\n      ]\n    };\n\n    // HTML template\
+  \ with versioned assets\n    /*\n    <link rel=\"stylesheet\" href=\"/css/main.a3f2bc1d.css\"\
+  >\n    <script src=\"/js/main.d7e9f2a1.js\"></script>\n    */\n\n    // Cache headers\
+  \ for versioned assets\n    app.use('/css', express.static('dist/css', {\n     \
+  \ maxAge: '1y',\n      immutable: true\n    }));\n    ```\n\n    ## CDN Configuration\n\
+  \n    ### Choosing CDN Strategy\n\n    ```javascript\n    // Option 1: Full site\
+  \ on CDN (static site)\n    // - Host entire site on CDN (Netlify, Vercel, Cloudflare\
+  \ Pages)\n    // - Best for: JAMstack, static sites, SPAs\n\n    // Option 2: CDN\
+  \ for assets only\n    // - Origin server serves HTML\n    // - CDN serves static\
+  \ assets (JS, CSS, images)\n    const CDN_URL = 'https://cdn.example.com';\n\n \
+  \   module.exports = {\n      output: {\n        publicPath: process.env.NODE_ENV\
+  \ === 'production'\n          ? `${CDN_URL}/`\n          : '/'\n      }\n    };\n\
+  \n    // Option 3: Full CDN with origin pull\n    // - CDN caches responses from\
+  \ origin\n    // - Best for: Dynamic sites with caching\n    ```\n\n    ### CDN\
+  \ Cache Configuration\n\n    ```javascript\n    // Cloudflare Workers - Custom caching\
+  \ logic\n    addEventListener('fetch', event => {\n      event.respondWith(handleRequest(event.request));\n\
+  \    });\n\n    async function handleRequest(request) {\n      const url = new URL(request.url);\n\
+  \n      // Cache API responses for 5 minutes\n      if (url.pathname.startsWith('/api/'))\
+  \ {\n        const cache = caches.default;\n        let response = await cache.match(request);\n\
+  \n        if (!response) {\n          response = await fetch(request);\n\n     \
+  \     // Clone response and cache it\n          const responseToCache = response.clone();\n\
+  \          const headers = new Headers(responseToCache.headers);\n          headers.set('Cache-Control',\
+  \ 'public, max-age=300');\n\n          const cachedResponse = new Response(responseToCache.body,\
+  \ {\n            status: responseToCache.status,\n            statusText: responseToCache.statusText,\n\
+  \            headers\n          });\n\n          event.waitUntil(cache.put(request,\
+  \ cachedResponse));\n        }\n\n        return response;\n      }\n\n      return\
+  \ fetch(request);\n    }\n    ```\n\n    ### Multi-CDN Strategy\n\n    ```javascript\n\
+  \    // Use multiple CDNs for redundancy\n    const CDN_PROVIDERS = [\n      'https://cdn1.example.com',\n\
+  \      'https://cdn2.example.com',\n      'https://cdn3.example.com'\n    ];\n\n\
+  \    function getCDNUrl(asset, userRegion) {\n      // Route based on geography\n\
+  \      if (userRegion === 'eu') return `${CDN_PROVIDERS[0]}/${asset}`;\n      if\
+  \ (userRegion === 'asia') return `${CDN_PROVIDERS[1]}/${asset}`;\n      return `${CDN_PROVIDERS[2]}/${asset}`;\n\
+  \    }\n\n    // Fallback on CDN failure\n    function loadScript(src) {\n     \
+  \ return new Promise((resolve, reject) => {\n        const script = document.createElement('script');\n\
+  \        script.src = src;\n        script.onload = resolve;\n        script.onerror\
+  \ = () => {\n          // Try fallback CDN\n          script.src = src.replace(CDN_PROVIDERS[0],\
+  \ CDN_PROVIDERS[1]);\n          script.onerror = reject;\n        };\n        document.head.appendChild(script);\n\
+  \      });\n    }\n    ```\n\n    ## Service Workers and PWA\n\n    ### Basic Service\
+  \ Worker\n\n    ```javascript\n    // sw.js - Service Worker\n    const CACHE_NAME\
+  \ = 'my-app-v1';\n    const urlsToCache = [\n      '/',\n      '/styles/main.css',\n\
+  \      '/scripts/main.js',\n      '/images/logo.png'\n    ];\n\n    // Install:\
+  \ Cache static resources\n    self.addEventListener('install', event => {\n    \
+  \  event.waitUntil(\n        caches.open(CACHE_NAME)\n          .then(cache => cache.addAll(urlsToCache))\n\
+  \          .then(() => self.skipWaiting())\n      );\n    });\n\n    // Activate:\
+  \ Clean up old caches\n    self.addEventListener('activate', event => {\n      event.waitUntil(\n\
+  \        caches.keys().then(cacheNames => {\n          return Promise.all(\n   \
+  \         cacheNames.map(cacheName => {\n              if (cacheName !== CACHE_NAME)\
+  \ {\n                return caches.delete(cacheName);\n              }\n       \
+  \     })\n          );\n        }).then(() => self.clients.claim())\n      );\n\
+  \    });\n\n    // Fetch: Cache-first strategy\n    self.addEventListener('fetch',\
+  \ event => {\n      event.respondWith(\n        caches.match(event.request)\n  \
+  \        .then(response => {\n            return response || fetch(event.request);\n\
+  \          })\n      );\n    });\n\n    // Register service worker\n    // main.js\n\
+  \    if ('serviceWorker' in navigator) {\n      navigator.serviceWorker.register('/sw.js')\n\
+  \        .then(registration => {\n          console.log('SW registered:', registration);\n\
+  \        })\n        .catch(error => {\n          console.log('SW registration failed:',\
+  \ error);\n        });\n    }\n    ```\n\n    ### Caching Strategies\n\n    ```javascript\n\
+  \    // Strategy 1: Cache First (offline-first)\n    self.addEventListener('fetch',\
+  \ event => {\n      event.respondWith(\n        caches.match(event.request)\n  \
+  \        .then(response => response || fetch(event.request))\n      );\n    });\n\
+  \n    // Strategy 2: Network First (fresh content)\n    self.addEventListener('fetch',\
+  \ event => {\n      event.respondWith(\n        fetch(event.request)\n         \
+  \ .catch(() => caches.match(event.request))\n      );\n    });\n\n    // Strategy\
+  \ 3: Stale-While-Revalidate (best of both)\n    self.addEventListener('fetch', event\
+  \ => {\n      event.respondWith(\n        caches.open(CACHE_NAME).then(cache =>\
+  \ {\n          return cache.match(event.request).then(response => {\n          \
+  \  const fetchPromise = fetch(event.request).then(networkResponse => {\n       \
+  \       cache.put(event.request, networkResponse.clone());\n              return\
+  \ networkResponse;\n            });\n\n            return response || fetchPromise;\n\
+  \          });\n        })\n      );\n    });\n\n    // Strategy 4: Network Only\
+  \ (dynamic content)\n    self.addEventListener('fetch', event => {\n      if (event.request.url.includes('/api/'))\
+  \ {\n        event.respondWith(fetch(event.request));\n      }\n    });\n\n    //\
+  \ Combined strategy based on request type\n    self.addEventListener('fetch', event\
+  \ => {\n      const { request } = event;\n      const url = new URL(request.url);\n\
+  \n      // API requests: Network first\n      if (url.pathname.startsWith('/api/'))\
+  \ {\n        event.respondWith(networkFirst(request));\n      }\n      // Static\
+  \ assets: Cache first\n      else if (url.pathname.match(/\\.(js|css|png|jpg|svg)$/))\
+  \ {\n        event.respondWith(cacheFirst(request));\n      }\n      // HTML: Stale\
+  \ while revalidate\n      else {\n        event.respondWith(staleWhileRevalidate(request));\n\
+  \      }\n    });\n    ```\n\n    ### Background Sync\n\n    ```javascript\n   \
+  \ // Queue failed requests and retry when online\n    // sw.js\n    self.addEventListener('sync',\
+  \ event => {\n      if (event.tag === 'sync-posts') {\n        event.waitUntil(syncPosts());\n\
+  \      }\n    });\n\n    async function syncPosts() {\n      const db = await openDB();\n\
+  \      const posts = await db.getAll('pending-posts');\n\n      for (const post\
+  \ of posts) {\n        try {\n          await fetch('/api/posts', {\n          \
+  \  method: 'POST',\n            body: JSON.stringify(post)\n          });\n    \
+  \      await db.delete('pending-posts', post.id);\n        } catch (error) {\n \
+  \         console.error('Sync failed:', error);\n        }\n      }\n    }\n\n \
+  \   // main.js - Request background sync\n    async function createPost(data) {\n\
+  \      try {\n        await fetch('/api/posts', {\n          method: 'POST',\n \
+  \         body: JSON.stringify(data)\n        });\n      } catch (error) {\n   \
+  \     // Store for later sync\n        const db = await openDB();\n        await\
+  \ db.add('pending-posts', data);\n\n        // Register sync\n        const registration\
+  \ = await navigator.serviceWorker.ready;\n        await registration.sync.register('sync-posts');\n\
+  \      }\n    }\n    ```\n\n    ## HTTP/2 and HTTP/3\n\n    ### HTTP/2 Features\n\
+  \n    ```javascript\n    // Server Push (HTTP/2)\n    // Node.js HTTP/2 server\n\
+  \    const http2 = require('http2');\n    const fs = require('fs');\n\n    const\
+  \ server = http2.createSecureServer({\n      key: fs.readFileSync('key.pem'),\n\
+  \      cert: fs.readFileSync('cert.pem')\n    });\n\n    server.on('stream', (stream,\
+  \ headers) => {\n      if (headers[':path'] === '/') {\n        // Push critical\
+  \ resources\n        stream.pushStream({ ':path': '/styles.css' }, (err, pushStream)\
+  \ => {\n          pushStream.respondWithFile('styles.css');\n        });\n\n   \
+  \     stream.pushStream({ ':path': '/app.js' }, (err, pushStream) => {\n       \
+  \   pushStream.respondWithFile('app.js');\n        });\n\n        // Respond with\
+  \ HTML\n        stream.respondWithFile('index.html');\n      }\n    });\n\n    server.listen(443);\n\
+  \    ```\n\n    ### HTTP/2 Best Practices\n\n    ```javascript\n    // 1. No need\
+  \ to concatenate files (multiplexing handles it)\n    // HTTP/1.1: Bundle all CSS/JS\n\
+  \    // HTTP/2: Send individual files\n\n    // 2. No need for domain sharding\n\
+  \    // HTTP/1.1: Use multiple subdomains to bypass connection limit\n    // HTTP/2:\
+  \ Single connection is more efficient\n\n    // 3. Inline only critical CSS\n  \
+  \  // HTTP/2 can efficiently load multiple small files\n\n    // 4. Use server push\
+  \ carefully\n    // Only push resources needed for initial render\n    // Don't\
+  \ push if client already has cached version\n\n    // Nginx HTTP/2 configuration\n\
+  \    /*\n    server {\n      listen 443 ssl http2;\n\n      # Enable HTTP/2 push\n\
+  \      http2_push /css/main.css;\n      http2_push /js/main.js;\n\n      # Enable\
+  \ HTTP/2 multiplexing\n      http2_max_concurrent_streams 128;\n    }\n    */\n\
+  \    ```\n\n    ### HTTP/3 (QUIC)\n\n    ```javascript\n    // Enable HTTP/3 with\
+  \ Cloudflare\n    // Cloudflare automatically enables HTTP/3 for all sites\n   \
+  \ // No code changes needed on client side\n\n    // Check if browser supports HTTP/3\n\
+  \    if ('quic' in navigator) {\n      console.log('HTTP/3 supported');\n    }\n\
+  \n    // Nginx HTTP/3 configuration\n    /*\n    server {\n      listen 443 ssl\
+  \ http3 reuseport;\n      listen 443 ssl http2;\n\n      # Advertise HTTP/3 support\n\
+  \      add_header Alt-Svc 'h3=\":443\"; ma=86400';\n    }\n    */\n    ```\n\n \
+  \   ## Performance Monitoring\n\n    ### Real User Monitoring (RUM)\n\n    ```javascript\n\
+  \    // Collect real user metrics\n    class PerformanceMonitor {\n      constructor(endpoint)\
+  \ {\n        this.endpoint = endpoint;\n        this.collectMetrics();\n      }\n\
+  \n      collectMetrics() {\n        // Core Web Vitals\n        this.observeLCP();\n\
+  \        this.observeFID();\n        this.observeCLS();\n\n        // Navigation\
+  \ timing\n        window.addEventListener('load', () => {\n          this.collectNavigationTiming();\n\
+  \        });\n      }\n\n      observeLCP() {\n        new PerformanceObserver((list)\
+  \ => {\n          const entries = list.getEntries();\n          const lastEntry\
+  \ = entries[entries.length - 1];\n\n          this.sendMetric('LCP', lastEntry.renderTime\
+  \ || lastEntry.loadTime);\n        }).observe({ type: 'largest-contentful-paint',\
+  \ buffered: true });\n      }\n\n      observeFID() {\n        new PerformanceObserver((list)\
+  \ => {\n          const firstInput = list.getEntries()[0];\n          const FID\
+  \ = firstInput.processingStart - firstInput.startTime;\n\n          this.sendMetric('FID',\
+  \ FID);\n        }).observe({ type: 'first-input', buffered: true });\n      }\n\
+  \n      observeCLS() {\n        let clsScore = 0;\n\n        new PerformanceObserver((list)\
+  \ => {\n          for (const entry of list.getEntries()) {\n            if (!entry.hadRecentInput)\
+  \ {\n              clsScore += entry.value;\n            }\n          }\n\n    \
+  \      this.sendMetric('CLS', clsScore);\n        }).observe({ type: 'layout-shift',\
+  \ buffered: true });\n      }\n\n      collectNavigationTiming() {\n        const\
+  \ nav = performance.getEntriesByType('navigation')[0];\n\n        this.sendMetric('TTFB',\
+  \ nav.responseStart - nav.requestStart);\n        this.sendMetric('DOMContentLoaded',\
+  \ nav.domContentLoadedEventEnd - nav.domContentLoadedEventStart);\n        this.sendMetric('Load',\
+  \ nav.loadEventEnd - nav.loadEventStart);\n      }\n\n      sendMetric(name, value)\
+  \ {\n        // Use sendBeacon for reliability\n        navigator.sendBeacon(this.endpoint,\
+  \ JSON.stringify({\n          metric: name,\n          value: value,\n         \
+  \ url: window.location.href,\n          userAgent: navigator.userAgent,\n      \
+  \    timestamp: Date.now()\n        }));\n      }\n    }\n\n    // Initialize\n\
+  \    new PerformanceMonitor('/api/metrics');\n    ```\n\n    ### Synthetic Monitoring\n\
+  \n    ```javascript\n    // Lighthouse CI configuration\n    // lighthouserc.js\n\
+  \    module.exports = {\n      ci: {\n        collect: {\n          numberOfRuns:\
+  \ 3,\n          url: [\n            'http://localhost:3000/',\n            'http://localhost:3000/products',\n\
+  \            'http://localhost:3000/checkout'\n          ]\n        },\n       \
+  \ assert: {\n          assertions: {\n            'categories:performance': ['error',\
+  \ { minScore: 0.9 }],\n            'categories:accessibility': ['warn', { minScore:\
+  \ 0.9 }],\n            'first-contentful-paint': ['error', { maxNumericValue: 2000\
+  \ }],\n            'largest-contentful-paint': ['error', { maxNumericValue: 2500\
+  \ }],\n            'cumulative-layout-shift': ['error', { maxNumericValue: 0.1 }]\n\
+  \          }\n        },\n        upload: {\n          target: 'temporary-public-storage'\n\
+  \        }\n      }\n    };\n\n    // Run in CI/CD\n    // npm install -g @lhci/cli\n\
+  \    // lhci autorun\n    ```\n\n    ### Performance Budgets\n\n    ```javascript\n\
+  \    // webpack.config.js - Enforce bundle size limits\n    module.exports = {\n\
+  \      performance: {\n        maxAssetSize: 244000,      // 244 KB\n        maxEntrypointSize:\
+  \ 244000,\n        hints: 'error',\n        assetFilter: (assetFilename) => {\n\
+  \          return assetFilename.endsWith('.js') || assetFilename.endsWith('.css');\n\
+  \        }\n      }\n    };\n\n    // package.json - Bundle size tracking\n    {\n\
+  \      \"scripts\": {\n        \"build\": \"webpack\",\n        \"size\": \"size-limit\"\
+  \n      },\n      \"size-limit\": [\n        {\n          \"path\": \"dist/main.js\"\
+  ,\n          \"limit\": \"200 KB\"\n        },\n        {\n          \"path\": \"\
+  dist/main.css\",\n          \"limit\": \"50 KB\"\n        }\n      ]\n    }\n\n\
+  \    // .github/workflows/performance.yml\n    /*\n    name: Performance\n    on:\
+  \ [pull_request]\n    jobs:\n      bundle-size:\n        runs-on: ubuntu-latest\n\
+  \        steps:\n          - uses: actions/checkout@v2\n          - run: npm ci\n\
+  \          - run: npm run build\n          - uses: andresz1/size-limit-action@v1\n\
+  \            with:\n              github_token: ${{ secrets.GITHUB_TOKEN }}\n  \
+  \  */\n    ```\n\n    ### Custom Performance Marks\n\n    ```javascript\n    //\
+  \ Mark important events\n    performance.mark('api-request-start');\n\n    fetch('/api/data')\n\
+  \      .then(res => res.json())\n      .then(data => {\n        performance.mark('api-request-end');\n\
+  \        performance.measure('api-request', 'api-request-start', 'api-request-end');\n\
+  \n        const measure = performance.getEntriesByName('api-request')[0];\n    \
+  \    console.log('API request took:', measure.duration, 'ms');\n\n        // Send\
+  \ to analytics\n        analytics.track('api_timing', {\n          duration: measure.duration,\n\
+  \          endpoint: '/api/data'\n        });\n      });\n\n    // Measure React\
+  \ component render\n    class MyComponent extends React.Component {\n      componentDidMount()\
+  \ {\n        performance.mark('component-mount-end');\n        performance.measure('component-mount',\
+  \ 'component-mount-start', 'component-mount-end');\n      }\n\n      render() {\n\
+  \        performance.mark('component-mount-start');\n        return <div>Component</div>;\n\
+  \      }\n    }\n    ```\n\n    ## Performance Checklist\n\n    ### Before Launch\n\
+  \n    - [ ] Core Web Vitals meet targets (LCP < 2.5s, FID < 100ms, CLS < 0.1)\n\
+  \    - [ ] Lighthouse score > 90\n    - [ ] Images optimized (WebP/AVIF, responsive,\
+  \ lazy loaded)\n    - [ ] Fonts optimized (preloaded, font-display: swap)\n    -\
+  \ [ ] JavaScript code-split and tree-shaken\n    - [ ] CSS critical path optimized\n\
+  \    - [ ] Compression enabled (Brotli + Gzip)\n    - [ ] Caching headers configured\n\
+  \    - [ ] CDN configured and tested\n    - [ ] Service Worker implemented (for\
+  \ PWA)\n    - [ ] Performance budgets enforced\n\n    ### Continuous Monitoring\n\
+  \n    - [ ] RUM collecting Core Web Vitals\n    - [ ] Synthetic monitoring in CI/CD\n\
+  \    - [ ] Performance budgets in place\n    - [ ] Alerts for performance regressions\n\
+  \    - [ ] Regular Lighthouse audits\n    - [ ] Bundle size tracking\n    - [ ]\
+  \ Error tracking (failed resource loads)\n\n    ## Best Practices Summary\n\n  \
+  \  1. **Caching**: Use immutable caching for versioned assets, validate HTML\n \
+  \   2. **CDN**: Serve static assets from CDN, use multi-CDN for critical applications\n\
+  \    3. **Service Workers**: Implement offline-first for static content, network-first\
+  \ for dynamic\n    4. **HTTP/2**: Enable and use server push judiciously\n    5.\
+  \ **Monitoring**: Collect RUM data, run synthetic tests in CI/CD\n    6. **Budgets**:\
+  \ Set and enforce performance budgets for every release\n    7. **Iterate**: Performance\
+  \ optimization is continuous, not one-time\n\n    The web performance landscape\
+  \ evolves rapidly. Stay informed about new browser APIs, compression algorithms,\
+  \ and protocols."
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: 'What is the difference between "Cache-Control: public" and "Cache-Control:
+    private"?'
+  options:
+  - public caches are faster than private caches
+  - public allows caching by browsers and CDNs, private allows only browser cache
+    (not CDNs)
+  - public means anyone can access the resource, private means authentication required
+  - They are the same, just different syntax
+  correct_answer: public allows caching by browsers and CDNs, private allows only
+    browser cache (not CDNs)
+  explanation: 'Cache-Control public vs private determines where resources can be
+    cached in the chain between server and user. public: Resource can be cached by
+    ANY cache (browser, CDN, proxy server, ISP cache). Use for: Static assets (JS,
+    CSS, images), public API responses, resources same for all users. Example: Cache-Control:
+    public, max-age=31536000 for versioned assets (main.abc123.js). CDN caches it
+    for all users globally. private: Only BROWSER cache can store it, not shared caches
+    (CDN, proxy). Use for: User-specific data (profile, settings, dashboards), responses
+    containing sensitive info, authenticated API responses. Example: Cache-Control:
+    private, max-age=300 for /api/user/profile. User''s browser caches it, but CDN
+    doesn''t (different users have different profiles). Why this matters: (1) Security
+    - private prevents CDN from caching sensitive data that could leak to other users,
+    (2) Efficiency - public enables CDN caching, reducing origin server load. Common
+    mistake: Marking user-specific content as public → CDN serves User A''s data to
+    User B. Best practice: Default to private for dynamic content, explicit public
+    only for truly shared resources. Combined: Cache-Control: public, s-maxage=3600,
+    private, max-age=300 (invalid - pick one).'
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: How do ETags (entity tags) improve caching efficiency?
+  options:
+  - ETags make responses download faster
+  - ETags allow server to return 304 Not Modified when content unchanged, saving bandwidth
+  - ETags automatically compress responses
+  - ETags enable HTTP/2 features
+  correct_answer: ETags allow server to return 304 Not Modified when content unchanged,
+    saving bandwidth
+  explanation: 'ETags enable conditional requests that save bandwidth when content
+    hasn''t changed. How ETags work: (1) Server generates ETag (hash of content):
+    ETag: "abc123" and sends with response, (2) Client caches response and stores
+    ETag, (3) Client makes new request with If-None-Match: "abc123", (4) Server checks:
+    if content unchanged (same ETag), returns 304 Not Modified with empty body (2KB
+    instead of 200KB). If changed, returns 200 with new content and new ETag. Benefits:
+    (1) Bandwidth savings - 304 response is tiny (headers only), client uses cached
+    content, (2) Speed - No processing time for unchanged resources, (3) Conditional
+    safety - Always validates, never serves stale critical content. ETag generation:
+    Hash of content: crypto.createHash(''md5'').update(content).digest(''hex''), Timestamp
+    + size (weaker but faster), Database record version number. Strong vs Weak ETags:
+    Strong ETag: "abc123" (byte-for-byte identical), Weak ETag: W/"abc123" (semantically
+    equivalent, may differ in compression). Combined with Cache-Control: Cache-Control:
+    max-age=0, must-revalidate + ETag enables always-fresh content with bandwidth
+    efficiency. Client checks every time but only downloads if changed. Alternative:
+    Last-Modified header works similarly but less precise (1-second granularity vs
+    ETag exact matching).'
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: What is the immutable directive in Cache-Control and when should you use
+    it?
+  options:
+  - immutable means the resource will never change and should never be revalidated
+  - immutable prevents users from modifying the cached resource
+  - immutable compresses the resource for faster transfer
+  - immutable is deprecated and should not be used
+  correct_answer: immutable means the resource will never change and should never
+    be revalidated
+  explanation: 'The immutable directive tells browsers to never revalidate the resource,
+    even when user explicitly refreshes the page. Standard caching: Cache-Control:
+    public, max-age=31536000 caches for 1 year, but browser still revalidates on hard
+    refresh (Ctrl+F5), wasting bandwidth checking if unchanged resource is still unchanged.
+    With immutable: Cache-Control: public, max-age=31536000, immutable tells browser
+    "this file will NEVER change, don''t even check on refresh". Why it works: Content-addressed
+    filenames (content hashing). main.d7e9f2a1.js - filename contains hash of contents.
+    If contents change, filename changes (main.a3f2bc1d.js). Old filename still points
+    to old content - truly immutable. When to use immutable: (1) Versioned static
+    assets - JS/CSS/images with content hash in filename (Webpack, Vite, etc.), (2)
+    Long max-age - Only makes sense with max-age of months/years, (3) Content-addressed
+    storage - Filename must guarantee content uniqueness. When NOT to use: HTML files
+    (need to update), API responses (data changes), Resources without content hashing.
+    Benefits: (1) Eliminates revalidation requests - Saves bandwidth and reduces server
+    load, (2) Faster page loads - No wait for revalidation on refresh, (3) Better
+    UX - Instant refresh for cached assets. Browser support: Modern browsers (Chrome,
+    Firefox, Safari). Falls back gracefully (treated as regular cache) in older browsers.'
+  require_pass: true

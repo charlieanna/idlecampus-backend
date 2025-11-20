@@ -1,0 +1,60 @@
+slug: lesson-17
+title: Lesson 17
+sequence_order: 17
+estimated_minutes: 2
+difficulty: easy
+content_md: "# Microlesson \U0001F680\n\n# Observability\n\n    Learn to monitor,\
+  \ log, and debug applications running in Kubernetes clusters.\n\n    ## Health Checks\n\
+  \n    **Liveness Probes**\n    - Is container alive?\n    - Kubelet restarts failed\
+  \ containers\n    - Use for detecting deadlocks\n\n    **Readiness Probes**\n  \
+  \  - Is container ready to serve traffic?\n    - Removes pod from service endpoints\
+  \ if fails\n    - Use during startup or temporary unavailability\n\n    **Startup\
+  \ Probes**\n    - Has application started?\n    - Useful for slow-starting applications\n\
+  \    - Prevents liveness probe from interfering\n\n    **Probe Types:**\n    - **HTTP\
+  \ GET**: Check HTTP endpoint\n    - **TCP Socket**: Check TCP connection\n    -\
+  \ **Exec**: Execute command in container\n\n    ## Logging\n\n    **Container Logs:**\n\
+  \    ```bash\n    # View logs\n    kubectl logs pod-name\n\n    # Follow logs\n\
+  \    kubectl logs -f pod-name\n\n    # Previous container logs\n    kubectl logs\
+  \ pod-name --previous\n\n    # Specific container in pod\n    kubectl logs pod-name\
+  \ -c container-name\n\n    # All pods with label\n    kubectl logs -l app=nginx\n\
+  \    ```\n\n    **Logging Architecture:**\n    - **Node-level**: Log files on nodes\n\
+  \    - **Cluster-level**: Centralized logging (ELK, Splunk, Loki)\n    - **Application-level**:\
+  \ Direct to logging service\n\n    ## Monitoring\n\n    **Metrics Server:**\n  \
+  \  - Resource usage metrics\n    - `kubectl top nodes/pods`\n    - Horizontal Pod\
+  \ Autoscaler input\n\n    **Prometheus Stack:**\n    - Metrics collection\n    -\
+  \ Alerting rules\n    - Grafana dashboards\n    - Custom metrics\n\n    ## Debugging\n\
+  \n    **Describe Resources:**\n    ```bash\n    # Pod details and events\n    kubectl\
+  \ describe pod pod-name\n\n    # Node details\n    kubectl describe node node-name\n\
+  \    ```\n\n    **Execute Commands:**\n    ```bash\n    # Interactive shell\n  \
+  \  kubectl exec -it pod-name -- /bin/bash\n\n    # Run command\n    kubectl exec\
+  \ pod-name -- ls /app\n    ```\n\n    **Port Forwarding:**\n    ```bash\n    # Forward\
+  \ local port to pod\n    kubectl port-forward pod-name 8080:80\n\n    # Forward\
+  \ to service\n    kubectl port-forward service/my-service 8080:80\n    ```\n\n \
+  \   **Copy Files:**\n    ```bash\n    # From pod to local\n    kubectl cp pod-name:/path/to/file\
+  \ ./local-file\n\n    # From local to pod\n    kubectl cp ./local-file pod-name:/path/to/file\n\
+  \    ```\n\n    ## Common Issues\n\n    **CrashLoopBackOff:**\n    - Application\
+  \ exits immediately\n    - Check logs: `kubectl logs pod-name --previous`\n    -\
+  \ Review resource limits\n    - Verify liveness probe configuration\n\n    **ImagePullBackOff:**\n\
+  \    - Cannot pull container image\n    - Check image name and tag\n    - Verify\
+  \ registry credentials\n    - Check imagePullSecrets\n\n    **Pending Pods:**\n\
+  \    - Insufficient resources\n    - Node selector not matching\n    - PVC not bound\n\
+  \    - Check events: `kubectl describe pod`\n\n    Master debugging in the practical\
+  \ labs!"
+exercises:
+- type: mcq
+  slug: lesson-17-mcq
+  sequence_order: 1
+  question: What is a key concept in Observability?
+  options:
+  - Understanding how components interact in a Kubernetes cluster
+  - Installing Docker on your machine
+  - Writing Python scripts
+  - Configuring network routers
+  correct_answer_index: 0
+  explanation: In Observability, understanding how different Kubernetes components
+    work together is essential for effective cluster management and troubleshooting.
+objectives:
+- Understand the fundamental concepts and mechanisms of lesson 17
+- Apply chemical principles to solve related problems
+- Identify key reactions, equations, and chemical behaviors
+next_recommended: []

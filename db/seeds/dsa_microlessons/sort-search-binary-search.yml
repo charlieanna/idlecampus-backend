@@ -1,0 +1,223 @@
+---
+slug: sort-search-binary-search
+title: Binary Search
+sequence_order: 60
+estimated_minutes: 20
+difficulty: medium
+key_concepts:
+- Binary Search
+- Basic Binary Search
+content_md: |
+  # Binary Search
+
+  Efficient search algorithm for sorted arrays using divide and conquer
+
+  ---
+
+  ## Binary Search Algorithm
+
+  Binary search is a divide-and-conquer algorithm that finds the position of a target value in a sorted array by repeatedly dividing the search interval in half.
+
+  **Requirements:**
+  - Array must be sorted
+  - Random access to elements
+
+  **Process:**
+  1. Compare target with middle element
+  2. If equal, return position
+  3. If target < middle, search left half
+  4. If target > middle, search right half
+  5. Repeat until found or search space empty
+
+  **Complexity:**
+  - Time: O(log n) - halves search space each iteration
+  - Space: O(1) iterative, O(log n) recursive
+
+  **Variations:**
+  - Find exact match
+  - Find first/last occurrence
+  - Find insert position
+  - Find in rotated array
+
+
+  ---
+
+  ## Common Patterns
+
+  ### Pattern 1: Basic Binary Search
+  ```python
+  def binary_search(arr, target):
+      left, right = 0, len(arr) - 1
+
+      while left <= right:
+          mid = left + (right - left) // 2  # Avoid overflow
+
+          if arr[mid] == target:
+              return mid
+          elif arr[mid] < target:
+              left = mid + 1
+          else:
+              right = mid - 1
+
+      return -1  # Not found
+  ```
+
+  ### Pattern 2: Find First Occurrence
+  ```python
+  def find_first(arr, target):
+      left, right = 0, len(arr) - 1
+      result = -1
+
+      while left <= right:
+          mid = left + (right - left) // 2
+
+          if arr[mid] == target:
+              result = mid
+              right = mid - 1  # Continue searching left
+          elif arr[mid] < target:
+              left = mid + 1
+          else:
+              right = mid - 1
+
+      return result
+  ```
+
+  ### Pattern 3: Find Insert Position
+  ```python
+  def search_insert(arr, target):
+      left, right = 0, len(arr)
+
+      while left < right:
+          mid = left + (right - left) // 2
+
+          if arr[mid] < target:
+              left = mid + 1
+          else:
+              right = mid
+
+      return left
+  ```
+
+  ### Pattern 4: Binary Search on Answer (Minimize/Maximize)
+  ```python
+  def minimize_max_distance(arr, k):
+      def can_place(min_dist):
+          """Check if we can place k elements with min_dist apart"""
+          count, last_pos = 1, arr[0]
+
+          for i in range(1, len(arr)):
+              if arr[i] - last_pos >= min_dist:
+                  count += 1
+                  last_pos = arr[i]
+                  if count == k:
+                      return True
+          return False
+
+      left, right = 1, arr[-1] - arr[0]
+      result = 0
+
+      while left <= right:
+          mid = (left + right) // 2
+          if can_place(mid):
+              result = mid
+              left = mid + 1  # Try larger distance
+          else:
+              right = mid - 1
+
+      return result
+  ```
+
+  ### Pattern 5: Search in Rotated Sorted Array
+  ```python
+  def search_rotated(arr, target):
+      left, right = 0, len(arr) - 1
+
+      while left <= right:
+          mid = (left + right) // 2
+
+          if arr[mid] == target:
+              return mid
+
+          # Determine which half is sorted
+          if arr[left] <= arr[mid]:  # Left half sorted
+              if arr[left] <= target < arr[mid]:
+                  right = mid - 1
+              else:
+                  left = mid + 1
+          else:  # Right half sorted
+              if arr[mid] < target <= arr[right]:
+                  left = mid + 1
+              else:
+                  right = mid - 1
+
+      return -1
+  ```
+
+
+  ---
+
+  ## When to Use This Technique
+
+  Use binary search for: searching in sorted arrays, finding boundaries, optimization problems (binary search on answer), minimizing/maximizing with monotonic functions.
+
+  ---
+
+  ## Common Pitfalls to Avoid
+
+  - Off-by-one errors in boundary conditions
+  - Integer overflow in mid calculation (use left + (right-left)//2)
+  - Using on unsorted arrays
+  - Wrong loop condition (left <= right vs left < right)
+  - Not considering empty array
+  - Infinite loops from incorrect boundary updates
+
+  ---
+
+  ## Practice Problems
+
+  Start with these problems to master this concept:
+
+  ### 1. Binary Search [Easy]
+
+  Search target in sorted array.
+
+  **Complexity:** Time O(O(log n)), Space O(O(1))
+
+
+  ### 2. Binary Search 1 [Easy]
+
+  Sorting/Searching: binary-search.
+
+  **Complexity:** Time O(O(log n)), Space O(O(1))
+
+
+  ### 3. Binary Search 2 [Easy]
+
+  Sorting/Searching: binary-search.
+
+  **Complexity:** Time O(O(log n)), Space O(O(1))
+
+
+  ### 4. Binary Search 6 [Easy]
+
+  Sorting/Searching: binary-search.
+
+  **Complexity:** Time O(O(log n)), Space O(O(1))
+
+
+  ### 5. Binary Search 15 [Easy]
+
+  Sorting/Searching: binary-search.
+
+  **Complexity:** Time O(O(n log n)), Space O(O(1))
+
+
+
+  ---
+
+  ## Key Takeaways
+
+  - Binary Search is essential for efficient search algorithm for sorted arrays using divide and conquer
+  - Time complexity improvements can be significant with this technique
+  - Practice problems in order of difficulty to build intuition
+  - Focus on recognizing patterns in problem statements

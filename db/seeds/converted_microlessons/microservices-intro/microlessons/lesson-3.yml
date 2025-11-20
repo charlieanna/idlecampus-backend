@@ -1,0 +1,300 @@
+slug: lesson-3
+title: Lesson 3
+difficulty: easy
+sequence_order: 3
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Microservices in Production\n\n    Running\
+  \ microservices in production requires containerization, orchestration, observability,\
+  \ and operational discipline.\n\n    ## Docker Containerization\n\n    **Containers\
+  \ package applications with all dependencies for consistent deployment**\n\n   \
+  \ ### Why Containers?\n\n    ```\n    Problem (Traditional):\n    - \"Works on my\
+  \ machine\"\n    - Different environments (dev, staging, prod)\n    - Dependency\
+  \ conflicts\n    - Complex deployment\n\n    Solution (Containers):\n    - Consistent\
+  \ environment everywhere\n    - Isolated dependencies\n    - Fast startup\n    -\
+  \ Easy scaling\n    ```\n\n    ### Dockerfile for Microservice\n\n    ```dockerfile\n\
+  \    # Python microservice Dockerfile\n    FROM python:3.11-slim\n\n    # Set working\
+  \ directory\n    WORKDIR /app\n\n    # Install dependencies\n    COPY requirements.txt\
+  \ .\n    RUN pip install --no-cache-dir -r requirements.txt\n\n    # Copy application\
+  \ code\n    COPY . .\n\n    # Create non-root user for security\n    RUN useradd\
+  \ -m appuser && chown -R appuser:appuser /app\n    USER appuser\n\n    # Expose\
+  \ port\n    EXPOSE 8000\n\n    # Health check\n    HEALTHCHECK --interval=30s --timeout=3s\
+  \ --start-period=5s --retries=3 \\\n      CMD python -c \"import requests; requests.get('http://localhost:8000/health')\"\
+  \n\n    # Run application\n    CMD [\"python\", \"app.py\"]\n    ```\n\n    ###\
+  \ Multi-Stage Build (Optimization)\n\n    ```dockerfile\n    # Stage 1: Build\n\
+  \    FROM node:18 AS builder\n\n    WORKDIR /app\n    COPY package*.json ./\n  \
+  \  RUN npm ci --only=production\n\n    COPY . .\n    RUN npm run build\n\n    #\
+  \ Stage 2: Runtime\n    FROM node:18-slim\n\n    WORKDIR /app\n\n    # Copy only\
+  \ necessary files from builder\n    COPY --from=builder /app/dist ./dist\n    COPY\
+  \ --from=builder /app/node_modules ./node_modules\n    COPY --from=builder /app/package*.json\
+  \ ./\n\n    USER node\n\n    EXPOSE 3000\n\n    CMD [\"node\", \"dist/main.js\"\
+  ]\n\n    # Result: 200MB → 80MB image size!\n    ```\n\n    ### Build and Run\n\n\
+  \    ```bash\n    # Build image\n    docker build -t user-service:1.0 .\n\n    #\
+  \ Run container\n    docker run -d \\\n      --name user-service \\\n      -p 8000:8000\
+  \ \\\n      -e DATABASE_URL=postgres://db:5432/users \\\n      -e REDIS_URL=redis://redis:6379\
+  \ \\\n      user-service:1.0\n\n    # View logs\n    docker logs -f user-service\n\
+  \n    # Execute command in container\n    docker exec -it user-service bash\n  \
+  \  ```\n\n    ### Docker Compose (Local Development)\n\n    ```yaml\n    # docker-compose.yml\n\
+  \    version: '3.8'\n\n    services:\n      user-service:\n        build: ./user-service\n\
+  \        ports:\n          - \"8001:8000\"\n        environment:\n          DATABASE_URL:\
+  \ postgres://postgres:password@db:5432/users\n          REDIS_URL: redis://redis:6379\n\
+  \        depends_on:\n          - db\n          - redis\n\n      order-service:\n\
+  \        build: ./order-service\n        ports:\n          - \"8002:8000\"\n   \
+  \     environment:\n          DATABASE_URL: postgres://postgres:password@db:5432/orders\n\
+  \          USER_SERVICE_URL: http://user-service:8000\n        depends_on:\n   \
+  \       - db\n          - user-service\n\n      payment-service:\n        build:\
+  \ ./payment-service\n        ports:\n          - \"8003:8000\"\n        environment:\n\
+  \          DATABASE_URL: postgres://postgres:password@db:5432/payments\n\n     \
+  \ db:\n        image: postgres:15\n        environment:\n          POSTGRES_PASSWORD:\
+  \ password\n        volumes:\n          - postgres_data:/var/lib/postgresql/data\n\
+  \n      redis:\n        image: redis:7\n        ports:\n          - \"6379:6379\"\
+  \n\n    volumes:\n      postgres_data:\n    ```\n\n    ```bash\n    # Start all\
+  \ services\n    docker-compose up -d\n\n    # View logs\n    docker-compose logs\
+  \ -f user-service\n\n    # Scale service\n    docker-compose up -d --scale order-service=3\n\
+  \n    # Stop all services\n    docker-compose down\n    ```\n\n    ## Kubernetes\
+  \ Orchestration Basics\n\n    **Kubernetes (K8s) automates deployment, scaling,\
+  \ and management of containerized applications**\n\n    ### Why Kubernetes?\n\n\
+  \    ```\n    Problems Docker doesn't solve:\n    - How to scale to 100 containers?\n\
+  \    - How to handle failures (restart containers)?\n    - How to load balance traffic?\n\
+  \    - How to do zero-downtime deployments?\n    - How to manage configuration/secrets?\n\
+  \n    Kubernetes solves all of these!\n    ```\n\n    ### Key Kubernetes Concepts\n\
+  \n    **1. Pod**\n    ```yaml\n    # Smallest deployable unit (one or more containers)\n\
+  \    apiVersion: v1\n    kind: Pod\n    metadata:\n      name: user-service-pod\n\
+  \    spec:\n      containers:\n      - name: user-service\n        image: user-service:1.0\n\
+  \        ports:\n        - containerPort: 8000\n        env:\n        - name: DATABASE_URL\n\
+  \          value: postgres://db:5432/users\n    ```\n\n    **2. Deployment**\n \
+  \   ```yaml\n    # Manages replicas, rolling updates, rollbacks\n    apiVersion:\
+  \ apps/v1\n    kind: Deployment\n    metadata:\n      name: user-service\n    spec:\n\
+  \      replicas: 3  # Run 3 instances\n      selector:\n        matchLabels:\n \
+  \         app: user-service\n      template:\n        metadata:\n          labels:\n\
+  \            app: user-service\n        spec:\n          containers:\n         \
+  \ - name: user-service\n            image: user-service:1.0\n            ports:\n\
+  \            - containerPort: 8000\n            env:\n            - name: DATABASE_URL\n\
+  \              valueFrom:\n                secretKeyRef:\n                  name:\
+  \ db-credentials\n                  key: url\n            resources:\n         \
+  \     requests:\n                memory: \"256Mi\"\n                cpu: \"250m\"\
+  \n              limits:\n                memory: \"512Mi\"\n                cpu:\
+  \ \"500m\"\n            livenessProbe:  # Restart if unhealthy\n              httpGet:\n\
+  \                path: /health\n                port: 8000\n              initialDelaySeconds:\
+  \ 10\n              periodSeconds: 10\n            readinessProbe:  # Don't send\
+  \ traffic if not ready\n              httpGet:\n                path: /ready\n \
+  \               port: 8000\n              initialDelaySeconds: 5\n             \
+  \ periodSeconds: 5\n    ```\n\n    **3. Service**\n    ```yaml\n    # Load balancing\
+  \ and service discovery\n    apiVersion: v1\n    kind: Service\n    metadata:\n\
+  \      name: user-service\n    spec:\n      selector:\n        app: user-service\n\
+  \      ports:\n      - protocol: TCP\n        port: 80\n        targetPort: 8000\n\
+  \      type: ClusterIP  # Internal only\n\n    # Now other services can call: http://user-service/\n\
+  \    ```\n\n    **4. ConfigMap and Secret**\n    ```yaml\n    # ConfigMap (non-sensitive\
+  \ config)\n    apiVersion: v1\n    kind: ConfigMap\n    metadata:\n      name: user-service-config\n\
+  \    data:\n      LOG_LEVEL: \"info\"\n      CACHE_TTL: \"3600\"\n\n    ---\n  \
+  \  # Secret (sensitive data)\n    apiVersion: v1\n    kind: Secret\n    metadata:\n\
+  \      name: db-credentials\n    type: Opaque\n    data:\n      url: cG9zdGdyZXM6Ly9kYjo1NDMyL3VzZXJz\
+  \  # Base64 encoded\n    ```\n\n    **5. Ingress**\n    ```yaml\n    # External\
+  \ access and routing\n    apiVersion: networking.k8s.io/v1\n    kind: Ingress\n\
+  \    metadata:\n      name: api-ingress\n    spec:\n      rules:\n      - host:\
+  \ api.example.com\n        http:\n          paths:\n          - path: /users\n \
+  \           pathType: Prefix\n            backend:\n              service:\n   \
+  \             name: user-service\n                port:\n                  number:\
+  \ 80\n          - path: /orders\n            pathType: Prefix\n            backend:\n\
+  \              service:\n                name: order-service\n                port:\n\
+  \                  number: 80\n    ```\n\n    ### Deploy to Kubernetes\n\n    ```bash\n\
+  \    # Apply configuration\n    kubectl apply -f user-service-deployment.yaml\n\
+  \    kubectl apply -f user-service-service.yaml\n\n    # Check status\n    kubectl\
+  \ get pods\n    kubectl get deployments\n    kubectl get services\n\n    # View\
+  \ logs\n    kubectl logs -f deployment/user-service\n\n    # Scale\n    kubectl\
+  \ scale deployment user-service --replicas=5\n\n    # Update image (rolling update)\n\
+  \    kubectl set image deployment/user-service user-service=user-service:1.1\n\n\
+  \    # Rollback\n    kubectl rollout undo deployment/user-service\n\n    # Execute\
+  \ command in pod\n    kubectl exec -it user-service-pod -- bash\n    ```\n\n   \
+  \ ### Horizontal Pod Autoscaler\n\n    ```yaml\n    # Auto-scale based on CPU/memory\n\
+  \    apiVersion: autoscaling/v2\n    kind: HorizontalPodAutoscaler\n    metadata:\n\
+  \      name: user-service-hpa\n    spec:\n      scaleTargetRef:\n        apiVersion:\
+  \ apps/v1\n        kind: Deployment\n        name: user-service\n      minReplicas:\
+  \ 2\n      maxReplicas: 10\n      metrics:\n      - type: Resource\n        resource:\n\
+  \          name: cpu\n          target:\n            type: Utilization\n       \
+  \     averageUtilization: 70  # Scale when CPU > 70%\n      - type: Resource\n \
+  \       resource:\n          name: memory\n          target:\n            type:\
+  \ Utilization\n            averageUtilization: 80  # Scale when memory > 80%\n \
+  \   ```\n\n    ## Service Mesh (Istio Overview)\n\n    **Service mesh handles service-to-service\
+  \ communication, security, and observability**\n\n    ### Why Service Mesh?\n\n\
+  \    ```\n    Without Service Mesh:\n    - Each service implements: retries, timeouts,\
+  \ circuit breaking\n    - Inconsistent behavior\n    - Code changes required for\
+  \ new features\n\n    With Service Mesh:\n    - Infrastructure handles: retries,\
+  \ timeouts, circuit breaking\n    - Consistent across all services\n    - Configuration-based\
+  \ (no code changes)\n    ```\n\n    ### Istio Architecture\n\n    ```\n    ┌──────────────────────────────────────┐\n\
+  \    │  Control Plane (istiod)              │\n    │  - Configuration          \
+  \           │\n    │  - Service discovery                 │\n    │  - Certificate\
+  \ management            │\n    └──────────────────────────────────────┘\n      \
+  \               │\n         ┌───────────┼───────────┐\n         │           │  \
+  \         │\n         ▼           ▼           ▼\n    ┌────────┐  ┌────────┐  ┌────────┐\n\
+  \    │  Pod   │  │  Pod   │  │  Pod   │\n    │ ┌────┐ │  │ ┌────┐ │  │ ┌────┐ │\n\
+  \    │ │App │ │  │ │App │ │  │ │App │ │\n    │ └────┘ │  │ └────┘ │  │ └────┘ │\n\
+  \    │ ┌────┐ │  │ ┌────┐ │  │ ┌────┐ │\n    │ │Envoy│ │  │ │Envoy│ │  │ │Envoy│\
+  \ │  Sidecar Proxy\n    │ └────┘ │  │ └────┘ │  │ └────┘ │\n    └────────┘  └────────┘\
+  \  └────────┘\n    ```\n\n    ### Istio Features (Configuration Examples)\n\n  \
+  \  **1. Traffic Management**\n    ```yaml\n    # Circuit breaking\n    apiVersion:\
+  \ networking.istio.io/v1alpha3\n    kind: DestinationRule\n    metadata:\n     \
+  \ name: payment-service\n    spec:\n      host: payment-service\n      trafficPolicy:\n\
+  \        connectionPool:\n          tcp:\n            maxConnections: 100\n    \
+  \      http:\n            http1MaxPendingRequests: 50\n            maxRequestsPerConnection:\
+  \ 2\n        outlierDetection:\n          consecutiveErrors: 5\n          interval:\
+  \ 30s\n          baseEjectionTime: 30s\n    ```\n\n    **2. Retries and Timeouts**\n\
+  \    ```yaml\n    apiVersion: networking.istio.io/v1alpha3\n    kind: VirtualService\n\
+  \    metadata:\n      name: user-service\n    spec:\n      hosts:\n      - user-service\n\
+  \      http:\n      - route:\n        - destination:\n            host: user-service\n\
+  \        timeout: 5s\n        retries:\n          attempts: 3\n          perTryTimeout:\
+  \ 2s\n          retryOn: 5xx,reset,connect-failure\n    ```\n\n    **3. Canary Deployments**\n\
+  \    ```yaml\n    # Route 90% to v1, 10% to v2 (canary)\n    apiVersion: networking.istio.io/v1alpha3\n\
+  \    kind: VirtualService\n    metadata:\n      name: user-service\n    spec:\n\
+  \      hosts:\n      - user-service\n      http:\n      - match:\n        - headers:\n\
+  \            user-type:\n              exact: \"beta\"\n        route:\n       \
+  \ - destination:\n            host: user-service\n            subset: v2\n     \
+  \ - route:\n        - destination:\n            host: user-service\n           \
+  \ subset: v1\n          weight: 90\n        - destination:\n            host: user-service\n\
+  \            subset: v2\n          weight: 10\n    ```\n\n    ## Distributed Tracing\
+  \ (Jaeger)\n\n    **Track requests across multiple services**\n\n    ### The Problem\n\
+  \n    ```\n    User request fails\n    Which service caused the error?\n    How\
+  \ long did each service take?\n    What was the call chain?\n\n    Without tracing:\
+  \ Check logs in 10+ services → Hours of debugging\n    With tracing: See entire\
+  \ request flow → Minutes to find issue\n    ```\n\n    ### OpenTelemetry Instrumentation\n\
+  \n    ```python\n    from opentelemetry import trace\n    from opentelemetry.exporter.jaeger.thrift\
+  \ import JaegerExporter\n    from opentelemetry.sdk.trace import TracerProvider\n\
+  \    from opentelemetry.sdk.trace.export import BatchSpanProcessor\n    from opentelemetry.instrumentation.flask\
+  \ import FlaskInstrumentor\n    from opentelemetry.instrumentation.requests import\
+  \ RequestsInstrumentor\n\n    # Setup tracing\n    trace.set_tracer_provider(TracerProvider())\n\
+  \    jaeger_exporter = JaegerExporter(\n        agent_host_name=\"jaeger\",\n  \
+  \      agent_port=6831,\n    )\n    trace.get_tracer_provider().add_span_processor(\n\
+  \        BatchSpanProcessor(jaeger_exporter)\n    )\n\n    # Auto-instrument Flask\n\
+  \    FlaskInstrumentor().instrument_app(app)\n\n    # Auto-instrument requests library\n\
+  \    RequestsInstrumentor().instrument()\n\n    # Manual instrumentation\n    tracer\
+  \ = trace.get_tracer(__name__)\n\n    @app.route('/create-order')\n    def create_order():\n\
+  \        with tracer.start_as_current_span(\"create_order\") as span:\n        \
+  \    span.set_attribute(\"user_id\", user_id)\n            span.set_attribute(\"\
+  items_count\", len(items))\n\n            # This call automatically traced (requests\
+  \ instrumented)\n            user = requests.get(f'http://user-service/users/{user_id}')\n\
+  \n            # Custom span\n            with tracer.start_as_current_span(\"save_to_database\"\
+  ):\n                order = db.save_order(user_id, items)\n\n            span.set_attribute(\"\
+  order_id\", order.id)\n\n            return order\n    ```\n\n    **Trace visualization\
+  \ in Jaeger:**\n    ```\n    Trace ID: abc123\n    Total duration: 250ms\n\n   \
+  \ → API Gateway (5ms)\n      → Order Service (200ms)\n        → User Service (50ms)\n\
+  \          → Database query (30ms)\n        → Payment Service (100ms)  ← Slow! Found\
+  \ the issue!\n          → Payment gateway API (95ms)\n        → Inventory Service\
+  \ (30ms)\n    ```\n\n    ## Centralized Logging (ELK Stack)\n\n    **Aggregate logs\
+  \ from all services in one place**\n\n    ### ELK Stack Components\n\n    ```\n\
+  \    Services → Filebeat/Fluentd → Logstash → Elasticsearch → Kibana\n         \
+  \        (Collect)       (Process)   (Store)        (Visualize)\n    ```\n\n   \
+  \ ### Structured Logging\n\n    ```python\n    import structlog\n    import logging\n\
+  \n    # Configure structured logging\n    structlog.configure(\n        processors=[\n\
+  \            structlog.stdlib.filter_by_level,\n            structlog.stdlib.add_logger_name,\n\
+  \            structlog.stdlib.add_log_level,\n            structlog.processors.TimeStamper(fmt=\"\
+  iso\"),\n            structlog.processors.JSONRenderer()\n        ],\n        context_class=dict,\n\
+  \        logger_factory=structlog.stdlib.LoggerFactory(),\n    )\n\n    logger =\
+  \ structlog.get_logger()\n\n    # Structured log (JSON)\n    @app.route('/orders/<order_id>')\n\
+  \    def get_order(order_id):\n        logger.info(\n            \"fetching_order\"\
+  ,\n            order_id=order_id,\n            user_id=current_user.id,\n      \
+  \      service=\"order-service\"\n        )\n\n        try:\n            order =\
+  \ db.get_order(order_id)\n\n            logger.info(\n                \"order_fetched\"\
+  ,\n                order_id=order_id,\n                status=order.status,\n  \
+  \              duration_ms=10\n            )\n\n            return order\n\n   \
+  \     except Exception as e:\n            logger.error(\n                \"order_fetch_failed\"\
+  ,\n                order_id=order_id,\n                error=str(e),\n         \
+  \       exc_info=True\n            )\n            raise\n\n    # Output (JSON):\n\
+  \    # {\n    #   \"event\": \"fetching_order\",\n    #   \"order_id\": \"123\"\
+  ,\n    #   \"user_id\": \"456\",\n    #   \"service\": \"order-service\",\n    #\
+  \   \"timestamp\": \"2024-01-15T10:30:00.000Z\",\n    #   \"level\": \"info\"\n\
+  \    # }\n    ```\n\n    ### Log Aggregation with Fluentd\n\n    ```yaml\n    #\
+  \ fluentd-daemonset.yaml\n    apiVersion: apps/v1\n    kind: DaemonSet\n    metadata:\n\
+  \      name: fluentd\n    spec:\n      template:\n        spec:\n          containers:\n\
+  \          - name: fluentd\n            image: fluent/fluentd-kubernetes-daemonset:v1-debian-elasticsearch\n\
+  \            env:\n            - name: FLUENT_ELASTICSEARCH_HOST\n             \
+  \ value: \"elasticsearch\"\n            - name: FLUENT_ELASTICSEARCH_PORT\n    \
+  \          value: \"9200\"\n            volumeMounts:\n            - name: varlog\n\
+  \              mountPath: /var/log\n            - name: containers\n           \
+  \   mountPath: /var/lib/docker/containers\n          volumes:\n          - name:\
+  \ varlog\n            hostPath:\n              path: /var/log\n          - name:\
+  \ containers\n            hostPath:\n              path: /var/lib/docker/containers\n\
+  \n    # Fluentd collects logs from all pods and sends to Elasticsearch\n    ```\n\
+  \n    ### Query Logs in Kibana\n\n    ```\n    # Find all errors in last hour\n\
+  \    level:error AND @timestamp:[now-1h TO now]\n\n    # Find specific order\n \
+  \   order_id:\"123\"\n\n    # Find slow requests\n    duration_ms:>1000\n\n    #\
+  \ Find errors from specific service\n    service:\"payment-service\" AND level:error\n\
+  \    ```\n\n    ## Monitoring and Observability\n\n    ### Prometheus Metrics\n\n\
+  \    ```python\n    from prometheus_client import Counter, Histogram, Gauge, start_http_server\n\
+  \n    # Define metrics\n    request_count = Counter(\n        'http_requests_total',\n\
+  \        'Total HTTP requests',\n        ['method', 'endpoint', 'status']\n    )\n\
+  \n    request_duration = Histogram(\n        'http_request_duration_seconds',\n\
+  \        'HTTP request duration',\n        ['method', 'endpoint']\n    )\n\n   \
+  \ active_users = Gauge(\n        'active_users',\n        'Number of active users'\n\
+  \    )\n\n    # Instrument application\n    @app.route('/orders')\n    def list_orders():\n\
+  \        # Increment counter\n        request_count.labels(method='GET', endpoint='/orders',\
+  \ status=200).inc()\n\n        # Track duration\n        with request_duration.labels(method='GET',\
+  \ endpoint='/orders').time():\n            orders = db.get_orders()\n\n        return\
+  \ orders\n\n    # Update gauge\n    active_users.set(len(get_active_users()))\n\n\
+  \    # Expose metrics endpoint\n    start_http_server(8001)  # Metrics at http://localhost:8001/metrics\n\
+  \    ```\n\n    ### Grafana Dashboards\n\n    ```\n    Key metrics to monitor:\n\
+  \n    1. Golden Signals:\n       - Latency (request duration)\n       - Traffic\
+  \ (requests per second)\n       - Errors (error rate)\n       - Saturation (CPU,\
+  \ memory usage)\n\n    2. Service-specific:\n       - Queue depth (message queues)\n\
+  \       - Cache hit rate\n       - Database connection pool\n       - Circuit breaker\
+  \ state\n\n    3. Business metrics:\n       - Orders per minute\n       - Revenue\
+  \ per hour\n       - User signups\n    ```\n\n    ## Common Challenges and Solutions\n\
+  \n    ### 1. Service Discovery Issues\n\n    ```python\n    # Problem: Service address\
+  \ changes\n    # Solution: Use Kubernetes DNS\n    user_service_url = \"http://user-service\"\
+  \  # Not IP address!\n    ```\n\n    ### 2. Configuration Management\n\n    ```python\n\
+  \    # Problem: Different config per environment\n    # Solution: Use ConfigMaps/Secrets\
+  \ + environment variables\n    DATABASE_URL = os.getenv('DATABASE_URL')\n    ```\n\
+  \n    ### 3. Debugging Distributed Systems\n\n    ```python\n    # Problem: Request\
+  \ fails, which service?\n    # Solution: Correlation IDs + Distributed tracing\n\
+  \    import uuid\n\n    @app.before_request\n    def add_correlation_id():\n   \
+  \     # Generate or get correlation ID\n        correlation_id = request.headers.get('X-Correlation-ID',\
+  \ str(uuid.uuid4()))\n        g.correlation_id = correlation_id\n        logger.info(\"\
+  request_started\", correlation_id=correlation_id)\n\n    @app.after_request\n  \
+  \  def add_correlation_header(response):\n        response.headers['X-Correlation-ID']\
+  \ = g.correlation_id\n        return response\n    ```\n\n    ### 4. Zero-Downtime\
+  \ Deployments\n\n    ```yaml\n    # Rolling update strategy\n    spec:\n      strategy:\n\
+  \        type: RollingUpdate\n        rollingUpdate:\n          maxUnavailable:\
+  \ 0      # Don't kill pods before new ones ready\n          maxSurge: 1        \
+  \    # Create 1 extra pod during update\n\n      # Graceful shutdown\n      containers:\n\
+  \      - name: app\n        lifecycle:\n          preStop:\n            exec:\n\
+  \              command: [\"/bin/sh\", \"-c\", \"sleep 15\"]  # Allow requests to\
+  \ drain\n    ```\n\n    ### 5. Database Migrations\n\n    ```python\n    # Problem:\
+  \ Schema changes with zero downtime\n    # Solution: Backward-compatible migrations\n\
+  \n    # Bad: Breaks old version\n    ALTER TABLE users DROP COLUMN phone;\n\n  \
+  \  # Good: Multi-step migration\n    # Step 1: Deploy code that doesn't use 'phone'\n\
+  \    # Step 2: Deploy migration that drops column\n    ```\n\n    ## Production\
+  \ Checklist\n\n    ✅ **Before going to production:**\n\n    - [ ] Health check endpoints\
+  \ implemented\n    - [ ] Graceful shutdown handling\n    - [ ] Resource limits set\
+  \ (CPU, memory)\n    - [ ] Logging configured (structured, JSON)\n    - [ ] Metrics\
+  \ exposed (Prometheus)\n    - [ ] Distributed tracing enabled\n    - [ ] Circuit\
+  \ breakers on external calls\n    - [ ] Timeouts on all network calls\n    - [ ]\
+  \ Retries with exponential backoff\n    - [ ] Database connection pooling\n    -\
+  \ [ ] Secrets in Secret manager (not code)\n    - [ ] TLS/HTTPS enabled\n    - [\
+  \ ] Auto-scaling configured\n    - [ ] Monitoring alerts set up\n    - [ ] Runbooks\
+  \ for common issues\n    - [ ] Disaster recovery plan\n    - [ ] Load testing completed\n\
+  \n    **Congratulations!** You now understand the fundamentals of microservices\
+  \ architecture - from principles and communication patterns to production deployment.\
+  \ The key is to start simple, add complexity only when needed, and always design\
+  \ for failure."
+  - type: multiple_choice_question
+    sequence_order: 1
+    question: "What is the main difference between monolithic and microservices architecture?"
+    options:
+      - "Monolithic applications are always slower than microservices"
+      - "Monolithic applications have all components in a single codebase while microservices split functionality into independent services"
+      - "Microservices can only be written in one programming language"
+      - "Monolithic applications cannot scale"
+    correct_answer: "Monolithic applications have all components in a single codebase while microservices split functionality into independent services"
+    explanation: "The fundamental difference between monolithic and microservices architectures lies in how the application is structured and deployed. A monolithic application combines all components (user management, products, orders, payments) into a single codebase, shared database, and deployment unit. Any change requires rebuilding and redeploying the entire application. Microservices architecture splits the application into small, independent services, each with its own codebase, database, and deployment lifecycle. Services communicate via APIs (REST, gRPC) or message queues. While monoliths are simpler initially (easy testing, no network calls, straightforward transactions), they become problematic as applications grow (tight coupling, scaling limitations, technology lock-in). Microservices offer independent scaling, technology diversity, faster deployments, and fault isolation, but introduce complexity (distributed systems, network latency, eventual consistency). Neither is inherently faster - performance depends on implementation. Microservices support multiple languages per service, while monoliths typically use one stack. Monoliths can scale (by running multiple instances), but must scale as a whole unit. The choice depends on application size, team structure, and operational maturity."
+    require_pass: true
+  - type: multiple_choice_question
+    sequence_order: 2
+    question: "What is the primary purpose of an API Gateway in microservices architecture?"
+    options:
+      - "To store data for all microservices"
+      - "To provide a single entry point for clients and handle cross-cutting concerns like authentication and routing"
+      - "To replace all microservices with a single service"
+      - "To slow down requests for security"
+    correct_answer: "To provide a single entry point for clients and handle cross-cutting concerns like authentication and routing"
+    explanation: "An API Gateway serves as the single entry point for all client requests in a microservices architecture, handling cross-cutting concerns that would otherwise need to be implemented in every service. Key responsibilities include: request routing (directing requests to appropriate services), authentication and authorization (verifying credentials once rather than in each service), rate limiting (preventing abuse), request aggregation (combining multiple service calls into one client request), protocol translation (REST to gRPC conversion), and load balancing. For example, a mobile app makes one request to the API Gateway for a user dashboard, and the gateway calls User Service, Order Service, and Recommendation Service in parallel, aggregating results before returning to the client. This simplifies client code, centralizes security, and hides internal service architecture. The API Gateway doesn't store data (services have their own databases), doesn't replace services (it routes to them), and doesn't slow requests (though it adds a network hop, it often improves performance through features like response caching and request aggregation). Popular API Gateways include Kong, AWS API Gateway, Nginx, and Envoy. Understanding API Gateway patterns is essential for building maintainable microservices architectures."
+    require_pass: true

@@ -1,0 +1,44 @@
+slug: lesson-102
+title: Lesson 102
+difficulty: easy
+sequence_order: 102
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Helm Charts and Package Management\n\n\
+  \    - Helm chart structure (Chart.yaml, templates, values)\n    - Installing and\
+  \ upgrading releases\n    - Values overrides and templating basics"
+exercises:
+  - type: mcq
+    sequence_order: 1
+    question: "Which file in a Helm chart contains the metadata about the chart such as name, version, and description?"
+    options:
+      - "values.yaml"
+      - "Chart.yaml"
+      - "templates/deployment.yaml"
+      - "README.md"
+    correct_answer: "Chart.yaml"
+    explanation: "Chart.yaml is the required file that contains metadata about a Helm chart. It includes essential information like chart name, version (chart version, not app version), description, maintainers, and dependencies. This file follows semantic versioning (e.g., 1.2.3) and is crucial for chart management and distribution. For example, a Chart.yaml might specify 'name: myapp', 'version: 0.1.0', 'appVersion: 1.16.0', where 'version' is the chart version and 'appVersion' is the application version being deployed. The values.yaml file contains default configuration values that can be overridden during installation, while the templates/ directory contains Kubernetes manifest templates that use Go templating. When you run 'helm install', Helm reads Chart.yaml to understand what it's installing, combines the templates with values, and generates the final Kubernetes manifests. Understanding Chart.yaml structure is fundamental to creating, packaging, and versioning Helm charts effectively."
+    require_pass: true
+  - type: mcq
+    sequence_order: 2
+    question: "How do you override default values when installing a Helm chart?"
+    options:
+      - "Edit the Chart.yaml file directly"
+      - "Use the --set flag or provide a custom values file with -f flag"
+      - "Modify the templates directory before installation"
+      - "Values cannot be changed after chart creation"
+    correct_answer: "Use the --set flag or provide a custom values file with -f flag"
+    explanation: "Helm provides flexible ways to override default values during chart installation without modifying the chart itself. The most common methods are: using '--set' for individual values (e.g., 'helm install myapp ./mychart --set replicas=3,image.tag=v2.0'), or using '-f' to provide a custom values file (e.g., 'helm install myapp ./mychart -f custom-values.yaml'). You can also combine multiple approaches, with precedence from lowest to highest: default values.yaml, custom values files (in order specified), and --set parameters. This design separates chart templates from configuration, enabling reusability across environments. For example, you might have production-values.yaml with 'replicas: 5' and staging-values.yaml with 'replicas: 2'. The values are injected into templates using Go templating syntax like '{{ .Values.replicas }}'. Best practices include using values files for complex configurations and --set for simple overrides, documenting all available values, and using 'helm template' to preview rendered manifests before installation."
+    require_pass: true
+  - type: mcq
+    sequence_order: 3
+    question: "What happens when you run 'helm upgrade' on an existing release?"
+    options:
+      - "The old release is deleted and a new one is created"
+      - "Helm updates the release with new configurations while maintaining release history"
+      - "All pods are immediately terminated and recreated"
+      - "The command fails if any changes are detected"
+    correct_answer: "Helm updates the release with new configurations while maintaining release history"
+    explanation: "The 'helm upgrade' command updates an existing Helm release with new chart versions or configuration values while preserving release history and enabling rollbacks. When executed, Helm compares the current deployed state with the desired state from the new chart/values, then applies only the necessary changes to Kubernetes resources. The command syntax is 'helm upgrade <release-name> <chart> [flags]', such as 'helm upgrade myapp ./mychart --set image.tag=v2.0'. Helm maintains a revision history (default 10 revisions) that enables rollback using 'helm rollback <release-name> <revision>'. The upgrade process respects Kubernetes deployment strategies like rolling updates, so pods aren't all terminated at once - instead, they're updated gradually based on the Deployment's strategy settings. You can use '--install' flag to install if the release doesn't exist ('helm upgrade --install'), and '--atomic' to automatically rollback on failure. Always review changes with 'helm diff' plugin before upgrading production releases, and use '--dry-run' to preview changes without applying them."
+    require_pass: true

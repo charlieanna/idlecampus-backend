@@ -1,0 +1,206 @@
+slug: lesson-1
+title: Lesson 1
+sequence_order: 1
+estimated_minutes: 2
+difficulty: easy
+key_concepts: []
+content_md: "# Microlesson \U0001F680\n\n# Continuous Integration & Deployment\n\n\
+  \    **CI/CD** automates the software delivery pipeline from code commit to production\
+  \ deployment.\n\n    ## CI vs CD vs Continuous Deployment\n\n    ### Continuous\
+  \ Integration (CI)\n    **Automatically build and test code on every commit**\n\n\
+  \    ```\n    Developer commits code\n      ↓\n    CI server detects change\n  \
+  \    ↓\n    Build application\n      ↓\n    Run automated tests\n      ↓\n    Report\
+  \ results (pass/fail)\n    ```\n\n    **Benefits:**\n    - Catch bugs early (minutes,\
+  \ not days)\n    - Reduce integration problems\n    - Improve code quality\n   \
+  \ - Enable faster development\n\n    **Example CI workflow:**\n    ```yaml\n   \
+  \ # .github/workflows/ci.yml\n    name: CI\n    on: [push, pull_request]\n\n   \
+  \ jobs:\n      test:\n        runs-on: ubuntu-latest\n        steps:\n         \
+  \ - uses: actions/checkout@v3\n          - name: Install dependencies\n        \
+  \    run: npm install\n          - name: Run tests\n            run: npm test\n\
+  \          - name: Run linter\n            run: npm run lint\n    ```\n\n    ###\
+  \ Continuous Delivery (CD)\n    **Automatically prepare code for production deployment**\n\
+  \n    ```\n    CI passes\n      ↓\n    Build deployment artifacts\n      ↓\n   \
+  \ Deploy to staging environment\n      ↓\n    Run integration tests\n      ↓\n \
+  \   Ready for manual production release\n    ```\n\n    **Key point:** Deployment\
+  \ to production requires manual approval.\n\n    **Benefits:**\n    - Deployment-ready\
+  \ code at all times\n    - Reduced deployment risk\n    - Predictable release process\n\
+  \    - Manual control over production releases\n\n    ### Continuous Deployment\n\
+  \    **Automatically deploy to production on every successful build**\n\n    ```\n\
+  \    CI passes\n      ↓\n    Build artifacts\n      ↓\n    Deploy to staging\n \
+  \     ↓\n    Automated tests pass\n      ↓\n    Automatically deploy to production\n\
+  \    ```\n\n    **Key point:** No manual approval - every passing build goes to\
+  \ production.\n\n    **Benefits:**\n    - Fastest time to market\n    - Smaller,\
+  \ lower-risk deployments\n    - Immediate user feedback\n    - Forces excellent\
+  \ automated testing\n\n    **Trade-off:** Requires high confidence in automated\
+  \ tests and monitoring.\n\n    ## Pipeline Stages\n\n    A typical CI/CD pipeline\
+  \ has multiple stages:\n\n    ### 1. Source Stage\n    **Trigger pipeline on code\
+  \ changes**\n\n    ```yaml\n    # GitHub Actions trigger\n    on:\n      push:\n\
+  \        branches: [main, develop]\n      pull_request:\n        branches: [main]\n\
+  \    ```\n\n    ### 2. Build Stage\n    **Compile and package application**\n\n\
+  \    ```yaml\n    build:\n      runs-on: ubuntu-latest\n      steps:\n        -\
+  \ uses: actions/checkout@v3\n\n        - name: Set up Node.js\n          uses: actions/setup-node@v3\n\
+  \          with:\n            node-version: '18'\n\n        - name: Install dependencies\n\
+  \          run: npm ci\n\n        - name: Build application\n          run: npm\
+  \ run build\n\n        - name: Upload build artifacts\n          uses: actions/upload-artifact@v3\n\
+  \          with:\n            name: dist\n            path: dist/\n    ```\n\n \
+  \   ### 3. Test Stage\n    **Run automated tests**\n\n    ```yaml\n    test:\n \
+  \     needs: build\n      runs-on: ubuntu-latest\n      steps:\n        - uses:\
+  \ actions/checkout@v3\n\n        # Unit tests\n        - name: Run unit tests\n\
+  \          run: npm run test:unit\n\n        # Integration tests\n        - name:\
+  \ Run integration tests\n          run: npm run test:integration\n\n        # Code\
+  \ coverage\n        - name: Generate coverage report\n          run: npm run test:coverage\n\
+  \n        - name: Upload coverage to Codecov\n          uses: codecov/codecov-action@v3\n\
+  \    ```\n\n    ### 4. Quality Stage\n    **Code quality checks**\n\n    ```yaml\n\
+  \    quality:\n      runs-on: ubuntu-latest\n      steps:\n        - uses: actions/checkout@v3\n\
+  \n        # Linting\n        - name: Run ESLint\n          run: npm run lint\n\n\
+  \        # Security scanning\n        - name: Run security audit\n          run:\
+  \ npm audit\n\n        # Static analysis\n        - name: SonarCloud scan\n    \
+  \      uses: SonarSource/sonarcloud-github-action@master\n          env:\n     \
+  \       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}\n            SONAR_TOKEN: ${{\
+  \ secrets.SONAR_TOKEN }}\n    ```\n\n    ### 5. Deploy Stage\n    **Deploy to environments**\n\
+  \n    ```yaml\n    deploy-staging:\n      needs: [test, quality]\n      runs-on:\
+  \ ubuntu-latest\n      environment: staging\n      steps:\n        - name: Download\
+  \ artifacts\n          uses: actions/download-artifact@v3\n          with:\n   \
+  \         name: dist\n\n        - name: Deploy to staging\n          run: |\n  \
+  \          aws s3 sync dist/ s3://my-app-staging\n            aws cloudfront create-invalidation\
+  \ \\\\\n              --distribution-id ${{ secrets.STAGING_DIST_ID }} \\\\\n  \
+  \            --paths \"/*\"\n\n    deploy-production:\n      needs: deploy-staging\n\
+  \      runs-on: ubuntu-latest\n      environment: production\n      if: github.ref\
+  \ == 'refs/heads/main'\n      steps:\n        - name: Download artifacts\n     \
+  \     uses: actions/download-artifact@v3\n          with:\n            name: dist\n\
+  \n        - name: Deploy to production\n          run: |\n            aws s3 sync\
+  \ dist/ s3://my-app-production\n            aws cloudfront create-invalidation \\\
+  \\\n              --distribution-id ${{ secrets.PROD_DIST_ID }} \\\\\n         \
+  \     --paths \"/*\"\n    ```\n\n    ## Artifact Management\n\n    **Artifacts**\
+  \ are the build outputs that get deployed (JARs, Docker images, compiled binaries,\
+  \ etc.).\n\n    ### Best Practices\n\n    **1. Version artifacts**\n    ```bash\n\
+  \    # Semantic versioning\n    myapp-1.2.3.jar\n\n    # Git commit hash\n    myapp-abc123f.jar\n\
+  \n    # Build number\n    myapp-build-456.jar\n    ```\n\n    **2. Store artifacts\
+  \ in registries**\n    ```yaml\n    # Docker registry\n    docker build -t myapp:${{\
+  \ github.sha }} .\n    docker tag myapp:${{ github.sha }} myapp:latest\n    docker\
+  \ push myapp:${{ github.sha }}\n    docker push myapp:latest\n    ```\n\n    **3.\
+  \ Artifact retention**\n    ```yaml\n    # GitHub Actions - keep artifacts for 30\
+  \ days\n    - name: Upload artifacts\n      uses: actions/upload-artifact@v3\n \
+  \     with:\n        name: build\n        path: dist/\n        retention-days: 30\n\
+  \    ```\n\n    **4. Artifact promotion**\n    ```\n    Development: myapp:dev-abc123\n\
+  \    Staging:     myapp:staging-abc123\n    Production:  myapp:v1.2.3 (same image,\
+  \ promoted)\n    ```\n\n    ## Environment Strategies\n\n    ### Typical Environment\
+  \ Flow\n\n    ```\n    Development → Staging → Production\n    ```\n\n    ### 1.\
+  \ Development Environment\n    **Purpose:** Developer testing and integration\n\n\
+  \    ```yaml\n    environment: development\n    config:\n      - Auto-deploy on\
+  \ every commit\n      - Debug logging enabled\n      - Relaxed security for testing\n\
+  \      - Synthetic test data\n      - Single instance\n    ```\n\n    ### 2. Staging\
+  \ Environment\n    **Purpose:** Pre-production validation\n\n    ```yaml\n    environment:\
+  \ staging\n    config:\n      - Production-like configuration\n      - Real-world\
+  \ data volume (sanitized)\n      - Performance testing\n      - QA validation\n\
+  \      - Load balancing (2-3 instances)\n    ```\n\n    ### 3. Production Environment\n\
+  \    **Purpose:** End users\n\n    ```yaml\n    environment: production\n    config:\n\
+  \      - High availability (multi-AZ)\n      - Monitoring and alerting\n      -\
+  \ Automatic scaling\n      - Backup and disaster recovery\n      - Security hardening\n\
+  \    ```\n\n    ### Environment Configuration\n\n    **Use environment variables:**\n\
+  \    ```yaml\n    # GitHub Actions environments\n    deploy:\n      runs-on: ubuntu-latest\n\
+  \      environment: production\n      steps:\n        - name: Deploy\n         \
+  \ env:\n            DATABASE_URL: ${{ secrets.DATABASE_URL }}\n            API_KEY:\
+  \ ${{ secrets.API_KEY }}\n            LOG_LEVEL: ${{ vars.LOG_LEVEL }}\n       \
+  \   run: ./deploy.sh\n    ```\n\n    **Environment-specific configs:**\n    ```yaml\n\
+  \    # config/staging.yml\n    database:\n      host: staging-db.example.com\n \
+  \     pool_size: 10\n    logging:\n      level: debug\n    features:\n      new_ui:\
+  \ true\n\n    # config/production.yml\n    database:\n      host: prod-db.example.com\n\
+  \      pool_size: 50\n    logging:\n      level: warn\n    features:\n      new_ui:\
+  \ false\n    ```\n\n    ## CI/CD Best Practices\n\n    ### 1. Fast Feedback\n  \
+  \  **Fail fast, fail early**\n\n    ```yaml\n    # Run fast tests first\n    jobs:\n\
+  \      lint:\n        runs-on: ubuntu-latest\n        steps:\n          - run: npm\
+  \ run lint  # 30 seconds\n\n      unit-tests:\n        runs-on: ubuntu-latest\n\
+  \        steps:\n          - run: npm run test:unit  # 2 minutes\n\n      integration-tests:\n\
+  \        needs: unit-tests  # Only run if unit tests pass\n        runs-on: ubuntu-latest\n\
+  \        steps:\n          - run: npm run test:integration  # 10 minutes\n    ```\n\
+  \n    ### 2. Keep Pipelines Fast\n    **Target: Under 10 minutes for CI**\n\n  \
+  \  Strategies:\n    - Parallel test execution\n    - Incremental builds\n    - Caching\
+  \ dependencies\n    - Test only changed code\n\n    ```yaml\n    # Cache dependencies\n\
+  \    - name: Cache node modules\n      uses: actions/cache@v3\n      with:\n   \
+  \     path: ~/.npm\n        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json')\
+  \ }}\n        restore-keys: |\n          ${{ runner.os }}-node-\n    ```\n\n   \
+  \ ### 3. Automate Everything\n    **If you do it twice, automate it**\n\n    - Testing\n\
+  \    - Code quality checks\n    - Security scanning\n    - Database migrations\n\
+  \    - Documentation generation\n\n    ### 4. Make Pipelines Reproducible\n    **Same\
+  \ code + same pipeline = same result**\n\n    ```yaml\n    # Pin versions\n    -\
+  \ uses: actions/checkout@v3  # ✅ Specific version\n    - uses: actions/setup-node@v3\n\
+  \      with:\n        node-version: '18.16.0'  # ✅ Exact version\n\n    # ❌ Avoid\n\
+  \    - uses: actions/checkout@main  # Unpredictable\n    - uses: actions/setup-node@v3\n\
+  \      with:\n        node-version: '18'  # Might get different minor versions\n\
+  \    ```\n\n    ### 5. Secure Your Pipeline\n    **Protect secrets and credentials**\n\
+  \n    ```yaml\n    # ✅ Use secrets\n    - name: Deploy\n      env:\n        AWS_ACCESS_KEY_ID:\
+  \ ${{ secrets.AWS_ACCESS_KEY_ID }}\n        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY\
+  \ }}\n      run: ./deploy.sh\n\n    # ❌ Never hardcode\n    - name: Deploy\n   \
+  \   env:\n        AWS_ACCESS_KEY_ID: AKIAIOSFODNN7EXAMPLE  # BAD!\n      run: ./deploy.sh\n\
+  \    ```\n\n    ### 6. Monitor Pipeline Health\n    **Track metrics:**\n    - Build\
+  \ success rate\n    - Average build time\n    - Time to detect failures\n    - Deployment\
+  \ frequency\n    - Mean time to recovery (MTTR)\n\n    ### 7. Keep main Branch Green\n\
+  \    **main/master should always be deployable**\n\n    Strategies:\n    - Required\
+  \ PR reviews\n    - Status checks must pass\n    - Protected branches\n    - Revert\
+  \ quickly if broken\n\n    ```yaml\n    # Branch protection rules\n    protection:\n\
+  \      required_reviews: 1\n      required_status_checks:\n        - ci/build\n\
+  \        - ci/test\n        - ci/lint\n      enforce_admins: true\n    ```\n\n \
+  \   ## Summary\n\n    **CI/CD Pipeline:**\n    ```\n    Code Commit\n      ↓\n \
+  \   CI: Build + Test + Quality Checks\n      ↓\n    CD: Deploy to Staging\n    \
+  \  ↓\n    Continuous Deployment: Auto-deploy to Production\n    (or manual approval\
+  \ for Continuous Delivery)\n    ```\n\n    **Key Principles:**\n    1. **Automate**\
+  \ - Build, test, and deploy automatically\n    2. **Fast feedback** - Fail fast,\
+  \ notify quickly\n    3. **Reproducible** - Same input → same output\n    4. **Secure**\
+  \ - Protect secrets and credentials\n    5. **Monitor** - Track pipeline health\
+  \ and metrics\n    6. **Incremental** - Small, frequent changes\n    7. **Rollback**\
+  \ - Always have an escape hatch\n\n    **Next:** We'll build complete CI/CD pipelines\
+  \ with GitHub Actions, GitLab CI, and Jenkins."
+exercises:
+- type: terminal
+  slug: lesson-1-term
+  sequence_order: 1
+  description: Create a basic CI workflow file structure
+  command: mkdir -p .github/workflows && touch .github/workflows/ci.yml && ls -la
+    .github/workflows/
+  validation:
+    must_not_include:
+    - No such file
+    - Permission denied
+    - command not found
+  hints:
+  - The .github/workflows directory is where GitHub Actions workflows are stored
+  - Use mkdir -p to create nested directories
+  timeout_sec: 60
+  require_pass: true
+- type: mcq
+  slug: lesson-1-mcq
+  sequence_order: 2
+  question: What is the main difference between Continuous Delivery and Continuous
+    Deployment?
+  options:
+  - Continuous Delivery requires manual approval for production, Continuous Deployment
+    is fully automated
+  - Continuous Deployment requires manual approval, Continuous Delivery is fully automated
+  - They are the same thing with different names
+  - Continuous Delivery only works with cloud platforms
+  correct_answer_index: 0
+  explanation: Continuous Delivery prepares code for production but requires manual
+    approval to deploy, while Continuous Deployment automatically deploys every successful
+    build to production
+  require_pass: true
+- type: mcq
+  slug: lesson-1-mcq-2
+  sequence_order: 3
+  question: What is the primary goal of Continuous Integration (CI)?
+  options:
+  - Automatically build and test code on every commit
+  - Deploy code to production immediately
+  - Manage cloud infrastructure
+  - Create Docker containers
+  correct_answer_index: 0
+  explanation: CI focuses on automatically building and testing code whenever changes
+    are committed, catching bugs early and ensuring code quality
+  require_pass: true
+objectives:
+- Understand the difference between CI, CD, and Continuous Deployment
+- Learn the stages of a CI/CD pipeline
+- Identify when to use Continuous Delivery vs Continuous Deployment
+next_recommended:
+- lesson-2
+- lesson-3

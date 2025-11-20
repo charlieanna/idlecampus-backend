@@ -1,0 +1,81 @@
+slug: sequences-ap-practice
+title: sequences-ap — Practice
+difficulty: medium
+sequence_order: 2
+estimated_minutes: 2
+key_concepts:
+- sequences-ap
+prerequisites: []
+content_md: '# sequences-ap — Practice 🚀
+
+
+  Apply AP/GP formulas
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 2
+  question: 'Find the 10th term of AP: 2, 5, 8, 11, ...'
+  options:
+  - '29'
+  - '27'
+  - '31'
+  - '26'
+  require_pass: true
+  correct_answer: '29'
+  explanation: 'For an arithmetic progression (AP), the nth term is given by: Tₙ =
+    a + (n-1)d, where a = first term, d = common difference, n = term number. Given
+    AP: 2, 5, 8, 11, ... First term a = 2, Common difference d = 5 - 2 = 3. For the
+    10th term (n = 10): T₁₀ = a + (10-1)d = 2 + 9×3 = 2 + 27 = 29. We can verify by
+    listing: T₁=2, T₂=5, T₃=8, T₄=11, T₅=14, T₆=17, T₇=20, T₈=23, T₉=26, T₁₀=29. The
+    general term formula can be written as Tₙ = 2 + 3(n-1) = 3n - 1. Other useful
+    AP formulas: Sum of n terms: Sₙ = n/2[2a + (n-1)d] = n/2[first term + last term].
+    For this sequence, S₁₀ = 10/2[2 + 29] = 5×31 = 155.'
+- type: mcq
+  sequence_order: 3
+  question: 'Find the sum of the first 20 terms of the AP: 5, 8, 11, 14, ...'
+  options:
+  - '650'
+  - '670'
+  - '690'
+  - '710'
+  require_pass: true
+  correct_answer: '670'
+  explanation: 'For sum of n terms in AP, use: Sₙ = (n/2)[2a + (n-1)d] or Sₙ = (n/2)[first
+    + last]. Given AP: 5, 8, 11, 14, ... First term a = 5, common difference d =
+    3, n = 20. **Method 1 - Using first term formula**: S₂₀ = (20/2)[2(5) + (20-1)3]
+    = 10[10 + 19×3] = 10[10 + 57] = 10×67 = 670. **Method 2 - Using first and last
+    terms**: First find T₂₀: T₂₀ = a + 19d = 5 + 19×3 = 5 + 57 = 62. Then: S₂₀ =
+    (20/2)[5 + 62] = 10×67 = 670 ✓. **Why both formulas work**: They''re algebraically
+    equivalent. Sₙ = (n/2)[first + last] is easier when you know or can easily find
+    the last term. **Pattern**: Sum forms an arithmetic sequence too if you compute
+    S₁, S₂, S₃, etc.'
+- type: mcq
+  sequence_order: 4
+  question: 'In an AP, if the 5th term is 17 and the 9th term is 29, find the first
+    term.'
+  options:
+  - '3'
+  - '5'
+  - '7'
+  - '9'
+  require_pass: true
+  correct_answer: '5'
+  explanation: 'Given: T₅ = 17 and T₉ = 29. Using Tₙ = a + (n-1)d: T₅ = a + 4d =
+    17 ... (1), T₉ = a + 8d = 29 ... (2). **Subtract equation (1) from (2)**: (a
+    + 8d) - (a + 4d) = 29 - 17, 4d = 12, d = 3. **Substitute d = 3 into equation
+    (1)**: a + 4(3) = 17, a + 12 = 17, a = 5. Therefore, first term a = 5. **Verification**:
+    If a = 5 and d = 3, then T₅ = 5 + 4×3 = 17 ✓, T₉ = 5 + 8×3 = 29 ✓. **General
+    strategy**: When given two terms Tₘ and Tₙ: (1) Write two equations using Tₙ
+    = a + (n-1)d, (2) Subtract to find d, (3) Substitute back to find a. **AP sequence**:
+    5, 8, 11, 14, 17, 20, 23, 26, 29, ...'

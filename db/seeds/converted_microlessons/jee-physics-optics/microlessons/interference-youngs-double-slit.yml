@@ -1,0 +1,242 @@
+slug: interference-youngs-double-slit
+title: "Interference and Young's Double Slit Experiment"
+difficulty: intermediate
+sequence_order: 4
+estimated_minutes: 18
+key_concepts:
+- interference
+- youngs-double-slit
+- path-difference
+- fringe-width
+- coherent-sources
+prerequisites:
+- wave-equation-properties
+content_md: |
+  # Interference and Young's Double Slit Experiment
+
+  ## Wave Interference
+
+  **Superposition of two or more coherent waves** producing regions of maximum and minimum intensity.
+
+  ### Types:
+  1. **Constructive Interference:** Crests meet crests (bright)
+  2. **Destructive Interference:** Crests meet troughs (dark)
+
+  ## Conditions for Sustained Interference
+
+  1. **Coherent sources:** Same frequency, constant phase difference
+  2. **Same polarization** (or unpolarized)
+  3. **Comparable amplitudes** (for good contrast)
+  4. **Sources must be narrow** and close together
+
+  ## Path Difference and Phase Difference
+
+  ```
+  Path difference: Δx
+  Phase difference: Δφ = (2π/λ)Δx
+
+  Δx = λ → Δφ = 2π (constructive)
+  Δx = λ/2 → Δφ = π (destructive)
+  ```
+
+  ## Constructive Interference
+
+  ```
+  Path difference: Δx = nλ (n = 0, 1, 2, ...)
+  Phase difference: Δφ = 2nπ
+
+  Resultant amplitude: A = A₁ + A₂ (maximum)
+  Intensity: I = 4I₀ (for equal amplitudes)
+  ```
+
+  ## Destructive Interference
+
+  ```
+  Path difference: Δx = (n + ½)λ = (2n+1)λ/2
+  Phase difference: Δφ = (2n+1)π
+
+  Resultant amplitude: A = |A₁ - A₂| (minimum)
+  Intensity: I = 0 (for equal amplitudes)
+  ```
+
+  ## Young's Double Slit Experiment (1801)
+
+  ### Setup:
+  - Two narrow slits S₁ and S₂ separated by distance d
+  - Screen at distance D from slits
+  - Monochromatic light of wavelength λ
+
+  ### Path Difference at Point P:
+  ```
+  Δx = S₂P - S₁P ≈ d sin θ ≈ dy/D
+
+  y = distance from central maximum
+  θ = angle from center line
+  ```
+
+  Small angle approximation: sin θ ≈ tan θ ≈ y/D
+
+  ## Position of Fringes
+
+  ### Bright Fringes (Maxima):
+  ```
+  dy/D = nλ
+
+  Position: y_n = nλD/d
+
+  n = 0: Central bright (y = 0)
+  n = 1: First bright (y = λD/d)
+  n = 2: Second bright (y = 2λD/d)
+  ```
+
+  ### Dark Fringes (Minima):
+  ```
+  dy/D = (n + ½)λ = (2n+1)λ/2
+
+  Position: y_n = (2n+1)λD/(2d)
+
+  n = 0: First dark (y = λD/2d)
+  n = 1: Second dark (y = 3λD/2d)
+  ```
+
+  ## Fringe Width
+
+  **Distance between consecutive bright (or dark) fringes:**
+
+  ```
+  β = λD/d
+
+  β = fringe width (constant for all fringes)
+  ```
+
+  ### Important Relations:
+  - β ∝ λ (longer wavelength, wider fringes)
+  - β ∝ D (screen farther, wider fringes)
+  - β ∝ 1/d (slits closer, wider fringes)
+
+  ## Intensity Distribution
+
+  For equal amplitudes (I₁ = I₂ = I₀):
+  ```
+  I = 4I₀ cos²(Δφ/2) = 4I₀ cos²(πdy/λD)
+
+  Maximum: I_max = 4I₀ (at bright fringes)
+  Minimum: I_min = 0 (at dark fringes)
+  Average: I_avg = 2I₀
+  ```
+
+  ## Angular Fringe Width
+
+  ```
+  Angular width: θ = β/D = λ/d
+
+  Independent of D!
+  ```
+
+  ## Effect of Medium
+
+  If experiment performed in medium of refractive index n:
+  ```
+  λ_medium = λ_vacuum/n
+  β_medium = λ_medium D/d = λD/(nd)
+
+  Fringe width decreases!
+  ```
+
+  ## Displacement of Fringes
+
+  ### Introducing thin transparent sheet (thickness t, refractive index μ):
+  ```
+  Extra path = (μ-1)t
+  Shift = (μ-1)tD/d
+
+  Central maximum shifts towards side with sheet.
+  Fringe pattern shifts but β remains same.
+  ```
+
+  ## Intensity for Unequal Amplitudes
+
+  If I₁ ≠ I₂:
+  ```
+  I_max = (√I₁ + √I₂)² = I₁ + I₂ + 2√(I₁I₂)
+  I_min = (√I₁ - √I₂)² = I₁ + I₂ - 2√(I₁I₂)
+
+  Contrast: (I_max - I_min)/(I_max + I_min) = 2√(I₁I₂)/(I₁+I₂)
+  ```
+
+  ## Numerical Examples
+
+  **Example 1:** Slits 0.3 mm apart, screen 1 m away, λ = 600 nm. Find fringe width.
+
+  **Solution:**
+  ```
+  β = λD/d = (600×10⁻⁹)(1)/(0.3×10⁻³)
+  β = 600×10⁻⁹/3×10⁻⁴ = 2×10⁻³ m = 2 mm
+
+  20 fringes would span 40 mm = 4 cm.
+  ```
+
+  **Example 2:** Third bright fringe is at 3 mm from center. Find slit separation if D = 1.5 m, λ = 500 nm.
+
+  **Solution:**
+  ```
+  y₃ = 3λD/d
+  3×10⁻³ = 3(500×10⁻⁹)(1.5)/d
+  d = 3×500×10⁻⁹×1.5/(3×10⁻³)
+  d = 750×10⁻⁶ = 0.75 mm
+  ```
+
+  **Example 3:** Transparent sheet (μ = 1.5, t = 2 μm) introduced in one path. Find shift.
+
+  **Solution:**
+  ```
+  Shift = (μ-1)tD/d = (0.5)(2×10⁻⁶)(D/d)
+  Shift = 10⁻⁶(D/d) = (D/d) μm
+
+  If β = 2 mm, shift = 10⁻⁶/(λ) × β = (10⁻⁶/6×10⁻⁷) × β
+  Shift ≈ 1.67β (about 1.67 fringe widths)
+  ```
+
+  ## JEE Key Points
+
+  1. **Path diff for bright:** Δx = nλ
+  2. **Path diff for dark:** Δx = (2n+1)λ/2
+  3. **Fringe width:** β = λD/d
+  4. **Position of nth bright:** y = nλD/d
+  5. **I ∝ 4I₀cos²(Δφ/2)** for equal sources
+  6. **Sheet shifts pattern** but β unchanged
+
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: "In Young's double slit experiment, slit separation is halved and slit-to-screen distance is doubled. Fringe width:"
+  options:
+  - "Remains same"
+  - "Doubles"
+  - "Becomes 4 times"
+  - "Halves"
+  correct_answer: "Becomes 4 times"
+  explanation: "β = λD/d. If d' = d/2 and D' = 2D: β' = λD'/d' = λ(2D)/(d/2) = 4λD/d = 4β. Fringe width quadruples! Two effects combine: halving d doubles β (inverse relation), and doubling D also doubles β (direct relation). Net effect: 2×2 = 4. This is important for experimental design: to get larger, more visible fringes, use larger D and smaller d. But smaller d requires narrower slits which reduces intensity. Trade-off between fringe visibility and brightness. Real experiments optimize these parameters."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: "In YDSE, if one slit is covered, pattern on screen shows:"
+  options:
+  - "No light at all"
+  - "Uniform illumination"
+  - "Interference fringes"
+  - "Single slit diffraction pattern"
+  correct_answer: "Single slit diffraction pattern"
+  explanation: "With one slit covered, light passes only through remaining single slit. This produces single-slit diffraction pattern: central bright maximum (widest), alternating dark and bright fringes of decreasing intensity. No interference because need two coherent sources! Interference requires superposition of waves from BOTH slits. Single slit diffraction has pattern due to different parts of same wavefront interfering. Fringe width of single slit: β = 2λD/a where a = slit width. Note: in complete YDSE, diffraction envelope modulates interference pattern - bright fringes have intensity modulated by diffraction envelope."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: "Path difference between two interfering waves is 11λ/2. This corresponds to:"
+  options:
+  - "Bright fringe"
+  - "Dark fringe"
+  - "Neither bright nor dark"
+  - "Central maximum"
+  correct_answer: "Dark fringe"
+  explanation: "11λ/2 = (10+1)λ/2 = 5λ + λ/2 = (odd number)×λ/2. For dark fringe: path difference = (2n+1)λ/2 where n = 0,1,2... Here 11λ/2 = (2×5+1)λ/2, so n = 5 (6th dark fringe). Phase difference = (2π/λ)×(11λ/2) = 11π = odd multiple of π, meaning destructive interference. At this position, crest from one slit meets trough from other. For bright: need even half-wavelengths (integer λ). Quick check: 11λ/2 is not integer multiple of λ (would be 5.5λ), confirming destructive interference. This principle applies to all interference phenomena."
+  require_pass: true

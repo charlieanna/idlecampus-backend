@@ -1,0 +1,156 @@
+slug: le-chatelier
+title: Le Chatelier\
+difficulty: easy
+sequence_order: 4
+estimated_minutes: 2
+key_concepts:
+- Le Chateliers principle
+- Effect of concentration
+- Effect of pressure
+- Effect of temperature
+- Degree of dissociation
+- ICE tables
+prerequisites: []
+content_md: "# Le Chatelier\\ \U0001F680\n\n# Le Chatelier's Principle & Equilibrium\
+  \ Calculations\n\n    ## Le Chatelier's Principle\n\n    **Statement:** If a system\
+  \ at equilibrium is subjected to a change, the system shifts in a direction that\
+  \ minimizes that change\n\n    ### Types of Changes:\n\n    1. Change in **concentration**\n\
+  \    2. Change in **pressure/volume**\n    3. Change in **temperature**\n    4.\
+  \ Addition of **catalyst** (NO EFFECT on equilibrium)\n    5. Addition of **inert\
+  \ gas**\n\n    ## Effect of Concentration\n\n    ### Adding Reactant or Removing\
+  \ Product:\n    - Equilibrium shifts **forward** (→)\n    - More products formed\n\
+  \    - K remains constant\n\n    ### Adding Product or Removing Reactant:\n    -\
+  \ Equilibrium shifts **backward** (←)\n    - More reactants formed\n    - K remains\
+  \ constant\n\n    ### Example: N₂ + 3H₂ ⇌ 2NH₃\n\n    - **Add N₂:** Shifts forward\
+  \ → more NH₃\n    - **Remove H₂:** Shifts backward → more N₂\n    - **Add NH₃:**\
+  \ Shifts backward\n    - **Remove NH₃:** Shifts forward\n\n    ## Effect of Pressure/Volume\n\
+  \n    **Rule:** Equilibrium shifts to the side with **fewer moles of gas**\n\n \
+  \   ### Increase Pressure (Decrease Volume):\n    - Shifts to side with **fewer\
+  \ gas molecules**\n    - System tries to reduce pressure\n\n    ### Decrease Pressure\
+  \ (Increase Volume):\n    - Shifts to side with **more gas molecules**\n    - System\
+  \ tries to increase pressure\n\n    ### If Δn = 0:\n    - **No effect** of pressure\
+  \ change\n\n    ### Examples:\n\n    **1. N₂ + 3H₂ ⇌ 2NH₃** (Δn = -2)\n    - Increase\
+  \ P: Shifts **forward** (2 < 4 moles)\n    - Decrease P: Shifts **backward**\n\n\
+  \    **2. H₂ + I₂ ⇌ 2HI** (Δn = 0)\n    - Change in P: **No effect**\n\n    **3.\
+  \ PCl₅ ⇌ PCl₃ + Cl₂** (Δn = +1)\n    - Increase P: Shifts **backward** (1 < 2 moles)\n\
+  \    - Decrease P: Shifts **forward**\n\n    ### Inert Gas Addition:\n\n    **At\
+  \ constant volume:** No effect (partial pressures unchanged)\n    **At constant\
+  \ pressure:** Volume increases, shifts to side with more moles\n\n    ## Effect\
+  \ of Temperature\n\n    **Rule:** Treat heat as reactant (endothermic) or product\
+  \ (exothermic)\n\n    ### For Exothermic Reaction (ΔH < 0):\n    **A + B ⇌ C + D\
+  \ + Heat**\n\n    - **Increase T:** Shifts **backward** (consume heat), K decreases\n\
+  \    - **Decrease T:** Shifts **forward** (produce heat), K increases\n\n    ###\
+  \ For Endothermic Reaction (ΔH > 0):\n    **A + B + Heat ⇌ C + D**\n\n    - **Increase\
+  \ T:** Shifts **forward** (consume heat), K increases\n    - **Decrease T:** Shifts\
+  \ **backward** (produce heat), K decreases\n\n    **Note:** Temperature is the **only\
+  \ factor that changes K**\n\n    ### Examples:\n\n    **1. N₂ + 3H₂ ⇌ 2NH₃, ΔH =\
+  \ -92 kJ** (exothermic)\n    - Increase T: K decreases, backward shift\n    - Decrease\
+  \ T: K increases, forward shift\n\n    **2. N₂ + O₂ ⇌ 2NO, ΔH = +180 kJ** (endothermic)\n\
+  \    - Increase T: K increases, forward shift\n    - Decrease T: K decreases, backward\
+  \ shift\n\n    ## Effect of Catalyst\n\n    - **Speeds up** both forward and backward\
+  \ reactions equally\n    - **No effect on equilibrium position** or K\n    - **Reduces\
+  \ time** to reach equilibrium\n    - Provides **alternate pathway** with lower activation\
+  \ energy\n\n    ## Summary Table: Le Chatelier's Principle\n\n    | Change | Effect\
+  \ | K changes? |\n    |--------|--------|------------|\n    | Add reactant | Forward\
+  \ shift | No |\n    | Add product | Backward shift | No |\n    | Increase P | To\
+  \ fewer moles | No |\n    | Decrease P | To more moles | No |\n    | Increase T\
+  \ (exo) | Backward | Yes (↓) |\n    | Increase T (endo) | Forward | Yes (↑) |\n\
+  \    | Add catalyst | Faster equilibrium | No |\n    | Add inert (const V) | No\
+  \ effect | No |\n\n    ## Degree of Dissociation (α)\n\n    **Definition:** Fraction\
+  \ of reactant that dissociates at equilibrium\n\n    **α = (Moles dissociated) /\
+  \ (Initial moles)**\n\n    Range: **0 ≤ α ≤ 1** or **0% to 100%**\n\n    ### For\
+  \ Reaction: A ⇌ B + C\n\n    If initial moles of A = a, and degree of dissociation\
+  \ = α:\n\n    - Moles dissociated = aα\n    - At equilibrium:\n      - A: a(1-α)\n\
+  \      - B: aα\n      - C: aα\n\n    ## ICE Table Method\n\n    **ICE = Initial,\
+  \ Change, Equilibrium**\n\n    ### Steps:\n\n    1. Write balanced equation\n  \
+  \  2. Write **I**nitial concentrations/pressures\n    3. Write **C**hange (using\
+  \ stoichiometry and variable)\n    4. Write **E**quilibrium (I + C)\n    5. Substitute\
+  \ in K expression and solve\n\n    ### Example: Equilibrium Calculation\n\n    **Q:\
+  \ For H₂ + I₂ ⇌ 2HI, Kc = 50. Initial: [H₂] = 0.2 M, [I₂] = 0.3 M, [HI] = 0. Find\
+  \ equilibrium concentrations.**\n\n    **ICE Table:**\n\n    |  | H₂ | I₂ | 2HI\
+  \ |\n    |---|---|---|---|\n    | I | 0.2 | 0.3 | 0 |\n    | C | -x | -x | +2x |\n\
+  \    | E | 0.2-x | 0.3-x | 2x |\n\n    **Solution:**\n\n    - Kc = [HI]² / [H₂][I₂]\
+  \ = 50\n    - (2x)² / [(0.2-x)(0.3-x)] = 50\n    - 4x² = 50(0.06 - 0.5x + x²)\n\
+  \    - 4x² = 3 - 25x + 50x²\n    - 46x² - 25x + 3 = 0\n\n    Using quadratic formula\
+  \ or simplification:\n    - x ≈ 0.15\n\n    **Equilibrium:**\n    - [H₂] = 0.2 -\
+  \ 0.15 = **0.05 M**\n    - [I₂] = 0.3 - 0.15 = **0.15 M**\n    - [HI] = 2(0.15)\
+  \ = **0.30 M**\n\n    ## Degree of Dissociation Problems\n\n    ### Problem 1: Calculate\
+  \ α\n\n    **Q: PCl₅ ⇌ PCl₃ + Cl₂. Initially 1 mol PCl₅ in 1 L. At equilibrium,\
+  \ 0.4 mol PCl₅ remains. Find α.**\n\n    Solution:\n    - Initial moles = 1\n  \
+  \  - Remaining = 0.4\n    - Dissociated = 1 - 0.4 = 0.6\n    - **α = 0.6/1 = 0.6\
+  \ or 60%**\n\n    ### Problem 2: Calculate Kp with α\n\n    **Q: For PCl₅ ⇌ PCl₃\
+  \ + Cl₂, if α = 0.5 and total pressure = 2 atm, find Kp.**\n\n    **Using ICE:**\n\
+  \n    |  | PCl₅ | PCl₃ | Cl₂ |\n    |---|---|---|---|\n    | Initial | 1 | 0 | 0\
+  \ |\n    | Change | -α | +α | +α |\n    | Equil | 1-α | α | α |\n\n    - Total moles\
+  \ = 1-α + α + α = 1+α = 1.5\n    - Mole fractions:\n      - X_PCl₅ = (1-α)/(1+α)\
+  \ = 0.5/1.5 = 1/3\n      - X_PCl₃ = α/(1+α) = 0.5/1.5 = 1/3\n      - X_Cl₂ = α/(1+α)\
+  \ = 1/3\n\n    - Partial pressures (P_i = X_i × P_total):\n      - P_PCl₅ = 2/3\
+  \ atm\n      - P_PCl₃ = 2/3 atm\n      - P_Cl₂ = 2/3 atm\n\n    - Kp = (P_PCl₃ ×\
+  \ P_Cl₂) / P_PCl₅\n    - Kp = (2/3 × 2/3) / (2/3)\n    - **Kp = 2/3 atm**\n\n  \
+  \  ## Relationship Between α and P\n\n    For: **A ⇌ B + C** (Δn = +1)\n\n    **α\
+  \ ∝ 1/√P** (at constant T)\n\n    - Higher pressure → lower dissociation\n    -\
+  \ Lower pressure → higher dissociation\n\n    ## Solved IIT JEE Problems\n\n   \
+  \ ### Problem 1: Le Chatelier application\n\n    **Q: For N₂ + O₂ ⇌ 2NO, ΔH = +180\
+  \ kJ, suggest conditions for maximum NO.**\n\n    Solution:\n    - **High temperature:**\
+  \ Endothermic, K increases with T\n    - **No pressure effect:** Δn = 0\n    - **Remove\
+  \ NO continuously:** Shift forward\n    - **Answer:** High T, remove NO\n\n    ###\
+  \ Problem 2: Equilibrium calculation\n\n    **Q: For CO + H₂O ⇌ CO₂ + H₂, Kc = 4.\
+  \ If 1 mol each of CO and H₂O in 1 L, find equilibrium [CO₂].**\n\n    **ICE Table:**\n\
+  \n    |  | CO | H₂O | CO₂ | H₂ |\n    |---|---|---|---|---|\n    | I | 1 | 1 | 0\
+  \ | 0 |\n    | C | -x | -x | +x | +x |\n    | E | 1-x | 1-x | x | x |\n\n    Solution:\n\
+  \    - Kc = [CO₂][H₂] / [CO][H₂O] = 4\n    - x² / (1-x)² = 4\n    - x/(1-x) = 2\n\
+  \    - x = 2 - 2x\n    - 3x = 2\n    - x = 2/3 = **0.67 M**\n\n    ### Problem 3:\
+  \ Degree of dissociation\n\n    **Q: N₂O₄ ⇌ 2NO₂. At 60°C, α = 0.5 in 1 L flask\
+  \ with 4 mol N₂O₄ initially. Calculate Kc.**\n\n    **ICE:**\n\n    |  | N₂O₄ |\
+  \ 2NO₂ |\n    |---|---|---|\n    | I | 4 | 0 |\n    | C | -4α | +8α |\n    | E |\
+  \ 4(1-α) | 8α |\n\n    With α = 0.5:\n    - [N₂O₄] = 4(0.5) = 2 M\n    - [NO₂] =\
+  \ 8(0.5) = 4 M\n\n    - Kc = [NO₂]² / [N₂O₄] = 16/2 = **8**\n\n    ## IIT JEE Key\
+  \ Points\n\n    1. **Le Chatelier:** System opposes the change\n    2. **Add reactant/product:**\
+  \ Shift to consume it\n    3. **Increase P:** Shift to fewer gas moles\n    4. **Increase\
+  \ T (exo):** K decreases, backward shift\n    5. **Increase T (endo):** K increases,\
+  \ forward shift\n    6. **Catalyst:** No effect on K or position\n    7. **Degree\
+  \ of dissociation:** α = moles dissociated/initial\n    8. **ICE table:** Systematic\
+  \ method for calculations\n    9. **For dissociation:** α ∝ 1/√P (if Δn > 0)\n \
+  \   10. **Only T changes K**\n\n    ## Quick Reference\n\n    | Factor | Exo (ΔH<0)\
+  \ | Endo (ΔH>0) |\n    |--------|------------|-------------|\n    | Increase T |\
+  \ Backward, K↓ | Forward, K↑ |\n    | Decrease T | Forward, K↑ | Backward, K↓ |\n\
+  \n    | Pressure | Δn<0 | Δn=0 | Δn>0 |\n    |----------|------|------|------|\n\
+  \    | Increase P | Forward | No effect | Backward |\n    | Decrease P | Backward\
+  \ | No effect | Forward |\n\n    ## ICE Table Template\n\n    |  | Reactant | Product\
+  \ |\n    |---|---|---|\n    | Initial | a | b |\n    | Change | -x | +x |\n    |\
+  \ Equil | a-x | b+x |\n\n    Then: K = f(a, b, x) → solve for x\n\n## Key Points\n\
+  \n- Le Chateliers principle\n\n- Effect of concentration\n\n- Effect of pressure"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: "For the exothermic reaction N₂(g) + 3H₂(g) ⇌ 2NH₃(g), ΔH = -92 kJ, which combination of conditions will maximize the yield of ammonia?"
+  options:
+  - "High temperature and high pressure"
+  - "Low temperature and low pressure"
+  - "Low temperature and high pressure"
+  - "High temperature and low pressure"
+  correct_answer: "Low temperature and high pressure"
+  explanation: "To maximize ammonia yield, we need to apply Le Chatelier's principle considering both temperature and pressure effects. For the reaction N₂(g) + 3H₂(g) ⇌ 2NH₃(g), ΔH = -92 kJ: (1) Temperature effect: Since the reaction is exothermic (releases heat), we can write it as N₂ + 3H₂ ⇌ 2NH₃ + Heat. Increasing temperature shifts the equilibrium backward (consuming heat), decreasing K and reducing NH₃ yield. Therefore, low temperature favors forward reaction and higher NH₃ yield. (2) Pressure effect: Reactants have 4 moles of gas (1 + 3), while products have 2 moles. Δn = 2 - 4 = -2. According to Le Chatelier, increasing pressure shifts equilibrium toward the side with fewer moles of gas, which is the product side (2 < 4). Therefore, high pressure favors NH₃ formation. Combining both: Low temperature and high pressure maximize NH₃ yield. In industrial Haber process, a compromise temperature (450-500°C) is used because very low temperature makes the reaction too slow, even though it would favor products thermodynamically. The high pressure (200-300 atm) is maintained for maximum yield."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: "Consider the reaction PCl₅(g) ⇌ PCl₃(g) + Cl₂(g). If the degree of dissociation (α) is 0.5 at a total pressure of 2 atm, what is the value of Kp?"
+  options:
+  - "0.33 atm"
+  - "0.67 atm"
+  - "1.00 atm"
+  - "1.33 atm"
+  correct_answer: "0.67 atm"
+  explanation: "To find Kp using degree of dissociation, we need to set up an ICE table. For PCl₅(g) ⇌ PCl₃(g) + Cl₂(g) with α = 0.5: Assuming 1 mole of PCl₅ initially: Initial moles: PCl₅ = 1, PCl₃ = 0, Cl₂ = 0. At equilibrium: PCl₅ = 1-α = 0.5 mol, PCl₃ = α = 0.5 mol, Cl₂ = α = 0.5 mol. Total moles at equilibrium = (1-α) + α + α = 1 + α = 1.5 mol. Mole fractions: X(PCl₅) = 0.5/1.5 = 1/3, X(PCl₃) = 0.5/1.5 = 1/3, X(Cl₂) = 0.5/1.5 = 1/3. Partial pressures (P_i = X_i × P_total where P_total = 2 atm): P(PCl₅) = (1/3) × 2 = 2/3 atm, P(PCl₃) = 2/3 atm, P(Cl₂) = 2/3 atm. Now, Kp = [P(PCl₃) × P(Cl₂)]/P(PCl₅) = [(2/3) × (2/3)]/(2/3) = (4/9)/(2/3) = (4/9) × (3/2) = 12/18 = 2/3 = 0.67 atm. This problem demonstrates the relationship between degree of dissociation and equilibrium constant, which is important for IIT JEE."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: "For the endothermic reaction N₂(g) + O₂(g) ⇌ 2NO(g), ΔH = +180 kJ, what happens to the equilibrium constant K when temperature is increased?"
+  options:
+  - "K decreases"
+  - "K increases"
+  - "K remains constant"
+  - "K first increases then decreases"
+  correct_answer: "K increases"
+  explanation: "Temperature is the only factor that changes the value of the equilibrium constant K. For an endothermic reaction, we can write it as: N₂(g) + O₂(g) + Heat ⇌ 2NO(g), treating heat as a reactant. When temperature is increased, we are effectively adding heat to the system. According to Le Chatelier's principle, the system will shift in a direction that consumes the added heat, which is the forward direction for an endothermic reaction. This forward shift means more products are formed at equilibrium, increasing the ratio [products]/[reactants], which means K increases. The relationship with temperature is given by the Van't Hoff equation: d(ln K)/dT = ΔH/(RT²). For endothermic reactions (ΔH > 0), this derivative is positive, confirming that K increases with T. Conversely, for exothermic reactions (ΔH < 0), K decreases with increasing T. This is why the Haber process for ammonia synthesis (exothermic) has a decreasing K with temperature, but operates at higher temperatures for kinetic reasons (faster reaction rate). Temperature is unique among all factors (concentration, pressure, catalyst, inert gas) as the only one that actually changes the value of K."
+  require_pass: true

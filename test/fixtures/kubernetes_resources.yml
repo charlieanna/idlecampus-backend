@@ -1,0 +1,46 @@
+# Test fixtures for kubernetes_resources
+pod_basic:
+  id: 1
+  resource_type: "Pod"
+  name: "basic-pod"
+  yaml_template: |
+    apiVersion: v1
+    kind: Pod
+    metadata:
+      name: my-pod
+    spec:
+      containers:
+      - name: my-container
+        image: nginx
+  explanation: "Basic Pod resource"
+  difficulty: "easy"
+  category: "basics"
+  exam_frequency: 10
+
+deployment_advanced:
+  id: 2
+  resource_type: "Deployment"
+  name: "rolling-deployment"
+  yaml_template: |
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: my-deployment
+    spec:
+      replicas: 3
+      selector:
+        matchLabels:
+          app: my-app
+      template:
+        metadata:
+          labels:
+            app: my-app
+        spec:
+          containers:
+          - name: my-container
+            image: nginx
+  explanation: "Advanced deployment with rolling updates"
+  difficulty: "medium"
+  category: "workloads"
+  exam_frequency: 8
+

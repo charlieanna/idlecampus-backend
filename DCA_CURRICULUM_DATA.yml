@@ -1,0 +1,52 @@
+---
+meta:
+  total_chapters: 55
+  total_labs: 11
+  exam: Docker Certified Associate (DCA)
+  estimated_hours: 9
+  generated_at: 2025-11-02 15:04:14 UTC
+chapters:
+- number: 10
+  slug: docker-images
+  title: Viewing Available Images
+  command: docker images
+  domain: Image Creation (20%)
+  difficulty: easy
+  estimated_minutes: 3
+  key_concepts:
+  - Images vs containers
+  - Image tags
+  - Image IDs
+  - Repository names
+  quiz_question: What does the TAG column represent in docker images output?
+  quiz_correct: The version or variant of the image
+- number: 11
+  slug: docker-pull
+  title: Downloading Images from Registry
+  command: docker pull
+  domain: Image Creation (20%)
+  difficulty: easy
+  estimated_minutes: 4
+  key_concepts:
+  - Docker Hub
+  - Image layers
+  - Pull strategies
+  - Registry URLs
+  quiz_question: What happens when you pull an image that already exists locally?
+  quiz_correct: Docker checks for updates and downloads only new layers
+labs:
+- number: 1
+  after_chapter: 14
+  title: Container Lifecycle Mastery
+  duration_minutes: 15
+  commands_tested:
+  - docker run
+  - docker ps
+  - docker stop
+  - docker rm
+  - docker logs
+  - docker exec
+  - docker images
+  - docker pull
+  pass_threshold: 70
+  scenario: Deploy, manage, and troubleshoot a complete container lifecycle

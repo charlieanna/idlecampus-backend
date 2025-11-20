@@ -1,0 +1,71 @@
+slug: lesson-3
+title: Lesson 3
+difficulty: easy
+sequence_order: 3
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Docker Secret ls - List and Manage Secrets\n\
+  \n    List all secrets in your Swarm cluster with filtering, formatting, and sorting\
+  \ capabilities for effective secret management.\n\n    ## Basic Syntax\n    ```bash\n\
+  \    docker secret ls [OPTIONS]\n    ```\n\n    ## Common Options\n    - `--filter`\
+  \ or `-f`: Filter output (e.g., by label, name)\n    - `--format`: Format output\
+  \ using Go templates\n    - `--quiet` or `-q`: Only show secret IDs\n\n    ## Usage\
+  \ Examples\n\n    ### List All Secrets\n    ```bash\n    docker secret ls\n    ```\n\
+  \n    ### Filter by Label\n    ```bash\n    docker secret ls --filter label=environment=production\n\
+  \    ```\n\n    ### Show Only IDs\n    ```bash\n    docker secret ls -q\n    ```\n\
+  \n    ### Custom Format\n    ```bash\n    docker secret ls --format \"table {{.Name}}\\\
+  t{{.CreatedAt}}\"\n    ```\n\n    ## Key Takeaways\n    - List secrets for inventory\
+  \ management\n    - Use filters to find specific secrets\n    - Format output for\
+  \ scripts and reports\n    - Monitor secret count and organization"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What information does docker secret ls display and why is the --filter flag
+    important?
+  options:
+  - Displays secret names, IDs, and creation dates; --filter allows finding secrets
+    by labels or names for organization and compliance
+  - Displays actual secret values for easy reference
+  - Only shows secret IDs with no other information
+  - docker secret ls shows encrypted data that must be decrypted
+  correct_answer: Displays secret names, IDs, creation dates; --filter allows finding
+    secrets by labels or names for organization and compliance
+  explanation: 'docker secret ls provides secret inventory management with filtering
+    capabilities essential for large-scale operations and compliance. Basic output
+    columns: ID (unique identifier, first 12 chars of full ID), NAME (human-readable
+    secret name), CREATED (when secret was created), UPDATED (last modification time).
+    Example output: ID: abc123xyz789, NAME: db_password, CREATED: 3 weeks ago, UPDATED:
+    3 weeks ago. Never shows actual secret values for security. Filtering by label:
+    docker secret ls --filter label=environment=production shows only production secrets,
+    docker secret ls --filter label=team=backend shows backend team secrets, docker
+    secret ls --filter label=rotation_date=2025-03 shows secrets due for rotation
+    in March. Enables organizational structure and compliance tracking. Filtering
+    by name: docker secret ls --filter name=db shows all secrets with "db" in name
+    (db_password, db_connection, backup_db_key), docker secret ls --filter name=^prod
+    shows secrets starting with "prod" (prod_api_key, prod_db_password). Useful for
+    finding related secrets. Use case scenarios: Organization: Label secrets by environment
+    (dev/staging/prod), team (backend/frontend/data), compliance requirement (pci-dss/hipaa/gdpr).
+    Then filter: docker secret ls --filter label=environment=production --filter label=compliance=pci-dss
+    shows PCI-compliant production secrets. Rotation management: Label secrets with
+    rotation schedule and date, docker secret ls --filter label=rotation_schedule=quarterly
+    shows all quarterly-rotated secrets, script checks creation date vs current date
+    to find secrets needing rotation. Audit and compliance: Generate inventory report:
+    docker secret ls --format "table {{.Name}}\t{{.CreatedAt}}\t{{.UpdatedAt}}" >
+    secrets_audit.txt, filter by compliance labels for specific audits, prove all
+    sensitive secrets properly labeled and tracked. Example large-scale deployment:
+    Company has 200+ secrets across multiple teams and environments. Without filtering:
+    docker secret ls shows overwhelming 200-line output, difficult to find specific
+    secrets, no organization. With labeling and filtering: docker secret ls --filter
+    label=team=payments --filter label=environment=production shows only 5 payment
+    team production secrets, easy to audit and manage. Script automation: #!/bin/bash,
+    echo "Secrets needing rotation:", docker secret ls --filter label=rotation_schedule=monthly
+    --format ''{{.Name}}\t{{.CreatedAt}}'', for each secret check if creation date
+    > 30 days ago, flag for rotation. Custom formatting: docker secret ls --format
+    "table {{.Name}}\t{{index .Labels \"environment\"}}\t{{index .Labels \"team\"}}"
+    creates custom columns showing name, environment, and team for easy categorization.
+    Best practices: Always label secrets during creation, use consistent labeling
+    scheme across organization, filter in scripts for automated management, regularly
+    review unlabeled secrets (docker secret ls --filter label!=environment), generate
+    periodic inventory reports for compliance.'
+  require_pass: true

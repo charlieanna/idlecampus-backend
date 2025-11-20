@@ -1,0 +1,59 @@
+slug: batteries-practice
+title: batteries — Practice
+difficulty: easy
+sequence_order: 16
+estimated_minutes: 2
+key_concepts:
+- batteries
+prerequisites: []
+content_md: '# batteries — Practice 🚀
+
+
+  Lead-acid battery is secondary (rechargeable). Dry cell and mercury cell are primary
+  (non-rechargeable).
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: Which of the following is a secondary (rechargeable) battery?
+  options:
+  - Lead-acid battery
+  - Dry cell
+  - Mercury cell
+  - Leclanche cell
+  correct_answer: Lead-acid battery
+  explanation: "Lead-acid battery is a secondary (rechargeable) battery used in automobiles. It can be recharged by passing electric current in the reverse direction, converting electrical energy back to chemical energy. The electrodes are lead (Pb) and lead dioxide (PbO₂) in sulfuric acid. Dry cell (Leclanche cell) and mercury cell are primary batteries that cannot be efficiently recharged once depleted - they are single-use batteries."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What happens during the discharging of a lead-acid battery?
+  options:
+  - Both electrodes convert to PbSO₄
+  - Lead converts to PbO₂
+  - Sulfuric acid concentration increases
+  - Water is consumed
+  correct_answer: Both electrodes convert to PbSO₄
+  explanation: "During discharge of a lead-acid battery, both the Pb (anode) and PbO₂ (cathode) electrodes convert to lead sulfate (PbSO₄), and sulfuric acid is consumed while water is formed. The reactions are: Anode: Pb + SO₄²⁻ → PbSO₄ + 2e⁻, Cathode: PbO₂ + 4H⁺ + SO₄²⁻ + 2e⁻ → PbSO₄ + 2H₂O. Overall: Pb + PbO₂ + 2H₂SO₄ → 2PbSO₄ + 2H₂O. During recharging, this reaction is reversed."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: Which battery uses Zn and MnO₂ as electrode materials?
+  options:
+  - Dry cell (Leclanche cell)
+  - Lead-acid battery
+  - Lithium-ion battery
+  - Nickel-cadmium battery
+  correct_answer: Dry cell (Leclanche cell)
+  explanation: "The dry cell (Leclanche cell) uses a zinc container as the anode and a carbon rod surrounded by MnO₂ (manganese dioxide) as the cathode, with NH₄Cl-ZnCl₂ paste as the electrolyte. Anode: Zn → Zn²⁺ + 2e⁻, Cathode: MnO₂ + NH₄⁺ + e⁻ → MnO(OH) + NH₃. It's a primary (non-rechargeable) battery commonly used in flashlights and remote controls. It provides about 1.5 V."
+  require_pass: true

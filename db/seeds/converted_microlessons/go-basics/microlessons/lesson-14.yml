@@ -1,0 +1,244 @@
+slug: lesson-14
+title: Lesson 14
+difficulty: easy
+sequence_order: 14
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# HTTP Networking and Building REST APIs\n\
+  \n    ### Go's HTTP Package\n\n    Go's **net/http** package makes it easy to:\n\
+  \    - ✅ Build HTTP servers\n    - ✅ Create REST APIs\n    - ✅ Make HTTP client\
+  \ requests\n    - ✅ Handle routing and middleware\n\n    **Import:**\n    ```go\n\
+  \    import \"net/http\"\n    ```\n\n    ### Simple HTTP Server\n\n    **Hello World\
+  \ server:**\n    ```go\n    package main\n\n    import (\n        \"fmt\"\n    \
+  \    \"net/http\"\n    )\n\n    func handler(w http.ResponseWriter, r *http.Request)\
+  \ {\n        fmt.Fprintf(w, \"Hello, World!\")\n    }\n\n    func main() {\n   \
+  \     http.HandleFunc(\"/\", handler)\n        fmt.Println(\"Server starting on\
+  \ :8080\")\n        http.ListenAndServe(\":8080\", nil)\n    }\n    ```\n\n    **Visit\
+  \ http://localhost:8080 to see: \"Hello, World!\"**\n\n    ### HTTP Handler Function\n\
+  \n    **Handler signature:**\n    ```go\n    func handler(w http.ResponseWriter,\
+  \ r *http.Request) {\n        // w - write response\n        // r - read request\n\
+  \    }\n    ```\n\n    **ResponseWriter methods:**\n    - `Write([]byte)` - Write\
+  \ response body\n    - `WriteHeader(int)` - Set HTTP status code\n    - `Header()`\
+  \ - Access response headers\n\n    **Request fields:**\n    - `r.Method` - HTTP\
+  \ method (GET, POST, etc.)\n    - `r.URL` - Request URL\n    - `r.Header` - Request\
+  \ headers\n    - `r.Body` - Request body\n    - `r.FormValue()` - Get form data\n\
+  \n    ### Routing\n\n    **Multiple routes:**\n    ```go\n    func main() {\n  \
+  \      http.HandleFunc(\"/\", homeHandler)\n        http.HandleFunc(\"/about\",\
+  \ aboutHandler)\n        http.HandleFunc(\"/contact\", contactHandler)\n\n     \
+  \   http.ListenAndServe(\":8080\", nil)\n    }\n\n    func homeHandler(w http.ResponseWriter,\
+  \ r *http.Request) {\n        fmt.Fprintf(w, \"Home Page\")\n    }\n\n    func aboutHandler(w\
+  \ http.ResponseWriter, r *http.Request) {\n        fmt.Fprintf(w, \"About Page\"\
+  )\n    }\n    ```\n\n    ### HTTP Methods\n\n    **Handle different HTTP methods:**\n\
+  \    ```go\n    func userHandler(w http.ResponseWriter, r *http.Request) {\n   \
+  \     switch r.Method {\n        case http.MethodGet:\n            // GET /user\
+  \ - List users\n            fmt.Fprintf(w, \"Get users\")\n        case http.MethodPost:\n\
+  \            // POST /user - Create user\n            fmt.Fprintf(w, \"Create user\"\
+  )\n        case http.MethodPut:\n            // PUT /user - Update user\n      \
+  \      fmt.Fprintf(w, \"Update user\")\n        case http.MethodDelete:\n      \
+  \      // DELETE /user - Delete user\n            fmt.Fprintf(w, \"Delete user\"\
+  )\n        default:\n            w.WriteHeader(http.StatusMethodNotAllowed)\n  \
+  \          fmt.Fprintf(w, \"Method not allowed\")\n        }\n    }\n    ```\n\n\
+  \    ### JSON REST API\n\n    **Complete CRUD API example:**\n    ```go\n    package\
+  \ main\n\n    import (\n        \"encoding/json\"\n        \"net/http\"\n      \
+  \  \"sync\"\n    )\n\n    type User struct {\n        ID       int    \\`json:\"\
+  id\"\\`\n        Username string \\`json:\"username\"\\`\n        Email    string\
+  \ \\`json:\"email\"\\`\n    }\n\n    var (\n        users   = make(map[int]User)\n\
+  \        nextID  = 1\n        usersMu sync.RWMutex\n    )\n\n    // GET /users -\
+  \ List all users\n    func listUsers(w http.ResponseWriter, r *http.Request) {\n\
+  \        usersMu.RLock()\n        defer usersMu.RUnlock()\n\n        userList :=\
+  \ make([]User, 0, len(users))\n        for _, user := range users {\n          \
+  \  userList = append(userList, user)\n        }\n\n        w.Header().Set(\"Content-Type\"\
+  , \"application/json\")\n        json.NewEncoder(w).Encode(userList)\n    }\n\n\
+  \    // POST /users - Create user\n    func createUser(w http.ResponseWriter, r\
+  \ *http.Request) {\n        var user User\n        if err := json.NewDecoder(r.Body).Decode(&user);\
+  \ err != nil {\n            http.Error(w, err.Error(), http.StatusBadRequest)\n\
+  \            return\n        }\n\n        usersMu.Lock()\n        user.ID = nextID\n\
+  \        nextID++\n        users[user.ID] = user\n        usersMu.Unlock()\n\n \
+  \       w.Header().Set(\"Content-Type\", \"application/json\")\n        w.WriteHeader(http.StatusCreated)\n\
+  \        json.NewEncoder(w).Encode(user)\n    }\n\n    func main() {\n        http.HandleFunc(\"\
+  /users\", func(w http.ResponseWriter, r *http.Request) {\n            switch r.Method\
+  \ {\n            case http.MethodGet:\n                listUsers(w, r)\n       \
+  \     case http.MethodPost:\n                createUser(w, r)\n            default:\n\
+  \                w.WriteHeader(http.StatusMethodNotAllowed)\n            }\n   \
+  \     })\n\n        http.ListenAndServe(\":8080\", nil)\n    }\n    ```\n\n    ###\
+  \ URL Parameters\n\n    **Extract URL path parameters:**\n    ```go\n    import\
+  \ \"strings\"\n\n    // GET /user/123\n    func getUserHandler(w http.ResponseWriter,\
+  \ r *http.Request) {\n        // Extract ID from /user/{id}\n        parts := strings.Split(r.URL.Path,\
+  \ \"/\")\n        if len(parts) < 3 {\n            http.Error(w, \"Invalid URL\"\
+  , http.StatusBadRequest)\n            return\n        }\n\n        id := parts[2]\
+  \  // \"123\"\n        fmt.Fprintf(w, \"User ID: %s\", id)\n    }\n    ```\n\n \
+  \   **Query parameters:**\n    ```go\n    // GET /search?q=golang&page=2\n    func\
+  \ searchHandler(w http.ResponseWriter, r *http.Request) {\n        query := r.URL.Query()\n\
+  \n        searchTerm := query.Get(\"q\")     // \"golang\"\n        page := query.Get(\"\
+  page\")        // \"2\"\n\n        fmt.Fprintf(w, \"Searching for: %s, page: %s\"\
+  , searchTerm, page)\n    }\n    ```\n\n    ### Request Body\n\n    **Reading JSON\
+  \ request body:**\n    ```go\n    type CreateUserRequest struct {\n        Username\
+  \ string \\`json:\"username\"\\`\n        Email    string \\`json:\"email\"\\`\n\
+  \    }\n\n    func createUser(w http.ResponseWriter, r *http.Request) {\n      \
+  \  var req CreateUserRequest\n\n        // Decode JSON body\n        if err := json.NewDecoder(r.Body).Decode(&req);\
+  \ err != nil {\n            http.Error(w, \"Invalid JSON\", http.StatusBadRequest)\n\
+  \            return\n        }\n        defer r.Body.Close()\n\n        // Validate\n\
+  \        if req.Username == \"\" {\n            http.Error(w, \"Username required\"\
+  , http.StatusBadRequest)\n            return\n        }\n\n        // Create user...\n\
+  \        fmt.Fprintf(w, \"Created user: %s\", req.Username)\n    }\n    ```\n\n\
+  \    ### HTTP Status Codes\n\n    **Set response status:**\n    ```go\n    w.WriteHeader(http.StatusOK)\
+  \          // 200\n    w.WriteHeader(http.StatusCreated)     // 201\n    w.WriteHeader(http.StatusBadRequest)\
+  \  // 400\n    w.WriteHeader(http.StatusNotFound)    // 404\n    w.WriteHeader(http.StatusInternalServerError)\
+  \ // 500\n    ```\n\n    **Using http.Error() helper:**\n    ```go\n    http.Error(w,\
+  \ \"User not found\", http.StatusNotFound)\n    // Sets status code and writes error\
+  \ message\n    ```\n\n    ### Headers\n\n    **Set response headers:**\n    ```go\n\
+  \    w.Header().Set(\"Content-Type\", \"application/json\")\n    w.Header().Set(\"\
+  Cache-Control\", \"no-cache\")\n    w.Header().Set(\"X-Custom-Header\", \"value\"\
+  )\n    ```\n\n    **Read request headers:**\n    ```go\n    authToken := r.Header.Get(\"\
+  Authorization\")\n    contentType := r.Header.Get(\"Content-Type\")\n    ```\n\n\
+  \    ### Middleware Pattern\n\n    **Wrap handlers with middleware:**\n    ```go\n\
+  \    // Logging middleware\n    func loggingMiddleware(next http.HandlerFunc) http.HandlerFunc\
+  \ {\n        return func(w http.ResponseWriter, r *http.Request) {\n           \
+  \ log.Printf(\"%s %s\", r.Method, r.URL.Path)\n            next(w, r)  // Call next\
+  \ handler\n        }\n    }\n\n    // Auth middleware\n    func authMiddleware(next\
+  \ http.HandlerFunc) http.HandlerFunc {\n        return func(w http.ResponseWriter,\
+  \ r *http.Request) {\n            token := r.Header.Get(\"Authorization\")\n   \
+  \         if token != \"secret-token\" {\n                http.Error(w, \"Unauthorized\"\
+  , http.StatusUnauthorized)\n                return\n            }\n            next(w,\
+  \ r)\n        }\n    }\n\n    // Usage\n    func main() {\n        http.HandleFunc(\"\
+  /public\", loggingMiddleware(publicHandler))\n        http.HandleFunc(\"/private\"\
+  , loggingMiddleware(authMiddleware(privateHandler)))\n\n        http.ListenAndServe(\"\
+  :8080\", nil)\n    }\n    ```\n\n    ### HTTP Client: Making Requests\n\n    **GET\
+  \ request:**\n    ```go\n    resp, err := http.Get(\"https://api.example.com/users\"\
+  )\n    if err != nil {\n        log.Fatal(err)\n    }\n    defer resp.Body.Close()\n\
+  \n    body, err := io.ReadAll(resp.Body)\n    if err != nil {\n        log.Fatal(err)\n\
+  \    }\n\n    fmt.Println(string(body))\n    ```\n\n    **POST request with JSON:**\n\
+  \    ```go\n    user := User{Username: \"alice\", Email: \"alice@example.com\"}\n\
+  \n    jsonData, _ := json.Marshal(user)\n\n    resp, err := http.Post(\n       \
+  \ \"https://api.example.com/users\",\n        \"application/json\",\n        bytes.NewBuffer(jsonData),\n\
+  \    )\n    if err != nil {\n        log.Fatal(err)\n    }\n    defer resp.Body.Close()\n\
+  \n    fmt.Println(\"Status:\", resp.Status)\n    ```\n\n    **Custom request with\
+  \ headers:**\n    ```go\n    client := &http.Client{\n        Timeout: 10 * time.Second,\n\
+  \    }\n\n    req, err := http.NewRequest(\"GET\", \"https://api.example.com/data\"\
+  , nil)\n    if err != nil {\n        log.Fatal(err)\n    }\n\n    // Set headers\n\
+  \    req.Header.Set(\"Authorization\", \"Bearer token123\")\n    req.Header.Set(\"\
+  Accept\", \"application/json\")\n\n    resp, err := client.Do(req)\n    if err !=\
+  \ nil {\n        log.Fatal(err)\n    }\n    defer resp.Body.Close()\n\n    // Check\
+  \ status\n    if resp.StatusCode != http.StatusOK {\n        log.Printf(\"Unexpected\
+  \ status: %s\", resp.Status)\n    }\n    ```\n\n    ### Complete REST API Example\n\
+  \n    ```go\n    package main\n\n    import (\n        \"encoding/json\"\n     \
+  \   \"log\"\n        \"net/http\"\n        \"strconv\"\n        \"strings\"\n  \
+  \      \"sync\"\n    )\n\n    type Todo struct {\n        ID        int    \\`json:\"\
+  id\"\\`\n        Title     string \\`json:\"title\"\\`\n        Completed bool \
+  \  \\`json:\"completed\"\\`\n    }\n\n    type TodoStore struct {\n        mu  \
+  \  sync.RWMutex\n        todos map[int]Todo\n        nextID int\n    }\n\n    func\
+  \ NewTodoStore() *TodoStore {\n        return &TodoStore{\n            todos: make(map[int]Todo),\n\
+  \            nextID: 1,\n        }\n    }\n\n    func (s *TodoStore) List() []Todo\
+  \ {\n        s.mu.RLock()\n        defer s.mu.RUnlock()\n\n        list := make([]Todo,\
+  \ 0, len(s.todos))\n        for _, todo := range s.todos {\n            list = append(list,\
+  \ todo)\n        }\n        return list\n    }\n\n    func (s *TodoStore) Get(id\
+  \ int) (Todo, bool) {\n        s.mu.RLock()\n        defer s.mu.RUnlock()\n\n  \
+  \      todo, ok := s.todos[id]\n        return todo, ok\n    }\n\n    func (s *TodoStore)\
+  \ Create(title string) Todo {\n        s.mu.Lock()\n        defer s.mu.Unlock()\n\
+  \n        todo := Todo{\n            ID:        s.nextID,\n            Title:  \
+  \   title,\n            Completed: false,\n        }\n        s.todos[s.nextID]\
+  \ = todo\n        s.nextID++\n\n        return todo\n    }\n\n    func (s *TodoStore)\
+  \ Update(id int, completed bool) bool {\n        s.mu.Lock()\n        defer s.mu.Unlock()\n\
+  \n        if todo, ok := s.todos[id]; ok {\n            todo.Completed = completed\n\
+  \            s.todos[id] = todo\n            return true\n        }\n        return\
+  \ false\n    }\n\n    func (s *TodoStore) Delete(id int) bool {\n        s.mu.Lock()\n\
+  \        defer s.mu.Unlock()\n\n        if _, ok := s.todos[id]; ok {\n        \
+  \    delete(s.todos, id)\n            return true\n        }\n        return false\n\
+  \    }\n\n    type TodoHandler struct {\n        store *TodoStore\n    }\n\n   \
+  \ func (h *TodoHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {\n  \
+  \      w.Header().Set(\"Content-Type\", \"application/json\")\n\n        // Parse\
+  \ ID from URL\n        var id int\n        if r.URL.Path != \"/todos\" && r.URL.Path\
+  \ != \"/todos/\" {\n            parts := strings.Split(r.URL.Path, \"/\")\n    \
+  \        if len(parts) >= 3 {\n                id, _ = strconv.Atoi(parts[2])\n\
+  \            }\n        }\n\n        switch r.Method {\n        case http.MethodGet:\n\
+  \            if id > 0 {\n                h.getTodo(w, id)\n            } else {\n\
+  \                h.listTodos(w)\n            }\n        case http.MethodPost:\n\
+  \            h.createTodo(w, r)\n        case http.MethodPut:\n            h.updateTodo(w,\
+  \ r, id)\n        case http.MethodDelete:\n            h.deleteTodo(w, id)\n   \
+  \     default:\n            w.WriteHeader(http.StatusMethodNotAllowed)\n       \
+  \ }\n    }\n\n    func (h *TodoHandler) listTodos(w http.ResponseWriter) {\n   \
+  \     json.NewEncoder(w).Encode(h.store.List())\n    }\n\n    func (h *TodoHandler)\
+  \ getTodo(w http.ResponseWriter, id int) {\n        todo, ok := h.store.Get(id)\n\
+  \        if !ok {\n            http.Error(w, \"Todo not found\", http.StatusNotFound)\n\
+  \            return\n        }\n        json.NewEncoder(w).Encode(todo)\n    }\n\
+  \n    func (h *TodoHandler) createTodo(w http.ResponseWriter, r *http.Request) {\n\
+  \        var req struct {\n            Title string \\`json:\"title\"\\`\n     \
+  \   }\n\n        if err := json.NewDecoder(r.Body).Decode(&req); err != nil {\n\
+  \            http.Error(w, \"Invalid JSON\", http.StatusBadRequest)\n          \
+  \  return\n        }\n\n        if req.Title == \"\" {\n            http.Error(w,\
+  \ \"Title required\", http.StatusBadRequest)\n            return\n        }\n\n\
+  \        todo := h.store.Create(req.Title)\n        w.WriteHeader(http.StatusCreated)\n\
+  \        json.NewEncoder(w).Encode(todo)\n    }\n\n    func (h *TodoHandler) updateTodo(w\
+  \ http.ResponseWriter, r *http.Request, id int) {\n        var req struct {\n  \
+  \          Completed bool \\`json:\"completed\"\\`\n        }\n\n        if err\
+  \ := json.NewDecoder(r.Body).Decode(&req); err != nil {\n            http.Error(w,\
+  \ \"Invalid JSON\", http.StatusBadRequest)\n            return\n        }\n\n  \
+  \      if !h.store.Update(id, req.Completed) {\n            http.Error(w, \"Todo\
+  \ not found\", http.StatusNotFound)\n            return\n        }\n\n        w.WriteHeader(http.StatusNoContent)\n\
+  \    }\n\n    func (h *TodoHandler) deleteTodo(w http.ResponseWriter, id int) {\n\
+  \        if !h.store.Delete(id) {\n            http.Error(w, \"Todo not found\"\
+  , http.StatusNotFound)\n            return\n        }\n        w.WriteHeader(http.StatusNoContent)\n\
+  \    }\n\n    func main() {\n        store := NewTodoStore()\n        handler :=\
+  \ &TodoHandler{store: store}\n\n        http.Handle(\"/todos\", handler)\n     \
+  \   http.Handle(\"/todos/\", handler)\n\n        log.Println(\"Server starting on\
+  \ :8080\")\n        log.Fatal(http.ListenAndServe(\":8080\", nil))\n    }\n    ```\n\
+  \n    **Test with curl:**\n    ```bash\n    # Create todo\n    curl -X POST http://localhost:8080/todos\
+  \ \\\n      -H \"Content-Type: application/json\" \\\n      -d '{\"title\":\"Buy\
+  \ groceries\"}'\n\n    # List todos\n    curl http://localhost:8080/todos\n\n  \
+  \  # Get todo\n    curl http://localhost:8080/todos/1\n\n    # Update todo\n   \
+  \ curl -X PUT http://localhost:8080/todos/1 \\\n      -H \"Content-Type: application/json\"\
+  \ \\\n      -d '{\"completed\":true}'\n\n    # Delete todo\n    curl -X DELETE http://localhost:8080/todos/1\n\
+  \    ```\n\n    ### Best Practices\n\n    **1. Always set Content-Type:**\n    ```go\n\
+  \    w.Header().Set(\"Content-Type\", \"application/json\")\n    ```\n\n    **2.\
+  \ Handle errors properly:**\n    ```go\n    if err != nil {\n        http.Error(w,\
+  \ err.Error(), http.StatusInternalServerError)\n        return\n    }\n    ```\n\
+  \n    **3. Use context for timeouts:**\n    ```go\n    ctx, cancel := context.WithTimeout(r.Context(),\
+  \ 5*time.Second)\n    defer cancel()\n\n    req, _ := http.NewRequestWithContext(ctx,\
+  \ \"GET\", url, nil)\n    ```\n\n    **4. Close response bodies:**\n    ```go\n\
+  \    resp, err := http.Get(url)\n    if err != nil {\n        return err\n    }\n\
+  \    defer resp.Body.Close()\n    ```\n\n    **5. Validate input:**\n    ```go\n\
+  \    if req.Email == \"\" || !strings.Contains(req.Email, \"@\") {\n        http.Error(w,\
+  \ \"Invalid email\", http.StatusBadRequest)\n        return\n    }\n    ```\n\n\
+  \    ### Key Takeaways\n\n    1. **http.HandleFunc()** - Register routes\n    2.\
+  \ **http.ListenAndServe()** - Start server\n    3. **ResponseWriter** - Write HTTP\
+  \ response\n    4. **Request** - Read HTTP request\n    5. **json.NewEncoder/Decoder**\
+  \ - JSON API\n    6. **Middleware** - Wrap handlers for logging, auth, etc.\n  \
+  \  7. **http.Client** - Make HTTP requests\n    8. **Context** - Manage timeouts\
+  \ and cancellation\n    9. **Status codes** - Use appropriate HTTP status codes\n\
+  \    10. **Struct tags** - Map JSON to Go structs\n\n    **Go's net/http makes building\
+  \ REST APIs simple and efficient!**"
+exercises:
+  - type: mcq
+    sequence_order: 1
+    question: "What is the correct signature for an HTTP handler function in Go?"
+    options:
+      - "func(request *http.Request) *http.Response"
+      - "func(w http.ResponseWriter, r *http.Request)"
+      - "func(w http.Writer, r http.Request)"
+      - "func(response http.Response, request http.Request)"
+    correct_answer: "func(w http.ResponseWriter, r *http.Request)"
+    explanation: "HTTP handler functions in Go must have the exact signature `func(w http.ResponseWriter, r *http.Request)`. The first parameter `w` is an interface that allows you to write the response, including headers and body. The second parameter `r` is a pointer to the request containing all request data (URL, headers, body, etc.). Example:\n\n```go\nfunc handler(w http.ResponseWriter, r *http.Request) {\n    w.Header().Set(\"Content-Type\", \"application/json\")\n    w.WriteHeader(http.StatusOK)\n    fmt.Fprintf(w, `{\"message\":\"Hello\"}\")`)\n}\n\nhttp.HandleFunc(\"/api\", handler)\n```\n\nThis signature is required by the `http.HandlerFunc` type. You can also implement the `http.Handler` interface with a `ServeHTTP` method that has this same signature. The ResponseWriter is an interface (not a concrete type) which allows for flexibility and testing. The Request is a pointer because it can be large and may be modified by middleware."
+    require_pass: true
+  - type: mcq
+    sequence_order: 2
+    question: "What's the proper way to send JSON in an HTTP response?"
+    options:
+      - "Use fmt.Fprintf to write JSON strings directly"
+      - "Set Content-Type header and use json.NewEncoder(w).Encode()"
+      - "Only use json.Marshal and write the bytes"
+      - "JSON is automatically encoded by the server"
+    correct_answer: "Set Content-Type header and use json.NewEncoder(w).Encode()"
+    explanation: "The best practice for sending JSON responses is to set the Content-Type header and use `json.NewEncoder(w).Encode()`. This approach is efficient for streaming and handles errors properly. Example:\n\n```go\nfunc handler(w http.ResponseWriter, r *http.Request) {\n    user := User{ID: 1, Name: \"Alice\"}\n    \n    // Set header first\n    w.Header().Set(\"Content-Type\", \"application/json\")\n    \n    // Encode directly to response\n    if err := json.NewEncoder(w).Encode(user); err != nil {\n        http.Error(w, err.Error(), http.StatusInternalServerError)\n        return\n    }\n}\n```\n\nThis is better than `json.Marshal()` because: (1) It streams data directly to the client without buffering in memory, (2) It's more efficient for large payloads, (3) It's cleaner code. While you could use `Marshal()` and then `w.Write()`, the encoder approach is idiomatic Go. Always set Content-Type before writing the body."
+    require_pass: true
+  - type: mcq
+    sequence_order: 3
+    question: "How do you properly read a JSON request body in a Go HTTP handler?"
+    options:
+      - "json.Unmarshal(r.Body, &data)"
+      - "json.NewDecoder(r.Body).Decode(&data) and defer r.Body.Close()"
+      - "r.Body.ReadJSON(&data)"
+      - "http.ParseJSON(r, &data)"
+    correct_answer: "json.NewDecoder(r.Body).Decode(&data) and defer r.Body.Close()"
+    explanation: "The proper way to decode JSON from a request body is using `json.NewDecoder(r.Body).Decode(&data)` followed by closing the body. Example:\n\n```go\nfunc createUser(w http.ResponseWriter, r *http.Request) {\n    var user User\n    \n    // Decode JSON body\n    if err := json.NewDecoder(r.Body).Decode(&user); err != nil {\n        http.Error(w, \"Invalid JSON\", http.StatusBadRequest)\n        return\n    }\n    defer r.Body.Close()  // Important!\n    \n    // Validate\n    if user.Name == \"\" {\n        http.Error(w, \"Name required\", http.StatusBadRequest)\n        return\n    }\n    \n    // Process user...\n}\n```\n\nKey points: (1) Always defer `r.Body.Close()` to prevent resource leaks, (2) Use pointer (`&user`) so Decode can modify it, (3) Check errors to handle invalid JSON, (4) Validate data after decoding. While you could use `io.ReadAll()` then `json.Unmarshal()`, the decoder approach is more efficient and idiomatic."
+    require_pass: true

@@ -1,0 +1,18 @@
+course:
+  slug: networking
+  title: Networking
+  description: ''
+  estimated_hours: null
+  level: null
+modules:
+- slug: default
+  title: Default Module
+  lessons:
+  - naming-your-containers
+  - codesprout-exposing-containers-with-port-mapping
+  - run-nginx-in-the-background
+  - listing-containers
+  - executing-commands-in-containers
+  - viewing-container-logs
+  - stopping-containers
+  - removing-containers

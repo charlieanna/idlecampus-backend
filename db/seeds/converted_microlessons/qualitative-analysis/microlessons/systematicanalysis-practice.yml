@@ -1,0 +1,59 @@
+slug: systematicanalysis-practice
+title: systematic_analysis — Practice
+difficulty: medium
+sequence_order: 9
+estimated_minutes: 2
+key_concepts:
+- systematic_analysis
+prerequisites: []
+content_md: '# systematic_analysis — Practice 🚀
+
+
+  Systematic analysis follows the sequence: Group 0 → I → II → III → IV → V → VI.
+  This ensures complete separation without interference.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What is the correct order of groups in systematic cation analysis?
+  options:
+  - Group I → II → III → IV → V → VI
+  - Group VI → V → IV → III → II → I
+  - Group II → I → III → IV → V → VI
+  - Group I → III → II → IV → V → VI
+  correct_answer: Group I → II → III → IV → V → VI
+  explanation: "Systematic cation analysis follows the sequence: Group I (dil HCl) → Group II (H₂S in acidic) → Group III (NH₄OH + NH₄Cl) → Group IV (H₂S in basic) → Group V ((NH₄)₂CO₃) → Group VI (remaining). This sequence ensures complete separation without interference between groups."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: Why is Group I analyzed first in systematic analysis?
+  options:
+  - Because dilute HCl precipitates only Group I cations
+  - Because it has the most cations
+  - Because it's the easiest group
+  - Random order
+  correct_answer: Because dilute HCl precipitates only Group I cations
+  explanation: "Group I is analyzed first because dilute HCl selectively precipitates only Pb²⁺, Ag⁺, and Hg₂²⁺ as insoluble chlorides, without affecting other groups. This allows clean separation. The filtrate is then used for subsequent group analysis."
+  require_pass: false
+- type: mcq
+  sequence_order: 3
+  question: What happens if we don't follow the systematic order?
+  options:
+  - Interference between groups, incomplete separation
+  - No effect on results
+  - Faster analysis
+  - Better precipitation
+  correct_answer: Interference between groups, incomplete separation
+  explanation: "If systematic order is not followed, there will be interference between groups leading to incomplete separation and inaccurate results. For example, if Group III is analyzed before Group II, the NH₄OH used for Group III would interfere with Group II analysis. The systematic sequence is designed to prevent such cross-contamination."
+  require_pass: false

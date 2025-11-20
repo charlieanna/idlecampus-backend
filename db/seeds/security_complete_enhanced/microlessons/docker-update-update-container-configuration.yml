@@ -1,0 +1,67 @@
+slug: docker-update-update-container-configuration
+title: 'Docker Update: Update Container Configuration'
+sequence_order: 9
+estimated_minutes: 2
+difficulty: medium
+content_md: '# Docker Update: Update Container Configuration 🚀
+
+
+  Update resource limits and restart policies of running containers without stopping
+  them.
+
+
+  ## Syntax/Command
+
+
+  ```bash
+
+  docker update --memory="1g" my-container
+
+  ```
+
+
+  ## Example
+
+
+  ```bash
+
+  docker update --cpus="2" container
+
+  ```
+
+
+  ## Key Points
+
+
+  - Update memory: docker update --memory="1g" <container>
+
+
+  - Update CPUs: docker update --cpus="2" <container>
+
+
+  - Update restart policy: docker update --restart=always <container>'
+exercises:
+- type: terminal
+  sequence_order: 1
+  description: Update container resource limits without stopping it
+- type: sandbox
+  sequence_order: 2
+- type: mcq
+  sequence_order: 3
+  question: What can you update with docker update command?
+  options:
+  - Resource limits and restart policies
+  - Container image
+  - Container name
+  - Environment variables
+  correct_answer_index: 0
+  explanation: The docker update command allows you to modify resource limits (memory,
+    CPU) and restart policies on running containers without stopping them. This is
+    crucial for production environments where you need to adjust resource allocation
+    dynamically. However, you cannot change the container image, name, or environment
+    variables - those require creating a new container.
+objectives:
+- Define the control
+- Choose tooling
+- Integrate checks in CI/CD
+next_recommended: []

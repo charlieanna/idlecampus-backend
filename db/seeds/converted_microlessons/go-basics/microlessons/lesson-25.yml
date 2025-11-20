@@ -1,0 +1,93 @@
+slug: lesson-25
+title: Lesson 25
+difficulty: easy
+sequence_order: 25
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Testing in Go\n\n    Go has built-in testing\
+  \ support. Write tests alongside your code!\n\n    ## Basic Test\n\n    File: `math.go`\n\
+  \    ```go\n    package math\n\n    func Add(a, b int) int {\n        return a +\
+  \ b\n    }\n    ```\n\n    File: `math_test.go`\n    ```go\n    package math\n\n\
+  \    import \"testing\"\n\n    func TestAdd(t *testing.T) {\n        result := Add(2,\
+  \ 3)\n        expected := 5\n\n        if result != expected {\n            t.Errorf(\"\
+  Add(2, 3) = %d; want %d\", result, expected)\n        }\n    }\n    ```\n\n    Run\
+  \ tests:\n    ```bash\n    go test\n    go test -v  # verbose\n    go test -cover\
+  \  # with coverage\n    ```\n\n    ## Table-Driven Tests\n\n    Test multiple cases\
+  \ efficiently:\n\n    ```go\n    func TestAdd(t *testing.T) {\n        tests :=\
+  \ []struct {\n            name     string\n            a, b     int\n          \
+  \  expected int\n        }{\n            {\"positive numbers\", 2, 3, 5},\n    \
+  \        {\"negative numbers\", -2, -3, -5},\n            {\"mixed signs\", -2,\
+  \ 3, 1},\n            {\"zeros\", 0, 0, 0},\n        }\n\n        for _, tt := range\
+  \ tests {\n            t.Run(tt.name, func(t *testing.T) {\n                result\
+  \ := Add(tt.a, tt.b)\n                if result != tt.expected {\n             \
+  \       t.Errorf(\"Add(%d, %d) = %d; want %d\",\n                        tt.a, tt.b,\
+  \ result, tt.expected)\n                }\n            })\n        }\n    }\n  \
+  \  ```\n\n    ## Test Helpers\n\n    ```go\n    func assertEqual(t *testing.T, got,\
+  \ want int) {\n        t.Helper()  // Mark as helper\n        if got != want {\n\
+  \            t.Errorf(\"got %d; want %d\", got, want)\n        }\n    }\n\n    func\
+  \ TestSomething(t *testing.T) {\n        assertEqual(t, Add(2, 3), 5)\n    }\n \
+  \   ```\n\n    ## Benchmarks\n\n    Measure performance:\n\n    ```go\n    func\
+  \ BenchmarkAdd(b *testing.B) {\n        for i := 0; i < b.N; i++ {\n           \
+  \ Add(2, 3)\n        }\n    }\n    ```\n\n    Run benchmarks:\n    ```bash\n   \
+  \ go test -bench=.\n    go test -bench=. -benchmem  # with memory stats\n    ```\n\
+  \n    ## Examples (Testable Documentation)\n\n    ```go\n    func ExampleAdd() {\n\
+  \        result := Add(2, 3)\n        fmt.Println(result)\n        // Output: 5\n\
+  \    }\n\n    func ExampleAdd_negative() {\n        result := Add(-2, -3)\n    \
+  \    fmt.Println(result)\n        // Output: -5\n    }\n    ```\n\n    ## Test Coverage\n\
+  \n    ```bash\n    go test -cover\n    go test -coverprofile=coverage.out\n    go\
+  \ tool cover -html=coverage.out\n    ```\n\n    ## Mocking\n\n    Use interfaces\
+  \ for testability:\n\n    ```go\n    type UserRepository interface {\n        GetUser(id\
+  \ int) (*User, error)\n    }\n\n    type UserService struct {\n        repo UserRepository\n\
+  \    }\n\n    // Mock for testing\n    type MockUserRepository struct {\n      \
+  \  users map[int]*User\n    }\n\n    func (m *MockUserRepository) GetUser(id int)\
+  \ (*User, error) {\n        if user, ok := m.users[id]; ok {\n            return\
+  \ user, nil\n        }\n        return nil, errors.New(\"user not found\")\n   \
+  \ }\n\n    func TestUserService(t *testing.T) {\n        mockRepo := &MockUserRepository{\n\
+  \            users: map[int]*User{\n                1: {ID: 1, Name: \"Alice\"},\n\
+  \            },\n        }\n\n        service := UserService{repo: mockRepo}\n \
+  \       user, err := service.repo.GetUser(1)\n\n        if err != nil {\n      \
+  \      t.Fatal(err)\n        }\n        if user.Name != \"Alice\" {\n          \
+  \  t.Errorf(\"expected Alice, got %s\", user.Name)\n        }\n    }\n    ```\n\n\
+  \    ## Test Organization\n\n    ```\n    myproject/\n    ├── math.go\n    ├── math_test.go\n\
+  \    ├── user.go\n    ├── user_test.go\n    └── testdata/\n        └── fixtures.json\n\
+  \    ```\n\n    ## Best Practices\n\n    1. **One test file per source file**: `math.go`\
+  \ → `math_test.go`\n    2. **Use table-driven tests**: Test multiple cases efficiently\n\
+  \    3. **Test exported functions**: Focus on public API\n    4. **Keep tests fast**:\
+  \ Fast tests are run more often\n    5. **Use t.Helper()**: For test utility functions\n\
+  \    6. **Aim for high coverage**: But don't obsess over 100%\n\n    **Practice:**\
+  \ Try the Testing lab!"
+exercises:
+  - type: mcq
+    sequence_order: 1
+    question: "What naming convention must test files follow in Go?"
+    options:
+      - "They must end with .test.go"
+      - "They must end with _test.go"
+      - "They must start with test_"
+      - "Any .go file with Test functions"
+    correct_answer: "They must end with _test.go"
+    explanation: "Go test files must end with `_test.go`. This naming convention tells the `go test` command which files contain tests. For example, if you have `math.go`, your tests go in `math_test.go`. Example structure:\n\n```\nmyproject/\n├── math.go          // Source code\n├── math_test.go     // Tests for math.go\n├── user.go\n└── user_test.go     // Tests for user.go\n```\n\nTest functions must start with `Test` and take `*testing.T` as parameter:\n\n```go\n// math_test.go\npackage math\n\nimport \"testing\"\n\nfunc TestAdd(t *testing.T) {\n    result := Add(2, 3)\n    if result != 5 {\n        t.Errorf(\"Add(2, 3) = %d; want 5\", result)\n    }\n}\n```\n\nRun with `go test` in the package directory, or `go test ./...` to run all tests in your project. The `_test.go` suffix is mandatory - Go will not recognize tests in files with other names."
+    require_pass: true
+  - type: mcq
+    sequence_order: 2
+    question: "What is the advantage of table-driven tests in Go?"
+    options:
+      - "They run faster than regular tests"
+      - "They allow testing multiple scenarios with the same test logic efficiently"
+      - "They automatically fix bugs"
+      - "They don't require assertions"
+    correct_answer: "They allow testing multiple scenarios with the same test logic efficiently"
+    explanation: "Table-driven tests allow you to test multiple test cases with the same test logic by defining test data in a table/slice. This makes tests more maintainable and comprehensive. Example:\n\n```go\nfunc TestAdd(t *testing.T) {\n    tests := []struct {\n        name     string\n        a, b     int\n        expected int\n    }{\n        {\"positive numbers\", 2, 3, 5},\n        {\"negative numbers\", -2, -3, -5},\n        {\"mixed signs\", -2, 3, 1},\n        {\"zeros\", 0, 0, 0},\n        {\"large numbers\", 1000, 2000, 3000},\n    }\n\n    for _, tt := range tests {\n        t.Run(tt.name, func(t *testing.T) {\n            result := Add(tt.a, tt.b)\n            if result != tt.expected {\n                t.Errorf(\"Add(%d, %d) = %d; want %d\",\n                    tt.a, tt.b, result, tt.expected)\n            }\n        })\n    }\n}\n```\n\nBenefits: (1) Easy to add new test cases, (2) Test logic is written once, (3) Clear test names with t.Run(), (4) Easy to identify which cases fail."
+    require_pass: true
+  - type: mcq
+    sequence_order: 3
+    question: "What is the purpose of the -cover flag when running tests?"
+    options:
+      - "It covers up failing tests"
+      - "It shows what percentage of code is executed by tests"
+      - "It runs tests multiple times"
+      - "It generates documentation"
+    correct_answer: "It shows what percentage of code is executed by tests"
+    explanation: "The `-cover` flag shows code coverage - what percentage of your code is actually executed during tests. This helps identify untested code. Example:\n\n```bash\n$ go test -cover\nPASS\ncoverage: 75.0% of statements\nok      myproject/math    0.002s\n```\n\nFor detailed coverage analysis:\n\n```bash\n# Generate coverage profile\n$ go test -coverprofile=coverage.out\n\n# View as HTML\n$ go tool cover -html=coverage.out\n```\n\nThis opens a browser showing your code with:\n- Green: covered by tests\n- Red: not covered by tests\n\nExample test that improves coverage:\n\n```go\n// Before: 50% coverage\nfunc Divide(a, b int) int {\n    if b == 0 {  // Not tested!\n        panic(\"divide by zero\")\n    }\n    return a / b  // Tested\n}\n\n// Add test for error case\nfunc TestDivideByZero(t *testing.T) {\n    defer func() {\n        if r := recover(); r == nil {\n            t.Error(\"Expected panic\")\n        }\n    }()\n    Divide(10, 0)\n}\n// Now: 100% coverage\n```\n\nAim for high coverage, but 100% isn't always necessary or practical."
+    require_pass: true

@@ -1,0 +1,234 @@
+slug: rc-circuits-transients
+title: "RC Circuits and Transient Response"
+difficulty: advanced
+sequence_order: 4
+estimated_minutes: 17
+key_concepts:
+- rc-circuit
+- charging-capacitor
+- discharging-capacitor
+- time-constant
+- energy-dissipation
+prerequisites:
+- kirchhoffs-laws-applications
+- ohms-law-resistance
+content_md: |
+  # RC Circuits and Transient Response
+
+  ## RC Circuit Overview
+
+  **Resistor and Capacitor in series** with voltage source.
+
+  Key feature: Current and voltage change gradually, not instantaneously.
+
+  ## Charging a Capacitor
+
+  ### Circuit:
+  Capacitor (initially uncharged) connected to EMF ε through resistor R.
+
+  ### Governing Equation:
+  ```
+  ε = iR + q/C
+
+  Where i = dq/dt
+  ε = R(dq/dt) + q/C
+  ```
+
+  ### Solution:
+  ```
+  q(t) = Cε(1 - e^(-t/RC))
+  q(t) = Q₀(1 - e^(-t/τ))
+
+  Q₀ = Cε = final charge
+  τ = RC = time constant
+  ```
+
+  ### Current:
+  ```
+  i(t) = (ε/R)e^(-t/RC) = I₀e^(-t/τ)
+
+  I₀ = ε/R = initial current
+  ```
+
+  ### Voltage Across Capacitor:
+  ```
+  V_C(t) = ε(1 - e^(-t/RC))
+  ```
+
+  ### Voltage Across Resistor:
+  ```
+  V_R(t) = εe^(-t/RC) = iR
+  ```
+
+  ## Discharging a Capacitor
+
+  ### Circuit:
+  Fully charged capacitor (Q₀) discharges through R.
+
+  ### Equations:
+  ```
+  q(t) = Q₀e^(-t/RC)
+  i(t) = (Q₀/RC)e^(-t/RC) = I₀e^(-t/τ)
+  V_C(t) = V₀e^(-t/RC)
+  ```
+
+  Current flows opposite to charging direction.
+
+  ## Time Constant (τ = RC)
+
+  **Physical meaning:** Time for charge to reach 63% of final value (charging) or fall to 37% of initial (discharging).
+
+  ```
+  At t = τ: q = Q₀(1 - e⁻¹) ≈ 0.63Q₀ (charging)
+  At t = τ: q = Q₀e⁻¹ ≈ 0.37Q₀ (discharging)
+  ```
+
+  ### After various time constants:
+  | t/τ | Charging (% of Q₀) | Discharging (% of Q₀) |
+  |-----|-------------------|----------------------|
+  | 1 | 63% | 37% |
+  | 2 | 86% | 14% |
+  | 3 | 95% | 5% |
+  | 5 | 99.3% | 0.7% |
+
+  After 5τ, capacitor is effectively fully charged/discharged.
+
+  ## Energy Considerations
+
+  ### During Charging:
+  ```
+  Energy supplied by source: W_source = Q₀ε = Cε²
+  Energy stored in capacitor: U_C = ½Cε² = ½Q₀ε
+  Energy dissipated in resistor: W_R = ½Cε²
+
+  Exactly half the energy is lost as heat!
+  ```
+
+  ### Surprising Result:
+  Energy dissipated in R = Energy stored in C
+
+  This is independent of R value!
+
+  ## Initial and Final Conditions
+
+  ### At t = 0 (just after connection):
+  - Uncharged C acts like short circuit (V_C = 0)
+  - All voltage across R
+  - Maximum current I₀ = ε/R
+
+  ### At t → ∞:
+  - Fully charged C acts like open circuit (i = 0)
+  - All voltage across C (V_C = ε)
+  - No current flows
+
+  ## Capacitor Behavior Summary
+
+  | Condition | Capacitor Acts Like |
+  |-----------|---------------------|
+  | Initially uncharged, just connected | Short circuit |
+  | Initially charged, just connected | Battery (V₀) |
+  | Long time (steady state) | Open circuit |
+
+  ## Series and Parallel RC
+
+  ### Capacitors in Parallel:
+  ```
+  C_eq = C₁ + C₂
+  τ = RC_eq = R(C₁ + C₂)
+  ```
+
+  ### Capacitors in Series:
+  ```
+  1/C_eq = 1/C₁ + 1/C₂
+  τ = RC_eq
+  ```
+
+  ## Applications
+
+  1. **Timer circuits:** Delay based on τ
+  2. **Filters:** Low-pass and high-pass
+  3. **Pulse shaping:** Smoothing signals
+  4. **Flash photography:** Energy storage and release
+  5. **Defibrillators:** Controlled energy delivery
+
+  ## Numerical Examples
+
+  **Example 1:** R = 1 MΩ, C = 1 μF, ε = 10 V. Find time constant and charge at t = 2 s.
+
+  **Solution:**
+  ```
+  τ = RC = 10⁶ × 10⁻⁶ = 1 s
+  Q₀ = Cε = 10⁻⁶ × 10 = 10 μC
+
+  At t = 2 s = 2τ:
+  q = 10(1 - e⁻²) = 10(1 - 0.135) = 8.65 μC
+
+  About 86.5% charged.
+  ```
+
+  **Example 2:** Charged capacitor (Q₀ = 100 μC) discharges through 10 kΩ. Time constant is 0.1 s. Find C.
+
+  **Solution:**
+  ```
+  τ = RC
+  C = τ/R = 0.1/10⁴ = 10⁻⁵ F = 10 μF
+
+  Check: 10⁴ × 10⁻⁵ = 0.1 s ✓
+  ```
+
+  **Example 3:** Energy stored after time τ in charging RC circuit?
+
+  **Solution:**
+  ```
+  At t = τ: V_C = ε(1 - e⁻¹) = 0.63ε
+  U = ½CV² = ½C(0.63ε)² = 0.4C ε²
+
+  Compare to final: U_final = ½Cε²
+  Ratio = 0.4/0.5 = 0.8
+
+  80% of final energy stored at t = τ.
+  ```
+
+  ## JEE Key Points
+
+  1. **τ = RC** (time constant)
+  2. **q = Q₀(1 - e^(-t/τ))** (charging)
+  3. **q = Q₀e^(-t/τ)** (discharging)
+  4. **At t = τ: 63% charged, 37% remaining**
+  5. **Energy: ½ stored, ½ dissipated** (charging)
+  6. **Initially: C = short; Finally: C = open**
+
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: "In RC circuit, if R and C are both doubled, time constant:"
+  options:
+  - "Doubles"
+  - "Quadruples"
+  - "Halves"
+  - "Remains same"
+  correct_answer: "Quadruples"
+  explanation: "Time constant τ = RC. If R' = 2R and C' = 2C: τ' = R'C' = (2R)(2C) = 4RC = 4τ. Time constant quadruples! This means circuit responds 4 times slower. Charging to same percentage takes 4 times longer. For fast response, minimize RC. For slow decay (memory circuits), maximize RC. Example: R = 1 kΩ, C = 1 μF gives τ = 1 ms. Doubling both: τ = 4 ms. The product RC has dimension of time: Ω × F = (V/A) × (C/V) = C/A = s. This confirms τ is measured in seconds."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: "A capacitor is charged through resistor. When fully charged, energy dissipated in resistor is:"
+  options:
+  - "Zero"
+  - "Equal to energy stored in capacitor"
+  - "Twice the energy stored"
+  - "Half the energy stored"
+  correct_answer: "Equal to energy stored in capacitor"
+  explanation: "Energy from source: W_s = ∫εi dt = ε∫dq = εQ₀ = Cε². Energy in capacitor: U_C = ½Cε² = ½εQ₀. Energy in resistor: W_R = W_s - U_C = Cε² - ½Cε² = ½Cε². So W_R = U_C! Half the energy is ALWAYS lost as heat, regardless of resistance value. Larger R means slower charging but same total heat loss. This is fundamentally different from mechanical systems where energy can be transferred without loss. This 50% efficiency is intrinsic to capacitor charging through any resistance. In practice, advanced circuits use inductors (LC circuits) for more efficient energy transfer."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: "In discharging RC circuit, current at t = 3τ compared to initial current is:"
+  options:
+  - "e⁻³ times"
+  - "3e⁻¹ times"
+  - "(1-e⁻³) times"
+  - "0.05 times"
+  correct_answer: "0.05 times"
+  explanation: "Current during discharge: i = I₀e^(-t/τ). At t = 3τ: i = I₀e⁻³ = I₀/e³ ≈ I₀/20 ≈ 0.05I₀. Current has dropped to 5% of initial! After 3 time constants, only 5% of current remains. After 5τ: i ≈ 0.007I₀ (practically zero). The exponential decay is very rapid: 1τ → 37%, 2τ → 14%, 3τ → 5%, 4τ → 2%, 5τ → 0.7%. This exponential behavior appears in many physical processes: radioactive decay (N = N₀e^(-λt)), cooling (Newton's law), atmospheric pressure decrease with height. Understanding e^(-t/τ) behavior is crucial for many JEE problems."
+  require_pass: true

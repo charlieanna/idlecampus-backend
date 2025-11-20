@@ -1,0 +1,201 @@
+---
+slug: tree-binary-tree-traversal
+title: Binary Tree Traversal
+sequence_order: 25
+estimated_minutes: 15
+difficulty: medium
+key_concepts:
+- Binary Tree Traversal
+- Recursive Inorder
+content_md: |
+  # Binary Tree Traversal
+
+  Systematic ways to visit all nodes in a binary tree
+
+  ---
+
+  ## Binary Tree Traversal Methods
+
+  Traversal is the process of visiting all nodes in a tree in a specific order.
+
+  **Four Main Traversals:**
+
+  ### 1. Inorder (Left-Root-Right)
+  - Visits left subtree, then root, then right subtree
+  - For BST: visits nodes in sorted order
+  - Use: Expression tree evaluation, sorted output
+
+  ### 2. Preorder (Root-Left-Right)
+  - Visits root first, then left, then right
+  - Use: Copying tree, prefix notation
+
+  ### 3. Postorder (Left-Right-Root)
+  - Visits children before root
+  - Use: Deleting tree, postfix notation, calculating tree size
+
+  ### 4. Level Order (BFS)
+  - Visits nodes level by level
+  - Use: Finding level, shortest path, serialization
+
+  **Complexity:** O(n) time, O(h) space for recursive (h = height)
+
+
+  ---
+
+  ## Common Patterns
+
+  ### Pattern 1: Recursive Inorder
+  ```python
+  def inorder(root, result=[]):
+      if root:
+          inorder(root.left, result)
+          result.append(root.val)
+          inorder(root.right, result)
+      return result
+  ```
+
+  ### Pattern 2: Iterative Inorder (Stack)
+  ```python
+  def inorder_iterative(root):
+      result, stack = [], []
+      curr = root
+
+      while curr or stack:
+          # Go to leftmost node
+          while curr:
+              stack.append(curr)
+              curr = curr.left
+
+          # Process node
+          curr = stack.pop()
+          result.append(curr.val)
+
+          # Move to right subtree
+          curr = curr.right
+
+      return result
+  ```
+
+  ### Pattern 3: Level Order (BFS with Queue)
+  ```python
+  from collections import deque
+
+  def level_order(root):
+      if not root:
+          return []
+
+      result = []
+      queue = deque([root])
+
+      while queue:
+          level_size = len(queue)
+          current_level = []
+
+          for _ in range(level_size):
+              node = queue.popleft()
+              current_level.append(node.val)
+
+              if node.left:
+                  queue.append(node.left)
+              if node.right:
+                  queue.append(node.right)
+
+          result.append(current_level)
+
+      return result
+  ```
+
+  ### Pattern 4: Morris Traversal (O(1) Space)
+  ```python
+  def morris_inorder(root):
+      result = []
+      curr = root
+
+      while curr:
+          if not curr.left:
+              result.append(curr.val)
+              curr = curr.right
+          else:
+              # Find inorder predecessor
+              pred = curr.left
+              while pred.right and pred.right != curr:
+                  pred = pred.right
+
+              if not pred.right:
+                  pred.right = curr  # Create thread
+                  curr = curr.left
+              else:
+                  pred.right = None  # Remove thread
+                  result.append(curr.val)
+                  curr = curr.right
+
+      return result
+  ```
+
+
+  ---
+
+  ## When to Use This Technique
+
+  Use tree traversal for: visiting all nodes, searching, copying trees, converting to arrays, finding paths, or any operation requiring systematic node visiting.
+
+  ---
+
+  ## Common Pitfalls to Avoid
+
+  - Stack overflow with deep recursive trees
+  - Not handling null/empty trees
+  - Confusing traversal orders
+  - Forgetting to track level in level-order traversal
+  - Modifying tree structure during traversal
+
+  ---
+
+  ## Practice Problems
+
+  Start with these problems to master this concept:
+
+  ### 1. Binary Tree Inorder Traversal [Easy]
+
+  Return inorder traversal of binary tree.
+
+  **Complexity:** Time O(O(n)), Space O(O(n))
+
+
+  ### 2. Binary Tree Traversal 6 [Easy]
+
+  Tree problem: binary-tree-traversal.
+
+  **Complexity:** Time O(O(n)), Space O(O(h))
+
+
+  ### 3. Binary Tree Traversal 9 [Easy]
+
+  Tree problem: binary-tree-traversal.
+
+  **Complexity:** Time O(O(n)), Space O(O(h))
+
+
+  ### 4. Binary Tree Traversal 13 [Easy]
+
+  Tree problem: binary-tree-traversal.
+
+  **Complexity:** Time O(O(n)), Space O(O(h))
+
+
+  ### 5. Binary Tree Traversal 16 [Easy]
+
+  Tree problem: binary-tree-traversal.
+
+  **Complexity:** Time O(O(n)), Space O(O(h))
+
+
+
+  ---
+
+  ## Key Takeaways
+
+  - Binary Tree Traversal is essential for systematic ways to visit all nodes in a binary tree
+  - Time complexity improvements can be significant with this technique
+  - Practice problems in order of difficulty to build intuition
+  - Focus on recognizing patterns in problem statements

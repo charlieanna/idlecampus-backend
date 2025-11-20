@@ -1,0 +1,93 @@
+slug: lesson-68
+title: Lesson 68
+difficulty: easy
+sequence_order: 68
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Kubernetes Architecture Overview\n\n  \
+  \  ## Control Plane Components\n\n    ### API Server (kube-apiserver)\n    - Central\
+  \ management entity\n    - Exposes Kubernetes API\n    - Frontend for the control\
+  \ plane\n    - All operations go through the API server\n\n    ### etcd\n    - Consistent\
+  \ and highly-available key-value store\n    - Stores all cluster data\n    - Source\
+  \ of truth for cluster state\n\n    ### Scheduler (kube-scheduler)\n    - Watches\
+  \ for newly created Pods\n    - Selects nodes for pods to run on\n    - Considers\
+  \ resource requirements, constraints, and affinity\n\n    ### Controller Manager\
+  \ (kube-controller-manager)\n    - Runs controller processes\n    - Node Controller:\
+  \ Monitors node status\n    - Replication Controller: Maintains correct number of\
+  \ pods\n    - Endpoints Controller: Populates endpoints objects\n    - Service Account\
+  \ Controller: Creates default accounts\n\n    ## Node Components\n\n    ### kubelet\n\
+  \    - Runs on each node\n    - Ensures containers are running in a Pod\n    - Communicates\
+  \ with API server\n    - Manages pod lifecycle\n\n    ### kube-proxy\n    - Network\
+  \ proxy on each node\n    - Implements Kubernetes Service concept\n    - Maintains\
+  \ network rules\n    - Enables pod-to-pod communication\n\n    ### Container Runtime\n\
+  \    - Software responsible for running containers\n    - Examples: Docker, containerd,\
+  \ CRI-O\n\n    ## Add-ons\n\n    - **DNS**: Cluster DNS server (CoreDNS)\n    -\
+  \ **Dashboard**: Web-based UI\n    - **Ingress Controller**: HTTP/HTTPS routing\n\
+  \    - **Metrics Server**: Resource usage monitoring\n\n    ## Communication Flow\n\
+  \n    1. kubectl sends request to API server\n    2. API server validates and stores\
+  \ in etcd\n    3. Controllers watch for changes\n    4. Scheduler assigns pods to\
+  \ nodes\n    5. kubelet pulls images and starts containers\n    6. kube-proxy configures\
+  \ networking"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: Which control plane component is responsible for making scheduling decisions?
+  options:
+  - kube-apiserver
+  - kube-scheduler
+  - kube-controller-manager
+  - etcd
+  correct_answer: kube-scheduler
+  explanation: The kube-scheduler is responsible for selecting which node a newly
+    created pod should run on. It watches for pods with no assigned node and evaluates
+    all available nodes based on filtering (removing unsuitable nodes) and scoring
+    (ranking suitable nodes). The scheduler considers factors like resource requests,
+    node affinity, taints/tolerations, and topology constraints. Importantly, the
+    scheduler only makes the placement decision - it updates the pod spec with the
+    chosen node, but doesn't actually start the pod. That's the kubelet's job. The
+    scheduler runs continuously, processing pods from a queue. If no node is suitable,
+    the pod remains Pending. The scheduler's decision-making process is pluggable,
+    allowing custom scheduling logic for specific requirements.
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What is the role of etcd in a Kubernetes cluster?
+  options:
+  - To schedule pods on nodes
+  - To store all cluster state as the single source of truth
+  - To run containers
+  - To expose the Kubernetes API
+  correct_answer: To store all cluster state as the single source of truth
+  explanation: etcd is a distributed key-value store that serves as Kubernetes' database,
+    storing all cluster state and configuration. Every object in Kubernetes - pods,
+    services, secrets, configmaps, RBAC policies - is stored in etcd. It's the single
+    source of truth for cluster state. All control plane components interact with
+    etcd through the kube-apiserver to read and write cluster data. etcd uses the
+    Raft consensus algorithm to maintain consistency across replicas, typically running
+    with 3 or 5 members for high availability. Because etcd is critical, regular backups
+    are essential - losing etcd means losing all cluster configuration. Performance
+    and reliability of etcd directly impact cluster operations. Only the API server
+    should directly access etcd; other components go through the API.
+  require_pass: true
+- type: terminal
+  sequence_order: 1
+  command: kubectl sends request to API server
+  description: 'Practice the command: kubectl sends request to API server'
+  hints:
+  - 'Try: kubectl sends request to API server'
+  - Use kubectl --help if you need help
+  timeout_sec: 60
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What command lists all pods in all namespaces?
+  options:
+  - kubectl get pods -A
+  - kubectl list pods --all
+  - kubectl get pods --everywhere
+  - kubectl pods list -A
+  correct_answer_index: 0
+  explanation: kubectl get pods -A (or --all-namespaces) lists pods across all namespaces.
+    The -A flag is shorthand for --all-namespaces.
+  require_pass: true

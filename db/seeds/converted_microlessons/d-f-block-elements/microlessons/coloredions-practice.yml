@@ -1,0 +1,93 @@
+slug: coloredions-practice
+title: colored_ions — Practice
+difficulty: hard
+sequence_order: 15
+estimated_minutes: 2
+key_concepts:
+- colored_ions
+prerequisites: []
+content_md: '# colored_ions — Practice 🚀
+
+
+  La³⁺ (f⁰) and Lu³⁺ (f¹⁴) are colorless because they have no f-electrons or fully-filled
+  f-orbitals. No f-f transitions are possible. Other Ln³⁺ ions are colored due to
+  f-f transitions.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 2
+  question: Which lanthanoid ions are colorless?
+  options:
+  - La³⁺ and Lu³⁺
+  - Ce³⁺ and Pr³⁺
+  - Nd³⁺ and Sm³⁺
+  - Eu³⁺ and Gd³⁺
+  require_pass: true
+  correct_answer: La³⁺ and Lu³⁺
+  explanation: 'La³⁺ (lanthanum) and Lu³⁺ (lutetium) are the only colorless lanthanoid
+    ions because they have extreme f-electron configurations: **La³⁺** has f⁰ configuration
+    (no f-electrons at all), so no f-f transitions are possible. **Lu³⁺** has f¹⁴
+    configuration (completely filled f-orbitals), so again no f-f transitions are
+    possible. All other lanthanoid ions (Ce³⁺ through Yb³⁺) have partially filled
+    f-orbitals (f¹ to f¹³) and exhibit colors due to f-f electronic transitions.
+    These transitions occur when f-electrons absorb specific wavelengths of visible
+    light and get promoted to higher energy f-orbitals. Examples of colored Ln³⁺
+    ions: Pr³⁺ (green, f²), Nd³⁺ (lilac, f³), Sm³⁺ (yellow, f⁵), Eu³⁺ (pale pink,
+    f⁶), Tb³⁺ (pale pink, f⁸), Er³⁺ (pink, f¹¹). The f-f transitions are Laporte-forbidden,
+    making lanthanoid colors pale compared to transition metal colors.'
+- type: mcq
+  sequence_order: 3
+  question: Why are f-f transitions in lanthanoid ions weaker than d-d transitions
+    in transition metal ions?
+  options:
+  - f-orbitals are more exposed to external fields
+  - f-f transitions are Laporte-forbidden (forbidden by selection rules)
+  - f-orbitals have higher energy than d-orbitals
+  - Lanthanoids have more unpaired electrons
+  require_pass: true
+  correct_answer: f-f transitions are Laporte-forbidden (forbidden by selection rules)
+  explanation: 'f-f transitions in lanthanoid ions are weaker than d-d transitions
+    because they are Laporte-forbidden by quantum mechanical selection rules. The
+    Laporte selection rule states that allowed electronic transitions must involve
+    a change in orbital angular momentum quantum number (Δl = ±1). Since f-f transitions
+    involve no change in l (both are f-orbitals), they are formally forbidden. However,
+    they can occur weakly due to: (1) **Vibrational coupling**: Molecular vibrations
+    temporarily distort the symmetry, relaxing selection rules. (2) **Spin-orbit
+    coupling**: Mixes states and partially allows transitions. As a result, lanthanoid
+    ions show pale, pastel colors with low molar absorptivities (ε ~ 1-10 M⁻¹cm⁻¹),
+    whereas transition metal d-d transitions (also formally forbidden but more relaxed)
+    have ε ~ 10-100 M⁻¹cm⁻¹. Additionally, f-orbitals are shielded by outer 5s and
+    5p electrons, making them less sensitive to the ligand field environment compared
+    to exposed d-orbitals in transition metals.'
+- type: mcq
+  sequence_order: 4
+  question: Which electronic configuration would result in a colored lanthanoid ion?
+  options:
+  - f⁰ (no f-electrons)
+  - f⁷ (half-filled f-orbitals)
+  - f¹⁴ (completely filled f-orbitals)
+  - Both f⁰ and f¹⁴
+  require_pass: true
+  correct_answer: f⁷ (half-filled f-orbitals)
+  explanation: 'An f⁷ configuration (half-filled f-orbitals) results in a colored
+    lanthanoid ion because it has partially filled f-orbitals, allowing f-f electronic
+    transitions. The f⁷ ion is Gd³⁺ (gadolinium), which actually appears colorless
+    in the visible region but can show weak absorption in UV. However, f⁷ demonstrates
+    the principle: partially filled f-orbitals (f¹ through f¹³) enable color. Examples
+    of colored lanthanoids with partial f-filling: **Pr³⁺ (f²)**: green, **Nd³⁺
+    (f³)**: lilac/violet, **Pm³⁺ (f⁴)**: pink (radioactive), **Sm³⁺ (f⁵)**: yellow,
+    **Eu³⁺ (f⁶)**: pale pink, **Tb³⁺ (f⁸)**: pale pink, **Dy³⁺ (f⁹)**: yellow, **Ho³⁺
+    (f¹⁰)**: yellow, **Er³⁺ (f¹¹)**: pink, **Tm³⁺ (f¹²)**: pale green, **Yb³⁺ (f¹³)**:
+    colorless in visible. In contrast: **f⁰ (La³⁺)** and **f¹⁴ (Lu³⁺)** are colorless
+    because no f-f transitions are possible with empty or completely filled f-orbitals.'

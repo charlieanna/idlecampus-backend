@@ -1,0 +1,199 @@
+slug: writing-clean-functions
+title: Writing Clean Functions
+sequence_order: 3
+estimated_minutes: 2
+difficulty: easy
+key_concepts: []
+content_md: "# Writing Clean Functions \U0001F680\n\n# Writing Clean Functions\n\n\
+  \    Functions are the first line of organization in any program. This chapter teaches\
+  \ how to write functions that are easy to understand and maintain.\n\n    ## The\
+  \ First Rule: Small!\n\n    ### Functions Should Be Small\n    **How small?** Typically\
+  \ 5-15 lines, rarely more than 20.\n\n    ### ❌ Too Large\n    ```python\n    def\
+  \ process_order(order):\n        # Validate order (20 lines)\n        if not order:\n\
+  \            raise ValueError(\"Order cannot be null\")\n        if not order.items:\n\
+  \            raise ValueError(\"Order must have items\")\n        # ... more validation\n\
+  \n        # Calculate totals (30 lines)\n        subtotal = 0\n        for item\
+  \ in order.items:\n            subtotal += item.price * item.quantity\n        #\
+  \ ... tax calculation\n        # ... shipping calculation\n\n        # Process payment\
+  \ (40 lines)\n        payment_gateway = PaymentGateway()\n        # ... payment\
+  \ logic\n\n        # Send confirmation (25 lines)\n        # ... email logic\n\n\
+  \        return order  # 115 lines total!\n    ```\n\n    ### ✅ Small and Focused\n\
+  \    ```python\n    def process_order(order):\n        validate_order(order)\n \
+  \       total = calculate_order_total(order)\n        process_payment(order, total)\n\
+  \        send_confirmation_email(order)\n        return order  # 5 lines total!\n\
+  \n    def validate_order(order):\n        if not order:\n            raise ValueError(\"\
+  Order cannot be null\")\n        if not order.items:\n            raise ValueError(\"\
+  Order must have items\")\n\n    def calculate_order_total(order):\n        subtotal\
+  \ = calculate_subtotal(order.items)\n        tax = calculate_tax(subtotal)\n   \
+  \     shipping = calculate_shipping(order)\n        return subtotal + tax + shipping\n\
+  \    ```\n\n    ## Do One Thing\n\n    **Functions should do one thing. They should\
+  \ do it well. They should do it only.**\n\n    ### How to Know if a Function Does\
+  \ One Thing?\n\n    **Test:** Can you extract another function from it with a name\
+  \ that isn't a restatement of its implementation?\n\n    ### ❌ Does Multiple Things\n\
+  \    ```python\n    def save_and_email_customer(customer):\n        # Saves to database\n\
+  \        db.save(customer)\n\n        # Sends email\n        email = f\"Welcome\
+  \ {customer.name}!\"\n        send_email(customer.email, email)\n\n        # Logs\
+  \ activity\n        logger.info(f\"Customer {customer.id} saved and emailed\")\n\
+  \    ```\n\n    ### ✅ Does One Thing\n    ```python\n    def save_customer(customer):\n\
+  \        db.save(customer)\n\n    def send_welcome_email(customer):\n        email\
+  \ = f\"Welcome {customer.name}!\"\n        send_email(customer.email, email)\n\n\
+  \    def log_customer_activity(customer, action):\n        logger.info(f\"Customer\
+  \ {customer.id} {action}\")\n\n    # Usage\n    save_customer(customer)\n    send_welcome_email(customer)\n\
+  \    log_customer_activity(customer, \"registered\")\n    ```\n\n    ## One Level\
+  \ of Abstraction\n\n    **Keep all statements in a function at the same level of\
+  \ abstraction.**\n\n    ### ❌ Mixed Levels of Abstraction\n    ```python\n    def\
+  \ render_page(page_data):\n        # High level\n        html = \"<html>\"\n\n \
+  \       # Medium level\n        html += render_header(page_data.header)\n\n    \
+  \    # Low level - string manipulation\n        html += \"<body>\"\n        html\
+  \ += \"<div class='content'>\"\n\n        # High level again\n        html += render_content(page_data.content)\n\
+  \n        # Low level\n        html += \"</div></body></html>\"\n\n        return\
+  \ html\n    ```\n\n    ### ✅ Consistent Abstraction Level\n    ```python\n    def\
+  \ render_page(page_data):\n        return build_html(\n            render_header(page_data.header),\n\
+  \            render_body(page_data.content),\n            render_footer(page_data.footer)\n\
+  \        )\n\n    def render_body(content):\n        return wrap_in_div(render_content(content),\
+  \ class_name='content')\n\n    def wrap_in_div(content, class_name):\n        return\
+  \ f\"<div class='{class_name}'>{content}</div>\"\n    ```\n\n    ## Function Arguments\n\
+  \n    ### Ideal Number of Arguments\n\n    | Arguments | Rating | Notes |\n    |-----------|--------|-------|\n\
+  \    | 0 (niladic) | ⭐⭐⭐⭐⭐ | Perfect |\n    | 1 (monadic) | ⭐⭐⭐⭐ | Good |\n    |\
+  \ 2 (dyadic) | ⭐⭐⭐ | OK |\n    | 3 (triadic) | ⭐⭐ | Questionable |\n    | 4+ (polyadic)\
+  \ | ⭐ | Avoid |\n\n    ### ❌ Too Many Arguments\n    ```python\n    def create_user(name,\
+  \ email, password, age, address, phone, country, timezone, preferences):\n     \
+  \   # Hard to remember order\n        # Hard to test all combinations\n        pass\n\
+  \n    # Confusing call site\n    create_user(\"John\", \"john@example.com\", \"\
+  pass123\", 30, \"123 Main St\", \"555-1234\", \"USA\", \"PST\", {})\n    ```\n\n\
+  \    ### ✅ Use Objects for Multiple Arguments\n    ```python\n    class UserData:\n\
+  \        def __init__(self, name, email, password):\n            self.name = name\n\
+  \            self.email = email\n            self.password = password\n        \
+  \    self.age = None\n            self.address = None\n            self.preferences\
+  \ = {}\n\n    def create_user(user_data):\n        # Clear and extensible\n    \
+  \    pass\n\n    # Clear call site\n    user_data = UserData(\"John\", \"john@example.com\"\
+  , \"pass123\")\n    user_data.age = 30\n    create_user(user_data)\n    ```\n\n\
+  \    ## Flag Arguments\n\n    **Flag arguments are ugly. Passing a boolean into\
+  \ a function is a terrible practice.**\n\n    ### ❌ Flag Argument\n    ```python\n\
+  \    def render(is_test):\n        if is_test:\n            render_for_test()\n\
+  \        else:\n            render_for_production()\n    ```\n\n    ### ✅ Split\
+  \ Into Two Functions\n    ```python\n    def render_for_test():\n        # Test\
+  \ rendering logic\n        pass\n\n    def render_for_production():\n        # Production\
+  \ rendering logic\n        pass\n    ```\n\n    ## Avoid Side Effects\n\n    **A\
+  \ function promises to do one thing, but it also does other hidden things.**\n\n\
+  \    ### ❌ Hidden Side Effect\n    ```python\n    def check_password(username, password):\n\
+  \        user = User.find_by_username(username)\n        if user.password == password:\n\
+  \            Session.initialize()  # Hidden side effect!\n            return True\n\
+  \        return False\n    ```\n\n    ### ✅ Clear Intent\n    ```python\n    def\
+  \ check_password(username, password):\n        user = User.find_by_username(username)\n\
+  \        return user.password == password\n\n    def login(username, password):\n\
+  \        if check_password(username, password):\n            Session.initialize()\
+  \  # Clear and explicit\n            return True\n        return False\n    ```\n\
+  \n    ## Command Query Separation\n\n    **Functions should either do something\
+  \ or answer something, but not both.**\n\n    ### ❌ Mixed Command and Query\n  \
+  \  ```python\n    def set_and_check_attribute(attribute, value):\n        if attribute_exists(attribute):\n\
+  \            set_attribute(attribute, value)\n            return True\n        return\
+  \ False\n\n    # Confusing usage\n    if set_and_check_attribute(\"username\", \"\
+  john\"):\n        # Does this mean it was set, or it already existed?\n        pass\n\
+  \    ```\n\n    ### ✅ Separate Command and Query\n    ```python\n    def set_attribute(attribute,\
+  \ value):\n        # Command: changes state\n        attributes[attribute] = value\n\
+  \n    def attribute_exists(attribute):\n        # Query: returns information\n \
+  \       return attribute in attributes\n\n    # Clear usage\n    if attribute_exists(\"\
+  username\"):\n        set_attribute(\"username\", \"john\")\n    ```\n\n    ## Prefer\
+  \ Exceptions to Error Codes\n\n    ### ❌ Error Codes\n    ```python\n    def delete_page(page):\n\
+  \        if delete_from_database(page) == E_OK:\n            if delete_from_cache(page)\
+  \ == E_OK:\n                logger.log(\"page deleted\")\n            else:\n  \
+  \              logger.log(\"cache delete failed\")\n        else:\n            logger.log(\"\
+  database delete failed\")\n    ```\n\n    ### ✅ Exceptions\n    ```python\n    def\
+  \ delete_page(page):\n        try:\n            delete_page_and_dependencies(page)\n\
+  \        except Exception as e:\n            logger.error(f\"Failed to delete page:\
+  \ {e}\")\n            raise\n\n    def delete_page_and_dependencies(page):\n   \
+  \     delete_from_database(page)\n        delete_from_cache(page)\n        logger.info(\"\
+  Page deleted successfully\")\n    ```\n\n    ## Don't Repeat Yourself (DRY)\n\n\
+  \    **Duplication is the root of all evil in software.**\n\n    ### ❌ Duplication\n\
+  \    ```python\n    def calculate_employee_pay(employee):\n        regular_hours\
+  \ = employee.hours\n        overtime = regular_hours > 40 ? regular_hours - 40 :\
+  \ 0\n        regular_pay = employee.rate * min(regular_hours, 40)\n        overtime_pay\
+  \ = overtime * employee.rate * 1.5\n        return regular_pay + overtime_pay\n\n\
+  \    def calculate_contractor_pay(contractor):\n        regular_hours = contractor.hours\n\
+  \        overtime = regular_hours > 40 ? regular_hours - 40 : 0\n        regular_pay\
+  \ = contractor.rate * min(regular_hours, 40)\n        overtime_pay = overtime *\
+  \ contractor.rate * 1.5\n        return regular_pay + overtime_pay\n    ```\n\n\
+  \    ### ✅ Extract Common Logic\n    ```python\n    def calculate_pay(worker):\n\
+  \        regular_hours = min(worker.hours, 40)\n        overtime_hours = max(worker.hours\
+  \ - 40, 0)\n\n        regular_pay = worker.rate * regular_hours\n        overtime_pay\
+  \ = worker.rate * 1.5 * overtime_hours\n\n        return regular_pay + overtime_pay\n\
+  \    ```\n\n    ## Structured Programming\n\n    **Every function should have:**\n\
+  \    - One entry point\n    - One exit point (single return)\n    - No breaks or\
+  \ continues (loops)\n    - Never any goto statements\n\n    ### Multiple Returns\
+  \ Can Be OK\n    ```python\n    # ✅ Early returns for guard clauses\n    def get_user_discount(user):\n\
+  \        if not user:\n            return 0\n\n        if user.is_premium():\n \
+  \           return 0.2\n\n        if user.order_count > 10:\n            return\
+  \ 0.1\n\n        return 0\n    ```\n\n    ## Function Organization Guidelines\n\n\
+  \    ### 1. Stepdown Rule\n    Read code from top to bottom like a narrative:\n\
+  \    ```python\n    def main_process():\n        initialize()\n        process_data()\n\
+  \        cleanup()\n\n    def initialize():\n        load_config()\n        connect_database()\n\
+  \n    def load_config():\n        # Details...\n        pass\n    ```\n\n    ###\
+  \ 2. Extract Till You Drop\n    Keep extracting until you can't anymore:\n    ```python\n\
+  \    # Level 0\n    def process_payment():\n        validate_payment()\n       \
+  \ charge_customer()\n        send_receipt()\n\n    # Level 1\n    def validate_payment():\n\
+  \        check_payment_method()\n        verify_amount()\n        validate_currency()\n\
+  \n    # Level 2\n    def check_payment_method():\n        # Specific implementation\n\
+  \        pass\n    ```\n\n    ## Key Takeaways\n\n    1. **Functions should be small**\
+  \ - 5-15 lines ideal\n    2. **Do one thing** - Single Responsibility Principle\n\
+  \    3. **One level of abstraction** - Don't mix high and low level\n    4. **Descriptive\
+  \ names** - Name reveals what function does\n    5. **Few arguments** - 0-2 ideal,\
+  \ avoid flags\n    6. **No side effects** - Do what you promise\n    7. **Prefer\
+  \ exceptions** - To error codes\n    8. **DRY** - Don't Repeat Yourself\n    9.\
+  \ **Separate commands and queries** - Clear intent\n    10. **Read like prose**\
+  \ - Top to bottom narrative"
+exercises:
+- type: mcq
+  slug: writing-clean-functions-mcq-1
+  sequence_order: 1
+  question: What is the ideal maximum length for a clean function?
+  options:
+  - 5-15 lines, rarely more than 20
+  - 50-100 lines
+  - As long as needed to complete the task
+  - Exactly 10 lines
+  correct_answer_index: 0
+  explanation: Functions should be small - typically 5-15 lines, rarely more than 20. Small functions are easier to understand, test, and maintain. If a function is getting too long, it's a sign it's doing more than one thing and should be broken down into smaller functions.
+- type: mcq
+  slug: writing-clean-functions-mcq-2
+  sequence_order: 2
+  question: What is wrong with flag arguments (passing boolean parameters to functions)?
+  options:
+  - They indicate the function does more than one thing - it should be split into two functions
+  - They make the code run slower
+  - They are not supported in Python
+  - They cause memory leaks
+  correct_answer_index: 0
+  explanation: Flag arguments are a code smell because they indicate a function does more than one thing. Instead of "render(is_test=True)", create two functions "render_for_test()" and "render_for_production()". This makes the code more readable and follows the Single Responsibility Principle.
+- type: mcq
+  slug: writing-clean-functions-mcq-3
+  sequence_order: 3
+  question: What does the principle "Do One Thing" mean for functions?
+  options:
+  - A function should have a single, well-defined responsibility and do it well
+  - A function can only call one other function
+  - A function can only have one line of code
+  - A function can only have one parameter
+  correct_answer_index: 0
+  explanation: 'Functions should do one thing, do it well, and do it only. A good test is: can you extract another function from it with a name that isn''t just a restatement of its implementation? If yes, it''s doing more than one thing. For example, "save_and_email_customer()" should be split into "save_customer()" and "send_welcome_email()".'
+- type: mcq
+  slug: writing-clean-functions-mcq-4
+  sequence_order: 4
+  question: What is the DRY principle and why is it important?
+  options:
+  - "Don't Repeat Yourself - duplication is the root of evil in software and should be eliminated"
+  - Do Repeat Yourself - redundancy provides backup
+  - Don't Return Yourself - avoid circular references
+  - Do Review Yearly - code should be audited annually
+  correct_answer_index: 0
+  explanation: DRY (Don't Repeat Yourself) states that duplication is the root of all evil in software. When logic is duplicated, bugs must be fixed in multiple places and changes require updating multiple locations. Extract common logic into reusable functions to maintain consistency and reduce maintenance burden.
+objectives:
+- Write small, focused functions that do one thing well
+- Avoid flag arguments and keep function parameters minimal (0-2 ideal)
+- Maintain consistent levels of abstraction within functions
+- Eliminate duplication by applying the DRY principle
+- Prefer exceptions over error codes for cleaner error handling
+- Use descriptive names that reveal function intent
+next_recommended:
+- data-structures
+- functions

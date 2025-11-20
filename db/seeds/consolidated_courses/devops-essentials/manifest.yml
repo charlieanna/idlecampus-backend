@@ -1,0 +1,81 @@
+---
+course:
+  slug: devops-essentials
+  title: DevOps Essentials - Version Control, CI/CD & IaC
+  description: Modern DevOps practices including Git version control, CI/CD pipelines,
+    Infrastructure as Code with Terraform, and networking fundamentals. Build automated
+    deployment workflows.
+  estimated_hours: 11
+  level: intermediate
+  prerequisites:
+  - Basic Linux command line knowledge
+  - Understanding of software development lifecycle
+  - Linux & Shell Scripting Fundamentals (recommended)
+  learning_outcomes:
+  - Master Git version control and collaboration workflows
+  - Build and maintain CI/CD pipelines
+  - Provision infrastructure with Terraform (IaC)
+  - Automate deployment and testing
+  - Understand networking for cloud and containers
+  tags:
+  - devops
+  - git
+  - cicd
+  - terraform
+  - iac
+  - automation
+  - networking
+  related_courses:
+  - linux-shell-fundamentals
+  - aws-cloud-fundamentals
+  recommended_next: aws-cloud-fundamentals
+modules:
+- slug: version-control-git
+  title: Version Control with Git
+  description: 'Comprehensive Git course covering basics, branching strategies, merging,
+    remote collaboration, GitHub workflows, and advanced techniques'
+  order: 1
+  estimated_hours: 3
+  lessons:
+  - lesson-1
+  - git-branching-strategies
+  - git-merging-conflict-resolution
+  - git-remote-collaboration
+  - git-github-workflows
+  - git-advanced-techniques
+  - git-best-practices
+- slug: cicd-fundamentals
+  title: CI/CD Fundamentals
+  description: Continuous Integration and Continuous Delivery pipelines
+  order: 2
+  estimated_hours: 3
+  lessons:
+  - lesson-1
+  - lesson-2
+  - lesson-3
+  - lesson-4
+  - lesson-5
+  - lesson-6
+- slug: infrastructure-as-code
+  title: Infrastructure as Code with Terraform
+  description: Terraform basics, advanced patterns, and configuration management
+  order: 3
+  estimated_hours: 3
+  lessons:
+  - infrastructure-as-code-with-terraform
+  - advanced-terraform-patterns
+  - configuration-management
+- slug: networking-fundamentals
+  title: Networking Fundamentals
+  description: OSI model, TCP/IP stack, and networking concepts for DevOps
+  order: 4
+  estimated_hours: 2
+  lessons:
+  - lesson-1
+  - lesson-2
+  - practice-question
+  - lesson-3
+  - lesson-4
+  - lesson-5
+  - lesson-6
+  - lesson-12

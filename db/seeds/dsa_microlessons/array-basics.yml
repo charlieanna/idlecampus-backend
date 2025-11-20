@@ -1,0 +1,125 @@
+---
+slug: array-basics
+title: Array Basics
+sequence_order: 1
+estimated_minutes: 10
+difficulty: medium
+key_concepts:
+- Array Basics
+content_md: |
+  # Array Basics
+
+  Fundamental operations on arrays including traversal, access, and manipulation
+
+  ---
+
+  ## What are Arrays?
+
+  Arrays are contiguous memory blocks that store elements of the same type. They provide O(1) random access but O(n) insertion/deletion.
+
+  **Key Properties:**
+  - Fixed or dynamic size
+  - Zero-indexed access
+  - Contiguous memory allocation
+  - Cache-friendly due to locality
+
+  **Time Complexities:**
+  - Access: O(1)
+  - Search (unsorted): O(n)
+  - Insert at end: O(1) amortized
+  - Insert at position: O(n)
+  - Delete: O(n)
+
+
+  ---
+
+  ## Common Patterns
+
+  ### 1. Iteration
+  ```python
+  for i in range(len(arr)):
+      process(arr[i])
+  ```
+
+  ### 2. Reverse Iteration
+  ```python
+  for i in range(len(arr) - 1, -1, -1):
+      process(arr[i])
+  ```
+
+  ### 3. In-place Modification
+  ```python
+  for i in range(len(arr)):
+      arr[i] = transform(arr[i])
+  ```
+
+
+  ---
+
+  ## When to Use This Technique
+
+  Use arrays when you need fast random access, know the size in advance, or need cache-efficient sequential access.
+
+  ---
+
+  ## Common Pitfalls to Avoid
+
+  - Index out of bounds errors
+  - Not considering edge cases (empty array, single element)
+  - Forgetting that arrays are zero-indexed
+  - Modifying array while iterating
+
+  ---
+
+  ## Practice Problems
+
+  Start with these problems to master this concept:
+
+  ### 1. Two Sum [Easy]
+
+  Given an array of integers nums and an integer target, return indices of the two numbers that add up to target.
+
+  **Complexity:** Time O(O(n)), Space O(O(n))
+
+  **Hint:** Use a hash map to store numbers you've seen
+
+
+  ### 2. Two Sum II - Input Array Is Sorted [Easy]
+
+  Given a sorted array, find two numbers that add up to a specific target.
+
+  **Complexity:** Time O(O(n)), Space O(O(1))
+
+  **Hint:** Use two pointers from both ends
+
+
+  ### 3. Two Sum - Data Structure Design [Easy]
+
+  Design a data structure that supports add and find operations for two sum.
+
+  **Complexity:** Time O(O(1) add, O(n) find), Space O(O(n))
+
+
+  ### 4. Two Sum Less Than K [Easy]
+
+  Find the maximum sum of two numbers less than K.
+
+  **Complexity:** Time O(O(n log n)), Space O(O(1))
+
+
+  ### 5. Two Sum BST [Easy]
+
+  Find if there exist two elements in a BST that sum to target.
+
+  **Complexity:** Time O(O(n)), Space O(O(n))
+
+
+
+  ---
+
+  ## Key Takeaways
+
+  - Array Basics is essential for fundamental operations on arrays including traversal, access, and manipulation
+  - Time complexity improvements can be significant with this technique
+  - Practice problems in order of difficulty to build intuition
+  - Focus on recognizing patterns in problem statements

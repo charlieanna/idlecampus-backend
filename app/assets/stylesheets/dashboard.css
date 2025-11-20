@@ -1,0 +1,34 @@
+.tag-questions {
+  font-family: Arial, sans-serif;
+  margin: 20px;
+
+  h2 {
+    color: #333;
+    font-size: 1.5em;
+    margin-bottom: 10px;
+  }
+
+  .questions-list {
+    list-style-type: none;
+    padding: 0;
+
+    li {
+      border-bottom: 1px solid #ddd;
+      padding: 10px 0;
+
+      &:last-child {
+        border-bottom: none;
+      }
+    }
+
+    a {
+      text-decoration: none;
+      color: #007bff;
+      font-size: 1.1em;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}

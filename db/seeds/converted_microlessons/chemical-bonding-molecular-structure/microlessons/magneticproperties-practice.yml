@@ -1,0 +1,67 @@
+slug: magneticproperties-practice
+title: magnetic_properties — Practice
+difficulty: medium
+sequence_order: 12
+estimated_minutes: 2
+key_concepts:
+- magnetic_properties
+prerequisites: []
+content_md: '# magnetic_properties — Practice 🚀
+
+
+  O₂ has 2 unpaired electrons in π* orbitals, making it paramagnetic. N₂, F₂, and
+  H₂ have all electrons paired (diamagnetic).
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 2
+  question: Which of the following molecules is paramagnetic?
+  options:
+  - N₂
+  - O₂
+  - F₂
+  - H₂
+  require_pass: true
+  correct_answer: O₂
+  explanation: 'O₂ (oxygen molecule) is paramagnetic due to two unpaired electrons
+    in antibonding π* orbitals. Molecular Orbital theory correctly predicts this:
+    O₂ electron configuration is σ1s² σ*1s² σ2s² σ*2s² σ2p² π2p⁴ π*2p². The two π*2p
+    electrons occupy separate orbitals with parallel spins (Hund''s rule), giving
+    2 unpaired electrons. Paramagnetism causes attraction to magnetic fields - liquid
+    O₂ is visibly attracted to magnets. Bond order = (10-6)/2 = 2 (double bond). In
+    contrast: N₂ is diamagnetic (all paired), O₂⁺ has 1 unpaired electron, O₂²⁻ is
+    diamagnetic. Simple Lewis structures incorrectly show O₂ as diamagnetic, demonstrating
+    MO theory''s superiority for explaining magnetic properties and bonding.'
+- type: mcq
+  sequence_order: 3
+  question: What is the difference between paramagnetic and diamagnetic substances?
+  options:
+  - Paramagnetic substances are repelled by magnetic fields; diamagnetic are attracted
+  - Paramagnetic substances have unpaired electrons; diamagnetic have all electrons paired
+  - Paramagnetic substances are always metals; diamagnetic are nonmetals
+  - Paramagnetic substances have higher bond orders than diamagnetic
+  require_pass: true
+  correct_answer: Paramagnetic substances have unpaired electrons; diamagnetic have all electrons paired
+  explanation: 'Paramagnetic substances have one or more unpaired electrons and are weakly attracted to magnetic fields, while diamagnetic substances have all electrons paired and are weakly repelled by magnetic fields. The unpaired electrons in paramagnetic materials have magnetic moments that align with external magnetic fields, creating net attraction. In diamagnetic materials, all electrons are paired with opposite spins, so their magnetic moments cancel, resulting in slight repulsion. Examples: Paramagnetic - O₂ (2 unpaired e⁻), NO (1 unpaired e⁻), transition metal complexes with unpaired d electrons (Fe³⁺, Cu²⁺). Diamagnetic - N₂, H₂O, CO₂, most organic molecules, noble gases. Paramagnetism can be detected experimentally: liquid O₂ is attracted to magnets and pools between magnetic poles. This property is crucial in MRI technology and analytical chemistry.'
+- type: mcq
+  sequence_order: 4
+  question: Why can Molecular Orbital Theory predict O₂''s paramagnetism while Lewis structures cannot?
+  options:
+  - Lewis structures ignore oxygen atoms
+  - MO theory shows unpaired electrons in π* orbitals; Lewis shows all paired
+  - Lewis structures only apply to ionic compounds
+  - MO theory uses different electronegativity values
+  require_pass: true
+  correct_answer: MO theory shows unpaired electrons in π* orbitals; Lewis shows all paired
+  explanation: 'Molecular Orbital (MO) Theory correctly predicts O₂''s paramagnetism by showing two unpaired electrons in π*2p antibonding orbitals, while Lewis structures incorrectly show all electrons paired. Lewis structure for O₂: O=O with two lone pairs on each oxygen, suggesting all electrons are paired (diamagnetic). However, MO theory reveals the actual electron configuration: σ1s² σ*1s² σ2s² σ*2s² σ2p² π2p⁴ π*2p². According to Hund''s rule, the two π*2p electrons occupy separate orbitals with parallel spins, making O₂ paramagnetic with 2 unpaired electrons. This is experimentally verified - liquid O₂ is visibly attracted to magnets. MO theory''s advantage is that it considers how atomic orbitals combine to form molecular orbitals, providing more accurate predictions for electronic structure, bond order, bond energy, and magnetic properties than simple Lewis structures, especially for homonuclear diatomic molecules.'

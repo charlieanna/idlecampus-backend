@@ -1,0 +1,59 @@
+slug: gas-laws-practice
+title: gas laws — Practice
+difficulty: medium
+sequence_order: 10
+estimated_minutes: 2
+key_concepts:
+- gas laws
+prerequisites: []
+content_md: '# gas laws — Practice 🚀
+
+
+  Practice key gas law formulas including ideal gas law, Graham''s law, and van der
+  Waals equation.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What is the ideal gas law equation?
+  options:
+  - PV = nRT
+  - PV = RT
+  - P = nRT/V
+  - V = nRT
+  correct_answer: PV = nRT
+  explanation: "The ideal gas law is PV = nRT, where P is pressure, V is volume, n is number of moles, R is gas constant (0.0821 L·atm/mol·K or 8.314 J/mol·K), and T is absolute temperature (K). This combines Boyle's, Charles's, and Avogadro's laws."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What is Graham's law of diffusion/effusion?
+  options:
+  - r₁/r₂ = √(M₂/M₁)
+  - r₁/r₂ = √(M₁/M₂)
+  - r₁/r₂ = M₂/M₁
+  - r₁/r₂ = M₁/M₂
+  correct_answer: r₁/r₂ = √(M₂/M₁)
+  explanation: "Graham's law states r₁/r₂ = √(M₂/M₁), where r₁ and r₂ are rates of diffusion/effusion, and M₁ and M₂ are molar masses. Lighter gases diffuse faster than heavier gases. The rate is inversely proportional to the square root of molar mass."
+  require_pass: false
+- type: mcq
+  sequence_order: 3
+  question: What is the van der Waals equation for real gases?
+  options:
+  - (P + an²/V²)(V - nb) = nRT
+  - (P - an²/V²)(V + nb) = nRT
+  - PV + an²/V² = nRT
+  - P(V - nb) = nRT
+  correct_answer: (P + an²/V²)(V - nb) = nRT
+  explanation: "The van der Waals equation is (P + an²/V²)(V - nb) = nRT, where 'a' corrects for intermolecular attractions (pressure correction) and 'b' corrects for molecular volume (volume correction). For ideal gases (a = 0, b = 0), it reduces to PV = nRT."
+  require_pass: false

@@ -1,0 +1,165 @@
+<ul>
+<% @posts.each do |question| %>
+<li><%= link_to question[1], "https://stackoverflow.com/questions/#{question[0]}", target: "_blank" %><%= link_to "More" %></li>
+<% end %>
+</ul>
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <p>Questions we think you might want to read</p>
+    <!-- Topics
+    <ul>
+      <li><%= link_to "Kubernetes", "https://stackoverflow.com/questions/tagged/kubernetes?tab=Votes" %></li>
+      <li><%= link_to "Docker", "https://stackoverflow.com/questions/tagged/docker?tab=Votes" %></li>
+      <li><%= link_to "Linux", "https://stackoverflow.com/questions/tagged/linux?tab=Votes" %></li>
+      <li><%= link_to "Go", "https://stackoverflow.com/questions/tagged/go?tab=Votes" %></li>
+      <li><%= link_to "PCA", "https://stats.stackexchange.com/questions/tagged/pca?tab=Votes" %></li>
+      <li><%= link_to "SVD", "https://stats.stackexchange.com/questions/tagged/svd?tab=Votes" %></li>
+      <li><%= link_to "Route53", "https://stackoverflow.com/questions/tagged/amazon-route53?tab=Votes" %></li>
+      <li><%= link_to "Probability", "https://math.stackexchange.com/questions/tagged/probability+probability-distributions?tabs=Votes" %></li>
+      <li><%= link_to "SQL", "https://stats.stackexchange.com/questions/tagged/sql?tab=Votes" %></li>
+    </ul> -->
+
+    <!--  GO Channels
+
+    <ul>
+      <% @questions["gochannels"].each do |question| %>
+      <li><%= link_to question[:title], "https://stackoverflow.com/questions/#{question[:postId]}", target: "_blank" %>, <%= link_to "Cluster Info", "/cluster_info/gochannel/#{question[:postId]}" %></li>
+      <% end %>
+    </ul>  -->
+
+    <!-- Linear Algebra
+
+     <ul>
+       <% @questions["linear-algebra"].each do |question| %>
+       <li><%= link_to question[:title], "https://math.stackexchange.com/questions/#{question[:postId]}", target: "_blank" %>, <%= link_to "Cluster Info", "/cluster_info/linear-algebra/#{question[:postId]}" %></li>
+     <% end %>
+     </ul>
+
+    Diagonalization
+     <ul>
+       <% @questions["diagonalization"].each do |question| %>
+       <li><%= link_to question[:title], "https://math.stackexchange.com//questions/#{question[:postId]}", target: "_blank" %>, <%= link_to "Cluster Info", "/cluster_info/diagonalization/#{question[:postId]}" %></li>
+     <% end %>
+     </ul>
+
+    SVD
+     <ul>
+       <% @questions["svd"].each do |question| %>
+       <li><%= link_to question[:title], "https://math.stackexchange.com//questions/#{question[:postId]}", target: "_blank" %>, <%= link_to "Cluster Info", "/cluster_info/svd/#{question[:postId]}" %></li>
+     <% end %>
+     </ul>
+
+
+    Goroutine
+    <ul>
+      <% @questions["eigenvalues-eigenvectors"].each do |question| %>
+      <li><%= link_to question[:title], "https://math.stackexchange.com/questions/#{question[:postId]}", target: "_blank" %>, <%= link_to "Cluster Info", "/cluster_info/goroutine/#{question[:postId]}" %></li>
+      <% end %>
+    </ul>
+
+    SVM
+    <ul>
+      <% @questions["svm"].each do |question| %>
+      <li><%= link_to question[:title], "https://stats.stackexchange.com/questions/#{question[:postId]}", target: "_blank" %>, <%= link_to "Cluster Info", "/cluster_info/svm/#{question[:postId]}" %></li>
+      <% end %>
+    </ul> -->
+
+    Go
+    <ul>
+      <% @questions["go"].each do |question| %>
+      <li><%= link_to question[:title], "https://stackoverflow.com/questions/#{question[:postId]}", target: "_blank" %>, <%= link_to "Cluster Info", "http://localhost:3000/posts/#{question[:postId]}", target: "_blank" %></li>
+      <%= question[:tags] %>
+      <% end %>
+    </ul>
+
+
+     <!-- Kubernetes
+    <ul>
+      <% @questions["kubernetes"].each do |question| %>
+      <li><%= link_to question[:title], "https://stackoverflow.com/questions/#{question[:postId]}", target: "_blank" %>, <%= link_to "Cluster Info", "/cluster_info/kubernetes/#{question[:postId]}" %></li>
+      <% end %>
+    </ul>
+
+    Docker
+    <ul>
+      <% @questions["docker"].each do |question| %>
+      <li><%= link_to question[:title], "https://stackoverflow.com/questions/#{question[:postId]}", target: "_blank" %>, <%= link_to "Cluster Info", "/cluster_info/docker/#{question[:postId]}" %></li>
+      <% end %>
+    </ul>
+
+    # PCA
+    # <ul>
+    #   <% @questions["pca"].each do |question| %>
+    #   <li><%= link_to question[:title], "https://stats.stackexchange.com//questions/#{question[:postId]}", target: "_blank" %>, <%= link_to "Cluster Info", "/cluster_info/pca/#{question[:postId]}" %></li>
+    #   <% end %>
+    # </ul>
+
+
+
+    # Bayesian
+    # <ul>
+    #   <% @questions["bayesian"].each do |question| %>
+    #   <li><%= link_to question[:title], "https://stats.stackexchange.com//questions/#{question[:postId]}", target: "_blank" %>, <%= link_to "Cluster Info", "/cluster_info/bayesian/#{question[:postId]}" %></li>
+    #   <% end %>
+    # </ul>
+
+    # Eigenvalues
+    # <ul>
+    #   <% @questions["eigenvalues"].each do |question| %>
+    #   <li><%= link_to question[:title], "https://stats.stackexchange.com//questions/#{question[:postId]}", target: "_blank" %>, <%= link_to "Cluster Info", "/cluster_info/eigenvalues/#{question[:postId]}" %></li>
+    #   <% end %>
+    # </ul>
+
+    Linux
+    <ul>
+      <% @questions["linux"].each do |question| %>
+      <li><%= link_to question[:title], "https://stats.stackexchange.com//questions/#{question[:postId]}", target: "_blank" %>, <%= link_to "Cluster Info", "/cluster_info/linux/#{question[:postId]}" %></li>
+      <% end %>
+    </ul>
+
+    AWS
+    <ul>
+      <% @questions["amazon-web-services"].each do |question| %>
+      <li><%= link_to question[:title], "https://stats.stackexchange.com//questions/#{question[:postId]}", target: "_blank" %>, <%= link_to "Cluster Info", "/cluster_info/amazon-web-services/#{question[:postId]}" %></li>
+      <% end %>
+    </ul>
+
+    SQL
+    <ul>
+      <% @questions["sql"].each do |question| %>
+      <li><%= link_to question[:title], "https://stats.stackexchange.com/questions/#{question[:postId]}", target: "_blank" %>, <%= link_to "Cluster Info", "/cluster_info/sql/#{question[:postId]}" %></li>
+      <% end %>
+    </ul>
+
+
+    Process
+    <ul>
+      <% @questions["process"].each do |question| %>
+      <li><%= link_to question[:title], "https://stats.stackexchange.com/questions/#{question[:postId]}", target: "_blank" %>, <%= link_to "Cluster Info", "/cluster_info/process/#{question[:postId]}" %></li>
+      <% end %>
+    </ul>
+
+    Multithreading
+    <ul>
+      <% @questions["multithreading"].each do |question| %>
+      <li><%= link_to question[:title], "https://stats.stackexchange.com/questions/#{question[:postId]}", target: "_blank" %>, <%= link_to "Cluster Info", "/cluster_info/multithreading/#{question[:postId]}" %></li>
+      <% end %>
+    </ul>
+
+    Google Kubernetes Engine
+    <ul>
+      <% @questions["google-kubernetes-engine"].each do |question| %>
+      <li><%= link_to question[:title], "https://stats.stackexchange.com/questions/#{question[:postId]}", target: "_blank" %>, <%= link_to "Cluster Info", "/cluster_info/google-kubernetes-engine/#{question[:postId]}" %></li>
+      <% end %>
+    </ul>
+ -->
+
+
+
+  </body>
+</html>

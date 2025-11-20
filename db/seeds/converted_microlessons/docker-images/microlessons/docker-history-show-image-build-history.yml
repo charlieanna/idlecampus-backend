@@ -1,0 +1,90 @@
+slug: docker-history-show-image-build-history
+title: 'Docker History: Show Image Build History'
+difficulty: medium
+sequence_order: 11
+estimated_minutes: 2
+key_concepts:
+- images
+- docker-history
+- layers
+- optimization
+- analysis
+prerequisites: []
+content_md: '# Docker History: Show Image Build History 🚀
+
+
+  Display the history of an image showing all layers, commands that created them,
+  and their sizes. Essential for understanding image composition and optimization.
+
+
+  ## Syntax/Command
+
+
+  ```bash
+
+  docker history nginx:alpine
+
+  ```
+
+
+  ## Example
+
+
+  ```bash
+
+  docker history --no-trunc nginx
+
+  ```
+
+
+  ## Key Points
+
+
+  - View history: docker history <image>
+
+
+  - Full commands: docker history --no-trunc <image>
+
+
+  - Size analysis: docker history <image> | head'
+exercises:
+- type: terminal
+  problem_statement: View the build history and layers of the nginx:alpine image to analyze its composition and layer sizes
+  expected_output: Table showing each layer with command, size, and creation time
+  language: bash
+  starter_code: "# View image history\n"
+  sequence_order: 1
+  command: docker history nginx:alpine
+  description: Examine image layers to find optimization opportunities
+  hints:
+  - 'View history: docker history <image>'
+  - 'Full commands: docker history --no-trunc <image>'
+  - 'Size analysis: docker history <image> | head'
+  validation:
+    must_not_include:
+    - Error
+    - 'panic:'
+  timeout_sec: 60
+  require_pass: true
+- type: sandbox
+  sequence_order: 99
+  hints:
+  - Run under CPU pressure to surface leaks or races
+  - Keep commands idempotent in CI
+  validation:
+    must_not_include:
+    - Error
+    - 'panic:'
+  timeout_sec: 60
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What does each line in docker history output represent?
+  options:
+  - A layer in the image with the command that created it and its size
+  - A version of the image in the registry
+  - A container created from the image
+  - A backup snapshot of the image
+  correct_answer: A layer in the image with the command that created it and its size
+  explanation: "Each line in docker history output represents a single layer in the image, showing the Dockerfile instruction (or command) that created it, when it was created, and how much disk space it adds. This is invaluable for optimizing image size by identifying large layers."
+  require_pass: true

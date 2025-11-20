@@ -1,0 +1,202 @@
+slug: moment-of-inertia-concepts
+title: "Moment of Inertia: Concepts and Calculations"
+difficulty: advanced
+sequence_order: 2
+estimated_minutes: 18
+key_concepts:
+- moment-of-inertia
+- rotational-inertia
+- radius-of-gyration
+- parallel-axis
+- perpendicular-axis
+prerequisites:
+- angular-displacement-velocity-acceleration
+content_md: |
+  # Moment of Inertia: Concepts and Calculations
+
+  ## Definition
+
+  **Moment of Inertia (I)** is the rotational analog of mass, measuring an object's resistance to angular acceleration.
+
+  ```
+  I = Σmᵢrᵢ² (for discrete particles)
+
+  I = ∫r²dm (for continuous mass distribution)
+  ```
+
+  Where r = perpendicular distance from rotation axis.
+
+  ## Physical Significance
+
+  - **Rotational inertia** - resistance to change in rotational motion
+  - **τ = Iα** (analog of F = ma)
+  - **KE_rot = ½Iω²** (analog of KE = ½mv²)
+  - **L = Iω** (angular momentum)
+
+  ## Standard Results for Common Shapes
+
+  | Object | Axis | Moment of Inertia |
+  |--------|------|-------------------|
+  | Ring (radius R) | Through center, ⊥ to plane | MR² |
+  | Ring | Diameter | MR²/2 |
+  | Disc | Through center, ⊥ to plane | MR²/2 |
+  | Disc | Diameter | MR²/4 |
+  | Solid Sphere | Any diameter | (2/5)MR² |
+  | Hollow Sphere | Any diameter | (2/3)MR² |
+  | Solid Cylinder | Central axis | MR²/2 |
+  | Solid Cylinder | Perpendicular axis through CM | M(R²/4 + L²/12) |
+  | Rod (length L) | Center, ⊥ to length | ML²/12 |
+  | Rod | End, ⊥ to length | ML²/3 |
+
+  ## Radius of Gyration (k)
+
+  ```
+  I = Mk²
+
+  k = √(I/M)
+  ```
+
+  k is the distance from axis where total mass can be concentrated to give same I.
+
+  **For common shapes:**
+  - Ring about center: k = R
+  - Disc about center: k = R/√2
+  - Solid sphere: k = R√(2/5)
+  - Rod about center: k = L/√12
+
+  ## Parallel Axis Theorem
+
+  ```
+  I = I_CM + Md²
+  ```
+
+  Where:
+  - I = MOI about any axis
+  - I_CM = MOI about parallel axis through CM
+  - d = distance between axes
+
+  **Key Point**: Always add Md² when moving away from CM axis.
+
+  ### Example: Rod about end
+  ```
+  I_end = I_CM + M(L/2)²
+  I_end = ML²/12 + ML²/4 = ML²/3
+  ```
+
+  ## Perpendicular Axis Theorem
+
+  **Only for planar bodies (2D):**
+  ```
+  I_z = I_x + I_y
+  ```
+
+  Where x and y are in the plane, z is perpendicular.
+
+  ### Example: Ring
+  ```
+  I_diameter + I_diameter = I_perpendicular
+  2I_d = MR²
+  I_d = MR²/2
+  ```
+
+  ### Example: Disc
+  ```
+  I_x + I_y = I_z
+  2I_diameter = MR²/2
+  I_diameter = MR²/4
+  ```
+
+  ## Calculation Examples
+
+  ### 1. Rod (from first principles)
+  For uniform rod of length L, mass M:
+  ```
+  dm = (M/L)dx
+  I = ∫_{-L/2}^{L/2} x²(M/L)dx = (M/L)[x³/3]_{-L/2}^{L/2}
+  I = ML²/12 (about center)
+  ```
+
+  ### 2. Disc (integration)
+  Using concentric rings:
+  ```
+  dm = (2M/R²)r·dr
+  I = ∫₀^R r²·dm = ∫₀^R r²(2M/R²)r·dr
+  I = (2M/R²)∫₀^R r³dr = (2M/R²)(R⁴/4) = MR²/2
+  ```
+
+  ## Combined Systems
+
+  For multiple bodies rotating about same axis:
+  ```
+  I_total = I₁ + I₂ + I₃ + ...
+  ```
+
+  ### Example: Disc with hole
+  ```
+  I = I_full disc - I_removed disc
+  ```
+
+  ## MOI Ratios (Important for JEE)
+
+  Comparing same mass and radius/length:
+  ```
+  Ring : Disc : Sphere = 1 : 1/2 : 2/5
+  ```
+
+  For rolling down incline:
+  - Lower I → Higher acceleration
+  - Sphere reaches first, then disc, then ring
+
+  ## Numerical Example
+
+  **Problem:** A disc of mass 2 kg and radius 0.1 m rotates about an axis parallel to its central axis at distance 0.1 m from center. Find I.
+
+  **Solution:**
+  ```
+  I_CM = MR²/2 = 2(0.1)²/2 = 0.01 kg·m²
+  I = I_CM + Md² = 0.01 + 2(0.1)² = 0.01 + 0.02
+  I = 0.03 kg·m²
+  ```
+
+  ## JEE Key Points
+
+  1. **MOI depends on axis of rotation** (not just mass)
+  2. **Parallel axis theorem always increases I**
+  3. **Perpendicular axis theorem only for 2D bodies**
+  4. **k² = I/M** (radius of gyration squared)
+  5. **For rolling**: Total KE = ½Mv² + ½Iω² = ½Mv²(1 + k²/R²)
+
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: "A thin ring of mass M and radius R is spinning about its diameter. Its moment of inertia is:"
+  options:
+  - "MR²"
+  - "MR²/2"
+  - "2MR²"
+  - "MR²/4"
+  correct_answer: "MR²/2"
+  explanation: "Using perpendicular axis theorem: I_x + I_y = I_z, where x and y are diameters, z is perpendicular to plane. For ring: I_z = MR² (about axis ⊥ to plane through center). By symmetry, I_x = I_y (both diameters). So 2I_diameter = MR², giving I_diameter = MR²/2. This is half the MOI about perpendicular axis because mass is distributed differently - along diameter, maximum distance is R, while about perpendicular axis, all mass is at distance R."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: "A uniform rod of length L is pivoted at one end. The moment of inertia about this pivot is:"
+  options:
+  - "ML²/12"
+  - "ML²/3"
+  - "ML²/4"
+  - "ML²/2"
+  correct_answer: "ML²/3"
+  explanation: "Using parallel axis theorem: I_end = I_CM + Md². For rod: I_CM = ML²/12 (about center). Distance from center to end: d = L/2. Therefore: I_end = ML²/12 + M(L/2)² = ML²/12 + ML²/4 = ML²/12 + 3ML²/12 = 4ML²/12 = ML²/3. This is 4 times the MOI about center because: (1) axis shifted by L/2, (2) Md² term is significant. This explains why pendulums pivoted at end have different period than those pivoted at center."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: "The radius of gyration of a solid sphere of radius R about any diameter is:"
+  options:
+  - "R"
+  - "R√(2/5)"
+  - "R/√2"
+  - "R√(3/5)"
+  correct_answer: "R√(2/5)"
+  explanation: "For solid sphere: I = (2/5)MR². Radius of gyration k: I = Mk², so k² = I/M = (2/5)MR²/M = (2/5)R². Therefore k = R√(2/5) ≈ 0.632R. This means if entire mass were concentrated at distance 0.632R from axis, MOI would be same. Physical interpretation: Mass in sphere is distributed from r=0 to r=R, with more mass at outer regions contributing more to I. The effective distance is √(2/5)R, showing average contribution. Compare: Ring k=R, Disc k=R/√2, Sphere k=R√(2/5)."
+  require_pass: true

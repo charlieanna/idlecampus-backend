@@ -1,0 +1,229 @@
+slug: data-preprocessing-fundamentals
+title: Data Preprocessing Fundamentals
+sequence_order: 3
+estimated_minutes: 2
+difficulty: easy
+key_concepts: []
+content_md: "# Data Preprocessing Fundamentals \U0001F680\n\n# Data Preprocessing\
+  \ Fundamentals\n\n    **\"Garbage in, garbage out\"** - Your model is only as good\
+  \ as your data. Data preprocessing is crucial for ML success.\n\n    ## Why Preprocessing\
+  \ Matters\n\n    ### Problems with Raw Data\n    - Missing values\n    - Inconsistent\
+  \ formats\n    - Outliers\n    - Different scales\n    - Categorical data\n    -\
+  \ Imbalanced classes\n\n    ### Impact on Models\n    - Poor data → Poor predictions\n\
+  \    - Some algorithms require scaled data\n    - Missing values cause errors\n\
+  \    - Outliers skew models\n\n    ## Handling Missing Values\n\n    ### 1. Detect\
+  \ Missing Values\n\n    ```python\n    import pandas as pd\n    import numpy as\
+  \ np\n\n    # Check for missing values\n    print(df.isnull().sum())\n    print(df.isnull().sum()\
+  \ / len(df) * 100)  # Percentage\n\n    # Visualize missing values\n    import seaborn\
+  \ as sns\n    import matplotlib.pyplot as plt\n\n    sns.heatmap(df.isnull(), cbar=False,\
+  \ cmap='viridis')\n    plt.show()\n    ```\n\n    ### 2. Strategies for Handling\
+  \ Missing Values\n\n    #### A. Remove Missing Data\n    ```python\n    # Remove\
+  \ rows with any missing value\n    df_clean = df.dropna()\n\n    # Remove rows where\
+  \ specific column is missing\n    df_clean = df.dropna(subset=['column_name'])\n\
+  \n    # Remove columns with >50% missing values\n    threshold = 0.5\n    df_clean\
+  \ = df.dropna(thresh=int(threshold * len(df)), axis=1)\n    ```\n\n    #### B. Imputation\
+  \ (Fill Missing Values)\n\n    **Mean/Median/Mode:**\n    ```python\n    from sklearn.impute\
+  \ import SimpleImputer\n\n    # Mean imputation (for numerical features)\n    imputer\
+  \ = SimpleImputer(strategy='mean')\n    df['age'] = imputer.fit_transform(df[['age']])\n\
+  \n    # Median (better for skewed data)\n    imputer = SimpleImputer(strategy='median')\n\
+  \    df['salary'] = imputer.fit_transform(df[['salary']])\n\n    # Most frequent\
+  \ (for categorical)\n    imputer = SimpleImputer(strategy='most_frequent')\n   \
+  \ df['city'] = imputer.fit_transform(df[['city']])\n\n    # Constant value\n   \
+  \ imputer = SimpleImputer(strategy='constant', fill_value=0)\n    df['missing_col']\
+  \ = imputer.fit_transform(df[['missing_col']])\n    ```\n\n    **Forward/Backward\
+  \ Fill:**\n    ```python\n    # Forward fill (use previous value)\n    df['column'].fillna(method='ffill')\n\
+  \n    # Backward fill (use next value)\n    df['column'].fillna(method='bfill')\n\
+  \    ```\n\n    **Interpolation:**\n    ```python\n    # Linear interpolation\n\
+  \    df['temperature'].interpolate(method='linear')\n\n    # Time-based interpolation\n\
+  \    df['value'].interpolate(method='time')\n    ```\n\n    ## Feature Scaling\n\
+  \n    ### Why Scale?\n    - Many ML algorithms are sensitive to feature scales\n\
+  \    - Features with larger values dominate\n    - Gradient descent converges faster\
+  \ with scaled features\n\n    ### 1. Standardization (Z-score Normalization)\n\n\
+  \    Transform data to have mean=0 and std=1\n\n    ```python\n    from sklearn.preprocessing\
+  \ import StandardScaler\n\n    scaler = StandardScaler()\n    X_train_scaled = scaler.fit_transform(X_train)\n\
+  \    X_test_scaled = scaler.transform(X_test)  # Don't fit on test!\n\n    # Formula:\
+  \ z = (x - mean) / std\n    ```\n\n    **When to use:**\n    - Most algorithms (SVM,\
+  \ logistic regression, neural networks)\n    - When features follow normal distribution\n\
+  \n    ### 2. Normalization (Min-Max Scaling)\n\n    Transform data to fixed range\
+  \ [0, 1]\n\n    ```python\n    from sklearn.preprocessing import MinMaxScaler\n\n\
+  \    scaler = MinMaxScaler()\n    X_train_scaled = scaler.fit_transform(X_train)\n\
+  \    X_test_scaled = scaler.transform(X_test)\n\n    # Formula: x_scaled = (x -\
+  \ min) / (max - min)\n    ```\n\n    **When to use:**\n    - When you need bounded\
+  \ values\n    - Neural networks\n    - Image data (pixels already 0-255)\n\n   \
+  \ ### 3. Robust Scaling\n\n    Uses median and IQR (robust to outliers)\n\n    ```python\n\
+  \    from sklearn.preprocessing import RobustScaler\n\n    scaler = RobustScaler()\n\
+  \    X_train_scaled = scaler.fit_transform(X_train)\n    X_test_scaled = scaler.transform(X_test)\n\
+  \n    # Formula: (x - median) / IQR\n    ```\n\n    **When to use:**\n    - Data\
+  \ has many outliers\n\n    ## Encoding Categorical Variables\n\n    ### 1. Label\
+  \ Encoding\n\n    Convert categories to numbers (0, 1, 2, ...)\n\n    ```python\n\
+  \    from sklearn.preprocessing import LabelEncoder\n\n    le = LabelEncoder()\n\
+  \    df['city_encoded'] = le.fit_transform(df['city'])\n\n    # Example:\n    #\
+  \ 'New York' → 0\n    # 'London' → 1\n    # 'Tokyo' → 2\n    ```\n\n    **⚠️ Warning:**\
+  \ Only use for ordinal data (has natural order)\n\n    ### 2. One-Hot Encoding\n\
+  \n    Create binary column for each category\n\n    ```python\n    # Using pandas\n\
+  \    df_encoded = pd.get_dummies(df, columns=['city'], drop_first=False)\n\n   \
+  \ # Using sklearn\n    from sklearn.preprocessing import OneHotEncoder\n\n    encoder\
+  \ = OneHotEncoder(sparse=False, drop='first')\n    city_encoded = encoder.fit_transform(df[['city']])\n\
+  \n    # Example:\n    # 'New York' → [1, 0, 0]\n    # 'London' → [0, 1, 0]\n   \
+  \ # 'Tokyo' → [0, 0, 1]\n    ```\n\n    **When to use:**\n    - Nominal categories\
+  \ (no order)\n    - Most ML algorithms\n\n    ### 3. Ordinal Encoding\n\n    Map\
+  \ categories to integers with meaningful order\n\n    ```python\n    from sklearn.preprocessing\
+  \ import OrdinalEncoder\n\n    # Define order\n    education_order = ['High School',\
+  \ 'Bachelor', 'Master', 'PhD']\n\n    encoder = OrdinalEncoder(categories=[education_order])\n\
+  \    df['education_encoded'] = encoder.fit_transform(df[['education']])\n\n    #\
+  \ High School → 0\n    # Bachelor → 1\n    # Master → 2\n    # PhD → 3\n    ```\n\
+  \n    ## Handling Outliers\n\n    ### 1. Detect Outliers\n\n    ```python\n    #\
+  \ Using IQR method\n    Q1 = df['salary'].quantile(0.25)\n    Q3 = df['salary'].quantile(0.75)\n\
+  \    IQR = Q3 - Q1\n\n    lower_bound = Q1 - 1.5 * IQR\n    upper_bound = Q3 + 1.5\
+  \ * IQR\n\n    outliers = df[(df['salary'] < lower_bound) | (df['salary'] > upper_bound)]\n\
+  \    print(f\"Number of outliers: {len(outliers)}\")\n\n    # Using Z-score\n  \
+  \  from scipy import stats\n    z_scores = stats.zscore(df['salary'])\n    outliers\
+  \ = df[np.abs(z_scores) > 3]\n    ```\n\n    ### 2. Handle Outliers\n\n    ```python\n\
+  \    # Remove outliers\n    df_no_outliers = df[(df['salary'] >= lower_bound) &\
+  \ (df['salary'] <= upper_bound)]\n\n    # Cap outliers (Winsorization)\n    df['salary_capped']\
+  \ = df['salary'].clip(lower=lower_bound, upper=upper_bound)\n\n    # Transform data\
+  \ (log transform for right-skewed)\n    df['log_salary'] = np.log1p(df['salary'])\n\
+  \    ```\n\n    ## Feature Engineering\n\n    ### 1. Creating New Features\n\n \
+  \   ```python\n    # Date features\n    df['date'] = pd.to_datetime(df['date'])\n\
+  \    df['year'] = df['date'].dt.year\n    df['month'] = df['date'].dt.month\n  \
+  \  df['day_of_week'] = df['date'].dt.dayofweek\n    df['is_weekend'] = df['day_of_week'].isin([5,\
+  \ 6]).astype(int)\n\n    # Mathematical transformations\n    df['price_per_sqft']\
+  \ = df['price'] / df['square_feet']\n    df['bmi'] = df['weight'] / (df['height']\
+  \ ** 2)\n\n    # Binning (discretization)\n    df['age_group'] = pd.cut(\n     \
+  \   df['age'],\n        bins=[0, 18, 35, 50, 100],\n        labels=['young', 'adult',\
+  \ 'middle_aged', 'senior']\n    )\n\n    # Polynomial features\n    from sklearn.preprocessing\
+  \ import PolynomialFeatures\n    poly = PolynomialFeatures(degree=2, include_bias=False)\n\
+  \    X_poly = poly.fit_transform(X)\n    ```\n\n    ### 2. Feature Selection\n\n\
+  \    ```python\n    # Correlation-based selection\n    correlation = df.corr()\n\
+  \    high_corr = correlation[abs(correlation['target']) > 0.5]['target']\n    print(high_corr)\n\
+  \n    # Remove highly correlated features\n    correlation_matrix = df.corr().abs()\n\
+  \    upper_triangle = correlation_matrix.where(\n        np.triu(np.ones(correlation_matrix.shape),\
+  \ k=1).astype(bool)\n    )\n    to_drop = [col for col in upper_triangle.columns\
+  \ if any(upper_triangle[col] > 0.95)]\n    df_reduced = df.drop(columns=to_drop)\n\
+  \    ```\n\n    ## Complete Preprocessing Pipeline\n\n    ```python\n    import\
+  \ pandas as pd\n    import numpy as np\n    from sklearn.model_selection import\
+  \ train_test_split\n    from sklearn.preprocessing import StandardScaler, OneHotEncoder\n\
+  \    from sklearn.impute import SimpleImputer\n    from sklearn.compose import ColumnTransformer\n\
+  \    from sklearn.pipeline import Pipeline\n\n    # Load data\n    df = pd.read_csv('data.csv')\n\
+  \n    # 1. Identify feature types\n    numerical_features = ['age', 'salary', 'experience']\n\
+  \    categorical_features = ['city', 'education']\n    target = 'target'\n\n   \
+  \ # 2. Separate X and y\n    X = df[numerical_features + categorical_features]\n\
+  \    y = df[target]\n\n    # 3. Train-test split\n    X_train, X_test, y_train,\
+  \ y_test = train_test_split(\n        X, y, test_size=0.2, random_state=42\n   \
+  \ )\n\n    # 4. Create preprocessing pipelines\n    numerical_pipeline = Pipeline([\n\
+  \        ('imputer', SimpleImputer(strategy='median')),\n        ('scaler', StandardScaler())\n\
+  \    ])\n\n    categorical_pipeline = Pipeline([\n        ('imputer', SimpleImputer(strategy='most_frequent')),\n\
+  \        ('encoder', OneHotEncoder(drop='first', sparse=False))\n    ])\n\n    #\
+  \ 5. Combine pipelines\n    preprocessor = ColumnTransformer([\n        ('num',\
+  \ numerical_pipeline, numerical_features),\n        ('cat', categorical_pipeline,\
+  \ categorical_features)\n    ])\n\n    # 6. Fit and transform\n    X_train_processed\
+  \ = preprocessor.fit_transform(X_train)\n    X_test_processed = preprocessor.transform(X_test)\n\
+  \n    print(f\"Original shape: {X_train.shape}\")\n    print(f\"Processed shape:\
+  \ {X_train_processed.shape}\")\n    ```\n\n    ## Best Practices\n\n    ### 1. Always\
+  \ Split First\n    ```python\n    # ✅ Correct order\n    X_train, X_test = train_test_split(X,\
+  \ y)\n    scaler.fit(X_train)  # Only fit on training data\n    X_train_scaled =\
+  \ scaler.transform(X_train)\n    X_test_scaled = scaler.transform(X_test)\n\n  \
+  \  # ❌ Wrong - causes data leakage\n    X_scaled = scaler.fit_transform(X)  # Fits\
+  \ on all data!\n    X_train, X_test = train_test_split(X_scaled, y)\n    ```\n\n\
+  \    ### 2. Save Preprocessors\n    ```python\n    import joblib\n\n    # Save\n\
+  \    joblib.dump(preprocessor, 'preprocessor.pkl')\n\n    # Load and use\n    preprocessor\
+  \ = joblib.load('preprocessor.pkl')\n    X_new_processed = preprocessor.transform(X_new)\n\
+  \    ```\n\n    ### 3. Document Decisions\n    ```python\n    \"\"\"\n    Preprocessing\
+  \ decisions:\n    - Imputed age with median (right-skewed distribution)\n    - Removed\
+  \ salary outliers beyond 3 IQR\n    - Standardized numerical features (for logistic\
+  \ regression)\n    - One-hot encoded city (nominal variable)\n    - Ordinal encoded\
+  \ education (has natural order)\n    \"\"\"\n    ```\n\n    ### 4. Validate Preprocessing\n\
+  \    ```python\n    # Check for remaining missing values\n    assert X_train_processed.isna().sum().sum()\
+  \ == 0\n\n    # Check scaling\n    print(f\"Mean: {X_train_processed.mean():.2f}\"\
+  )\n    print(f\"Std: {X_train_processed.std():.2f}\")\n\n    # Check shapes match\n\
+  \    assert X_train_processed.shape[0] == len(y_train)\n    ```\n\n    ## Common\
+  \ Pitfalls\n\n    ### 1. Data Leakage\n    ```python\n    # ❌ Fitting scaler on\
+  \ full dataset\n    scaler.fit(X)  # Sees test data!\n\n    # ✅ Fit only on training\
+  \ data\n    scaler.fit(X_train)\n    ```\n\n    ### 2. Forgetting to Transform Test\
+  \ Data\n    ```python\n    # ❌ Forgot to scale test data\n    model.fit(X_train_scaled,\
+  \ y_train)\n    model.predict(X_test)  # Not scaled!\n\n    # ✅ Scale test data\
+  \ same way\n    model.fit(X_train_scaled, y_train)\n    model.predict(X_test_scaled)\n\
+  \    ```\n\n    ### 3. Using Mean for Skewed Data\n    ```python\n    # ❌ Mean sensitive\
+  \ to outliers\n    imputer = SimpleImputer(strategy='mean')\n\n    # ✅ Median robust\
+  \ to outliers\n    imputer = SimpleImputer(strategy='median')\n    ```\n\n    ##\
+  \ Key Takeaways\n\n    1. **Preprocess before modeling** - Essential step\n    2.\
+  \ **Handle missing values** - Impute or remove\n    3. **Scale features** - Standardize\
+  \ or normalize\n    4. **Encode categories** - One-hot for nominal, ordinal for\
+  \ ordered\n    5. **Handle outliers** - Remove, cap, or transform\n    6. **Split\
+  \ first** - Avoid data leakage\n    7. **Use pipelines** - Organize preprocessing\
+  \ steps\n    8. **Save preprocessors** - Use same transform at inference\n    9.\
+  \ **Validate thoroughly** - Check for issues\n    10. **Document decisions** - Why\
+  \ you did what you did\n\n    ## Next Steps\n\n    - Practice preprocessing on Kaggle\
+  \ datasets\n    - Build preprocessing pipelines\n    - Experiment with different\
+  \ strategies\n    - Learn feature engineering techniques\n    - Study domain-specific\
+  \ preprocessing"
+exercises:
+- type: mcq
+  slug: data-preprocessing-fundamentals-mcq-1
+  sequence_order: 1
+  question: Why is feature scaling important in machine learning?
+  options:
+  - It helps algorithms converge faster and puts features on comparable scales
+  - It removes missing values from the dataset
+  - It automatically selects the best features
+  - It converts categorical variables to numbers
+  correct_answer_index: 0
+  explanation: Feature scaling puts features on similar scales, helping gradient descent
+    converge faster and preventing features with larger ranges from dominating the
+    learning process. Algorithms like SVM, logistic regression, and neural networks
+    are particularly sensitive to feature scales.
+- type: mcq
+  slug: data-preprocessing-fundamentals-mcq-2
+  sequence_order: 2
+  question: When should you use median imputation instead of mean imputation for missing
+    values?
+  options:
+  - When the data is skewed or contains outliers
+  - When the data is categorical
+  - When the data has no missing values
+  - When the data is perfectly normally distributed
+  correct_answer_index: 0
+  explanation: Median imputation is more robust to outliers and skewed distributions
+    because the median is not affected by extreme values, unlike the mean. Use median
+    for skewed numerical data and mean for normally distributed data.
+- type: mcq
+  slug: data-preprocessing-fundamentals-mcq-3
+  sequence_order: 3
+  question: What is the main difference between One-Hot Encoding and Label Encoding?
+  options:
+  - One-Hot creates binary columns for each category; Label Encoding assigns integers
+    (0,1,2...)
+  - One-Hot is faster to compute
+  - Label Encoding works only with numbers
+  - They are the same technique with different names
+  correct_answer_index: 0
+  explanation: One-Hot Encoding creates separate binary columns for each category
+    (e.g., 'Red'→[1,0,0], 'Blue'→[0,1,0]), suitable for nominal data. Label Encoding
+    assigns integers (e.g., 'Red'→0, 'Blue'→1), which should only be used for ordinal
+    data with natural ordering.
+- type: terminal
+  slug: data-preprocessing-fundamentals-term
+  sequence_order: 4
+  description: Test data preprocessing with StandardScaler
+  command: 'python - << "PY" from sklearn.preprocessing import StandardScaler import
+    numpy as np X = np.array([[1, 2000], [2, 3000], [3, 5000]]) scaler = StandardScaler()
+    X_scaled = scaler.fit_transform(X) print(f"Original data:\n{X}") print(f"\nScaled
+    data (mean=0, std=1):\n{X_scaled}") print(f"\nMean of scaled data: {X_scaled.mean(axis=0)}")
+    PY'
+  validation:
+    must_not_include:
+    - Traceback
+    - SyntaxError
+  hints:
+  - If `python` is not available, try `python3`.
+  - Make sure scikit-learn and numpy are installed.
+objectives:
+- Understand the importance of data preprocessing for ML success
+- Handle missing values using appropriate imputation strategies
+- Apply feature scaling techniques (StandardScaler, MinMaxScaler, RobustScaler)
+- Encode categorical variables correctly (One-Hot vs Label vs Ordinal)
+- Detect and handle outliers in datasets
+- Avoid data leakage by preprocessing train and test sets correctly
+next_recommended:
+- control
+- data-structures

@@ -1,0 +1,58 @@
+slug: concentration-practice
+title: concentration — Practice
+difficulty: easy
+sequence_order: 8
+estimated_minutes: 2
+key_concepts:
+- concentration
+prerequisites: []
+content_md: '# concentration — Practice 🚀
+
+
+  n = 5.85/58.5 = 0.1 mol. W = 0.2 kg. m = n/W = 0.1/0.2 = 0.5 m
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: 'Calculate molality when 5.85 g of NaCl (M = 58.5) is dissolved in 200 g of water:'
+  options:
+  - '0.5 m'
+  - '1.0 m'
+  - '0.25 m'
+  - '2.0 m'
+  correct_answer: '0.5 m'
+  explanation: "Molality (m) = moles of solute / kg of solvent. First, calculate moles: n = mass/molar mass = 5.85/58.5 = 0.1 mol. Mass of water = 200 g = 0.2 kg. Therefore, molality m = 0.1/0.2 = 0.5 mol/kg or 0.5 m. Molality is preferred for colligative properties because it doesn't change with temperature (unlike molarity), as it's based on mass not volume."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: 'Molality differs from molarity in that:'
+  options:
+  - Molality is moles per kg of solvent; molarity is moles per L of solution
+  - Molality changes with temperature
+  - Molarity is independent of temperature
+  - Both are the same
+  correct_answer: Molality is moles per kg of solvent; molarity is moles per L of solution
+  explanation: "Molality (m) = moles of solute / kg of solvent. Molarity (M) = moles of solute / L of solution. Key difference: molality is temperature-independent (mass doesn't change with temperature), while molarity is temperature-dependent (volume changes with temperature). Molality is used for colligative properties. Example: A solution can have M ≠ m depending on density. For water at 25°C, if density ≈ 1 g/mL, they're approximately equal only for dilute solutions."
+  require_pass: false
+- type: mcq
+  sequence_order: 3
+  question: 'Which concentration unit is most appropriate for studying colligative properties?'
+  options:
+  - Molality
+  - Molarity
+  - Normality
+  - Parts per million
+  correct_answer: Molality
+  explanation: "Molality is the most appropriate concentration unit for colligative properties because: (1) It's temperature-independent (based on mass, not volume), (2) Colligative property equations (ΔTf = Kf×m, ΔTb = Kb×m, π = iMRT uses molarity but can be converted) work best with molality, (3) Experimental measurements of freezing point and boiling point involve temperature changes, so a temperature-independent unit is essential. Molarity would change as temperature changes during the measurement."
+  require_pass: false

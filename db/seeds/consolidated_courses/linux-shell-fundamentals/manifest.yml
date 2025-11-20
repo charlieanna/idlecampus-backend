@@ -1,0 +1,78 @@
+---
+course:
+  slug: linux-shell-fundamentals
+  title: Linux & Shell Scripting Fundamentals
+  description: Master Linux command line, filesystem navigation, and shell scripting
+    for DevOps. Learn essential Linux skills including bash scripting, process management,
+    and automation.
+  estimated_hours: 8
+  level: beginner
+  prerequisites:
+  - Basic computer literacy
+  - Understanding of command line concepts
+  learning_outcomes:
+  - Navigate and manage Linux filesystem
+  - Execute Linux commands for file and process management
+  - Write bash scripts for automation
+  - Understand Linux permissions and security basics
+  - Automate repetitive tasks with shell scripts
+  tags:
+  - linux
+  - bash
+  - shell-scripting
+  - devops
+  - sysadmin
+  - automation
+  related_courses:
+  - devops-essentials
+  - aws-cloud-fundamentals
+  recommended_next: devops-essentials
+modules:
+- slug: introduction-to-linux
+  title: Introduction to Linux
+  description: Linux filesystem hierarchy, navigation commands, file operations, and
+    permissions
+  order: 1
+  estimated_hours: 2
+  lessons:
+  - network-commands
+  - linux-filesystem-hierarchy
+  - file-operations
+  - understanding-permissions
+  - searching-with-grep
+  - pipes-and-redirection
+  - working-with-processes
+  - introduction-to-linux
+- slug: shell-basics
+  title: Linux Shell Basics
+  description: Shell introduction, basic commands, and working with processes
+  order: 2
+  estimated_hours: 2
+  lessons:
+  - lesson-2
+  - lesson-3
+  - lesson-4
+  - lesson-5
+  - lesson-6
+  - lesson-7
+  - lesson-8
+  - lesson-31
+- slug: bash-scripting
+  title: Bash Scripting
+  description: Introduction to bash, variables, and data types
+  order: 3
+  estimated_hours: 2
+  lessons:
+  - introduction-to-bash-and-shell-scripting
+  - variables-and-data-types
+  - working-with-command-line-arguments
+- slug: shell-automation
+  title: Shell Scripting Automation
+  description: Automation scripts and advanced scripting techniques
+  order: 4
+  estimated_hours: 2
+  lessons:
+  - lesson-2
+  - lesson-3
+  - lesson-4
+  - lesson-9

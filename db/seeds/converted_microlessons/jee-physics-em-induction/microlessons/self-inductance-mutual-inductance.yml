@@ -1,0 +1,255 @@
+slug: self-inductance-mutual-inductance
+title: "Self-Inductance and Mutual Inductance"
+difficulty: advanced
+sequence_order: 2
+estimated_minutes: 17
+key_concepts:
+- self-inductance
+- mutual-inductance
+- inductor
+- energy-stored
+- lr-circuits
+prerequisites:
+- magnetic-flux-faradays-law
+content_md: |
+  # Self-Inductance and Mutual Inductance
+
+  ## Self-Inductance
+
+  **EMF induced in coil due to change in its own current.**
+
+  ```
+  Magnetic flux: Φ = LI
+  Induced EMF: ε = -L(dI/dt)
+
+  L = self-inductance (Henry, H)
+  ```
+
+  ### Properties:
+  - Opposes change in current (Lenz's law)
+  - Like "electrical inertia"
+  - Depends on geometry, not on current
+
+  ## Self-Inductance of Solenoid
+
+  ```
+  Solenoid: N turns, length l, area A
+
+  B = μ₀nI = μ₀NI/l
+  Φ = NBA = μ₀N²IA/l
+
+  L = Φ/I = μ₀N²A/l = μ₀n²Al
+
+  With core (μᵣ): L = μ₀μᵣN²A/l
+  ```
+
+  ### Important:
+  - L ∝ N² (doubling turns quadruples L)
+  - L ∝ A (larger area, more inductance)
+  - L ∝ 1/l (longer solenoid, less inductance)
+
+  ## Energy Stored in Inductor
+
+  ```
+  Work done to establish current I:
+  W = ∫₀ᴵ LI dI = ½LI²
+
+  Energy: U = ½LI²
+  ```
+
+  ### Comparison:
+  | Capacitor | Inductor |
+  |-----------|----------|
+  | U = ½CV² | U = ½LI² |
+  | Stores energy in E field | Stores energy in B field |
+  | Opposes voltage change | Opposes current change |
+
+  ### Energy Density:
+  ```
+  u = B²/(2μ₀) (energy per unit volume)
+
+  Total: U = B²V/(2μ₀) = ½LI²
+  ```
+
+  ## LR Circuit (Growth of Current)
+
+  ### Circuit: Inductor L with resistance R, connected to EMF ε:
+  ```
+  ε = IR + L(dI/dt)
+
+  Solution: I(t) = (ε/R)(1 - e^(-t/τ))
+
+  Time constant: τ = L/R
+  ```
+
+  ### Behavior:
+  - At t = 0: I = 0 (inductor opposes sudden change)
+  - At t = τ: I = 0.63(ε/R)
+  - At t → ∞: I = ε/R (steady state)
+
+  ## LR Circuit (Decay of Current)
+
+  ```
+  I(t) = I₀e^(-t/τ) = I₀e^(-Rt/L)
+
+  At t = τ: I = I₀/e = 0.37I₀
+  At t = 5τ: I ≈ 0.007I₀ (effectively zero)
+  ```
+
+  ## Mutual Inductance
+
+  **EMF induced in one coil due to change in current in another.**
+
+  ```
+  Flux in coil 2 due to I₁: Φ₂₁ = MI₁
+  EMF in coil 2: ε₂ = -M(dI₁/dt)
+
+  M = mutual inductance
+  ```
+
+  ### Reciprocity:
+  ```
+  M₁₂ = M₂₁ = M
+
+  Mutual inductance is same either way!
+  ```
+
+  ## Coefficient of Coupling
+
+  ```
+  M = k√(L₁L₂)
+
+  k = coefficient of coupling (0 ≤ k ≤ 1)
+  k = 1: Perfect coupling (all flux links)
+  k = 0: No coupling
+  ```
+
+  ### For coaxial solenoids:
+  ```
+  M = μ₀N₁N₂A/l
+
+  Where A is area of inner solenoid
+  ```
+
+  ## Mutual Inductance: Two Coils
+
+  ### Coaxial coils of radii R₁ and R₂ (R₁ << R₂):
+  ```
+  M = μ₀πN₁N₂R₁²/(2R₂)
+  ```
+
+  ### Two solenoids (one inside other):
+  ```
+  M = μ₀N₁N₂A/l
+
+  A = cross-section of inner solenoid
+  l = length of outer solenoid
+  ```
+
+  ## Combination of Inductors
+
+  ### Series (no mutual inductance):
+  ```
+  L_eq = L₁ + L₂
+
+  If mutual inductance M:
+  L_eq = L₁ + L₂ + 2M (aiding)
+  L_eq = L₁ + L₂ - 2M (opposing)
+  ```
+
+  ### Parallel:
+  ```
+  1/L_eq = 1/L₁ + 1/L₂
+
+  L_eq = L₁L₂/(L₁ + L₂)
+  ```
+
+  ## Transformer Principle
+
+  Based on mutual inductance:
+  ```
+  ε₂/ε₁ = N₂/N₁ (voltage ratio)
+  I₂/I₁ = N₁/N₂ (current ratio, ideal)
+
+  Power: ε₁I₁ = ε₂I₂ (ideal, no losses)
+  ```
+
+  ### Types:
+  - Step-up: N₂ > N₁ (increases voltage)
+  - Step-down: N₂ < N₁ (decreases voltage)
+
+  ## Numerical Examples
+
+  **Example 1:** Solenoid: 500 turns, length 0.5 m, area 10 cm². Find self-inductance.
+
+  **Solution:**
+  ```
+  L = μ₀N²A/l = (4π×10⁻⁷)(500)²(10×10⁻⁴)/(0.5)
+  L = (4π×10⁻⁷)(2.5×10⁵)(10⁻³)/(0.5)
+  L = π×10⁻⁴/0.5 = 2π×10⁻⁴ ≈ 6.3×10⁻⁴ H = 0.63 mH
+  ```
+
+  **Example 2:** Inductor of 2 H carries 5 A current. Energy stored?
+
+  **Solution:**
+  ```
+  U = ½LI² = ½(2)(5)² = ½(2)(25) = 25 J
+
+  Significant energy! Compare: Capacitor 1000 μF at 100 V
+  stores only ½(10⁻³)(10⁴) = 5 J.
+  ```
+
+  **Example 3:** LR circuit: L = 4 H, R = 2 Ω, ε = 10 V. Find time constant and steady-state current.
+
+  **Solution:**
+  ```
+  τ = L/R = 4/2 = 2 s
+  I_final = ε/R = 10/2 = 5 A
+
+  At t = 2 s: I = 5(1 - e⁻¹) = 5(0.63) = 3.15 A
+  At t = 6 s ≈ 3τ: I ≈ 5(0.95) = 4.75 A
+  ```
+
+  ## JEE Key Points
+
+  1. **L = μ₀N²A/l** (solenoid)
+  2. **ε = -L(dI/dt)** (self-induction)
+  3. **U = ½LI²** (energy stored)
+  4. **τ = L/R** (time constant)
+  5. **M = k√(L₁L₂)** (coupling)
+  6. **Opposes current change** (Lenz's law)
+
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: "Number of turns in solenoid is doubled keeping other factors same. Self-inductance:"
+  options:
+  - "Doubles"
+  - "Halves"
+  - "Becomes 4 times"
+  - "Remains same"
+  correct_answer: "Becomes 4 times"
+  explanation: "L = μ₀N²A/l. If N' = 2N: L' = μ₀(2N)²A/l = 4μ₀N²A/l = 4L. Self-inductance quadruples! This is because: (1) more turns means more flux linkage (×N), and (2) each turn contributes to total flux (×N again). Result: L ∝ N². This N² dependence makes coil design critical. Adding few more turns significantly increases inductance. Conversely, to halve inductance, reduce turns by factor √2, not 2. Compare: Capacitor C ∝ A (linear), but inductor L ∝ N² (quadratic). This makes high-inductance coils bulky with many turns."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: "In LR circuit, time constant is 2 s. After how many seconds current reaches 63% of maximum?"
+  options:
+  - "1 s"
+  - "2 s"
+  - "4 s"
+  - "6 s"
+  correct_answer: "2 s"
+  explanation: "Current growth: I = I₀(1 - e^(-t/τ)). At t = τ: I = I₀(1 - e⁻¹) = I₀(1 - 0.368) = 0.632I₀ ≈ 63%. Given τ = 2 s, so at t = 2 s, current is 63% of maximum. This is definition of time constant! At t = 2τ: 86%, at 3τ: 95%, at 5τ: 99.3% (practically maximum). Time constant τ = L/R tells how quickly circuit responds. Large L (high inertia) or small R means slow response (large τ). For quick response, use small L or large R. Applications: RL circuits are used as filters, in timing circuits, and to smooth current fluctuations."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: "Two coils have self-inductances L₁ = 4 mH and L₂ = 9 mH with coupling coefficient k = 0.5. Mutual inductance is:"
+  options:
+  - "3 mH"
+  - "6 mH"
+  - "9 mH"
+  - "18 mH"
+  correct_answer: "3 mH"
+  explanation: "M = k√(L₁L₂) = 0.5√(4×9) mH = 0.5√36 mH = 0.5×6 = 3 mH. The coupling coefficient k = 0.5 means 50% of magnetic flux from one coil links with the other. For perfect coupling (k = 1): M = √(4×9) = 6 mH. Maximum possible M = √(L₁L₂). In practice k < 1 due to flux leakage. Iron core transformers have k ≈ 0.95-0.99. Air-core inductors have lower k. This formula is used in transformer design, wireless power transfer, and inductive sensors. Higher k means better energy transfer between coils."
+  require_pass: true

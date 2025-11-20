@@ -1,0 +1,141 @@
+slug: if-statements-conditions
+title: If Statements & Conditions
+sequence_order: 2
+estimated_minutes: 2
+difficulty: easy
+key_concepts: []
+content_md: "# If Statements & Conditions \U0001F680\n\n# If Statements & Conditions\n\
+  \n    **If statements** let your program make decisions based on conditions.\n\n\
+  \    ## Basic If Statement\n\n    ```python\n    age = 18\n\n    if age >= 18:\n\
+  \        print(\"You are an adult\")\n    ```\n\n    ### Syntax:\n    - Start with\
+  \ `if`\n    - Condition that evaluates to True or False\n    - Colon `:`\n    -\
+  \ **Indented** code block (4 spaces or 1 tab)\n\n    ## If-Else\n\n    Execute different\
+  \ code based on condition:\n\n    ```python\n    temperature = 25\n\n    if temperature\
+  \ > 30:\n        print(\"It's hot outside!\")\n    else:\n        print(\"It's not\
+  \ too hot\")\n    ```\n\n    ## If-Elif-Else\n\n    Check multiple conditions:\n\
+  \n    ```python\n    score = 85\n\n    if score >= 90:\n        grade = \"A\"\n\
+  \    elif score >= 80:\n        grade = \"B\"\n    elif score >= 70:\n        grade\
+  \ = \"C\"\n    elif score >= 60:\n        grade = \"D\"\n    else:\n        grade\
+  \ = \"F\"\n\n    print(f\"Your grade is: {grade}\")\n    ```\n\n    **Important:**\
+  \ Python checks conditions top-to-bottom and stops at the first True condition.\n\
+  \n    ## Comparison Operators\n\n    | Operator | Meaning | Example |\n    |----------|---------|---------|\n\
+  \    | `==` | Equal to | `x == 5` |\n    | `!=` | Not equal to | `x != 5` |\n  \
+  \  | `>` | Greater than | `x > 5` |\n    | `<` | Less than | `x < 5` |\n    | `>=`\
+  \ | Greater than or equal | `x >= 5` |\n    | `<=` | Less than or equal | `x <=\
+  \ 5` |\n\n    ```python\n    x = 10\n\n    print(x == 10)  # True\n    print(x !=\
+  \ 10)  # False\n    print(x > 5)    # True\n    print(x < 5)    # False\n    ```\n\
+  \n    ## Logical Operators\n\n    Combine multiple conditions:\n\n    ### AND -\
+  \ Both must be True\n    ```python\n    age = 25\n    has_license = True\n\n   \
+  \ if age >= 18 and has_license:\n        print(\"You can drive\")\n    ```\n\n \
+  \   ### OR - At least one must be True\n    ```python\n    is_weekend = True\n \
+  \   is_holiday = False\n\n    if is_weekend or is_holiday:\n        print(\"You\
+  \ can relax!\")\n    ```\n\n    ### NOT - Inverts the condition\n    ```python\n\
+  \    is_raining = False\n\n    if not is_raining:\n        print(\"You don't need\
+  \ an umbrella\")\n    ```\n\n    ### Combining Multiple Conditions\n    ```python\n\
+  \    age = 25\n    has_ticket = True\n    has_id = True\n\n    if (age >= 18 and\
+  \ has_ticket) and has_id:\n        print(\"Welcome to the concert!\")\n    else:\n\
+  \        print(\"Entry denied\")\n    ```\n\n    ## Nested If Statements\n\n   \
+  \ If statements inside if statements:\n\n    ```python\n    age = 20\n    has_license\
+  \ = True\n\n    if age >= 18:\n        print(\"You are old enough\")\n\n       \
+  \ if has_license:\n            print(\"You can drive\")\n        else:\n       \
+  \     print(\"Get a license first\")\n    else:\n        print(\"You are too young\"\
+  )\n    ```\n\n    ## Membership Operators\n\n    Check if value exists in a sequence:\n\
+  \n    ```python\n    # in operator\n    fruits = [\"apple\", \"banana\", \"cherry\"\
+  ]\n\n    if \"apple\" in fruits:\n        print(\"Apple is available!\")\n\n   \
+  \ # not in operator\n    if \"mango\" not in fruits:\n        print(\"No mangoes\
+  \ here\")\n\n    # Works with strings too\n    message = \"Hello, World!\"\n   \
+  \ if \"World\" in message:\n        print(\"Found it!\")\n    ```\n\n    ## Identity\
+  \ Operators\n\n    Check if variables are the same object:\n\n    ```python\n  \
+  \  x = None\n\n    if x is None:\n        print(\"x is None\")\n\n    if x is not\
+  \ None:\n        print(\"x has a value\")\n    ```\n\n    ## Truthy and Falsy Values\n\
+  \n    Python considers some values as False:\n\n    ### Falsy Values:\n    - `False`\n\
+  \    - `None`\n    - `0`, `0.0`\n    - `\"\"` (empty string)\n    - `[]` (empty\
+  \ list)\n    - `{}` (empty dict)\n    - `()` (empty tuple)\n\n    ### Everything\
+  \ Else is Truthy\n\n    ```python\n    name = \"\"\n\n    if name:\n        print(f\"\
+  Hello, {name}!\")\n    else:\n        print(\"Name is empty\")\n\n    # More examples\n\
+  \    if []:\n        print(\"This won't print\")  # Empty list is falsy\n\n    if\
+  \ [1, 2, 3]:\n        print(\"List has items\")  # Non-empty list is truthy\n  \
+  \  ```\n\n    ## Ternary Operator (One-Line If)\n\n    Shorter syntax for simple\
+  \ if-else:\n\n    ```python\n    # Regular if-else\n    age = 20\n    if age >=\
+  \ 18:\n        status = \"adult\"\n    else:\n        status = \"minor\"\n\n   \
+  \ # Ternary operator\n    status = \"adult\" if age >= 18 else \"minor\"\n\n   \
+  \ # Another example\n    x = 10\n    y = 20\n    max_value = x if x > y else y\n\
+  \    ```\n\n    ## Common Patterns\n\n    ### 1. Checking Multiple Values\n    ```python\n\
+  \    status = \"pending\"\n\n    if status in [\"pending\", \"processing\", \"queued\"\
+  ]:\n        print(\"Please wait...\")\n    ```\n\n    ### 2. Default Values\n  \
+  \  ```python\n    name = input(\"Enter your name (or press Enter): \")\n\n    #\
+  \ Use default if empty\n    name = name if name else \"Guest\"\n    print(f\"Welcome,\
+  \ {name}!\")\n    ```\n\n    ### 3. Range Checking\n    ```python\n    age = 25\n\
+  \n    if 18 <= age < 65:\n        print(\"Working age\")\n    ```\n\n    ### 4.\
+  \ Validating Input\n    ```python\n    password = input(\"Enter password: \")\n\n\
+  \    if len(password) < 8:\n        print(\"Password too short\")\n    elif not\
+  \ any(c.isdigit() for c in password):\n        print(\"Password needs a number\"\
+  )\n    elif not any(c.isupper() for c in password):\n        print(\"Password needs\
+  \ an uppercase letter\")\n    else:\n        print(\"Password is strong!\")\n  \
+  \  ```\n\n    ## Practice Exercise\n\n    Let's build a simple number guessing game:\n\
+  \n    ```python\n    secret_number = 7\n    guess = int(input(\"Guess a number between\
+  \ 1-10: \"))\n\n    if guess == secret_number:\n        print(\"\U0001F389 Correct!\
+  \ You guessed it!\")\n    elif guess < secret_number:\n        print(\"\U0001F4C9\
+  \ Too low! Try again.\")\n    else:\n        print(\"\U0001F4C8 Too high! Try again.\"\
+  )\n    ```\n\n    ## Common Mistakes\n\n    ❌ **Wrong:**\n    ```python\n    # Missing\
+  \ colon\n    if age >= 18\n        print(\"Adult\")\n\n    # Using = instead of\
+  \ ==\n    if age = 18:  # Assignment, not comparison\n        print(\"Adult\")\n\
+  \n    # No indentation\n    if age >= 18:\n    print(\"Adult\")  # Error!\n    ```\n\
+  \n    ✅ **Correct:**\n    ```python\n    if age >= 18:\n        print(\"Adult\"\
+  )\n    ```\n\n    ## Next: Loops\n\n    Now that you can make decisions, let's learn\
+  \ how to repeat actions with **loops**!"
+exercises:
+- type: mcq
+  slug: if-statements-conditions-mcq-1
+  sequence_order: 1
+  question: What will be printed by this code? age = 17; print("Adult" if age >= 18 else "Minor")
+  options:
+  - Minor
+  - Adult
+  - True
+  - Error
+  correct_answer_index: 0
+  explanation: This is a ternary operator (one-line if-else). Since age (17) is less than 18, the condition "age >= 18" evaluates to False, so the "else" part ("Minor") is returned and printed.
+- type: mcq
+  slug: if-statements-conditions-mcq-2
+  sequence_order: 2
+  question: What is the difference between "==" and "=" in Python?
+  options:
+  - "==" compares values for equality, "=" assigns a value to a variable"
+  - They are exactly the same
+  - "=" compares values, "==" assigns values"
+  - "==" is for strings, "=" is for numbers"
+  correct_answer_index: 0
+  explanation: 'The single equals "=" is the assignment operator (assigns a value to a variable: x = 5). The double equals "==" is the comparison operator (checks if two values are equal: x == 5 returns True or False). Using = instead of == in an if statement is a common error.'
+- type: mcq
+  slug: if-statements-conditions-mcq-3
+  sequence_order: 3
+  question: In Python, which values are considered "falsy" (evaluate to False)?
+  options:
+  - 'False, None, 0, empty string "", empty list [], empty dict {}'
+  - Only False and 0
+  - All numbers less than 0
+  - Only None and False
+  correct_answer_index: 0
+  explanation: 'Python considers several values as "falsy": False, None, 0 (and 0.0), empty string "", empty containers ([], {}, (), set()). Everything else is "truthy". This allows concise checks like "if my_list:" instead of "if len(my_list) > 0:".'
+- type: mcq
+  slug: if-statements-conditions-mcq-4
+  sequence_order: 4
+  question: What is the purpose of the "elif" statement in Python?
+  options:
+  - To check additional conditions when the previous if/elif was False
+  - To create an else statement that also performs checks
+  - To combine multiple if statements
+  - To repeat the if condition
+  correct_answer_index: 0
+  explanation: '"elif" (else if) allows checking multiple conditions sequentially. Python evaluates conditions top-to-bottom and executes only the first True block. This is more efficient than multiple separate if statements and creates a clear decision tree. For example: if score >= 90: grade = "A"; elif score >= 80: grade = "B".'
+objectives:
+- Write conditional statements using if, elif, and else
+- Use comparison operators (==, !=, >, <, >=, <=)
+- Combine conditions with logical operators (and, or, not)
+- Understand truthy and falsy values in Python
+- Check membership using "in" and "not in" operators
+- Use ternary operators for simple conditional assignments
+next_recommended:
+- control
+- data-structures

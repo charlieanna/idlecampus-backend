@@ -1,0 +1,200 @@
+slug: lesson-7
+title: Lesson 7
+difficulty: easy
+sequence_order: 7
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Monitoring & Debugging\n\n      Monitor\
+  \ applications and troubleshoot issues in Kubernetes clusters.\n\n      ## Pod Debugging\n\
+  \n      ### Viewing Pod Status\n\n      ```bash\n      # List pods with status\n\
+  \      kubectl get pods\n\n      # Watch pods in real-time\n      kubectl get pods\
+  \ --watch\n\n      # Get pod with detailed status\n      kubectl get pod my-pod\
+  \ -o wide\n\n      # Describe pod (shows events)\n      kubectl describe pod my-pod\n\
+  \n      # Get pod YAML\n      kubectl get pod my-pod -o yaml\n      ```\n\n    \
+  \  ### Viewing Logs\n\n      ```bash\n      # View pod logs\n      kubectl logs\
+  \ my-pod\n\n      # Follow logs (tail -f)\n      kubectl logs -f my-pod\n\n    \
+  \  # Logs from previous container instance\n      kubectl logs my-pod --previous\n\
+  \n      # Logs from specific container in pod\n      kubectl logs my-pod -c container-name\n\
+  \n      # Logs with timestamps\n      kubectl logs my-pod --timestamps\n\n     \
+  \ # Last N lines\n      kubectl logs my-pod --tail=50\n\n      # Logs since timestamp\n\
+  \      kubectl logs my-pod --since-time=2024-01-01T00:00:00Z\n\n      # Logs since\
+  \ duration\n      kubectl logs my-pod --since=1h\n\n      # Logs from all pods with\
+  \ label\n      kubectl logs -l app=nginx\n\n      # Stream logs from all containers\
+  \ in pod\n      kubectl logs my-pod --all-containers=true --follow\n      ```\n\n\
+  \      ### Execute Commands\n\n      ```bash\n      # Open interactive shell\n \
+  \     kubectl exec -it my-pod -- /bin/bash\n      kubectl exec -it my-pod -- /bin/sh\n\
+  \n      # Run single command\n      kubectl exec my-pod -- ls /app\n      kubectl\
+  \ exec my-pod -- cat /etc/config/app.conf\n\n      # Execute in specific container\n\
+  \      kubectl exec -it my-pod -c container-name -- bash\n\n      # Run command\
+  \ with environment variables\n      kubectl exec my-pod -- env\n      ```\n\n  \
+  \    ### Port Forwarding\n\n      ```bash\n      # Forward local port to pod\n \
+  \     kubectl port-forward my-pod 8080:80\n\n      # Forward to service\n      kubectl\
+  \ port-forward service/my-service 8080:80\n\n      # Forward to deployment\n   \
+  \   kubectl port-forward deployment/nginx 8080:80\n\n      # Listen on all interfaces\n\
+  \      kubectl port-forward --address 0.0.0.0 pod/my-pod 8080:80\n\n      # Multiple\
+  \ ports\n      kubectl port-forward my-pod 8080:80 8443:443\n      ```\n\n     \
+  \ ### Copy Files\n\n      ```bash\n      # Copy from pod to local\n      kubectl\
+  \ cp my-pod:/path/to/file ./local-file\n\n      # Copy from local to pod\n     \
+  \ kubectl cp ./local-file my-pod:/path/to/file\n\n      # Copy from specific container\n\
+  \      kubectl cp my-pod:/file ./file -c container-name\n\n      # Copy directory\n\
+  \      kubectl cp my-pod:/app/config ./config-backup\n      ```\n\n      ## Events\n\
+  \n      ### Viewing Events\n\n      ```bash\n      # View all events\n      kubectl\
+  \ get events\n\n      # Events sorted by timestamp\n      kubectl get events --sort-by='.metadata.creationTimestamp'\n\
+  \n      # Events in specific namespace\n      kubectl get events -n kube-system\n\
+  \n      # Watch events in real-time\n      kubectl get events --watch\n\n      #\
+  \ Events for specific resource\n      kubectl get events --field-selector involvedObject.name=my-pod\n\
+  \n      # Events for specific type\n      kubectl get events --field-selector type=Warning\n\
+  \n      # Filter by reason\n      kubectl get events --field-selector reason=Failed\n\
+  \      ```\n\n      ## Resource Metrics\n\n      ### Metrics Server Commands\n\n\
+  \      ```bash\n      # Node resource usage\n      kubectl top nodes\n\n      #\
+  \ Node usage with labels\n      kubectl top nodes --show-labels\n\n      # Pod resource\
+  \ usage\n      kubectl top pods\n\n      # Pods in all namespaces\n      kubectl\
+  \ top pods -A\n\n      # Pods in specific namespace\n      kubectl top pods -n production\n\
+  \n      # Sort by CPU\n      kubectl top pods --sort-by=cpu\n\n      # Sort by memory\n\
+  \      kubectl top pods --sort-by=memory\n\n      # Container-level metrics\n  \
+  \    kubectl top pod my-pod --containers\n      ```\n\n      ## Common Issues &\
+  \ Solutions\n\n      ### CrashLoopBackOff\n\n      ```bash\n      # View previous\
+  \ container logs\n      kubectl logs my-pod --previous\n\n      # Describe pod (check\
+  \ events)\n      kubectl describe pod my-pod\n\n      # Check resource limits\n\
+  \      kubectl get pod my-pod -o jsonpath='{.spec.containers[*].resources}'\n\n\
+  \      # Check liveness/readiness probes\n      kubectl get pod my-pod -o jsonpath='{.spec.containers[*].livenessProbe}'\n\
+  \      ```\n\n      ### ImagePullBackOff\n\n      ```bash\n      # Check events\n\
+  \      kubectl describe pod my-pod\n\n      # Verify image name\n      kubectl get\
+  \ pod my-pod -o jsonpath='{.spec.containers[*].image}'\n\n      # Check image pull\
+  \ secrets\n      kubectl get pod my-pod -o jsonpath='{.spec.imagePullSecrets}'\n\
+  \n      # Test image pull manually\n      docker pull <image-name>\n      ```\n\n\
+  \      ### Pending Pods\n\n      ```bash\n      # Check events (insufficient resources,\
+  \ taints, etc.)\n      kubectl describe pod my-pod\n\n      # Check node resources\n\
+  \      kubectl top nodes\n      kubectl describe nodes\n\n      # Check pod resource\
+  \ requests\n      kubectl get pod my-pod -o jsonpath='{.spec.containers[*].resources.requests}'\n\
+  \n      # Check PVC binding\n      kubectl get pvc\n\n      # Check node selectors/affinity\n\
+  \      kubectl get pod my-pod -o jsonpath='{.spec.nodeSelector}'\n      ```\n\n\
+  \      ### Troubleshooting Network\n\n      ```bash\n      # Check service endpoints\n\
+  \      kubectl get endpoints my-service\n\n      # Test DNS resolution\n      kubectl\
+  \ run debug --image=nicolaka/netshoot -it --rm -- bash\n      nslookup my-service\n\
+  \n      # Test connectivity\n      kubectl run debug --image=curlimages/curl -it\
+  \ --rm -- curl http://my-service\n\n      # Check network policies\n      kubectl\
+  \ get networkpolicies\n      kubectl describe networkpolicy my-policy\n      ```\n\
+  \n      ## Advanced Debugging\n\n      ### Debug Container (Ephemeral)\n\n     \
+  \ ```bash\n      # Add debug container to running pod\n      kubectl debug my-pod\
+  \ -it --image=busybox --target=my-container\n\n      # Create debug pod as copy\n\
+  \      kubectl debug my-pod -it --copy-to=my-pod-debug --container=debugger --image=busybox\n\
+  \n      # Debug node by creating pod on node\n      kubectl debug node/my-node -it\
+  \ --image=busybox\n      ```\n\n      ### Cluster Info\n\n      ```bash\n      #\
+  \ Cluster information\n      kubectl cluster-info\n\n      # Cluster info dump\n\
+  \      kubectl cluster-info dump\n\n      # API versions\n      kubectl api-versions\n\
+  \n      # API resources\n      kubectl api-resources\n\n      # Component status\n\
+  \      kubectl get componentstatuses\n      kubectl get cs\n      ```\n\n      Master\
+  \ debugging in the hands-on labs!"
+exercises:
+- type: multiple_choice_question
+  sequence_order: 1
+  question: What is the purpose of kubectl's 'kubectl debug' command with ephemeral
+    containers?
+  options:
+  - To permanently add debugging tools to production containers
+  - To temporarily attach a debugging container to a running pod without restarting
+    it
+  - To replace a crashed container with a debug container
+  - To create a debug namespace for troubleshooting
+  correct_answer: To temporarily attach a debugging container to a running pod without
+    restarting it
+  explanation: The 'kubectl debug' command with ephemeral containers allows you to
+    temporarily attach a debugging container to a running pod without restarting it
+    or modifying its specification. This is invaluable when you need to troubleshoot
+    a pod that doesn't have debugging tools (like many minimal production images based
+    on distroless or scratch). For example, if you have a pod running a minimal Go
+    binary without a shell, you can run 'kubectl debug my-pod -it --image=busybox
+    --target=my-container' to attach a busybox container with access to the same process
+    namespace, allowing you to inspect the running process. Ephemeral containers are
+    temporary - they're not restarted if they exit and are removed when the pod is
+    deleted. They're designed specifically for debugging and don't support all pod
+    features (no resource limits, probes, etc.). This is different from modifying
+    the pod spec (which requires restart), permanently adding tools to images (which
+    increases attack surface), or creating new pods (which don't have the exact same
+    state). The --copy-to flag creates a copy of the pod with debugging tools for
+    scenarios where you need to modify the pod spec. Ephemeral containers are particularly
+    useful in production where you can't restart pods easily, need to debug live issues,
+    and want to keep production images minimal for security.
+  require_pass: true
+- type: multiple_choice_question
+  sequence_order: 2
+  question: When viewing events with 'kubectl get events', what information is most
+    useful for troubleshooting pod scheduling issues?
+  options:
+  - The event timestamp and message describing why the pod couldn't be scheduled
+  - The event count showing how many times it occurred
+  - The event source showing which component generated it
+  - All of the above are equally important for troubleshooting
+  correct_answer: The event timestamp and message describing why the pod couldn't
+    be scheduled
+  explanation: 'While all event information can be useful, the timestamp and message
+    are most critical for troubleshooting pod scheduling issues because they tell
+    you exactly what went wrong and when. Kubernetes events for scheduling failures
+    typically include detailed messages like ''Insufficient cpu'', ''0/3 nodes are
+    available: 3 node(s) had taint {node-role.kubernetes.io/master: }, that the pod
+    didn''t tolerate'', or ''persistentvolumeclaim "my-pvc" not found''. These messages
+    directly identify the root cause. You can use ''kubectl get events --sort-by=.metadata.creationTimestamp''
+    to see events in chronological order, or filter for specific resources with ''--field-selector
+    involvedObject.name=my-pod''. Events are stored for only 1 hour by default, so
+    check them quickly when troubleshooting. For scheduling issues specifically, you''ll
+    see events from the scheduler component explaining why a pod is Pending. Common
+    messages include resource constraints, node selector/affinity mismatches, taints/tolerations,
+    PVC binding issues, or pod security policies. The event count shows how many times
+    an event occurred (useful for detecting recurring issues), and the source identifies
+    the component, but these don''t directly tell you the problem. Best practice:
+    use ''kubectl describe pod'' which includes relevant events at the bottom, providing
+    both pod state and events in one view.'
+  require_pass: true
+- type: terminal
+  sequence_order: 1
+  command: kubectl get pods
+  description: 'Practice the command: kubectl get pods'
+  hints:
+  - 'Try: kubectl get pods'
+  - Use kubectl --help if you need help
+  timeout_sec: 60
+  require_pass: true
+- type: terminal
+  sequence_order: 2
+  command: kubectl get pods --watch
+  description: 'Practice the command: kubectl get pods --watch'
+  hints:
+  - 'Try: kubectl get pods --watch'
+  - Use kubectl --help if you need help
+  timeout_sec: 60
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: Which command creates a deployment with 3 replicas?
+  options:
+  - kubectl create deployment nginx --image=nginx --replicas=3
+  - kubectl make deployment nginx replicas=3
+  - kubectl deploy nginx --count=3
+  - kubectl new deployment nginx x3
+  correct_answer_index: 0
+  explanation: kubectl create deployment creates a deployment. The --replicas flag
+    specifies the number of pod replicas.
+  require_pass: true
+- type: code
+  sequence_order: 4
+  language: yaml
+  question: Create a deployment with 3 replicas of nginx
+  starter_code: '# Write your deployment YAML here
+
+    apiVersion: apps/v1
+
+    kind: Deployment
+
+    '
+  solution_code: "apiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: nginx-deployment\n\
+    spec:\n  replicas: 3\n  selector:\n    matchLabels:\n      app: nginx\n  template:\n\
+    \    metadata:\n      labels:\n        app: nginx\n    spec:\n      containers:\n\
+    \      - name: nginx\n        image: nginx:1.25\n        ports:\n        - containerPort:\
+    \ 80"
+  hints:
+  - 'Use apiVersion: apps/v1 for Deployments'
+  - Set spec.replicas to 3
+  - Define selector.matchLabels to match template.metadata.labels
+  require_pass: true

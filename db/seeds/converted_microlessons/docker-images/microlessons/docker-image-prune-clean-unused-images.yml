@@ -1,0 +1,90 @@
+slug: docker-image-prune-clean-unused-images
+title: 'Docker Image Prune: Clean Unused Images'
+difficulty: easy
+sequence_order: 7
+estimated_minutes: 2
+key_concepts:
+- images
+- docker-prune
+- cleanup
+- maintenance
+- disk-space
+prerequisites: []
+content_md: '# Docker Image Prune: Clean Unused Images 🚀
+
+
+  Remove unused (dangling) images in batch to reclaim disk space. Use -a to remove
+  all images not used by containers.
+
+
+  ## Syntax/Command
+
+
+  ```bash
+
+  docker image prune
+
+  ```
+
+
+  ## Example
+
+
+  ```bash
+
+  docker image prune -f
+
+  ```
+
+
+  ## Key Points
+
+
+  - Remove dangling: docker image prune
+
+
+  - Skip confirmation: docker image prune -f
+
+
+  - Remove all unused: docker image prune -a'
+exercises:
+- type: terminal
+  problem_statement: Remove all dangling (untagged) Docker images to free up disk space
+  expected_output: Confirmation message showing deleted images and total reclaimed space
+  language: bash
+  starter_code: "# Clean up dangling images\n"
+  sequence_order: 1
+  command: docker image prune
+  description: Automate cleanup of unused Docker images to maintain system health
+  hints:
+  - 'Remove dangling: docker image prune'
+  - 'Skip confirmation: docker image prune -f'
+  - 'Remove all unused: docker image prune -a'
+  validation:
+    must_not_include:
+    - Error
+    - 'panic:'
+  timeout_sec: 60
+  require_pass: true
+- type: sandbox
+  sequence_order: 99
+  hints:
+  - Run under CPU pressure to surface leaks or races
+  - Keep commands idempotent in CI
+  validation:
+    must_not_include:
+    - Error
+    - 'panic:'
+  timeout_sec: 60
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What are "dangling" images?
+  options:
+  - Untagged images (showing <none>) from failed builds or replaced tags
+  - Images that are corrupted and unusable
+  - Images over 1GB in size
+  - Images from untrusted sources
+  correct_answer: Untagged images (showing <none>) from failed builds or replaced tags
+  explanation: "Dangling images are layers that have no tag and aren't referenced by any tagged image. They appear as <none>:<none> in docker images output. They're created when builds fail partway or when you rebuild an image with the same tag (the old version becomes dangling). Use docker image prune to clean them up."
+  require_pass: true

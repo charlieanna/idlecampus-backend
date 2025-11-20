@@ -1,0 +1,81 @@
+slug: lesson-114
+title: Lesson 114
+difficulty: easy
+sequence_order: 114
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# DNS and Service Discovery\n\n    - CoreDNS,\
+  \ stub domains, and search paths\n    - Service DNS names and SRV records"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What is the role of CoreDNS in a Kubernetes cluster?
+  options:
+  - To manage container networking and IP addresses
+  - To provide DNS-based service discovery and name resolution for cluster resources
+  - To handle TLS certificate generation
+  - To monitor cluster health and metrics
+  correct_answer: To provide DNS-based service discovery and name resolution for cluster
+    resources
+  explanation: 'CoreDNS is the default DNS server in Kubernetes clusters (since v1.13,
+    replacing kube-dns), providing critical service discovery and name resolution
+    capabilities. It runs as a Deployment (typically in the kube-system namespace)
+    and handles DNS queries from pods, enabling them to discover services and other
+    resources using human-readable names instead of IP addresses. CoreDNS automatically
+    creates DNS records for Services following the pattern ''<service-name>.<namespace>.svc.cluster.local''.
+    For example, a Service named ''database'' in namespace ''production'' gets the
+    DNS name ''database.production.svc.cluster.local'', and pods within the same namespace
+    can use the short name ''database''. CoreDNS also creates records for pods (when
+    enabled), typically ''<pod-ip-with-dashes>.<namespace>.pod.cluster.local''. It
+    implements the Kubernetes DNS specification using plugins, configured via a Corefile
+    in a ConfigMap. Common plugins include: kubernetes (for cluster DNS), forward
+    (for external DNS queries), cache (performance), and errors/log (debugging). CoreDNS
+    supports advanced features like custom DNS entries, conditional forwarding, and
+    stub domains for hybrid environments. Each pod gets DNS configuration automatically
+    via /etc/resolv.conf with nameserver pointing to CoreDNS ClusterIP, and search
+    domains for namespace-relative lookups. Without CoreDNS, you''d need to hardcode
+    IP addresses or implement your own service discovery mechanism, making applications
+    brittle and hard to manage.'
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What is a valid DNS name for a Kubernetes Service named 'api' in the 'backend'
+    namespace?
+  options:
+  - api.backend.cluster.local
+  - api.backend.svc.cluster.local
+  - backend.api.svc.cluster.local
+  - api.svc.backend.cluster.local
+  correct_answer: api.backend.svc.cluster.local
+  explanation: 'The fully qualified domain name (FQDN) for a Kubernetes Service follows
+    the pattern ''<service-name>.<namespace>.svc.<cluster-domain>'', where cluster-domain
+    is typically ''cluster.local''. So a Service named ''api'' in namespace ''backend''
+    has the FQDN ''api.backend.svc.cluster.local''. This hierarchical naming enables
+    organized service discovery across namespaces. Pods can use different forms of
+    this name: 1) FQDN ''api.backend.svc.cluster.local'' works from anywhere in the
+    cluster, 2) namespace-qualified ''api.backend'' works from any namespace (relies
+    on search domains), 3) short name ''api'' works only within the same namespace
+    (backend). The DNS search path in pods is configured in /etc/resolv.conf with
+    entries like ''search backend.svc.cluster.local svc.cluster.local cluster.local'',
+    enabling these shortened forms. For example, a pod in ''backend'' namespace looking
+    up ''api'' will try ''api.backend.svc.cluster.local'' first. The ''.svc'' component
+    indicates this is a Service record (as opposed to ''.pod'' for Pod records). Understanding
+    DNS naming is crucial for cross-namespace communication, troubleshooting connectivity
+    issues, and configuring application endpoints. You can verify DNS resolution using
+    ''kubectl run -it --rm debug --image=busybox --restart=Never -- nslookup api.backend.svc.cluster.local''.
+    Best practices include using namespace-qualified names for cross-namespace calls
+    and short names within the same namespace.'
+  require_pass: true
+- type: mcq
+  sequence_order: 1
+  question: What is the default service type in Kubernetes?
+  options:
+  - ClusterIP
+  - NodePort
+  - LoadBalancer
+  - ExternalName
+  correct_answer_index: 0
+  explanation: ClusterIP is the default service type. It exposes the service on an
+    internal cluster IP, making it only reachable within the cluster.
+  require_pass: true

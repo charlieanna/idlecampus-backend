@@ -1,0 +1,44 @@
+slug: lesson-40
+title: Lesson 40
+difficulty: easy
+sequence_order: 40
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Helm Charts and Package Management\n\n\
+  \    - Helm chart structure (Chart.yaml, templates, values)\n    - Installing and\
+  \ upgrading releases\n    - Values overrides and templating basics"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What is the purpose of the Chart.yaml file in a Helm chart?
+  options:
+  - It contains the Kubernetes resource templates
+  - It defines metadata about the chart including name, version, and description
+  - It stores default configuration values
+  - It lists chart dependencies
+  correct_answer: It defines metadata about the chart including name, version, and description
+  explanation: "The Chart.yaml file is a required file in every Helm chart that contains metadata about the chart. Essential fields include: name (chart name), version (chart version using SemVer), description (human-readable description), type (application or library), and optionally appVersion (version of the application being deployed). This metadata is used by Helm to identify and manage the chart. The file can also include maintainer information, keywords, home URL, and sources. This is distinct from values.yaml which contains default configuration values, and the templates/ directory which contains the actual Kubernetes resource templates. The Chart.yaml helps users understand what the chart does, what version they're using, and provides important information for chart repositories."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: How do you override default values when installing a Helm chart?
+  options:
+  - Edit the values.yaml file directly in the chart
+  - Use the --set flag or provide a custom values file with -f flag
+  - Modify the templates directly
+  - Change the Chart.yaml metadata
+  correct_answer: Use the --set flag or provide a custom values file with -f flag
+  explanation: "Helm provides two main ways to override default values: (1) Using the --set flag for individual values: 'helm install myapp ./mychart --set image.tag=v2.0,replicas=3', or (2) Using a custom values file with the -f or --values flag: 'helm install myapp ./mychart -f custom-values.yaml'. You can use multiple -f flags to specify multiple values files, with later files taking precedence. The --set flag takes highest precedence, overriding both default values.yaml and any custom values files. This approach keeps your customizations separate from the chart itself, making it easier to upgrade the chart without losing your configuration. Never modify the chart's values.yaml directly as it gets overwritten during upgrades. For complex configurations, use custom values files; for simple overrides, --set works well."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: What command would you use to upgrade an existing Helm release with a new version of the chart?
+  options:
+  - helm update
+  - helm upgrade
+  - helm install --upgrade
+  - helm apply
+  correct_answer: helm upgrade
+  explanation: "The 'helm upgrade' command is used to upgrade an existing Helm release to a new version of a chart or with new configuration values. The syntax is 'helm upgrade <release-name> <chart> [flags]', for example: 'helm upgrade myapp ./mychart --set image.tag=v2.0'. Helm performs a three-way merge between the old release manifest, new chart templates with provided values, and current cluster state. If the upgrade fails, you can use 'helm rollback' to revert to a previous revision. The --install flag can be combined with upgrade ('helm upgrade --install') to install if the release doesn't exist or upgrade if it does, which is useful in CI/CD pipelines. You can use 'helm history' to see all revisions of a release and 'helm get values' to see what values were used in a specific revision."
+  require_pass: true

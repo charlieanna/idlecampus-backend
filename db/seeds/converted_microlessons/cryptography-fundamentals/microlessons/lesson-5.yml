@@ -1,0 +1,136 @@
+slug: lesson-5
+title: Lesson 5
+difficulty: easy
+sequence_order: 5
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# TLS/SSL Protocol Overview\n\n    **TLS\
+  \ (Transport Layer Security)** is the protocol that secures communications over\
+  \ the internet. It's the successor to SSL (Secure Sockets Layer).\n\n    ## TLS\
+  \ vs SSL\n\n    | Version | Year | Status |\n    |---------|------|--------|\n \
+  \   | SSL 1.0 | Never released | Insecure |\n    | SSL 2.0 | 1995 | **Deprecated\
+  \ (2011)** |\n    | SSL 3.0 | 1996 | **Deprecated (2015)** |\n    | TLS 1.0 | 1999\
+  \ | **Deprecated (2021)** |\n    | TLS 1.1 | 2006 | **Deprecated (2021)** |\n  \
+  \  | TLS 1.2 | 2008 | **Supported** ✓ |\n    | TLS 1.3 | 2018 | **Recommended**\
+  \ ✓✓ |\n\n    **Only use TLS 1.2+ in production!**\n\n    ## What TLS Provides\n\
+  \n    1. **Confidentiality**: Data encrypted in transit\n    2. **Integrity**: Detect\
+  \ tampering with MAC (Message Authentication Code)\n    3. **Authentication**: Verify\
+  \ server (and optionally client) identity\n\n    ## TLS Handshake (TLS 1.2)\n\n\
+  \    The handshake establishes a secure connection:\n\n    ### Step-by-Step Process\n\
+  \n    ```\n    Client                                         Server\n\n    1. ClientHello\n\
+  \       - TLS version (1.2)\n       - Cipher suites supported\n       - Random number\n\
+  \       ---------------------------------------->\n\n    2.                    \
+  \                  ServerHello\n                                            - Chosen\
+  \ cipher suite\n                                            - Random number\n  \
+  \                                          Certificate\n                       \
+  \                     - Server's public key\n                                  \
+  \          ServerHelloDone\n       <----------------------------------------\n\n\
+  \    3. ClientKeyExchange\n       - Encrypted pre-master secret\n       ChangeCipherSpec\n\
+  \       Finished (encrypted)\n       ---------------------------------------->\n\
+  \n    4.                                      ChangeCipherSpec\n               \
+  \                             Finished (encrypted)\n       <----------------------------------------\n\
+  \n    5. Application Data <-----------------> Application Data\n       (encrypted\
+  \ with session keys)\n    ```\n\n    ### Handshake in Detail\n\n    **1. ClientHello**\n\
+  \    ```\n    - TLS Version: 1.2\n    - Cipher Suites:\n      TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384\n\
+  \      TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256\n      ...\n    - Extensions: SNI,\
+  \ ALPN, etc.\n    - Random: 28 random bytes + 4 bytes timestamp\n    ```\n\n   \
+  \ **2. ServerHello**\n    ```\n    - Selected cipher suite\n    - Server certificate\
+  \ (contains public key)\n    - Server random number\n    ```\n\n    **3. Key Exchange**\n\
+  \    - Client generates pre-master secret\n    - Encrypts with server's public key\
+  \ (from certificate)\n    - Both derive master secret:\n      ```\n      master_secret\
+  \ = PRF(pre_master_secret,\n                          \"master secret\",\n     \
+  \                     ClientHello.random + ServerHello.random)\n      ```\n\n  \
+  \  **4. Generate Session Keys**\n    ```\n    - Client write key (client encrypts)\n\
+  \    - Server write key (server encrypts)\n    - Client MAC key (client integrity)\n\
+  \    - Server MAC key (server integrity)\n    - Client IV (initialization vector)\n\
+  \    - Server IV\n    ```\n\n    ## TLS 1.3 Handshake (Simplified)\n\n    TLS 1.3\
+  \ is faster - only 1 round trip:\n\n    ```\n    Client                        \
+  \                 Server\n\n    1. ClientHello\n       - Supported groups & key\
+  \ shares\n       - Cipher suites\n       ---------------------------------------->\n\
+  \n    2.                                      ServerHello\n                    \
+  \                        - Key share\n                                         \
+  \   Certificate\n                                            CertificateVerify\n\
+  \                                            Finished\n       <----------------------------------------\n\
+  \n    3. Finished\n       Application Data\n       ---------------------------------------->\n\
+  \n    4.                                      Application Data\n       <----------------------------------------\n\
+  \    ```\n\n    **Improvements in TLS 1.3:**\n    - Faster (1-RTT instead of 2-RTT)\n\
+  \    - Forward secrecy mandatory\n    - Removed weak ciphers\n    - 0-RTT mode for\
+  \ resumption (with caveats)\n\n    ## Cipher Suites\n\n    A cipher suite specifies\
+  \ algorithms for:\n\n    ### Format: TLS_[KeyExchange]_[Authentication]_WITH_[Encryption]_[MAC]\n\
+  \n    Example: `TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384`\n\n    - **ECDHE**: Elliptic\
+  \ Curve Diffie-Hellman Ephemeral (key exchange)\n    - **RSA**: RSA signature for\
+  \ authentication\n    - **AES_256_GCM**: AES 256-bit in GCM mode (encryption)\n\
+  \    - **SHA384**: SHA-384 hash (integrity)\n\n    ### Modern Recommended Cipher\
+  \ Suites (TLS 1.2)\n\n    ```nginx\n    # Strong, recommended order\n    TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384\n\
+  \    TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384\n    TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256\n\
+  \    TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256\n    TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256\n\
+  \    TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256\n    ```\n\n    ### TLS 1.3 Cipher\
+  \ Suites (Much Simpler)\n\n    ```\n    TLS_AES_256_GCM_SHA384\n    TLS_CHACHA20_POLY1305_SHA256\n\
+  \    TLS_AES_128_GCM_SHA256\n    ```\n\n    **Note**: Key exchange is separate in\
+  \ TLS 1.3\n\n    ### Cipher Suite Components\n\n    **Key Exchange Algorithms:**\n\
+  \    - ✓ ECDHE (Elliptic Curve Diffie-Hellman Ephemeral) - Best\n    - ✓ DHE (Diffie-Hellman\
+  \ Ephemeral) - Good\n    - ✗ RSA - No forward secrecy\n    - ✗ ECDH, DH (non-ephemeral)\
+  \ - No forward secrecy\n\n    **Encryption Algorithms:**\n    - ✓ AES-GCM (Authenticated\
+  \ encryption)\n    - ✓ ChaCha20-Poly1305 (Modern, fast on mobile)\n    - ⚠ AES-CBC\
+  \ (Use with caution, padding oracle risks)\n    - ✗ 3DES, RC4 - Deprecated\n\n \
+  \   ## Forward Secrecy\n\n    **If server private key is compromised, past sessions\
+  \ remain secure**\n\n    ```\n    Without Forward Secrecy (RSA key exchange):\n\
+  \    - Attacker records encrypted traffic\n    - Later steals server private key\n\
+  \    - Decrypts ALL past traffic ❌\n\n    With Forward Secrecy (ECDHE):\n    - Each\
+  \ session uses ephemeral keys\n    - Stealing server key doesn't help\n    - Past\
+  \ traffic remains secure ✓\n    ```\n\n    **Always use ECDHE or DHE for forward\
+  \ secrecy!**\n\n    ## Session Resumption\n\n    Avoid full handshake for repeat\
+  \ connections:\n\n    ### Session IDs (TLS 1.2)\n    ```\n    1. Server sends session\
+  \ ID in ServerHello\n    2. Client stores session ID\n    3. On reconnect, client\
+  \ sends session ID\n    4. Server resumes session (if valid)\n    ```\n\n    ###\
+  \ Session Tickets (TLS 1.2)\n    ```\n    1. Server sends encrypted session state\
+  \ to client\n    2. Client stores ticket\n    3. On reconnect, client presents ticket\n\
+  \    4. Server decrypts and resumes\n    ```\n\n    ### PSK (Pre-Shared Key) - TLS\
+  \ 1.3\n    ```\n    - 0-RTT: Send data in first packet!\n    - Trade-off: No forward\
+  \ secrecy for 0-RTT data\n    - Use carefully (replay attacks possible)\n    ```\n\
+  \n    ## SNI (Server Name Indication)\n\n    **Enable multiple HTTPS sites on same\
+  \ IP:**\n\n    ```\n    ClientHello:\n      ...\n      Extensions:\n        server_name:\
+  \ www.example.com\n    ```\n\n    Server selects appropriate certificate based on\
+  \ SNI.\n\n    **Important**: SNI is sent unencrypted in TLS 1.2!\n    - TLS 1.3\
+  \ can encrypt SNI with ESNI/ECH\n\n    ## ALPN (Application-Layer Protocol Negotiation)\n\
+  \n    **Negotiate application protocol during TLS handshake:**\n\n    ```\n    ClientHello:\n\
+  \      ...\n      Extensions:\n        application_layer_protocol_negotiation:\n\
+  \          - h2 (HTTP/2)\n          - http/1.1\n    ```\n\n    Prevents extra round\
+  \ trip for protocol negotiation.\n\n    ## Common TLS Configurations\n\n    ###\
+  \ Nginx\n    ```nginx\n    ssl_protocols TLSv1.2 TLSv1.3;\n    ssl_ciphers 'ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384';\n\
+  \    ssl_prefer_server_ciphers on;\n    ssl_session_cache shared:SSL:10m;\n    ssl_session_timeout\
+  \ 10m;\n    ```\n\n    ### Apache\n    ```apache\n    SSLProtocol all -SSLv3 -TLSv1\
+  \ -TLSv1.1\n    SSLCipherSuite HIGH:!aNULL:!MD5\n    SSLHonorCipherOrder on\n  \
+  \  ```\n\n    ### Node.js\n    ```javascript\n    const options = {\n      minVersion:\
+  \ 'TLSv1.2',\n      ciphers: 'ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES128-GCM-SHA256',\n\
+  \      honorCipherOrder: true\n    };\n    https.createServer(options, app);\n \
+  \   ```\n\n    ## Testing TLS Configuration\n\n    ```bash\n    # Test with OpenSSL\n\
+  \    openssl s_client -connect example.com:443 -tls1_2\n\n    # Check cipher suite\n\
+  \    openssl s_client -connect example.com:443 -cipher 'ECDHE-RSA-AES256-GCM-SHA384'\n\
+  \n    # Test for weak ciphers\n    nmap --script ssl-enum-ciphers -p 443 example.com\n\
+  \n    # Online tools\n    # SSL Labs: https://www.ssllabs.com/ssltest/\n    ```\n\
+  \n    **Next**: We'll explore certificates and PKI in depth."
+exercises:
+  - type: multiple_choice_question
+    sequence_order: 1
+    question: "What is SNI (Server Name Indication) used for in TLS?"
+    options:
+      - "To encrypt the entire TLS handshake"
+      - "To allow multiple HTTPS sites to be hosted on the same IP address"
+      - "To generate session keys"
+      - "To validate certificates"
+    correct_answer: "To allow multiple HTTPS sites to be hosted on the same IP address"
+    explanation: "Server Name Indication (SNI) is a TLS extension that solves the problem of hosting multiple HTTPS websites on a single IP address. Without SNI, the server wouldn't know which certificate to present because the hostname is only revealed after the TLS handshake completes, but the certificate must be sent during the handshake. SNI works by including the hostname in the ClientHello message at the start of the TLS handshake, allowing the server to select the appropriate certificate before continuing. This is essential for modern hosting environments where IP addresses are scarce and expensive, and virtual hosting (multiple sites per IP) is standard practice. However, SNI has a privacy limitation in TLS 1.2: the hostname is sent in plaintext, potentially revealing which website a user is visiting to network observers. TLS 1.3 addresses this with Encrypted Client Hello (ECH, formerly ESNI), which encrypts the SNI field. Despite the privacy concern in TLS 1.2, SNI is widely deployed and enabled by default in all modern browsers and servers. It's a foundational technology for cost-effective HTTPS hosting and certificate management."
+    require_pass: true
+  - type: multiple_choice_question
+    sequence_order: 2
+    question: "What is session resumption in TLS and why is it useful?"
+    options:
+      - "It backs up TLS sessions to disk"
+      - "It allows clients to skip the full handshake for subsequent connections, improving performance"
+      - "It re-encrypts all data automatically"
+      - "It rotates encryption keys every second"
+    correct_answer: "It allows clients to skip the full handshake for subsequent connections, improving performance"
+    explanation: "Session resumption is a TLS optimization that allows clients and servers to reestablish connections without performing a full cryptographic handshake, significantly improving performance for repeat connections. The full TLS handshake involves multiple round trips, public key operations, and certificate validation - operations that are computationally expensive and add latency. With session resumption, after the initial connection, the client and server can use previously established session parameters to quickly resume encryption. In TLS 1.2, this is achieved through Session IDs (where the server stores session state) or Session Tickets (where the client stores encrypted session state). TLS 1.3 improves this with PSK (Pre-Shared Keys) and even supports 0-RTT (zero round-trip time) mode where application data can be sent in the very first packet, though 0-RTT has replay attack vulnerabilities and should be used carefully. Session resumption is particularly important for mobile applications and websites with frequent connections, as it reduces connection latency, saves battery life, and improves user experience. However, it must be balanced with security - resumption tickets should have limited lifetime and rotation policies."
+    require_pass: true

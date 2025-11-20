@@ -1,0 +1,110 @@
+slug: lesson-26
+title: Lesson 26
+difficulty: easy
+sequence_order: 26
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Ingress Controllers Deep Dive\n\n    -\
+  \ Controller deployment and class annotations\n    - TLS, path/host routing, rewrites"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What is an Ingress Controller and why is it needed in addition to Ingress
+    resources?
+  options:
+  - Ingress Controller is optional; Ingress resources work alone
+  - Ingress Controller is the actual implementation that reads Ingress resources and
+    configures load balancing
+  - Ingress Controller creates Ingress resources automatically
+  - They are the same thing with different names
+  correct_answer: Ingress Controller is the actual implementation that reads Ingress
+    resources and configures load balancing
+  explanation: 'The Ingress resource is just a specification (a manifest defining
+    routing rules), while the Ingress Controller is the actual implementation that
+    makes those rules work. Without a controller, Ingress resources do nothing - they''re
+    just stored in etcd. The Ingress Controller is a pod (or set of pods) that: watches
+    for Ingress resource changes, reads routing rules from Ingress specs, configures
+    a load balancer/proxy (nginx, HAProxy, Traefik, etc.) based on those rules, and
+    handles actual traffic routing. Think of it like a thermostat (Ingress resource)
+    and HVAC system (Ingress Controller) - the thermostat sets desired temperature,
+    but the HVAC does the actual work. Popular Ingress Controllers: nginx-ingress
+    (most common, uses nginx as reverse proxy), Traefik (dynamic configuration, built-in
+    Let''s Encrypt), HAProxy Ingress (high performance), Contour (Envoy-based, advanced
+    features), AWS Load Balancer Controller (creates ALB/NLB), GKE Ingress (GCP load
+    balancers), and Azure Application Gateway Ingress Controller. You must install
+    an Ingress Controller before using Ingress resources. Installation typically involves:
+    deploying the controller as Deployment/DaemonSet, creating Services (usually LoadBalancer
+    type) for external access, and configuring RBAC permissions to watch Ingress resources.
+    Some controllers support annotations for advanced config: ''nginx.ingress.kubernetes.io/rewrite-target'',
+    ''cert-manager.io/cluster-issuer''. The IngressClass resource (introduced in K8s
+    1.18) allows multiple controllers in one cluster, with Ingress resources specifying
+    which controller to use via ''ingressClassName: nginx''. This enables different
+    routing policies per application. Understanding the controller/resource separation
+    is crucial - you configure routing in Ingress resources, but must ensure the appropriate
+    controller is installed and running.'
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What is the purpose of path rewriting in Ingress configurations?
+  options:
+  - To improve performance by shortening URLs
+  - To modify incoming request paths before forwarding to backend services
+  - To encrypt URL paths
+  - To validate URL syntax
+  correct_answer: To modify incoming request paths before forwarding to backend services
+  explanation: 'Path rewriting allows the Ingress Controller to modify request paths
+    before forwarding to backend services, enabling cleaner external URLs that differ
+    from internal service paths. This is critical when backend services expect different
+    paths than what external users see. For example, external URL ''api.example.com/v2/users''
+    might need to route to a service expecting ''/users'' (without ''/v2''). Without
+    rewriting, the service receives ''/v2/users'' which it doesn''t recognize. Path
+    rewriting configuration varies by controller. For nginx-ingress: ''annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$2'' with path: ''/api(/|$)(.*)''.
+    This captures everything after ''/api/'' and rewrites to ''/$2''. For example,
+    ''/api/users'' becomes ''/users''. Traefik uses: ''spec.routes[].middlewares''
+    with StripPrefix middleware. Common use cases: API versioning - expose ''/v1/api''
+    externally, route to ''/api'' internally. Legacy system integration - external
+    modern paths, internal legacy paths. Multi-tenancy - ''/tenant1/app'' -> ''/app'',
+    ''/tenant2/app'' -> ''/app''. Microservices abstraction - ''/api/users'' and ''/api/orders''
+    route to different services both expecting ''/''. Service migration - keep external
+    URLs stable while changing backend paths. Best practices: document rewrite rules
+    clearly (they can be confusing), test thoroughly with curl/postman, use rewrite-target
+    carefully with capture groups, consider using service mesh for more complex routing,
+    and monitor for 404 errors indicating mismatched rewrites. Path rewriting, combined
+    with host-based routing and TLS, makes Ingress a powerful API gateway, enabling
+    clean, user-friendly URLs while maintaining flexible backend architectures.'
+  require_pass: true
+- type: mcq
+  sequence_order: 1
+  question: Which command creates a deployment with 3 replicas?
+  options:
+  - kubectl create deployment nginx --image=nginx --replicas=3
+  - kubectl make deployment nginx replicas=3
+  - kubectl deploy nginx --count=3
+  - kubectl new deployment nginx x3
+  correct_answer_index: 0
+  explanation: kubectl create deployment creates a deployment. The --replicas flag
+    specifies the number of pod replicas.
+  require_pass: true
+- type: code
+  sequence_order: 2
+  language: yaml
+  question: Create a deployment with 3 replicas of nginx
+  starter_code: '# Write your deployment YAML here
+
+    apiVersion: apps/v1
+
+    kind: Deployment
+
+    '
+  solution_code: "apiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: nginx-deployment\n\
+    spec:\n  replicas: 3\n  selector:\n    matchLabels:\n      app: nginx\n  template:\n\
+    \    metadata:\n      labels:\n        app: nginx\n    spec:\n      containers:\n\
+    \      - name: nginx\n        image: nginx:1.25\n        ports:\n        - containerPort:\
+    \ 80"
+  hints:
+  - 'Use apiVersion: apps/v1 for Deployments'
+  - Set spec.replicas to 3
+  - Define selector.matchLabels to match template.metadata.labels
+  require_pass: true

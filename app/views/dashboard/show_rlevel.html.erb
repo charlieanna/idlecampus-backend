@@ -1,0 +1,49 @@
+<h1>Outlinks from Node <%= params[:node] %></h1>
+
+<% @rlevel_data.sort_by { |k, v| k.to_i }.each do |distance, nodes| %>
+  <h2>Distance: <%= distance %></h2>
+  <table border="1">
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Tags</th>
+        <th>Score</th>
+        <th>Inlinks</th>
+        <th>Outlinks</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% nodes.each do |node_id, node_details| %>
+        <tr>
+          <td>
+            <% if node_details['database'] == 'stackoverflow' %>
+                <%= link_to node_details['title'], "https://stackoverflow.com/questions/#{node_id}", target: "_blank" %>
+            <% else %>
+                <%= link_to node_details['title'], "https://#{node_details['site']}/questions/#{node_id}", target: "_blank" %>
+            <% end %>
+          </td>
+          <td>
+            <% node_details['tags'].each do |tag| %>
+              <% if tag %>
+              <%= link_to tag, { controller: 'tags', action: 'show', tag_name: tag.to_s }, target: "_blank" %>
+              <% else %>
+              <%= link_to "nil", { controller: 'tags', action: 'show', tag_name: "nil" }, target: "_blank" %>
+              <% end %>
+            <% end %>
+          </td>
+          <td>
+              <%= node_details['score'] %>
+          </td>
+          <td>
+            <%= link_to node_details['inlinks'], level_show_path(node_id, node_details['database']), target: "_blank" %>
+          </td>
+          <td>
+            <%= link_to node_details['outlinks'], rlevel_show_path(node_id, node_details['database']), target: "_blank" %>
+          </td>
+         
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <br>
+<% end %>

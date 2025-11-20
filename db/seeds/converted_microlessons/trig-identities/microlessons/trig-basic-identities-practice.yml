@@ -1,0 +1,78 @@
+slug: trig-basic-identities-practice
+title: trig-basic-identities — Practice
+difficulty: medium
+sequence_order: 10
+estimated_minutes: 2
+key_concepts:
+- trig-basic-identities
+prerequisites: []
+content_md: '# trig-basic-identities — Practice 🚀
+
+
+  Use compound angle formulas
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: Which identity is correct?
+  options:
+  - sin²θ + cos²θ = 2
+  - sin²θ + cos²θ = 1
+  - sin²θ - cos²θ = 1
+  - sin²θ × cos²θ = 1
+  require_pass: true
+  correct_answer: sin²θ + cos²θ = 1
+  explanation: 'The fundamental Pythagorean identity is sin²θ + cos²θ = 1 for all
+    values of θ. This can be derived from the unit circle: If a point on unit circle
+    has coordinates (cos θ, sin θ), then by distance formula: (cos θ)² + (sin θ)²
+    = 1. This identity holds for ALL angles. Other Pythagorean identities derived
+    from this: (1) Divide by cos²θ: tan²θ + 1 = sec²θ, (2) Divide by sin²θ: 1 + cot²θ
+    = csc²θ. Applications: Simplifying expressions, solving equations, proving other
+    identities. Example: If sin θ = 3/5, then cos²θ = 1 - sin²θ = 1 - 9/25 = 16/25,
+    so cos θ = ±4/5 (sign depends on quadrant).'
+- type: mcq
+  sequence_order: 2
+  question: What is sin(A + B) equal to?
+  options:
+  - sin A + sin B
+  - sin A cos B + cos A sin B
+  - sin A cos B - cos A sin B
+  - cos A cos B + sin A sin B
+  require_pass: true
+  correct_answer: sin A cos B + cos A sin B
+  explanation: 'The compound angle formula for sine is: sin(A + B) = sin A cos B +
+    cos A sin B. This is NOT equal to sin A + sin B. Similarly: sin(A - B) = sin
+    A cos B - cos A sin B, cos(A + B) = cos A cos B - sin A sin B, cos(A - B) = cos
+    A cos B + sin A sin B. For tangent: tan(A + B) = (tan A + tan B)/(1 - tan A tan
+    B). Applications: Finding exact values like sin(75°) = sin(45° + 30°) = sin 45°
+    cos 30° + cos 45° sin 30° = (√2/2)(√3/2) + (√2/2)(1/2) = (√6 + √2)/4. These formulas
+    are fundamental for solving trig equations and proving identities.'
+- type: mcq
+  sequence_order: 3
+  question: Which double angle formula is correct for cos 2θ?
+  options:
+  - cos 2θ = 2 cos²θ
+  - cos 2θ = 1 - 2 sin²θ
+  - cos 2θ = 2 sin θ cos θ
+  - cos 2θ = sin²θ - cos²θ
+  require_pass: true
+  correct_answer: cos 2θ = 1 - 2 sin²θ
+  explanation: 'The double angle formulas for cos 2θ have three equivalent forms:
+    (1) cos 2θ = cos²θ - sin²θ (basic form), (2) cos 2θ = 2 cos²θ - 1 (substitute
+    sin²θ = 1 - cos²θ), (3) cos 2θ = 1 - 2 sin²θ (substitute cos²θ = 1 - sin²θ).
+    All three are correct! The option "1 - 2 sin²θ" is one of them. For sine: sin
+    2θ = 2 sin θ cos θ. For tangent: tan 2θ = 2 tan θ/(1 - tan²θ). Half-angle formulas
+    (derived from double angle): sin²(θ/2) = (1 - cos θ)/2, cos²(θ/2) = (1 + cos
+    θ)/2. Applications: Solving equations like cos 2x = 1/2, simplifying expressions,
+    integration.'

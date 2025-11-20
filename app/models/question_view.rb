@@ -1,0 +1,2 @@
+class QuestionView < ApplicationRecord
+end

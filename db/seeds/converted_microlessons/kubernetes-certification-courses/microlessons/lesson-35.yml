@@ -1,0 +1,113 @@
+slug: lesson-35
+title: Lesson 35
+difficulty: easy
+sequence_order: 35
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Deployments: Rolling Updates and Rollbacks\n\
+  \n    Use Deployments to declaratively manage application updates.\n    - Strategies:\
+  \ RollingUpdate (maxSurge, maxUnavailable), Recreate\n    - Rollout operations:\
+  \ status, pause, resume, undo\n    - History and revisions"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What is the purpose of maxSurge and maxUnavailable in a RollingUpdate
+    strategy?
+  options:
+  - They control CPU and memory limits
+  - maxSurge limits extra pods created during update; maxUnavailable limits pods that
+    can be down during update
+  - They control network bandwidth
+  - They are only for StatefulSets
+  correct_answer: maxSurge limits extra pods created during update; maxUnavailable
+    limits pods that can be down during update
+  explanation: 'maxSurge and maxUnavailable control the rolling update process for
+    Deployments, balancing update speed against resource usage and availability. maxSurge
+    specifies the maximum number of pods that can be created above the desired replica
+    count during an update. For example, with 10 replicas and ''maxSurge: 2'', up
+    to 12 pods can exist during rollout (10 old + 2 new). This allows faster updates
+    by creating new pods before terminating old ones, ensuring availability. It can
+    be a number (e.g., 2) or percentage (e.g., 25%). maxUnavailable specifies the
+    maximum number of pods that can be unavailable during the update. With 10 replicas
+    and ''maxUnavailable: 1'', at least 9 pods must be running at all times. Only
+    1 can be terminating/starting. This ensures service availability but slows rollout.
+    It can also be a number or percentage. These parameters work together: with ''maxSurge:
+    2, maxUnavailable: 1'' and 10 replicas, Kubernetes creates 2 new pods (total 12),
+    waits for them to be ready, terminates 1 old pod (total 11), repeats until all
+    old pods are replaced. Common patterns: Fast rollout with extra resources: ''maxSurge:
+    50%, maxUnavailable: 0'' (create all new pods first, then terminate old ones).
+    Conservative rollout: ''maxSurge: 0, maxUnavailable: 1'' (one-at-a-time replacement,
+    no extra resources). Balanced: ''maxSurge: 25%, maxUnavailable: 25%'' (default,
+    moderate speed and resource usage). Setting both to 0 is invalid (no progress
+    possible). Best practices: use maxSurge for resource-rich clusters prioritizing
+    speed, use maxUnavailable for resource-constrained environments, test rollout
+    parameters in non-production, combine with readiness probes for safe rollouts,
+    and monitor rollout progress with ''kubectl rollout status deployment/myapp''.'
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: How do you rollback a Deployment to a previous revision in Kubernetes?
+  options:
+  - Delete the Deployment and recreate it
+  - Use 'kubectl rollout undo deployment/<name>' to revert to the previous revision
+  - Manually edit the Deployment YAML
+  - Rollbacks are not supported
+  correct_answer: Use 'kubectl rollout undo deployment/<name>' to revert to the previous
+    revision
+  explanation: 'Kubernetes Deployments maintain revision history, enabling easy rollbacks
+    when updates cause issues. The rollback process uses ''kubectl rollout undo deployment/<deployment-name>''
+    to revert to the previous revision. For example, if you update image from v1.0
+    to v2.0 and encounter issues, ''kubectl rollout undo deployment/myapp'' reverts
+    to v1.0. To rollback to a specific revision: ''kubectl rollout undo deployment/myapp
+    --to-revision=3''. View revision history with ''kubectl rollout history deployment/myapp'',
+    which shows revision numbers and change causes. Each revision represents a unique
+    pod template - changes to replicas, labels, or annotations don''t create revisions,
+    only changes to the pod spec (image, env vars, volumes, etc.). The history depth
+    is controlled by ''revisionHistoryLimit'' (default 10) in the Deployment spec.
+    Older revisions are automatically deleted. When you undo, Kubernetes creates a
+    new revision that matches the target revision''s pod template, then performs a
+    rolling update to that template. This means undo triggers another rolling update,
+    not an instant switch. The rollback respects the Deployment''s rollout strategy
+    (maxSurge, maxUnavailable). Best practices: always test updates in non-production
+    first, monitor deployments after updates using metrics and logs, use ''kubectl
+    rollout pause'' to pause a problematic rollout mid-way, use ''kubectl rollout
+    resume'' to continue after fixes, set appropriate revisionHistoryLimit (balance
+    history vs etcd storage), and document revision changes with ''--record'' flag
+    (deprecated) or annotations. Understanding rollbacks is crucial for production
+    operations - they''re your safety net when updates go wrong, enabling rapid recovery
+    without manual manifest management.'
+  require_pass: true
+- type: mcq
+  sequence_order: 1
+  question: Which command creates a deployment with 3 replicas?
+  options:
+  - kubectl create deployment nginx --image=nginx --replicas=3
+  - kubectl make deployment nginx replicas=3
+  - kubectl deploy nginx --count=3
+  - kubectl new deployment nginx x3
+  correct_answer_index: 0
+  explanation: kubectl create deployment creates a deployment. The --replicas flag
+    specifies the number of pod replicas.
+  require_pass: true
+- type: code
+  sequence_order: 2
+  language: yaml
+  question: Create a deployment with 3 replicas of nginx
+  starter_code: '# Write your deployment YAML here
+
+    apiVersion: apps/v1
+
+    kind: Deployment
+
+    '
+  solution_code: "apiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: nginx-deployment\n\
+    spec:\n  replicas: 3\n  selector:\n    matchLabels:\n      app: nginx\n  template:\n\
+    \    metadata:\n      labels:\n        app: nginx\n    spec:\n      containers:\n\
+    \      - name: nginx\n        image: nginx:1.25\n        ports:\n        - containerPort:\
+    \ 80"
+  hints:
+  - 'Use apiVersion: apps/v1 for Deployments'
+  - Set spec.replicas to 3
+  - Define selector.matchLabels to match template.metadata.labels
+  require_pass: true

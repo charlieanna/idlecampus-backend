@@ -1,0 +1,486 @@
+<div class="container-fluid mt-4">
+  <div class="row">
+    <!-- Quiz Content -->
+    <div class="col-md-9">
+      <!-- Timer and Progress Bar -->
+      <div class="card mb-3 <%= @quiz.mastery_challenge? ? 'border-danger' : 'border-warning' %>">
+        <div class="card-body">
+          <div class="row align-items-center">
+            <div class="col-md-<%= @quiz.timed? ? '4' : '6' %>">
+              <h5 class="mb-0">
+                <%= @quiz.title %>
+                <% if @quiz.practice_quiz? %>
+                  <span class="badge bg-info">Practice</span>
+                <% end %>
+              </h5>
+            </div>
+            <div class="col-md-<%= @quiz.timed? ? '4' : '6' %> text-center">
+              <div class="progress" style="height: 30px;">
+                <div class="progress-bar bg-success" role="progressbar"
+                     style="width: 0%;" id="progress-bar">
+                  <span id="progress-text">0 / <%= @questions.count %></span>
+                </div>
+              </div>
+            </div>
+            <% if @quiz.timed? %>
+              <div class="col-md-4 text-end">
+                <div id="quiz-timer"
+                     data-time-limit="<%= @quiz.time_limit_seconds %>"
+                     class="timer-display">
+                  <h3 class="mb-0">
+                    <span class="badge bg-danger">
+                      <i class="fas fa-clock"></i>
+                      <span id="timer-display"><%= @quiz.time_limit_display %></span>
+                    </span>
+                  </h3>
+                  <div class="timer-progress-bar">
+                    <div id="timer-progress" class="timer-progress-fill"></div>
+                  </div>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+
+      <!-- Question Display -->
+      <div class="card mb-3">
+        <div class="card-body">
+          <div id="question-container">
+            <% @questions.each_with_index do |question, index| %>
+              <div class="question-block" data-question-id="<%= question.id %>" data-index="<%= index %>" style="<%= index == 0 ? '' : 'display: none;' %>">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <h4>Question <%= index + 1 %> of <%= @questions.count %></h4>
+                  <span class="badge bg-<%= question.difficulty_level == 'easy' ? 'success' : (question.difficulty_level == 'medium' ? 'warning' : 'danger') %>">
+                    <%= question.difficulty_level.upcase %>
+                  </span>
+                </div>
+
+                <p class="lead mb-4"><%= question.question_text %></p>
+
+                <!-- MCQ Question -->
+                <% if question.question_type == 'mcq' %>
+                  <div class="options-container">
+                    <% JSON.parse(question.options).each_with_index do |option, opt_index| %>
+                      <div class="form-check mb-3 option-item">
+                        <input class="form-check-input" type="radio" 
+                               name="question_<%= question.id %>" 
+                               id="option_<%= question.id %>_<%= opt_index %>"
+                               value="<%= option['text'] %>"
+                               data-question-id="<%= question.id %>">
+                        <label class="form-check-label" for="option_<%= question.id %>_<%= opt_index %>">
+                          <%= option['text'] %>
+                        </label>
+                      </div>
+                    <% end %>
+                  </div>
+                <% end %>
+
+                <!-- Fill in the Blank -->
+                <% if question.question_type == 'fill_blank' %>
+                  <div class="mb-3">
+                    <input type="text" class="form-control form-control-lg" 
+                           id="answer_<%= question.id %>"
+                           name="question_<%= question.id %>"
+                           placeholder="Type your answer here..."
+                           data-question-id="<%= question.id %>">
+                  </div>
+                <% end %>
+
+                <!-- Command Question -->
+                <% if question.question_type == 'command' %>
+                  <div class="mb-3">
+                    <div class="alert alert-info">
+                      <i class="fas fa-terminal"></i> Enter the command exactly as you would type it in a terminal
+                    </div>
+                    <input type="text" class="form-control form-control-lg font-monospace" 
+                           id="answer_<%= question.id %>"
+                           name="question_<%= question.id %>"
+                           placeholder="$ "
+                           data-question-id="<%= question.id %>">
+                  </div>
+                <% end %>
+
+                <!-- True/False Question -->
+                <% if question.question_type == 'true_false' %>
+                  <div class="options-container">
+                    <div class="form-check mb-3 option-item">
+                      <input class="form-check-input" type="radio" 
+                             name="question_<%= question.id %>" 
+                             id="true_<%= question.id %>"
+                             value="true"
+                             data-question-id="<%= question.id %>">
+                      <label class="form-check-label" for="true_<%= question.id %>">
+                        <i class="fas fa-check-circle text-success"></i> True
+                      </label>
+                    </div>
+                    <div class="form-check mb-3 option-item">
+                      <input class="form-check-input" type="radio" 
+                             name="question_<%= question.id %>" 
+                             id="false_<%= question.id %>"
+                             value="false"
+                             data-question-id="<%= question.id %>">
+                      <label class="form-check-label" for="false_<%= question.id %>">
+                        <i class="fas fa-times-circle text-danger"></i> False
+                      </label>
+                    </div>
+                  </div>
+                <% end %>
+
+                <!-- Question Points -->
+                <div class="text-muted mt-3">
+                  <i class="fas fa-star"></i> Worth <%= question.points %> points
+                </div>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+
+      <!-- Navigation Buttons -->
+      <div class="card">
+        <div class="card-body">
+          <div class="d-flex justify-content-between">
+            <button class="btn btn-secondary" id="prev-btn" disabled>
+              <i class="fas fa-arrow-left"></i> Previous
+            </button>
+            <button class="btn btn-primary" id="next-btn">
+              Next <i class="fas fa-arrow-right"></i>
+            </button>
+            <button class="btn btn-success" id="submit-btn" style="display: none;">
+              <i class="fas fa-check"></i> Submit Quiz
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Question Navigator Sidebar -->
+    <div class="col-md-3">
+      <div class="card sticky-top" style="top: 20px;">
+        <div class="card-header bg-primary text-white">
+          <h6 class="mb-0"><i class="fas fa-list"></i> Question Navigator</h6>
+        </div>
+        <div class="card-body">
+          <div class="question-nav-grid">
+            <% @questions.each_with_index do |question, index| %>
+              <button class="btn btn-outline-secondary btn-sm question-nav-btn" 
+                      data-index="<%= index %>"
+                      data-question-id="<%= question.id %>">
+                <%= index + 1 %>
+              </button>
+            <% end %>
+          </div>
+
+          <hr>
+
+          <div class="legend">
+            <div class="d-flex align-items-center mb-2">
+              <span class="badge bg-success me-2">&nbsp;&nbsp;</span>
+              <small>Answered</small>
+            </div>
+            <div class="d-flex align-items-center mb-2">
+              <span class="badge bg-primary me-2">&nbsp;&nbsp;</span>
+              <small>Current</small>
+            </div>
+            <div class="d-flex align-items-center">
+              <span class="badge bg-secondary me-2">&nbsp;&nbsp;</span>
+              <small>Not Answered</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Submit Confirmation Modal -->
+<div class="modal fade" id="submitModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-warning">
+        <h5 class="modal-title">
+          <i class="fas fa-exclamation-triangle"></i> Submit Quiz?
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to submit your quiz?</p>
+        <div id="unanswered-warning" class="alert alert-danger" style="display: none;">
+          <strong>Warning:</strong> You have <span id="unanswered-count"></span> unanswered question(s).
+        </div>
+        <p class="text-muted small">Once submitted, you cannot change your answers.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Cancel
+        </button>
+        <button type="button" class="btn btn-success" id="confirm-submit-btn">
+          Yes, Submit Quiz
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%= form_with url: submit_quiz_path(@quiz), method: :post, id: "quiz-form", class: "quiz-form" do |f| %>
+  <input type="hidden" name="attempt_id" value="<%= @attempt.id %>">
+  <div id="answers-container"></div>
+<% end %>
+
+<%= javascript_include_tag 'quiz_timer', defer: true if @quiz.timed? %>
+
+<style>
+  .question-nav-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 5px;
+  }
+
+  .question-nav-btn {
+    aspect-ratio: 1;
+    padding: 0;
+  }
+
+  .question-nav-btn.answered {
+    background-color: #28a745;
+    color: white;
+    border-color: #28a745;
+  }
+
+  .question-nav-btn.current {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+  }
+
+  .option-item {
+    padding: 15px;
+    border: 2px solid #dee2e6;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+
+  .option-item:hover {
+    background-color: #f8f9fa;
+    border-color: #007bff;
+  }
+
+  .option-item input:checked ~ label {
+    font-weight: bold;
+  }
+
+  .sticky-top {
+    position: sticky;
+  }
+
+  /* Timer Styles */
+  .timer-display {
+    position: relative;
+  }
+
+  .timer-progress-bar {
+    width: 100%;
+    height: 4px;
+    background: #e0e0e0;
+    border-radius: 2px;
+    margin-top: 8px;
+    overflow: hidden;
+  }
+
+  .timer-progress-fill {
+    height: 100%;
+    width: 0%;
+    background: #dc3545;
+    transition: width 1s linear, background-color 0.3s ease;
+  }
+
+  .timer-progress-fill.warning {
+    background: #ffc107;
+  }
+
+  .timer-progress-fill.critical {
+    background: #ff0000;
+    animation: pulse-bar 1s ease-in-out infinite;
+  }
+
+  #quiz-timer.warning #timer-display {
+    animation: flash-warning 1s ease-in-out infinite;
+  }
+
+  #quiz-timer.critical #timer-display {
+    animation: pulse-critical 0.5s ease-in-out infinite;
+  }
+
+  @keyframes pulse-bar {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+  }
+
+  @keyframes flash-warning {
+    0%, 100% { color: white; }
+    50% { color: #ffc107; }
+  }
+
+  @keyframes pulse-critical {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+  }
+
+  @keyframes slideInRight {
+    from {
+      transform: translateX(100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+
+  @keyframes fadeOut {
+    from { opacity: 1; }
+    to { opacity: 0; }
+  }
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const questions = document.querySelectorAll('.question-block');
+  const totalQuestions = questions.length;
+  let currentIndex = 0;
+  let answers = {};
+  
+  const prevBtn = document.getElementById('prev-btn');
+  const nextBtn = document.getElementById('next-btn');
+  const submitBtn = document.getElementById('submit-btn');
+  const progressBar = document.getElementById('progress-bar');
+  const progressText = document.getElementById('progress-text');
+  const timeRemaining = document.getElementById('time-remaining');
+  
+  // Timer
+  let timeLimit = <%= @quiz.time_limit_minutes %> * 60; // seconds
+  let timeLeft = timeLimit;
+  
+  const timerInterval = setInterval(function() {
+    timeLeft--;
+    const minutes = Math.floor(timeLeft / 60);
+    const seconds = timeLeft % 60;
+    timeRemaining.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+    
+    if (timeLeft <= 60) {
+      document.getElementById('timer').classList.remove('bg-danger');
+      document.getElementById('timer').classList.add('bg-warning');
+    }
+    
+    if (timeLeft <= 0) {
+      clearInterval(timerInterval);
+      alert('Time is up! Your quiz will be automatically submitted.');
+      submitQuiz();
+    }
+  }, 1000);
+  
+  // Navigation
+  function showQuestion(index) {
+    questions.forEach((q, i) => {
+      q.style.display = i === index ? 'block' : 'none';
+    });
+    
+    currentIndex = index;
+    
+    prevBtn.disabled = index === 0;
+    
+    if (index === totalQuestions - 1) {
+      nextBtn.style.display = 'none';
+      submitBtn.style.display = 'block';
+    } else {
+      nextBtn.style.display = 'block';
+      submitBtn.style.display = 'none';
+    }
+    
+    updateNavigator();
+    updateProgress();
+  }
+  
+  function updateNavigator() {
+    document.querySelectorAll('.question-nav-btn').forEach((btn, index) => {
+      btn.classList.remove('current', 'answered');
+      
+      if (index === currentIndex) {
+        btn.classList.add('current');
+      } else if (answers[btn.dataset.questionId]) {
+        btn.classList.add('answered');
+      }
+    });
+  }
+  
+  function updateProgress() {
+    const answeredCount = Object.keys(answers).length;
+    const percentage = (answeredCount / totalQuestions) * 100;
+    progressBar.style.width = percentage + '%';
+    progressText.textContent = `${answeredCount} / ${totalQuestions}`;
+  }
+  
+  // Event Listeners
+  prevBtn.addEventListener('click', () => showQuestion(currentIndex - 1));
+  nextBtn.addEventListener('click', () => showQuestion(currentIndex + 1));
+  
+  document.querySelectorAll('.question-nav-btn').forEach(btn => {
+    btn.addEventListener('click', () => showQuestion(parseInt(btn.dataset.index)));
+  });
+  
+  // Capture answers
+  document.querySelectorAll('input[type="radio"], input[type="text"]').forEach(input => {
+    input.addEventListener('change', function() {
+      const questionId = this.dataset.questionId;
+      answers[questionId] = this.value;
+      updateProgress();
+      updateNavigator();
+    });
+  });
+  
+  // Submit quiz
+  submitBtn.addEventListener('click', () => {
+    const unansweredCount = totalQuestions - Object.keys(answers).length;
+    
+    if (unansweredCount > 0) {
+      document.getElementById('unanswered-warning').style.display = 'block';
+      document.getElementById('unanswered-count').textContent = unansweredCount;
+    } else {
+      document.getElementById('unanswered-warning').style.display = 'none';
+    }
+    
+    const modal = new bootstrap.Modal(document.getElementById('submitModal'));
+    modal.show();
+  });
+  
+  document.getElementById('confirm-submit-btn').addEventListener('click', submitQuiz);
+  
+  function submitQuiz() {
+    clearInterval(timerInterval);
+    
+    // Add answers to form
+    const container = document.getElementById('answers-container');
+    container.innerHTML = '';
+    
+    Object.entries(answers).forEach(([questionId, answer]) => {
+      const input = document.createElement('input');
+      input.type = 'hidden';
+      input.name = `answers[${questionId}]`;
+      input.value = answer;
+      container.appendChild(input);
+    });
+    
+    // Add time taken
+    const timeTaken = timeLimit - timeLeft;
+    const timeInput = document.createElement('input');
+    timeInput.type = 'hidden';
+    timeInput.name = 'time_taken';
+    timeInput.value = timeTaken;
+    container.appendChild(timeInput);
+    
+    document.getElementById('quiz-form').submit();
+  }
+});
+</script>

@@ -1,0 +1,59 @@
+slug: nucleicacids-practice
+title: nucleic_acids — Practice
+difficulty: easy
+sequence_order: 13
+estimated_minutes: 2
+key_concepts:
+- nucleic_acids
+prerequisites: []
+content_md: '# nucleic_acids — Practice 🚀
+
+
+  DNA base pairing: A-T (2 H-bonds), G-C (3 H-bonds). RNA has uracil (U) instead of
+  thymine (T).
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: 'In DNA, adenine pairs with:'
+  options:
+  - Thymine
+  - Cytosine
+  - Guanine
+  - Uracil
+  correct_answer: Thymine
+  explanation: "In DNA, adenine (A) pairs with thymine (T) through two hydrogen bonds. This is one of the fundamental base pairing rules discovered by Watson and Crick. The complementary base pairs in DNA are A-T (2 hydrogen bonds) and G-C (3 hydrogen bonds). The greater number of hydrogen bonds in G-C pairs makes them more stable than A-T pairs. Uracil is found in RNA instead of thymine, where adenine pairs with uracil. Cytosine pairs with guanine, not adenine."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: 'Which nitrogenous base is found in RNA but not in DNA?'
+  options:
+  - Uracil
+  - Thymine
+  - Adenine
+  - Guanine
+  correct_answer: Uracil
+  explanation: "Uracil (U) is the nitrogenous base found in RNA but not in DNA. In RNA, uracil replaces thymine and pairs with adenine through two hydrogen bonds, just as thymine does in DNA. The other three bases - adenine, guanine, and cytosine - are found in both DNA and RNA. Thymine is found in DNA but not in RNA. This difference between DNA and RNA is one of their key structural distinctions, along with the sugar component (deoxyribose in DNA vs. ribose in RNA)."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: 'How many hydrogen bonds form between guanine and cytosine?'
+  options:
+  - Three
+  - Two
+  - One
+  - Four
+  correct_answer: Three
+  explanation: "Guanine (G) and cytosine (C) form three hydrogen bonds when they pair, making G-C base pairs more stable than A-T base pairs, which form only two hydrogen bonds. The greater stability of G-C pairs due to the extra hydrogen bond is significant in DNA structure and function. Regions of DNA with higher G-C content are more difficult to denature (separate) because more energy is required to break the additional hydrogen bonds. This property is important in techniques like PCR and in understanding the thermal stability of DNA."
+  require_pass: true

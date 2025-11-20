@@ -1,0 +1,175 @@
+---
+slug: tree-bst-operations
+title: Binary Search Tree Operations
+sequence_order: 26
+estimated_minutes: 15
+difficulty: medium
+key_concepts:
+- Binary Search Tree Operations
+- BST Search
+content_md: |
+  # Binary Search Tree Operations
+
+  Efficient operations on BST including search, insert, delete
+
+  ---
+
+  ## Binary Search Tree (BST)
+
+  A BST is a binary tree where for each node:
+  - All values in left subtree < node value
+  - All values in right subtree > node value
+
+  **Key Properties:**
+  - Inorder traversal gives sorted sequence
+  - Average case: O(log n) for search, insert, delete
+  - Worst case: O(n) if tree becomes skewed
+
+  **Operations:**
+  - Search: Follow BST property to find value
+  - Insert: Find correct position and add node
+  - Delete: Three cases - leaf, one child, two children
+  - Find Min/Max: Go leftmost/rightmost
+
+
+  ---
+
+  ## Common Patterns
+
+  ### Pattern 1: BST Search
+  ```python
+  def search_bst(root, target):
+      if not root or root.val == target:
+          return root
+
+      if target < root.val:
+          return search_bst(root.left, target)
+      return search_bst(root.right, target)
+  ```
+
+  ### Pattern 2: BST Insert
+  ```python
+  def insert_bst(root, val):
+      if not root:
+          return TreeNode(val)
+
+      if val < root.val:
+          root.left = insert_bst(root.left, val)
+      else:
+          root.right = insert_bst(root.right, val)
+
+      return root
+  ```
+
+  ### Pattern 3: BST Delete
+  ```python
+  def delete_bst(root, key):
+      if not root:
+          return None
+
+      if key < root.val:
+          root.left = delete_bst(root.left, key)
+      elif key > root.val:
+          root.right = delete_bst(root.right, key)
+      else:
+          # Node to delete found
+          # Case 1: Leaf or one child
+          if not root.left:
+              return root.right
+          if not root.right:
+              return root.left
+
+          # Case 2: Two children
+          # Find inorder successor (min in right subtree)
+          successor = find_min(root.right)
+          root.val = successor.val
+          root.right = delete_bst(root.right, successor.val)
+
+      return root
+
+  def find_min(node):
+      while node.left:
+          node = node.left
+      return node
+  ```
+
+  ### Pattern 4: Validate BST
+  ```python
+  def is_valid_bst(root, min_val=float('-inf'), max_val=float('inf')):
+      if not root:
+          return True
+
+      if not (min_val < root.val < max_val):
+          return False
+
+      return (is_valid_bst(root.left, min_val, root.val) and
+             is_valid_bst(root.right, root.val, max_val))
+  ```
+
+
+  ---
+
+  ## When to Use This Technique
+
+  Use BST for: maintaining sorted data with fast operations, range queries, finding closest elements, or when you need logarithmic search in dynamic data.
+
+  ---
+
+  ## Common Pitfalls to Avoid
+
+  - Not handling duplicate values consistently
+  - Forgetting to check BST validity
+  - Not handling edge cases in delete (leaf, one child, two children)
+  - Creating unbalanced BST (use AVL/Red-Black for balance)
+  - Not updating parent pointers if maintaining them
+
+  ---
+
+  ## Practice Problems
+
+  Start with these problems to master this concept:
+
+  ### 1. Bst Operations 2 [Easy]
+
+  Tree problem: bst-operations.
+
+  **Complexity:** Time O(O(n)), Space O(O(h))
+
+
+  ### 2. Bst Operations 4 [Easy]
+
+  Tree problem: bst-operations.
+
+  **Complexity:** Time O(O(n)), Space O(O(h))
+
+
+  ### 3. Bst Operations 10 [Easy]
+
+  Tree problem: bst-operations.
+
+  **Complexity:** Time O(O(n)), Space O(O(h))
+
+
+  ### 4. Bst Operations 13 [Easy]
+
+  Tree problem: bst-operations.
+
+  **Complexity:** Time O(O(n)), Space O(O(h))
+
+
+  ### 5. Bst Operations 16 [Easy]
+
+  Tree problem: bst-operations.
+
+  **Complexity:** Time O(O(n)), Space O(O(h))
+
+
+
+  ---
+
+  ## Key Takeaways
+
+  - Binary Search Tree Operations is essential for efficient operations on bst including search, insert, delete
+  - Time complexity improvements can be significant with this technique
+  - Practice problems in order of difficulty to build intuition
+  - Focus on recognizing patterns in problem statements

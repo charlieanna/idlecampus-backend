@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Test React</title>
+  <%= javascript_pack_tag 'course_stream' %>
+  <%= stylesheet_link_tag 'application' %>
+</head>
+<body>
+  <h1>Test React Component</h1>
+  <div id="interactive-learning-container" data-props='<%= {
+    unit: {
+      slug: "test-unit",
+      title: "Test Unit",
+      concept_explanation: "<h1>Test Content</h1><p>This is a test.</p>",
+      command_to_learn: "docker run hello-world",
+      command_variations: ["docker container run hello-world"],
+      practice_hints: ["Type docker run", "Add hello-world"],
+      code_examples: [],
+      quiz_question_text: "What does docker run do?",
+      quiz_question_type: "mcq",
+      quiz_options: [{"text": "Runs a container", "correct": true}],
+      quiz_correct_answer: "Runs a container",
+      scenario_description: "Test scenario",
+      scenario_steps: [{"step": 1, "instruction": "Run hello-world"}]
+    },
+    initialProgress: {
+      explanation_read: false,
+      practice_completed: false,
+      quiz_answered: false,
+      scenario_completed: false,
+      completed: false,
+      completion_percentage: 0,
+      mastery_score: 0.0,
+      practice_attempts: 0,
+      quiz_attempts: 0
+    },
+    csrfToken: "test",
+    streamNextPath: "/"
+  }.to_json %>'></div>
+</body>
+</html>

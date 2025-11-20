@@ -1,0 +1,177 @@
+slug: lesson-2
+title: Lesson 2
+difficulty: easy
+sequence_order: 2
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Docker Secret Inspect - Audit and Analyze\
+  \ Secrets\n\n    ## What Is Secret Inspection?\n\n    The `docker secret inspect`\
+  \ command displays detailed metadata about secrets including:\n    - **Creation\
+  \ and update timestamps**\n    - **Labels** for organization and tracking\n    -\
+  \ **Secret ID** for unique identification\n    - **Version information** from the\
+  \ raft log\n    - **Size** of the secret data\n\n    **Important**: The actual secret\
+  \ value is **never displayed** - only metadata is shown for security.\n\n    ##\
+  \ Core Concepts\n\n    ### Metadata vs. Secret Data\n    - **Metadata**: Name, labels,\
+  \ timestamps, ID (safe to view)\n    - **Secret Data**: Actual password, key, certificate\
+  \ (never shown)\n    - **Access Control**: Metadata is visible to managers, data\
+  \ only to authorized containers\n\n    ### Secret Lifecycle Tracking\n    Inspect\
+  \ helps track:\n    - **When secrets were created** (compliance auditing)\n    -\
+  \ **Which version** is current (rotation tracking)\n    - **What labels** are assigned\
+  \ (organization)\n    - **Secret size** (storage planning)\n\n    ## Basic Syntax\n\
+  \n    ```bash\n    # Inspect single secret\n    docker secret inspect <secret-name>\n\
+  \n    # Inspect multiple secrets\n    docker secret inspect <secret1> <secret2>\
+  \ <secret3>\n\n    # Format output for specific fields\n    docker secret inspect\
+  \ --format '{{.Spec.Name}}' <secret-name>\n    ```\n\n    ## Common Use Cases\n\n\
+  \    ### 1. View Secret Metadata\n    ```bash\n    # Full JSON output\n    docker\
+  \ secret inspect db_password\n\n    # Output example:\n    # [\n    #   {\n    #\
+  \     \"ID\": \"abc123xyz789\",\n    #     \"Version\": {\n    #       \"Index\"\
+  : 12\n    #     },\n    #     \"CreatedAt\": \"2025-01-15T10:30:00.123456Z\",\n\
+  \    #     \"UpdatedAt\": \"2025-01-15T10:30:00.123456Z\",\n    #     \"Spec\":\
+  \ {\n    #       \"Name\": \"db_password\",\n    #       \"Labels\": {\n    #  \
+  \       \"environment\": \"production\",\n    #         \"rotation_date\": \"2025-03-01\"\
+  \n    #       }\n    #     }\n    #   }\n    # ]\n    ```\n\n    ### 2. Check Secret\
+  \ Creation Date\n    ```bash\n    # View when secret was created (for audit compliance)\n\
+  \    docker secret inspect --format '{{.CreatedAt}}' db_password\n    # Output:\
+  \ 2025-01-15T10:30:00.123456Z\n\n    # Check multiple secrets' ages\n    for secret\
+  \ in $(docker secret ls -q); do\n      echo -n \"$(docker secret inspect --format\
+  \ '{{.Spec.Name}}' $secret): \"\n      docker secret inspect --format '{{.CreatedAt}}'\
+  \ $secret\n    done\n    ```\n\n    ### 3. View Secret Labels\n    ```bash\n   \
+  \ # Check all labels on a secret\n    docker secret inspect --format '{{json .Spec.Labels}}'\
+  \ api_key | jq\n\n    # Check specific label value\n    docker secret inspect \\\
+  \\\n      --format '{{index .Spec.Labels \"environment\"}}' \\\\\n      db_password\n\
+  \n    # Filter secrets by label\n    docker secret ls --filter label=environment=production\n\
+  \    ```\n\n    ### 4. Audit Secret Rotation Schedule\n    ```bash\n    # View rotation\
+  \ metadata\n    docker secret inspect --format '{{json .Spec.Labels}}' db_password\n\
+  \    # {\n    #   \"last_rotation\": \"2025-01-15\",\n    #   \"next_rotation\"\
+  : \"2025-04-15\",\n    #   \"rotation_frequency\": \"quarterly\"\n    # }\n\n  \
+  \  # Check which secrets need rotation\n    docker secret ls --format 'table {{.Name}}\\\
+  t{{.CreatedAt}}' | \\\\\n      awk 'NR>1 {print $0}'\n    ```\n\n    ### 5. Verify\
+  \ Secret Exists Before Use\n    ```bash\n    # Check if secret exists in deployment\
+  \ script\n    if docker secret inspect db_password &>/dev/null; then\n      echo\
+  \ \"Secret exists, deploying service...\"\n      docker service create --secret\
+  \ db_password myapp\n    else\n      echo \"Error: db_password secret not found!\"\
+  \n      exit 1\n    fi\n    ```\n\n    ## Advanced Formatting\n\n    ### Extract\
+  \ Specific Fields\n    ```bash\n    # Get secret ID\n    docker secret inspect --format\
+  \ '{{.ID}}' db_password\n\n    # Get secret name\n    docker secret inspect --format\
+  \ '{{.Spec.Name}}' db_password\n\n    # Get version index\n    docker secret inspect\
+  \ --format '{{.Version.Index}}' db_password\n\n    # Get all labels as JSON\n  \
+  \  docker secret inspect --format '{{json .Spec.Labels}}' db_password | jq\n   \
+  \ ```\n\n    ### Formatted Table Output\n    ```bash\n    # Create custom table\
+  \ of all secrets\n    docker secret ls --format 'table {{.ID}}\\t{{.Name}}\\t{{.CreatedAt}}'\
+  \ | \\\\\n      head -n 10\n\n    # Compare multiple secrets side by side\n    docker\
+  \ secret inspect \\\\\n      --format '{{.Spec.Name}}: Created {{.CreatedAt}}' \\\
+  \\\n      db_password api_key tls_cert\n    ```\n\n    ### Batch Inspection Script\n\
+  \    ```bash\n    #!/bin/bash\n    # Inspect all secrets and generate report\n\n\
+  \    echo \"=== Secret Audit Report ===\"\n    echo \"Generated: $(date)\"\n   \
+  \ echo \"\"\n\n    for secret in $(docker secret ls -q); do\n      name=$(docker\
+  \ secret inspect --format '{{.Spec.Name}}' $secret)\n      created=$(docker secret\
+  \ inspect --format '{{.CreatedAt}}' $secret)\n      labels=$(docker secret inspect\
+  \ --format '{{json .Spec.Labels}}' $secret)\n\n      echo \"Secret: $name\"\n  \
+  \    echo \"  Created: $created\"\n      echo \"  Labels: $labels\"\n      echo\
+  \ \"\"\n    done\n    ```\n\n    ## Security Auditing Use Cases\n\n    ### 1. Compliance\
+  \ Reporting\n    ```bash\n    # Generate secret age report for compliance\n    docker\
+  \ secret ls --format '{{.Name}}' | while read secret; do\n      created=$(docker\
+  \ secret inspect --format '{{.CreatedAt}}' $secret)\n      echo \"$secret,$created\"\
+  \n    done > secret_audit_$(date +%Y%m%d).csv\n    ```\n\n    ### 2. Find Secrets\
+  \ Without Proper Labels\n    ```bash\n    # Find secrets missing required labels\n\
+  \    docker secret ls -q | while read secret; do\n      labels=$(docker secret inspect\
+  \ --format '{{json .Spec.Labels}}' $secret)\n      if [[ \"$labels\" == \"null\"\
+  \ ]] || [[ \"$labels\" == \"{}\" ]]; then\n        name=$(docker secret inspect\
+  \ --format '{{.Spec.Name}}' $secret)\n        echo \"WARNING: $name has no labels\"\
+  \n      fi\n    done\n    ```\n\n    ### 3. Track Secret Usage by Services\n   \
+  \ ```bash\n    # Check which services use a secret (requires service inspection)\n\
+  \    SECRET_NAME=\"db_password\"\n    echo \"Services using secret '$SECRET_NAME':\"\
+  \n\n    docker service ls -q | while read service; do\n      if docker service inspect\
+  \ --format '{{range .Spec.TaskTemplate.ContainerSpec.Secrets}}{{.SecretName}}{{end}}'\
+  \ $service | grep -q \"$SECRET_NAME\"; then\n        service_name=$(docker service\
+  \ inspect --format '{{.Spec.Name}}' $service)\n        echo \"  - $service_name\"\
+  \n      fi\n    done\n    ```\n\n    ### 4. Verify Secret Rotation Dates\n    ```bash\n\
+  \    # Check secrets older than 90 days\n    THRESHOLD_DAYS=90\n    CURRENT_TIMESTAMP=$(date\
+  \ +%s)\n\n    docker secret ls -q | while read secret; do\n      created=$(docker\
+  \ secret inspect --format '{{.CreatedAt}}' $secret)\n      created_timestamp=$(date\
+  \ -d \"$created\" +%s)\n      age_days=$(( ($CURRENT_TIMESTAMP - $created_timestamp)\
+  \ / 86400 ))\n\n      if [ $age_days -gt $THRESHOLD_DAYS ]; then\n        name=$(docker\
+  \ secret inspect --format '{{.Spec.Name}}' $secret)\n        echo \"⚠️  $name is\
+  \ $age_days days old (rotation needed)\"\n      fi\n    done\n    ```\n\n    ##\
+  \ Production Best Practices\n\n    ### 1. Document Secrets with Labels\n    ```bash\n\
+  \    # Create secrets with comprehensive metadata\n    echo \"password123\" | docker\
+  \ secret create db_password - \\\\\n      --label owner=backend-team \\\\\n    \
+  \  --label environment=production \\\\\n      --label created_by=deploy-script \\\
+  \\\n      --label rotation_schedule=quarterly \\\\\n      --label compliance=pci-dss\n\
+  \    ```\n\n    ### 2. Regular Secret Audits\n    ```bash\n    # Weekly audit script\
+  \ (add to cron)\n    #!/bin/bash\n    REPORT_FILE=\"/var/log/docker-secrets-$(date\
+  \ +%Y%m%d).log\"\n\n    {\n      echo \"=== Docker Secrets Audit ===\"\n      echo\
+  \ \"Date: $(date)\"\n      docker secret ls\n      echo \"\"\n      echo \"=== Secret\
+  \ Details ===\"\n      docker secret ls -q | while read s; do\n        docker secret\
+  \ inspect $s\n      done\n    } > \"$REPORT_FILE\"\n    ```\n\n    ### 3. Integrate\
+  \ with Monitoring\n    ```bash\n    # Export secret metadata to monitoring system\n\
+  \    docker secret ls --format '{{json .}}' | \\\\\n      jq -c '.[] | {name: .Name,\
+  \ created: .CreatedAt, updated: .UpdatedAt}' | \\\\\n      curl -X POST -d @- https://monitoring.example.com/api/secrets\n\
+  \    ```\n\n    ## Common Patterns\n\n    ### Secret Existence Check in Scripts\n\
+  \    ```bash\n    # Deployment script with secret validation\n    REQUIRED_SECRETS=(\"\
+  db_password\" \"api_key\" \"tls_cert\")\n\n    for secret in \"${REQUIRED_SECRETS[@]}\"\
+  ; do\n      if ! docker secret inspect \"$secret\" &>/dev/null; then\n        echo\
+  \ \"ERROR: Required secret '$secret' not found\"\n        exit 1\n      fi\n   \
+  \ done\n\n    echo \"All required secrets present, proceeding with deployment...\"\
+  \n    ```\n\n    ### Diff Secrets Between Environments\n    ```bash\n    # Compare\
+  \ production vs staging secrets\n    echo \"=== Production Secrets ===\"\n    docker\
+  \ secret ls --format '{{.Name}}'\n\n    echo \"\"\n    echo \"=== Staging Secrets\
+  \ ===\"\n    docker -H staging-swarm:2376 secret ls --format '{{.Name}}'\n    ```\n\
+  \n    ## Key Takeaways\n\n    - **Inspect shows metadata only** - actual secret\
+  \ values are never displayed\n    - **Use for auditing** - track creation dates,\
+  \ labels, and versions\n    - **Format output** with `--format` for custom reporting\
+  \ and scripts\n    - **Label secrets** for better organization and compliance tracking\n\
+  \    - **Regular audits** help maintain security posture and rotation schedules\n\
+  \    - **Verify existence** before deployment to catch missing secrets early\n \
+  \   - **Integrate with compliance** tools for automated security reporting"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: How can you verify which services are using a specific Docker secret without
+    exposing the secret value?
+  options:
+  - Use docker secret inspect to see metadata and docker service inspect to check
+    which services reference the secret in their configuration
+  - Docker secrets cannot be audited for security reasons
+  - You must view the secret value to audit usage
+  - Only managers can audit secret usage
+  correct_answer: Use docker secret inspect to see metadata and docker service inspect
+    to check which services reference the secret in their configuration
+  explanation: 'Docker provides comprehensive secret auditing capabilities through
+    inspect commands that expose metadata while protecting actual secret values. docker
+    secret inspect workflow: Shows secret metadata (name, ID, creation date, labels,
+    version), never displays actual secret value, safe to use for auditing and compliance,
+    available to all Swarm managers. Example: docker secret inspect db_password returns
+    JSON with CreatedAt, UpdatedAt, Labels, Spec.Name but no password value. Finding
+    services using a secret: Approach 1 - Manual inspection: List all services (docker
+    service ls -q), inspect each service for secrets (docker service inspect --format
+    {{range .Spec.TaskTemplate.ContainerSpec.Secrets}}{{.SecretName}}{{end}} service_name),
+    filter services referencing target secret. Approach 2 - Script: for service in
+    $(docker service ls -q); do if docker service inspect $service | grep -q "db_password";
+    then echo $service uses db_password; fi; done. Metadata provides: Creation timestamp
+    for rotation tracking (when was secret created?), labels for categorization (environment=prod,
+    team=backend), version information for change tracking, size for storage planning.
+    Compliance use cases: Audit which services access PCI-DSS sensitive data, verify
+    secrets older than 90 days for rotation policy, confirm all production secrets
+    have required labels, generate reports of secret usage without exposing values.
+    Example audit script: #!/bin/bash, SECRET_NAME="prod_db_password", echo "Services
+    using $SECRET_NAME:", docker service ls -q | while read service; do if docker
+    service inspect --format ''{{json .Spec.TaskTemplate.ContainerSpec.Secrets}}''
+    $service | grep -q "$SECRET_NAME"; then service_name=$(docker service inspect
+    --format ''{{.Spec.Name}}'' $service); echo "- $service_name"; fi; done. Label-based
+    auditing: docker secret ls --filter label=environment=production lists all production
+    secrets, docker secret inspect --format ''{{.Spec.Labels}}'' secret_name shows
+    all labels for categorization. Real-world compliance: Security audit requires
+    list of all services accessing customer database credentials. Run audit script
+    for db_password secret, generate report showing 5 services (api-backend, batch-processor,
+    analytics, admin-dashboard, backup-service), verify each service has legitimate
+    need for database access, no secret values exposed during audit. Rotation tracking:
+    docker secret inspect --format ''{{.CreatedAt}}'' db_password shows 2024-10-15,
+    current date 2025-01-15 means 92 days old, exceeds 90-day rotation policy, triggers
+    rotation workflow, update secret without exposing old or new password values.
+    Best practices for auditing: Automate regular secret audits with scripts, document
+    required labels for all secrets, track secret age for rotation compliance, maintain
+    inventory of which services use which secrets, never log or print actual secret
+    values during audits.'
+  require_pass: true

@@ -1,0 +1,126 @@
+slug: lesson-8
+title: Lesson 8
+difficulty: easy
+sequence_order: 8
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Load Balancing Strategies\n\n    A **load\
+  \ balancer** distributes incoming requests across multiple servers to improve reliability\
+  \ and capacity.\n\n    ## Why Load Balancing?\n\n    ```\n    Without LB:\n    Single\
+  \ server → 1000 RPS max → Bottleneck\n\n    With LB:\n    10 servers × 1000 RPS\
+  \ = 10,000 RPS capacity\n    + Fault tolerance (1 server fails → 9 still work)\n\
+  \    ```\n\n    ## Load Balancer Types\n\n    ### Layer 4 (Transport Layer)\n  \
+  \  **Operates at TCP/UDP level**\n\n    ```nginx\n    # Routes based on IP and port\n\
+  \    Client → LB (checks IP:port) → Server\n    ```\n\n    ✅ Fast (no need to inspect\
+  \ content)\n    ✅ Low latency\n    ❌ Limited routing logic\n    ❌ No content-based\
+  \ routing\n\n    ### Layer 7 (Application Layer)\n    **Operates at HTTP level**\n\
+  \n    ```nginx\n    # Routes based on URL, headers, cookies\n    /api/* → API servers\n\
+  \    /static/* → Static file servers\n    ```\n\n    ✅ Smart routing (URL, headers,\
+  \ cookies)\n    ✅ SSL termination\n    ✅ Caching\n    ❌ Slightly higher latency\n\
+  \n    ## Load Balancing Algorithms\n\n    ### 1. Round Robin\n\n    ```\n    Request\
+  \ 1 → Server 1\n    Request 2 → Server 2\n    Request 3 → Server 3\n    Request\
+  \ 4 → Server 1 (cycle repeats)\n    ```\n\n    ✅ Simple, fair distribution\n   \
+  \ ❌ Doesn't account for server capacity\n    ❌ Doesn't account for server load\n\
+  \n    **When to use:** Servers have equal capacity, requests have similar load\n\
+  \n    ### 2. Weighted Round Robin\n\n    ```\n    Server 1 (weight 3): Gets 3 requests\n\
+  \    Server 2 (weight 2): Gets 2 requests\n    Server 3 (weight 1): Gets 1 request\n\
+  \    ```\n\n    ✅ Accounts for different server capacities\n    ❌ Still doesn't\
+  \ account for current load\n\n    **When to use:** Servers have different capacities\
+  \ (e.g., different instance sizes)\n\n    ### 3. Least Connections\n\n    ```\n\
+  \    Server 1: 5 active connections\n    Server 2: 3 active connections ← New request\
+  \ goes here\n    Server 3: 7 active connections\n    ```\n\n    ✅ Accounts for current\
+  \ load\n    ✅ Good for long-lived connections\n    ❌ Requires tracking connections\n\
+  \n    **When to use:** WebSocket connections, database connections, long-polling\n\
+  \n    ### 4. Least Response Time\n\n    ```\n    Server 1: avg 100ms response time\n\
+  \    Server 2: avg 50ms response time ← New request goes here\n    Server 3: avg\
+  \ 150ms response time\n    ```\n\n    ✅ Routes to fastest server\n    ✅ Accounts\
+  \ for server performance\n    ❌ Requires health checks with latency monitoring\n\
+  \n    **When to use:** Servers with varying performance, heterogeneous infrastructure\n\
+  \n    ### 5. IP Hash (Consistent Hashing)\n\n    ```python\n    # Hash client IP\
+  \ to determine server\n    server_index = hash(client_ip) % num_servers\n    ```\n\
+  \n    ✅ Same client → same server (session affinity)\n    ✅ Good for caching (server-local\
+  \ cache)\n    ❌ Uneven distribution if few clients\n    ❌ Sticky sessions (hard\
+  \ to scale)\n\n    **When to use:** Stateful applications, server-side caching\n\
+  \n    ### 6. Random\n\n    ```python\n    import random\n    server = random.choice(servers)\n\
+  \    ```\n\n    ✅ Simple\n    ✅ Works well with large number of requests\n    ❌\
+  \ Can be uneven in short term\n\n    **When to use:** Stateless apps, microservices\n\
+  \n    ## Health Checks\n\n    **Ensure requests only go to healthy servers**\n\n\
+  \    ### Active Health Checks\n\n    ```python\n    # Load balancer periodically\
+  \ checks servers\n    @app.route('/health')\n    def health_check():\n        #\
+  \ Check database connection\n        if not db.is_connected():\n            return\
+  \ {'status': 'unhealthy'}, 503\n\n        # Check critical dependencies\n      \
+  \  if not cache.ping():\n            return {'status': 'degraded'}, 200\n\n    \
+  \    return {'status': 'healthy'}, 200\n    ```\n\n    **Configuration:**\n    ```nginx\n\
+  \    upstream backend {\n        server backend1:8000;\n        server backend2:8000;\n\
+  \n        # Health check every 5 seconds\n        check interval=5000 rise=2 fall=3\
+  \ timeout=1000;\n    }\n    ```\n\n    ### Passive Health Checks\n\n    ```\n  \
+  \  Monitor actual traffic:\n    - 3 failed requests in 10s → Mark unhealthy\n  \
+  \  - Server recovers → Mark healthy after 2 successful requests\n    ```\n\n   \
+  \ ## Common Load Balancers\n\n    ### Nginx\n\n    ```nginx\n    upstream backend\
+  \ {\n        least_conn;  # Use least connections algorithm\n        server backend1.example.com;\n\
+  \        server backend2.example.com;\n        server backend3.example.com;\n  \
+  \  }\n\n    server {\n        listen 80;\n        location / {\n            proxy_pass\
+  \ http://backend;\n        }\n    }\n    ```\n\n    ### HAProxy\n\n    ```haproxy\n\
+  \    frontend http_front\n        bind *:80\n        default_backend http_back\n\
+  \n    backend http_back\n        balance roundrobin\n        server server1 10.0.0.1:8000\
+  \ check\n        server server2 10.0.0.2:8000 check\n        server server3 10.0.0.3:8000\
+  \ check\n    ```\n\n    ### AWS Application Load Balancer (ALB)\n\n    ```python\n\
+  \    # Layer 7 load balancing\n    # Routes based on:\n    - URL path (/api/* →\
+  \ API servers)\n    - Host header (api.example.com → API servers)\n    - HTTP headers\n\
+  \    - Query parameters\n    ```\n\n    ### AWS Network Load Balancer (NLB)\n\n\
+  \    ```python\n    # Layer 4 load balancing\n    - Ultra-low latency\n    - Handles\
+  \ millions of RPS\n    - Static IP addresses\n    ```\n\n    ## Session Persistence\
+  \ (Sticky Sessions)\n\n    ### Cookie-Based\n\n    ```nginx\n    upstream backend\
+  \ {\n        sticky cookie srv_id expires=1h domain=.example.com path=/;\n     \
+  \   server backend1:8000;\n        server backend2:8000;\n    }\n    ```\n\n   \
+  \ **Flow:**\n    ```\n    1. First request → Server 1\n    2. LB sets cookie: srv_id=server1\n\
+  \    3. Future requests include cookie → Always route to Server 1\n    ```\n\n \
+  \   ### IP-Based\n\n    ```nginx\n    upstream backend {\n        ip_hash;\n   \
+  \     server backend1:8000;\n        server backend2:8000;\n    }\n    ```\n\n \
+  \   **Problems with sticky sessions:**\n    - Uneven load distribution\n    - Server\
+  \ failure = session loss\n    - Harder to scale\n\n    **Better solution:** Use\
+  \ external session store (Redis)\n\n    ## SSL/TLS Termination\n\n    **Load balancer\
+  \ handles SSL, backends use HTTP**\n\n    ```nginx\n    server {\n        listen\
+  \ 443 ssl;\n        ssl_certificate /path/to/cert.pem;\n        ssl_certificate_key\
+  \ /path/to/key.pem;\n\n        location / {\n            proxy_pass http://backend;\
+  \  # HTTP to backend\n        }\n    }\n    ```\n\n    **Benefits:**\n    - Centralized\
+  \ certificate management\n    - Reduced CPU load on backends\n    - Simpler backend\
+  \ configuration\n\n    ## Global Load Balancing (GSLB)\n\n    **Route users to nearest\
+  \ datacenter**\n\n    ```\n    User in US → us-east-1 datacenter\n    User in EU\
+  \ → eu-west-1 datacenter\n    User in Asia → ap-southeast-1 datacenter\n    ```\n\
+  \n    **Methods:**\n    1. **DNS-based** (Route53, Cloudflare)\n       ```\n   \
+  \    example.com → Different IP based on user location\n       ```\n\n    2. **Anycast**\n\
+  \       ```\n       Same IP announced from multiple locations\n       BGP routes\
+  \ to nearest\n       ```\n\n    ## Real-World Example: Netflix\n\n    **Challenge:**\n\
+  \    - 200+ million subscribers\n    - Global traffic\n    - High availability required\n\
+  \n    **Solution:**\n    ```\n    1. AWS ELB for load balancing\n    2. Auto-scaling\
+  \ groups (add/remove servers based on load)\n    3. Multi-region deployment\n  \
+  \  4. Route53 for DNS-based routing\n    5. Health checks with automatic failover\n\
+  \    ```\n\n    **Results:**\n    - 99.99% availability\n    - Handles traffic spikes\
+  \ (new releases)\n    - Global low latency\n\n    **Next**: We'll explore caching\
+  \ strategies to reduce load and improve performance."
+exercises: []
+exercises:
+  - type: mcq
+    sequence_order: 1
+    question: "What does the CAP theorem state about distributed systems?"
+    options:
+      - "You can have all three: Consistency, Availability, and Partition tolerance"
+      - "You can only guarantee two out of three: Consistency, Availability, and Partition tolerance"
+      - "CAP stands for Cache, API, Performance"
+      - "It only applies to databases"
+    correct_answer: "You can only guarantee two out of three: Consistency, Availability, and Partition tolerance"
+    explanation: "CAP theorem states that in a distributed system experiencing a network partition, you must choose between Consistency (all nodes see same data) and Availability (every request gets a response). You cannot have both during a partition. Real-world: CP systems (Consistency + Partition tolerance): MongoDB, HBase—sacrifice availability during partitions. AP systems (Availability + Partition tolerance): Cassandra, DynamoDB—sacrifice consistency (eventual consistency). CA systems (Consistency + Availability): Single-node databases—no partition tolerance. Modern systems often use eventual consistency—accept temporary inconsistency for availability, data converges over time. Understanding CAP helps choose the right database for your requirements."
+    require_pass: true
+  - type: mcq
+    sequence_order: 2
+    question: "What is eventual consistency?"
+    options:
+      - "Data is always consistent immediately"
+      - "Data will become consistent across all nodes eventually, but may be temporarily inconsistent"
+      - "Data is never consistent"
+      - "A type of database"
+    correct_answer: "Data will become consistent across all nodes eventually, but may be temporarily inconsistent"
+    explanation: "Eventual consistency means that given enough time without new updates, all replicas will converge to the same value. Trade-off for high availability in distributed systems. Example: Social media—when you post, some users might see it immediately, others in a few seconds. Benefits: high availability, better performance, partition tolerance. Challenges: complex application logic (handle stale reads), conflict resolution. When to use: social media, caches, systems where slight delays are acceptable. When to avoid: financial transactions, inventory management. Modern databases offer tunable consistency—choose consistency level per operation (Cassandra: ONE, QUORUM, ALL). Understanding consistency models is crucial for distributed system design."
+    require_pass: true

@@ -1,0 +1,64 @@
+slug: kpkcrelationship-practice
+title: kp_kc_relationship — Practice
+difficulty: easy
+sequence_order: 6
+estimated_minutes: 2
+key_concepts:
+- kp_kc_relationship
+prerequisites: []
+content_md: '# kp_kc_relationship — Practice 🚀
+
+
+  Δn = (products) - (reactants) = 2 - (1+3) = 2 - 4 = -2
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 2
+  question: For the reaction N₂ + 3H₂ ⇌ 2NH₃, what is Δn?
+  options:
+  - '+2'
+  - '-2'
+  - '0'
+  - '+4'
+  require_pass: true
+  correct_answer: '-2'
+  explanation: 'For the reaction N₂(g) + 3H₂(g) ⇌ 2NH₃(g), Δn is calculated as the
+    change in number of moles of gas: Δn = (moles of gaseous products) - (moles of
+    gaseous reactants) = 2 - (1 + 3) = 2 - 4 = -2. This value is crucial for the relationship
+    between Kp and Kc: Kp = Kc(RT)^Δn. For this reaction, Kp = Kc(RT)^(-2) = Kc/(RT)².
+    Since Δn is negative, Kp < Kc at any temperature. This is important in the Haber
+    process for ammonia synthesis - high pressure favors the forward reaction because
+    the system shifts to reduce total moles of gas (Le Chatelier''s principle).'
+- type: mcq
+  sequence_order: 3
+  question: For the reaction H₂(g) + I₂(g) ⇌ 2HI(g), what is the relationship between Kp and Kc?
+  options:
+  - Kp = Kc
+  - Kp = Kc(RT)
+  - Kp = Kc(RT)²
+  - Kp = Kc/(RT)
+  require_pass: true
+  correct_answer: Kp = Kc
+  explanation: 'For this reaction, Kp = Kc. The relationship between Kp and Kc is: Kp = Kc(RT)^Δn, where Δn = (moles of gaseous products) - (moles of gaseous reactants). For H₂(g) + I₂(g) ⇌ 2HI(g): Δn = 2 - (1 + 1) = 2 - 2 = 0. Therefore, Kp = Kc(RT)^0 = Kc(1) = Kc. When Δn = 0 (equal moles of gas on both sides), Kp equals Kc regardless of temperature. This means pressure and concentration give the same equilibrium constant value. Other examples with Δn = 0: H₂(g) + Cl₂(g) ⇌ 2HCl(g), CO(g) + H₂O(g) ⇌ CO₂(g) + H₂(g). For these reactions, changing pressure doesn''t shift equilibrium position (Le Chatelier''s principle), and Kp = Kc always. Units: Kp is in atm^Δn or bar^Δn, Kc is in M^Δn. When Δn = 0, both are dimensionless.'
+- type: mcq
+  sequence_order: 4
+  question: For PCl₅(g) ⇌ PCl₃(g) + Cl₂(g) at 250°C (523 K), if Kc = 0.04 M, what is Kp? (R = 0.0821 L·atm/mol·K)
+  options:
+  - 0.04 atm
+  - 1.72 atm
+  - 0.023 atm
+  - 4.0 atm
+  require_pass: true
+  correct_answer: 1.72 atm
+  explanation: 'Kp = 1.72 atm. Using the relationship Kp = Kc(RT)^Δn: First find Δn: Δn = (1 + 1) - 1 = 2 - 1 = +1. Calculate RT: RT = 0.0821 × 523 = 42.94 L·atm/mol. Apply formula: Kp = Kc(RT)^Δn = 0.04 × (42.94)^1 = 0.04 × 42.94 = 1.72 atm. Since Δn is positive (+1), Kp > Kc. This makes sense: the reaction produces more gas molecules, so pressure-based K is larger than concentration-based K. For PCl₅ decomposition, Δn = +1 means the forward reaction increases total pressure. At equilibrium, Kp = 1.72 indicates moderate dissociation at 250°C. Key points: (1) Δn > 0 → Kp > Kc, (2) Δn < 0 → Kp < Kc, (3) Δn = 0 → Kp = Kc. Units: Kc in M (or M^Δn), Kp in atm (or atm^Δn), RT in L·atm/mol (or same pressure units as Kp).'

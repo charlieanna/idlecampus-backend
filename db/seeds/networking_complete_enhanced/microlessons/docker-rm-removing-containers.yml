@@ -1,0 +1,109 @@
+slug: docker-rm-removing-containers
+title: 'Docker RM: Removing Containers'
+sequence_order: 4
+estimated_minutes: 2
+difficulty: easy
+content_md: "# Docker RM: Removing Containers \U0001F680\n\n# Mastering docker rm:\
+  \ Container Cleanup and Removal\n\n    ## What is docker rm?\n    `docker rm` permanently\
+  \ deletes one or more stopped containers from your system. This command frees up\
+  \ disk space and keeps your Docker environment clean and organized.\n\n    ## Why\
+  \ Container Removal Matters\n    - **Disk Space**: Each container consumes disk\
+  \ space even when stopped\n    - **Organization**: Prevents clutter from old experiments\
+  \ and tests\n    - **Name Conflicts**: Frees up container names for reuse\n    -\
+  \ **System Health**: Reduces metadata overhead on Docker daemon\n\n    ## Basic\
+  \ Syntax\n    ```bash\n    docker rm [OPTIONS] CONTAINER [CONTAINER...]\n    ```\n\
+  \n    ## Important Constraint\n    **You CANNOT remove a running container without\
+  \ -f flag**\n    ```bash\n    docker rm running-container\n    # Error: You cannot\
+  \ remove a running container\n\n    docker stop running-container\n    docker rm\
+  \ running-container\n    # Success!\n    ```\n\n    ## Common Use Cases\n\n    ###\
+  \ 1. Remove a Stopped Container\n    ```bash\n    docker rm old-container\n    ```\n\
+  \    Removes a single stopped container.\n\n    ### 2. Force Remove Running Container\n\
+  \    ```bash\n    docker rm -f web-server\n    ```\n    Stops AND removes the container\
+  \ (not recommended for production).\n\n    ### 3. Remove Multiple Containers\n \
+  \   ```bash\n    docker rm container1 container2 container3\n    ```\n    Removes\
+  \ multiple containers in one command.\n\n    ### 4. Remove All Stopped Containers\n\
+  \    ```bash\n    docker rm $(docker ps -a -q -f status=exited)\n    ```\n    Cleans\
+  \ up all exited containers.\n\n    ## Container Lifecycle: Remove in Context\n\n\
+  \    ```\n    Created → Running → Stopped → Removed\n              ↓          ↓\
+  \         ↓\n           (start)   (stop)     (rm)\n                            \
+  \     ↓\n                           Gone forever!\n                      (image\
+  \ still exists)\n    ```\n\n    ## Remove Options\n\n    | Option | Description\
+  \ | Example |\n    |--------|-------------|---------|\n    | `-f` | Force remove\
+  \ (stops if running) | `docker rm -f web` |\n    | `-v` | Remove associated volumes\
+  \ | `docker rm -v database` |\n    | `-l` | Remove specified link | `docker rm -l\
+  \ my-link` |\n\n    ## Volumes and Removal\n\n    **Default Behavior (volumes persist)**\n\
+  \    ```bash\n    docker rm database\n    # Container removed, but volumes remain!\n\
+  \    ```\n\n    **Remove Container AND Volumes**\n    ```bash\n    docker rm -v\
+  \ database\n    # Container AND its anonymous volumes removed\n    ```\n\n    ##\
+  \ Common Cleanup Patterns\n\n    ### 1. Stop and Remove\n    ```bash\n    docker\
+  \ stop my-app && docker rm my-app\n    ```\n    Proper two-step removal process.\n\
+  \n    ### 2. Force Remove (shortcut)\n    ```bash\n    docker rm -f my-app\n   \
+  \ ```\n    Combines stop and remove (use with caution).\n\n    ### 3. Clean All\
+  \ Stopped Containers\n    ```bash\n    docker container prune\n    ```\n    Modern\
+  \ way to remove all stopped containers.\n\n    ### 4. Remove Containers Matching\
+  \ Pattern\n    ```bash\n    docker rm $(docker ps -a -q -f name=test-)\n    ```\n\
+  \    Removes all containers with names starting with \"test-\".\n\n    ## Common\
+  \ Mistakes to Avoid\n\n    1. **Trying to remove running containers**: Always stop\
+  \ first (or use -f)\n    2. **Forgetting about volumes**: Use -v if you want to\
+  \ remove volumes too\n    3. **Removing production containers**: Double-check before\
+  \ removing!\n    4. **Not using --rm flag on docker run**: For temporary containers\n\
+  \    5. **Manual cleanup when automated works**: Use `docker run --rm` for tests\n\
+  \n    ## What Gets Removed?\n\n    **Removed:**\n    - Container filesystem layer\n\
+  \    - Container metadata\n    - Network connections (unless connected to user-defined\
+  \ networks)\n    - Anonymous volumes (if -v flag used)\n\n    **NOT Removed:**\n\
+  \    - The underlying image\n    - Named volumes\n    - User-defined networks\n\
+  \    - Container logs (in some configurations)\n\n    ## Preventing Accidental Removal\n\
+  \n    ```bash\n    # Use descriptive names\n    docker run --name production-api-server\
+  \ nginx\n\n    # Add labels for organization\n    docker run --label env=production\
+  \ nginx\n\n    # Use docker run --rm for temporary work\n    docker run --rm alpine\
+  \ echo \"test\"\n    ```\n\n    ## Bulk Cleanup Strategies\n\n    ### Remove All\
+  \ Stopped Containers\n    ```bash\n    docker container prune\n    # or\n    docker\
+  \ rm $(docker ps -a -q -f status=exited)\n    ```\n\n    ### Remove Containers Older\
+  \ Than 24h\n    ```bash\n    docker container prune --filter \"until=24h\"\n   \
+  \ ```\n\n    ### Remove Everything (nuclear option)\n    ```bash\n    docker rm\
+  \ -f $(docker ps -a -q)\n    # WARNING: Removes ALL containers!\n    ```\n\n   \
+  \ ## Automation and Best Practices\n\n    ### 1. Self-Cleaning Test Containers\n\
+  \    ```bash\n    docker run --rm -it alpine sh\n    # Automatically removed on\
+  \ exit\n    ```\n\n    ### 2. Cron Job for Cleanup\n    ```bash\n    # Daily cleanup\
+  \ of exited containers\n    0 2 * * * docker container prune -f\n    ```\n\n   \
+  \ ### 3. Pre-Deployment Cleanup\n    ```bash\n    #!/bin/bash\n    docker stop old-version\n\
+  \    docker rm old-version\n    docker run -d --name new-version app:latest\n  \
+  \  ```\n\n    ## When to Use docker rm\n\n    - After testing/development work\n\
+  \    - Before redeploying with same name\n    - During regular maintenance\n   \
+  \ - When freeing disk space\n    - After failed deployments\n\n    ## Recovery After\
+  \ Accidental Removal\n\n    **Important**: Once removed, a container cannot be recovered!\n\
+  \n    However, you can:\n    1. Recreate from the same image\n    2. Restore from\
+  \ volume backups (if volumes still exist)\n    3. Check Docker logs (if log driver\
+  \ persists logs)\n\n    ## Pro Tips\n\n    1. **Use --rm for temporary work**: `docker\
+  \ run --rm alpine echo \"test\"`\n    2. **Label your containers**: `--label purpose=testing`\n\
+  \    3. **Regular cleanup**: Schedule `docker container prune`\n    4. **Check before\
+  \ removing**: `docker inspect` to verify it's safe\n    5. **Backup important data**:\
+  \ Always backup before removing data containers\n\n## Syntax/Command\n\n```bash\n\
+  docker rm my-container\n```\n\n## Example\n\n```bash\ndocker rm container_name\n\
+  ```\n\n## Key Points\n\n- Remove stopped container: docker rm <name>\n\n- Force\
+  \ remove running: docker rm -f <name>\n\n- Remove with volumes: docker rm -v <name>"
+exercises:
+- type: terminal
+  sequence_order: 1
+  description: Remove all stopped containers that start with "test-" including their
+    volumes
+- type: sandbox
+  sequence_order: 2
+- type: mcq
+  sequence_order: 3
+  question: Can you remove a running container with just "docker rm container_name"?
+  options:
+  - 'No'
+  - you must stop it first or use -f flag
+  - 'Yes'
+  - it will stop automatically
+  - 'Yes'
+  - but only if you use sudo
+  - 'No'
+  - running containers cannot be removed
+  correct_answer_index: 0
+objectives:
+- Understand the fundamental concepts and mechanisms of docker rm removing containers
+- Apply chemical principles to solve related problems
+- Identify key reactions, equations, and chemical behaviors
+next_recommended: []

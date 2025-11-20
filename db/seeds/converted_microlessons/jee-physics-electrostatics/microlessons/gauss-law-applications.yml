@@ -1,0 +1,236 @@
+slug: gauss-law-applications
+title: "Gauss's Law and Applications"
+difficulty: advanced
+sequence_order: 6
+estimated_minutes: 20
+key_concepts:
+- gauss-law
+- electric-flux
+- gaussian-surface
+- charge-enclosed
+- symmetric-distributions
+prerequisites:
+- electric-field-point-charges
+- electric-field-continuous-distributions
+content_md: |
+  # Gauss's Law and Applications
+
+  ## Electric Flux
+
+  **Definition:** Electric flux through a surface is the number of electric field lines passing through it.
+
+  ```
+  Φ = E⃗ · A⃗ = EA cos θ (for uniform field)
+
+  Φ = ∫E⃗ · dA⃗ (for non-uniform field)
+  ```
+
+  ### Properties:
+  - Scalar quantity
+  - SI unit: N·m²/C or V·m
+  - Positive if field lines exit surface
+  - Negative if field lines enter surface
+
+  ## Gauss's Law Statement
+
+  **"The total electric flux through any closed surface equals the net charge enclosed divided by ε₀."**
+
+  ```
+  ∮E⃗ · dA⃗ = Q_enclosed/ε₀
+
+  or
+
+  Φ = Q_enc/ε₀
+  ```
+
+  ## Key Concepts
+
+  ### 1. Gaussian Surface
+  - Imaginary closed surface
+  - Chosen for mathematical convenience
+  - Shape depends on charge distribution symmetry
+  - Common shapes: sphere, cylinder, pillbox
+
+  ### 2. Charge Enclosed
+  - Only charges INSIDE the surface matter
+  - External charges create no net flux
+  - Internal fields from external charges cancel
+
+  ### 3. Symmetry Requirements
+  For Gauss's law to be useful:
+  - E⃗ parallel to dA⃗ everywhere (or perpendicular)
+  - |E⃗| constant on the surface
+  - This requires high symmetry
+
+  ## Applications
+
+  ### 1. Point Charge
+  **Gaussian surface:** Sphere of radius r centered on charge
+
+  ```
+  ∮E⃗ · dA⃗ = E(4πr²) = Q/ε₀
+
+  E = Q/(4πε₀r²) = kQ/r² ✓
+  ```
+
+  Confirms Coulomb's law!
+
+  ### 2. Infinite Line Charge (λ C/m)
+  **Gaussian surface:** Cylinder of radius r, length L
+
+  ```
+  Flux through curved surface only:
+  E(2πrL) = λL/ε₀
+
+  E = λ/(2πε₀r) = 2kλ/r
+  ```
+
+  Field radially outward, inversely proportional to r.
+
+  ### 3. Infinite Plane Sheet (σ C/m²)
+  **Gaussian surface:** Pillbox (cylinder perpendicular to plane)
+
+  ```
+  Flux through two end faces:
+  2EA = σA/ε₀
+
+  E = σ/(2ε₀)
+  ```
+
+  Field is **uniform** - independent of distance!
+
+  ### 4. Two Parallel Plates (Capacitor)
+  ```
+  Between plates: E = σ/ε₀
+  Outside plates: E = 0
+
+  (Superposition: Fields add between, cancel outside)
+  ```
+
+  ### 5. Uniformly Charged Sphere
+
+  **Outside (r > R):**
+  ```
+  E = kQ/r² (acts like point charge at center)
+  ```
+
+  **Inside (r < R):**
+  ```
+  Q_enc = Q(r/R)³
+  E = kQr/R³ = ρr/(3ε₀)
+
+  E ∝ r (increases linearly)
+  ```
+
+  ### 6. Conducting Sphere (Charged)
+
+  **Inside conductor:** E = 0 (always)
+  **On surface:** E = σ/ε₀
+  **Outside:** E = kQ/r²
+
+  All charge resides on surface!
+
+  ### 7. Spherical Shell
+
+  **Outside (r > R):** E = kQ/r²
+  **Inside (r < R):** E = 0
+
+  No field inside hollow conductor!
+
+  ## Important Results Table
+
+  | Distribution | Gaussian Surface | Electric Field |
+  |--------------|-----------------|----------------|
+  | Point charge | Sphere | kQ/r² |
+  | Line charge | Cylinder | λ/(2πε₀r) |
+  | Plane sheet | Pillbox | σ/(2ε₀) |
+  | Solid sphere (inside) | Sphere | kQr/R³ |
+  | Solid sphere (outside) | Sphere | kQ/r² |
+  | Shell (inside) | Sphere | 0 |
+  | Shell (outside) | Sphere | kQ/r² |
+
+  ## Flux Through Surfaces
+
+  ### Closed Surface Around Charge:
+  ```
+  Φ = Q/ε₀ (regardless of surface shape)
+  ```
+
+  ### Flux Through Hemisphere (charge at center):
+  ```
+  Φ = Q/(2ε₀) (half of total)
+  ```
+
+  ### Flux Through Cube Face (charge at center):
+  ```
+  Φ = Q/(6ε₀) (one-sixth of total)
+  ```
+
+  ## Numerical Examples
+
+  **Example 1:** Find electric field at r = 2 cm from infinite line with λ = 10⁻⁹ C/m.
+
+  **Solution:**
+  ```
+  E = λ/(2πε₀r) = 2kλ/r
+  E = 2(9×10⁹)(10⁻⁹)/(0.02)
+  E = 18/0.02 = 900 N/C
+  ```
+
+  **Example 2:** A sphere of radius 10 cm has uniform charge Q = 1μC. Find E at r = 5 cm and r = 20 cm.
+
+  **Solution:**
+  Inside (r = 5 cm):
+  ```
+  E = kQr/R³ = (9×10⁹)(10⁻⁶)(0.05)/(0.1)³
+  E = 450/0.001 = 4.5×10⁵ N/C
+  ```
+
+  Outside (r = 20 cm):
+  ```
+  E = kQ/r² = (9×10⁹)(10⁻⁶)/(0.2)²
+  E = 9000/0.04 = 2.25×10⁵ N/C
+  ```
+
+  ## JEE Key Points
+
+  1. **Gauss's law is always true**, but only useful with symmetry
+  2. **Flux depends only on enclosed charge**, not field configuration
+  3. **E = 0 inside conductor** in electrostatic equilibrium
+  4. **Choose Gaussian surface wisely** - exploit symmetry
+  5. **External charges don't contribute** to net flux
+
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: "A point charge Q is placed at the center of a cube of side a. The electric flux through one face is:"
+  options:
+  - "Q/ε₀"
+  - "Q/(6ε₀)"
+  - "Q/(4ε₀)"
+  - "Q/(8ε₀)"
+  correct_answer: "Q/(6ε₀)"
+  explanation: "By Gauss's law, total flux through closed surface = Q/ε₀. Cube has 6 identical faces, and by symmetry, flux is equally distributed. So flux through one face = Q/(6ε₀). This is true regardless of face size - if you change cube size, flux per face remains Q/(6ε₀) because larger area compensates for smaller field strength. This symmetry argument is powerful for JEE problems. Note: This only works when charge is at exact center."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: "Electric field inside a uniformly charged conducting sphere is:"
+  options:
+  - "Zero"
+  - "Maximum at center"
+  - "Proportional to distance from center"
+  - "Inversely proportional to square of distance"
+  correct_answer: "Zero"
+  explanation: "Inside any conductor in electrostatic equilibrium, E = 0. This is because: (1) In equilibrium, charges don't move, so no net force, (2) Charges redistribute on surface until internal field is zero, (3) By Gauss's law with Gaussian surface inside: no charge enclosed (all on surface), so E = 0. This is different from uniformly charged non-conducting sphere where E ∝ r inside. The distinction between conducting and non-conducting is crucial in JEE. Conductors have surface charges; insulators can have volume charges."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: "Two infinite parallel plates have surface charge densities +σ and -σ. Electric field between them is:"
+  options:
+  - "Zero"
+  - "σ/ε₀"
+  - "σ/(2ε₀)"
+  - "2σ/ε₀"
+  correct_answer: "σ/ε₀"
+  explanation: "Each plate produces field σ/(2ε₀) on both sides. Between plates: Fields from both plates point in same direction (from + to -). E_net = σ/(2ε₀) + σ/(2ε₀) = σ/ε₀. Outside plates: Fields point in opposite directions and cancel, E = 0. This is the principle of parallel plate capacitor. The field is uniform between plates, independent of position. Energy stored = ε₀E²/2 per unit volume. Note: If plates have same sign charge, field between them cancels and exists outside."
+  require_pass: true

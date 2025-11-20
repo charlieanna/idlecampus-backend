@@ -1,0 +1,44 @@
+slug: lesson-91
+title: Lesson 91
+difficulty: easy
+sequence_order: 91
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Pod Scheduling Basics\n\n    - Scheduler\
+  \ flow and predicates/priorities (legacy -> profiles)\n    - Node selection and\
+  \ default scheduler behavior"
+exercises:
+  - type: mcq
+    sequence_order: 1
+    question: "What is the primary responsibility of the Kubernetes scheduler?"
+    options:
+      - "To create and delete pods based on deployment specifications"
+      - "To select the best node for each unscheduled pod based on constraints and available resources"
+      - "To monitor pod health and restart failed containers"
+      - "To manage network routing between pods"
+    correct_answer: "To select the best node for each unscheduled pod based on constraints and available resources"
+    explanation: "The Kubernetes scheduler is a control plane component responsible for assigning newly created pods to nodes in the cluster. When a pod is created without a node assignment, the scheduler watches for such unscheduled pods and evaluates all available nodes against a series of predicates (filtering criteria) and priorities (scoring criteria) to determine the most suitable node. The scheduler considers factors like resource requirements (CPU, memory), hardware/software/policy constraints (node selectors, affinity/anti-affinity rules, taints/tolerations), data locality, and current node resource utilization. The modern scheduler uses scheduling profiles that combine plugins for filtering and scoring phases. Once the scheduler selects a node, it updates the pod's spec.nodeName field, and the kubelet on that node takes over to actually run the pod. The scheduler doesn't create/delete pods (that's the controller's job), restart containers (kubelet's job), or manage networking (CNI's job) - it purely focuses on optimal pod placement decisions."
+    require_pass: true
+  - type: mcq
+    sequence_order: 2
+    question: "In the Kubernetes scheduling process, what happens during the filtering phase?"
+    options:
+      - "All nodes are ranked by their available resources"
+      - "Nodes that cannot run the pod due to constraints are eliminated from consideration"
+      - "The pod's resource requests are automatically adjusted"
+      - "Network policies are applied to the pod"
+    correct_answer: "Nodes that cannot run the pod due to constraints are eliminated from consideration"
+    explanation: "The Kubernetes scheduling process consists of two main phases: filtering (formerly called predicates) and scoring (formerly called priorities). During the filtering phase, the scheduler evaluates all nodes in the cluster against a set of constraints and eliminates any nodes that cannot satisfy the pod's requirements. These filtering checks include: verifying sufficient CPU and memory resources, checking if the node matches any nodeSelector requirements, evaluating node affinity/anti-affinity rules, checking taints and tolerations, validating volume availability, and ensuring port availability. Only nodes that pass all filtering criteria move forward to the scoring phase. If no nodes pass the filtering phase, the pod remains unscheduled and enters a Pending state. The filtering phase is about binary yes/no decisions - a node either can or cannot run the pod. This is distinct from the scoring phase, where the scheduler ranks the remaining feasible nodes to choose the optimal one. Understanding this two-phase process is crucial for troubleshooting why pods might not be scheduled."
+    require_pass: true
+  - type: mcq
+    sequence_order: 3
+    question: "What is the default behavior when a pod has no nodeSelector, affinity rules, or other placement constraints specified?"
+    options:
+      - "The pod will not be scheduled until constraints are added"
+      - "The pod will only run on the master node"
+      - "The scheduler will select any available node that has sufficient resources"
+      - "The pod will be distributed round-robin across all nodes"
+    correct_answer: "The scheduler will select any available node that has sufficient resources"
+    explanation: "When a pod has no explicit placement constraints (no nodeSelector, nodeAffinity, podAffinity/AntiAffinity, or tolerations), the Kubernetes scheduler will consider all nodes in the cluster as potential candidates, subject only to basic feasibility checks like having sufficient CPU and memory resources to satisfy the pod's resource requests. The scheduler will then score these feasible nodes using default scoring plugins that consider factors like resource balance (spreading pods across nodes), image locality (preferring nodes that already have the required image), and other built-in heuristics. The node with the highest score is selected. This doesn't mean round-robin distribution - the scheduler makes intelligent decisions based on current cluster state to achieve balanced resource utilization. Pods without constraints won't be restricted to master nodes (which typically have taints preventing regular pod scheduling). The absence of constraints gives the scheduler maximum flexibility to optimize placement, which is often desirable for stateless applications. However, for applications with specific requirements (like SSD storage, GPU access, or co-location needs), explicit constraints should be specified."
+    require_pass: true

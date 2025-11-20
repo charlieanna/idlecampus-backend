@@ -1,0 +1,188 @@
+slug: lesson-6
+title: Lesson 6
+difficulty: easy
+sequence_order: 6
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Day 3: Network Services – DNS, DHCP, NAT\
+  \ and Routing Essentials\n\n    ## Learning Goals\n\n    - Understand key network\
+  \ services that make IP networks function\n    - Learn how DNS resolves names to\
+  \ IP addresses\n    - Understand how DHCP automatically assigns IP configurations\n\
+  \    - Master NAT concepts and why it's essential\n    - Grasp basic routing between\
+  \ networks\n\n    ## The Four Pillars of Network Services\n\n    Modern networks\
+  \ rely on four key services:\n    1. **DHCP** - Automatic IP configuration\n   \
+  \ 2. **DNS** - Name to IP address resolution\n    3. **NAT** - Sharing public IPs\
+  \ across private networks\n    4. **Routing** - Forwarding packets between networks\n\
+  \n    ## DHCP (Dynamic Host Configuration Protocol)\n\n    ### What is DHCP?\n\n\
+  \    DHCP automatically provides devices with their network configuration when they\
+  \ join a network. Without DHCP, you'd have to manually configure every device!\n\
+  \n    ### What DHCP Provides\n\n    When a device connects to a network, DHCP can\
+  \ supply:\n    - **IP address** (e.g., 192.168.1.100)\n    - **Subnet mask** (e.g.,\
+  \ 255.255.255.0)\n    - **Default gateway** (e.g., 192.168.1.1)\n    - **DNS server(s)**\
+  \ (e.g., 8.8.8.8, 8.8.4.4)\n    - **Lease time** (how long the IP is valid)\n  \
+  \  - **Domain name** (e.g., company.local)\n\n    ### DHCP Process (DORA)\n\n  \
+  \  The DHCP handshake has four steps:\n\n    ```\n    1. DISCOVER: Client broadcasts\
+  \ \"I need an IP!\"\n       Source: 0.0.0.0, Dest: 255.255.255.255 (broadcast)\n\
+  \n    2. OFFER: DHCP server responds \"Here's 192.168.1.100\"\n       Server offers\
+  \ available IP from its pool\n\n    3. REQUEST: Client broadcasts \"I'll take 192.168.1.100\"\
+  \n       Client requests the offered IP\n\n    4. ACK: Server confirms \"192.168.1.100\
+  \ is yours for 24 hours\"\n       Server acknowledges and activates the lease\n\
+  \    ```\n\n    ### DHCP Components\n\n    - **DHCP Server**: Device that manages\
+  \ IP address pool and leases\n      - Often your router in home networks\n     \
+  \ - Dedicated server in enterprise networks\n      - Managed service in cloud environments\n\
+  \n    - **DHCP Client**: Any device that requests automatic configuration\n    \
+  \  - Laptops, phones, IoT devices, VMs\n\n    - **IP Address Pool**: Range of IPs\
+  \ available for assignment\n      - Example: 192.168.1.100 - 192.168.1.200\n\n \
+  \   - **Lease Time**: How long a client can use an IP before renewal\n      - Home\
+  \ networks: Often 24 hours\n      - Enterprise: May be shorter for better control\n\
+  \n    ### Static vs Dynamic IP\n\n    - **Dynamic (DHCP)**: IP assigned automatically,\
+  \ can change\n      - Best for: Client devices, laptops, phones, non-critical servers\n\
+  \n    - **Static**: Manually configured IP that doesn't change\n      - Best for:\
+  \ Servers, printers, network equipment, DNS servers\n\n    ## DNS (Domain Name System)\n\
+  \n    ### What is DNS?\n\n    DNS is the internet's \"phonebook\" – it translates\
+  \ human-friendly domain names into IP addresses that computers use to communicate.\n\
+  \n    **Without DNS**: You'd need to remember `142.250.64.78` instead of `google.com`\n\
+  \n    ### How DNS Resolution Works\n\n    When you type `www.example.com` in your\
+  \ browser:\n\n    ```\n    1. Browser checks local cache\n       → If found, use\
+  \ cached IP\n\n    2. Browser asks OS resolver\n       → OS checks /etc/hosts (Linux/Mac)\
+  \ or C:\\\\Windows\\\\System32\\\\drivers\\\\etc\\\\hosts\n\n    3. OS asks configured\
+  \ DNS server (from DHCP or manual config)\n       → Usually your ISP's DNS or public\
+  \ DNS like 8.8.8.8\n\n    4. DNS server checks its cache\n       → If not cached,\
+  \ performs recursive resolution\n\n    5. Recursive resolution (if needed):\n  \
+  \     a. Query root DNS servers (.) → \"Ask .com servers\"\n       b. Query TLD\
+  \ servers (.com) → \"Ask example.com nameserver\"\n       c. Query authoritative\
+  \ nameserver → \"www.example.com is 93.184.216.34\"\n\n    6. DNS server returns\
+  \ IP to OS\n\n    7. OS returns IP to browser\n\n    8. Browser connects to 93.184.216.34\n\
+  \    ```\n\n    ### DNS Record Types\n\n    | Record | Purpose | Example |\n   \
+  \ |--------|---------|---------|\n    | **A** | Maps domain to IPv4 address | example.com\
+  \ → 93.184.216.34 |\n    | **AAAA** | Maps domain to IPv6 address | example.com\
+  \ → 2606:2800:220:1:... |\n    | **CNAME** | Alias from one domain to another |\
+  \ www.example.com → example.com |\n    | **MX** | Mail server for domain | example.com\
+  \ → mail.example.com (priority 10) |\n    | **TXT** | Text information (SPF, DKIM,\
+  \ verification) | Various metadata |\n    | **NS** | Nameserver for domain | example.com\
+  \ → ns1.provider.com |\n    | **PTR** | Reverse DNS (IP to domain) | 93.184.216.34\
+  \ → example.com |\n\n    ### DNS in Practice\n\n    **Home Network**:\n    - Router\
+  \ acts as DNS forwarder\n    - Forwards queries to ISP DNS or configured DNS (e.g.,\
+  \ 8.8.8.8)\n\n    **Enterprise**:\n    - Internal DNS servers for company domains\
+  \ (e.g., server1.company.local)\n    - Forward public queries to internet DNS\n\n\
+  \    **Cloud (AWS/Azure/GCP)**:\n    - Managed DNS services (Route 53, Azure DNS,\
+  \ Cloud DNS)\n    - Internal DNS for VPC/VNet resources\n\n    ### Public DNS Servers\n\
+  \n    | Provider | IPv4 | Purpose |\n    |----------|------|---------|\n    | Google\
+  \ | 8.8.8.8, 8.8.4.4 | Fast, reliable |\n    | Cloudflare | 1.1.1.1, 1.0.0.1 | Privacy-focused,\
+  \ fast |\n    | Quad9 | 9.9.9.9 | Security filtering |\n    | OpenDNS | 208.67.222.222,\
+  \ 208.67.220.220 | Content filtering |\n\n    ## NAT (Network Address Translation)\n\
+  \n    ### What is NAT?\n\n    NAT allows multiple devices on a private network to\
+  \ share a single public IP address when accessing the internet.\n\n    **Why NAT\
+  \ Exists:**\n    - IPv4 address exhaustion (not enough public IPs for every device)\n\
+  \    - Security (hide internal network structure)\n    - Cost (public IPs cost money)\n\
+  \n    ### How NAT Works\n\n    **Scenario**: Home network with multiple devices\
+  \ behind a router\n\n    ```\n    Internal Network (Private): 192.168.1.0/24\n \
+  \   Router's Public IP: 203.0.113.5\n\n    Device A (192.168.1.100) wants to visit\
+  \ Google (142.250.64.78)\n\n    Step 1: Device sends packet\n      Source: 192.168.1.100:54321\n\
+  \      Dest: 142.250.64.78:443\n\n    Step 2: Router (NAT) modifies packet\n   \
+  \   Source: 203.0.113.5:54321 ← Changed!\n      Dest: 142.250.64.78:443\n      [Router\
+  \ records: 192.168.1.100:54321 → 203.0.113.5:54321]\n\n    Step 3: Google responds\n\
+  \      Source: 142.250.64.78:443\n      Dest: 203.0.113.5:54321\n\n    Step 4: Router\
+  \ translates back\n      [Looks up: 54321 → 192.168.1.100:54321]\n      Source:\
+  \ 142.250.64.78:443\n      Dest: 192.168.1.100:54321 ← Changed back!\n\n    Step\
+  \ 5: Device receives response\n    ```\n\n    ### Types of NAT\n\n    1. **Static\
+  \ NAT**: One-to-one mapping\n       - One private IP always maps to one specific\
+  \ public IP\n       - Used for servers that need consistent public access\n\n  \
+  \  2. **Dynamic NAT**: Many-to-many mapping\n       - Pool of public IPs shared\
+  \ among private IPs\n       - First-come, first-served\n\n    3. **PAT (Port Address\
+  \ Translation)** / NAT Overload: Many-to-one\n       - Most common type\n      \
+  \ - Many private IPs share ONE public IP\n       - Uses different port numbers to\
+  \ distinguish connections\n\n    ### NAT in Cloud Environments\n\n    **AWS**:\n\
+  \    - **NAT Gateway**: Managed NAT service for private subnets\n    - **Internet\
+  \ Gateway**: Provides NAT for instances with public IPs\n\n    **Azure**:\n    -\
+  \ **Azure NAT Gateway**: Outbound internet connectivity for VNets\n\n    **GCP**:\n\
+  \    - **Cloud NAT**: Managed NAT service\n\n    ## Routing Basics\n\n    ### What\
+  \ is Routing?\n\n    **Routing** is the process of forwarding IP packets between\
+  \ networks. A **router** is a device (or software function) that performs this forwarding.\n\
+  \n    ### How Routing Works\n\n    Every device has a **routing table** that determines\
+  \ where to send packets:\n\n    ```\n    Example routing table for host 10.0.1.5:\n\
+  \n    Destination        Gateway        Interface\n    10.0.1.0/24        *    \
+  \          eth0       (Direct: same subnet)\n    0.0.0.0/0          10.0.1.1   \
+  \    eth0       (Default: everything else)\n    ```\n\n    **Decision process**:\n\
+  \    1. Packet destined for 10.0.1.100 → Same subnet → Send directly via eth0\n\
+  \    2. Packet destined for 8.8.8.8 → No specific route → Send to default gateway\
+  \ 10.0.1.1\n\n    ### Default Gateway\n\n    The **default gateway** is the router\
+  \ that handles all traffic destined for other networks.\n\n    **Example**:\n  \
+  \  - Your laptop: 192.168.1.100\n    - Default gateway: 192.168.1.1 (your router)\n\
+  \    - To reach Google (8.8.8.8), laptop sends packet to 192.168.1.1\n    - Router\
+  \ forwards packet toward the internet\n\n    ### Routing Between Networks\n\n  \
+  \  ```\n    Network A: 10.0.1.0/24 ←→ Router ←→ Network B: 10.0.2.0/24\n\n    Host\
+  \ A (10.0.1.5) sends packet to Host B (10.0.2.10):\n\n    1. Host A checks routing\
+  \ table: 10.0.2.0/24 not in local subnet\n    2. Host A sends to default gateway\
+  \ (10.0.1.1)\n    3. Router receives packet, checks its routing table\n    4. Router\
+  \ knows 10.0.2.0/24 is on its eth1 interface\n    5. Router forwards packet to 10.0.2.10\n\
+  \    6. Host B receives packet\n    ```\n\n    ### Static vs Dynamic Routing\n\n\
+  \    **Static Routing**:\n    - Routes manually configured by administrator\n  \
+  \  - Simple, predictable\n    - Doesn't adapt to network changes\n    - Good for\
+  \ small networks\n\n    **Dynamic Routing**:\n    - Routers automatically discover\
+  \ routes and adapt to changes\n    - Uses routing protocols: RIP, OSPF, EIGRP, BGP\n\
+  \    - Scales to large networks\n    - More complex but more resilient\n\n    ##\
+  \ Putting It All Together: Complete Scenario\n\n    **Scenario**: You connect your\
+  \ laptop to Wi-Fi and visit google.com\n\n    ### Step-by-Step Flow\n\n    ```\n\
+  \    1. DHCP Configuration\n       - Laptop sends DHCP DISCOVER\n       - Router\
+  \ responds with DHCP OFFER: 192.168.1.100/24\n       - Laptop accepts, gets: IP,\
+  \ subnet, gateway (192.168.1.1), DNS (8.8.8.8)\n\n    2. DNS Resolution\n      \
+  \ - Laptop asks DNS server (8.8.8.8): \"What's the IP for google.com?\"\n      \
+  \ - DNS responds: \"142.250.64.78\"\n\n    3. Routing Decision\n       - Laptop\
+  \ checks: 142.250.64.78 not in local subnet (192.168.1.0/24)\n       - Sends packet\
+  \ to default gateway (192.168.1.1)\n\n    4. NAT Translation\n       - Router (NAT)\
+  \ receives packet from 192.168.1.100:54321\n       - Changes source to router's\
+  \ public IP: 203.0.113.5:54321\n       - Records mapping in NAT table\n\n    5.\
+  \ Internet Routing\n       - Packet travels through ISP routers to Google's network\n\
+  \       - Google responds to 203.0.113.5:54321\n\n    6. NAT Translation (Return)\n\
+  \       - Router receives response on port 54321\n       - Looks up NAT table: 54321\
+  \ → 192.168.1.100:54321\n       - Forwards to laptop\n\n    7. Application\n   \
+  \    - Laptop's browser receives data\n       - Displays Google homepage\n    ```\n\
+  \n    ## Key Takeaways\n\n    1. **DHCP** automatically configures devices with\
+  \ IP, gateway, DNS, and more\n    2. **DNS** translates domain names to IP addresses\
+  \ via recursive resolution\n    3. **NAT** allows multiple private IPs to share\
+  \ one public IP using port mapping\n    4. **Routing** forwards packets between\
+  \ networks using routing tables and gateways\n    5. **Default gateway** is the\
+  \ router that handles traffic to other networks\n    6. All four services work together\
+  \ to enable seamless internet connectivity\n\n    ## Common Troubleshooting\n\n\
+  \    | Problem | Likely Service | What to Check |\n    |---------|---------------|---------------|\n\
+  \    | No IP address | DHCP | Is DHCP server running? IP pool exhausted? |\n   \
+  \ | Can't resolve names | DNS | Check DNS server config, try `nslookup` or `dig`\
+  \ |\n    | Can't reach internet | NAT/Routing | Check gateway IP, NAT configuration,\
+  \ routing table |\n    | Local network works, internet doesn't | Gateway/NAT | Verify\
+  \ default gateway, NAT rules, ISP connection |"
+exercises:
+  - type: multiple_choice_question
+    sequence_order: 1
+    question: "What is the role of the default gateway in a network?"
+    options:
+      - "It assigns IP addresses to devices"
+      - "It is the router that forwards traffic destined for other networks"
+      - "It resolves domain names to IP addresses"
+      - "It encrypts all outgoing traffic"
+    correct_answer: "It is the router that forwards traffic destined for other networks"
+    explanation: "The default gateway is the router interface that serves as the forwarding point for all traffic destined for networks outside the local subnet. When a device needs to communicate with another device, it first checks if the destination IP is on the same subnet by using its subnet mask. If the destination is on the local network, the device sends the packet directly. If the destination is on a different network (like accessing a website on the internet), the device sends the packet to its configured default gateway. The gateway (router) then examines its routing table to determine the best path to forward the packet toward its destination. For example, a laptop with IP 192.168.1.100/24 and gateway 192.168.1.1 would send all traffic for destinations outside 192.168.1.0/24 to the router at 192.168.1.1. This is typically configured automatically via DHCP along with the IP address, subnet mask, and DNS servers. The default gateway is critical for internet connectivity - without it, devices can only communicate within their local subnet. It's not involved in assigning IPs (that's DHCP), resolving names (that's DNS), or encryption (that's TLS/IPSec). Incorrect gateway configuration is a common cause of 'local network works but can't reach internet' problems."
+    require_pass: true
+  - type: multiple_choice_question
+    sequence_order: 2
+    question: "What DNS record type maps a domain name to an IPv4 address?"
+    options:
+      - "CNAME record"
+      - "MX record"
+      - "A record"
+      - "TXT record"
+    correct_answer: "A record"
+    explanation: "An A (Address) record is the fundamental DNS record type that maps a domain name to an IPv4 address. When you query DNS for example.com, the A record returns the IPv4 address like 93.184.216.34, allowing your device to connect to the server. A records are essential for virtually all internet services - web servers, mail servers, API endpoints all need A records so clients can find them. Multiple A records can exist for one domain name, enabling load balancing and redundancy. In contrast, AAAA records serve the same purpose but for IPv6 addresses (the four As represent the longer 128-bit IPv6 addresses versus 32-bit IPv4). CNAME (Canonical Name) records create aliases pointing one domain to another (like www.example.com → example.com), allowing multiple names to point to the same address. MX (Mail Exchange) records specify mail servers for email delivery, including priority values for failover. TXT records contain arbitrary text data, commonly used for domain verification, SPF (email authentication), DKIM, and other metadata. Understanding DNS record types is crucial for configuring web services, troubleshooting connectivity issues, and implementing cloud infrastructure where you frequently need to update DNS records to point to new servers or load balancers."
+    require_pass: true
+  - type: multiple_choice_question
+    sequence_order: 3
+    question: "How does routing differ between static and dynamic routing?"
+    options:
+      - "Static routing is faster than dynamic routing"
+      - "Static routes are manually configured while dynamic routing uses protocols to automatically discover and adapt routes"
+      - "Static routing only works on small networks while dynamic routing only works on large networks"
+      - "Static routing uses IP addresses while dynamic routing uses domain names"
+    correct_answer: "Static routes are manually configured while dynamic routing uses protocols to automatically discover and adapt routes"
+    explanation: "Static routing and dynamic routing represent two fundamentally different approaches to maintaining routing tables. With static routing, network administrators manually configure each route in the routing table, specifying exactly where packets for each destination network should be forwarded. Static routes don't change unless manually reconfigured, making them simple, predictable, and requiring no routing protocol overhead. However, they don't adapt to network changes - if a link fails, static routes won't automatically reroute traffic, potentially causing outages. Static routing works well for small networks with predictable topologies and as a backup or supplement to dynamic routing. Dynamic routing, in contrast, uses routing protocols (like RIP, OSPF, EIGRP, or BGP) that enable routers to automatically discover network topology, share routing information with neighbor routers, calculate best paths, and adapt to changes like link failures or new paths becoming available. While more complex to configure initially and requiring processing overhead for protocol exchanges, dynamic routing scales to large networks and provides resilience. The internet backbone uses dynamic routing (primarily BGP) to handle millions of routes and constant topology changes. Both approaches use IP addresses for routing decisions, and both can be fast - the speed difference is negligible compared to the reliability and scalability benefits."
+    require_pass: true

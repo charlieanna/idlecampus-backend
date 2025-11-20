@@ -1,0 +1,59 @@
+slug: oxidationstates-practice
+title: oxidation_states — Practice
+difficulty: medium
+sequence_order: 17
+estimated_minutes: 2
+key_concepts:
+- oxidation_states
+prerequisites: []
+content_md: '# oxidation_states — Practice 🚀
+
+
+  Let oxidation state of Cr = x. H₂O is neutral. Complex has +3 charge (to balance
+  3 Cl⁻). x + 6(0) = +3, so x = +3.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What is the oxidation state of Cr in [Cr(H₂O)₆]Cl₃?
+  options:
+  - '+1'
+  - '+2'
+  - '+3'
+  - '+6'
+  correct_answer: '+3'
+  explanation: "Let oxidation state of Cr = x. H₂O is a neutral ligand (charge = 0). The complex has +3 charge (to balance 3 Cl⁻ outside). So: x + 6(0) = +3, therefore x = +3. This is a common oxidation state for chromium."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What is the oxidation state of Fe in [Fe(CN)₆]⁴⁻?
+  options:
+  - '+2'
+  - '+3'
+  - '+4'
+  - '+6'
+  correct_answer: '+2'
+  explanation: "Let oxidation state of Fe = x. CN⁻ is a monodentate ligand with charge = -1. The complex has -4 charge overall. So: x + 6(-1) = -4, therefore x - 6 = -4, x = +2. This is ferrocyanide ion."
+  require_pass: false
+- type: mcq
+  sequence_order: 3
+  question: In K₄[Fe(CN)₆], what is the oxidation state of Fe?
+  options:
+  - '+2'
+  - '+3'
+  - '+4'
+  - '0'
+  correct_answer: '+2'
+  explanation: "The complex ion is [Fe(CN)₆]⁴⁻. Let oxidation state of Fe = x. Each CN⁻ has charge -1. So: x + 6(-1) = -4, x = +2. The 4 K⁺ ions balance the -4 charge of the complex. This is potassium ferrocyanide."
+  require_pass: false

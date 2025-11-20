@@ -1,0 +1,89 @@
+slug: copperextraction-practice
+title: copper_extraction — Practice
+difficulty: medium
+sequence_order: 13
+estimated_minutes: 2
+key_concepts:
+- copper_extraction
+prerequisites: []
+content_md: '# copper_extraction — Practice 🚀
+
+
+  Copper extraction uses self-reduction: 2Cu₂O + Cu₂S → 6Cu + SO₂. Cu₂S acts as reducing
+  agent for Cu₂O, no external reducing agent needed.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 2
+  question: Which process involves self-reduction?
+  options:
+  - Extraction of iron from Fe₂O₃
+  - Extraction of copper from Cu₂S
+  - Extraction of aluminum from Al₂O₃
+  - Extraction of zinc from ZnO
+  require_pass: true
+  correct_answer: Extraction of copper from Cu₂S
+  explanation: 'Copper extraction from Cu₂S involves self-reduction (auto-reduction),
+    where no external reducing agent is needed. The process: (1) Roasting: 2Cu₂S +
+    3O₂ → 2Cu₂O + 2SO₂ (partial oxidation), (2) Self-reduction: 2Cu₂O + Cu₂S → 6Cu
+    + SO₂ (Cu₂S acts as reducing agent for Cu₂O). In this clever process, Cu₂S reduces
+    Cu₂O to metallic copper while being oxidized to SO₂. This is economically advantageous
+    as it doesn''t require expensive reducing agents like coke (used for iron: Fe₂O₃
+    + 3C → 2Fe + 3CO) or electrolysis (used for aluminum: Al₂O₃ → Al). The self-reduction
+    is unique to copper and a few other metals.'
+- type: mcq
+  sequence_order: 3
+  question: What is the composition of copper matte obtained after smelting copper
+    ore?
+  options:
+  - Pure copper metal
+  - Mixture of Cu₂S and FeS
+  - Mixture of Cu₂O and Fe₂O₃
+  - Mixture of CuO and slag
+  require_pass: true
+  correct_answer: Mixture of Cu₂S and FeS
+  explanation: 'Copper extraction from sulfide ores (chalcopyrite CuFeS₂) produces
+    **copper matte**: **Step 1 - Concentration**: Froth flotation enriches the ore.
+    **Step 2 - Roasting**: Partial oxidation in reverberatory furnace: 2CuFeS₂ +
+    O₂ → Cu₂S + 2FeS + SO₂ (controlled heating). **Step 3 - Smelting**: Heating
+    with silica (SiO₂) as flux: FeS oxidizes: 2FeS + 3O₂ → 2FeO + 2SO₂, FeO + SiO₂
+    → FeSiO₃ (slag, removed). **Copper matte** = Cu₂S + FeS (40-50% Cu). **Step
+    4 - Bessemerization**: Air blown through molten matte: 2FeS + 3O₂ → 2FeO + 2SO₂
+    (removes remaining FeS), 2Cu₂S + 3O₂ → 2Cu₂O + 2SO₂ (partial oxidation), **Self-reduction**:
+    2Cu₂O + Cu₂S → 6Cu + SO₂. Product: **Blister copper** (~98-99% pure, contains
+    SO₂ bubbles). **Step 5 - Refining**: Electrolytic refining gives 99.99% pure
+    copper for electrical use.'
+- type: mcq
+  sequence_order: 4
+  question: 'Why is copper obtained from the self-reduction process called "blister
+    copper"?'
+  options:
+  - It has a shiny blister-like appearance
+  - It contains SO₂ gas bubbles that create blisters on solidification
+  - It is shaped like blisters during casting
+  - It has blister-shaped impurities
+  require_pass: true
+  correct_answer: It contains SO₂ gas bubbles that create blisters on solidification
+  explanation: '**Blister copper** (98-99% pure) is named for its appearance: During
+    self-reduction: 2Cu₂O + Cu₂S → 6Cu + SO₂, **SO₂ gas is produced** and gets trapped
+    in the molten copper. When the molten copper solidifies, these **SO₂ gas bubbles
+    create blister-like protrusions** on the surface, giving it a characteristic
+    pockmarked appearance. Properties of blister copper: Purity ~98-99% Cu, Contains
+    dissolved gases (SO₂, O₂), Has blistered/pitted surface, Still contains impurities
+    (Fe, Zn, Ag, Au, Pt). **Further purification needed**: Blister copper must undergo
+    electrolytic refining to achieve 99.99% purity required for electrical applications
+    (wires, circuits). Why such high purity? Electrical conductivity is extremely
+    sensitive to impurities - even 0.1% impurity reduces conductivity significantly.
+    The impurities settle as anode mud containing precious metals (Ag, Au, Pt), which
+    are recovered as valuable byproducts, making copper refining economically attractive!'

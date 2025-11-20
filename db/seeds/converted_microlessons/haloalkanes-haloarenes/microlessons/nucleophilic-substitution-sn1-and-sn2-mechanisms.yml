@@ -1,0 +1,147 @@
+slug: nucleophilic-substitution-sn1-and-sn2-mechanisms
+title: Nucleophilic Substitution - SN1 and SN2 Mechanisms
+difficulty: easy
+sequence_order: 5
+estimated_minutes: 2
+key_concepts:
+- Nucleophilic substitution
+- SN1 mechanism
+- SN2 mechanism
+- Stereochemistry
+- Factors affecting reactivity
+prerequisites: []
+content_md: "# Nucleophilic Substitution - SN1 and SN2 Mechanisms \U0001F680\n\n#\
+  \ Nucleophilic Substitution Reactions\n\n    ## Introduction\n\n    **Nucleophilic\
+  \ substitution** is a reaction where a nucleophile (Nu⁻) replaces a leaving group\
+  \ (X⁻) in a molecule.\n\n    **General reaction:**\n    ```\n    R-X + Nu⁻ → R-Nu\
+  \ + X⁻\n    ```\n\n    **Two major mechanisms:**\n    1. **SN1:** Substitution,\
+  \ Nucleophilic, Unimolecular\n    2. **SN2:** Substitution, Nucleophilic, Bimolecular\n\
+  \n    ---\n\n    ## SN2 Mechanism (Bimolecular)\n\n    ### Characteristics\n\n \
+  \   **S** = Substitution\n    **N** = Nucleophilic\n    **2** = Second order kinetics\
+  \ (depends on both [R-X] and [Nu⁻])\n\n    ### Mechanism (One-Step)\n\n    ```\n\
+  \    Nu⁻ + R-X → [Nu---R---X]‡ → Nu-R + X⁻\n              Transition state\n   \
+  \ ```\n\n    **Key features:**\n    - **Single step** (no intermediate)\n    - **Transition\
+  \ state** with partial bonds\n    - **Concerted mechanism** (bond making and breaking\
+  \ simultaneous)\n\n    ### Rate Equation\n    ```\n    Rate = k[R-X][Nu⁻]\n    ```\n\
+  \n    **Second order:** Depends on concentration of both reactants\n\n    ### Stereochemistry:\
+  \ Inversion of Configuration\n\n    **Walden Inversion:** Complete inversion of\
+  \ stereochemistry\n\n    ```\n         Nu⁻\n          ↓\n    a     |     c     \
+  \      c     |     a\n     \\    |    /             \\    |    /\n      \\   | \
+  \  /     SN2       \\   |   /\n       C--X        →           C--Nu\n      /   \
+  \      /             /         \\\n     b         b\n\n    (R) configuration  →\
+  \  (S) configuration\n    ```\n\n    **Example:**\n    ```\n    (R)-2-bromobutane\
+  \ + OH⁻ → (S)-2-butanol\n    ```\n\n    **100% inversion of configuration**\n\n\
+  \    ### Factors Affecting SN2 Rate\n\n    #### 1. Structure of Alkyl Halide\n\n\
+  \    **Steric hindrance is crucial:**\n\n    ```\n    Methyl > 1° > 2° >> 3° (cannot\
+  \ occur)\n\n    CH₃-X > R-CH₂-X > R₂CH-X >> R₃C-X\n    (fastest)               \
+  \     (no reaction)\n    ```\n\n    **Reason:** Backside attack is hindered by bulky\
+  \ groups\n\n    **Examples:**\n    - CH₃Br: Very fast (no steric hindrance)\n  \
+  \  - CH₃CH₂Br: Fast (1°, little hindrance)\n    - (CH₃)₂CHBr: Slow (2°, moderate\
+  \ hindrance)\n    - (CH₃)₃CBr: No SN2 (3°, too hindered)\n\n    #### 2. Nature of\
+  \ Nucleophile\n\n    **Stronger nucleophile → Faster reaction**\n\n    **Nucleophilicity\
+  \ order (in protic solvents):**\n    ```\n    I⁻ > Br⁻ > Cl⁻ > F⁻ (opposite of basicity)\n\
+  \    RS⁻ > RO⁻\n    CN⁻ > I⁻ > OH⁻ > N₃⁻ > Br⁻ > Cl⁻ > F⁻ > H₂O\n    ```\n\n   \
+  \ **In protic solvents:** Larger nucleophile = less solvated = more nucleophilic\n\
+  \n    #### 3. Nature of Leaving Group\n\n    **Better leaving group → Faster reaction**\n\
+  \n    **Leaving group ability:**\n    ```\n    I⁻ > Br⁻ > Cl⁻ >> F⁻\n    (weak base\
+  \ = good leaving group)\n    ```\n\n    #### 4. Solvent\n\n    **Polar aprotic solvents\
+  \ favor SN2**\n    - Examples: DMSO, DMF, acetone, acetonitrile\n    - Do not solvate\
+  \ nucleophile strongly\n    - Nucleophile remains \"naked\" and reactive\n\n   \
+  \ **Polar protic solvents slow SN2**\n    - Examples: H₂O, ROH\n    - Solvate and\
+  \ stabilize nucleophile\n    - Reduces nucleophilicity\n\n    ---\n\n    ## SN1\
+  \ Mechanism (Unimolecular)\n\n    ### Characteristics\n\n    **S** = Substitution\n\
+  \    **N** = Nucleophilic\n    **1** = First order kinetics (depends only on [R-X])\n\
+  \n    ### Mechanism (Two-Step)\n\n    **Step 1: Ionization (slow, rate-determining)**\n\
+  \    ```\n    R-X → R⁺ + X⁻  (slow)\n    ```\n\n    **Step 2: Nucleophilic attack\
+  \ (fast)**\n    ```\n    R⁺ + Nu⁻ → R-Nu  (fast)\n    ```\n\n    **Key features:**\n\
+  \    - **Two steps**\n    - **Carbocation intermediate** formed\n    - **Rate-determining\
+  \ step:** Formation of carbocation\n\n    ### Rate Equation\n    ```\n    Rate =\
+  \ k[R-X]\n    ```\n\n    **First order:** Depends only on [R-X], NOT on [Nu⁻]\n\n\
+  \    ### Stereochemistry: Racemization\n\n    **Carbocation is sp² hybridized (planar)**\n\
+  \n    ```\n         R₁\n          |\n    R₂---C⁺   (planar, sp²)\n          |\n\
+  \         R₃\n    ```\n\n    **Nucleophile can attack from either side:**\n    -\
+  \ 50% from top → Retention of configuration\n    - 50% from bottom → Inversion of\
+  \ configuration\n\n    **Result: Racemic mixture (50:50 mixture of enantiomers)**\n\
+  \n    **Example:**\n    ```\n    (R)-2-bromobutane + H₂O → (R)-2-butanol (50%) +\
+  \ (S)-2-butanol (50%)\n    ```\n\n    ### Factors Affecting SN1 Rate\n\n    ####\
+  \ 1. Structure of Alkyl Halide\n\n    **Carbocation stability is crucial:**\n\n\
+  \    ```\n    3° > 2° > 1° > Methyl\n\n    R₃C-X > R₂CH-X > R-CH₂-X >> CH₃-X\n \
+  \   (fastest)                    (no reaction)\n    ```\n\n    **Carbocation stability\
+  \ order:**\n    ```\n    3° > 2° > 1° > CH₃⁺\n\n    Resonance-stabilized > 3° >\
+  \ 2° > 1°\n    ```\n\n    **Examples of resonance-stabilized:**\n    - Allyl: CH₂=CH-CH₂⁺\
+  \ (resonance)\n    - Benzyl: C₆H₅-CH₂⁺ (resonance with ring)\n\n    #### 2. Nature\
+  \ of Leaving Group\n\n    **Same as SN2:** I⁻ > Br⁻ > Cl⁻ >> F⁻\n\n    #### 3. Solvent\n\
+  \n    **Polar protic solvents favor SN1**\n    - Examples: H₂O, ROH\n    - Stabilize\
+  \ carbocation and leaving group by solvation\n    - SN1 rate increases in polar\
+  \ protic solvents\n\n    #### 4. Nature of Nucleophile\n\n    **Does NOT affect\
+  \ rate** (not involved in rate-determining step)\n    - But affects product distribution\n\
+  \n    ---\n\n    ## Comparison: SN1 vs SN2\n\n    | Property | SN1 | SN2 |\n   \
+  \ |----------|-----|-----|\n    | **Mechanism** | Two-step (carbocation) | One-step\
+  \ (concerted) |\n    | **Rate equation** | Rate = k[R-X] | Rate = k[R-X][Nu⁻] |\n\
+  \    | **Order** | First order | Second order |\n    | **Intermediate** | Carbocation\
+  \ (sp²) | Transition state |\n    | **Stereochemistry** | Racemization (±) | Inversion\
+  \ (Walden) |\n    | **Alkyl halide** | 3° > 2° >> 1° | 1° > 2° >> 3° |\n    | **Nucleophile**\
+  \ | Weak OK | Strong required |\n    | **Solvent** | Polar protic | Polar aprotic\
+  \ |\n    | **Rearrangement** | Possible (via carbocation) | Not possible |\n\n \
+  \   ---\n\n    ## Important Reactions of Haloalkanes\n\n    ### 1. Hydrolysis (with\
+  \ OH⁻ or H₂O)\n    ```\n    R-X + OH⁻ → R-OH + X⁻  (SN2 for 1°)\n    R-X + H₂O →\
+  \ R-OH + HX  (SN1 for 3°)\n    ```\n\n    ### 2. Reaction with Alkoxide (Williamson\
+  \ Ether Synthesis)\n    ```\n    R-X + R'O⁻ → R-O-R' + X⁻  (SN2)\n    ```\n\n  \
+  \  **Best with 1° alkyl halides and alkoxide**\n\n    ### 3. Reaction with Cyanide\
+  \ (CN⁻)\n    ```\n    R-X + CN⁻ → R-CN + X⁻  (SN2)\n    ```\n\n    **Chain extension\
+  \ by one carbon**\n\n    ### 4. Reaction with Ammonia\n    ```\n    R-X + NH₃ →\
+  \ R-NH₂ + HX\n    ```\n\n    **Excess NH₃ used to prevent multiple substitutions**\n\
+  \n    ### 5. Reaction with AgCN\n    ```\n    R-X + AgCN → R-NC + AgX  (isocyanide)\n\
+  \    ```\n\n    **KCN gives nitrile, AgCN gives isonitrile**\n\n    ### 6. Reduction\n\
+  \    ```\n    R-X + Zn + H⁺ → R-H + ZnX₂\n    or\n    R-X + LiAlH₄ → R-H + LiX +\
+  \ AlH₃\n    ```\n\n    ---\n\n    ## Carbocation Rearrangements in SN1\n\n    **Carbocations\
+  \ can rearrange to more stable forms via:**\n\n    ### 1. Hydride Shift (H⁻ migration)\n\
+  \    ```\n    CH₃-CH-CH₂⁺-CH₃  →  CH₃-C⁺-CH₂-CH₃\n        |                    \
+  \ |\n        CH₃                   CH₃\n\n    (2° carbocation)      (3° carbocation\
+  \ - more stable)\n    ```\n\n    ### 2. Methyl Shift (CH₃⁻ migration)\n    ```\n\
+  \    (CH₃)₂CH-CH₂⁺  →  (CH₃)₂C⁺-CH₃\n\n    (1° carbocation)   (3° carbocation)\n\
+  \    ```\n\n    **Driving force:** Formation of more stable carbocation\n\n    ---\n\
+  \n    ## IIT JEE Key Points\n\n    1. **SN2:** One-step, inversion, 1° > 2° >> 3°,\
+  \ polar aprotic solvent\n    2. **SN1:** Two-step, racemization, 3° > 2° >> 1°,\
+  \ polar protic solvent\n    3. **Carbocation stability:** 3° > 2° > 1° > CH₃⁺, resonance\
+  \ > 3°\n    4. **Walden inversion:** Complete stereochemical inversion in SN2\n\
+  \    5. **Leaving group ability:** I⁻ > Br⁻ > Cl⁻ >> F⁻\n    6. **Nucleophilicity\
+  \ (protic):** I⁻ > Br⁻ > Cl⁻ > F⁻\n    7. **Rearrangements** possible in SN1 (not\
+  \ in SN2)\n    8. **Williamson ether synthesis:** R-X + R'O⁻ (SN2, use 1° halide)\n\
+  \    9. **KCN gives nitrile** (R-CN), **AgCN gives isonitrile** (R-NC)\n    10.\
+  \ **Rate (SN2) = k[R-X][Nu⁻]**, **Rate (SN1) = k[R-X]**\n\n## Key Points\n\n- Nucleophilic\
+  \ substitution\n\n- SN1 mechanism\n\n- SN2 mechanism"
+exercises:
+  - type: mcq
+    sequence_order: 1
+    question: "When (R)-2-bromobutane undergoes an SN2 reaction with hydroxide ion (OH⁻), what is the expected stereochemical outcome?"
+    options:
+      - "Formation of (R)-2-butanol (retention of configuration)"
+      - "Formation of (S)-2-butanol (inversion of configuration)"
+      - "Formation of racemic mixture of (R) and (S)-2-butanol"
+      - "Formation of 2-butene by elimination"
+    correct_answer: "Formation of (S)-2-butanol (inversion of configuration)"
+    explanation: "SN2 reactions proceed through a one-step concerted mechanism where the nucleophile attacks from the backside of the carbon bearing the leaving group. This backside attack causes a phenomenon known as Walden inversion, which results in complete inversion of configuration at the stereogenic center. When (R)-2-bromobutane reacts with OH⁻ via SN2 mechanism, the hydroxide ion attacks the carbon from the opposite side of the C-Br bond. As the C-OH bond forms and the C-Br bond breaks simultaneously, the three other groups attached to the carbon flip to the opposite side, like an umbrella turning inside out. This 100% inversion converts the (R) configuration to (S) configuration, yielding (S)-2-butanol. This is different from SN1 reactions which give racemic mixtures due to planar carbocation intermediates. The predictable stereochemical outcome of SN2 reactions makes them valuable for stereoselective synthesis."
+    require_pass: true
+  - type: mcq
+    sequence_order: 2
+    question: "Which of the following alkyl halides will react FASTEST in an SN2 reaction with CN⁻ ion?"
+    options:
+      - "CH₃Br (methyl bromide)"
+      - "CH₃CH₂Br (ethyl bromide)"
+      - "(CH₃)₂CHBr (isopropyl bromide)"
+      - "(CH₃)₃CBr (tert-butyl bromide)"
+    correct_answer: "CH₃Br (methyl bromide)"
+    explanation: "The rate of SN2 reactions is highly dependent on steric factors because the nucleophile must approach and attack the carbon bearing the leaving group from the backside. Steric hindrance significantly slows down this backside attack. The reactivity order for SN2 reactions is: methyl > 1° > 2° >> 3° (no reaction). CH₃Br (methyl bromide) has no alkyl substituents on the carbon bearing the bromine, providing maximum accessibility for nucleophilic attack. CH₃CH₂Br (1° primary) has one alkyl group causing slight hindrance. (CH₃)₂CHBr (2° secondary) has two alkyl groups creating moderate steric hindrance. (CH₃)₃CBr (3° tertiary) has three bulky methyl groups that completely block the backside approach, making SN2 virtually impossible. Therefore, CH₃Br reacts fastest in SN2 reactions due to minimal steric hindrance, allowing easy nucleophilic approach and attack."
+    require_pass: true
+  - type: mcq
+    sequence_order: 3
+    question: "In which solvent would you expect an SN2 reaction between CH₃CH₂Br and I⁻ to proceed FASTEST?"
+    options:
+      - "Water (H₂O)"
+      - "Methanol (CH₃OH)"
+      - "Dimethyl sulfoxide (DMSO)"
+      - "Acetic acid (CH₃COOH)"
+    correct_answer: "Dimethyl sulfoxide (DMSO)"
+    explanation: "SN2 reactions proceed fastest in polar aprotic solvents like DMSO (dimethyl sulfoxide), DMF (dimethylformamide), or acetone. The key difference between polar protic and polar aprotic solvents lies in their ability to form hydrogen bonds with nucleophiles. Polar protic solvents (water, alcohols, acetic acid) have O-H or N-H bonds and can form strong hydrogen bonds with nucleophiles, creating a solvation shell around the nucleophile. This solvation stabilizes the nucleophile but significantly reduces its reactivity by surrounding it with solvent molecules, effectively making it less 'naked' and less able to attack the electrophilic carbon. In contrast, polar aprotic solvents like DMSO have high dielectric constants (good at dissolving ionic species) but cannot form hydrogen bonds with nucleophiles. This keeps the nucleophile poorly solvated, 'naked,' and highly reactive. Therefore, in DMSO, the iodide ion remains highly nucleophilic and can rapidly attack CH₃CH₂Br, resulting in the fastest SN2 reaction rate compared to protic solvents."
+    require_pass: true

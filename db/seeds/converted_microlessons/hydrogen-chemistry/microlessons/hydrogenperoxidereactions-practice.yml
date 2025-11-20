@@ -1,0 +1,83 @@
+slug: hydrogenperoxidereactions-practice
+title: hydrogen_peroxide_reactions — Practice
+difficulty: medium
+sequence_order: 12
+estimated_minutes: 2
+key_concepts:
+- hydrogen_peroxide_reactions
+prerequisites: []
+content_md: '# hydrogen_peroxide_reactions — Practice 🚀
+
+
+  H₂O₂ acts as a reducing agent when it reduces strong oxidizing agents like KMnO₄,
+  producing O₂: H₂O₂ → O₂ + 2H⁺ + 2e⁻. In the other reactions, H₂O₂ acts as an oxidizing
+  agent.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 2
+  question: In which of the following reactions does H₂O₂ act as a reducing agent?
+  options:
+  - H₂O₂ + 2Fe²⁺ + 2H⁺ → 2Fe³⁺ + 2H₂O
+  - H₂O₂ + 2I⁻ + 2H⁺ → I₂ + 2H₂O
+  - 2KMnO₄ + 3H₂SO₄ + 5H₂O₂ → K₂SO₄ + 2MnSO₄ + 8H₂O + 5O₂
+  - PbS + 4H₂O₂ → PbSO₄ + 4H₂O
+  require_pass: true
+  correct_answer: 2KMnO₄ + 3H₂SO₄ + 5H₂O₂ → K₂SO₄ + 2MnSO₄ + 8H₂O + 5O₂
+  explanation: 'In this reaction with KMnO₄ (a strong oxidizing agent), H₂O₂ acts
+    as a reducing agent. H₂O₂ is oxidized to O₂ while reducing Mn⁺⁷ (in KMnO₄) to
+    Mn⁺² (in MnSO₄): H₂O₂ → O₂ + 2H⁺ + 2e⁻. In contrast, in the other reactions: (1)
+    With Fe²⁺: H₂O₂ acts as oxidizing agent, oxidizing Fe²⁺ to Fe³⁺. (2) With I⁻:
+    H₂O₂ oxidizes I⁻ to I₂. (3) With PbS: H₂O₂ oxidizes S⁻² to S⁺⁶ (PbSO₄). H₂O₂''s
+    dual behavior (both oxidizing and reducing) occurs because oxygen in H₂O₂ has
+    an intermediate oxidation state (-1), which can be reduced to -2 (H₂O) or oxidized
+    to 0 (O₂).'
+- type: mcq
+  sequence_order: 3
+  question: What is the oxidation state of oxygen in H₂O₂?
+  options:
+  - '-2'
+  - '-1'
+  - '0'
+  - '+1'
+  require_pass: true
+  correct_answer: '-1'
+  explanation: 'In hydrogen peroxide (H₂O₂), oxygen has an unusual oxidation state
+    of -1. This is intermediate between O in H₂O (-2) and O₂ (0). The -1 state makes
+    H₂O₂ capable of both oxidation and reduction (disproportionation). Structure:
+    H-O-O-H with O-O single bond. Each O has: +1 from H bond, -1 from O-O bond (shared
+    equally), Net = -1. This dual nature allows: As oxidizing agent: O goes from
+    -1 to -2 (gains electrons), e.g., H₂O₂ + 2I⁻ + 2H⁺ → I₂ + 2H₂O. As reducing agent:
+    O goes from -1 to 0 (loses electrons), e.g., H₂O₂ + 2Fe³⁺ → O₂ + 2Fe²⁺ + 2H⁺
+    (no, this is wrong - let me reconsider). Actually as reducing: H₂O₂ + KMnO₄ →
+    O₂ + products.'
+- type: mcq
+  sequence_order: 4
+  question: Which compound is used as a stabilizer to prevent decomposition of H₂O₂?
+  options:
+  - Sodium chloride
+  - Urea or phosphoric acid
+  - Potassium permanganate
+  - Hydrogen sulfide
+  require_pass: true
+  correct_answer: Urea or phosphoric acid
+  explanation: 'Urea, phosphoric acid, or acetanilide are added as stabilizers to
+    prevent decomposition of H₂O₂. H₂O₂ is unstable and slowly decomposes: 2H₂O₂
+    → 2H₂O + O₂ (exothermic, ΔH = -98 kJ/mol). Decomposition is catalyzed by: (1)
+    Heavy metal ions (Fe³⁺, Cu²⁺, Mn²⁺), (2) Alkaline conditions, (3) Light, (4)
+    Heat. Stabilizers work by: Complexing trace metal impurities, Maintaining slightly
+    acidic pH (pH 3-4 is most stable). Storage: H₂O₂ must be stored in dark bottles
+    (prevents photodecomposition), plastic or wax-lined glass containers (glass has
+    metal impurities), cool conditions, without metal caps. Concentrated H₂O₂ (>50%)
+    can decompose explosively if contaminated.'

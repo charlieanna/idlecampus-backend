@@ -1,0 +1,68 @@
+slug: lesson-77
+title: Lesson 77
+difficulty: easy
+sequence_order: 77
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Pod Security Standards\n\n    - Baseline,\
+  \ restricted profiles\n    - Namespace-level enforcement"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What is the difference between the baseline and restricted Pod Security
+    Standards?
+  options:
+  - Baseline allows privileged containers, restricted does not
+  - Baseline prevents known privilege escalations, restricted enforces hardened security
+    best practices
+  - They are the same
+  - Baseline is deprecated
+  correct_answer: Baseline prevents known privilege escalations, restricted enforces
+    hardened security best practices
+  explanation: 'Pod Security Standards define three policies: (1) Privileged - unrestricted,
+    for trusted workloads, (2) Baseline - minimally restrictive, prevents known privilege
+    escalations like hostNetwork, hostPID, hostPath, privileged containers, and dangerous
+    capabilities, suitable for most applications, and (3) Restricted - heavily restricted,
+    enforces current security best practices including running as non-root, read-only
+    root filesystem, dropping all capabilities, and preventing privilege escalation.
+    Baseline is a practical middle ground that blocks obvious security issues while
+    allowing most common applications. Restricted is for security-sensitive workloads
+    requiring maximum hardening. Apply these standards at the namespace level using
+    Pod Security Admission controller. Choose based on workload sensitivity and security
+    requirements. Most applications can run under baseline; restricted requires careful
+    application design.'
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: How do you enforce Pod Security Standards in a namespace?
+  options:
+  - Using RBAC policies
+  - Using Pod Security Admission labels on the namespace
+  - Using NetworkPolicies
+  - Using ResourceQuotas
+  correct_answer: Using Pod Security Admission labels on the namespace
+  explanation: 'Pod Security Standards are enforced using Pod Security Admission controller
+    by adding labels to namespaces. Three labels control enforcement: pod-security.kubernetes.io/enforce
+    (blocks violating pods), pod-security.kubernetes.io/audit (logs violations but
+    allows pods), and pod-security.kubernetes.io/warn (warns users about violations).
+    Each label specifies a level: privileged, baseline, or restricted. For example,
+    ''pod-security.kubernetes.io/enforce: restricted'' prevents creation of pods that
+    don''t meet restricted standards. Use audit and warn modes for testing before
+    enforcing. You can set different levels for each mode - enforce baseline while
+    warning about restricted violations to encourage gradual hardening. Pod Security
+    Admission replaced PodSecurityPolicy (deprecated in 1.21, removed in 1.25) with
+    a simpler, more maintainable approach to pod security.'
+  require_pass: true
+- type: mcq
+  sequence_order: 1
+  question: What command lists all pods in all namespaces?
+  options:
+  - kubectl get pods -A
+  - kubectl list pods --all
+  - kubectl get pods --everywhere
+  - kubectl pods list -A
+  correct_answer_index: 0
+  explanation: kubectl get pods -A (or --all-namespaces) lists pods across all namespaces.
+    The -A flag is shorthand for --all-namespaces.
+  require_pass: true

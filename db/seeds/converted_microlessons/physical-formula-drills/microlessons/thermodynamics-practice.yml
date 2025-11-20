@@ -1,0 +1,59 @@
+slug: thermodynamics-practice
+title: thermodynamics — Practice
+difficulty: medium
+sequence_order: 2
+estimated_minutes: 2
+key_concepts:
+- thermodynamics
+prerequisites: []
+content_md: '# thermodynamics — Practice 🚀
+
+
+  Practice key thermodynamics formulas including Gibbs free energy, enthalpy, and
+  entropy relationships.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What is the relationship between Gibbs free energy, enthalpy, and entropy?
+  options:
+  - ΔG = ΔH - TΔS
+  - ΔG = ΔH + TΔS
+  - ΔG = TΔS - ΔH
+  - ΔG = ΔH/TΔS
+  correct_answer: ΔG = ΔH - TΔS
+  explanation: "The Gibbs free energy equation is ΔG = ΔH - TΔS, where ΔG is Gibbs free energy change, ΔH is enthalpy change, T is absolute temperature (K), and ΔS is entropy change. For spontaneous processes at constant T and P: ΔG < 0. At equilibrium: ΔG = 0."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What is the relationship between Gibbs free energy and equilibrium constant?
+  options:
+  - ΔG° = -RT ln K
+  - ΔG° = RT ln K
+  - ΔG° = -nF ln K
+  - ΔG° = K/RT
+  correct_answer: ΔG° = -RT ln K
+  explanation: "The relationship is ΔG° = -RT ln K, where ΔG° is standard Gibbs free energy change, R is gas constant (8.314 J/mol·K), T is temperature (K), and K is equilibrium constant. Also: ΔG = ΔG° + RT ln Q. When ΔG° < 0, K > 1 (products favored); when ΔG° > 0, K < 1 (reactants favored)."
+  require_pass: false
+- type: mcq
+  sequence_order: 3
+  question: What is the first law of thermodynamics?
+  options:
+  - ΔU = q + w
+  - ΔU = q - w
+  - ΔU = qp
+  - ΔU = w only
+  correct_answer: ΔU = q + w
+  explanation: "The first law of thermodynamics is ΔU = q + w, where ΔU is change in internal energy, q is heat absorbed by the system, and w is work done on the system. Using sign convention where w = -PΔV (work done by system), it becomes ΔU = q - PΔV. For constant pressure: ΔH = ΔU + PΔV = qp."
+  require_pass: false

@@ -1,0 +1,122 @@
+slug: crystal-lattices-unit-cells-and-coordination-number
+title: Crystal Lattices, Unit Cells and Coordination Number
+difficulty: easy
+sequence_order: 16
+estimated_minutes: 2
+key_concepts:
+- Crystal lattice
+- Unit cell
+- Primitive cells
+- Simple cubic
+- BCC
+- FCC
+- Coordination number
+- Crystal systems
+prerequisites: []
+content_md: "# Crystal Lattices, Unit Cells and Coordination Number \U0001F680\n\n\
+  # Crystal Lattices, Unit Cells and Coordination Number\n\n    ## Solid State Classification\n\
+  \n    ### Crystalline Solids:\n    - Long-range order\n    - Definite geometric\
+  \ shape\n    - Sharp melting point\n    - Anisotropic properties\n    - Examples:\
+  \ NaCl, diamond, quartz\n\n    ### Amorphous Solids:\n    - Short-range order only\n\
+  \    - No definite shape\n    - Gradual softening\n    - Isotropic properties\n\
+  \    - Examples: Glass, rubber, plastics\n\n    ## Crystal Lattice\n\n    **Definition:**\
+  \ 3D arrangement of constituent particles (atoms, ions, molecules) in a regular\
+  \ pattern\n\n    **Space Lattice:** Array of points showing positions of particles\n\
+  \n    **Lattice Points:** Positions occupied by constituent particles\n\n    ##\
+  \ Unit Cell\n\n    **Definition:** Smallest repeating unit of crystal lattice that\
+  \ generates entire crystal when repeated in 3D\n\n    **Parameters:**\n    - **Edge\
+  \ lengths:** a, b, c\n    - **Angles:** α (between b and c), β (between a and c),\
+  \ γ (between a and b)\n\n    ### Types of Unit Cells:\n\n    **1. Primitive (Simple):**\
+  \ Atoms only at corners\n    **2. Body-centered:** Atoms at corners + body center\n\
+  \    **3. Face-centered:** Atoms at corners + face centers\n    **4. End-centered:**\
+  \ Atoms at corners + two opposite face centers\n\n    ## Seven Crystal Systems\n\
+  \n    | System | Axial Lengths | Axial Angles | Example |\n    |--------|---------------|--------------|---------|\n\
+  \    | **Cubic** | a = b = c | α = β = γ = 90° | NaCl, Diamond |\n    | **Tetragonal**\
+  \ | a = b ≠ c | α = β = γ = 90° | SnO₂, TiO₂ |\n    | **Orthorhombic** | a ≠ b ≠\
+  \ c | α = β = γ = 90° | BaSO₄, KNO₃ |\n    | **Monoclinic** | a ≠ b ≠ c | α = γ\
+  \ = 90° ≠ β | Na₂SO₄·10H₂O |\n    | **Triclinic** | a ≠ b ≠ c | α ≠ β ≠ γ | K₂Cr₂O₇,\
+  \ CuSO₄·5H₂O |\n    | **Hexagonal** | a = b ≠ c | α = β = 90°, γ = 120° | Graphite,\
+  \ ZnO |\n    | **Rhombohedral** | a = b = c | α = β = γ ≠ 90° | Calcite |\n\n  \
+  \  ## Cubic Unit Cells\n\n    ### 1. Simple Cubic (SC) / Primitive Cubic (PC)\n\n\
+  \    **Structure:**\n    - Atoms at 8 corners only\n    - Each corner atom shared\
+  \ by 8 unit cells\n\n    **Atoms per unit cell:**\n    - Corner atoms: 8 × 1/8 =\
+  \ **1 atom**\n\n    **Coordination number:** 6\n\n    **Examples:** Po (only example!)\n\
+  \n    **Volume of unit cell:** a³\n    **Relation:** If r = atomic radius, **a =\
+  \ 2r**\n\n    ### 2. Body-Centered Cubic (BCC)\n\n    **Structure:**\n    - Atoms\
+  \ at 8 corners + 1 at body center\n    - Corner atoms shared by 8 cells\n    - Body\
+  \ center atom belongs to 1 cell\n\n    **Atoms per unit cell:**\n    - Corners:\
+  \ 8 × 1/8 = 1\n    - Body center: 1 × 1 = 1\n    - **Total: 2 atoms**\n\n    **Coordination\
+  \ number:** 8\n\n    **Examples:** Fe, Cr, Na, K, W\n\n    **Relation:** Body diagonal\
+  \ = 4r\n    - **√3 a = 4r**\n    - **a = 4r/√3**\n\n    ### 3. Face-Centered Cubic\
+  \ (FCC)\n\n    **Structure:**\n    - Atoms at 8 corners + 6 face centers\n    -\
+  \ Corner atoms shared by 8 cells\n    - Face atoms shared by 2 cells\n\n    **Atoms\
+  \ per unit cell:**\n    - Corners: 8 × 1/8 = 1\n    - Faces: 6 × 1/2 = 3\n    -\
+  \ **Total: 4 atoms**\n\n    **Coordination number:** 12\n\n    **Examples:** Cu,\
+  \ Ag, Au, Al, Ni, Pt\n\n    **Relation:** Face diagonal = 4r\n    - **√2 a = 4r**\n\
+  \    - **a = 4r/√2 = 2√2 r**\n\n    ## Comparison: Cubic Unit Cells\n\n    | Property\
+  \ | Simple Cubic | BCC | FCC |\n    |----------|--------------|-----|-----|\n  \
+  \  | Atoms/cell | 1 | 2 | 4 |\n    | Coordination number | 6 | 8 | 12 |\n    | a-r\
+  \ relation | 2r | 4r/√3 | 2√2 r |\n    | Packing efficiency | 52.4% | 68% | 74%\
+  \ |\n    | Example | Po | Fe, Na | Cu, Ag |\n\n    ## Coordination Number\n\n  \
+  \  **Definition:** Number of nearest neighbors surrounding a particle\n\n    ###\
+  \ For Cubic Structures:\n\n    - **Simple Cubic:** 6\n    - **BCC:** 8\n    - **FCC:**\
+  \ 12\n    - **HCP:** 12 (hexagonal close packing)\n\n    ### For Ionic Compounds:\n\
+  \n    Depends on radius ratio (r⁺/r⁻):\n\n    | r⁺/r⁻ | Coordination Number | Structure\
+  \ | Example |\n    |-------|---------------------|-----------|---------|\n    |\
+  \ 0.155-0.225 | 3 | Planar triangle | - |\n    | 0.225-0.414 | 4 | Tetrahedral |\
+  \ ZnS |\n    | 0.414-0.732 | 6 | Octahedral | NaCl |\n    | 0.732-1.0 | 8 | Cubic\
+  \ | CsCl |\n\n    ## Density Calculations\n\n    **Formula:**\n\n    **ρ = (Z ×\
+  \ M) / (a³ × Nₐ)**\n\n    Where:\n    - ρ = density (g/cm³)\n    - Z = atoms per\
+  \ unit cell\n    - M = molar mass (g/mol)\n    - a = edge length (cm)\n    - Nₐ\
+  \ = Avogadro's number = 6.022 × 10²³\n\n    **Or:** **M = (ρ × a³ × Nₐ) / Z**\n\n\
+  \    ## Solved Problems\n\n    ### Problem 1: Calculate a from r (BCC)\n\n    **Q:\
+  \ Fe crystallizes in BCC with atomic radius 1.24 Å. Calculate edge length.**\n\n\
+  \    Solution:\n    - For BCC: a = 4r/√3\n    - a = (4 × 1.24)/√3 = 4.96/1.732\n\
+  \    - **a = 2.86 Å**\n\n    ### Problem 2: Calculate density\n\n    **Q: Cu (FCC)\
+  \ has a = 3.6 Å, M = 63.5 g/mol. Calculate density.**\n\n    Solution:\n    - Z\
+  \ = 4 (FCC)\n    - a = 3.6 Å = 3.6 × 10⁻⁸ cm\n    - a³ = (3.6 × 10⁻⁸)³ = 4.67 ×\
+  \ 10⁻²³ cm³\n\n    ρ = (Z × M)/(a³ × Nₐ)\n    = (4 × 63.5)/(4.67 × 10⁻²³ × 6.022\
+  \ × 10²³)\n    = 254/(4.67 × 6.022)\n    = 254/28.12\n    **ρ = 9.03 g/cm³**\n\n\
+  \    ### Problem 3: Atoms per unit cell\n\n    **Q: A metal crystallizes with atoms\
+  \ at corners and face centers. How many atoms per unit cell?**\n\n    Solution:\n\
+  \    - This is FCC\n    - Corners: 8 × 1/8 = 1\n    - Faces: 6 × 1/2 = 3\n    -\
+  \ **Total: 4 atoms**\n\n    ### Problem 4: Coordination number\n\n    **Q: In CsCl\
+  \ structure, what is coordination number of Cs⁺?**\n\n    Solution:\n    - CsCl\
+  \ has cubic structure (not FCC NaCl type!)\n    - Each Cs⁺ surrounded by 8 Cl⁻\n\
+  \    - **Coordination number = 8**\n\n    ### Problem 5: Calculate M from density\n\
+  \n    **Q: Metal (BCC) has ρ = 7.2 g/cm³, a = 2.88 × 10⁻⁸ cm. Calculate molar mass.**\n\
+  \n    Solution:\n    - Z = 2 (BCC)\n    - a³ = (2.88 × 10⁻⁸)³ = 2.39 × 10⁻²³ cm³\n\
+  \n    M = (ρ × a³ × Nₐ)/Z\n    = (7.2 × 2.39 × 10⁻²³ × 6.022 × 10²³)/2\n    = (7.2\
+  \ × 2.39 × 6.022)/2\n    = 103.4/2\n    **M = 51.7 g/mol** (Close to Cr = 52)\n\n\
+  \    ## Ionic Structures\n\n    ### 1. Rock Salt (NaCl) Structure:\n\n    - **FCC\
+  \ lattice** of Cl⁻\n    - Na⁺ in **octahedral voids**\n    - Coordination: 6:6\n\
+  \    - Examples: NaCl, KCl, MgO\n\n    ### 2. Zinc Blende (ZnS) Structure:\n\n \
+  \   - **FCC lattice** of S²⁻\n    - Zn²⁺ in **alternate tetrahedral voids**\n  \
+  \  - Coordination: 4:4\n    - Examples: ZnS, CuCl\n\n    ### 3. Fluorite (CaF₂)\
+  \ Structure:\n\n    - **FCC lattice** of Ca²⁺\n    - F⁻ in **all tetrahedral voids**\n\
+  \    - Coordination: 8:4\n    - Examples: CaF₂, BaCl₂\n\n    ### 4. Antifluorite\
+  \ (Na₂O) Structure:\n\n    - **FCC lattice** of O²⁻\n    - Na⁺ in **all tetrahedral\
+  \ voids**\n    - Coordination: 4:8 (reverse of fluorite)\n    - Examples: Na₂O,\
+  \ K₂O\n\n    ### 5. Cesium Chloride (CsCl) Structure:\n\n    - **Simple cubic**\
+  \ of Cl⁻\n    - Cs⁺ at **body center**\n    - Coordination: 8:8\n    - Examples:\
+  \ CsCl, CsBr\n\n    ## Voids in Close Packing\n\n    ### Tetrahedral Void:\n\n \
+  \   - Formed by 4 spheres\n    - **Number:** 2n (if n atoms)\n    - Coordination:\
+  \ 4\n    - Size: Can accommodate sphere with r = 0.225R\n\n    ### Octahedral Void:\n\
+  \n    - Formed by 6 spheres\n    - **Number:** n (if n atoms)\n    - Coordination:\
+  \ 6\n    - Size: Can accommodate sphere with r = 0.414R\n\n    ## IIT JEE Key Points\n\
+  \n    1. **Unit cell:** Smallest repeating unit\n    2. **SC:** Z = 1, CN = 6\n\
+  \    3. **BCC:** Z = 2, CN = 8, a = 4r/√3\n    4. **FCC:** Z = 4, CN = 12, a = 2√2r\n\
+  \    5. **Density:** ρ = ZM/(a³Nₐ)\n    6. **NaCl:** FCC of Cl⁻, 6:6 coordination\n\
+  \    7. **ZnS:** FCC of S²⁻, 4:4 coordination\n    8. **CaF₂:** FCC of Ca²⁺, 8:4\
+  \ coordination\n    9. **CsCl:** Simple cubic, 8:8 coordination\n    10. **Voids:**\
+  \ 2n tetrahedral, n octahedral\n\n    ## Quick Reference\n\n    | Structure | Z\
+  \ | CN | a-r relation |\n    |-----------|---|----|--------------|\n    | SC | 1\
+  \ | 6 | 2r |\n    | BCC | 2 | 8 | 4r/√3 |\n    | FCC | 4 | 12 | 2√2r |\n\n    |\
+  \ Ionic Structure | Lattice | Voids Occupied | CN |\n    |-----------------|---------|----------------|-----|\n\
+  \    | NaCl | FCC Cl⁻ | All octahedral | 6:6 |\n    | ZnS | FCC S²⁻ | Alternate\
+  \ tetrahedral | 4:4 |\n    | CaF₂ | FCC Ca²⁺ | All tetrahedral | 8:4 |\n    | CsCl\
+  \ | SC Cl⁻ | Body center | 8:8 |\n\n    ## Important Formulas\n\n    | Concept |\
+  \ Formula |\n    |---------|---------|\n    | Density | ρ = ZM/(a³Nₐ) |\n    | BCC\
+  \ edge | a = 4r/√3 |\n    | FCC edge | a = 2√2r |\n    | SC edge | a = 2r |\n\n\
+  ## Key Points\n\n- Crystal lattice\n\n- Unit cell\n\n- Primitive cells"
+exercises: []

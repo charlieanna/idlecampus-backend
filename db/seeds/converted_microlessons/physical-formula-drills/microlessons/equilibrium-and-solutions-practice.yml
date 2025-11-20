@@ -1,0 +1,59 @@
+slug: equilibrium-and-solutions-practice
+title: equilibrium and solutions — Practice
+difficulty: medium
+sequence_order: 5
+estimated_minutes: 2
+key_concepts:
+- equilibrium and solutions
+prerequisites: []
+content_md: '# equilibrium and solutions — Practice 🚀
+
+
+  Practice key equilibrium and solution formulas including equilibrium constants,
+  colligative properties, and concentration relationships.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What is the relationship between Kp and Kc for gaseous equilibria?
+  options:
+  - Kp = Kc(RT)^Δn
+  - Kp = Kc/RT
+  - Kp = Kc + RT
+  - Kp = Kc - Δn
+  correct_answer: Kp = Kc(RT)^Δn
+  explanation: "The relationship is Kp = Kc(RT)^Δn, where Kp is equilibrium constant in pressure, Kc is equilibrium constant in concentration, R is gas constant (0.0821 L·atm/mol·K), T is temperature (K), and Δn = (moles of gaseous products) - (moles of gaseous reactants). When Δn = 0, Kp = Kc."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What is the formula for boiling point elevation?
+  options:
+  - ΔTb = Kb × m
+  - ΔTb = Kb/m
+  - ΔTb = m/Kb
+  - ΔTb = Kb × M
+  correct_answer: ΔTb = Kb × m
+  explanation: "Boiling point elevation is given by ΔTb = Kb × m, where ΔTb is increase in boiling point, Kb is ebullioscopic constant (molal boiling point elevation constant, depends on solvent), and m is molality of solution. This is a colligative property depending on number of solute particles."
+  require_pass: false
+- type: mcq
+  sequence_order: 3
+  question: What is the formula for osmotic pressure?
+  options:
+  - π = MRT
+  - π = mRT
+  - π = CRT
+  - π = nRT/V
+  correct_answer: π = MRT
+  explanation: "Osmotic pressure is given by π = MRT (also written as π = CRT or π = (n/V)RT), where π is osmotic pressure, M (or C) is molar concentration, R is gas constant (0.0821 L·atm/mol·K), and T is temperature (K). This is analogous to the ideal gas law."
+  require_pass: false

@@ -1,0 +1,79 @@
+slug: lesson-110
+title: Lesson 110
+difficulty: easy
+sequence_order: 110
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Monitoring Fundamentals\n\n    - Metrics\
+  \ collection (Prometheus)\n    - Alerting and recording rules\n    - ServiceMonitor/PodMonitor\
+  \ basics"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What is Prometheus primarily used for in Kubernetes monitoring?
+  options:
+  - Managing container logs and log aggregation
+  - Collecting and storing time-series metrics data
+  - Tracing requests across microservices
+  - Managing Kubernetes cluster configuration
+  correct_answer: Collecting and storing time-series metrics data
+  explanation: 'Prometheus is an open-source monitoring and alerting toolkit designed
+    specifically for collecting and storing time-series metrics data. It scrapes metrics
+    from configured endpoints at regular intervals, stores them in a time-series database,
+    and enables powerful querying using PromQL (Prometheus Query Language). In Kubernetes,
+    Prometheus collects metrics like CPU usage, memory consumption, request rates,
+    error rates, and custom application metrics. It uses a pull model where Prometheus
+    actively scrapes HTTP endpoints (typically /metrics) exposing metrics in its text-based
+    format. For example, a metric might look like ''http_requests_total{method="GET",status="200"}
+    1027''. The data is stored with timestamps, enabling historical analysis and trend
+    detection. Prometheus integrates deeply with Kubernetes through service discovery,
+    automatically finding and monitoring pods, services, and nodes. It''s commonly
+    deployed with the Prometheus Operator, which simplifies configuration through
+    CustomResourceDefinitions like ServiceMonitor and PodMonitor. While Prometheus
+    handles metrics, it''s often paired with complementary tools: Grafana for visualization,
+    Alertmanager for alert routing, and Loki or ELK for logs. Understanding Prometheus
+    is essential for production Kubernetes deployments as it provides visibility into
+    application and infrastructure health.'
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What is the purpose of a ServiceMonitor in Prometheus Operator?
+  options:
+  - To monitor the health of Kubernetes Services
+  - To define how Prometheus should discover and scrape metrics from Services
+  - To replace the default Kubernetes Service resource
+  - To automatically restart failing services
+  correct_answer: To define how Prometheus should discover and scrape metrics from
+    Services
+  explanation: 'ServiceMonitor is a CustomResourceDefinition (CRD) provided by Prometheus
+    Operator that declaratively defines how Prometheus should discover and scrape
+    metrics from Kubernetes Services. Instead of manually configuring Prometheus scrape
+    configs, you create a ServiceMonitor resource that specifies which Services to
+    monitor using label selectors. For example, a ServiceMonitor might select all
+    Services with label ''app: myapp'' and scrape their /metrics endpoint on port
+    8080. The Prometheus Operator watches for ServiceMonitor resources and automatically
+    updates the Prometheus configuration to include the matching endpoints. A typical
+    ServiceMonitor looks like: ''selector: matchLabels: app: myapp, endpoints: - port:
+    metrics, interval: 30s''. This approach provides several benefits: declarative
+    configuration managed through Kubernetes manifests, automatic service discovery
+    as pods scale up/down, namespace isolation (ServiceMonitor only discovers Services
+    in its namespace by default), and separation of concerns (application teams can
+    create ServiceMonitors without accessing Prometheus config). Similarly, PodMonitor
+    works at the Pod level for cases where you need to scrape pods directly rather
+    than through a Service. This pattern makes Prometheus configuration cloud-native
+    and GitOps-friendly, enabling teams to manage monitoring alongside their application
+    deployments.'
+  require_pass: true
+- type: mcq
+  sequence_order: 1
+  question: What command lists all pods in all namespaces?
+  options:
+  - kubectl get pods -A
+  - kubectl list pods --all
+  - kubectl get pods --everywhere
+  - kubectl pods list -A
+  correct_answer_index: 0
+  explanation: kubectl get pods -A (or --all-namespaces) lists pods across all namespaces.
+    The -A flag is shorthand for --all-namespaces.
+  require_pass: true

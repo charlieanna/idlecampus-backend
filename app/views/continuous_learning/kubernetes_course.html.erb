@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CKAD Interactive Learning - SOVisits</title>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    
+    <style>
+      body { 
+        margin: 0; 
+        padding: 0; 
+        overflow: hidden;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
+      }
+      iframe {
+        border: none;
+        width: 100%;
+        height: 100vh;
+        display: block;
+      }
+      .loading {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        font-size: 18px;
+        color: #666;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="loading" id="loading">
+      Loading CKAD Interactive Learning...
+    </div>
+    <iframe 
+      id="kubernetes-frame"
+      src="http://localhost:5001" 
+      style="display: none;"
+      onload="document.getElementById('loading').style.display='none'; this.style.display='block';">
+    </iframe>
+    
+    <script>
+      // Note: The CKAD Interactive Learning app needs to be running on port 5001
+      // Run: cd kubernetes/learn/app && npm run dev
+      
+      // Check if the app is running
+      fetch('http://localhost:5001')
+        .catch(() => {
+          document.getElementById('loading').innerHTML = `
+            <div style="text-align: center; padding: 20px;">
+              <h2 style="color: #dc2626; margin-bottom: 10px;">⚠️ CKAD Interactive Learning Not Running</h2>
+              <p style="color: #666; margin-bottom: 20px;">Please start the standalone app first:</p>
+              <pre style="background: #f3f4f6; padding: 15px; border-radius: 8px; text-align: left; max-width: 500px; margin: 0 auto;">
+cd kubernetes/learn/app
+./start.sh</pre>
+              <p style="color: #666; margin-top: 20px; font-size: 14px;">Or run: <code>npm run dev</code></p>
+            </div>
+          `;
+        });
+    </script>
+  </body>
+</html>

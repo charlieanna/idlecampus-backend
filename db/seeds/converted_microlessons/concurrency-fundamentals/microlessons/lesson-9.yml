@@ -1,0 +1,143 @@
+slug: lesson-9
+title: Lesson 9
+difficulty: easy
+sequence_order: 9
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Race Conditions Explained\n\n    A **race\
+  \ condition** occurs when the behavior of code depends on the relative timing or\
+  \ interleaving of multiple threads.\n\n    ## What is a Race Condition?\n\n    When\
+  \ multiple threads access shared data and at least one modifies it, without proper\
+  \ synchronization, you have a race condition.\n\n    ### Classic Example: Bank Account\n\
+  \n    ```python\n    class BankAccount:\n        def __init__(self):\n         \
+  \   self.balance = 1000\n\n        def withdraw(self, amount):\n            # RACE\
+  \ CONDITION!\n            if self.balance >= amount:  # Check\n                time.sleep(0.001)\
+  \  # Simulate processing\n                self.balance -= amount  # Modify\n   \
+  \             return True\n            return False\n\n    account = BankAccount()\n\
+  \n    # Two threads try to withdraw $600 each\n    def thread1():\n        account.withdraw(600)\n\
+  \n    def thread2():\n        account.withdraw(600)\n\n    # Possible outcome: balance\
+  \ = -200 (overdraft!)\n    ```\n\n    **What happened?**\n    1. Thread 1 checks\
+  \ balance (1000 >= 600) ✓\n    2. Thread 2 checks balance (1000 >= 600) ✓\n    3.\
+  \ Thread 1 withdraws: balance = 400\n    4. Thread 2 withdraws: balance = -200 ❌\n\
+  \n    ## Types of Race Conditions\n\n    ### 1. Check-Then-Act\n    ```python\n\
+  \    # BAD: Race between check and act\n    if x == None:\n        x = create_expensive_object()\n\
+  \    ```\n\n    ### 2. Read-Modify-Write\n    ```python\n    # BAD: Non-atomic increment\n\
+  \    counter += 1  # Read, add, write (3 operations!)\n    ```\n\n    ### 3. Lost\
+  \ Update\n    ```python\n    # BAD: Second write overwrites first\n    # Thread\
+  \ 1\n    x = x + 1\n\n    # Thread 2\n    x = x + 2  # Might read old value of x\n\
+  \    ```\n\n    ## Fixing Race Conditions\n\n    ### Solution 1: Mutual Exclusion\
+  \ (Mutex)\n    ```python\n    class BankAccount:\n        def __init__(self):\n\
+  \            self.balance = 1000\n            self.lock = threading.Lock()\n\n \
+  \       def withdraw(self, amount):\n            with self.lock:  # Only one thread\
+  \ at a time\n                if self.balance >= amount:\n                    self.balance\
+  \ -= amount\n                    return True\n                return False\n   \
+  \ ```\n\n    ### Solution 2: Atomic Operations\n    ```python\n    import threading\n\
+  \n    # Use atomic operations when possible\n    counter = 0\n    lock = threading.Lock()\n\
+  \n    # Instead of this:\n    def increment_unsafe():\n        global counter\n\
+  \        counter += 1\n\n    # Use atomic with lock:\n    def increment_safe():\n\
+  \        global counter\n        with lock:\n            counter += 1\n    ```\n\
+  \n    ### Solution 3: Thread-Local Storage\n    ```python\n    import threading\n\
+  \n    # Each thread has its own copy\n    local_data = threading.local()\n\n   \
+  \ def process():\n        local_data.counter = 0  # Thread-safe\n        local_data.counter\
+  \ += 1  # No race condition\n    ```\n\n    ## Detecting Race Conditions\n\n   \
+  \ ### 1. Code Review\n    Look for:\n    - Shared mutable state\n    - Missing synchronization\n\
+  \    - Check-then-act patterns\n    - Multiple operations on shared data\n\n   \
+  \ ### 2. Testing\n    ```python\n    # Stress test with many threads\n    def stress_test():\n\
+  \        threads = []\n        for i in range(100):\n            t = threading.Thread(target=increment)\n\
+  \            threads.append(t)\n            t.start()\n\n        for t in threads:\n\
+  \            t.join()\n\n        assert counter == 100, f\"Race condition! Counter\
+  \ = {counter}\"\n    ```\n\n    ### 3. Tools\n    - **Python**: threading sanitizer,\
+  \ `sys.settrace()`\n    - **Java**: ThreadSanitizer, FindBugs\n    - **C++**: ThreadSanitizer\
+  \ (TSan), Helgrind (Valgrind)\n    - **Go**: race detector (`go run -race`)\n\n\
+  \    ## Deadlocks\n\n    A **deadlock** occurs when threads wait for each other\
+  \ indefinitely, preventing progress.\n\n    ### Deadlock Conditions (All 4 must\
+  \ be present)\n\n    1. **Mutual Exclusion**: Resources can't be shared\n    2.\
+  \ **Hold and Wait**: Thread holds resources while waiting for more\n    3. **No\
+  \ Preemption**: Resources can't be forcibly taken\n    4. **Circular Wait**: Circular\
+  \ chain of threads waiting for each other\n\n    ### Classic Deadlock Example\n\n\
+  \    ```python\n    lock_a = threading.Lock()\n    lock_b = threading.Lock()\n\n\
+  \    def thread1():\n        with lock_a:\n            time.sleep(0.001)\n     \
+  \       with lock_b:  # Waiting for lock_b\n                print(\"Thread 1\")\n\
+  \n    def thread2():\n        with lock_b:\n            time.sleep(0.001)\n    \
+  \        with lock_a:  # Waiting for lock_a\n                print(\"Thread 2\"\
+  )\n\n    # Deadlock! Thread 1 has A, wants B\n    #           Thread 2 has B, wants\
+  \ A\n    ```\n\n    ## Deadlock Prevention Strategies\n\n    ### 1. Lock Ordering\n\
+  \    Always acquire locks in the same order:\n    ```python\n    # GOOD: Both threads\
+  \ acquire in same order\n    def thread1():\n        with lock_a:\n            with\
+  \ lock_b:\n                pass\n\n    def thread2():\n        with lock_a:  # Same\
+  \ order as thread1\n            with lock_b:\n                pass\n    ```\n\n\
+  \    ### 2. Timeout and Retry\n    ```python\n    def acquire_with_timeout():\n\
+  \        while True:\n            if lock_a.acquire(timeout=1.0):\n            \
+  \    try:\n                    if lock_b.acquire(timeout=1.0):\n               \
+  \         try:\n                            # Critical section\n               \
+  \             pass\n                        finally:\n                         \
+  \   lock_b.release()\n                        break  # Success\n               \
+  \     else:\n                        # Timeout, retry\n                        continue\n\
+  \                finally:\n                    lock_a.release()\n    ```\n\n   \
+  \ ### 3. Try-Lock\n    ```python\n    def try_acquire():\n        while True:\n\
+  \            lock_a.acquire()\n            if lock_b.acquire(blocking=False):  #\
+  \ Try without blocking\n                try:\n                    # Got both locks\n\
+  \                    pass\n                finally:\n                    lock_b.release()\n\
+  \                    lock_a.release()\n                break\n            else:\n\
+  \                lock_a.release()  # Release and retry\n                time.sleep(0.001)\
+  \  # Back off\n    ```\n\n    ### 4. Single Lock\n    Use one lock for all related\
+  \ resources:\n    ```python\n    # Instead of lock_a and lock_b, use one lock\n\
+  \    master_lock = threading.Lock()\n\n    def thread1():\n        with master_lock:\n\
+  \            # Access both resources\n            pass\n    ```\n\n    ### 5. Lock-Free\
+  \ Data Structures\n    Use atomic operations instead of locks:\n    ```python\n\
+  \    from queue import Queue  # Thread-safe, lock-free\n\n    queue = Queue()\n\
+  \    queue.put(item)  # Thread-safe\n    item = queue.get()  # Thread-safe\n   \
+  \ ```\n\n    ## Livelock\n\n    Threads are actively responding but not progressing:\n\
+  \n    ```python\n    # Livelock example: Two threads continuously defer to each\
+  \ other\n    def polite_thread1():\n        while True:\n            if not thread2_active:\n\
+  \                do_work()\n                break\n            time.sleep(0.001)\
+  \  # Wait for thread2\n\n    def polite_thread2():\n        while True:\n      \
+  \      if not thread1_active:\n                do_work()\n                break\n\
+  \            time.sleep(0.001)  # Wait for thread1\n\n    # Both keep deferring,\
+  \ no progress!\n    ```\n\n    ## Starvation\n\n    A thread never gets resources\
+  \ due to scheduling or priority:\n\n    ```python\n    # Low-priority thread never\
+  \ gets lock\n    # because high-priority threads keep acquiring it\n    ```\n\n\
+  \    ## Best Practices\n\n    1. **Minimize Shared State**: Less sharing = fewer\
+  \ race conditions\n    2. **Use High-Level Constructs**: Queues, semaphores, etc.\n\
+  \    3. **Lock Ordering**: Establish and follow lock hierarchies\n    4. **Keep\
+  \ Critical Sections Short**: Reduce lock contention\n    5. **Test Thoroughly**:\
+  \ Use stress tests and race detectors\n    6. **Document Locking Policy**: Make\
+  \ lock orders explicit\n\n    **Next**: We'll explore atomic operations and memory\
+  \ ordering."
+exercises:
+  - type: mcq
+    sequence_order: 1
+    question: "What are the four necessary conditions that must ALL be present for a deadlock to occur?"
+    options:
+      - "Race condition, lock contention, starvation, and priority inversion"
+      - "Mutual exclusion, hold and wait, no preemption, and circular wait"
+      - "Thread creation, context switching, cache misses, and page faults"
+      - "Blocking, spinning, yielding, and sleeping"
+    correct_answer: "Mutual exclusion, hold and wait, no preemption, and circular wait"
+    explanation: "Deadlock requires all four Coffman conditions to be present simultaneously: (1) Mutual Exclusion - resources cannot be shared (locks are inherently exclusive), (2) Hold and Wait - threads hold resources while waiting for others (thread holds lock A while waiting for lock B), (3) No Preemption - resources cannot be forcibly taken away (can't force a thread to release its lock), (4) Circular Wait - circular chain exists (Thread 1 waits for Thread 2's resource, Thread 2 waits for Thread 1's resource). Breaking ANY one condition prevents deadlock. Common strategies: Break circular wait with lock ordering (always acquire locks in same order), break hold-and-wait with timeout-and-retry (release all locks if can't get all needed locks), or break mutual exclusion with lock-free data structures. Understanding these conditions helps identify deadlock risks during code review and design deadlock-free systems."
+    require_pass: true
+
+  - type: mcq
+    sequence_order: 2
+    question: "In the bank account race condition example, why does the balance become -200 instead of 400?"
+    options:
+      - "Because of a mathematical error in the code"
+      - "Because both threads check balance >= 600 when balance is 1000, both proceed, and each subtracts 600"
+      - "Because threads cannot share objects"
+      - "Because Python's GIL prevents correct execution"
+    correct_answer: "Because both threads check balance >= 600 when balance is 1000, both proceed, and each subtracts 600"
+    explanation: "This is a classic check-then-act race condition. The sequence unfolds as follows: Initially balance = 1000. Thread 1 checks: 1000 >= 600? Yes, proceeds. Thread 2 checks: 1000 >= 600? Yes, proceeds (both passed the check!). Thread 1 executes: balance = 1000 - 600 = 400. Thread 2 executes: balance = 400 - 600 = -200 (overdraft!). The problem is that the check (if balance >= amount) and the action (balance -= amount) are not atomic - they're separate operations that can be interleaved. The fix requires making the entire check-and-act sequence atomic using a lock: with self.lock: if self.balance >= amount: self.balance -= amount; return True; return False. Now only one thread can execute this logic at a time. Thread 1 completes the withdrawal first (balance = 400), then Thread 2's check fails (400 < 600), preventing overdraft. This pattern appears everywhere: lazy initialization, singleton creation, cache lookups - anywhere you check a condition then act based on it."
+    require_pass: true
+
+  - type: mcq
+    sequence_order: 3
+    question: "What is the difference between deadlock and livelock?"
+    options:
+      - "There is no difference, they are the same"
+      - "Deadlock: threads blocked waiting forever. Livelock: threads actively running but making no progress"
+      - "Deadlock happens with locks, livelock happens with semaphores"
+      - "Livelock is faster than deadlock"
+    correct_answer: "Deadlock: threads blocked waiting forever. Livelock: threads actively running but making no progress"
+    explanation: "Deadlock and livelock are both forms of thread starvation but differ in thread state. In deadlock, threads are completely blocked, waiting for resources they'll never get - they're stuck in the 'Blocked' state consuming no CPU. For example: Thread 1 holds lock A, waits for lock B; Thread 2 holds lock B, waits for lock A - both frozen. In livelock, threads are actively running and responding to each other but making no forward progress - they're in the 'Running' state consuming CPU cycles wastefully. Example: Two polite threads each trying to defer to the other: while thread2_active: sleep(0.001); do_work(); while thread1_active: sleep(0.001); do_work() - both keep checking and sleeping but never do_work(). Livelock is like two people in a hallway repeatedly stepping aside in the same direction. Deadlock is easier to detect (blocked threads), while livelock can be harder to diagnose since threads appear active. Both require careful design of coordination protocols and backoff strategies to prevent."
+    require_pass: true

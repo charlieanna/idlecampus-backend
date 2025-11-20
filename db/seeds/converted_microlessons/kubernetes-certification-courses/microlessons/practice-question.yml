@@ -1,0 +1,59 @@
+slug: practice-question
+title: Practice Question
+difficulty: medium
+sequence_order: 157
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: '# Practice Question 🚀
+
+
+  ## What is this?
+
+  A concise explanation of the concept.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+  - type: mcq
+    sequence_order: 1
+    question: "When preparing for a Kubernetes certification exam, what is the most effective study approach?"
+    options:
+      - "Only reading documentation without hands-on practice"
+      - "Combining hands-on practice with reading official documentation and understanding core concepts"
+      - "Memorizing kubectl commands without understanding what they do"
+      - "Only watching video tutorials"
+    correct_answer: "Combining hands-on practice with reading official documentation and understanding core concepts"
+    explanation: "Effective Kubernetes certification preparation requires a balanced, multi-faceted approach. The most successful strategy combines hands-on practice in real clusters (or tools like minikube, kind, or kubeadm) with thorough study of official Kubernetes documentation and deep understanding of core concepts. Kubernetes certifications like CKA, CKAD, and CKS are performance-based exams where you must solve real problems in a live cluster environment within a time limit. This means you need muscle memory for kubectl commands, understanding of YAML resource specifications, troubleshooting skills, and the ability to navigate documentation quickly during the exam. Simply reading documentation without practice won't develop the speed and confidence needed. Memorizing commands without understanding creates fragile knowledge that fails under exam pressure or when facing unfamiliar scenarios. While video tutorials are helpful for initial learning, they're passive and don't build the active problem-solving skills required. The best approach includes: regular hands-on labs, practice exams under time pressure, familiarity with the official docs structure for quick reference, understanding the 'why' behind configurations, and troubleshooting real issues. This comprehensive preparation builds both competence and confidence."
+    require_pass: true
+  - type: mcq
+    sequence_order: 2
+    question: "Which Kubernetes resource would you use to ensure a web application remains available during a node maintenance operation?"
+    options:
+      - "Single Pod"
+      - "Deployment with multiple replicas and a PodDisruptionBudget"
+      - "ConfigMap"
+      - "Secret"
+    correct_answer: "Deployment with multiple replicas and a PodDisruptionBudget"
+    explanation: "To ensure a web application remains available during node maintenance (like draining a node for upgrades), you need a combination of Deployment with multiple replicas and a PodDisruptionBudget (PDB). A Deployment with multiple replicas (e.g., replicas: 3) ensures your application runs on multiple pods, typically spread across different nodes, providing redundancy. If one node is drained, other replicas continue serving traffic. The PodDisruptionBudget adds an additional safety layer by specifying the minimum number of pods that must remain available during voluntary disruptions like node drains. For example, a PDB with minAvailable: 2 ensures that even during maintenance, at least 2 pods stay running. When you run kubectl drain, the operation respects the PDB and won't evict pods if it would violate the budget, ensuring your application maintains availability. A single Pod provides no redundancy - draining its node makes the application unavailable. ConfigMaps and Secrets are for configuration and sensitive data, not availability. This pattern of Deployment + PDB is a best practice for production applications requiring high availability during both planned maintenance and unexpected node failures."
+    require_pass: true
+  - type: mcq
+    sequence_order: 3
+    question: "What is a key difference between imperative and declarative Kubernetes management?"
+    options:
+      - "Imperative uses YAML files while declarative uses kubectl commands"
+      - "Declarative describes desired state in YAML and lets Kubernetes converge to it; imperative issues direct commands"
+      - "Imperative is faster than declarative for all operations"
+      - "Declarative management cannot be used in production"
+    correct_answer: "Declarative describes desired state in YAML and lets Kubernetes converge to it; imperative issues direct commands"
+    explanation: "The fundamental difference between imperative and declarative Kubernetes management lies in how you interact with the cluster. Declarative management (the recommended approach for production) involves describing your desired state in YAML manifests and applying them with 'kubectl apply -f'. Kubernetes then takes responsibility for making the actual state match your desired state, handling differences gracefully. If you apply the same manifest multiple times, Kubernetes intelligently updates only what changed. Declarative management provides version control (YAML in git), repeatability, and easier collaboration. Imperative management involves issuing direct commands like 'kubectl create deployment', 'kubectl scale', or 'kubectl expose', telling Kubernetes exactly what action to perform. While imperative commands are useful for quick experiments, learning, or emergency fixes, they don't provide the same reliability and reproducibility as declarative manifests. The statement that imperative uses YAML is backwards - declarative uses YAML while imperative uses commands. Speed depends on context - imperative might be faster for one-off tasks, but declarative is more efficient for managing complex, evolving infrastructure. Both approaches are valid in production, but declarative is strongly preferred for production workloads."
+    require_pass: true

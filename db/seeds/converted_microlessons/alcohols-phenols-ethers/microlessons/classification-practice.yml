@@ -1,0 +1,59 @@
+slug: classification-practice
+title: classification — Practice
+difficulty: easy
+sequence_order: 7
+estimated_minutes: 2
+key_concepts:
+- classification
+prerequisites: []
+content_md: '# classification — Practice 🚀
+
+
+  CH₃CH(OH)CH₃ (2-propanol/isopropanol) is 2° alcohol - OH on carbon bonded to 2 other
+  carbons. Option A is 1°, C is 3°, D is methanol.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: 'Which of the following is a secondary (2°) alcohol?'
+  options:
+  - CH₃CH₂OH (ethanol)
+  - CH₃CH(OH)CH₃ (isopropanol)
+  - (CH₃)₃COH (tert-butanol)
+  - CH₃OH (methanol)
+  require_pass: true
+  correct_answer: CH₃CH(OH)CH₃ (isopropanol)
+  explanation: 'A secondary (2°) alcohol has the -OH group attached to a carbon atom that is bonded to two other carbon atoms. CH₃CH(OH)CH₃ (2-propanol or isopropanol) is a 2° alcohol because the central carbon bearing the -OH group is connected to two methyl groups (CH₃). Ethanol (CH₃CH₂OH) is a primary (1°) alcohol because the carbon with -OH is bonded to only one other carbon. Tert-butanol ((CH₃)₃COH) is a tertiary (3°) alcohol because the carbon with -OH is bonded to three other carbons. Methanol (CH₃OH) has no other carbons and is classified as a primary alcohol. Classification: 1° = R-CH₂-OH, 2° = R₂CH-OH, 3° = R₃C-OH.'
+- type: mcq
+  sequence_order: 2
+  question: 'Identify the classification of (CH₃)₂CHCH₂OH:'
+  options:
+  - Primary alcohol
+  - Secondary alcohol
+  - Tertiary alcohol
+  - Quaternary alcohol
+  require_pass: true
+  correct_answer: Primary alcohol
+  explanation: 'To classify an alcohol, look at the carbon atom directly attached to the -OH group, not the other carbons in the molecule. In (CH₃)₂CHCH₂OH (isobutanol or 2-methylpropan-1-ol), the -OH group is attached to a -CH₂- carbon (the last carbon in the chain). This carbon is bonded to only ONE other carbon atom (the branched carbon), making it a primary (1°) alcohol. The fact that there is branching elsewhere in the molecule does not matter. Primary alcohols have the structure R-CH₂-OH where the -OH-bearing carbon is attached to at most one other carbon (or none, as in methanol). Don''t confuse the branching pattern with the classification of the alcohol.'
+- type: mcq
+  sequence_order: 3
+  question: 'Which statement correctly describes tertiary alcohols?'
+  options:
+  - The -OH group is on a carbon bonded to one other carbon
+  - The -OH group is on a carbon bonded to two other carbons
+  - The -OH group is on a carbon bonded to three other carbons
+  - The -OH group is on a terminal carbon
+  require_pass: true
+  correct_answer: The -OH group is on a carbon bonded to three other carbons
+  explanation: 'Tertiary (3°) alcohols have the -OH group attached to a carbon atom that is bonded to THREE other carbon atoms. The general structure is R₃C-OH, where R represents alkyl groups (which can be the same or different). An example is tert-butanol or 2-methylpropan-2-ol: (CH₃)₃C-OH. The central carbon bearing the -OH is connected to three methyl groups. In contrast, primary alcohols (1°) have the -OH on a carbon bonded to zero or one other carbon (R-CH₂-OH), and secondary alcohols (2°) have the -OH on a carbon bonded to two other carbons (R₂CH-OH). This classification is important because it affects the chemical reactivity of the alcohol, including oxidation reactions and substitution mechanisms.'

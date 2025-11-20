@@ -1,0 +1,1241 @@
+# Module 8: Practical Organic Chemistry
+# Laboratory techniques, qualitative analysis, and functional group identification
+# Covers detection tests, separation techniques, and systematic analysis
+
+puts "Creating Module 8: Practical Organic Chemistry..."
+
+# Get Organic Chemistry course
+course_organic = Course.find_by(title: 'Organic Chemistry for IIT JEE Main & Advanced')
+
+unless course_organic
+  puts "❌ Error: Organic Chemistry course not found. Please run module_01_goc.rb first."
+  exit
+end
+
+# Create Module 8
+module_08 = CourseModule.create!(
+  course: course_organic,
+  title: 'Module 8: Practical Organic Chemistry',
+  description: 'Laboratory techniques, qualitative analysis, functional group tests, purification methods, and systematic identification of organic compounds',
+  sequence_order: 8,
+  estimated_minutes: 220,
+  published: true
+)
+
+puts "✅ Module 8 created"
+
+# ============================================================================
+# LESSON 8.1: Introduction to Practical Organic Chemistry and Basic Techniques
+# ============================================================================
+
+lesson_8_1 = CourseLesson.create!(
+  title: 'Basic Laboratory Techniques - Purification and Separation Methods',
+  reading_time_minutes: 50,
+  key_concepts: [
+    'Crystallization and recrystallization',
+    'Distillation (simple, fractional, steam)',
+    'Sublimation',
+    'Chromatography (TLC, column)',
+    'Extraction and washing',
+    'Drying agents'
+  ],
+  content: <<~MD
+    # Basic Laboratory Techniques in Organic Chemistry
+
+    ## 1. Introduction to Practical Organic Chemistry
+
+    ### Importance
+    - **Synthesis:** Preparing organic compounds
+    - **Purification:** Obtaining pure products
+    - **Analysis:** Identifying unknown compounds
+    - **Characterization:** Determining structure and properties
+
+    ### Safety Principles
+    1. Always wear **safety goggles** and **lab coat**
+    2. Work in a **fume hood** with volatile/toxic compounds
+    3. Know the location of **fire extinguisher** and **safety shower**
+    4. Never taste or directly smell chemicals
+    5. Dispose of chemical waste properly
+
+    ---
+
+    ## 2. Crystallization and Recrystallization
+
+    ### Principle
+    - **Solubility difference:** Most substances are more soluble in hot solvent than cold
+    - **Impurities:** Either remain dissolved or don't dissolve at all
+
+    ### Procedure
+    1. **Dissolve:** Impure solid in minimum hot solvent
+    2. **Filter hot:** Remove insoluble impurities
+    3. **Cool slowly:** Pure crystals form
+    4. **Filter cold:** Collect crystals (impurities stay in solution)
+    5. **Wash:** With cold solvent
+    6. **Dry:** Remove residual solvent
+
+    ### Choice of Solvent
+    **Ideal solvent should:**
+    - Dissolve large amount of substance when hot
+    - Dissolve very little when cold
+    - Not react with the substance
+    - Have low boiling point (easy to remove)
+    - Be non-toxic and non-flammable (preferred)
+
+    **Common solvents:**
+    - Water, ethanol, methanol
+    - Acetone, diethyl ether
+    - Petroleum ether, benzene, toluene
+
+    ### Example
+    **Purification of benzoic acid:**
+    - Soluble in hot water, insoluble in cold water
+    - Dissolve in hot water → Cool → Crystals form
+    - Filter, wash with cold water, dry
+
+    ---
+
+    ## 3. Distillation
+
+    ### A. Simple Distillation
+
+    **Principle:** Separation based on **boiling point difference** (>25°C)
+
+    **Setup:**
+    ```
+    Thermometer
+        |
+    [Round-bottom flask with liquid]
+        ↓ heat
+    [Condenser with cold water]
+        ↓
+    [Receiving flask]
+    ```
+
+    **Applications:**
+    - Purifying liquids
+    - Separating liquid from non-volatile impurities
+    - Example: Purifying ethanol from water-ethanol mixture (not efficient for close bp)
+
+    ### B. Fractional Distillation
+
+    **Principle:** Separation of liquids with **close boiling points** (<25°C)
+
+    **Setup:** Same as simple distillation but with **fractionating column** (packed with glass beads or steel wool)
+
+    **How it works:**
+    - Multiple vaporization-condensation cycles
+    - Lower bp component concentrates at top
+    - Higher bp component returns to flask
+
+    **Applications:**
+    - Petroleum refining
+    - Separating ethanol (78°C) from water (100°C)
+    - Separating benzene (80°C) from toluene (111°C)
+
+    ### C. Steam Distillation
+
+    **Principle:** Used for **heat-sensitive, water-immiscible** organic compounds
+
+    **Key point:**
+    - Mixture boils when sum of vapor pressures = atmospheric pressure
+    - Boiling point < 100°C (both components' bp)
+
+    **Setup:**
+    ```
+    [Steam generator] → [Flask with organic compound + water] → [Condenser] → [Receiver]
+    ```
+
+    **Applications:**
+    - Extracting essential oils (aniline, nitrobenzene)
+    - Purifying natural products
+    - Example: Isolating aniline (bp 184°C) at ~98°C
+
+    **Advantages:**
+    - Compounds distill below their boiling points
+    - Prevents decomposition of heat-sensitive compounds
+
+    ---
+
+    ## 4. Sublimation
+
+    ### Principle
+    **Sublimation:** Direct conversion from solid → gas without passing through liquid phase.
+
+    ### Procedure
+    1. Place crude solid in sublimation apparatus
+    2. Heat gently
+    3. Pure substance sublimes and condenses on cold surface
+    4. Impurities remain behind (if non-volatile)
+
+    ### Compounds that Sublime
+    - **Organic:** Benzoic acid, camphor, naphthalene, anthracene
+    - **Inorganic:** Iodine, ammonium chloride, dry ice (CO₂)
+
+    ### Applications
+    - Purifying solids that sublime readily
+    - Separating from non-volatile impurities
+
+    ---
+
+    ## 5. Chromatography
+
+    ### Principle
+    **Separation** based on differential migration of components between:
+    - **Stationary phase:** Fixed (solid or liquid)
+    - **Mobile phase:** Moving (liquid or gas)
+
+    ### A. Thin Layer Chromatography (TLC)
+
+    **Stationary phase:** Thin layer of silica gel or alumina on glass/plastic plate
+
+    **Mobile phase:** Liquid solvent
+
+    **Procedure:**
+    1. Spot sample near bottom of TLC plate
+    2. Place plate in chamber with solvent (below spot level)
+    3. Solvent rises by capillary action
+    4. Components separate based on polarity
+    5. Visualize spots (UV light or iodine vapor)
+
+    **Rf value (Retention factor):**
+    ```
+    Rf = Distance traveled by compound / Distance traveled by solvent
+
+    0 < Rf < 1
+    ```
+
+    **Applications:**
+    - Checking purity
+    - Monitoring reactions
+    - Identifying compounds
+
+    **Interpretation:**
+    - More polar compound → Lower Rf (sticks to polar silica)
+    - Less polar compound → Higher Rf (moves with solvent)
+
+    ### B. Column Chromatography
+
+    **Stationary phase:** Silica gel or alumina packed in column
+
+    **Mobile phase:** Liquid solvent (eluting solvent)
+
+    **Procedure:**
+    1. Pack column with adsorbent (silica gel)
+    2. Load sample mixture at top
+    3. Elute with solvent
+    4. Less polar compounds elute first
+    5. Collect fractions, analyze
+
+    **Applications:**
+    - Separating mixtures
+    - Purifying compounds
+    - Large-scale separations
+
+    ---
+
+    ## 6. Extraction and Washing
+
+    ### Liquid-Liquid Extraction
+
+    **Principle:** Transfer of solute from one solvent to another (immiscible solvents)
+
+    **Based on:** **Distribution law** (partition coefficient)
+    ```
+    K = Concentration in solvent A / Concentration in solvent B
+    ```
+
+    **Setup:**
+    - **Separatory funnel**
+    - Two immiscible solvents (e.g., water and ether)
+
+    **Procedure:**
+    1. Add mixture to separatory funnel with two solvents
+    2. Shake vigorously (vent periodically)
+    3. Let layers separate
+    4. Drain lower layer
+    5. Collect upper layer
+
+    **Applications:**
+    - Isolating organic products from aqueous solutions
+    - Removing impurities
+
+    ### Acid-Base Extraction
+
+    **Principle:** Use acid/base to convert organic compound to ionic form (water-soluble)
+
+    **Example: Separating carboxylic acid, phenol, and neutral compound**
+
+    ```
+    Mixture in ether
+        ↓ Extract with NaOH (base)
+    [Aqueous layer: RCOO⁻ + phenolate]  [Ether layer: neutral compound]
+        ↓ Acidify
+    RCOOH + Phenol (precipitate)
+
+    Further separate phenol using NaHCO₃ (weaker base)
+    - RCOOH reacts with NaHCO₃ → RCOONa (water-soluble)
+    - Phenol does NOT react (too weak acid)
+    ```
+
+    **Key reactions:**
+    - RCOOH + NaOH → RCOONa (soluble)
+    - ArOH + NaOH → ArONa (soluble)
+    - RCOOH + NaHCO₃ → RCOONa + H₂O + CO₂
+
+    ---
+
+    ## 7. Drying Agents
+
+    ### Purpose
+    Remove traces of water from organic solvents or solutions
+
+    ### Common Drying Agents
+
+    | Drying Agent | Use | Advantages | Disadvantages |
+    |--------------|-----|------------|---------------|
+    | **Anhydrous Na₂SO₄** | General purpose | Neutral, mild | Slow, low capacity |
+    | **Anhydrous MgSO₄** | General purpose | Fast, high capacity | Slightly acidic |
+    | **Anhydrous CaCl₂** | Hydrocarbons, ethers | Fast, cheap | Reacts with alcohols, amines |
+    | **Anhydrous K₂CO₃** | Esters, ketones | Basic (removes acids) | Cannot use with acidic compounds |
+    | **Molecular sieves** | All solvents | Very efficient | Expensive |
+
+    ### Procedure
+    1. Add drying agent to wet organic solution
+    2. Swirl/stir for 5-10 minutes
+    3. Filter off drying agent
+    4. Solvent is now anhydrous
+
+    ---
+
+    ## 8. Determination of Melting Point
+
+    ### Importance
+    - **Identification:** Pure compounds have sharp melting points
+    - **Purity:** Impurities lower and broaden melting point
+
+    ### Procedure
+    1. Pack powdered sample in capillary tube
+    2. Heat slowly in melting point apparatus
+    3. Note temperature when melting starts and when complete
+
+    ### Interpretation
+    - **Sharp mp (1-2°C range):** Pure compound
+    - **Broad mp (>5°C range):** Impure
+    - **Lower than expected:** Impurities present
+
+    ### Mixed Melting Point
+    - Mix unknown with known compound
+    - If mp doesn't change → Same compound
+    - If mp decreases/broadens → Different compounds
+
+    ---
+
+    ## 9. Determination of Boiling Point
+
+    ### Importance
+    - Identification of liquid compounds
+    - Purity check
+
+    ### Simple Method
+    1. Heat liquid in small flask with thermometer
+    2. Note temperature when boiling (constant temperature)
+
+    ### Micro Method (Siwoloboff Method)
+    - Use capillary tube inverted in liquid
+    - When bubbles stream rapidly → boiling point
+
+    ### Interpretation
+    - **Constant bp:** Pure liquid
+    - **Range of bp:** Mixture
+
+    ---
+
+    ## Important Points for IIT JEE
+
+    1. **Crystallization:**
+       - Compound should be soluble in hot solvent, insoluble in cold
+       - Impurities remain in solution (mother liquor)
+
+    2. **Distillation types:**
+       - Simple: bp difference >25°C
+       - Fractional: bp difference <25°C
+       - Steam: Heat-sensitive, water-immiscible compounds
+
+    3. **Sublimation examples:**
+       - Benzoic acid, naphthalene, camphor, iodine
+
+    4. **TLC Rf values:**
+       - Polar compounds: Low Rf (stick to silica)
+       - Non-polar compounds: High Rf (move with solvent)
+
+    5. **Acid-base extraction:**
+       - Strong acid (RCOOH): Reacts with NaHCO₃ and NaOH
+       - Weak acid (ArOH): Reacts only with NaOH
+       - Use to separate mixtures
+
+    ---
+
+    ## Practice Questions
+
+    1. What solvent would you choose to recrystallize benzoic acid? Why?
+    2. Explain why steam distillation is used for isolating aniline.
+    3. Calculate Rf if a compound travels 4.5 cm and solvent travels 6.0 cm.
+    4. How would you separate a mixture of benzoic acid, phenol, and toluene using extraction?
+    5. What drying agent would you use for drying ethanol? Why not CaCl₂?
+  MD
+)
+
+ModuleItem.create!(
+  course_module: module_08,
+  item: lesson_8_1,
+  sequence_order: 1,
+  required: true
+)
+
+puts "✅ Lesson 8.1 created"
+
+# Create Quiz 8.1
+quiz_8_1 = Quiz.create!(
+  title: 'Quiz 8.1: Basic Laboratory Techniques',
+  description: 'Test your understanding of purification and separation methods',
+  time_limit_minutes: 20,
+  passing_score: 70,
+  max_attempts: 3,
+  shuffle_questions: true,
+  show_correct_answers: true,
+  quiz_type: 'standard'
+)
+
+ModuleItem.create!(
+  course_module: module_08,
+  item: quiz_8_1,
+  sequence_order: 2,
+  required: true
+)
+
+# Quiz 8.1 Questions
+QuizQuestion.create!([
+  {
+    quiz: quiz_8_1,
+    question_type: 'mcq',
+    multiple_correct: false,
+    question_text: 'Which purification technique is based on differences in boiling points of liquids?',
+    options: [
+      { text: 'Crystallization', correct: false },
+      { text: 'Distillation', correct: true },
+      { text: 'Sublimation', correct: false },
+      { text: 'Chromatography', correct: false }
+    ],
+    explanation: 'Distillation separates liquids based on differences in their boiling points. Simple distillation is used when bp difference >25°C, fractional distillation when <25°C.',
+    points: 2,
+    difficulty: -0.1,
+    discrimination: 1.0,
+    guessing: 0.25,
+    difficulty_level: 'easy'
+  },
+  {
+    quiz: quiz_8_1,
+    question_type: 'mcq',
+    multiple_correct: false,
+    question_text: 'Steam distillation is particularly useful for:',
+    options: [
+      { text: 'Separating miscible liquids', correct: false },
+      { text: 'Purifying heat-sensitive, water-immiscible compounds', correct: true },
+      { text: 'Separating solids from liquids', correct: false },
+      { text: 'Removing dissolved gases', correct: false }
+    ],
+    explanation: 'Steam distillation is used for heat-sensitive, water-immiscible organic compounds. It allows distillation below the normal boiling point of the compound, preventing decomposition. Example: aniline.',
+    points: 3,
+    difficulty: 0.2,
+    discrimination: 1.2,
+    guessing: 0.25,
+    difficulty_level: 'medium'
+  },
+  {
+    quiz: quiz_8_1,
+    question_type: 'mcq',
+    multiple_correct: true,
+    question_text: 'Which of the following compounds can be purified by sublimation?',
+    options: [
+      { text: 'Benzoic acid', correct: true },
+      { text: 'Naphthalene', correct: true },
+      { text: 'Sodium chloride', correct: false },
+      { text: 'Camphor', correct: true }
+    ],
+    explanation: 'Compounds that sublime (solid→gas directly) include: benzoic acid, naphthalene, camphor, anthracene, and iodine. NaCl has very high melting point and does not sublime readily.',
+    points: 4,
+    difficulty: 0.3,
+    discrimination: 1.3,
+    guessing: 0.06,
+    difficulty_level: 'medium'
+  },
+  {
+    quiz: quiz_8_1,
+    question_type: 'numerical',
+    question_text: 'In a TLC experiment, a compound travels 3.6 cm and the solvent front travels 9.0 cm. Calculate the Rf value.',
+    correct_answer: '0.4',
+    tolerance: 0.05,
+    explanation: 'Rf = Distance traveled by compound / Distance traveled by solvent = 3.6 / 9.0 = 0.4. Rf values always range from 0 to 1.',
+    points: 3,
+    difficulty: 0.1,
+    discrimination: 1.1,
+    guessing: 0.0,
+    difficulty_level: 'easy'
+  },
+  {
+    quiz: quiz_8_1,
+    question_type: 'mcq',
+    multiple_correct: false,
+    question_text: 'In TLC, a compound with high Rf value indicates that it is:',
+    options: [
+      { text: 'Very polar', correct: false },
+      { text: 'Less polar', correct: true },
+      { text: 'Ionic', correct: false },
+      { text: 'Insoluble', correct: false }
+    ],
+    explanation: 'High Rf means the compound moves far with the solvent, indicating it is less polar (weak interaction with polar silica gel). Polar compounds have low Rf as they stick to the stationary phase.',
+    points: 3,
+    difficulty: 0.2,
+    discrimination: 1.2,
+    guessing: 0.25,
+    difficulty_level: 'medium'
+  },
+  {
+    quiz: quiz_8_1,
+    question_type: 'mcq',
+    multiple_correct: false,
+    question_text: 'Which reagent can be used to distinguish between benzoic acid and phenol using extraction?',
+    options: [
+      { text: 'H₂O', correct: false },
+      { text: 'NaHCO₃', correct: true },
+      { text: 'HCl', correct: false },
+      { text: 'Ether', correct: false }
+    ],
+    explanation: 'NaHCO₃ (weak base) reacts with stronger acids like benzoic acid (RCOOH) but NOT with weaker acids like phenol (ArOH). Benzoic acid dissolves in aqueous NaHCO₃ layer, phenol stays in organic layer.',
+    points: 4,
+    difficulty: 0.4,
+    discrimination: 1.4,
+    guessing: 0.25,
+    difficulty_level: 'medium'
+  },
+  {
+    quiz: quiz_8_1,
+    question_type: 'mcq',
+    multiple_correct: false,
+    question_text: 'Which drying agent should NOT be used for drying alcohols?',
+    options: [
+      { text: 'Na₂SO₄', correct: false },
+      { text: 'MgSO₄', correct: false },
+      { text: 'CaCl₂', correct: true },
+      { text: 'K₂CO₃', correct: false }
+    ],
+    explanation: 'CaCl₂ reacts with alcohols and amines forming complexes, so it should not be used. Na₂SO₄ or MgSO₄ are suitable for drying alcohols as they are neutral and unreactive.',
+    points: 3,
+    difficulty: 0.3,
+    discrimination: 1.3,
+    guessing: 0.25,
+    difficulty_level: 'medium'
+  },
+  {
+    quiz: quiz_8_1,
+    question_type: 'mcq',
+    multiple_correct: false,
+    question_text: 'A pure organic compound typically shows:',
+    options: [
+      { text: 'A broad melting point range (>10°C)', correct: false },
+      { text: 'A sharp melting point (1-2°C range)', correct: true },
+      { text: 'No definite melting point', correct: false },
+      { text: 'Multiple melting points', correct: false }
+    ],
+    explanation: 'A pure organic compound has a sharp melting point (1-2°C range). Impurities cause the melting point to be lower and broader (depression and broadening of mp).',
+    points: 2,
+    difficulty: 0.0,
+    discrimination: 1.0,
+    guessing: 0.25,
+    difficulty_level: 'easy'
+  },
+  {
+    quiz: quiz_8_1,
+    question_type: 'true_false',
+    question_text: 'Fractional distillation is more efficient than simple distillation for separating liquids with close boiling points.',
+    correct_answer: true,
+    explanation: 'TRUE. Fractional distillation uses a fractionating column that provides multiple vaporization-condensation cycles, making it much more efficient for separating liquids with boiling points differing by <25°C.',
+    points: 2,
+    difficulty: 0.0,
+    discrimination: 1.0,
+    guessing: 0.5,
+    difficulty_level: 'easy'
+  }
+])
+
+puts "✅ Quiz 8.1 created with 9 questions"
+
+# ============================================================================
+# LESSON 8.2: Qualitative Analysis - Detection of Elements and Functional Groups
+# ============================================================================
+
+lesson_8_2 = CourseLesson.create!(
+  title: 'Qualitative Analysis - Detection Tests for Elements and Functional Groups',
+  reading_time_minutes: 60,
+  key_concepts: [
+    'Detection of C, H, O, N, S, halogens',
+    'Lassaigne\'s test',
+    'Tests for alcohols and phenols',
+    'Tests for aldehydes and ketones',
+    'Tests for carboxylic acids',
+    'Tests for amines'
+  ],
+  content: <<~MD
+    # Qualitative Analysis of Organic Compounds
+
+    ## 1. Introduction
+
+    ### Purpose of Qualitative Analysis
+    1. **Element detection:** C, H, O, N, S, halogens
+    2. **Functional group identification:** -OH, -CHO, -COOH, -NH₂, etc.
+    3. **Structure determination:** Combining with other data
+
+    ### Systematic Approach
+    1. Physical examination (color, odor, state)
+    2. Detection of elements
+    3. Functional group tests
+    4. Confirmatory tests
+
+    ---
+
+    ## 2. Detection of Carbon and Hydrogen
+
+    ### Test: Combustion Test
+
+    **Procedure:**
+    - Heat organic compound with copper(II) oxide (CuO)
+    - Organic compound oxidized to CO₂ and H₂O
+
+    **Reactions:**
+    ```
+    C (in compound) + 2CuO → CO₂ + 2Cu
+    2H (in compound) + CuO → H₂O + Cu
+    ```
+
+    **Observations:**
+    - **Carbon:** CO₂ turns lime water milky
+      ```
+      Ca(OH)₂ + CO₂ → CaCO₃ (white ppt) + H₂O
+      ```
+
+    - **Hydrogen:** H₂O condenses on cool surface or turns anhydrous CuSO₄ blue
+      ```
+      CuSO₄ (white) + 5H₂O → CuSO₄·5H₂O (blue)
+      ```
+
+    ---
+
+    ## 3. Detection of Nitrogen, Sulfur, and Halogens
+
+    ### Lassaigne's Test (Sodium Fusion Test)
+
+    **Principle:** Convert covalent organic compounds to ionic forms (water-soluble)
+
+    **Procedure:**
+    1. Fuse organic compound with metallic sodium
+    2. Extract with water (sodium fusion extract - SFE)
+    3. Perform specific tests on SFE
+
+    **Key reactions during fusion:**
+    ```
+    Nitrogen: C, H, N + Na → NaCN (sodium cyanide)
+    Sulfur: S + 2Na → Na₂S (sodium sulfide)
+    Halogens: C, H, X + Na → NaX (sodium halide)
+    ```
+
+    ### A. Test for Nitrogen (Prussian Blue Test)
+
+    **Procedure:**
+    1. Boil SFE with FeSO₄ (iron(II) sulfate)
+    2. Add few drops H₂SO₄
+    3. Heat and cool
+
+    **Reactions:**
+    ```
+    6NaCN + FeSO₄ → Na₄[Fe(CN)₆] (sodium ferrocyanide) + Na₂SO₄
+
+    3Na₄[Fe(CN)₆] + 4FeSO₄ → Fe₄[Fe(CN)₆]₃ (Prussian blue) + 6Na₂SO₄
+    ```
+
+    **Observation:**
+    - **Prussian blue/green precipitate** → Nitrogen present
+
+    ### B. Test for Sulfur
+
+    **Procedure:**
+    1. Acidify SFE with acetic acid
+    2. Add lead acetate solution
+
+    **Reaction:**
+    ```
+    Na₂S + (CH₃COO)₂Pb → PbS (black ppt) + 2CH₃COONa
+    ```
+
+    **Observation:**
+    - **Black precipitate** → Sulfur present
+
+    **Alternative Test (Sodium Nitroprusside Test):**
+    ```
+    Na₂S + Na₂[Fe(CN)₅NO] → Purple/violet color
+    ```
+
+    ### C. Test for Halogens
+
+    **Procedure:**
+    1. Acidify SFE with HNO₃
+    2. Add AgNO₃ solution
+
+    **Reactions:**
+    ```
+    NaCl + AgNO₃ → AgCl (white ppt) + NaNO₃
+    NaBr + AgNO₃ → AgBr (pale yellow ppt) + NaNO₃
+    NaI + AgNO₃ → AgI (yellow ppt) + NaNO₃
+    ```
+
+    **Observations:**
+    - **White ppt:** Chlorine
+    - **Pale yellow ppt:** Bromine
+    - **Yellow ppt:** Iodine
+
+    **Note:** If N and S are present with halogens, they must be removed first (interfere with test):
+    ```
+    NaCN + AgNO₃ → AgCN (white) - interferes
+    Na₂S + AgNO₃ → Ag₂S (black) - interferes
+    ```
+
+    ---
+
+    ## 4. Detection of Oxygen
+
+    ### No Direct Test
+    - Oxygen is detected by **difference**
+    - If elements add up to <100% → Oxygen likely present
+    - Oxygen presence inferred from functional group tests
+
+    ---
+
+    ## 5. Functional Group Tests - Alcohols and Phenols
+
+    ### A. Test for Alcohols
+
+    #### 1. Ester Test (Acetylation)
+    **Reagent:** Acetic anhydride or acetyl chloride
+
+    **Reaction:**
+    ```
+    R-OH + (CH₃CO)₂O → R-O-CO-CH₃ (ester) + CH₃COOH
+    ```
+
+    **Observation:**
+    - **Fruity smell** of ester
+
+    #### 2. Lucas Test (Distinguish 1°, 2°, 3° alcohols)
+    **Reagent:** Lucas reagent (ZnCl₂ in conc. HCl)
+
+    **Principle:** 3° > 2° > 1° reactivity toward SN1
+
+    **Observations:**
+    - **Tertiary (3°):** Turbidity appears **immediately**
+    - **Secondary (2°):** Turbidity after **5-10 minutes**
+    - **Primary (1°):** **No turbidity** at room temperature
+
+    **Reaction:**
+    ```
+    R-OH + HCl → R-Cl (insoluble, turbid) + H₂O
+    ```
+
+    #### 3. Oxidation Test (Victor Meyer Test)
+    **Reagent:** K₂Cr₂O₇ + H₂SO₄ (or KMnO₄)
+
+    **Observations:**
+    - **Primary alcohol:** Oxidized to aldehyde, then carboxylic acid (orange to green)
+    - **Secondary alcohol:** Oxidized to ketone (orange to green)
+    - **Tertiary alcohol:** **No oxidation** (orange color persists)
+
+    ### B. Test for Phenols
+
+    #### 1. Ferric Chloride Test
+    **Reagent:** Neutral FeCl₃ solution
+
+    **Reaction:**
+    ```
+    3ArOH + FeCl₃ → [Fe(OAr)₃] (colored complex) + 3HCl
+    ```
+
+    **Observation:**
+    - **Violet, blue, green, or red color** → Phenol present
+    - Most common: Violet color for simple phenols
+
+    #### 2. Bromine Water Test
+    **Reagent:** Bromine water (Br₂/H₂O)
+
+    **Reaction:**
+    ```
+    C₆H₅OH + 3Br₂ → 2,4,6-Tribromophenol (white ppt) + 3HBr
+    ```
+
+    **Observation:**
+    - **White precipitate** → Phenol present
+    - Decolorization of bromine water
+
+    #### 3. Libermann's Nitroso Test
+    **Reagent:** NaNO₂ + conc. H₂SO₄
+
+    **Observation:**
+    - **Deep blue/green color** → Phenol present
+
+    ---
+
+    ## 6. Functional Group Tests - Aldehydes and Ketones
+
+    ### Tests for Carbonyl Group (C=O)
+
+    #### 1. 2,4-DNP Test (2,4-Dinitrophenylhydrazine)
+    **Reagent:** 2,4-dinitrophenylhydrazine in acidic solution
+
+    **Reaction:**
+    ```
+    R-CHO + H₂N-NH-C₆H₃(NO₂)₂ → R-CH=N-NH-C₆H₃(NO₂)₂ (yellow/orange ppt)
+    ```
+
+    **Observation:**
+    - **Yellow/orange precipitate** → Aldehyde or ketone present
+
+    **Note:** Both aldehydes and ketones give this test (not specific)
+
+    ### Tests Specific for Aldehydes
+
+    #### 2. Tollens' Test (Silver Mirror Test)
+    **Reagent:** Tollens' reagent [Ag(NH₃)₂]⁺ (ammoniacal AgNO₃)
+
+    **Reaction:**
+    ```
+    R-CHO + 2[Ag(NH₃)₂]⁺ + 3OH⁻ → R-COO⁻ + 2Ag (silver mirror) + 4NH₃ + 2H₂O
+    ```
+
+    **Observation:**
+    - **Silver mirror** on inner surface of test tube → Aldehyde present
+
+    **Note:**
+    - **Aldehydes:** Positive (reducing agents)
+    - **Ketones:** Negative (not reducing)
+    - Aromatic aldehydes (benzaldehyde) may give positive test but slowly
+
+    #### 3. Fehling's Test
+    **Reagent:** Fehling's solution (Cu²⁺ in alkaline tartrate)
+
+    **Reaction:**
+    ```
+    R-CHO + 2Cu²⁺ + 5OH⁻ → R-COO⁻ + Cu₂O (red ppt) + 3H₂O
+    ```
+
+    **Observation:**
+    - **Red precipitate (Cu₂O)** → Aliphatic aldehyde present
+
+    **Note:**
+    - **Aliphatic aldehydes:** Positive
+    - **Aromatic aldehydes:** Negative
+    - **Ketones:** Negative
+
+    #### 4. Schiff's Test
+    **Reagent:** Schiff's reagent (decolorized fuchsin)
+
+    **Observation:**
+    - **Pink/magenta color** → Aldehyde present
+    - **Ketones:** No color change
+
+    ### Test for Methyl Ketones
+
+    #### Iodoform Test
+    **Reagent:** I₂ + NaOH (or KI/I₂ + NaOH)
+
+    **Reaction:**
+    ```
+    CH₃-CO-R + 3I₂ + 4NaOH → CHI₃ (iodoform, yellow ppt) + R-COONa + 3NaI + 3H₂O
+    ```
+
+    **Observation:**
+    - **Yellow precipitate of iodoform** (characteristic smell)
+
+    **Positive test:**
+    - Methyl ketones: CH₃-CO-R
+    - Ethanol: CH₃-CH₂-OH (oxidized to CH₃-CHO, then gives test)
+    - Secondary alcohols with CH₃-CHOH-R structure
+
+    ---
+
+    ## 7. Functional Group Tests - Carboxylic Acids
+
+    ### 1. Litmus Test
+    **Observation:**
+    - **Turns blue litmus red** → Acidic compound (carboxylic acid)
+
+    ### 2. Sodium Bicarbonate Test
+    **Reagent:** NaHCO₃ solution
+
+    **Reaction:**
+    ```
+    R-COOH + NaHCO₃ → R-COONa + H₂O + CO₂ (effervescence)
+    ```
+
+    **Observation:**
+    - **Brisk effervescence** → Carboxylic acid present
+    - CO₂ turns lime water milky
+
+    **Note:** This test distinguishes RCOOH from phenols (phenols don't react with NaHCO₃)
+
+    ### 3. Ester Test
+    **Reagent:** Ethanol + conc. H₂SO₄ (heat)
+
+    **Reaction:**
+    ```
+    R-COOH + C₂H₅OH → R-COO-C₂H₅ (ester, fruity smell) + H₂O
+    ```
+
+    **Observation:**
+    - **Fruity smell** → Carboxylic acid present
+
+    ---
+
+    ## 8. Functional Group Tests - Amines
+
+    ### 1. Carbylamine Test (Isocyanide Test)
+    **Reagent:** CHCl₃ + alcoholic KOH (heat)
+
+    **Reaction:**
+    ```
+    R-NH₂ + CHCl₃ + 3KOH → R-N≡C (isocyanide, foul smell) + 3KCl + 3H₂O
+    ```
+
+    **Observation:**
+    - **Offensive/foul smell** → Primary amine present
+
+    **Note:** Only **primary amines** give this test (2° and 3° amines do NOT)
+
+    ### 2. Hinsberg's Test (Distinguish 1°, 2°, 3° amines)
+    **Reagent:** Benzenesulfonyl chloride (C₆H₅SO₂Cl) + KOH
+
+    **Reactions:**
+
+    **Primary amine:**
+    ```
+    R-NH₂ + C₆H₅SO₂Cl + KOH → C₆H₅SO₂-NH-R (soluble in KOH) + KCl + H₂O
+    ```
+    **Observation:** Soluble in base (clear solution)
+
+    **Secondary amine:**
+    ```
+    R₂NH + C₆H₅SO₂Cl → C₆H₅SO₂-NR₂ (insoluble in KOH) + HCl
+    ```
+    **Observation:** Insoluble in base (oily layer or precipitate)
+
+    **Tertiary amine:**
+    ```
+    R₃N + C₆H₅SO₂Cl → No reaction
+    ```
+    **Observation:** Remains as separate layer (unreacted)
+
+    **Summary:**
+    - **1° amine:** Soluble in KOH (can donate H⁺)
+    - **2° amine:** Insoluble in KOH (no H to donate)
+    - **3° amine:** No reaction (no H on N)
+
+    ### 3. Azo Dye Test (for Aromatic Amines)
+    **Reagent:** NaNO₂ + HCl (0-5°C), then β-naphthol
+
+    **Reactions:**
+    ```
+    Step 1: Ar-NH₂ + NaNO₂ + 2HCl → Ar-N₂⁺Cl⁻ (diazonium salt) + NaCl + 2H₂O
+    Step 2: Ar-N₂⁺Cl⁻ + β-naphthol → Ar-N=N-naphthol (orange-red dye)
+    ```
+
+    **Observation:**
+    - **Orange-red dye** → Aromatic primary amine present
+
+    ---
+
+    ## 9. Summary Table - Functional Group Tests
+
+    | Functional Group | Test | Reagent | Positive Result |
+    |------------------|------|---------|-----------------|
+    | **Alcohol** | Lucas test | ZnCl₂/HCl | Turbidity (3°>2°>1°) |
+    | **Phenol** | FeCl₃ test | FeCl₃ | Violet/blue/green color |
+    | **Phenol** | Bromine water | Br₂/H₂O | White ppt |
+    | **Aldehyde** | Tollens' test | [Ag(NH₃)₂]⁺ | Silver mirror |
+    | **Aldehyde** | Fehling's test | Cu²⁺/alkaline | Red ppt (Cu₂O) |
+    | **Aldehyde/Ketone** | 2,4-DNP | 2,4-DNP | Yellow/orange ppt |
+    | **Methyl ketone** | Iodoform | I₂/NaOH | Yellow ppt (CHI₃) |
+    | **Carboxylic acid** | NaHCO₃ | NaHCO₃ | Effervescence (CO₂) |
+    | **Primary amine** | Carbylamine | CHCl₃/KOH | Foul smell |
+    | **Amines (1°/2°/3°)** | Hinsberg | C₆H₅SO₂Cl/KOH | Soluble/insoluble/no rxn |
+
+    ---
+
+    ## Important Points for IIT JEE
+
+    1. **Lassaigne's test:**
+       - Converts covalent to ionic (water-soluble)
+       - N → NaCN (Prussian blue with Fe²⁺)
+       - S → Na₂S (black PbS with lead acetate)
+       - X → NaX (ppt with AgNO₃)
+
+    2. **Distinction tests:**
+       - Aldehyde vs ketone: Tollens' or Fehling's
+       - 1°, 2°, 3° alcohols: Lucas test
+       - 1°, 2°, 3° amines: Hinsberg test
+       - RCOOH vs ArOH: NaHCO₃ test
+
+    3. **Color tests:**
+       - Phenol + FeCl₃ → Violet
+       - Aldehyde + Tollens' → Silver mirror
+       - Aldehyde + Fehling's → Red ppt
+       - Methyl ketone + I₂/NaOH → Yellow ppt
+
+    4. **Specific tests:**
+       - Only primary amines: Carbylamine test
+       - Only aldehydes: Tollens' and Fehling's
+       - Only carboxylic acids: NaHCO₃ (effervescence)
+
+    ---
+
+    ## Practice Questions
+
+    1. How would you distinguish between ethanal and propanone using a chemical test?
+    2. An organic compound gives a silver mirror with Tollens' reagent. What functional group is present?
+    3. Explain how Hinsberg's test distinguishes between 1°, 2°, and 3° amines.
+    4. A compound gives a violet color with FeCl₃. Which functional group is present?
+    5. How would you test for the presence of nitrogen in an organic compound?
+  MD
+)
+
+ModuleItem.create!(
+  course_module: module_08,
+  item: lesson_8_2,
+  sequence_order: 3,
+  required: true
+)
+
+puts "✅ Lesson 8.2 created"
+
+# Create Quiz 8.2
+quiz_8_2 = Quiz.create!(
+  title: 'Quiz 8.2: Qualitative Analysis and Detection Tests',
+  description: 'Test your understanding of element detection and functional group identification',
+  time_limit_minutes: 25,
+  passing_score: 70,
+  max_attempts: 3,
+  shuffle_questions: true,
+  show_correct_answers: true,
+  quiz_type: 'standard'
+)
+
+ModuleItem.create!(
+  course_module: module_08,
+  item: quiz_8_2,
+  sequence_order: 4,
+  required: true
+)
+
+# Quiz 8.2 Questions
+QuizQuestion.create!([
+  {
+    quiz: quiz_8_2,
+    question_type: 'mcq',
+    multiple_correct: false,
+    question_text: 'In Lassaigne\'s test, the presence of nitrogen is confirmed by:',
+    options: [
+      { text: 'Formation of white precipitate with AgNO₃', correct: false },
+      { text: 'Formation of Prussian blue precipitate with FeSO₄', correct: true },
+      { text: 'Formation of black precipitate with lead acetate', correct: false },
+      { text: 'Effervescence with NaHCO₃', correct: false }
+    ],
+    explanation: 'Nitrogen is detected by forming Prussian blue (Fe₄[Fe(CN)₆]₃) when sodium fusion extract is treated with FeSO₄ and H₂SO₄. The nitrogen converts to NaCN during fusion.',
+    points: 3,
+    difficulty: 0.2,
+    discrimination: 1.2,
+    guessing: 0.25,
+    difficulty_level: 'medium'
+  },
+  {
+    quiz: quiz_8_2,
+    question_type: 'mcq',
+    multiple_correct: false,
+    question_text: 'Which test gives a silver mirror with aldehydes?',
+    options: [
+      { text: 'Fehling\'s test', correct: false },
+      { text: 'Tollens\' test', correct: true },
+      { text: 'Iodoform test', correct: false },
+      { text: '2,4-DNP test', correct: false }
+    ],
+    explanation: 'Tollens\' test uses ammoniacal silver nitrate [Ag(NH₃)₂]⁺. Aldehydes reduce Ag⁺ to metallic silver, which deposits as a silver mirror on the test tube. Ketones do not give this test.',
+    points: 2,
+    difficulty: 0.0,
+    discrimination: 1.0,
+    guessing: 0.25,
+    difficulty_level: 'easy'
+  },
+  {
+    quiz: quiz_8_2,
+    question_type: 'mcq',
+    multiple_correct: false,
+    question_text: 'The Lucas test is used to distinguish between:',
+    options: [
+      { text: 'Aldehydes and ketones', correct: false },
+      { text: 'Primary, secondary, and tertiary alcohols', correct: true },
+      { text: 'Phenols and alcohols', correct: false },
+      { text: 'Carboxylic acids and esters', correct: false }
+    ],
+    explanation: 'Lucas test (ZnCl₂ in HCl) distinguishes alcohols based on reactivity: Tertiary (immediate turbidity) > Secondary (5-10 min) > Primary (no reaction). Based on SN1 mechanism.',
+    points: 3,
+    difficulty: 0.2,
+    discrimination: 1.2,
+    guessing: 0.25,
+    difficulty_level: 'medium'
+  },
+  {
+    quiz: quiz_8_2,
+    question_type: 'mcq',
+    multiple_correct: true,
+    question_text: 'Which of the following compounds will give a positive iodoform test?',
+    options: [
+      { text: 'Acetone (CH₃-CO-CH₃)', correct: true },
+      { text: 'Ethanol (CH₃-CH₂-OH)', correct: true },
+      { text: 'Propanone (CH₃-CO-CH₂-CH₃)', correct: false },
+      { text: 'Acetaldehyde (CH₃-CHO)', correct: true }
+    ],
+    explanation: 'Iodoform test is positive for: (1) Methyl ketones (CH₃-CO-R), (2) Ethanol (oxidizes to acetaldehyde), (3) Acetaldehyde. Propanone is a methyl ketone so it gives positive test.',
+    points: 4,
+    difficulty: 0.4,
+    discrimination: 1.4,
+    guessing: 0.06,
+    difficulty_level: 'medium'
+  },
+  {
+    quiz: quiz_8_2,
+    question_type: 'mcq',
+    multiple_correct: false,
+    question_text: 'Phenol reacts with neutral FeCl₃ to give:',
+    options: [
+      { text: 'Red precipitate', correct: false },
+      { text: 'Violet/blue/green color', correct: true },
+      { text: 'Silver mirror', correct: false },
+      { text: 'Yellow precipitate', correct: false }
+    ],
+    explanation: 'Phenol forms a colored complex [Fe(OAr)₃] with FeCl₃, giving violet, blue, or green color depending on the phenol. This is a characteristic test for phenolic compounds.',
+    points: 2,
+    difficulty: 0.1,
+    discrimination: 1.1,
+    guessing: 0.25,
+    difficulty_level: 'easy'
+  },
+  {
+    quiz: quiz_8_2,
+    question_type: 'mcq',
+    multiple_correct: false,
+    question_text: 'Which test can distinguish between a carboxylic acid and a phenol?',
+    options: [
+      { text: 'FeCl₃ test', correct: false },
+      { text: 'NaOH test', correct: false },
+      { text: 'NaHCO₃ test', correct: true },
+      { text: 'Bromine water test', correct: false }
+    ],
+    explanation: 'NaHCO₃ reacts only with carboxylic acids (stronger acids) producing CO₂ effervescence. Phenols (weaker acids) do NOT react with NaHCO₃ but react with NaOH.',
+    points: 3,
+    difficulty: 0.3,
+    discrimination: 1.3,
+    guessing: 0.25,
+    difficulty_level: 'medium'
+  },
+  {
+    quiz: quiz_8_2,
+    question_type: 'mcq',
+    multiple_correct: false,
+    question_text: 'In Hinsberg\'s test, a primary amine forms a product that is:',
+    options: [
+      { text: 'Insoluble in KOH', correct: false },
+      { text: 'Soluble in KOH', correct: true },
+      { text: 'Does not react', correct: false },
+      { text: 'Forms a colored complex', correct: false }
+    ],
+    explanation: 'Primary amine reacts with benzenesulfonyl chloride to form C₆H₅SO₂-NH-R, which has an acidic H and is soluble in KOH. Secondary amines give insoluble products. Tertiary amines don\'t react.',
+    points: 4,
+    difficulty: 0.4,
+    discrimination: 1.4,
+    guessing: 0.25,
+    difficulty_level: 'medium'
+  },
+  {
+    quiz: quiz_8_2,
+    question_type: 'mcq',
+    multiple_correct: false,
+    question_text: 'The carbylamine test is specific for:',
+    options: [
+      { text: 'All amines', correct: false },
+      { text: 'Primary amines only', correct: true },
+      { text: 'Secondary amines only', correct: false },
+      { text: 'Tertiary amines only', correct: false }
+    ],
+    explanation: 'Carbylamine test (CHCl₃ + KOH) produces isocyanide with a foul smell ONLY with primary amines. Secondary and tertiary amines do not give this test.',
+    points: 3,
+    difficulty: 0.2,
+    discrimination: 1.2,
+    guessing: 0.25,
+    difficulty_level: 'medium'
+  },
+  {
+    quiz: quiz_8_2,
+    question_type: 'mcq',
+    multiple_correct: false,
+    question_text: 'Fehling\'s test gives a red precipitate with:',
+    options: [
+      { text: 'All aldehydes and ketones', correct: false },
+      { text: 'Aliphatic aldehydes only', correct: true },
+      { text: 'Aromatic aldehydes only', correct: false },
+      { text: 'All ketones', correct: false }
+    ],
+    explanation: 'Fehling\'s test gives a red precipitate (Cu₂O) with ALIPHATIC aldehydes only. Aromatic aldehydes (like benzaldehyde) and ketones do NOT give this test.',
+    points: 3,
+    difficulty: 0.3,
+    discrimination: 1.3,
+    guessing: 0.25,
+    difficulty_level: 'medium'
+  },
+  {
+    quiz: quiz_8_2,
+    question_type: 'true_false',
+    question_text: 'Both aldehydes and ketones give a positive 2,4-DNP test.',
+    correct_answer: true,
+    explanation: 'TRUE. The 2,4-DNP (2,4-dinitrophenylhydrazine) test is positive for all compounds containing a carbonyl group (C=O), including both aldehydes and ketones. Yellow/orange precipitate forms.',
+    points: 2,
+    difficulty: 0.1,
+    discrimination: 1.1,
+    guessing: 0.5,
+    difficulty_level: 'easy'
+  }
+])
+
+puts "✅ Quiz 8.2 created with 10 questions"
+
+puts "\n" + "="*80
+puts "Module 8: Practical Organic Chemistry Complete!"
+puts "="*80
+puts "✅ 2 comprehensive lessons covering:"
+puts "   - Basic laboratory techniques and purification"
+puts "   - Qualitative analysis and detection tests"
+puts "✅ 2 quizzes with 19 questions total"
+puts "="*80
+puts "\n"
+puts "="*80
+puts "ALL THREE ORGANIC CHEMISTRY MODULES CREATED SUCCESSFULLY!"
+puts "="*80
+puts "📚 Module 6: Stereochemistry (3 lessons, 3 quizzes, 25 questions)"
+puts "📚 Module 7: Aromatic Compounds (3 lessons, 3 quizzes, 29 questions)"
+puts "📚 Module 8: Practical Organic Chemistry (2 lessons, 2 quizzes, 19 questions)"
+puts "="*80
+puts "Total: 8 lessons, 8 quizzes, 73 questions"
+puts "="*80

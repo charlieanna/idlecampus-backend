@@ -1,0 +1,58 @@
+slug: gaslaws-practice
+title: gas_laws — Practice
+difficulty: easy
+sequence_order: 8
+estimated_minutes: 2
+key_concepts:
+- gas_laws
+prerequisites: []
+content_md: '# gas_laws — Practice 🚀
+
+
+  Using Charles\
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: 'A gas at 300 K occupies 5 L. What volume will it occupy at 450 K if pressure is constant (using Charles'' Law)?'
+  options:
+  - 3.33 L
+  - 5.0 L
+  - 7.5 L
+  - 10.0 L
+  require_pass: true
+  correct_answer: 7.5 L
+  explanation: 'According to Charles'' Law, V₁/T₁ = V₂/T₂ at constant pressure. Given: V₁ = 5 L, T₁ = 300 K, T₂ = 450 K. Solving: V₂ = V₁ × (T₂/T₁) = 5 × (450/300) = 5 × 1.5 = 7.5 L. Charles'' Law states that the volume of a gas is directly proportional to its absolute temperature when pressure is constant. When temperature increases from 300 K to 450 K (a 1.5-fold increase), the volume also increases by the same factor. This relationship is fundamental to understanding thermal expansion of gases and is one of the three classical gas laws that combine to form the ideal gas equation.'
+- type: mcq
+  sequence_order: 2
+  question: 'If the pressure of a gas is doubled while temperature remains constant, what happens to its volume (Boyle''s Law)?'
+  options:
+  - Doubles
+  - Halves
+  - Remains the same
+  - Quadruples
+  require_pass: true
+  correct_answer: Halves
+  explanation: 'According to Boyle''s Law, P₁V₁ = P₂V₂ at constant temperature. If P₂ = 2P₁, then: P₁V₁ = 2P₁V₂, which gives V₂ = V₁/2. Boyle''s Law states that pressure and volume are inversely proportional for a fixed amount of gas at constant temperature. This means: (1) If pressure increases, volume decreases proportionally, (2) If pressure decreases, volume increases proportionally, (3) The product PV remains constant. Practical applications include: breathing (diaphragm changes lung volume, affecting pressure), syringes, hydraulic systems, and scuba diving (gas compression at depth). The inverse relationship explains why gases are compressible unlike liquids and solids.'
+- type: mcq
+  sequence_order: 3
+  question: 'According to Gay-Lussac''s Law, if the temperature of a gas in a rigid container increases from 300 K to 600 K, what happens to the pressure?'
+  options:
+  - Remains the same
+  - Doubles
+  - Halves
+  - Quadruples
+  require_pass: true
+  correct_answer: Doubles
+  explanation: 'Gay-Lussac''s Law states that P₁/T₁ = P₂/T₂ at constant volume. Given: T₁ = 300 K, T₂ = 600 K. Therefore: P₂/P₁ = T₂/T₁ = 600/300 = 2, meaning P₂ = 2P₁ (pressure doubles). This law shows that pressure is directly proportional to absolute temperature when volume is constant. Physical explanation: As temperature increases, gas molecules move faster (higher kinetic energy), colliding with container walls more frequently and with greater force, increasing pressure. This relationship is critical for: (1) Pressure cookers (higher temperature → higher pressure → faster cooking), (2) Aerosol can warnings (heating can cause explosion), (3) Tire pressure changes with weather (pressure increases in summer, decreases in winter). The law only applies when using absolute temperature (Kelvin), not Celsius.'

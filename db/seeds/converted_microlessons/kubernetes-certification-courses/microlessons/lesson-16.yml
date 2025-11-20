@@ -1,0 +1,86 @@
+slug: lesson-16
+title: Lesson 16
+difficulty: easy
+sequence_order: 16
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Admission Controllers\n\n    - Mutating\
+  \ vs Validating webhooks\n    - Common built-in controllers"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What is the difference between Mutating and Validating admission webhooks?
+  options:
+  - Mutating webhooks reject requests; Validating webhooks modify them
+  - Mutating webhooks can modify requests before they're persisted; Validating webhooks
+    only approve or reject
+  - They are the same, just different names
+  - Mutating webhooks are for users; Validating webhooks are for service accounts
+  correct_answer: Mutating webhooks can modify requests before they're persisted;
+    Validating webhooks only approve or reject
+  explanation: 'Admission webhooks are HTTP callbacks that intercept API requests
+    after authentication and authorization but before objects are persisted to etcd.
+    They come in two types with distinct purposes: Mutating Admission Webhooks can
+    modify (mutate) the incoming object before it''s stored. Common use cases include:
+    injecting sidecar containers (like Istio''s Envoy proxy), setting default values
+    (adding resource limits if none specified), adding labels or annotations, and
+    modifying security contexts. For example, a mutating webhook might automatically
+    add ''sidecar.istio.io/inject: "true"'' annotation or inject an init container.
+    Validating Admission Webhooks can only accept or reject requests - they cannot
+    modify objects. They enforce custom policies beyond what Kubernetes natively supports.
+    Examples: enforcing naming conventions (reject pods not following ''team-app-env''
+    pattern), requiring specific labels or annotations, blocking privileged containers
+    in production namespaces, or enforcing image registry restrictions (only allow
+    images from approved registries). The admission process: Request -> Mutating Webhooks
+    (modify) -> Validating Webhooks (approve/reject) -> Persist to etcd. Multiple
+    webhooks can be chained, with mutating webhooks running first, then validating
+    webhooks verify the final object. Both types are implemented as external HTTPS
+    services, configured via MutatingWebhookConfiguration or ValidatingWebhookConfiguration
+    resources. Tools like OPA Gatekeeper, Kyverno, and Pod Security Admission use
+    these mechanisms. Understanding webhooks is crucial for implementing custom policies,
+    automating configurations, and extending Kubernetes functionality beyond built-in
+    capabilities.'
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What are some common built-in admission controllers in Kubernetes?
+  options:
+  - Only custom webhooks exist; there are no built-in controllers
+  - NamespaceLifecycle, LimitRanger, ResourceQuota, and PodSecurity
+  - Only RBAC and authentication controllers
+  - Built-in controllers are deprecated
+  correct_answer: NamespaceLifecycle, LimitRanger, ResourceQuota, and PodSecurity
+  explanation: 'Kubernetes includes numerous built-in admission controllers compiled
+    into the API server that enforce policies and set defaults. Key built-in controllers
+    include: NamespaceLifecycle prevents creating objects in non-existent or terminating
+    namespaces, and prevents deleting kube-system/kube-public/kube-node-lease namespaces.
+    LimitRanger enforces LimitRange constraints in namespaces, setting default resource
+    requests/limits and validating min/max values. ResourceQuota enforces ResourceQuota
+    limits, preventing object creation if quotas would be exceeded. PodSecurity (formerly
+    PodSecurityPolicy) enforces Pod Security Standards (Privileged, Baseline, Restricted)
+    via namespace labels. ServiceAccount automatically adds a ServiceAccount to pods
+    that don''t specify one and mounts its token. DefaultStorageClass adds default
+    StorageClass to PVCs without one. MutatingAdmissionWebhook and ValidatingAdmissionWebhook
+    enable custom webhook-based admission. PersistentVolumeClaimResize allows PVC
+    expansion. NodeRestriction limits kubelet permissions to modify only its own node
+    and pods. These controllers are enabled/disabled via API server flags ''--enable-admission-plugins''
+    and ''--disable-admission-plugins''. For example, ''--enable-admission-plugins=NamespaceLifecycle,LimitRanger,ServiceAccount,DefaultStorageClass,ResourceQuota,PodSecurity''.
+    Different Kubernetes versions have different default enabled controllers. Built-in
+    controllers provide essential cluster functionality and security - for instance,
+    without ServiceAccount controller, pods wouldn''t get tokens for API access. Understanding
+    which controllers are enabled helps troubleshoot why certain policies are enforced
+    or why objects are being modified/rejected.'
+  require_pass: true
+- type: mcq
+  sequence_order: 1
+  question: What kubectl command checks if you can perform an action?
+  options:
+  - kubectl auth can-i create pods
+  - kubectl check permissions create pods
+  - kubectl verify action create pods
+  - kubectl test auth create pods
+  correct_answer_index: 0
+  explanation: kubectl auth can-i <action> <resource> checks if the current user has
+    permission to perform the specified action.
+  require_pass: true

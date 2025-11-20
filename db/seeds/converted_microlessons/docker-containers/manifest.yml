@@ -1,0 +1,30 @@
+course:
+  slug: docker-containers
+  title: Docker Containers
+  description: ''
+  estimated_hours: null
+  level: null
+modules:
+- slug: default
+  title: Default Module
+  lessons:
+  - docker-container-stop-gracefully-stop-containers
+  - docker-container-kill-forcefully-stop-containers
+  - docker-container-prune-batch-container-cleanup
+  - docker-cp-copy-files-between-container-and-host
+  - docker-diff-inspect-container-filesystem-changes
+  - docker-export-export-container-filesystem-as-archive
+  - docker-stats-live-resource-usage-statistics
+  - docker-top-display-running-processes-in-container
+  - docker-update-update-container-configuration
+  - docker-port-list-port-mappings
+  - docker-rename-rename-a-container
+  - docker-container-ls-list-containers
+  - docker-container-create-create-container-without-starting
+  - docker-container-start-start-stopped-containers
+  - docker-container-restart-stop-and-start-containers
+  - docker-container-rm-remove-containers
+  - docker-container-inspect-detailed-container-information
+  - docker-container-logs-view-container-output
+  - docker-container-exec-run-commands-in-container
+  - docker-container-wait-block-until-container-stops

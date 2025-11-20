@@ -1,0 +1,349 @@
+slug: lesson-1
+title: Lesson 1
+difficulty: easy
+sequence_order: 1
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Web Performance Metrics and Optimization\n\
+  \n    Performance directly impacts user experience, conversion rates, and SEO rankings.\
+  \ Understanding and optimizing Core Web Vitals is essential for modern web development.\n\
+  \n    ## Core Web Vitals\n\n    Google's Core Web Vitals measure real-world user\
+  \ experience across three dimensions:\n\n    ### 1. Largest Contentful Paint (LCP)\n\
+  \n    **Measures loading performance** - when the largest content element becomes\
+  \ visible.\n\n    **Target: < 2.5 seconds**\n\n    ```javascript\n    // Measuring\
+  \ LCP with PerformanceObserver\n    const observer = new PerformanceObserver((list)\
+  \ => {\n      const entries = list.getEntries();\n      const lastEntry = entries[entries.length\
+  \ - 1];\n\n      console.log('LCP:', lastEntry.renderTime || lastEntry.loadTime);\n\
+  \      console.log('LCP Element:', lastEntry.element);\n    });\n\n    observer.observe({\
+  \ type: 'largest-contentful-paint', buffered: true });\n    ```\n\n    **Common\
+  \ LCP elements:**\n    - Hero images\n    - Video thumbnails\n    - Background images\
+  \ via CSS\n    - Text blocks\n\n    **How to optimize LCP:**\n\n    ```html\n  \
+  \  <!-- 1. Preload critical resources -->\n    <link rel=\"preload\" as=\"image\"\
+  \ href=\"/hero.jpg\" fetchpriority=\"high\">\n\n    <!-- 2. Use appropriate image\
+  \ formats -->\n    <picture>\n      <source srcset=\"/hero.webp\" type=\"image/webp\"\
+  >\n      <source srcset=\"/hero.avif\" type=\"image/avif\">\n      <img src=\"/hero.jpg\"\
+  \ alt=\"Hero\" width=\"1200\" height=\"600\">\n    </picture>\n\n    <!-- 3. Optimize\
+  \ server response time -->\n    <!-- Use CDN, HTTP/2, server-side caching -->\n\
+  \    ```\n\n    ### 2. First Input Delay (FID) / Interaction to Next Paint (INP)\n\
+  \n    **Measures interactivity** - time from user interaction to browser response.\n\
+  \n    **Target FID: < 100ms | Target INP: < 200ms**\n\n    ```javascript\n    //\
+  \ Measuring FID\n    const observer = new PerformanceObserver((list) => {\n    \
+  \  for (const entry of list.getEntries()) {\n        const FID = entry.processingStart\
+  \ - entry.startTime;\n        console.log('FID:', FID);\n\n        // Send to analytics\n\
+  \        gtag('event', 'web_vitals', {\n          event_category: 'Web Vitals',\n\
+  \          event_label: 'FID',\n          value: Math.round(FID)\n        });\n\
+  \      }\n    });\n\n    observer.observe({ type: 'first-input', buffered: true\
+  \ });\n    ```\n\n    **How to optimize FID/INP:**\n\n    ```javascript\n    //\
+  \ 1. Break up long tasks\n    // Bad: Blocking task\n    function processLargeArray(items)\
+  \ {\n      items.forEach(item => {\n        // Heavy processing\n        processItem(item);\n\
+  \      });\n    }\n\n    // Good: Yield to main thread\n    async function processLargeArray(items)\
+  \ {\n      for (let i = 0; i < items.length; i++) {\n        processItem(items[i]);\n\
+  \n        // Yield to browser every 50ms\n        if (i % 100 === 0) {\n       \
+  \   await new Promise(resolve => setTimeout(resolve, 0));\n        }\n      }\n\
+  \    }\n\n    // 2. Use web workers for heavy computation\n    // main.js\n    const\
+  \ worker = new Worker('worker.js');\n    worker.postMessage({ data: largeDataset\
+  \ });\n    worker.onmessage = (e) => {\n      console.log('Result:', e.data);\n\
+  \    };\n\n    // worker.js\n    self.onmessage = (e) => {\n      const result =\
+  \ heavyComputation(e.data);\n      self.postMessage(result);\n    };\n\n    // 3.\
+  \ Defer non-critical JavaScript\n    // Use async/defer attributes\n    ```\n\n\
+  \    ### 3. Cumulative Layout Shift (CLS)\n\n    **Measures visual stability** -\
+  \ unexpected layout shifts during page load.\n\n    **Target: < 0.1**\n\n    ```javascript\n\
+  \    // Measuring CLS\n    let clsScore = 0;\n\n    const observer = new PerformanceObserver((list)\
+  \ => {\n      for (const entry of list.getEntries()) {\n        if (!entry.hadRecentInput)\
+  \ {\n          clsScore += entry.value;\n          console.log('CLS:', clsScore);\n\
+  \          console.log('Shifted element:', entry.sources);\n        }\n      }\n\
+  \    });\n\n    observer.observe({ type: 'layout-shift', buffered: true });\n  \
+  \  ```\n\n    **How to optimize CLS:**\n\n    ```html\n    <!-- 1. Always set image\
+  \ dimensions -->\n    <img src=\"/image.jpg\" width=\"800\" height=\"600\" alt=\"\
+  Photo\">\n\n    <!-- 2. Reserve space for ads/embeds -->\n    <div class=\"ad-container\"\
+  \ style=\"min-height: 250px;\">\n      <!-- Ad loads here -->\n    </div>\n\n  \
+  \  <!-- 3. Use aspect ratio boxes -->\n    <style>\n      .video-container {\n \
+  \       aspect-ratio: 16 / 9;\n        width: 100%;\n      }\n    </style>\n   \
+  \ <div class=\"video-container\">\n      <iframe src=\"video.mp4\"></iframe>\n \
+  \   </div>\n\n    <!-- 4. Preload fonts to avoid FOIT/FOUT -->\n    <link rel=\"\
+  preload\" href=\"/fonts/main.woff2\" as=\"font\" type=\"font/woff2\" crossorigin>\n\
+  \    ```\n\n    ## Lighthouse Scoring\n\n    Lighthouse audits performance across\
+  \ multiple categories:\n\n    ```javascript\n    // Run Lighthouse programmatically\n\
+  \    const lighthouse = require('lighthouse');\n    const chromeLauncher = require('chrome-launcher');\n\
+  \n    async function runLighthouse(url) {\n      const chrome = await chromeLauncher.launch({\
+  \ chromeFlags: ['--headless'] });\n\n      const options = {\n        logLevel:\
+  \ 'info',\n        output: 'json',\n        port: chrome.port\n      };\n\n    \
+  \  const runnerResult = await lighthouse(url, options);\n\n      // Performance\
+  \ score\n      console.log('Performance:', runnerResult.lhr.categories.performance.score\
+  \ * 100);\n\n      // Core Web Vitals\n      console.log('LCP:', runnerResult.lhr.audits['largest-contentful-paint'].numericValue);\n\
+  \      console.log('TBT:', runnerResult.lhr.audits['total-blocking-time'].numericValue);\n\
+  \      console.log('CLS:', runnerResult.lhr.audits['cumulative-layout-shift'].numericValue);\n\
+  \n      await chrome.kill();\n    }\n    ```\n\n    **Lighthouse scoring weights:**\n\
+  \    - First Contentful Paint: 10%\n    - Speed Index: 10%\n    - Largest Contentful\
+  \ Paint: 25%\n    - Total Blocking Time: 30%\n    - Cumulative Layout Shift: 25%\n\
+  \n    ## Critical Rendering Path\n\n    Understanding how browsers render pages\
+  \ is key to optimization:\n\n    ```\n    HTML → DOM Tree\n    CSS  → CSSOM Tree\n\
+  \              ↓\n        Render Tree\n              ↓\n          Layout\n     \
+  \         ↓\n           Paint\n              ↓\n         Composite\n    ```\n\n\
+  \    ### Optimizing Critical Rendering Path\n\n    ```html\n    <!DOCTYPE html>\n\
+  \    <html>\n    <head>\n      <!-- 1. Inline critical CSS -->\n      <style>\n\
+  \        /* Above-the-fold styles */\n        .hero { background: #fff; padding:\
+  \ 20px; }\n        .nav { display: flex; }\n      </style>\n\n      <!-- 2. Preload\
+  \ critical resources -->\n      <link rel=\"preload\" as=\"style\" href=\"/styles.css\"\
+  >\n      <link rel=\"preload\" as=\"script\" href=\"/main.js\">\n\n      <!-- 3.\
+  \ Load non-critical CSS asynchronously -->\n      <link rel=\"preload\" as=\"style\"\
+  \ href=\"/non-critical.css\"\n            onload=\"this.onload=null;this.rel='stylesheet'\"\
+  >\n      <noscript><link rel=\"stylesheet\" href=\"/non-critical.css\"></noscript>\n\
+  \n      <!-- 4. Defer JavaScript -->\n      <script src=\"/main.js\" defer></script>\n\
+  \    </head>\n    <body>\n      <!-- Content -->\n    </body>\n    </html>\n   \
+  \ ```\n\n    ## Resource Loading Optimization\n\n    ### Resource Hints\n\n    ```html\n\
+  \    <!-- DNS Prefetch: Resolve DNS early -->\n    <link rel=\"dns-prefetch\" href=\"\
+  //api.example.com\">\n\n    <!-- Preconnect: Establish connection early -->\n  \
+  \  <link rel=\"preconnect\" href=\"https://cdn.example.com\" crossorigin>\n\n  \
+  \  <!-- Prefetch: Load for next navigation -->\n    <link rel=\"prefetch\" href=\"\
+  /next-page.html\">\n\n    <!-- Preload: Load critical resource immediately -->\n\
+  \    <link rel=\"preload\" href=\"/critical.js\" as=\"script\">\n\n    <!-- Prerender:\
+  \ Render entire page in background (use sparingly) -->\n    <link rel=\"prerender\"\
+  \ href=\"/next-page.html\">\n    ```\n\n    ### Priority Hints\n\n    ```html\n\
+  \    <!-- High priority for hero image -->\n    <img src=\"/hero.jpg\" fetchpriority=\"\
+  high\" alt=\"Hero\">\n\n    <!-- Low priority for below-fold images -->\n    <img\
+  \ src=\"/footer-logo.jpg\" fetchpriority=\"low\" alt=\"Logo\">\n\n    <!-- High\
+  \ priority for critical script -->\n    <script src=\"/critical.js\" fetchpriority=\"\
+  high\"></script>\n    ```\n\n    ## Image Optimization\n\n    ### Modern Image Formats\n\
+  \n    ```html\n    <!-- Use picture element for format fallbacks -->\n    <picture>\n\
+  \      <!-- AVIF: Best compression (60% smaller than JPEG) -->\n      <source srcset=\"\
+  /image.avif\" type=\"image/avif\">\n\n      <!-- WebP: Good compression (30% smaller\
+  \ than JPEG) -->\n      <source srcset=\"/image.webp\" type=\"image/webp\">\n\n\
+  \      <!-- JPEG: Fallback for older browsers -->\n      <img src=\"/image.jpg\"\
+  \ alt=\"Description\" width=\"800\" height=\"600\">\n    </picture>\n    ```\n\n\
+  \    ### Responsive Images\n\n    ```html\n    <!-- Serve different sizes based\
+  \ on viewport -->\n    <img\n      src=\"/image-800.jpg\"\n      srcset=\"\n   \
+  \     /image-400.jpg 400w,\n        /image-800.jpg 800w,\n        /image-1200.jpg\
+  \ 1200w,\n        /image-1600.jpg 1600w\n      \"\n      sizes=\"\n        (max-width:\
+  \ 400px) 400px,\n        (max-width: 800px) 800px,\n        (max-width: 1200px)\
+  \ 1200px,\n        1600px\n      \"\n      alt=\"Responsive image\"\n      width=\"\
+  1600\"\n      height=\"900\"\n    >\n    ```\n\n    ### Lazy Loading\n\n    ```html\n\
+  \    <!-- Native lazy loading -->\n    <img src=\"/image.jpg\" loading=\"lazy\"\
+  \ alt=\"Lazy image\">\n\n    <!-- JavaScript implementation with Intersection Observer\
+  \ -->\n    <script>\n      const images = document.querySelectorAll('img[data-src]');\n\
+  \n      const imageObserver = new IntersectionObserver((entries, observer) => {\n\
+  \        entries.forEach(entry => {\n          if (entry.isIntersecting) {\n   \
+  \         const img = entry.target;\n            img.src = img.dataset.src;\n  \
+  \          img.removeAttribute('data-src');\n            observer.unobserve(img);\n\
+  \          }\n        });\n      }, {\n        rootMargin: '50px' // Load 50px before\
+  \ entering viewport\n      });\n\n      images.forEach(img => imageObserver.observe(img));\n\
+  \    </script>\n    ```\n\n    ### Image Compression\n\n    ```javascript\n    //\
+  \ Using sharp for server-side optimization\n    const sharp = require('sharp');\n\
+  \n    async function optimizeImage(inputPath, outputPath) {\n      await sharp(inputPath)\n\
+  \        .resize(1200, 900, { fit: 'cover' })\n        .webp({ quality: 80 })\n\
+  \        .toFile(outputPath);\n    }\n\n    // Generate multiple formats\n    async\
+  \ function generateResponsiveImages(input) {\n      const sizes = [400, 800, 1200,\
+  \ 1600];\n\n      for (const size of sizes) {\n        // WebP\n        await sharp(input)\n\
+  \          .resize(size)\n          .webp({ quality: 80 })\n          .toFile(`image-${size}.webp`);\n\
+  \n        // AVIF\n        await sharp(input)\n          .resize(size)\n       \
+  \   .avif({ quality: 75 })\n          .toFile(`image-${size}.avif`);\n\n       \
+  \ // JPEG fallback\n        await sharp(input)\n          .resize(size)\n      \
+  \    .jpeg({ quality: 85 })\n          .toFile(`image-${size}.jpg`);\n      }\n\
+  \    }\n    ```\n\n    ## Font Optimization\n\n    ### Font Loading Strategies\n\
+  \n    ```html\n    <head>\n      <!-- 1. Preload critical fonts -->\n      <link\
+  \ rel=\"preload\" href=\"/fonts/main.woff2\"\n            as=\"font\" type=\"font/woff2\"\
+  \ crossorigin>\n\n      <!-- 2. Use font-display for control -->\n      <style>\n\
+  \        @font-face {\n          font-family: 'MainFont';\n          src: url('/fonts/main.woff2')\
+  \ format('woff2');\n          font-display: swap; /* Show fallback immediately */\n\
+  \          font-weight: 400;\n          font-style: normal;\n        }\n\n     \
+  \   /* Optional: Reduce layout shift */\n        @font-face {\n          font-family:\
+  \ 'MainFont';\n          src: local('Arial'); /* Use system font as fallback */\n\
+  \          size-adjust: 95%; /* Match x-height of web font */\n          ascent-override:\
+  \ 90%;\n          descent-override: 20%;\n        }\n      </style>\n    </head>\n\
+  \    ```\n\n    ### Font Display Options\n\n    ```css\n    @font-face {\n     \
+  \ font-family: 'MyFont';\n      src: url('/font.woff2') format('woff2');\n\n   \
+  \   /* font-display options */\n      font-display: auto;     /* Browser default\
+  \ (usually block) */\n      font-display: block;    /* Hide text up to 3s, then\
+  \ swap */\n      font-display: swap;     /* Show fallback immediately, swap when\
+  \ loaded */\n      font-display: fallback; /* 100ms invisible, 3s swap period, then\
+  \ stick with fallback */\n      font-display: optional; /* 100ms block, browser\
+  \ decides to swap or not */\n    }\n    ```\n\n    ### Subsetting Fonts\n\n    ```javascript\n\
+  \    // Using glyphhanger to subset fonts\n    // Install: npm install -g glyphhanger\n\
+  \n    // Generate subset for specific characters\n    // glyphhanger --subset=font.ttf\
+  \ --whitelist=\"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789\"\
+  \n\n    // In CSS, use unicode-range\n    @font-face {\n      font-family: 'MyFont';\n\
+  \      src: url('/font-latin.woff2') format('woff2');\n      unicode-range: U+0000-00FF;\
+  \ /* Latin characters only */\n    }\n\n    @font-face {\n      font-family: 'MyFont';\n\
+  \      src: url('/font-extended.woff2') format('woff2');\n      unicode-range: U+0100-017F;\
+  \ /* Latin Extended */\n    }\n    ```\n\n    ### Variable Fonts\n\n    ```css\n\
+  \    /* Use variable fonts to reduce file count */\n    @font-face {\n      font-family:\
+  \ 'MyVariableFont';\n      src: url('/font-variable.woff2') format('woff2-variations');\n\
+  \      font-weight: 100 900; /* Entire weight range in one file */\n      font-display:\
+  \ swap;\n    }\n\n    .heading {\n      font-family: 'MyVariableFont';\n      font-weight:\
+  \ 700; /* Interpolated from variable font */\n    }\n\n    .body {\n      font-family:\
+  \ 'MyVariableFont';\n      font-weight: 400;\n    }\n    ```\n\n    ## Performance\
+  \ Monitoring\n\n    ### Using Performance API\n\n    ```javascript\n    // Navigation\
+  \ Timing\n    const perfData = performance.getEntriesByType('navigation')[0];\n\
+  \    console.log('DNS lookup:', perfData.domainLookupEnd - perfData.domainLookupStart);\n\
+  \    console.log('TCP connection:', perfData.connectEnd - perfData.connectStart);\n\
+  \    console.log('Request:', perfData.responseStart - perfData.requestStart);\n\
+  \    console.log('Response:', perfData.responseEnd - perfData.responseStart);\n\
+  \    console.log('DOM Processing:', perfData.domComplete - perfData.domLoading);\n\
+  \n    // Resource Timing\n    const resources = performance.getEntriesByType('resource');\n\
+  \    resources.forEach(resource => {\n      console.log(`${resource.name}: ${resource.duration}ms`);\n\
+  \    });\n\n    // Custom marks and measures\n    performance.mark('operation-start');\n\
+  \    // ... perform operation\n    performance.mark('operation-end');\n    performance.measure('operation',\
+  \ 'operation-start', 'operation-end');\n\n    const measure = performance.getEntriesByName('operation')[0];\n\
+  \    console.log('Operation took:', measure.duration, 'ms');\n    ```\n\n    ##\
+  \ Best Practices Summary\n\n    1. **Measure First**: Use Lighthouse, WebPageTest,\
+  \ and real user monitoring\n    2. **Optimize Images**: Use modern formats (AVIF,\
+  \ WebP), responsive images, lazy loading\n    3. **Minimize Critical Resources**:\
+  \ Inline critical CSS, defer non-critical JavaScript\n    4. **Use Resource Hints**:\
+  \ Preconnect to important origins, preload critical resources\n    5. **Optimize\
+  \ Fonts**: Preload critical fonts, use font-display: swap, subset fonts\n    6.\
+  \ **Reduce Layout Shifts**: Set image dimensions, reserve space for dynamic content\n\
+  \    7. **Monitor Continuously**: Track Core Web Vitals in production with RUM\n\
+  \n    Performance is not a one-time task but an ongoing process. Set performance\
+  \ budgets and monitor them continuously."
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What are Google's Core Web Vitals, and how do LCP, FID/INP, and CLS measure
+    different aspects of user experience?
+  options:
+  - Core Web Vitals measure server performance only; not related to user experience
+  - LCP (Largest Contentful Paint) measures loading (<2.5s target), FID/INP measure
+    interactivity (<100ms/<200ms targets), CLS (Cumulative Layout Shift) measures
+    visual stability (<0.1 target)
+  - All three metrics measure page load time; they are redundant measurements
+  - LCP measures bandwidth; FID measures CPU; CLS measures memory usage
+  correct_answer: LCP (Largest Contentful Paint) measures loading (<2.5s target),
+    FID/INP measure interactivity (<100ms/<200ms targets), CLS (Cumulative Layout
+    Shift) measures visual stability (<0.1 target)
+  explanation: 'Core Web Vitals are Google''s standardized metrics for measuring real-world
+    user experience across the web, directly impacting SEO rankings and user satisfaction.
+    These three metrics capture distinct dimensions of UX. 1. LARGEST CONTENTFUL PAINT
+    (LCP) - LOADING PERFORMANCE: Measures when the largest content element in the
+    viewport becomes visible. Represents perceived loading speed from user perspective.
+    TARGET: < 2.5 seconds (Good), 2.5-4.0s (Needs Improvement), > 4.0s (Poor). Common
+    LCP elements: hero images, video thumbnails, large text blocks, background images
+    loaded via CSS. Measured using PerformanceObserver API with type: "largest-contentful-paint".
+    OPTIMIZATION: Preload critical resources (<link rel="preload" as="image" href="/hero.jpg"
+    fetchpriority="high">), use modern image formats (AVIF, WebP), optimize server
+    response time (TTFB), use CDN, enable HTTP/2, minimize render-blocking resources.
+    2. FIRST INPUT DELAY (FID) / INTERACTION TO NEXT PAINT (INP) - INTERACTIVITY:
+    FID measures time from first user interaction (click, tap, key press) to when
+    browser can respond. INP (replacing FID in 2024) measures responsiveness across
+    all interactions during page lifetime. TARGET: FID < 100ms (Good), INP < 200ms
+    (Good). Captures "input lag" caused by long-running JavaScript blocking main thread.
+    OPTIMIZATION: Break up long tasks (yield to main thread with setTimeout or await
+    new Promise(resolve => setTimeout(resolve, 0))), use Web Workers for heavy computation,
+    defer non-critical JavaScript (async/defer attributes), code-split large bundles,
+    reduce JavaScript execution time. 3. CUMULATIVE LAYOUT SHIFT (CLS) - VISUAL STABILITY:
+    Measures unexpected layout shifts during page load (elements moving after initial
+    render). Calculated as sum of shift scores for each unexpected movement. TARGET:
+    < 0.1 (Good), 0.1-0.25 (Needs Improvement), > 0.25 (Poor). Common causes: images
+    without dimensions, ads/embeds without reserved space, web fonts causing FOIT/FOUT,
+    dynamically injected content. OPTIMIZATION: Always set width/height on images
+    and video, reserve space for ads/dynamic content (min-height), use aspect-ratio
+    CSS property, preload fonts with font-display: swap, avoid inserting content above
+    existing content unless in response to user interaction. WHY IT MATTERS: Google
+    uses Core Web Vitals as ranking signals. Poor metrics correlate with higher bounce
+    rates and lower conversions. Real User Monitoring (RUM) in production captures
+    actual user experiences across devices and networks.'
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What is the difference between preload, prefetch, and preconnect resource
+    hints, and when should you use each?
+  options:
+  - All three are identical; use any for the same purpose
+  - Preload loads critical resources for current page immediately (high priority);
+    prefetch loads resources for next navigation (low priority); preconnect establishes
+    early connection to origin (DNS+TCP+TLS)
+  - Prefetch has highest priority; preload has lowest priority
+  - Preconnect loads entire pages; preload and prefetch only load JavaScript
+  correct_answer: Preload loads critical resources for current page immediately (high
+    priority); prefetch loads resources for next navigation (low priority); preconnect
+    establishes early connection to origin (DNS+TCP+TLS)
+  explanation: 'Resource hints are HTML link rel attributes that help browsers optimize
+    resource loading by providing advance information about what resources will be
+    needed. Each hint serves a distinct purpose with different timing and priority.
+    1. PRELOAD - CRITICAL RESOURCES FOR CURRENT PAGE: Syntax: <link rel="preload"
+    href="/critical.js" as="script">. Tells browser to fetch resource immediately
+    at high priority, even before HTML parser discovers it. Use cases: (1) Fonts needed
+    for above-the-fold content (<link rel="preload" href="/fonts/main.woff2" as="font"
+    type="font/woff2" crossorigin> - note crossorigin required for fonts), (2) Critical
+    CSS or JavaScript, (3) Hero images that would normally be discovered late (<link
+    rel="preload" href="/hero.jpg" as="image" fetchpriority="high">), (4) Dynamically
+    loaded modules that are definitely needed. Timing: Resource is fetched immediately
+    in parallel with HTML parsing. Priority: High (same as parser-blocking resources).
+    WARNING: Don''t overuse - preloading too many resources can delay other critical
+    resources. Only preload truly critical resources. 2. PREFETCH - RESOURCES FOR
+    NEXT NAVIGATION: Syntax: <link rel="prefetch" href="/next-page.html">. Tells browser
+    to fetch resource during idle time for likely future navigation. Use cases: (1)
+    Next page in a flow (e.g., step 2 of checkout after step 1), (2) Resources likely
+    to be needed based on analytics (90% of users visit /products after /home), (3)
+    Images/scripts for pages user is likely to navigate to. Timing: Fetched during
+    browser idle time (low priority, doesn''t compete with current page resources).
+    Priority: Lowest - only fetched when network is idle. Stored in HTTP cache. Not
+    executed/rendered until navigation occurs. 3. PRECONNECT - EARLY CONNECTION SETUP:
+    Syntax: <link rel="preconnect" href="https://cdn.example.com" crossorigin>. Tells
+    browser to establish early connection to a third-party origin (perform DNS resolution,
+    TCP handshake, TLS negotiation). Use cases: (1) CDN origins where you''ll load
+    resources (<link rel="preconnect" href="https://cdn.cloudflare.com">), (2) API
+    endpoints you''ll fetch from, (3) Third-party fonts (Google Fonts, Typekit), (4)
+    Analytics/tracking scripts. Timing: Connection established early, before resources
+    are requested. Saves 100-500ms of connection overhead when resource is actually
+    fetched. Benefit: Reduces latency when you know you''ll need resources from an
+    origin but don''t know exact URLs yet. For known URLs, use preload instead. 4.
+    DNS-PREFETCH (RELATED): <link rel="dns-prefetch" href="//api.example.com">. Only
+    performs DNS resolution (subset of preconnect). Use when you want to resolve DNS
+    for many origins without full connection overhead. DECISION TREE: Critical resource
+    for current page whose URL you know → preload. Connection to origin you''ll use
+    but don''t know exact URLs → preconnect. Resource for next navigation → prefetch.
+    Just DNS for multiple origins → dns-prefetch.'
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: What is the purpose of the font-display CSS property, and how do the different
+    values (swap, block, fallback, optional) affect the Flash of Invisible Text (FOIT)
+    and Flash of Unstyled Text (FOUT)?
+  options:
+  - font-display controls font size; has no effect on text rendering during load
+  - 'font-display controls how text is displayed while web fonts load: swap shows
+    fallback immediately (FOUT), block hides text briefly (FOIT), fallback/optional
+    balance visibility and font consistency'
+  - All font-display values cause FOIT; no way to avoid invisible text
+  - font-display only works with Google Fonts; has no effect on self-hosted fonts
+  correct_answer: 'font-display controls how text is displayed while web fonts load:
+    swap shows fallback immediately (FOUT), block hides text briefly (FOIT), fallback/optional
+    balance visibility and font consistency'
+  explanation: 'The font-display property in @font-face rules controls the font loading
+    timeline, addressing the trade-off between showing text immediately with a fallback
+    font (FOUT - Flash of Unstyled Text) vs waiting for the web font to load (FOIT
+    - Flash of Invisible Text). Understanding these behaviors is critical for optimizing
+    perceived performance and Core Web Vitals (LCP, CLS). FONT LOADING TIMELINE: Browsers
+    divide font loading into periods: (1) Block period: Browser hides text (invisible)
+    while waiting for font, (2) Swap period: If font hasn''t loaded, browser shows
+    fallback font, swaps to web font when loaded, (3) Failure period: If font still
+    hasn''t loaded, browser sticks with fallback font. FONT-DISPLAY VALUES: 1. font-display:
+    block - FOIT BEHAVIOR: Block period: ~3000ms (3 seconds). Browser hides text for
+    up to 3s waiting for font. If font loads within 3s, renders with web font (no
+    flash). If font hasn''t loaded after 3s, shows fallback font, swaps when web font
+    arrives. Swap period: Infinite. Use case: Brand-critical fonts where FOUT would
+    be jarring (logos, headings where brand consistency is paramount). Risk: Text
+    invisible for up to 3s → terrible for LCP. 2. font-display: swap - FOUT BEHAVIOR
+    (RECOMMENDED): Block period: ~0ms (extremely short, ~100ms). Shows fallback font
+    almost immediately. Swap period: Infinite. Always swaps to web font when it loads,
+    regardless of timing. Use case: Body text, any text where visibility matters more
+    than font consistency. Performance wins for LCP (text visible immediately). Risk:
+    FOUT can cause layout shift (CLS) if fallback and web font have different metrics.
+    Mitigation: Use size-adjust, ascent-override, descent-override CSS properties
+    to match fallback font metrics to web font (reduce shift). 3. font-display: fallback
+    - BALANCED APPROACH: Block period: ~100ms. Very short invisible period. Swap period:
+    ~3000ms. Browser shows fallback after 100ms. If web font loads within ~3s, swaps
+    to it. After 3s, browser sticks with fallback (no swap). Use case: Balance between
+    performance and aesthetics. Text appears quickly, font swap happens if load is
+    reasonably fast, but no late swap that could be jarring. 4. font-display: optional
+    - BROWSER DECIDES: Block period: ~100ms. Swap period: 0ms (browser decides whether
+    to swap based on connection speed). On fast connections, may swap. On slow connections
+    (e.g., 3G), browser may decide to stick with fallback and not swap at all. Use
+    case: Progressive enhancement - use web font if it loads fast, otherwise fallback
+    is fine. Best for performance-first scenarios. 5. font-display: auto (DEFAULT):
+    Browser''s default behavior (usually similar to block). BEST PRACTICE: Use font-display:
+    swap for most text, preload critical fonts (<link rel="preload" href="/fonts/main.woff2"
+    as="font" type="font/woff2" crossorigin>), adjust fallback font metrics to minimize
+    CLS.'
+  require_pass: true

@@ -1,0 +1,74 @@
+slug: lesson-4
+title: Lesson 4
+sequence_order: 4
+estimated_minutes: 2
+difficulty: easy
+key_concepts: []
+content_md: "# Microlesson \U0001F680\n\n# Python Lists\n\n    **Lists** are ordered,\
+  \ mutable collections that can hold multiple items.\n\n    ## Creating Lists\n\n\
+  \    ```python\n    numbers = [1, 2, 3, 4, 5]\n    fruits = [\"apple\", \"banana\"\
+  , \"cherry\"]\n    mixed = [1, \"hello\", 3.14, True]\n    empty = []\n    ```\n\
+  \n    ## Accessing Items\n\n    ```python\n    fruits = [\"apple\", \"banana\",\
+  \ \"cherry\"]\n    print(fruits[0])   # \"apple\"\n    print(fruits[-1])  # \"cherry\"\
+  \ (last item)\n    ```\n\n    ## Slicing\n\n    ```python\n    numbers = [0, 1,\
+  \ 2, 3, 4, 5]\n    print(numbers[2:5])   # [2, 3, 4]\n    print(numbers[:3])   \
+  \ # [0, 1, 2]\n    print(numbers[::2])   # [0, 2, 4]\n    ```\n\n    ## Modifying\
+  \ Lists\n\n    ```python\n    fruits = [\"apple\", \"banana\"]\n    fruits.append(\"\
+  cherry\")      # Add to end\n    fruits.insert(1, \"orange\")   # Insert at index\n\
+  \    fruits.remove(\"banana\")      # Remove by value\n    last = fruits.pop() \
+  \         # Remove and return last\n    ```\n\n    ## List Methods\n\n    ```python\n\
+  \    numbers = [3, 1, 4, 1, 5, 9]\n    numbers.sort()         # Sort in place\n\
+  \    numbers.reverse()      # Reverse in place\n    numbers.count(1)       # Count\
+  \ occurrences\n    numbers.index(4)       # Find index\n    len(numbers)       \
+  \    # Length\n    min(numbers)           # Minimum\n    max(numbers)          \
+  \ # Maximum\n    sum(numbers)           # Sum\n    ```\n\n    ## List Comprehensions\n\
+  \n    Create lists concisely:\n\n    ```python\n    # Traditional way\n    squares\
+  \ = []\n    for x in range(10):\n        squares.append(x ** 2)\n\n    # List comprehension\n\
+  \    squares = [x ** 2 for x in range(10)]\n\n    # With condition\n    evens =\
+  \ [x for x in range(20) if x % 2 == 0]\n    ```\n\n    ## Looping Through Lists\n\
+  \n    ```python\n    fruits = [\"apple\", \"banana\", \"cherry\"]\n\n    # Loop\
+  \ through values\n    for fruit in fruits:\n        print(fruit)\n\n    # Loop with\
+  \ index\n    for i, fruit in enumerate(fruits):\n        print(f\"{i}: {fruit}\"\
+  )\n    ```\n\n    **Practice:** Try the List Comprehensions lab!"
+exercises:
+- type: mcq
+  slug: lesson-4-mcq-1
+  sequence_order: 1
+  question: What is the difference between a list and a tuple in Python?
+  options:
+  - Lists are mutable (can be modified), tuples are immutable (cannot be changed)
+  - Lists are faster than tuples
+  - Tuples can only store strings
+  - Lists use less memory
+  correct_answer_index: 0
+  explanation: Lists are mutable - you can add, remove, or modify elements after creation using methods like append(), remove(), etc. Tuples are immutable - once created, they cannot be modified. Tuples are slightly faster and use less memory, making them ideal for fixed collections of data.
+- type: mcq
+  slug: lesson-4-mcq-2
+  sequence_order: 2
+  question: What is a list comprehension in Python?
+  options:
+  - A concise way to create lists using a single line of code with optional filtering
+  - A method to compress lists
+  - A way to compare two lists
+  - A list sorting algorithm
+  correct_answer_index: 0
+  explanation: List comprehensions provide a concise syntax to create lists: [expression for item in iterable if condition]. For example, [x**2 for x in range(10) if x % 2 == 0] creates a list of squares of even numbers. This is more readable and often faster than traditional loops.
+- type: mcq
+  slug: lesson-4-mcq-3
+  sequence_order: 3
+  question: What does the try-except block do in Python?
+  options:
+  - Handles exceptions (errors) gracefully without crashing the program
+  - Tries to optimize code performance
+  - Tests if code syntax is correct
+  - Executes code multiple times until it succeeds
+  correct_answer_index: 0
+  explanation: try-except blocks catch and handle exceptions, preventing program crashes. Code in the try block is executed, and if an exception occurs, the except block handles it. For example, catching ValueError when converting user input to int prevents crashes from invalid input.
+objectives:
+- Understand core concepts of Python Lists
+- Apply learned concepts in practical scenarios
+- Identify best practices and common patterns
+- Recognize trade-offs in different approaches
+next_recommended:
+- control
+- data-structures

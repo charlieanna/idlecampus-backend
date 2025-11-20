@@ -1,0 +1,86 @@
+slug: lesson-15
+title: Lesson 15
+difficulty: easy
+sequence_order: 15
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Pod Security Standards\n\n    - Baseline,\
+  \ restricted profiles\n    - Namespace-level enforcement"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What is the 'Baseline' Pod Security Standard designed to prevent?
+  options:
+  - All security risks in pods
+  - Known privilege escalations while allowing common application patterns
+  - Pods from accessing the network
+  - Pods from using any volumes
+  correct_answer: Known privilege escalations while allowing common application patterns
+  explanation: 'The Baseline Pod Security Standard is the middle tier between Privileged
+    and Restricted, designed to prevent known privilege escalation vectors while remaining
+    practical for most applications. It blocks dangerous configurations without requiring
+    the strict hardening of Restricted profile. Baseline prohibits: hostNetwork (using
+    host''s network namespace - enables network sniffing/manipulation), hostPID and
+    hostIPC (sharing host process/IPC namespaces - enables process manipulation),
+    hostPath volumes (accessing host filesystem - enables breakout), privileged containers
+    (access to all devices, can bypass restrictions), containers with dangerous capabilities
+    (CAP_SYS_ADMIN, CAP_NET_RAW, etc.), appArmor profiles set to ''unconfined'', SELinux
+    set to custom types, and proc mount set to ''unmasked''. However, Baseline allows:
+    running as root (uid 0), hostPorts (binding to host network ports), most volume
+    types, and default capabilities. This makes it suitable for most applications
+    that don''t do anything unusual. For example, a typical web application running
+    as root in a container, using emptyDir and PersistentVolumeClaims, would pass
+    Baseline but fail Restricted (due to running as root). Baseline strikes a balance
+    - it prevents the most dangerous privilege escalations that could compromise the
+    node or other containers, while allowing common patterns like running legacy applications
+    that expect root. Implement Baseline as a first step toward security: it provides
+    significant security improvement over unrestricted (Privileged) with minimal application
+    changes. Then progressively move critical namespaces to Restricted. Apply using
+    namespace labels: ''pod-security.kubernetes.io/enforce: baseline''.'
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: How are Pod Security Standards enforced in Kubernetes?
+  options:
+  - Through RBAC policies only
+  - Using namespace labels with Pod Security Admission (PSA) controller
+  - Automatically without any configuration
+  - Through network policies
+  correct_answer: Using namespace labels with Pod Security Admission (PSA) controller
+  explanation: 'Pod Security Standards are enforced through the Pod Security Admission
+    (PSA) controller, which is built into Kubernetes (enabled by default in v1.25+).
+    PSA operates at the namespace level using labels to define policies. Each namespace
+    can have labels for three modes: ''enforce'' (rejects non-compliant pods), ''warn''
+    (allows but returns warnings to users), and ''audit'' (allows but logs violations
+    to audit log). Each mode specifies a level: ''privileged'' (unrestricted), ''baseline''
+    (minimally restrictive), or ''restricted'' (heavily restricted). For example,
+    labels like ''pod-security.kubernetes.io/enforce: restricted, pod-security.kubernetes.io/warn:
+    restricted, pod-security.kubernetes.io/audit: baseline'' would: enforce restricted
+    policy (blocking non-compliant pods), warn users about restricted violations,
+    and audit baseline violations. You can also pin to specific Kubernetes versions
+    with labels like ''pod-security.kubernetes.io/enforce-version: v1.27''. This prevents
+    policies from changing when upgrading Kubernetes (as standards evolve). The workflow:
+    1) Apply labels to namespaces (''kubectl label namespace production pod-security.kubernetes.io/enforce=baseline''),
+    2) PSA controller intercepts pod creation requests, 3) Validates pod against the
+    specified standard, 4) Enforces/warns/audits based on mode. Start with audit/warn
+    modes to understand violations without blocking (''pod-security.kubernetes.io/audit:
+    baseline, pod-security.kubernetes.io/warn: baseline''), review violations in audit
+    logs and warnings, remediate non-compliant workloads, then enable enforce mode.
+    PSA replaced PodSecurityPolicy (deprecated in v1.21, removed in v1.25), providing
+    simpler, more maintainable security policy enforcement. For more complex policies
+    beyond the three standards, use external admission controllers like OPA Gatekeeper
+    or Kyverno.'
+  require_pass: true
+- type: mcq
+  sequence_order: 1
+  question: What command lists all pods in all namespaces?
+  options:
+  - kubectl get pods -A
+  - kubectl list pods --all
+  - kubectl get pods --everywhere
+  - kubectl pods list -A
+  correct_answer_index: 0
+  explanation: kubectl get pods -A (or --all-namespaces) lists pods across all namespaces.
+    The -A flag is shorthand for --all-namespaces.
+  require_pass: true

@@ -1,0 +1,23 @@
+course:
+  slug: jee-physics-current-electricity
+  title: "JEE Physics: Current Electricity"
+  description: "Ohm's law, Kirchhoff's laws, circuit analysis, and electrical instruments for IIT JEE"
+  estimated_hours: 14
+  level: intermediate
+modules:
+- slug: current-resistance
+  title: Current and Resistance
+  lessons:
+  - electric-current-drift-velocity
+  - ohms-law-resistance
+  - resistivity-temperature-dependence
+  - series-parallel-resistances
+  - color-coding-resistors
+- slug: circuit-analysis
+  title: Circuit Analysis and Instruments
+  lessons:
+  - kirchhoffs-laws-applications
+  - wheatstone-bridge
+  - meter-bridge-potentiometer
+  - rc-circuits-charging-discharging
+  - electrical-power-energy

@@ -1,0 +1,82 @@
+<nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(135deg, #1e293b 0%, #334155 100%); box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+  <div class="container-fluid">
+    <%= link_to root_path, class: "navbar-brand fw-bold" do %>
+      Docker Learning
+    <% end %>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item">
+          <%= link_to "Dashboard", root_path, class: "nav-link" %>
+        </li>
+      </ul>
+
+      <div class="d-flex align-items-center gap-3">
+        <!-- Session Stats -->
+        <% if defined?(@session) && @session %>
+          <div class="d-flex gap-2">
+            <span class="badge" style="background: rgba(255,255,255,0.15); font-weight: 500; font-size: 0.85rem; padding: 6px 12px;">
+              Items <%= @session.items_presented %>/25
+            </span>
+            <span class="badge" style="background: rgba(255,255,255,0.15); font-weight: 500; font-size: 0.85rem; padding: 6px 12px;">
+              Accuracy <%= @session.accuracy_rate %>%
+            </span>
+            <span class="badge" style="background: rgba(255,255,255,0.15); font-weight: 500; font-size: 0.85rem; padding: 6px 12px;">
+              🔥 <%= @session.current_streak %>
+            </span>
+          </div>
+        <% end %>
+
+        <!-- Restart Buttons -->
+        <% if defined?(@track) && @track %>
+          <%
+            # Determine the correct restart path based on track
+            restart_path_helper = case @track
+            when 'docker'
+              :docker_learn_restart_path
+            when 'kubernetes'
+              :kubernetes_learn_restart_path
+            else
+              :learn_restart_path
+            end
+          %>
+          <div class="d-flex gap-2">
+            <%= link_to send(restart_path_helper, reset_progress: false),
+                method: :post,
+                data: { confirm: "End current session and start fresh? (keeps your progress)" },
+                class: "btn btn-sm btn-outline-warning",
+                title: "Soft Restart - End session, keep progress" do %>
+              <i class="fas fa-redo"></i> Soft Restart
+            <% end %>
+            <%= link_to send(restart_path_helper, reset_progress: true),
+                method: :post,
+                data: { confirm: "⚠️ WARNING: This will DELETE ALL your progress! Are you sure?" },
+                class: "btn btn-sm btn-outline-danger",
+                title: "Hard Restart - Delete all progress and start over" do %>
+              <i class="fas fa-bomb"></i> Hard Restart
+            <% end %>
+          </div>
+        <% end %>
+
+          <!-- User Info -->
+          <% if defined?(@current_user) && @current_user %>
+            <span class="navbar-text text-white">
+              <%= @current_user.name || @current_user.email || "User ##{@current_user.id}" %>
+            </span>
+            <%= link_to logout_path, class: "btn btn-outline-light btn-sm" do %>
+              Logout
+            <% end %>
+          <% else %>
+            <%= link_to "/auth/google_oauth2", class: "btn btn-outline-light btn-sm" do %>
+              Sign In with Google
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>

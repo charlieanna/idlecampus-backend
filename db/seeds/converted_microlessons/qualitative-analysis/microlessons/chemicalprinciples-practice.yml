@@ -1,0 +1,60 @@
+slug: chemicalprinciples-practice
+title: chemical_principles — Practice
+difficulty: hard
+sequence_order: 1
+estimated_minutes: 2
+key_concepts:
+- chemical_principles
+prerequisites: []
+content_md: '# chemical_principles — Practice 🚀
+
+
+  In acidic medium, [H⁺] is high which keeps [S²⁻] low (due to H₂S ⇌ 2H⁺ + S²⁻). This
+  allows only Group II cations with very low Ksp to precipitate, while Group IV remains
+  in solution.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: Why is H₂S added in acidic medium for Group II precipitation?
+  options:
+  - To maintain low S²⁻ concentration, precipitating only Group II sulfides (low Ksp)
+  - To increase solubility of all sulfides
+  - To prevent H₂S from decomposing
+  - To make the solution neutral for precipitation
+  correct_answer: To maintain low S²⁻ concentration, precipitating only Group II sulfides (low Ksp)
+  explanation: "In acidic medium, high [H⁺] shifts the equilibrium H₂S ⇌ 2H⁺ + S²⁻ to the left, keeping [S²⁻] very low. At this low [S²⁻], only Group II sulfides with very low Ksp values precipitate. Group IV sulfides have higher Ksp and remain in solution until basic medium increases [S²⁻]."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What is the chemical principle behind selective precipitation in qualitative analysis?
+  options:
+  - Controlling common ion concentration to exceed Ksp
+  - Adding excess water
+  - Increasing temperature
+  - Adding random reagents
+  correct_answer: Controlling common ion concentration to exceed Ksp
+  explanation: "Selective precipitation works by controlling the concentration of common ions (like S²⁻, OH⁻, Cl⁻) so that the ionic product [M^n+][X^m-] exceeds Ksp only for the target group. For example, low [S²⁻] in acid precipitates only low-Ksp Group II sulfides, while high [S²⁻] in base precipitates higher-Ksp Group IV sulfides."
+  require_pass: false
+- type: mcq
+  sequence_order: 3
+  question: The common ion effect is used in qualitative analysis to
+  options:
+  - Control precipitation and prevent interference
+  - Increase solubility
+  - Speed up reactions
+  - Change colors
+  correct_answer: Control precipitation and prevent interference
+  explanation: "Common ion effect is extensively used in qualitative analysis. Examples: (1) NH₄Cl suppresses [OH⁻] from NH₄OH, preventing Group IV precipitation during Group III analysis, (2) HCl controls [S²⁻] from H₂S for selective Group II precipitation. By controlling ion concentrations, we achieve selective separation."
+  require_pass: false

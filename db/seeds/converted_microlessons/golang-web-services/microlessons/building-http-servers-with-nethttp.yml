@@ -1,0 +1,98 @@
+slug: building-http-servers-with-nethttp
+title: Building HTTP Servers with net/http
+difficulty: easy
+sequence_order: 2
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Building HTTP Servers with net/http \U0001F680\n\n# Building HTTP Servers\
+  \ with net/http\n\n    Go's standard library includes the powerful `net/http` package\
+  \ for building web servers and clients. No external frameworks needed!\n\n    ##\
+  \ Your First HTTP Server\n\n    ```go\n    package main\n\n    import (\n      \
+  \  \"fmt\"\n        \"net/http\"\n    )\n\n    func helloHandler(w http.ResponseWriter,\
+  \ r *http.Request) {\n        fmt.Fprintf(w, \"Hello, World!\")\n    }\n\n    func\
+  \ main() {\n        http.HandleFunc(\"/\", helloHandler)\n\n        fmt.Println(\"\
+  Server starting on :8080...\")\n        http.ListenAndServe(\":8080\", nil)\n  \
+  \  }\n    ```\n\n    **Key components:**\n    - `http.HandleFunc` - Registers a\
+  \ handler function for a path\n    - `http.ResponseWriter` - Interface for writing\
+  \ the HTTP response\n    - `http.Request` - Contains all request information\n \
+  \   - `http.ListenAndServe` - Starts the server on specified port\n\n    ## Handler\
+  \ Functions\n\n    Handler functions have this signature:\n    ```go\n    func(w\
+  \ http.ResponseWriter, r *http.Request)\n    ```\n\n    **Example with different\
+  \ paths:**\n    ```go\n    func main() {\n        http.HandleFunc(\"/\", homeHandler)\n\
+  \        http.HandleFunc(\"/about\", aboutHandler)\n        http.HandleFunc(\"/api/users\"\
+  , usersHandler)\n\n        http.ListenAndServe(\":8080\", nil)\n    }\n\n    func\
+  \ homeHandler(w http.ResponseWriter, r *http.Request) {\n        fmt.Fprintf(w,\
+  \ \"Welcome Home!\")\n    }\n\n    func aboutHandler(w http.ResponseWriter, r *http.Request)\
+  \ {\n        fmt.Fprintf(w, \"About Page\")\n    }\n    ```\n\n    ## Reading Request\
+  \ Information\n\n    The `*http.Request` object contains all request details:\n\n\
+  \    ```go\n    func requestInfoHandler(w http.ResponseWriter, r *http.Request)\
+  \ {\n        // HTTP Method (GET, POST, etc.)\n        method := r.Method\n\n  \
+  \      // Request URL path\n        path := r.URL.Path\n\n        // Query parameters\n\
+  \        name := r.URL.Query().Get(\"name\")\n\n        // Headers\n        userAgent\
+  \ := r.Header.Get(\"User-Agent\")\n\n        fmt.Fprintf(w, \"Method: %s\\\\nPath:\
+  \ %s\\\\nName: %s\\\\n\",\n            method, path, name)\n    }\n    ```\n\n \
+  \   ## Handling Different HTTP Methods\n\n    ```go\n    func userHandler(w http.ResponseWriter,\
+  \ r *http.Request) {\n        switch r.Method {\n        case http.MethodGet:\n\
+  \            // Handle GET - retrieve users\n            fmt.Fprintf(w, \"Getting\
+  \ users\")\n\n        case http.MethodPost:\n            // Handle POST - create\
+  \ user\n            fmt.Fprintf(w, \"Creating user\")\n\n        case http.MethodPut:\n\
+  \            // Handle PUT - update user\n            fmt.Fprintf(w, \"Updating\
+  \ user\")\n\n        case http.MethodDelete:\n            // Handle DELETE - remove\
+  \ user\n            fmt.Fprintf(w, \"Deleting user\")\n\n        default:\n    \
+  \        // Method not allowed\n            w.WriteHeader(http.StatusMethodNotAllowed)\n\
+  \            fmt.Fprintf(w, \"Method not allowed\")\n        }\n    }\n    ```\n\
+  \n    ## Setting Response Status Codes\n\n    ```go\n    func handler(w http.ResponseWriter,\
+  \ r *http.Request) {\n        // Set status code (must be called before writing\
+  \ body)\n        w.WriteHeader(http.StatusCreated) // 201\n\n        // Write response\
+  \ body\n        fmt.Fprintf(w, \"Resource created\")\n    }\n    ```\n\n    **Common\
+  \ status codes:**\n    ```go\n    w.WriteHeader(http.StatusOK)                //\
+  \ 200\n    w.WriteHeader(http.StatusCreated)           // 201\n    w.WriteHeader(http.StatusBadRequest)\
+  \        // 400\n    w.WriteHeader(http.StatusNotFound)          // 404\n    w.WriteHeader(http.StatusInternalServerError)\
+  \ // 500\n    ```\n\n    ## Setting Response Headers\n\n    ```go\n    func jsonHandler(w\
+  \ http.ResponseWriter, r *http.Request) {\n        // Set content type header\n\
+  \        w.Header().Set(\"Content-Type\", \"application/json\")\n\n        // Set\
+  \ custom headers\n        w.Header().Set(\"X-Custom-Header\", \"value\")\n\n   \
+  \     // Write response\n        fmt.Fprintf(w, `{\"message\": \"Hello\"}`)\n  \
+  \  }\n    ```\n\n    ## Using http.ServeMux (Router)\n\n    For more control, create\
+  \ your own ServeMux:\n\n    ```go\n    func main() {\n        mux := http.NewServeMux()\n\
+  \n        mux.HandleFunc(\"/\", homeHandler)\n        mux.HandleFunc(\"/api/users\"\
+  , usersHandler)\n        mux.HandleFunc(\"/api/tasks\", tasksHandler)\n\n      \
+  \  // Start server with custom mux\n        http.ListenAndServe(\":8080\", mux)\n\
+  \    }\n    ```\n\n    ## Concurrent Request Handling\n\n    **Important:** The\
+  \ Go HTTP server automatically handles each request in its own goroutine!\n\n  \
+  \  ```go\n    func slowHandler(w http.ResponseWriter, r *http.Request) {\n     \
+  \   // This runs in its own goroutine\n        time.Sleep(2 * time.Second)\n   \
+  \     fmt.Fprintf(w, \"Done!\")\n    }\n    // Multiple concurrent requests won't\
+  \ block each other\n    ```\n\n    **Thread safety considerations:**\n    - Global\
+  \ variables need synchronization (mutex or channels)\n    - Each request runs concurrently\n\
+  \    - Database connections should use connection pooling\n\n    ## Graceful Shutdown\n\
+  \n    ```go\n    func main() {\n        mux := http.NewServeMux()\n        mux.HandleFunc(\"\
+  /\", homeHandler)\n\n        server := &http.Server{\n            Addr:    \":8080\"\
+  ,\n            Handler: mux,\n        }\n\n        // Start server in goroutine\n\
+  \        go func() {\n            fmt.Println(\"Server starting on :8080...\")\n\
+  \            if err := server.ListenAndServe(); err != nil {\n                log.Fatal(err)\n\
+  \            }\n        }()\n\n        // Wait for interrupt signal\n        quit\
+  \ := make(chan os.Signal, 1)\n        signal.Notify(quit, os.Interrupt)\n      \
+  \  <-quit\n\n        fmt.Println(\"Shutting down server...\")\n        ctx, cancel\
+  \ := context.WithTimeout(context.Background(), 5*time.Second)\n        defer cancel()\n\
+  \n        if err := server.Shutdown(ctx); err != nil {\n            log.Fatal(\"\
+  Server forced to shutdown:\", err)\n        }\n\n        fmt.Println(\"Server exited\"\
+  )\n    }\n    ```\n\n    ## Best Practices\n\n    1. **Always check HTTP methods**\
+  \ - Use switch statements\n    2. **Set status codes explicitly** - Don't rely on\
+  \ defaults\n    3. **Set Content-Type header** - Especially for JSON responses\n\
+  \    4. **Handle errors properly** - Return appropriate error status codes\n   \
+  \ 5. **Be aware of concurrency** - Handlers run in separate goroutines\n    6. **Implement\
+  \ graceful shutdown** - For production servers"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: Which function starts an HTTP server?
+  options:
+  - http.ListenAndServe
+  - http.ServeHTTP
+  - http.Handle
+  - http.ServerMux
+  correct_answer: http.ListenAndServe
+  explanation: "http.ListenAndServe starts an HTTP server on the specified address (like ':8080') and blocks while serving requests. It takes two parameters: the address to listen on and an optional handler (use nil for the default ServeMux). http.ServeHTTP is a method interface, http.Handle registers handlers, and http.ServerMux is not a valid function name (the correct type is ServeMux)."
+  require_pass: true

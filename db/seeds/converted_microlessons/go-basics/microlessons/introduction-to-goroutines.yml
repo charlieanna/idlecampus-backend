@@ -1,0 +1,124 @@
+slug: introduction-to-goroutines
+title: Introduction to Goroutines
+difficulty: easy
+sequence_order: 3
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Introduction to Goroutines \U0001F680\n\n# Introduction to Goroutines\n\
+  \n    A **goroutine** is a lightweight thread of execution managed by the Go runtime.\
+  \ They're one of Go's most powerful features!\n\n    ## Creating a Goroutine\n\n\
+  \    Simply add `go` before a function call:\n\n    ```go\n    package main\n\n\
+  \    import (\n        \"fmt\"\n        \"time\"\n    )\n\n    func sayHello() {\n\
+  \        fmt.Println(\"Hello from goroutine!\")\n    }\n\n    func main() {\n  \
+  \      go sayHello()  // Launch as goroutine\n\n        time.Sleep(1 * time.Second)\
+  \  // Wait for goroutine to finish\n        fmt.Println(\"Main function\")\n   \
+  \ }\n    ```\n\n    ## How Goroutines Work\n\n    ### Sequential Execution (Normal)\n\
+  \    ```go\n    func main() {\n        task1()  // Wait for task1 to finish\n  \
+  \      task2()  // Then do task2\n        task3()  // Then do task3\n    }\n   \
+  \ // Timeline: [task1] → [task2] → [task3]\n    ```\n\n    ### Concurrent Execution\
+  \ (With Goroutines)\n    ```go\n    func main() {\n        go task1()  // Start\
+  \ task1 in background\n        go task2()  // Start task2 in background\n      \
+  \  go task3()  // Start task3 in background\n\n        time.Sleep(time.Second) \
+  \ // Wait for them to finish\n    }\n    // Timeline: [task1, task2, task3] all\
+  \ running concurrently\n    ```\n\n    ## Anonymous Function Goroutines\n\n    You\
+  \ can launch goroutines with anonymous functions:\n\n    ```go\n    func main()\
+  \ {\n        // Launch inline\n        go func() {\n            fmt.Println(\"Anonymous\
+  \ goroutine!\")\n        }()\n\n        // With parameters\n        message := \"\
+  Hello\"\n        go func(msg string) {\n            fmt.Println(msg)\n        }(message)\
+  \  // Pass by value\n\n        time.Sleep(time.Second)\n    }\n    ```\n\n    ##\
+  \ Multiple Goroutines Example\n\n    ```go\n    package main\n\n    import (\n \
+  \       \"fmt\"\n        \"time\"\n    )\n\n    func worker(id int) {\n        fmt.Printf(\"\
+  Worker %d starting\\\\n\", id)\n        time.Sleep(time.Second)\n        fmt.Printf(\"\
+  Worker %d done\\\\n\", id)\n    }\n\n    func main() {\n        // Launch 5 workers\
+  \ concurrently\n        for i := 1; i <= 5; i++ {\n            go worker(i)\n  \
+  \      }\n\n        // Wait for goroutines to finish\n        time.Sleep(2 * time.Second)\n\
+  \        fmt.Println(\"All workers complete\")\n    }\n    ```\n\n    Output (order\
+  \ may vary):\n    ```\n    Worker 1 starting\n    Worker 3 starting\n    Worker\
+  \ 2 starting\n    Worker 5 starting\n    Worker 4 starting\n    Worker 2 done\n\
+  \    Worker 1 done\n    Worker 4 done\n    Worker 3 done\n    Worker 5 done\n  \
+  \  All workers complete\n    ```\n\n    ## Common Pitfalls\n\n    ### 1. Main Function\
+  \ Exits Too Early\n\n    ❌ **Problem:**\n    ```go\n    func main() {\n        go\
+  \ fmt.Println(\"Hello\")\n        // Program exits immediately, goroutine may not\
+  \ run!\n    }\n    ```\n\n    ✅ **Solution:** Use synchronization (we'll learn WaitGroups\
+  \ next)\n\n    ### 2. Loop Variable Closure\n\n    ❌ **Problem:**\n    ```go\n \
+  \   for i := 0; i < 5; i++ {\n        go func() {\n            fmt.Println(i)  //\
+  \ All goroutines see i=5!\n        }()\n    }\n    ```\n\n    ✅ **Solution:** Pass\
+  \ as parameter\n    ```go\n    for i := 0; i < 5; i++ {\n        go func(num int)\
+  \ {\n            fmt.Println(num)  // Each gets its own copy\n        }(i)\n   \
+  \ }\n    ```\n\n    ### 3. Shared Memory Without Synchronization\n\n    ❌ **Problem:**\n\
+  \    ```go\n    counter := 0\n    for i := 0; i < 1000; i++ {\n        go func()\
+  \ {\n            counter++  // RACE CONDITION!\n        }()\n    }\n    ```\n\n\
+  \    ✅ **Solution:** Use channels or sync primitives (coming up next)\n\n    ##\
+  \ Goroutine Lifecycle\n\n    ```\n    Create → Runnable → Running → Blocked → Runnable\
+  \ → ... → Dead\n                ↑                    ↓\n                └────────────────────┘\n\
+  \    ```\n\n    **States:**\n    - **Runnable**: Ready to run, waiting for CPU\n\
+  \    - **Running**: Currently executing on a CPU\n    - **Blocked**: Waiting for\
+  \ I/O, channel, or sleep\n    - **Dead**: Finished execution\n\n    ## The Go Scheduler\n\
+  \n    Go uses an **M:N scheduler**:\n    - **M goroutines** run on **N OS threads**\n\
+  \    - Go runtime manages the mapping\n    - Scheduler is cooperative (goroutines\
+  \ yield at function calls, channel ops, etc.)\n\n    ### GOMAXPROCS\n\n    Controls\
+  \ how many OS threads can execute goroutines simultaneously:\n\n    ```go\n    import\
+  \ \"runtime\"\n\n    func main() {\n        // Use all CPU cores\n        runtime.GOMAXPROCS(runtime.NumCPU())\n\
+  \n        // Or set specific number\n        runtime.GOMAXPROCS(4)\n    }\n    ```\n\
+  \n    By default, `GOMAXPROCS = runtime.NumCPU()`\n\n    ## Practical Example: Concurrent\
+  \ Web Scraper\n\n    ```go\n    package main\n\n    import (\n        \"fmt\"\n\
+  \        \"time\"\n    )\n\n    func fetchURL(url string) {\n        fmt.Printf(\"\
+  Fetching %s...\\\\n\", url)\n        time.Sleep(500 * time.Millisecond)  // Simulate\
+  \ network delay\n        fmt.Printf(\"Completed %s\\\\n\", url)\n    }\n\n    func\
+  \ main() {\n        urls := []string{\n            \"https://golang.org\",\n   \
+  \         \"https://github.com\",\n            \"https://stackoverflow.com\",\n\
+  \            \"https://reddit.com\",\n        }\n\n        start := time.Now()\n\
+  \n        // Sequential (slow)\n        // for _, url := range urls {\n        //\
+  \     fetchURL(url)\n        // }\n        // Time: ~2 seconds (4 × 0.5s)\n\n  \
+  \      // Concurrent (fast!)\n        for _, url := range urls {\n            go\
+  \ fetchURL(url)\n        }\n\n        time.Sleep(1 * time.Second)\n        elapsed\
+  \ := time.Since(start)\n        fmt.Printf(\"\\\\nTotal time: %s\\\\n\", elapsed)\n\
+  \        // Time: ~1 second (all run concurrently)\n    }\n    ```\n\n    ## When\
+  \ to Use Goroutines\n\n    ✅ **Great for:**\n    - I/O operations (network, disk,\
+  \ database)\n    - Independent tasks that can run concurrently\n    - Event handling\
+  \ and message processing\n    - Background workers\n    - Fan-out/fan-in patterns\n\
+  \n    ❌ **Avoid for:**\n    - CPU-intensive tasks with dependencies\n    - Operations\
+  \ requiring strict ordering\n    - Very short-lived tasks (overhead not worth it)\n\
+  \n    ## Best Practices\n\n    1. **Always synchronize**: Never let goroutines outlive\
+  \ main without coordination\n    2. **Pass data by value**: Avoid sharing pointers\
+  \ between goroutines\n    3. **Know when goroutines end**: Use WaitGroups or channels\
+  \ to track completion\n    4. **Limit goroutine count**: Don't create millions unnecessarily\n\
+  \    5. **Use contexts**: For cancellation and timeouts\n\n    ## Next Steps\n\n\
+  \    Now that you understand goroutines, let's learn how they communicate using\
+  \ **channels**!\n\n    Practice what you've learned in the \"Go Concurrency Basics\"\
+  \ lab!"
+exercises:
+  - type: multiple_choice_question
+    sequence_order: 1
+    question: "What is a goroutine in Go?"
+    options:
+      - "A heavy operating system thread"
+      - "A lightweight thread managed by the Go runtime"
+      - "A type of data structure"
+      - "A function that runs sequentially"
+    correct_answer: "A lightweight thread managed by the Go runtime"
+    explanation: "A goroutine is a lightweight thread of execution managed by the Go runtime, not the operating system. This is a crucial distinction that makes goroutines extremely efficient. While OS threads typically require 1-2 MB of stack space and have significant creation overhead, goroutines start with just a few KB of stack space that grows and shrinks dynamically as needed. The Go runtime multiplexes many goroutines onto a smaller number of OS threads using an M:N scheduler, where M goroutines run on N OS threads. This means you can create hundreds of thousands or even millions of goroutines in a single program without overwhelming the system - try that with OS threads and you'll quickly run out of resources! Goroutines are created simply by prefixing a function call with the 'go' keyword. The Go scheduler is cooperative, automatically switching between goroutines at function calls, channel operations, and blocking operations. This makes concurrent programming much more accessible than traditional threading. However, goroutines aren't magic - they still require proper synchronization through channels or sync primitives when accessing shared data, and the main function must not exit before goroutines complete their work."
+    require_pass: true
+  - type: multiple_choice_question
+    sequence_order: 2
+    question: "What is the problem with this code: for i := 0; i < 5; i++ { go func() { fmt.Println(i) }() }?"
+    options:
+      - "It creates too many goroutines"
+      - "All goroutines will likely print 5 because they capture the loop variable by reference"
+      - "Goroutines cannot be created in loops"
+      - "The code will not compile"
+    correct_answer: "All goroutines will likely print 5 because they capture the loop variable by reference"
+    explanation: "This is a classic goroutine pitfall involving closures and loop variables. The anonymous function captures the loop variable i by reference, not by value. By the time the goroutines actually execute (which happens asynchronously), the loop has likely completed, and i has reached its final value of 5. Therefore, all goroutines will probably print 5 instead of printing 0, 1, 2, 3, 4 as intended. This happens because goroutines are scheduled independently - the loop creates them faster than they execute, so they don't start running until after the loop finishes. The solution is to pass i as a parameter to the anonymous function: go func(num int) { fmt.Println(num) }(i). This creates a copy of i's current value for each goroutine. Alternatively, you can create a loop-scoped variable: i := i before the goroutine. This is one of the most common mistakes in Go concurrent programming and can lead to confusing bugs because the exact behavior depends on timing - in some cases you might see varied output, making it seem like it works. The Go 1.22+ loop variable change addresses this for for-range loops, but the principle remains important to understand."
+    require_pass: true
+  - type: multiple_choice_question
+    sequence_order: 3
+    question: "Why do goroutines need synchronization when accessing shared variables?"
+    options:
+      - "To make the code run faster"
+      - "To prevent race conditions where concurrent access to shared memory leads to unpredictable behavior"
+      - "To reduce memory usage"
+      - "To make the code compile"
+    correct_answer: "To prevent race conditions where concurrent access to shared memory leads to unpredictable behavior"
+    explanation: "When multiple goroutines access shared variables concurrently without synchronization, you get race conditions - situations where the outcome depends on the unpredictable timing of goroutine execution. Consider a simple counter++: this seemingly atomic operation actually involves reading the value from memory, incrementing it, and writing it back. If two goroutines do this simultaneously, they might both read the same value (say, 5), both increment to 6, and both write 6 back - the counter is now 6 instead of the expected 7. One increment was lost! This is called a race condition. As the number of goroutines increases, these races become more frequent and unpredictable. Race conditions are particularly insidious because they may not manifest during testing but appear under production load, and they can cause data corruption, incorrect calculations, crashes, or security vulnerabilities. Go provides several synchronization mechanisms: channels (the idiomatic Go way, following 'Don't communicate by sharing memory; share memory by communicating'), mutexes from the sync package, and atomic operations from sync/atomic. You can detect races using go run -race or go test -race. The key principle is that shared mutable state requires synchronization - either through channels for communication or explicit locking for protection."
+    require_pass: true

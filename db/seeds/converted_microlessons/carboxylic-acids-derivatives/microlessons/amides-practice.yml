@@ -1,0 +1,59 @@
+slug: amides-practice
+title: amides — Practice
+difficulty: medium
+sequence_order: 11
+estimated_minutes: 2
+key_concepts:
+- amides
+prerequisites: []
+content_md: '# amides — Practice 🚀
+
+
+  Hoffmann: R-CONH₂ + Br₂/NaOH → R-NH₂ + CO₂. Amide loses -CO₂, giving amine with
+  one less carbon.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: 'Hoffmann bromamide degradation converts:'
+  options:
+  - Amide to carboxylic acid
+  - Amide to amine with one less carbon
+  - Amide to alcohol
+  - Amide to nitrile
+  correct_answer: Amide to amine with one less carbon
+  explanation: "Hoffmann bromamide degradation (also called Hoffmann rearrangement) converts a primary amide to a primary amine with one less carbon atom. The reaction: R-CONH₂ + Br₂/NaOH → R-NH₂ + CO₂ + 2NaBr + H₂O. For example, ethanamide (CH₃CONH₂, 2 carbons) gives methanamine (CH₃NH₂, 1 carbon). The amide loses the carbonyl carbon as CO₂. This is useful for descending a homologous series and for converting carboxylic acids to amines (via amide intermediate)."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What is the basicity order of amides compared to amines?
+  options:
+  - Amides are more basic than amines
+  - Amides are less basic than amines
+  - Amides and amines have equal basicity
+  - Amides are amphoteric while amines are basic
+  correct_answer: Amides are less basic than amines
+  explanation: "Amides are much less basic than amines. In amides, the lone pair on nitrogen is delocalized through resonance with the carbonyl group (R-CO-NH₂ ↔ R-C(O⁻)=NH₂⁺), making it unavailable for accepting protons. This resonance stabilization is so significant that amides are essentially neutral (not basic). In contrast, amines have the nitrogen lone pair readily available for protonation, making them basic. The pKb of amines is around 3-5, while amides have pKb > 13, making them ~10⁸-10¹⁰ times less basic than amines."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: Which of the following BEST describes the C-N bond in amides?
+  options:
+  - Pure single bond with free rotation
+  - Pure double bond
+  - Partial double bond character with restricted rotation
+  - Triple bond character
+  correct_answer: Partial double bond character with restricted rotation
+  explanation: "The C-N bond in amides has significant partial double bond character due to resonance between the nitrogen lone pair and the carbonyl group. This creates a resonance hybrid with approximately 40% double bond character. As a result, rotation around the C-N bond is restricted (barrier ~75 kJ/mol), and amides exist as planar molecules with sp² hybridized nitrogen. This is unlike regular amines where the C-N bond is a pure single bond with free rotation. The partial double bond character also explains why amide bonds are shorter and stronger than typical C-N single bonds."
+  require_pass: true

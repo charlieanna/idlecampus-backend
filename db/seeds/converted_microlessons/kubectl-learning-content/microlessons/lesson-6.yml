@@ -1,0 +1,109 @@
+slug: lesson-6
+title: Lesson 6
+difficulty: easy
+sequence_order: 6
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# StatefulSets, DaemonSets & Jobs\n\n   \
+  \   Specialized workload controllers for stateful apps, system services, and batch\
+  \ tasks.\n\n      ## StatefulSets\n\n      For stateful applications requiring stable\
+  \ identities and storage.\n\n      ### Creating StatefulSets\n\n      ```bash\n\
+  \      # Create from YAML\n      kubectl apply -f statefulset.yaml\n\n      # View\
+  \ StatefulSet status\n      kubectl get statefulset\n      kubectl get sts\n   \
+  \   ```\n\n      ### Managing StatefulSets\n\n      ```bash\n      # Scale StatefulSet\n\
+  \      kubectl scale statefulset mysql --replicas=3\n\n      # Update image\n  \
+  \    kubectl set image statefulset/mysql mysql=mysql:8.0\n\n      # View rollout\
+  \ status\n      kubectl rollout status statefulset/mysql\n\n      # Delete StatefulSet\
+  \ (keeps PVCs)\n      kubectl delete statefulset mysql --cascade=orphan\n      ```\n\
+  \n      ### StatefulSet Pods\n\n      ```bash\n      # List pods (predictable names)\n\
+  \      kubectl get pods -l app=mysql\n\n      # Pods named: mysql-0, mysql-1, mysql-2\n\
+  \n      # Access specific pod\n      kubectl exec -it mysql-0 -- bash\n\n      #\
+  \ View pod order\n      kubectl get pods -l app=mysql --sort-by=.metadata.creationTimestamp\n\
+  \      ```\n\n      ## DaemonSets\n\n      Ensure all nodes run a copy of a pod\
+  \ (monitoring agents, log collectors).\n\n      ### Viewing DaemonSets\n\n     \
+  \ ```bash\n      # List daemonsets\n      kubectl get daemonsets\n      kubectl\
+  \ get ds\n\n      # List daemonsets in kube-system\n      kubectl get ds -n kube-system\n\
+  \n      # Describe daemonset\n      kubectl describe ds node-exporter\n\n      #\
+  \ Get DaemonSet YAML\n      kubectl get ds node-exporter -o yaml\n      ```\n\n\
+  \      ### Managing DaemonSets\n\n      ```bash\n      # Update DaemonSet image\n\
+  \      kubectl set image daemonset/node-exporter exporter=prom/node-exporter:v1.5.0\n\
+  \n      # View rollout status\n      kubectl rollout status daemonset/node-exporter\n\
+  \n      # View rollout history\n      kubectl rollout history daemonset/node-exporter\n\
+  \n      # Rollback\n      kubectl rollout undo daemonset/node-exporter\n\n     \
+  \ # Delete DaemonSet\n      kubectl delete daemonset node-exporter\n      ```\n\n\
+  \      ## Jobs\n\n      Run batch tasks to completion.\n\n      ### Creating Jobs\n\
+  \n      ```bash\n      # Create simple job\n      kubectl create job pi --image=perl:5.34\
+  \ -- perl -Mbignum=bpi -wle 'print bpi(2000)'\n\n      # Create from YAML\n    \
+  \  kubectl apply -f job.yaml\n\n      # Create job with completions\n      kubectl\
+  \ create job process-items --image=busybox --completions=5 -- /bin/sh -c 'echo Processing\
+  \ item'\n      ```\n\n      ### Viewing Jobs\n\n      ```bash\n      # List jobs\n\
+  \      kubectl get jobs\n\n      # Describe job\n      kubectl describe job pi\n\
+  \n      # View job pods\n      kubectl get pods -l job-name=pi\n\n      # View job\
+  \ logs\n      kubectl logs job/pi\n      ```\n\n      ### Managing Jobs\n\n    \
+  \  ```bash\n      # Wait for job to complete\n      kubectl wait --for=condition=complete\
+  \ --timeout=300s job/pi\n\n      # Delete job\n      kubectl delete job pi\n\n \
+  \     # Delete job and its pods\n      kubectl delete job pi --cascade=foreground\n\
+  \n      # Keep pods after job completion\n      # Set ttlSecondsAfterFinished: 100\
+  \ in job spec\n      ```\n\n      ## CronJobs\n\n      Run jobs on a schedule.\n\
+  \n      ### Creating CronJobs\n\n      ```bash\n      # Create cronjob\n      kubectl\
+  \ create cronjob backup --image=backup-tool --schedule=\"0 2 * * *\" -- /backup.sh\n\
+  \n      # Create from YAML\n      kubectl apply -f cronjob.yaml\n      ```\n\n \
+  \     ### Viewing CronJobs\n\n      ```bash\n      # List cronjobs\n      kubectl\
+  \ get cronjobs\n      kubectl get cj\n\n      # Describe cronjob\n      kubectl\
+  \ describe cronjob backup\n\n      # View cronjob schedule\n      kubectl get cronjob\
+  \ backup -o jsonpath='{.spec.schedule}'\n\n      # View jobs created by cronjob\n\
+  \      kubectl get jobs -l cronjob=backup\n      ```\n\n      ### Managing CronJobs\n\
+  \n      ```bash\n      # Suspend cronjob (stop scheduling)\n      kubectl patch\
+  \ cronjob backup -p '{\"spec\":{\"suspend\":true}}'\n\n      # Resume cronjob\n\
+  \      kubectl patch cronjob backup -p '{\"spec\":{\"suspend\":false}}'\n\n    \
+  \  # Manually trigger cronjob\n      kubectl create job --from=cronjob/backup backup-manual\n\
+  \n      # Update schedule\n      kubectl patch cronjob backup -p '{\"spec\":{\"\
+  schedule\":\"0 3 * * *\"}}'\n\n      # Delete cronjob\n      kubectl delete cronjob\
+  \ backup\n      ```\n\n      ## Resource Management\n\n      ### View Resource Usage\n\
+  \n      ```bash\n      # Node resource usage\n      kubectl top nodes\n\n      #\
+  \ Pod resource usage\n      kubectl top pods\n\n      # Pod usage in namespace\n\
+  \      kubectl top pods -n kube-system\n\n      # Sort by CPU\n      kubectl top\
+  \ pods --sort-by=cpu\n\n      # Sort by memory\n      kubectl top pods --sort-by=memory\n\
+  \n      # Container-level usage\n      kubectl top pod my-pod --containers\n   \
+  \   ```\n\n      ### Resource Quotas\n\n      ```bash\n      # List resource quotas\n\
+  \      kubectl get resourcequotas\n      kubectl get quota\n\n      # Describe quota\n\
+  \      kubectl describe resourcequota my-quota\n\n      # Check namespace resource\
+  \ usage\n      kubectl describe namespace production\n      ```\n\n      ### Limit\
+  \ Ranges\n\n      ```bash\n      # List limit ranges\n      kubectl get limitranges\n\
+  \      kubectl get limits\n\n      # Describe limit range\n      kubectl describe\
+  \ limitrange my-limits\n      ```\n\n      Practice advanced workloads in the labs!"
+exercises:
+  - type: multiple_choice_question
+    sequence_order: 1
+    question: "What is a Resource Quota in Kubernetes and what does it control?"
+    options:
+      - "It limits the CPU and memory that individual containers can use"
+      - "It sets aggregate resource limits for all resources in a namespace"
+      - "It controls the number of nodes in a cluster"
+      - "It defines the maximum size of container images"
+    correct_answer: "It sets aggregate resource limits for all resources in a namespace"
+    explanation: "Resource Quotas in Kubernetes set aggregate (total) resource limits for all resources within a namespace, providing administrators with control over resource consumption at the namespace level. Unlike container resource limits which apply to individual containers, or LimitRanges which apply to individual resources, ResourceQuotas constrain the total resources that can be consumed across all objects in a namespace. For example, a ResourceQuota might specify that a namespace can have a maximum of 20 pods, request up to 100 CPU cores, use up to 200Gi of memory, and have no more than 10 PersistentVolumeClaims. This prevents any single team or application from consuming all cluster resources. When a ResourceQuota is active in a namespace, users must specify resource requests and limits for their pods (they can't be omitted), ensuring that administrators can track and enforce resource allocation. ResourceQuotas can also limit object counts (number of services, secrets, configmaps) to prevent resource exhaustion from excessive object creation. They're essential for multi-tenant clusters where different teams share infrastructure and need guaranteed resource availability. ResourceQuotas do NOT control node count (that's cluster infrastructure), image sizes (that's a registry concern), or individual container limits (that's LimitRanges). Understanding ResourceQuotas is crucial for effective namespace-based resource management."
+    require_pass: true
+  - type: multiple_choice_question
+    sequence_order: 2
+    question: "What does the 'completions' field specify in a Kubernetes Job?"
+    options:
+      - "The maximum time allowed for the job to complete"
+      - "The total number of successful pod completions required for the job to be considered complete"
+      - "The number of parallel pods that can run simultaneously"
+      - "The number of retries allowed before the job fails"
+    correct_answer: "The total number of successful pod completions required for the job to be considered complete"
+    explanation: "The 'completions' field in a Kubernetes Job specifies how many successful pod completions are required for the job to be considered complete. For example, if completions is set to 5, the job must successfully complete 5 pods before it's marked as complete. This is different from the 'parallelism' field, which controls how many pods run simultaneously. With completions=5 and parallelism=2, Kubernetes runs 2 pods at a time until 5 have completed successfully. If a pod fails, Kubernetes creates a replacement to ensure the completions count is met. This is useful for batch processing where you need to process multiple items or run the same task multiple times. For example, processing 100 files might use completions=100 with parallelism=10 to process 10 files at a time. The 'backoffLimit' field (not completions) controls retry attempts for failed pods, and 'activeDeadlineSeconds' (not completions) sets the maximum time. The completions field enables work queue patterns where you need a specific number of successful executions. If you omit completions (or set it to 1), the job completes after one successful pod. Setting completions without parallelism runs pods sequentially, while using both enables parallel execution. Understanding completions vs parallelism is essential for designing efficient batch processing jobs in Kubernetes."
+    require_pass: true
+  - type: multiple_choice_question
+    sequence_order: 3
+    question: "What is a LimitRange in Kubernetes and how does it differ from a ResourceQuota?"
+    options:
+      - "LimitRange sets cluster-wide limits while ResourceQuota sets namespace limits"
+      - "LimitRange sets default and min/max limits for individual resources while ResourceQuota sets aggregate namespace limits"
+      - "LimitRange is deprecated and ResourceQuota is the modern replacement"
+      - "LimitRange applies to CPU only while ResourceQuota applies to memory only"
+    correct_answer: "LimitRange sets default and min/max limits for individual resources while ResourceQuota sets aggregate namespace limits"
+    explanation: "LimitRange constrains individual resources (pods, containers, PVCs) within a namespace by setting minimum, maximum, and default resource requests and limits, while ResourceQuota sets aggregate limits across all resources in the namespace. They work together but serve different purposes. A LimitRange might specify that each container must request at least 100m CPU and at most 2 cores, and if a pod doesn't specify limits, defaults of 500m CPU and 512Mi memory are applied. This prevents both resource starvation (too small) and resource hogging (too large) by individual resources. ResourceQuota, on the other hand, might limit the namespace to a total of 100 CPU cores across all pods. Both can exist in the same namespace and are complementary - LimitRange ensures individual resources are reasonably sized, while ResourceQuota ensures the namespace doesn't exceed its allocation. LimitRange also helps prevent users from creating pods without resource specifications, which could cause scheduling issues or resource exhaustion. Neither is deprecated - both are active features with different use cases. Both can apply to CPU, memory, storage, and other resources. A practical example: LimitRange ensures no single pod uses more than 4Gi memory (preventing runaway containers), while ResourceQuota ensures the entire namespace uses at most 64Gi total (preventing namespace-level exhaustion). Understanding this distinction is crucial for effective resource governance."
+    require_pass: true

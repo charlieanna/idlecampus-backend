@@ -1,0 +1,96 @@
+slug: lesson-24
+title: Lesson 24
+difficulty: easy
+sequence_order: 24
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Interfaces in Go\n\n    **Interfaces**\
+  \ define behavior without specifying implementation. They're Go's way of achieving\
+  \ polymorphism.\n\n    ## Defining Interfaces\n\n    ```go\n    type Writer interface\
+  \ {\n        Write([]byte) (int, error)\n    }\n\n    type Reader interface {\n\
+  \        Read([]byte) (int, error)\n    }\n    ```\n\n    ## Implementing Interfaces\n\
+  \n    **Implicit implementation** - no \"implements\" keyword needed!\n\n    ```go\n\
+  \    type File struct {\n        path string\n    }\n\n    // File implements Writer\
+  \ by having a Write method\n    func (f *File) Write(data []byte) (int, error) {\n\
+  \        fmt.Printf(\"Writing %d bytes to %s\\\\n\", len(data), f.path)\n      \
+  \  return len(data), nil\n    }\n\n    // Use it polymorphically\n    var w Writer\
+  \ = &File{path: \"/tmp/data.txt\"}\n    w.Write([]byte(\"Hello\"))\n    ```\n\n\
+  \    ## Empty Interface\n\n    `interface{}` can hold any type:\n\n    ```go\n \
+  \   func PrintAnything(v interface{}) {\n        fmt.Println(v)\n    }\n\n    PrintAnything(42)\n\
+  \    PrintAnything(\"hello\")\n    PrintAnything([]int{1, 2, 3})\n    ```\n\n  \
+  \  ## Type Assertions\n\n    ```go\n    var i interface{} = \"hello\"\n\n    //\
+  \ Type assertion\n    s := i.(string)\n    fmt.Println(s)  // \"hello\"\n\n    //\
+  \ Safe type assertion\n    s, ok := i.(string)\n    if ok {\n        fmt.Println(s)\n\
+  \    }\n\n    // Type switch\n    switch v := i.(type) {\n    case string:\n   \
+  \     fmt.Printf(\"String: %s\\\\n\", v)\n    case int:\n        fmt.Printf(\"Int:\
+  \ %d\\\\n\", v)\n    default:\n        fmt.Printf(\"Unknown type\\\\n\")\n    }\n\
+  \    ```\n\n    ## Common Standard Interfaces\n\n    ### io.Reader and io.Writer\n\
+  \    ```go\n    type Reader interface {\n        Read(p []byte) (n int, err error)\n\
+  \    }\n\n    type Writer interface {\n        Write(p []byte) (n int, err error)\n\
+  \    }\n    ```\n\n    ### fmt.Stringer\n    ```go\n    type Stringer interface\
+  \ {\n        String() string\n    }\n\n    type Person struct {\n        Name string\n\
+  \        Age  int\n    }\n\n    func (p Person) String() string {\n        return\
+  \ fmt.Sprintf(\"%s (%d years)\", p.Name, p.Age)\n    }\n\n    person := Person{Name:\
+  \ \"Alice\", Age: 25}\n    fmt.Println(person)  // Calls String() method\n    ```\n\
+  \n    ### error interface\n    ```go\n    type error interface {\n        Error()\
+  \ string\n    }\n\n    type MyError struct {\n        Code    int\n        Message\
+  \ string\n    }\n\n    func (e MyError) Error() string {\n        return fmt.Sprintf(\"\
+  Error %d: %s\", e.Code, e.Message)\n    }\n    ```\n\n    ## Interface Composition\n\
+  \n    Combine interfaces:\n\n    ```go\n    type Reader interface {\n        Read([]byte)\
+  \ (int, error)\n    }\n\n    type Writer interface {\n        Write([]byte) (int,\
+  \ error)\n    }\n\n    type ReadWriter interface {\n        Reader\n        Writer\n\
+  \    }\n\n    // Or inline\n    type ReadWriteCloser interface {\n        Read([]byte)\
+  \ (int, error)\n        Write([]byte) (int, error)\n        Close() error\n    }\n\
+  \    ```\n\n    ## Practical Example\n\n    ```go\n    type Shape interface {\n\
+  \        Area() float64\n        Perimeter() float64\n    }\n\n    type Circle struct\
+  \ {\n        Radius float64\n    }\n\n    func (c Circle) Area() float64 {\n   \
+  \     return math.Pi * c.Radius * c.Radius\n    }\n\n    func (c Circle) Perimeter()\
+  \ float64 {\n        return 2 * math.Pi * c.Radius\n    }\n\n    type Rectangle\
+  \ struct {\n        Width, Height float64\n    }\n\n    func (r Rectangle) Area()\
+  \ float64 {\n        return r.Width * r.Height\n    }\n\n    func (r Rectangle)\
+  \ Perimeter() float64 {\n        return 2 * (r.Width + r.Height)\n    }\n\n    func\
+  \ PrintShapeInfo(s Shape) {\n        fmt.Printf(\"Area: %.2f\\\\n\", s.Area())\n\
+  \        fmt.Printf(\"Perimeter: %.2f\\\\n\", s.Perimeter())\n    }\n\n    circle\
+  \ := Circle{Radius: 5}\n    rectangle := Rectangle{Width: 10, Height: 5}\n\n   \
+  \ PrintShapeInfo(circle)\n    PrintShapeInfo(rectangle)\n    ```\n\n    ## Best\
+  \ Practices\n\n    1. **Keep interfaces small**: Prefer single-method interfaces\n\
+  \    2. **Accept interfaces, return structs**: Functions should accept interfaces\
+  \ but return concrete types\n    3. **Interface at usage point**: Define interfaces\
+  \ where they're used, not where types are defined\n    4. **Implicit satisfaction**:\
+  \ Don't explicitly declare implementation\n\n    **Practice:** Try the Interfaces\
+  \ lab!"
+exercises:
+  - type: mcq
+    sequence_order: 1
+    question: "How does Go implement interfaces differently from other languages like Java?"
+    options:
+      - "Go requires explicit 'implements' declarations"
+      - "Go uses implicit interface satisfaction - no declarations needed"
+      - "Go doesn't support interfaces"
+      - "Go interfaces require inheritance"
+    correct_answer: "Go uses implicit interface satisfaction - no declarations needed"
+    explanation: "Go's interfaces are satisfied implicitly - a type implements an interface simply by having the required methods. No explicit declaration or 'implements' keyword is needed. This is called 'duck typing' or structural typing. Example:\n\n```go\ntype Writer interface {\n    Write([]byte) (int, error)\n}\n\n// File implements Writer (implicitly!)\ntype File struct {}\n\nfunc (f *File) Write(data []byte) (int, error) {\n    fmt.Printf(\"Writing %d bytes\\n\", len(data))\n    return len(data), nil\n}\n\n// No 'implements Writer' declaration needed!\nvar w Writer = &File{}  // Works!\nw.Write([]byte(\"hello\"))\n```\n\nThis design has huge advantages: (1) Interfaces can be defined by consumers, not just type authors, (2) You can make third-party types satisfy your interfaces, (3) It encourages small, focused interfaces, (4) No coupling between interface and implementation. This is fundamentally different from Java/C# and enables Go's powerful composition patterns."
+    require_pass: true
+  - type: mcq
+    sequence_order: 2
+    question: "What is the empty interface (interface{}) used for in Go?"
+    options:
+      - "It represents an empty value"
+      - "It can hold values of any type"
+      - "It's an error type"
+      - "It's deprecated in modern Go"
+    correct_answer: "It can hold values of any type"
+    explanation: "The empty interface `interface{}` has no methods, which means every type satisfies it. This makes it Go's way of representing 'any type'. Modern Go also has the `any` keyword as an alias. Example:\n\n```go\nfunc PrintAnything(v interface{}) {\n    fmt.Println(v)\n}\n\n// Can accept any type\nPrintAnything(42)\nPrintAnything(\"hello\")\nPrintAnything([]int{1, 2, 3})\nPrintAnything(struct{ Name string }{\"Alice\"})\n\n// Modern Go uses 'any' alias\nfunc Print(v any) {\n    fmt.Println(v)  // Same as interface{}\n}\n```\n\nTo use the actual value, you need type assertions or type switches:\n\n```go\nfunc Process(v interface{}) {\n    switch val := v.(type) {\n    case int:\n        fmt.Printf(\"Integer: %d\\n\", val)\n    case string:\n        fmt.Printf(\"String: %s\\n\", val)\n    default:\n        fmt.Printf(\"Unknown type\\n\")\n    }\n}\n```\n\nWhile powerful, use empty interface sparingly - it sacrifices type safety. Prefer specific interfaces when possible."
+    require_pass: true
+  - type: mcq
+    sequence_order: 3
+    question: "What is a type assertion in Go and when do you use it?"
+    options:
+      - "It asserts that a type is valid"
+      - "It extracts the concrete value from an interface"
+      - "It creates new types"
+      - "It validates struct fields"
+    correct_answer: "It extracts the concrete value from an interface"
+    explanation: "A type assertion extracts the concrete value stored in an interface. It's used when you have an interface value and need to access the underlying concrete type. There are two forms: one that panics on failure, one that returns a boolean. Example:\n\n```go\nvar i interface{} = \"hello\"\n\n// Unsafe version - panics if wrong type\ns := i.(string)\nfmt.Println(s)  // \"hello\"\n// i.(int)  // Would panic!\n\n// Safe version - returns bool\ns, ok := i.(string)\nif ok {\n    fmt.Println(\"It's a string:\", s)\n}\n\nn, ok := i.(int)\nif !ok {\n    fmt.Println(\"Not an int\")  // This prints\n}\n\n// Type switch for multiple types\nswitch v := i.(type) {\ncase string:\n    fmt.Printf(\"String: %s\\n\", v)\ncase int:\n    fmt.Printf(\"Int: %d\\n\", v)\ndefault:\n    fmt.Printf(\"Unknown type\\n\")\n}\n```\n\nAlways use the safe two-value form in production code to avoid panics. Type assertions are essential when working with interface{} or any."
+    require_pass: true

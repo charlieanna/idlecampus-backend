@@ -1,0 +1,86 @@
+slug: docker-rename-rename-a-container
+title: 'Docker Rename: Rename a Container'
+difficulty: easy
+sequence_order: 11
+estimated_minutes: 2
+key_concepts:
+- containers
+- docker-rename
+- management
+- naming
+- organization
+prerequisites: []
+content_md: '# Docker Rename: Rename a Container 🚀
+
+
+  Change the name of a container to something more meaningful or to resolve naming
+  conflicts.
+
+
+  ## Syntax/Command
+
+
+  ```bash
+
+  docker rename old-name new-name
+
+  ```
+
+
+  ## Example
+
+
+  ```bash
+
+  docker rename container-name new-name
+
+  ```
+
+
+  ## Key Points
+
+
+  - Rename: docker rename <old-name> <new-name>
+
+
+  - Works on running or stopped containers'
+exercises:
+- type: terminal
+  problem_statement: Rename a container from 'old-name' to 'new-name'
+  expected_output: Silent success (no output on success)
+  language: bash
+  starter_code: "# Rename a container\n"
+  sequence_order: 1
+  command: docker rename old-name new-name
+  description: Rename container for better identification and management
+  hints:
+  - 'Rename: docker rename <old-name> <new-name>'
+  - Works on running or stopped containers
+  validation:
+    must_not_include:
+    - Error
+    - 'panic:'
+  timeout_sec: 60
+  require_pass: true
+- type: sandbox
+  sequence_order: 99
+  hints:
+  - Run under CPU pressure to surface leaks or races
+  - Keep commands idempotent in CI
+  validation:
+    must_not_include:
+    - Error
+    - 'panic:'
+  timeout_sec: 60
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: Can you rename a running container?
+  options:
+  - Yes, containers can be renamed while running without any issues
+  - No, you must stop the container first
+  - Only if no active connections exist
+  - Only if you use the --force flag
+  correct_answer: Yes, containers can be renamed while running without any issues
+  explanation: "docker rename works on both running and stopped containers. The rename is purely a metadata change and doesn't affect the container's state or running processes."
+  require_pass: true

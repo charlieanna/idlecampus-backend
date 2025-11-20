@@ -1,0 +1,77 @@
+slug: trig-equations-basic-practice
+title: trig-equations-basic — Practice
+difficulty: medium
+sequence_order: 2
+estimated_minutes: 2
+key_concepts:
+- trig-equations-basic
+prerequisites: []
+content_md: '# trig-equations-basic — Practice 🚀
+
+
+  Find general solution using trig identities
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What is the general solution of sin θ = 1/2?
+  options:
+  - θ = nπ + (-1)ⁿ(π/6), where n ∈ Z
+  - θ = 2nπ + π/6, where n ∈ Z
+  - θ = nπ + π/6, where n ∈ Z
+  - θ = π/6 only
+  require_pass: true
+  correct_answer: θ = nπ + (-1)ⁿ(π/6), where n ∈ Z
+  explanation: 'The general solution of sin θ = 1/2 is θ = nπ + (-1)ⁿ(π/6), where
+    n ∈ Z (integers). Explanation: sin θ = 1/2 has solutions in quadrants I and II:
+    θ = π/6, 5π/6, 13π/6, 17π/6, ... and also negative angles. The general form captures
+    all solutions. General solution formula for sin θ = sin α: θ = nπ + (-1)ⁿα, where
+    n ∈ Z. For cos θ = cos α: θ = 2nπ ± α. For tan θ = tan α: θ = nπ + α. Example:
+    For sin θ = √3/2, the principal value is π/3, so general solution is θ = nπ +
+    (-1)ⁿ(π/3). Verification: n=0 gives π/6, n=1 gives π - π/6 = 5π/6, n=2 gives
+    2π + π/6, etc.'
+- type: mcq
+  sequence_order: 2
+  question: Solve for θ in [0, 2π]: 2 cos θ + 1 = 0
+  options:
+  - θ = π/3, 5π/3
+  - θ = 2π/3, 4π/3
+  - θ = π/6, 11π/6
+  - θ = π/2, 3π/2
+  require_pass: true
+  correct_answer: θ = 2π/3, 4π/3
+  explanation: 'Solving 2 cos θ + 1 = 0: Step 1: 2 cos θ = -1, Step 2: cos θ = -1/2.
+    We need angles where cosine is -1/2 in [0, 2π]. cos θ < 0 in quadrants II and
+    III. Reference angle: cos⁻¹(1/2) = π/3. Quadrant II: θ = π - π/3 = 2π/3. Quadrant
+    III: θ = π + π/3 = 4π/3. Verification: cos(2π/3) = -1/2 ✓, cos(4π/3) = -1/2 ✓.
+    General approach: (1) Isolate the trig function, (2) Find reference angle, (3)
+    Determine which quadrants satisfy the sign, (4) Find angles in those quadrants,
+    (5) Select solutions in given interval.'
+- type: mcq
+  sequence_order: 3
+  question: What is the general solution of tan θ = 1?
+  options:
+  - θ = nπ + π/4, where n ∈ Z
+  - θ = 2nπ + π/4, where n ∈ Z
+  - θ = nπ/2 + π/4, where n ∈ Z
+  - θ = π/4 only
+  require_pass: true
+  correct_answer: θ = nπ + π/4, where n ∈ Z
+  explanation: 'The general solution of tan θ = 1 is θ = nπ + π/4, where n ∈ Z. Explanation:
+    tan θ = 1 when θ = π/4 (45°) in quadrant I. Since tangent has period π (not 2π
+    like sine and cosine), it repeats every π radians. So solutions are: π/4, π/4
+    + π = 5π/4, π/4 + 2π = 9π/4, ... and also π/4 - π = -3π/4, etc. General solution
+    formula: For tan θ = tan α, the solution is θ = nπ + α where n ∈ Z. Verification:
+    tan(π/4) = 1 ✓, tan(π/4 + π) = tan(5π/4) = 1 ✓. Key point: Tangent period is
+    π, not 2π. In [0, 2π], tan θ = 1 has solutions θ = π/4 and 5π/4.'

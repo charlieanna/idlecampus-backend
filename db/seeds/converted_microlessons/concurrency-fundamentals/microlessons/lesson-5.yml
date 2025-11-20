@@ -1,0 +1,128 @@
+slug: lesson-5
+title: Lesson 5
+difficulty: easy
+sequence_order: 5
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Atomic Operations\n\n    **Atomic operations**\
+  \ execute as a single, indivisible unit - they either complete fully or not at all,\
+  \ with no visible intermediate states.\n\n    ## Why Atomic Operations?\n\n    Locks\
+  \ have overhead:\n    - Context switching\n    - Thread blocking\n    - Cache coherency\
+  \ traffic\n\n    Atomic operations provide synchronization without locks!\n\n  \
+  \  ## Common Atomic Operations\n\n    ### 1. Load and Store\n    ```python\n   \
+  \ # Python (using ctypes)\n    import ctypes\n\n    value = ctypes.c_int(0)\n  \
+  \  # Atomic load\n    current = value.value\n    # Atomic store\n    value.value\
+  \ = 42\n    ```\n\n    ### 2. Fetch-and-Add\n    ```cpp\n    // C++\n    #include\
+  \ <atomic>\n\n    std::atomic<int> counter{0};\n\n    // Atomically adds 1 and returns\
+  \ old value\n    int old = counter.fetch_add(1);\n\n    // Atomically adds 1 and\
+  \ returns new value\n    int new_val = ++counter;\n    ```\n\n    ### 3. Compare-and-Swap\
+  \ (CAS)\n    Most powerful atomic operation!\n\n    ```cpp\n    // C++: CAS\n  \
+  \  std::atomic<int> value{10};\n\n    int expected = 10;\n    int desired = 20;\n\
+  \n    // If value == expected, set value = desired\n    // Returns true if successful\n\
+  \    bool success = value.compare_exchange_strong(expected, desired);\n\n    if\
+  \ (success) {\n        // value is now 20\n    } else {\n        // value wasn't\
+  \ 10, expected now contains actual value\n    }\n    ```\n\n    ### 4. Test-and-Set\n\
+  \    ```cpp\n    // Used for spin locks\n    std::atomic_flag flag = ATOMIC_FLAG_INIT;\n\
+  \n    // Atomically set to true, return old value\n    while (flag.test_and_set())\
+  \ {\n        // Spin until we get the flag\n    }\n\n    // Critical section\n\n\
+  \    flag.clear();  // Release\n    ```\n\n    ## Lock-Free Counter Example\n\n\
+  \    ### Without Atomics (WRONG)\n    ```python\n    # NOT thread-safe!\n    counter\
+  \ = 0\n\n    def increment():\n        global counter\n        counter += 1  # Race\
+  \ condition!\n    ```\n\n    ### With Lock (SAFE but SLOW)\n    ```python\n    counter\
+  \ = 0\n    lock = threading.Lock()\n\n    def increment():\n        global counter\n\
+  \        with lock:  # Overhead!\n            counter += 1\n    ```\n\n    ### With\
+  \ Atomics (SAFE and FAST)\n    ```cpp\n    // C++\n    std::atomic<int> counter{0};\n\
+  \n    void increment() {\n        counter.fetch_add(1);  // Lock-free, thread-safe!\n\
+  \    }\n    ```\n\n    ```java\n    // Java\n    import java.util.concurrent.atomic.AtomicInteger;\n\
+  \n    AtomicInteger counter = new AtomicInteger(0);\n\n    void increment() {\n\
+  \        counter.incrementAndGet();  // Lock-free!\n    }\n    ```\n\n    ```go\n\
+  \    // Go\n    import \"sync/atomic\"\n\n    var counter int64\n\n    func increment()\
+  \ {\n        atomic.AddInt64(&counter, 1)  // Lock-free!\n    }\n    ```\n\n   \
+  \ ## Memory Ordering\n\n    Modern CPUs reorder instructions for performance. This\
+  \ can break concurrent code!\n\n    ### The Problem\n    ```cpp\n    // Thread 1\n\
+  \    data = 42;\n    ready = true;\n\n    // Thread 2\n    if (ready) {\n      \
+  \  print(data);  // Might print 0!\n    }\n    ```\n\n    **Why?** CPU might reorder\
+  \ to:\n    ```cpp\n    // Reordered by CPU!\n    ready = true;  // Moved up\n  \
+  \  data = 42;     // Moved down\n    ```\n\n    ### Memory Ordering Guarantees\n\
+  \n    1. **Relaxed**: No ordering guarantees (fastest)\n    2. **Acquire**: Loads\
+  \ after this can't move before it\n    3. **Release**: Stores before this can't\
+  \ move after it\n    4. **AcqRel**: Both acquire and release\n    5. **SeqCst**:\
+  \ Sequential consistency (slowest, safest)\n\n    ```cpp\n    // C++ with memory\
+  \ ordering\n    std::atomic<int> data{0};\n    std::atomic<bool> ready{false};\n\
+  \n    // Thread 1\n    data.store(42, std::memory_order_relaxed);\n    ready.store(true,\
+  \ std::memory_order_release);  // Barrier\n\n    // Thread 2\n    if (ready.load(std::memory_order_acquire))\
+  \ {  // Barrier\n        int value = data.load(std::memory_order_relaxed);\n   \
+  \     // Guaranteed to see data = 42\n    }\n    ```\n\n    ## Lock-Free Stack Example\n\
+  \n    ```cpp\n    template<typename T>\n    class LockFreeStack {\n    private:\n\
+  \        struct Node {\n            T data;\n            Node* next;\n        };\n\
+  \        std::atomic<Node*> head{nullptr};\n\n    public:\n        void push(T value)\
+  \ {\n            Node* new_node = new Node{value, nullptr};\n\n            // CAS\
+  \ loop\n            new_node->next = head.load();\n            while (!head.compare_exchange_weak(new_node->next,\
+  \ new_node)) {\n                // If CAS fails, new_node->next updated with current\
+  \ head\n                // Try again\n            }\n        }\n\n        bool pop(T&\
+  \ result) {\n            Node* old_head = head.load();\n\n            // CAS loop\n\
+  \            while (old_head != nullptr) {\n                Node* new_head = old_head->next;\n\
+  \                if (head.compare_exchange_weak(old_head, new_head)) {\n       \
+  \             result = old_head->data;\n                    delete old_head;\n \
+  \                   return true;\n                }\n                // If CAS fails,\
+  \ old_head updated, try again\n            }\n\n            return false;  // Stack\
+  \ was empty\n        }\n    };\n    ```\n\n    ## ABA Problem\n\n    A subtle bug\
+  \ in lock-free algorithms:\n\n    ```\n    1. Thread 1 reads A from head\n    2.\
+  \ Thread 2 changes A to B\n    3. Thread 3 changes B back to A\n    4. Thread 1's\
+  \ CAS succeeds (sees A) but structure might be corrupted!\n    ```\n\n    **Solution**:\
+  \ Use tagged pointers or generation counters:\n    ```cpp\n    struct TaggedPointer\
+  \ {\n        Node* ptr;\n        unsigned int tag;\n    };\n    ```\n\n    ## When\
+  \ to Use Atomics\n\n    ✅ **Use atomics when:**\n    - Simple counters or flags\n\
+  \    - Performance critical\n    - Lock-free algorithms\n\n    ❌ **Use locks when:**\n\
+  \    - Complex critical sections\n    - Multiple operations need to be atomic together\n\
+  \    - Easier to reason about correctness\n\n    ## Platform-Specific Atomics\n\n\
+  \    ### Python (Limited support)\n    ```python\n    # Python's GIL provides some\
+  \ atomicity\n    # But explicit locks recommended\n    ```\n\n    ### Java\n   \
+  \ ```java\n    import java.util.concurrent.atomic.*;\n\n    AtomicInteger counter\
+  \ = new AtomicInteger();\n    AtomicBoolean flag = new AtomicBoolean();\n    AtomicReference<String>\
+  \ ref = new AtomicReference<>();\n    ```\n\n    ### C++\n    ```cpp\n    #include\
+  \ <atomic>\n\n    std::atomic<int> x;\n    std::atomic<bool> flag;\n    std::atomic<MyClass*>\
+  \ ptr;\n    ```\n\n    ### Rust\n    ```rust\n    use std::sync::atomic::{AtomicI32,\
+  \ Ordering};\n\n    let counter = AtomicI32::new(0);\n    counter.fetch_add(1, Ordering::SeqCst);\n\
+  \    ```\n\n    ## Performance Considerations\n\n    - **Atomics are faster than\
+  \ locks** for simple operations\n    - **But slower than non-atomic** operations\n\
+  \    - **Memory ordering matters**: Relaxed < Acquire/Release < SeqCst\n    - **Contention\
+  \ still affects** performance\n\n    **Best practice**: Measure before optimizing!\n\
+  \n    **Next**: We'll explore concurrency patterns and best practices."
+exercises:
+  - type: mcq
+    sequence_order: 1
+    question: "What is Compare-and-Swap (CAS) and why is it considered the most powerful atomic operation?"
+    options:
+      - "It's faster than all other operations"
+      - "It atomically compares a value with an expected value and only updates if they match, enabling lock-free algorithms"
+      - "It works on all data types"
+      - "It requires no CPU support"
+    correct_answer: "It atomically compares a value with an expected value and only updates if they match, enabling lock-free algorithms"
+    explanation: "Compare-and-Swap (CAS) is fundamental to lock-free programming because it enables conditional atomic updates. The operation works in three steps as one atomic unit: (1) Read the current value, (2) Compare it with an expected value, (3) If equal, update to desired value; if not equal, do nothing and return the actual value. Example in C++: bool success = value.compare_exchange_strong(expected, desired). If value equals expected, it's updated to desired and returns true. If not, expected is updated with the actual value and returns false. This allows retry loops: while (!cas_succeeded) { old = value; new = compute(old); cas(old, new); }. CAS is more powerful than simple atomics because it can implement complex lock-free data structures like stacks, queues, and hash tables. The key insight: CAS detects if another thread modified the value between read and write, allowing safe retry. This forms the basis of optimistic concurrency control."
+    require_pass: true
+
+  - type: mcq
+    sequence_order: 2
+    question: "Why might CPU instruction reordering cause problems in concurrent code, and how do memory ordering semantics help?"
+    options:
+      - "Reordering makes code run slower"
+      - "CPUs reorder for performance, but this can make one thread see writes in a different order than another thread made them; memory barriers prevent this"
+      - "Reordering only affects single-threaded code"
+      - "Memory ordering has no effect on correctness"
+    correct_answer: "CPUs reorder for performance, but this can make one thread see writes in a different order than another thread made them; memory barriers prevent this"
+    explanation: "Modern CPUs reorder instructions to maximize throughput through pipelining and out-of-order execution. In single-threaded code, this is invisible, but in concurrent code it can cause subtle bugs. Example: Thread 1 writes data=42 then ready=true. Thread 2 reads if(ready) print(data). The CPU might reorder Thread 1's writes, so Thread 2 sees ready=true but data=0. Memory ordering prevents this with barriers. Acquire semantics (on load) ensure subsequent operations can't move before it. Release semantics (on store) ensure previous operations can't move after it. Example: data.store(42, relaxed); ready.store(true, release) paired with if(ready.load(acquire)) { x = data.load(relaxed); } guarantees Thread 2 sees data=42. The ordering types (relaxed < acquire/release < sequential consistency) trade performance for safety. Most code should use sequential consistency (default in many languages) unless profiling shows it's a bottleneck. Understanding memory ordering is crucial for lock-free programming and reasoning about concurrent behavior."
+    require_pass: true
+
+  - type: mcq
+    sequence_order: 3
+    question: "What is the ABA problem in lock-free algorithms and why is it dangerous?"
+    options:
+      - "It causes performance degradation"
+      - "A value changes from A to B back to A, making CAS succeed when it should fail, potentially corrupting data structure"
+      - "It only affects single-threaded code"
+      - "It's a problem with mutex locks, not atomics"
+    correct_answer: "A value changes from A to B back to A, making CAS succeed when it should fail, potentially corrupting data structure"
+    explanation: "The ABA problem occurs in lock-free data structures when CAS succeeds incorrectly because a value coincidentally returned to its original state. Example in lock-free stack: Thread 1 reads head pointer (A), gets interrupted. Thread 2 pops A, pops B, pushes A back (head is A again but different structure). Thread 1 resumes, CAS succeeds because head still appears to be A, but A's next pointer might now be invalid, corrupting the stack. The problem: CAS only checks value equality, not whether the structure is truly unchanged. Solutions include: (1) Tagged pointers - combine pointer with version counter so even if pointer value matches, tag differs: struct { Node* ptr; uint64_t tag; }. Each CAS increments tag. (2) Hazard pointers - track which nodes threads are accessing to prevent premature reuse. (3) Garbage collection - defer node deletion until safe. The ABA problem is subtle and can cause rare, hard-to-reproduce crashes, making it critical to understand when implementing lock-free data structures."
+    require_pass: true

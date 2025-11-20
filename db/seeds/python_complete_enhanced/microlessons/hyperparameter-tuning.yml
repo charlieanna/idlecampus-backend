@@ -1,0 +1,280 @@
+slug: hyperparameter-tuning
+title: Hyperparameter Tuning
+sequence_order: 1
+estimated_minutes: 2
+difficulty: easy
+key_concepts: []
+content_md: "# Hyperparameter Tuning \U0001F680\n\n# Hyperparameter Tuning\n\n   \
+  \ Hyperparameters are settings that control the learning process. Tuning them properly\
+  \ can significantly improve model performance.\n\n    ## Hyperparameters vs Parameters\n\
+  \n    ### Parameters (Learned)\n    - **Learned from data** during training\n  \
+  \  - Examples: weights in neural networks, coefficients in linear regression\n\n\
+  \    ### Hyperparameters (Set Before Training)\n    - **Set before training** begins\n\
+  \    - Control the learning process\n    - Examples: learning rate, number of trees,\
+  \ max depth\n\n    ## Common Hyperparameters by Algorithm\n\n    ### Random Forest\n\
+  \n    ```python\n    RandomForestClassifier(\n        n_estimators=100,        #\
+  \ Number of trees\n        max_depth=None,          # Max depth of trees\n     \
+  \   min_samples_split=2,     # Min samples to split node\n        min_samples_leaf=1,\
+  \      # Min samples in leaf\n        max_features='sqrt',     # Features per split\n\
+  \        random_state=42\n    )\n    ```\n\n    ### Gradient Boosting\n\n    ```python\n\
+  \    GradientBoostingClassifier(\n        n_estimators=100,        # Number of boosting\
+  \ stages\n        learning_rate=0.1,       # Shrinks contribution of each tree\n\
+  \        max_depth=3,             # Max depth of trees\n        subsample=1.0, \
+  \          # Fraction of samples for training each tree\n        random_state=42\n\
+  \    )\n    ```\n\n    ### SVM\n\n    ```python\n    SVC(\n        C=1.0,      \
+  \             # Regularization parameter\n        kernel='rbf',            # Kernel\
+  \ type\n        gamma='scale',           # Kernel coefficient\n        random_state=42\n\
+  \    )\n    ```\n\n    ### Logistic Regression\n\n    ```python\n    LogisticRegression(\n\
+  \        C=1.0,                   # Inverse of regularization strength\n       \
+  \ penalty='l2',            # Regularization type\n        solver='lbfgs',      \
+  \    # Optimization algorithm\n        max_iter=100\n    )\n    ```\n\n    ## Grid\
+  \ Search\n\n    **Idea:** Try all combinations of hyperparameters\n\n    ### Basic\
+  \ Example\n\n    ```python\n    from sklearn.model_selection import GridSearchCV\n\
+  \    from sklearn.ensemble import RandomForestClassifier\n    from sklearn.datasets\
+  \ import load_iris\n\n    # Load data\n    iris = load_iris()\n    X, y = iris.data,\
+  \ iris.target\n\n    # Define parameter grid\n    param_grid = {\n        'n_estimators':\
+  \ [50, 100, 200],\n        'max_depth': [3, 5, 7, None],\n        'min_samples_split':\
+  \ [2, 5, 10]\n    }\n\n    # Create model\n    rf = RandomForestClassifier(random_state=42)\n\
+  \n    # Grid search\n    grid_search = GridSearchCV(\n        rf,\n        param_grid,\n\
+  \        cv=5,                    # 5-fold cross-validation\n        scoring='accuracy',\n\
+  \        n_jobs=-1,               # Use all CPU cores\n        verbose=1\n    )\n\
+  \n    # Fit\n    grid_search.fit(X, y)\n\n    # Results\n    print(f\"Best parameters:\
+  \ {grid_search.best_params_}\")\n    print(f\"Best CV score: {grid_search.best_score_:.4f}\"\
+  )\n\n    # Use best model\n    best_model = grid_search.best_estimator_\n    ```\n\
+  \n    ### Analyzing Results\n\n    ```python\n    import pandas as pd\n\n    # Convert\
+  \ results to DataFrame\n    results_df = pd.DataFrame(grid_search.cv_results_)\n\
+  \n    # View top 10 configurations\n    results_df = results_df.sort_values('rank_test_score')\n\
+  \    print(results_df[['params', 'mean_test_score', 'std_test_score', 'rank_test_score']].head(10))\n\
+  \n    # Visualize (for 2 hyperparameters)\n    import matplotlib.pyplot as plt\n\
+  \    import numpy as np\n\n    # Extract results for visualization\n    scores =\
+  \ grid_search.cv_results_['mean_test_score']\n    scores = scores.reshape(len(param_grid['n_estimators']),\n\
+  \                           len(param_grid['max_depth']))\n\n    plt.figure(figsize=(10,\
+  \ 6))\n    plt.imshow(scores, interpolation='nearest', cmap='viridis')\n    plt.xlabel('max_depth')\n\
+  \    plt.ylabel('n_estimators')\n    plt.colorbar(label='Accuracy')\n    plt.xticks(np.arange(len(param_grid['max_depth'])),\
+  \ param_grid['max_depth'])\n    plt.yticks(np.arange(len(param_grid['n_estimators'])),\
+  \ param_grid['n_estimators'])\n    plt.title('Grid Search Results')\n    plt.show()\n\
+  \    ```\n\n    ## Randomized Search\n\n    **Idea:** Try random combinations (faster\
+  \ than grid search)\n\n    ### When to Use\n\n    - Large hyperparameter space\n\
+  \    - Limited computational budget\n    - Want to explore more broadly\n\n    ###\
+  \ Example\n\n    ```python\n    from sklearn.model_selection import RandomizedSearchCV\n\
+  \    from scipy.stats import randint, uniform\n\n    # Define distributions to sample\
+  \ from\n    param_distributions = {\n        'n_estimators': randint(50, 500), \
+  \          # Random int between 50-500\n        'max_depth': randint(3, 20),   \
+  \             # Random int between 3-20\n        'min_samples_split': randint(2,\
+  \ 20),\n        'min_samples_leaf': randint(1, 10),\n        'max_features': ['sqrt',\
+  \ 'log2', None],\n        'bootstrap': [True, False]\n    }\n\n    rf = RandomForestClassifier(random_state=42)\n\
+  \n    # Randomized search\n    random_search = RandomizedSearchCV(\n        rf,\n\
+  \        param_distributions,\n        n_iter=50,              # Try 50 random combinations\n\
+  \        cv=5,\n        scoring='accuracy',\n        n_jobs=-1,\n        random_state=42,\n\
+  \        verbose=1\n    )\n\n    random_search.fit(X, y)\n\n    print(f\"Best parameters:\
+  \ {random_search.best_params_}\")\n    print(f\"Best CV score: {random_search.best_score_:.4f}\"\
+  )\n    ```\n\n    ## Comparison: Grid vs Random Search\n\n    | Aspect | Grid Search\
+  \ | Random Search |\n    |--------|-------------|---------------|\n    | **Coverage**\
+  \ | Exhaustive | Random sample |\n    | **Speed** | Slower | Faster |\n    | **Best\
+  \ for** | Small param space | Large param space |\n    | **Reproducible** | Yes\
+  \ | Yes (with seed) |\n    | **Efficiency** | Lower | Higher |\n\n    ```python\n\
+  \    # Grid Search: 3 × 4 × 3 = 36 combinations\n    param_grid = {\n        'n_estimators':\
+  \ [50, 100, 200],\n        'max_depth': [3, 5, 7, None],\n        'min_samples_split':\
+  \ [2, 5, 10]\n    }\n\n    # Random Search: Try 50 random combinations\n    # Much\
+  \ more efficient for large spaces!\n    ```\n\n    ## Advanced: Bayesian Optimization\n\
+  \n    **Idea:** Use past evaluations to choose next hyperparameters\n\n    ### Using\
+  \ Optuna\n\n    ```python\n    import optuna\n    from sklearn.ensemble import RandomForestClassifier\n\
+  \    from sklearn.model_selection import cross_val_score\n\n    def objective(trial):\n\
+  \        # Suggest hyperparameters\n        n_estimators = trial.suggest_int('n_estimators',\
+  \ 50, 500)\n        max_depth = trial.suggest_int('max_depth', 3, 20)\n        min_samples_split\
+  \ = trial.suggest_int('min_samples_split', 2, 20)\n\n        # Create model\n  \
+  \      rf = RandomForestClassifier(\n            n_estimators=n_estimators,\n  \
+  \          max_depth=max_depth,\n            min_samples_split=min_samples_split,\n\
+  \            random_state=42\n        )\n\n        # Evaluate\n        scores =\
+  \ cross_val_score(rf, X, y, cv=5, scoring='accuracy')\n        return scores.mean()\n\
+  \n    # Create study\n    study = optuna.create_study(direction='maximize')\n  \
+  \  study.optimize(objective, n_trials=100)\n\n    print(f\"Best parameters: {study.best_params}\"\
+  )\n    print(f\"Best CV score: {study.best_value:.4f}\")\n\n    # Visualize optimization\
+  \ history\n    optuna.visualization.plot_optimization_history(study)\n    ```\n\n\
+  \    ## Hyperparameter Tuning with Pipeline\n\n    ```python\n    from sklearn.pipeline\
+  \ import Pipeline\n    from sklearn.preprocessing import StandardScaler\n    from\
+  \ sklearn.svm import SVC\n\n    # Create pipeline\n    pipeline = Pipeline([\n \
+  \       ('scaler', StandardScaler()),\n        ('svm', SVC())\n    ])\n\n    # Define\
+  \ parameters (use pipeline step name prefix)\n    param_grid = {\n        'svm__C':\
+  \ [0.1, 1, 10, 100],\n        'svm__kernel': ['linear', 'rbf'],\n        'svm__gamma':\
+  \ ['scale', 'auto', 0.1, 0.01]\n    }\n\n    grid_search = GridSearchCV(pipeline,\
+  \ param_grid, cv=5, scoring='accuracy')\n    grid_search.fit(X, y)\n\n    print(f\"\
+  Best parameters: {grid_search.best_params_}\")\n    ```\n\n    ## Real-World Example:\
+  \ Complete Tuning Workflow\n\n    ```python\n    import pandas as pd\n    import\
+  \ numpy as np\n    from sklearn.model_selection import train_test_split, RandomizedSearchCV,\
+  \ cross_val_score\n    from sklearn.ensemble import RandomForestClassifier\n   \
+  \ from sklearn.metrics import classification_report, confusion_matrix\n    from\
+  \ scipy.stats import randint\n    import matplotlib.pyplot as plt\n    import seaborn\
+  \ as sns\n\n    # Load data\n    from sklearn.datasets import load_breast_cancer\n\
+  \    data = load_breast_cancer()\n    X, y = data.data, data.target\n\n    # Split\
+  \ data (hold out final test set)\n    X_train, X_test, y_train, y_test = train_test_split(\n\
+  \        X, y, test_size=0.2, random_state=42, stratify=y\n    )\n\n    # Define\
+  \ hyperparameter space\n    param_distributions = {\n        'n_estimators': randint(100,\
+  \ 500),\n        'max_depth': [5, 10, 15, 20, None],\n        'min_samples_split':\
+  \ randint(2, 20),\n        'min_samples_leaf': randint(1, 10),\n        'max_features':\
+  \ ['sqrt', 'log2', None],\n        'bootstrap': [True, False],\n        'class_weight':\
+  \ ['balanced', None]\n    }\n\n    # Create model\n    rf = RandomForestClassifier(random_state=42)\n\
+  \n    # Randomized search with stratified k-fold\n    random_search = RandomizedSearchCV(\n\
+  \        rf,\n        param_distributions,\n        n_iter=100,                \
+  \    # Try 100 combinations\n        cv=5,                          # 5-fold CV\n\
+  \        scoring='roc_auc',             # Optimize for AUC\n        n_jobs=-1,\n\
+  \        random_state=42,\n        verbose=1,\n        return_train_score=True\n\
+  \    )\n\n    # Fit\n    print(\"Starting hyperparameter search...\")\n    random_search.fit(X_train,\
+  \ y_train)\n\n    print(f\"\\\\nBest parameters: {random_search.best_params_}\"\
+  )\n    print(f\"Best CV AUC: {random_search.best_score_:.4f}\")\n\n    # Analyze\
+  \ results\n    results_df = pd.DataFrame(random_search.cv_results_)\n    results_df\
+  \ = results_df.sort_values('rank_test_score')\n\n    print(f\"\\\\nTop 5 configurations:\"\
+  )\n    print(results_df[['params', 'mean_test_score', 'std_test_score']].head())\n\
+  \n    # Check for overfitting\n    plt.figure(figsize=(10, 6))\n    plt.scatter(results_df['mean_train_score'],\
+  \ results_df['mean_test_score'], alpha=0.5)\n    plt.plot([0, 1], [0, 1], 'r--',\
+  \ label='Perfect fit')\n    plt.xlabel('Training Score')\n    plt.ylabel('Validation\
+  \ Score')\n    plt.title('Training vs Validation Scores')\n    plt.legend()\n  \
+  \  plt.grid(True, alpha=0.3)\n    plt.show()\n\n    # Get best model\n    best_model\
+  \ = random_search.best_estimator_\n\n    # Evaluate on test set\n    y_pred = best_model.predict(X_test)\n\
+  \    y_pred_proba = best_model.predict_proba(X_test)[:, 1]\n\n    from sklearn.metrics\
+  \ import roc_auc_score\n    test_auc = roc_auc_score(y_test, y_pred_proba)\n\n \
+  \   print(f\"\\\\nTest set AUC: {test_auc:.4f}\")\n    print(f\"\\\\nClassification\
+  \ Report:\")\n    print(classification_report(y_test, y_pred, target_names=data.target_names))\n\
+  \n    # Confusion matrix\n    cm = confusion_matrix(y_test, y_pred)\n    plt.figure(figsize=(8,\
+  \ 6))\n    sns.heatmap(cm, annot=True, fmt='d', cmap='Blues',\n                xticklabels=data.target_names,\n\
+  \                yticklabels=data.target_names)\n    plt.title('Confusion Matrix')\n\
+  \    plt.ylabel('True Label')\n    plt.xlabel('Predicted Label')\n    plt.show()\n\
+  \n    # Feature importance\n    feature_importance = pd.DataFrame({\n        'feature':\
+  \ data.feature_names,\n        'importance': best_model.feature_importances_\n \
+  \   }).sort_values('importance', ascending=False)\n\n    plt.figure(figsize=(10,\
+  \ 8))\n    plt.barh(feature_importance.head(10)['feature'],\n             feature_importance.head(10)['importance'])\n\
+  \    plt.xlabel('Importance')\n    plt.title('Top 10 Most Important Features')\n\
+  \    plt.gca().invert_yaxis()\n    plt.tight_layout()\n    plt.show()\n    ```\n\
+  \n    ## Tuning Strategies\n\n    ### 1. Coarse to Fine\n\n    ```python\n    #\
+  \ Step 1: Coarse search (wide range, fewer values)\n    param_grid_coarse = {\n\
+  \        'n_estimators': [50, 200, 500],\n        'max_depth': [5, 15, None]\n \
+  \   }\n    grid_coarse = GridSearchCV(rf, param_grid_coarse, cv=5)\n    grid_coarse.fit(X_train,\
+  \ y_train)\n\n    # Step 2: Fine search (narrow range around best, more values)\n\
+  \    param_grid_fine = {\n        'n_estimators': [150, 200, 250],\n        'max_depth':\
+  \ [13, 15, 17]\n    }\n    grid_fine = GridSearchCV(rf, param_grid_fine, cv=5)\n\
+  \    grid_fine.fit(X_train, y_train)\n    ```\n\n    ### 2. One-at-a-Time\n\n  \
+  \  ```python\n    # Tune each hyperparameter separately (faster but misses interactions)\n\
+  \n    # Step 1: Tune n_estimators\n    param_grid_1 = {'n_estimators': [50, 100,\
+  \ 200, 300, 500]}\n    # ... find best n_estimators\n\n    # Step 2: Fix n_estimators,\
+  \ tune max_depth\n    param_grid_2 = {'max_depth': [5, 10, 15, 20, None]}\n    #\
+  \ ... and so on\n    ```\n\n    ## Tips for Effective Tuning\n\n    ### 1. Start\
+  \ with Default Parameters\n\n    ```python\n    # Baseline with defaults\n    rf_default\
+  \ = RandomForestClassifier(random_state=42)\n    baseline_score = cross_val_score(rf_default,\
+  \ X, y, cv=5).mean()\n    print(f\"Baseline score: {baseline_score:.4f}\")\n\n \
+  \   # Only tune if baseline is insufficient\n    ```\n\n    ### 2. Understand Hyperparameter\
+  \ Effects\n\n    - **n_estimators:** More is usually better (diminishing returns)\n\
+  \    - **max_depth:** Controls overfitting (lower = less overfit)\n    - **learning_rate:**\
+  \ Lower = better but slower\n    - **C (SVM/LogReg):** Lower = more regularization\n\
+  \n    ### 3. Use Domain Knowledge\n\n    ```python\n    # If you know data is complex,\
+  \ try deeper trees\n    param_grid = {\n        'max_depth': [15, 20, 25, None],\
+  \  # Focus on deeper trees\n        # ...\n    }\n    ```\n\n    ### 4. Monitor\
+  \ for Overfitting\n\n    ```python\n    # Check train vs validation scores\n   \
+  \ random_search = RandomizedSearchCV(\n        rf, param_distributions,\n      \
+  \  n_iter=50,\n        cv=5,\n        return_train_score=True  # Important!\n  \
+  \  )\n\n    # If train score >> validation score → overfitting\n    ```\n\n    ##\
+  \ Common Pitfalls\n\n    ### 1. Data Leakage\n\n    ```python\n    # ❌ WRONG - Tuning\
+  \ on test set\n    grid_search.fit(X_test, y_test)\n\n    # ✅ CORRECT - Separate\
+  \ train/validation/test\n    # Train: For training\n    # Validation: For hyperparameter\
+  \ tuning (via CV)\n    # Test: For final evaluation (never used in tuning!)\n  \
+  \  ```\n\n    ### 2. Overfitting to Validation Set\n\n    ```python\n    # ❌ WRONG\
+  \ - Trying too many combinations\n    # Leads to overfitting the validation set\n\
+  \n    # ✅ BETTER - Use nested CV\n    from sklearn.model_selection import cross_val_score\n\
+  \    outer_scores = cross_val_score(grid_search, X, y, cv=5)\n    ```\n\n    ###\
+  \ 3. Not Setting random_state\n\n    ```python\n    # ❌ Non-reproducible\n    RandomForestClassifier()\n\
+  \n    # ✅ Reproducible\n    RandomForestClassifier(random_state=42)\n    ```\n\n\
+  \    ## Best Practices\n\n    1. **Hold out test set** - Never use for tuning\n\
+  \    2. **Use cross-validation** - More reliable than single validation set\n  \
+  \  3. **Start broad, then narrow** - Coarse to fine search\n    4. **Random search\
+  \ first** - Explore space efficiently\n    5. **Monitor overfitting** - Check train\
+  \ vs validation scores\n    6. **Set random_state** - For reproducibility\n    7.\
+  \ **Use appropriate metric** - Match business objective\n    8. **Don't over-tune**\
+  \ - Risk overfitting to validation set\n\n    ## Advantages\n\n    ✅ Can significantly\
+  \ improve performance\n    ✅ Finds optimal model configuration\n    ✅ Automated\
+  \ process\n    ✅ Works with any scikit-learn model\n\n    ## Disadvantages\n\n \
+  \   ❌ Computationally expensive\n    ❌ Risk of overfitting to validation set\n \
+  \   ❌ May not find global optimum (grid/random)\n    ❌ Requires computational resources\n\
+  \n    ## Key Takeaways\n\n    1. **Hyperparameters control learning** process\n\
+  \    2. **Grid search** tries all combinations (exhaustive)\n    3. **Random search**\
+  \ more efficient for large spaces\n    4. **Use cross-validation** for reliable\
+  \ estimates\n    5. **Pipeline** prevents data leakage\n    6. **Start broad, refine**\
+  \ - coarse to fine\n    7. **Monitor for overfitting** - check train vs validation\n\
+  \    8. **Hold out test set** - final evaluation only\n\n    ## Next Steps\n\n \
+  \   - Practice tuning different algorithms\n    - Try Bayesian optimization (Optuna)\n\
+  \    - Learn about AutoML tools\n    - Study learning curves\n    - Experiment with\
+  \ nested cross-validation"
+exercises:
+- type: mcq
+  slug: hyperparameter-tuning-mcq-1
+  sequence_order: 1
+  question: What is the key difference between hyperparameters and parameters in machine
+    learning?
+  options:
+  - Hyperparameters are set before training; parameters are learned from data during
+    training
+  - Hyperparameters are always integers; parameters are always floats
+  - Hyperparameters are used only in neural networks
+  - They are the same thing with different names
+  correct_answer_index: 0
+  explanation: Hyperparameters (like learning rate, max_depth, n_estimators) are configuration
+    settings you set before training begins. Parameters (like weights in neural networks
+    or coefficients in linear regression) are learned from the data during the training
+    process.
+- type: mcq
+  slug: hyperparameter-tuning-mcq-2
+  sequence_order: 2
+  question: What is the main advantage of RandomizedSearchCV over GridSearchCV?
+  options:
+  - It's much faster when searching large hyperparameter spaces by sampling randomly
+  - It always finds better hyperparameters than GridSearchCV
+  - It doesn't require cross-validation
+  - It uses less memory for storing results
+  correct_answer_index: 0
+  explanation: RandomizedSearchCV samples hyperparameter combinations randomly rather
+    than trying every single combination like GridSearchCV. This makes it much more
+    efficient for large hyperparameter spaces, though it doesn't guarantee finding
+    the absolute best combination.
+- type: mcq
+  slug: hyperparameter-tuning-mcq-3
+  sequence_order: 3
+  question: Why is it important to use cross-validation during hyperparameter tuning
+    instead of a single train-validation split?
+  options:
+  - Cross-validation provides more robust and reliable performance estimates across
+    different data splits
+  - Cross-validation is faster than a single split
+  - Cross-validation automatically finds the best hyperparameters
+  - Cross-validation eliminates the need for a test set
+  correct_answer_index: 0
+  explanation: Cross-validation (e.g., 5-fold CV) trains and evaluates the model on
+    multiple different splits of the data, providing a more reliable estimate of performance
+    that's less sensitive to how the data happens to be split. A single split might
+    give misleading results due to luck.
+- type: terminal
+  slug: hyperparameter-tuning-term
+  sequence_order: 4
+  description: Test hyperparameter tuning with GridSearchCV
+  command: 'python - << "PY" from sklearn.model_selection import GridSearchCV from
+    sklearn.ensemble import RandomForestClassifier from sklearn.datasets import make_classification
+    X, y = make_classification(n_samples=200, n_features=10, random_state=42) param_grid
+    = {"n_estimators": [10, 50, 100], "max_depth": [3, 5, None]} grid = GridSearchCV(RandomForestClassifier(random_state=42),
+    param_grid, cv=3) grid.fit(X, y) print(f"Best parameters: {grid.best_params_}")
+    print(f"Best CV score: {grid.best_score_:.4f}") PY'
+  validation:
+    must_not_include:
+    - Traceback
+    - SyntaxError
+  hints:
+  - If `python` is not available, try `python3`.
+  - Make sure scikit-learn is installed.
+objectives:
+- Distinguish between hyperparameters (set before training) and parameters (learned
+  during training)
+- Understand common hyperparameters for different algorithms (Random Forest, SVM,
+  Logistic Regression)
+- Apply GridSearchCV for exhaustive search of hyperparameter combinations
+- Use RandomizedSearchCV for efficient search of large hyperparameter spaces
+- Choose appropriate number of components based on explained variance and cross-validation
+- Avoid data leakage and overfitting during hyperparameter tuning
+next_recommended:
+- control
+- data-structures

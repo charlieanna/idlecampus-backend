@@ -1,0 +1,42 @@
+<div class="mastery-decay-page" style="min-height: 100vh; background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);">
+  <div class="container-fluid py-5">
+    <div class="row mb-4">
+      <div class="col-12">
+        <h1 class="text-white mb-2" style="font-size: 2.5rem; font-weight: 700;">
+          🎯 Command Mastery Dashboard
+        </h1>
+        <p class="text-white-50" style="font-size: 1.1rem;">
+          Track your learning progress with intelligent decay tracking powered by Ebbinghaus forgetting curves
+        </p>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-12">
+        <%= react_component('SimpleMasteryDashboard', {
+          userId: @user_id,
+          timeRange: @time_range.to_i,
+          initialStats: @initial_data[:stats]
+        }) %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* Full-width container for immersive experience */
+  .mastery-decay-page {
+    margin: -20px;
+    padding: 0;
+  }
+  
+  /* Dark theme typography */
+  .mastery-decay-page h1 {
+    text-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+  }
+  
+  /* Ensure React components render properly */
+  [data-react-class="EnhancedDecayVisualization"] {
+    min-height: 600px;
+  }
+</style>

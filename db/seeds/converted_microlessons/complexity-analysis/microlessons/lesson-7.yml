@@ -1,0 +1,90 @@
+slug: lesson-7
+title: Lesson 7
+difficulty: easy
+sequence_order: 7
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Big O Notation\n\n    **Big O** describes\
+  \ the worst-case time or space complexity as input size grows.\n\n    ## Common\
+  \ Complexities (Best to Worst)\n\n    | Big O | Name | Example |\n    |-------|------|---------|\n\
+  \    | O(1) | Constant | Array access, hash lookup |\n    | O(log n) | Logarithmic\
+  \ | Binary search |\n    | O(n) | Linear | Array traversal |\n    | O(n log n) |\
+  \ Linearithmic | Merge sort, quick sort |\n    | O(n²) | Quadratic | Nested loops,\
+  \ bubble sort |\n    | O(2ⁿ) | Exponential | Recursive fibonacci |\n    | O(n!)\
+  \ | Factorial | Permutations |\n\n    ## O(1) - Constant Time\n\n    ```python\n\
+  \    def get_first(arr):\n        return arr[0]  # Always 1 operation\n\n    # O(1)\
+  \ - regardless of array size\n    ```\n\n    ## O(n) - Linear Time\n\n    ```python\n\
+  \    def find_max(arr):\n        max_val = arr[0]\n        for num in arr:  # n\
+  \ iterations\n            if num > max_val:\n                max_val = num\n   \
+  \     return max_val\n\n    # O(n) - time grows with input size\n    ```\n\n   \
+  \ ## O(n²) - Quadratic Time\n\n    ```python\n    def find_pairs(arr):\n       \
+  \ pairs = []\n        for i in range(len(arr)):        # n iterations\n        \
+  \    for j in range(len(arr)):    # n iterations\n                if i != j:\n \
+  \                   pairs.append((arr[i], arr[j]))\n        return pairs\n\n   \
+  \ # O(n²) - nested loops\n    ```\n\n    ## O(log n) - Logarithmic Time\n\n    ```python\n\
+  \    def binary_search(arr, target):\n        left, right = 0, len(arr) - 1\n\n\
+  \        while left <= right:\n            mid = (left + right) // 2\n         \
+  \   if arr[mid] == target:\n                return mid\n            elif arr[mid]\
+  \ < target:\n                left = mid + 1  # Eliminate half\n            else:\n\
+  \                right = mid - 1  # Eliminate half\n\n        return -1\n\n    #\
+  \ O(log n) - halves search space each iteration\n    # 1000 items = ~10 steps, 1M\
+  \ items = ~20 steps\n    ```\n\n    ## Rules for Calculating Big O\n\n    ### 1.\
+  \ Drop Constants\n\n    ```python\n    def example(arr):\n        print(arr[0])\
+  \     # O(1)\n        print(arr[1])     # O(1)\n\n        for x in arr:     # O(n)\n\
+  \            print(x)\n\n    # O(1) + O(1) + O(n) = O(2 + n) → O(n)\n    # Drop\
+  \ constants: O(n)\n    ```\n\n    ### 2. Drop Non-Dominant Terms\n\n    ```python\n\
+  \    def example(arr):\n        for x in arr:              # O(n)\n            print(x)\n\
+  \n        for i in arr:              # O(n²)\n            for j in arr:\n      \
+  \          print(i, j)\n\n    # O(n) + O(n²) = O(n² + n) → O(n²)\n    # Drop non-dominant:\
+  \ O(n²)\n    ```\n\n    ### 3. Different Inputs = Different Variables\n\n    ```python\n\
+  \    def intersect(arr1, arr2):\n        for a in arr1:       # O(a)\n         \
+  \   for b in arr2:   # O(b)\n                if a == b:\n                    print(a,\
+  \ b)\n\n    # O(a × b) NOT O(n²)\n    # Different inputs!\n    ```\n\n    ## Space\
+  \ Complexity\n\n    **Memory used relative to input size**\n\n    ```python\n  \
+  \  def example1(arr):\n        total = 0              # O(1) space\n        for\
+  \ num in arr:\n            total += num\n        return total\n    # Space: O(1)\n\
+  \n    def example2(arr):\n        copy = arr.copy()      # O(n) space\n        return\
+  \ copy\n    # Space: O(n)\n\n    def example3(n):\n        matrix = [[0]*n for _\
+  \ in range(n)]  # O(n²) space\n        return matrix\n    # Space: O(n²)\n    ```\n\
+  \n    ## Interview Tips\n\n    1. **Always state assumptions**: \"Assuming array\
+  \ is sorted...\"\n    2. **Start with brute force**: O(n²) solution first, then\
+  \ optimize\n    3. **Trade space for time**: Hash tables trade O(n) space for O(1)\
+  \ lookups\n    4. **Look for patterns**: Two pointers, sliding window, divide &\
+  \ conquer\n\n    **Next**: We'll implement fundamental data structures!"
+exercises:
+  - type: mcq
+    sequence_order: 1
+    question: "What is the Big O time complexity of the following nested loop code?\n\n```python\ndef example(arr1, arr2):\n    for a in arr1:\n        for b in arr2:\n            print(a, b)\n```"
+    options:
+      - "O(n²) because there are two loops"
+      - "O(n + m) because we iterate both arrays"
+      - "O(n × m) where n = len(arr1) and m = len(arr2)"
+      - "O(n) because we only count the outer loop"
+    correct_answer: "O(n × m) where n = len(arr1) and m = len(arr2)"
+    explanation: "When dealing with nested loops that iterate over different inputs, we must use different variables to represent their sizes. The outer loop runs n times (length of arr1), and for each iteration, the inner loop runs m times (length of arr2), giving us O(n × m) total operations. A common mistake is to assume all nested loops are O(n²), but that only applies when both loops iterate over the same input. The rule is: different inputs = different variables. For example, if arr1 has 10 elements and arr2 has 1000 elements, the total operations would be 10 × 1000 = 10,000, not 10² = 100. This distinction is crucial in algorithm analysis, especially for problems involving multiple data structures like finding intersections between two arrays or comparing elements from different collections."
+    require_pass: true
+
+  - type: mcq
+    sequence_order: 2
+    question: "Which of the following best describes why we drop constants and non-dominant terms in Big O notation?"
+    options:
+      - "To make the math easier to calculate"
+      - "Because Big O focuses on growth rate as input approaches infinity, not exact operation counts"
+      - "Constants don't matter in programming"
+      - "To always get O(n) complexity"
+    correct_answer: "Because Big O focuses on growth rate as input approaches infinity, not exact operation counts"
+    explanation: "Big O notation is designed to describe asymptotic behavior - how an algorithm's performance scales as input size grows toward infinity. Constants and non-dominant terms become insignificant at large scales. For example, an algorithm that performs 3n + 100 operations is O(n), not O(3n + 100), because as n grows large, the difference between 3n and n becomes proportionally smaller, and the constant 100 becomes negligible. Similarly, n² + n + 1 simplifies to O(n²) because n² dominates as n grows: when n = 1000, n² = 1,000,000 while n = 1,000, making the linear term irrelevant. This abstraction helps us compare algorithms at scale. An O(n²) algorithm will eventually be slower than an O(n) algorithm for sufficiently large n, regardless of constant factors. However, for small inputs or specific use cases, constants do matter in practice."
+    require_pass: true
+
+  - type: mcq
+    sequence_order: 3
+    question: "Binary search has O(log n) time complexity. If searching 1,000 items takes approximately 10 steps, how many steps would searching 1,000,000 items take?"
+    options:
+      - "10,000 steps (1000x more)"
+      - "20 steps (log₂(1,000,000) ≈ 20)"
+      - "100 steps (10x more)"
+      - "1,000 steps (sqrt of input)"
+    correct_answer: "20 steps (log₂(1,000,000) ≈ 20)"
+    explanation: "Binary search's O(log n) complexity means it eliminates half the search space with each comparison. The number of steps is approximately log₂(n). Since 2¹⁰ ≈ 1,000, searching 1,000 items takes about 10 steps. For 1,000,000 items, we calculate log₂(1,000,000) ≈ 20. This demonstrates the power of logarithmic algorithms: increasing input size by 1000x (from 1,000 to 1,000,000) only doubles the steps (from 10 to 20). This is why binary search is incredibly efficient for large datasets. The pattern continues: 1 billion items would take only about 30 steps. This efficiency comes from the divide-and-conquer approach where each comparison eliminates half the remaining possibilities. Understanding logarithmic complexity is crucial for recognizing when sorted data structures and binary search trees can dramatically improve performance over linear search."
+    require_pass: true

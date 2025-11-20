@@ -1,0 +1,231 @@
+slug: lesson-1
+title: Lesson 1
+difficulty: easy
+sequence_order: 1
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# TypeScript Fundamentals and Type System\n\
+  \n    **TypeScript** is JavaScript with syntax for types. It's a strongly typed\
+  \ superset of JavaScript that compiles to plain JavaScript.\n\n    ## Why TypeScript?\n\
+  \n    ### JavaScript Pain Points\n\n    ```javascript\n    // JavaScript - No type\
+  \ safety\n    function add(a, b) {\n      return a + b;\n    }\n\n    add(5, 10);\
+  \        // 15 ✓\n    add(\"5\", \"10\");    // \"510\" - String concatenation!\n\
+  \    add(5, \"10\");      // \"510\" - Type coercion!\n    add({}, []);       //\
+  \ \"[object Object]\" - WTF?\n    ```\n\n    ### TypeScript Solution\n\n    ```typescript\n\
+  \    // TypeScript - Type safety\n    function add(a: number, b: number): number\
+  \ {\n      return a + b;\n    }\n\n    add(5, 10);        // 15 ✓\n    add(\"5\"\
+  , \"10\");    // ❌ Error: Argument of type 'string' not assignable to 'number'\n\
+  \    add(5, \"10\");      // ❌ Error: Argument of type 'string' not assignable to\
+  \ 'number'\n    ```\n\n    **Benefits:**\n    - Catch errors at compile time (not\
+  \ runtime!)\n    - Better IDE support (autocomplete, refactoring)\n    - Self-documenting\
+  \ code\n    - Easier refactoring and maintenance\n\n    ## Basic Types\n\n    ###\
+  \ Primitive Types\n\n    ```typescript\n    // String\n    let name: string = \"\
+  Alice\";\n    let greeting: string = `Hello, ${name}`;\n\n    // Number (int, float,\
+  \ hex, binary all are number)\n    let age: number = 30;\n    let price: number\
+  \ = 99.99;\n    let hex: number = 0xf00d;\n    let binary: number = 0b1010;\n\n\
+  \    // Boolean\n    let isDone: boolean = false;\n    let isActive: boolean = true;\n\
+  \n    // Null and Undefined\n    let nothing: null = null;\n    let notDefined:\
+  \ undefined = undefined;\n\n    // Any (avoid when possible!)\n    let anything:\
+  \ any = \"string\";\n    anything = 42;        // OK\n    anything = true;     \
+  \ // OK\n    anything = {};        // OK - defeats purpose of TypeScript!\n    ```\n\
+  \n    ### Arrays\n\n    ```typescript\n    // Array of numbers\n    let numbers:\
+  \ number[] = [1, 2, 3, 4, 5];\n    let nums: Array<number> = [1, 2, 3];  // Alternative\
+  \ syntax\n\n    // Array of strings\n    let names: string[] = [\"Alice\", \"Bob\"\
+  , \"Charlie\"];\n\n    // Mixed array (avoid!)\n    let mixed: any[] = [1, \"two\"\
+  , true];\n\n    // Array methods are type-safe\n    numbers.push(6);        // OK\n\
+  \    numbers.push(\"7\");      // ❌ Error: Argument of type 'string' not assignable\n\
+  \n    // Array operations\n    const doubled = numbers.map(n => n * 2);  // Type:\
+  \ number[]\n    const evens = numbers.filter(n => n % 2 === 0);  // Type: number[]\n\
+  \    ```\n\n    ### Tuples\n\n    **Fixed-length arrays with specific types**\n\n\
+  \    ```typescript\n    // Tuple: [string, number]\n    let person: [string, number]\
+  \ = [\"Alice\", 30];\n\n    console.log(person[0].toUpperCase());  // \"ALICE\"\
+  \ - knows it's a string\n    console.log(person[1].toFixed(2));     // \"30.00\"\
+  \ - knows it's a number\n\n    // Error: Wrong types\n    person = [30, \"Alice\"\
+  ];  // ❌ Error: Type 'number' not assignable to 'string'\n\n    // Error: Wrong\
+  \ length\n    person = [\"Alice\", 30, true];  // ❌ Error: Type '[string, number,\
+  \ boolean]' not assignable\n\n    // Common use case: React hooks\n    const [count,\
+  \ setCount]: [number, (n: number) => void] = useState(0);\n\n    // Multiple return\
+  \ values\n    function getCoordinates(): [number, number] {\n      return [10, 20];\n\
+  \    }\n\n    const [x, y] = getCoordinates();  // x: number, y: number\n    ```\n\
+  \n    ### Enums\n\n    **Named constants**\n\n    ```typescript\n    // Numeric\
+  \ enum (default)\n    enum Direction {\n      Up,      // 0\n      Down,    // 1\n\
+  \      Left,    // 2\n      Right    // 3\n    }\n\n    let dir: Direction = Direction.Up;\n\
+  \    console.log(dir);  // 0\n\n    // String enum (recommended)\n    enum Status\
+  \ {\n      Pending = \"PENDING\",\n      Approved = \"APPROVED\",\n      Rejected\
+  \ = \"REJECTED\"\n    }\n\n    function updateStatus(status: Status) {\n      console.log(`Status\
+  \ updated to: ${status}`);\n    }\n\n    updateStatus(Status.Approved);  // \"Status\
+  \ updated to: APPROVED\"\n    updateStatus(\"APPROVED\");       // ❌ Error: Argument\
+  \ type '\"APPROVED\"' not assignable\n\n    // Enum with custom values\n    enum\
+  \ HttpStatus {\n      OK = 200,\n      BadRequest = 400,\n      Unauthorized = 401,\n\
+  \      NotFound = 404,\n      ServerError = 500\n    }\n\n    // Const enum (better\
+  \ performance - inlined at compile time)\n    const enum Color {\n      Red = \"\
+  #FF0000\",\n      Green = \"#00FF00\",\n      Blue = \"#0000FF\"\n    }\n    ```\n\
+  \n    ## Type Inference\n\n    **TypeScript infers types automatically**\n\n   \
+  \ ```typescript\n    // Explicit type annotation\n    let count: number = 10;\n\n\
+  \    // Type inference (preferred when obvious)\n    let inferredCount = 10;  //\
+  \ Type: number (inferred)\n\n    // Function return type inference\n    function\
+  \ add(a: number, b: number) {\n      return a + b;  // Return type inferred as number\n\
+  \    }\n\n    // Array type inference\n    let numbers = [1, 2, 3];  // Type: number[]\n\
+  \    let mixed = [1, \"two\"];   // Type: (string | number)[]\n\n    // Object type\
+  \ inference\n    let user = {\n      name: \"Alice\",\n      age: 30\n    };\n \
+  \   // Type: { name: string; age: number; }\n\n    user.name = \"Bob\";     // OK\n\
+  \    user.age = \"thirty\";   // ❌ Error: Type 'string' not assignable to 'number'\n\
+  \    ```\n\n    **When to use explicit types:**\n    - Function parameters (required)\n\
+  \    - Public API boundaries\n    - When inference is unclear\n    - When you want\
+  \ to enforce a specific type\n\n    ## Type Annotations\n\n    ### Function Types\n\
+  \n    ```typescript\n    // Function with type annotations\n    function greet(name:\
+  \ string): string {\n      return `Hello, ${name}!`;\n    }\n\n    // Arrow function\n\
+  \    const greet2 = (name: string): string => `Hello, ${name}!`;\n\n    // Optional\
+  \ parameters\n    function greet3(name: string, greeting?: string): string {\n \
+  \     return `${greeting || \"Hello\"}, ${name}!`;\n    }\n\n    greet3(\"Alice\"\
+  );           // \"Hello, Alice!\"\n    greet3(\"Alice\", \"Hi\");     // \"Hi, Alice!\"\
+  \n\n    // Default parameters\n    function greet4(name: string, greeting: string\
+  \ = \"Hello\"): string {\n      return `${greeting}, ${name}!`;\n    }\n\n    //\
+  \ Rest parameters\n    function sum(...numbers: number[]): number {\n      return\
+  \ numbers.reduce((total, n) => total + n, 0);\n    }\n\n    sum(1, 2, 3, 4, 5);\
+  \  // 15\n\n    // Void return type (no return value)\n    function log(message:\
+  \ string): void {\n      console.log(message);\n    }\n\n    // Never return type\
+  \ (function never returns)\n    function throwError(message: string): never {\n\
+  \      throw new Error(message);\n    }\n\n    function infiniteLoop(): never {\n\
+  \      while (true) {}\n    }\n    ```\n\n    ### Object Types\n\n    ```typescript\n\
+  \    // Object type annotation\n    let user: { name: string; age: number; email?:\
+  \ string } = {\n      name: \"Alice\",\n      age: 30\n    };\n\n    // Optional\
+  \ property (email?)\n    user.email = \"alice@example.com\";  // OK\n    delete\
+  \ user.email;                 // OK\n\n    // Readonly properties\n    let config:\
+  \ { readonly apiKey: string; timeout: number } = {\n      apiKey: \"secret123\"\
+  ,\n      timeout: 5000\n    };\n\n    config.timeout = 10000;  // OK\n    config.apiKey\
+  \ = \"new\";   // ❌ Error: Cannot assign to 'apiKey' (readonly)\n\n    // Index\
+  \ signature (dynamic keys)\n    let scores: { [key: string]: number } = {\n    \
+  \  math: 95,\n      english: 87,\n      science: 92\n    };\n\n    scores.history\
+  \ = 88;  // OK - any string key allowed\n    scores.math = \"A\";    // ❌ Error:\
+  \ Type 'string' not assignable to 'number'\n    ```\n\n    ## Interfaces vs Types\n\
+  \n    ### Interfaces\n\n    ```typescript\n    // Interface definition\n    interface\
+  \ User {\n      id: number;\n      name: string;\n      email: string;\n      age?:\
+  \ number;  // Optional\n    }\n\n    const user1: User = {\n      id: 1,\n     \
+  \ name: \"Alice\",\n      email: \"alice@example.com\"\n    };\n\n    // Interface\
+  \ with methods\n    interface Product {\n      id: number;\n      name: string;\n\
+  \      price: number;\n      calculateDiscount(percentage: number): number;\n  \
+  \  }\n\n    const product: Product = {\n      id: 1,\n      name: \"Laptop\",\n\
+  \      price: 1000,\n      calculateDiscount(percentage: number): number {\n   \
+  \     return this.price * (percentage / 100);\n      }\n    };\n\n    // Extending\
+  \ interfaces\n    interface Employee {\n      id: number;\n      name: string;\n\
+  \    }\n\n    interface Manager extends Employee {\n      department: string;\n\
+  \      subordinates: Employee[];\n    }\n\n    const manager: Manager = {\n    \
+  \  id: 1,\n      name: \"Bob\",\n      department: \"Engineering\",\n      subordinates:\
+  \ []\n    };\n\n    // Interface merging (declaration merging)\n    interface Window\
+  \ {\n      customProperty: string;\n    }\n\n    interface Window {\n      anotherProperty:\
+  \ number;\n    }\n\n    // Now Window has both properties\n    window.customProperty\
+  \ = \"value\";\n    window.anotherProperty = 42;\n    ```\n\n    ### Type Aliases\n\
+  \n    ```typescript\n    // Type alias\n    type User = {\n      id: number;\n \
+  \     name: string;\n      email: string;\n      age?: number;\n    };\n\n    //\
+  \ Union types (types only!)\n    type ID = string | number;\n\n    let userId: ID\
+  \ = 123;     // OK\n    userId = \"abc-123\";       // OK\n\n    // Intersection\
+  \ types\n    type Person = {\n      name: string;\n      age: number;\n    };\n\n\
+  \    type Employee = {\n      employeeId: number;\n      department: string;\n \
+  \   };\n\n    type EmployeePerson = Person & Employee;\n\n    const emp: EmployeePerson\
+  \ = {\n      name: \"Alice\",\n      age: 30,\n      employeeId: 123,\n      department:\
+  \ \"Engineering\"\n    };\n\n    // Literal types\n    type Status = \"pending\"\
+  \ | \"approved\" | \"rejected\";\n    type Direction = \"north\" | \"south\" | \"\
+  east\" | \"west\";\n\n    let status: Status = \"pending\";    // OK\n    status\
+  \ = \"approved\";               // OK\n    status = \"cancelled\";             \
+  \ // ❌ Error: Type '\"cancelled\"' not assignable\n\n    // Function type\n    type\
+  \ MathOperation = (a: number, b: number) => number;\n\n    const add: MathOperation\
+  \ = (a, b) => a + b;\n    const subtract: MathOperation = (a, b) => a - b;\n   \
+  \ ```\n\n    ## Interfaces vs Types: When to Use What?\n\n    ### Use Interfaces\
+  \ When:\n\n    ```typescript\n    // 1. Defining object shapes\n    interface User\
+  \ {\n      id: number;\n      name: string;\n    }\n\n    // 2. Need to extend/inherit\n\
+  \    interface Admin extends User {\n      permissions: string[];\n    }\n\n   \
+  \ // 3. Working with classes\n    class UserAccount implements User {\n      constructor(public\
+  \ id: number, public name: string) {}\n    }\n\n    // 4. Want declaration merging\n\
+  \    interface Config {\n      apiUrl: string;\n    }\n\n    interface Config {\n\
+  \      timeout: number;\n    }\n    ```\n\n    ### Use Types When:\n\n    ```typescript\n\
+  \    // 1. Union types\n    type Result = Success | Error;\n\n    // 2. Intersection\
+  \ types\n    type Combined = TypeA & TypeB;\n\n    // 3. Primitive aliases\n   \
+  \ type ID = string | number;\n\n    // 4. Tuple types\n    type Point = [number,\
+  \ number];\n\n    // 5. Function types\n    type Callback = (data: string) => void;\n\
+  \n    // 6. Mapped types\n    type Readonly<T> = {\n      readonly [P in keyof T]:\
+  \ T[P];\n    };\n    ```\n\n    **General rule:** Use `interface` for object shapes\
+  \ and public APIs. Use `type` for unions, intersections, and utility types.\n\n\
+  \    ## Real-World Example: User Management\n\n    ```typescript\n    // Types and\
+  \ interfaces\n    type UserRole = \"admin\" | \"user\" | \"guest\";\n\n    interface\
+  \ BaseUser {\n      id: string;\n      email: string;\n      createdAt: Date;\n\
+  \    }\n\n    interface User extends BaseUser {\n      name: string;\n      role:\
+  \ UserRole;\n      isActive: boolean;\n    }\n\n    interface UserWithProfile extends\
+  \ User {\n      profile: {\n        bio?: string;\n        avatar?: string;\n  \
+  \      location?: string;\n      };\n    }\n\n    // Function implementations\n\
+  \    function createUser(\n      email: string,\n      name: string,\n      role:\
+  \ UserRole = \"user\"\n    ): User {\n      return {\n        id: generateId(),\n\
+  \        email,\n        name,\n        role,\n        isActive: true,\n       \
+  \ createdAt: new Date()\n      };\n    }\n\n    function updateUser(\n      userId:\
+  \ string,\n      updates: Partial<User>\n    ): User | null {\n      // Implementation\n\
+  \      const user = findUserById(userId);\n      if (!user) return null;\n\n   \
+  \   return { ...user, ...updates };\n    }\n\n    function findUsersByRole(role:\
+  \ UserRole): User[] {\n      // Type-safe database query\n      return users.filter(u\
+  \ => u.role === role);\n    }\n\n    // Usage\n    const newUser = createUser(\"\
+  alice@example.com\", \"Alice\", \"admin\");\n    const updated = updateUser(newUser.id,\
+  \ { isActive: false });\n    const admins = findUsersByRole(\"admin\");\n    ```\n\
+  \n    ## Type Assertions\n\n    ```typescript\n    // Type assertion (when you know\
+  \ more than TypeScript)\n    let someValue: any = \"this is a string\";\n\n    //\
+  \ Angle-bracket syntax\n    let strLength1: number = (<string>someValue).length;\n\
+  \n    // As syntax (preferred, required in JSX)\n    let strLength2: number = (someValue\
+  \ as string).length;\n\n    // Common use case: DOM elements\n    const input =\
+  \ document.getElementById(\"email\") as HTMLInputElement;\n    input.value = \"\
+  alice@example.com\";  // OK - knows it's an input\n\n    // Non-null assertion (!)\n\
+  \    function processUser(user: User | null) {\n      // If you're SURE it's not\
+  \ null\n      console.log(user!.name);  // Tell TS: trust me, it's not null\n  \
+  \  }\n    ```\n\n    ## Interview Tips\n\n    1. **Always prefer type inference\
+  \ when obvious**\n    2. **Use strict mode** (`strict: true` in tsconfig.json)\n\
+  \    3. **Avoid `any`** - use `unknown` if type is truly unknown\n    4. **Interfaces\
+  \ for objects, types for everything else**\n    5. **Enums vs union types**: String\
+  \ unions are often simpler\n    6. **Optional chaining**: `user?.profile?.bio`\n\
+  \    7. **Nullish coalescing**: `value ?? defaultValue`\n\n    **Next**: We'll explore\
+  \ generics and advanced type features!"
+exercises: []
+exercises:
+  - type: mcq
+    sequence_order: 1
+    question: "What is the main benefit of TypeScript's static type system over JavaScript?"
+    options:
+      - "TypeScript runs faster than JavaScript"
+      - "TypeScript catches type-related errors at compile time before code runs, preventing runtime errors"
+      - "TypeScript has more features than JavaScript"
+      - "TypeScript works on more browsers"
+    correct_answer: "TypeScript catches type-related errors at compile time before code runs, preventing runtime errors"
+    explanation: "TypeScript's static type system analyzes code during compilation and identifies type mismatches before the code ever runs. For example, if you declare function add(a: number, b: number) and call it with add('hello', 5), TypeScript immediately shows an error: 'Argument of type string is not assignable to parameter of type number.' This prevents runtime errors that would crash your application in production. JavaScript would only discover this error when the code runs and tries to perform invalid operations. Type checking also enables better IDE support with autocomplete, refactoring tools, and inline documentation. While TypeScript compiles to JavaScript and runs at the same speed, the development-time benefits are substantial: catching bugs early (when they're cheap to fix), improving code maintainability, and providing self-documenting code through type annotations. Studies show TypeScript can prevent 15% of bugs that would occur in JavaScript."
+    require_pass: true
+
+  - type: mcq
+    sequence_order: 2
+    question: "What is the difference between 'interface' and 'type' in TypeScript?"
+    options:
+      - "There is no difference at all"
+      - "Interfaces can be extended/implemented and merged; types are more flexible for unions/intersections but cannot be reopened"
+      - "Interfaces are faster"
+      - "Types are deprecated"
+    correct_answer: "Interfaces can be extended/implemented and merged; types are more flexible for unions/intersections but cannot be reopened"
+    explanation: "Interfaces and type aliases have overlapping functionality but key differences. Interfaces support declaration merging: declaring interface User twice merges the properties, useful for extending third-party types. Interfaces can be implemented by classes (class Admin implements User) and extended (interface SuperUser extends User). Type aliases are more flexible for complex types: union types (type ID = string | number), intersection types (type Admin = User & Permissions), mapped types, and conditional types. Types cannot be reopened - once defined, they're fixed. Best practices: use interfaces for object shapes that might be extended or implemented by classes, especially public APIs. Use type aliases for unions, intersections, tuples, and complex utility types. Example: interface User { name: string } can be extended with interface User { email: string } (merging), but type User = { name: string } cannot be reopened. Both compile to JavaScript the same way - this is purely a TypeScript design-time distinction."
+    require_pass: true
+exercises:
+  - type: mcq
+    sequence_order: 1
+    question: "What is the main advantage of using TypeScript over JavaScript?"
+    options:
+      - "TypeScript is faster at runtime"
+      - "TypeScript adds static typing and catches errors at compile time"
+      - "TypeScript has more features than JavaScript"
+      - "TypeScript runs on more platforms"
+    correct_answer: "TypeScript adds static typing and catches errors at compile time"
+    explanation: "TypeScript is a superset of JavaScript that adds static type checking, catching many errors before code runs. At compile time, TypeScript checks types and reports mismatches, preventing bugs like calling methods on undefined or passing wrong argument types. Example: In JavaScript, `function add(a, b) { return a + b; }` accepts any types—calling `add('1', 2)` returns '12' (string concatenation). In TypeScript, `function add(a: number, b: number): number { return a + b; }` would flag `add('1', 2)` as an error. Benefits: better IDE support, refactoring safety, self-documenting code. TypeScript compiles to JavaScript, so runtime performance is identical. The value is in development-time error detection."
+    require_pass: true
+  - type: mcq
+    sequence_order: 2
+    question: "What does it mean that TypeScript is a 'superset' of JavaScript?"
+    options:
+      - "TypeScript replaces JavaScript"
+      - "All valid JavaScript is valid TypeScript, plus TypeScript adds additional features"
+      - "TypeScript is a different language"
+      - "TypeScript is smaller than JavaScript"
+    correct_answer: "All valid JavaScript is valid TypeScript, plus TypeScript adds additional features"
+    explanation: "TypeScript being a 'superset' means every valid JavaScript program is also valid TypeScript. You can take any .js file, rename it to .ts, and it will work. TypeScript then adds features on top: static types, interfaces, enums, generics, access modifiers, etc. This makes migration easy—adopt TypeScript gradually, add types incrementally. Example: JavaScript code `let x = 5;` is valid TypeScript. TypeScript adds the option to be explicit: `let x: number = 5;`. The relationship: JavaScript ⊂ TypeScript. TypeScript compiles down to JavaScript for execution. This design ensures TypeScript stays compatible with the JavaScript ecosystem while providing additional developer benefits."
+    require_pass: true

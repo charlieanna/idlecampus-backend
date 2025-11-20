@@ -1,0 +1,81 @@
+slug: quadratic-sum-product-practice
+title: quadratic-sum-product — Practice
+difficulty: medium
+sequence_order: 12
+estimated_minutes: 2
+key_concepts:
+- quadratic-sum-product
+prerequisites: []
+content_md: '# quadratic-sum-product — Practice 🚀
+
+
+  Apply quadratic formula or analyze discriminant
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 2
+  question: For the equation $$x^2 - 5x + 6 = 0$$, find the sum of the roots
+  options:
+  - '5'
+  - '-5'
+  - '6'
+  - '1'
+  require_pass: true
+  correct_answer: '5'
+  explanation: 'For a quadratic equation ax² + bx + c = 0, the sum of roots is given
+    by the formula: Sum of roots = -b/a. Given equation: x² - 5x + 6 = 0. Here a =
+    1, b = -5, c = 6. Sum of roots = -(-5)/1 = 5. We can verify by factoring: x² -
+    5x + 6 = (x - 2)(x - 3) = 0, giving roots α = 2 and β = 3. Sum = 2 + 3 = 5 ✓.
+    The relationship between roots and coefficients (Vieta''s formulas): For ax² +
+    bx + c = 0 with roots α, β: Sum of roots: α + β = -b/a, Product of roots: α·β
+    = c/a. For our equation: Product = 6/1 = 6, verified: 2×3 = 6 ✓. These formulas
+    allow us to find sum and product without actually solving for the roots, which
+    is useful when roots are irrational or complex.'
+- type: mcq
+  sequence_order: 3
+  question: 'For the equation 2x² + 3x - 5 = 0, find the product of the roots.'
+  options:
+  - '-5/2'
+  - '5/2'
+  - '-3/2'
+  - '3/2'
+  require_pass: true
+  correct_answer: '-5/2'
+  explanation: 'Using **Vieta''s formula**: For ax² + bx + c = 0, product of roots
+    = c/a. Given equation: 2x² + 3x - 5 = 0. Here a = 2, b = 3, c = -5. Product of
+    roots = c/a = -5/2. **Verification by solving**: Using quadratic formula: x =
+    [-3 ± √(9 + 40)]/4 = [-3 ± 7]/4. Roots: α = (-3+7)/4 = 1, β = (-3-7)/4 = -5/2.
+    Product: α·β = 1 × (-5/2) = -5/2 ✓. **Sum of roots**: -b/a = -3/2 (verify: 1
+    + (-5/2) = 2/2 - 5/2 = -3/2 ✓). **Sign of product**: Product < 0 means roots
+    have opposite signs (one positive, one negative). Product > 0 means roots have
+    same sign. Product = 0 means one root is zero.'
+- type: mcq
+  sequence_order: 4
+  question: 'Form a quadratic equation whose roots are 3 and -2.'
+  options:
+  - x² - x - 6 = 0
+  - x² + x - 6 = 0
+  - x² - x + 6 = 0
+  - x² + x + 6 = 0
+  require_pass: true
+  correct_answer: x² - x - 6 = 0
+  explanation: 'If α and β are roots, the quadratic equation is: x² - (α+β)x + αβ
+    = 0 or x² - (sum of roots)x + (product of roots) = 0. Given roots: α = 3, β
+    = -2. Sum of roots: α + β = 3 + (-2) = 1. Product of roots: α·β = 3 × (-2) =
+    -6. **Equation**: x² - (1)x + (-6) = 0, which simplifies to x² - x - 6 = 0.
+    **Verification by factoring**: x² - x - 6 = (x - 3)(x + 2) = 0, giving x = 3
+    or x = -2 ✓. **General method**: Given roots α, β: (1) Find sum = α + β and
+    product = αβ, (2) Substitute into x² - (sum)x + (product) = 0, (3) Or directly
+    write as (x - α)(x - β) = 0 and expand. **Example**: Equation with roots 5 and
+    -1: x² - (5-1)x + 5(-1) = 0 → x² - 4x - 5 = 0.'

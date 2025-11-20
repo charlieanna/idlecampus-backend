@@ -1,0 +1,170 @@
+---
+slug: array-prefix-sum
+title: Prefix Sum
+sequence_order: 3
+estimated_minutes: 15
+difficulty: medium
+key_concepts:
+- Prefix Sum
+- Basic Prefix Sum
+content_md: |
+  # Prefix Sum
+
+  Precomputing cumulative sums for efficient range sum queries
+
+  ---
+
+  ## Prefix Sum Technique
+
+  Prefix sum (or cumulative sum) is a preprocessing technique where we compute the sum of elements from the start up to each index.
+
+  **Definition:**
+  ```
+  prefix[i] = arr[0] + arr[1] + ... + arr[i]
+  ```
+
+  **Key Insight:**
+  Range sum from index i to j can be computed in O(1):
+  ```
+  sum(i, j) = prefix[j] - prefix[i-1]
+  ```
+
+  **Applications:**
+  - Range sum queries
+  - Subarray sum problems
+  - Count subarrays with given sum
+  - 2D matrix sum queries
+
+  **Complexity:**
+  - Preprocessing: O(n)
+  - Query: O(1)
+  - Space: O(n)
+
+
+  ---
+
+  ## Common Patterns
+
+  ### Pattern 1: Basic Prefix Sum
+  ```python
+  def build_prefix_sum(arr):
+      prefix = [0] * (len(arr) + 1)  # Extra space for easier range query
+
+      for i in range(len(arr)):
+          prefix[i + 1] = prefix[i] + arr[i]
+
+      return prefix
+
+  def range_sum(prefix, i, j):
+      """Sum from index i to j (inclusive)"""
+      return prefix[j + 1] - prefix[i]
+  ```
+
+  ### Pattern 2: Prefix Sum with HashMap (Subarray Sum = K)
+  ```python
+  def subarray_sum_equals_k(arr, k):
+      prefix_sum = 0
+      sum_count = {0: 1}  # Handle subarrays starting from index 0
+      count = 0
+
+      for num in arr:
+          prefix_sum += num
+
+          # If (prefix_sum - k) exists, we found subarrays
+          if prefix_sum - k in sum_count:
+              count += sum_count[prefix_sum - k]
+
+          sum_count[prefix_sum] = sum_count.get(prefix_sum, 0) + 1
+
+      return count
+  ```
+
+  ### Pattern 3: 2D Prefix Sum
+  ```python
+  def build_2d_prefix(matrix):
+      rows, cols = len(matrix), len(matrix[0])
+      prefix = [[0] * (cols + 1) for _ in range(rows + 1)]
+
+      for i in range(1, rows + 1):
+          for j in range(1, cols + 1):
+              prefix[i][j] = (matrix[i-1][j-1] +
+                             prefix[i-1][j] +
+                             prefix[i][j-1] -
+                             prefix[i-1][j-1])
+      return prefix
+
+  def query_2d(prefix, r1, c1, r2, c2):
+      """Sum of submatrix from (r1,c1) to (r2,c2)"""
+      return (prefix[r2+1][c2+1] -
+             prefix[r1][c2+1] -
+             prefix[r2+1][c1] +
+             prefix[r1][c1])
+  ```
+
+
+  ---
+
+  ## When to Use This Technique
+
+  Use prefix sum when you have multiple range sum queries, need to find subarrays with specific sum properties, or optimize subarray sum calculations from O(n) to O(1) per query.
+
+  ---
+
+  ## Common Pitfalls to Avoid
+
+  - Off-by-one errors in indexing
+  - Not handling empty subarrays (prefix[0] = 0)
+  - Forgetting to include overlap correction in 2D prefix sum
+  - Not considering negative numbers in sum
+  - Overflow issues with large sums
+
+  ---
+
+  ## Practice Problems
+
+  Start with these problems to master this concept:
+
+  ### 1. Range Sum Query - Immutable [Easy]
+
+  Calculate sum of elements between indices i and j.
+
+  **Complexity:** Time O(O(1) query, O(n) init), Space O(O(n))
+
+
+  ### 2. Range Sum Query 2D - Immutable [Medium]
+
+  Calculate sum of elements in 2D matrix region.
+
+  **Complexity:** Time O(O(1) query, O(mn) init), Space O(O(mn))
+
+
+  ### 3. Product of Array Except Self [Medium]
+
+  Return array where each element is product of all others.
+
+  **Complexity:** Time O(O(n)), Space O(O(1))
+
+
+  ### 4. Contiguous Array [Medium]
+
+  Find maximum length subarray with equal number of 0s and 1s.
+
+  **Complexity:** Time O(O(n)), Space O(O(n))
+
+
+  ### 5. Maximum Size Subarray Sum Equals k [Medium]
+
+  Find maximum length of subarray that sums to k.
+
+  **Complexity:** Time O(O(n)), Space O(O(n))
+
+
+
+  ---
+
+  ## Key Takeaways
+
+  - Prefix Sum is essential for precomputing cumulative sums for efficient range sum queries
+  - Time complexity improvements can be significant with this technique
+  - Practice problems in order of difficulty to build intuition
+  - Focus on recognizing patterns in problem statements

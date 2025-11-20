@@ -1,0 +1,100 @@
+slug: lesson-2
+title: Lesson 2
+difficulty: easy
+sequence_order: 2
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# OSI and TCP/IP Models\n\n    Understanding\
+  \ network models is essential for troubleshooting and designing networks.\n\n  \
+  \  ## OSI Model (7 Layers)\n\n    **Open Systems Interconnection** - conceptual\
+  \ framework\n\n    ### Layer 7: Application\n    - **Purpose**: End-user services\
+  \ and applications\n    - **Protocols**: HTTP, HTTPS, FTP, SMTP, DNS, SSH\n    -\
+  \ **Data Unit**: Data/Messages\n    - **Examples**: Web browsers, email clients\n\
+  \n    ### Layer 6: Presentation\n    - **Purpose**: Data formatting, encryption,\
+  \ compression\n    - **Protocols**: SSL/TLS, JPEG, MPEG\n    - **Functions**: Character\
+  \ encoding, data serialization\n\n    ### Layer 5: Session\n    - **Purpose**: Session\
+  \ management and control\n    - **Protocols**: NetBIOS, PPTP, RPC\n    - **Functions**:\
+  \ Authentication, reconnection\n\n    ### Layer 4: Transport\n    - **Purpose**:\
+  \ End-to-end communication\n    - **Protocols**: TCP, UDP\n    - **Data Unit**:\
+  \ Segments (TCP) / Datagrams (UDP)\n    - **Port Numbers**: 0-65535\n\n    ### Layer\
+  \ 3: Network\n    - **Purpose**: Routing and logical addressing\n    - **Protocols**:\
+  \ IP, ICMP, OSPF, BGP\n    - **Data Unit**: Packets\n    - **Addressing**: IP addresses\n\
+  \n    ### Layer 2: Data Link\n    - **Purpose**: Node-to-node data transfer\n  \
+  \  - **Protocols**: Ethernet, Wi-Fi (802.11), PPP\n    - **Data Unit**: Frames\n\
+  \    - **Addressing**: MAC addresses\n\n    ### Layer 1: Physical\n    - **Purpose**:\
+  \ Physical transmission\n    - **Components**: Cables, hubs, NICs\n    - **Data\
+  \ Unit**: Bits\n    - **Media**: Copper, fiber, wireless\n\n    ## TCP/IP Model\
+  \ (4 Layers)\n\n    **Practical implementation used in the Internet**\n\n    ###\
+  \ Layer 4: Application\n    - Combines OSI layers 5-7\n    - Protocols: HTTP, FTP,\
+  \ DNS, SMTP, SSH\n\n    ### Layer 3: Transport\n    - Same as OSI Layer 4\n    -\
+  \ TCP and UDP\n\n    ### Layer 2: Internet\n    - Same as OSI Layer 3\n    - IP,\
+  \ ICMP, ARP\n\n    ### Layer 1: Network Access\n    - Combines OSI layers 1-2\n\
+  \    - Ethernet, Wi-Fi\n\n    ## Encapsulation\n\n    **Data is wrapped at each\
+  \ layer as it goes down the stack**\n\n    ```\n    Application Layer:    [Data]\n\
+  \    Transport Layer:      [TCP Header | Data]  → Segment\n    Internet Layer: \
+  \      [IP Header | TCP Header | Data]  → Packet\n    Network Access:       [Ethernet\
+  \ Header | IP | TCP | Data | Trailer]  → Frame\n    Physical:             01010101...\
+  \  → Bits\n    ```\n\n    ### Example: Sending an HTTP Request\n\n    ```\n    1.\
+  \ Application: HTTP GET request\n    2. Transport: Add TCP header (ports 52341 →\
+  \ 80)\n    3. Internet: Add IP header (192.168.1.10 → 93.184.216.34)\n    4. Network:\
+  \ Add Ethernet header (MAC addresses)\n    5. Physical: Transmit as electrical/optical\
+  \ signals\n    ```\n\n    ## TCP vs UDP\n\n    ### TCP (Transmission Control Protocol)\n\
+  \    **Reliable, connection-oriented**\n\n    ✓ **Features:**\n    - Connection\
+  \ establishment (3-way handshake)\n    - Guaranteed delivery\n    - Order preservation\n\
+  \    - Flow control\n    - Error checking and recovery\n\n    **Use cases:**\n \
+  \   - HTTP/HTTPS (web)\n    - FTP (file transfer)\n    - SMTP (email)\n    - SSH\
+  \ (remote shell)\n\n    **TCP Header:**\n    ```\n    0                   16   \
+  \               31\n    +---------------------------------------+\n    |  Source\
+  \ Port  |  Destination Port     |\n    +---------------------------------------+\n\
+  \    |        Sequence Number                |\n    +---------------------------------------+\n\
+  \    |     Acknowledgment Number             |\n    +---------------------------------------+\n\
+  \    | Offset| Flags |    Window Size        |\n    +---------------------------------------+\n\
+  \    |  Checksum     |  Urgent Pointer       |\n    +---------------------------------------+\n\
+  \    ```\n\n    ### UDP (User Datagram Protocol)\n    **Fast, connectionless**\n\
+  \n    ✓ **Features:**\n    - No connection establishment\n    - No delivery guarantee\n\
+  \    - No ordering\n    - Minimal overhead\n\n    **Use cases:**\n    - DNS queries\n\
+  \    - Video streaming\n    - Online gaming\n    - VoIP (voice)\n\n    **UDP Header:**\n\
+  \    ```\n    0                   16                  31\n    +---------------------------------------+\n\
+  \    |  Source Port  |  Destination Port     |\n    +---------------------------------------+\n\
+  \    |     Length    |      Checksum         |\n    +---------------------------------------+\n\
+  \    ```\n\n    ## TCP Three-Way Handshake\n\n    **Connection establishment:**\n\
+  \n    ```\n    Client                              Server\n\n    1. SYN (seq=100)\n\
+  \       ------------------------------------>\n       \"I want to connect\"\n\n\
+  \    2.                        SYN-ACK (seq=300, ack=101)\n       <------------------------------------\n\
+  \       \"OK, let's connect\"\n\n    3. ACK (seq=101, ack=301)\n       ------------------------------------>\n\
+  \       \"Connection established\"\n\n    [Data Transfer]\n\n    4. FIN\n      \
+  \ ------------------------------------>\n       \"I'm done\"\n\n    5.         \
+  \               ACK\n       <------------------------------------\n\n    6.    \
+  \                    FIN\n       <------------------------------------\n\n    7.\
+  \ ACK\n       ------------------------------------>\n    ```\n\n    ## Common Port\
+  \ Numbers\n\n    ### Well-Known Ports (0-1023)\n\n    ```\n    20/21  - FTP (File\
+  \ Transfer)\n    22     - SSH (Secure Shell)\n    23     - Telnet (insecure, avoid)\n\
+  \    25     - SMTP (Email sending)\n    53     - DNS (Domain Name System)\n    67/68\
+  \  - DHCP (IP assignment)\n    80     - HTTP (Web)\n    110    - POP3 (Email retrieval)\n\
+  \    143    - IMAP (Email access)\n    443    - HTTPS (Secure web)\n    3306   -\
+  \ MySQL\n    3389   - RDP (Remote Desktop)\n    5432   - PostgreSQL\n    6379  \
+  \ - Redis\n    8080   - HTTP alternate\n    ```\n\n    ### Reserved Ranges\n\n \
+  \   ```\n    0-1023    - Well-known ports (require root/admin)\n    1024-49151 -\
+  \ Registered ports\n    49152-65535 - Dynamic/private ports\n    ```\n\n    ## Protocol\
+  \ Data Units (PDUs)\n\n    | Layer | PDU | Header Includes |\n    |-------|-----|----------------|\n\
+  \    | Application | Data | Application-specific |\n    | Transport | Segment/Datagram\
+  \ | Ports, sequence numbers |\n    | Network | Packet | IP addresses, TTL |\n  \
+  \  | Data Link | Frame | MAC addresses |\n    | Physical | Bits | None |\n\n   \
+  \ ## Practical Example: HTTP Request\n\n    ```\n    User enters: http://example.com\n\
+  \n    1. DNS Lookup (UDP port 53)\n       - Query: \"What's the IP of example.com?\"\
+  \n       - Response: \"93.184.216.34\"\n\n    2. TCP Connection (port 80)\n    \
+  \   - SYN to 93.184.216.34:80\n       - SYN-ACK\n       - ACK\n\n    3. HTTP Request\n\
+  \       GET / HTTP/1.1\n       Host: example.com\n\n    4. HTTP Response\n     \
+  \  HTTP/1.1 200 OK\n       Content-Type: text/html\n       ...\n\n    5. TCP Termination\n\
+  \       FIN, ACK, FIN, ACK\n    ```\n\n    ## Tools for Analysis\n\n    ### Wireshark\n\
+  \    ```bash\n    # Capture HTTP traffic\n    wireshark -i eth0 -f \"tcp port 80\"\
+  \n    ```\n\n    ### tcpdump\n    ```bash\n    # Capture packets\n    sudo tcpdump\
+  \ -i any port 80\n\n    # Save to file\n    sudo tcpdump -i any -w capture.pcap\n\
+  \n    # Read file\n    tcpdump -r capture.pcap\n    ```\n\n    ### netstat\n   \
+  \ ```bash\n    # Show listening ports\n    netstat -tuln\n\n    # Show connections\n\
+  \    netstat -tun\n    ```\n\n    ### ss (modern replacement for netstat)\n    ```bash\n\
+  \    # Show listening ports\n    ss -tuln\n\n    # Show established connections\n\
+  \    ss -tu state established\n    ```\n\n    **Next**: We'll dive into IP addressing\
+  \ and subnetting!"
+exercises: []

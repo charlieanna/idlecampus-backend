@@ -1,0 +1,100 @@
+slug: volumetricanalysis-practice
+title: volumetric_analysis — Practice
+difficulty: medium
+sequence_order: 1
+estimated_minutes: 2
+key_concepts:
+- volumetric_analysis
+prerequisites: []
+content_md: '# volumetric_analysis — Practice 🚀
+
+
+  K₂Cr₂O₇ is a primary standard (pure, stable, doesn''t absorb moisture). KMnO₄
+  is not a primary standard (contains impurities, decomposes). K₂Cr₂O₇ is used to
+  standardize reducing agents in acidic medium.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 2
+  question: Which compound is used as a primary standard in volumetric analysis?
+  options:
+  - KMnO₄
+  - K₂Cr₂O₇
+  - FeSO₄
+  - Na₂S₂O₃
+  require_pass: true
+  correct_answer: K₂Cr₂O₇
+  explanation: 'Potassium dichromate (K₂Cr₂O₇) is used as a primary standard in volumetric
+    analysis because it meets all requirements: (1) **High purity**: Available in
+    very pure form (>99.9%), (2) **Stability**: Does not absorb moisture from air
+    (non-hygroscopic), stable in solution, does not decompose, (3) **High molecular
+    weight**: Large molar mass (294.2 g/mol) minimizes weighing errors, (4) **Definite
+    composition**: Exact stoichiometry, does not contain water of crystallization.
+    In contrast: **KMnO₄ is NOT a primary standard** because it: (a) Contains impurities
+    (MnO₂), (b) Decomposes in presence of organic matter and light, (c) Solutions
+    are unstable and must be standardized against primary standards like oxalic acid
+    or sodium oxalate. **FeSO₄ and Na₂S₂O₃** are easily oxidized and unstable, requiring
+    frequent standardization. Applications: K₂Cr₂O₇ is used in redox titrations (dichromate
+    acts as oxidizing agent in acidic medium: Cr₂O₇²⁻ + 14H⁺ + 6e⁻ → 2Cr³⁺ + 7H₂O),
+    determination of Fe²⁺, and standardizing solutions of reducing agents. The orange
+    color changing to green (Cr³⁺) provides a visual indication of the endpoint.'
+- type: mcq
+  sequence_order: 3
+  question: Why is KMnO₄ not used as a primary standard in volumetric analysis?
+  options:
+  - It is too expensive and rare
+  - It contains impurities and decomposes in presence of organic matter and light
+  - It has very low molecular weight
+  - It is colorless and cannot indicate endpoint
+  require_pass: true
+  correct_answer: It contains impurities and decomposes in presence of organic matter
+    and light
+  explanation: 'KMnO₄ (potassium permanganate) is NOT used as a primary standard
+    because it fails to meet several key requirements: (1) **Impurities**: Commercial
+    KMnO₄ always contains traces of manganese dioxide (MnO₂) as an impurity, which
+    cannot be completely removed. (2) **Decomposition**: KMnO₄ decomposes in the
+    presence of: (a) **Organic matter**: Even dust particles or organic impurities
+    in water can reduce MnO₄⁻ to MnO₂. (b) **Light**: Photochemical decomposition
+    occurs: 4MnO₄⁻ + 2H₂O → 4MnO₂ + 3O₂ + 4OH⁻. (c) **Heat**: Thermal decomposition
+    at elevated temperatures. (3) **Solution instability**: KMnO₄ solutions gradually
+    decompose over time, changing concentration. Consequently, KMnO₄ solutions must
+    be **standardized** against primary standards like: **Oxalic acid** (H₂C₂O₄·2H₂O),
+    **Sodium oxalate** (Na₂C₂O₄), **Ferrous ammonium sulfate** (Mohr''s salt). Despite
+    not being a primary standard, KMnO₄ is widely used as a **secondary standard**
+    (standardized solution) in redox titrations due to its intense purple color (self-indicator)
+    and strong oxidizing power in acidic medium: MnO₄⁻ + 8H⁺ + 5e⁻ → Mn²⁺ + 4H₂O
+    (purple to colorless).'
+- type: mcq
+  sequence_order: 4
+  question: In acidic medium, what is the half-reaction for dichromate ion (Cr₂O₇²⁻)
+    acting as an oxidizing agent?
+  options:
+  - Cr₂O₇²⁻ + 7H⁺ + 3e⁻ → 2Cr³⁺ + 7H₂O
+  - Cr₂O₇²⁻ + 14H⁺ + 6e⁻ → 2Cr³⁺ + 7H₂O
+  - Cr₂O₇²⁻ + 8H⁺ + 6e⁻ → 2Cr³⁺ + 4H₂O
+  - Cr₂O₇²⁻ + 14H⁺ + 3e⁻ → 2Cr³⁺ + 7H₂O
+  require_pass: true
+  correct_answer: Cr₂O₇²⁻ + 14H⁺ + 6e⁻ → 2Cr³⁺ + 7H₂O
+  explanation: 'The correct half-reaction for dichromate ion in acidic medium is:
+    Cr₂O₇²⁻ + 14H⁺ + 6e⁻ → 2Cr³⁺ + 7H₂O. **Balancing explanation**: (1) **Oxidation
+    state change**: Each Cr atom goes from +6 (in Cr₂O₇²⁻) to +3 (in Cr³⁺), a reduction
+    of 3 units per Cr atom. With 2 Cr atoms: 2 × 3 = 6 electrons gained total. (2)
+    **Oxygen balance**: 7 oxygen atoms on left need to form water, requiring 7 H₂O
+    molecules on right. (3) **Hydrogen balance**: 7 H₂O on right contains 14 H atoms,
+    requiring 14 H⁺ on left. (4) **Charge balance**: Left side: -2 + 14(+1) + 6(-1)
+    = +6. Right side: 2(+3) = +6. ✓ **Color change**: Orange Cr₂O₇²⁻ → Green Cr³⁺
+    provides visual indication. **Application example**: Titration of Fe²⁺ with K₂Cr₂O₇:
+    6Fe²⁺ + Cr₂O₇²⁻ + 14H⁺ → 6Fe³⁺ + 2Cr³⁺ + 7H₂O. This reaction is used to determine
+    iron content in ores. The dichromate ion is a strong oxidizer in acidic conditions
+    (E° = +1.33 V) but much weaker in basic conditions.'

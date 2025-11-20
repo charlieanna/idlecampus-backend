@@ -1,0 +1,23 @@
+course:
+  slug: jee-physics-electromagnetic-induction
+  title: "JEE Physics: Electromagnetic Induction"
+  description: "Faraday's laws, Lenz's law, inductance, AC circuits, and transformers for IIT JEE"
+  estimated_hours: 14
+  level: advanced
+modules:
+- slug: faraday-lenz-laws
+  title: Faraday's and Lenz's Laws
+  lessons:
+  - magnetic-flux-faradays-law
+  - lenz-law-applications
+  - motional-emf
+  - eddy-currents-applications
+  - self-inductance-mutual-inductance
+- slug: ac-circuits
+  title: Alternating Current Circuits
+  lessons:
+  - ac-voltage-current-phasors
+  - lcr-series-circuit
+  - resonance-quality-factor
+  - power-in-ac-circuits
+  - transformers-efficiency

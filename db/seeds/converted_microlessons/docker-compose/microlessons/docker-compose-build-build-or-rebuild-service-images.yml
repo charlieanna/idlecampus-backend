@@ -1,0 +1,111 @@
+slug: docker-compose-build-build-or-rebuild-service-images
+title: 'Docker Compose Build: Build or Rebuild Service Images'
+difficulty: medium
+sequence_order: 3
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Docker Compose Build: Build or Rebuild Service Images \U0001F680\n\n\
+  # Mastering docker-compose build: Building Service Images\n\n    ## What is docker-compose\
+  \ build?\n    `docker-compose build` builds or rebuilds images for services that\
+  \ have a `build:` configuration in docker-compose.yml. Essential for services using\
+  \ custom Dockerfiles rather than pre-built images from registries.\n\n    ## Why\
+  \ Building with Compose Matters\n    - **Custom Services**: Build your application\
+  \ images\n    - **Consistency**: Same build process across team\n    - **Build Arguments**:\
+  \ Pass variables during build\n    - **Parallel Builds**: Build multiple services\
+  \ simultaneously\n    - **Cache Control**: Force fresh builds when needed\n\n  \
+  \  ## Basic Syntax\n    ```bash\n    docker-compose build [OPTIONS] [SERVICE...]\n\
+  \    ```\n\n    ## Common Use Cases\n\n    ### 1. Build All Services\n    ```bash\n\
+  \    docker-compose build\n    ```\n    Builds all services with `build:` configuration.\n\
+  \n    ### 2. Force Rebuild (No Cache)\n    ```bash\n    docker-compose build --no-cache\n\
+  \    ```\n    Rebuilds from scratch ignoring Docker layer cache.\n\n    ### 3. Build\
+  \ Specific Service\n    ```bash\n    docker-compose build api\n    ```\n    Builds\
+  \ only the api service.\n\n    ### 4. Parallel Builds\n    ```bash\n    docker-compose\
+  \ build --parallel\n    ```\n    Builds multiple services simultaneously for speed.\n\
+  \n    ## Sample docker-compose.yml with Build\n\n    ```yaml\n    version: '3.8'\n\
+  \    services:\n      web:\n        build:\n          context: ./frontend\n    \
+  \      dockerfile: Dockerfile\n          args:\n            NODE_ENV: production\n\
+  \        ports:\n          - \"3000:3000\"\n\n      api:\n        build:\n     \
+  \     context: ./backend\n          target: production\n        environment:\n \
+  \         - DB_HOST=database\n\n      database:\n        image: postgres:13  # Not\
+  \ built, pulled from registry\n    ```\n\n    ## Build Context Explained\n\n   \
+  \ ```yaml\n    web:\n      build:\n        context: ./frontend    # Directory with\
+  \ source code\n        dockerfile: Dockerfile  # Optional, defaults to Dockerfile\n\
+  \    ```\n\n    The context is sent to Docker daemon - use .dockerignore to exclude\
+  \ files!\n\n    ## Build Arguments\n\n    Pass variables to Dockerfile during build:\n\
+  \n    ```yaml\n    services:\n      api:\n        build:\n          context: ./api\n\
+  \          args:\n            VERSION: \"1.0.0\"\n            NODE_ENV: production\n\
+  \    ```\n\n    In Dockerfile:\n    ```dockerfile\n    ARG VERSION\n    ARG NODE_ENV\n\
+  \    RUN echo \"Building version ${VERSION}\"\n    ```\n\n    ## Multi-Stage Builds\n\
+  \n    Target specific build stage:\n\n    ```yaml\n    api:\n      build:\n    \
+  \    context: ./api\n        target: production  # Stops at 'production' stage\n\
+  \    ```\n\n    ## Common Options\n\n    | Option | Description | Example |\n  \
+  \  |--------|-------------|---------|\n    | `--no-cache` | Build without using\
+  \ cache | `docker-compose build --no-cache` |\n    | `--pull` | Always pull newer\
+  \ base images | `docker-compose build --pull` |\n    | `--parallel` | Build in parallel\
+  \ | `docker-compose build --parallel` |\n    | `--build-arg` | Set build arguments\
+  \ | `docker-compose build --build-arg VERSION=2.0` |\n    | `--progress` | Set progress\
+  \ output type | `docker-compose build --progress plain` |\n\n    ## Build vs Up\
+  \ --build\n\n    ### docker-compose build\n    - Only builds images\n    - Doesn't\
+  \ start containers\n    - Use for CI/CD pipelines\n\n    ### docker-compose up --build\n\
+  \    - Builds images first\n    - Then starts containers\n    - Convenience for\
+  \ development\n\n    ## When Images Get Built\n\n    ### Automatic Build\n    ```bash\n\
+  \    docker-compose up --build  # Builds then starts\n    ```\n\n    ### Manual\
+  \ Build\n    ```bash\n    docker-compose build       # Build only\n    docker-compose\
+  \ up -d       # Start separately\n    ```\n\n    ## Pro Tips\n\n    1. **Use .dockerignore**:\
+  \ Exclude node_modules, .git, etc.\n    2. **Parallel builds in CI**: Use `--parallel`\
+  \ for speed\n    3. **Pull base images**: Use `--pull` to get latest base images\n\
+  \    4. **Build arguments for config**: Pass environment-specific values\n    5.\
+  \ **Name your builds**: Tag images in compose file\n    6. **Cache strategically**:\
+  \ Use `--no-cache` only when needed\n\n## Syntax/Command\n\n```bash\ndocker-compose\
+  \ build\n```\n\n## Example\n\n```bash\ndocker-compose build --no-cache\n```\n\n\
+  ## Key Points\n\n- Build all: docker-compose build\n\n- Force rebuild: docker-compose\
+  \ build --no-cache\n\n- Specific service: docker-compose build api"
+exercises:
+- type: terminal
+  sequence_order: 1
+  command: docker-compose build
+  description: Rebuild application services from scratch for production deployment
+  hints:
+  - 'Build all: docker-compose build'
+  - 'Force rebuild: docker-compose build --no-cache'
+  - 'Specific service: docker-compose build api'
+  validation:
+    must_not_include:
+    - Error
+    - 'panic:'
+  timeout_sec: 60
+  require_pass: true
+- type: sandbox
+  sequence_order: 99
+  hints:
+  - Run under CPU pressure to surface leaks or races
+  - Keep commands idempotent in CI
+  validation:
+    must_not_include:
+    - Error
+    - 'panic:'
+  timeout_sec: 60
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: When should you use --no-cache flag?
+  options:
+  - When you need a clean build without layer caching
+  - Always, to ensure consistency
+  - Only in production environments
+  - When you want faster builds
+  require_pass: true
+  correct_answer: When you need a clean build without layer caching
+  explanation: 'The `--no-cache` flag should be used when you need to rebuild Docker
+    images from scratch without using cached layers. Use cases: (1) **After base image
+    updates**: When your FROM image has been updated but Docker uses cached old version,
+    (2) **Debugging build issues**: Cache might hide problems; clean build reveals
+    real issues, (3) **Security updates**: Ensure latest package versions are installed
+    in base images, (4) **Changing external dependencies**: When APT packages or NPM
+    modules need fresh download. AVOID using --no-cache always because: (a) Much slower
+    builds (no layer reuse), (b) Wastes bandwidth re-downloading packages, (c) Increases
+    CI/CD time. Normal workflow: Use `docker-compose build` (with cache) for development;
+    use `--no-cache` occasionally when needed; use `--pull` to update base images.
+    The --no-cache flag makes builds slower, not faster, so "Always" and "it makes
+    builds faster" are incorrect.'

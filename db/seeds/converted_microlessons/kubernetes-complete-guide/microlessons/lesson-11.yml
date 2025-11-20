@@ -1,0 +1,106 @@
+slug: lesson-11
+title: Lesson 11
+difficulty: easy
+sequence_order: 11
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Deployments & ReplicaSets\n\n    Learn\
+  \ how to manage application replicas and perform zero-downtime updates using Deployments\
+  \ and ReplicaSets.\n\n    ## Deployments\n\n    Deployments provide declarative\
+  \ updates for Pods and ReplicaSets. They handle:\n    - Scaling applications up\
+  \ or down\n    - Rolling updates with zero downtime\n    - Rollback to previous\
+  \ versions\n    - Pausing and resuming updates\n\n    ## ReplicaSets\n\n    ReplicaSets\
+  \ ensure a specified number of pod replicas are running at all times. Features:\n\
+  \    - Self-healing: Automatically replaces failed pods\n    - Scaling: Adjusts\
+  \ replica count based on demand\n    - Label selectors: Identifies which pods to\
+  \ manage\n\n    ## Deployment Strategies\n\n    **Rolling Update (Default)**\n \
+  \   - Gradually replaces old pods with new ones\n    - Zero downtime\n    - Rollback\
+  \ capability\n\n    **Recreate**\n    - Terminates all old pods before creating\
+  \ new ones\n    - Brief downtime\n    - Useful for incompatible updates\n\n    ##\
+  \ Essential Commands\n\n    ```bash\n    # Create deployment\n    kubectl create\
+  \ deployment nginx --image=nginx:1.25 --replicas=3\n\n    # Scale deployment\n \
+  \   kubectl scale deployment nginx --replicas=5\n\n    # Update image\n    kubectl\
+  \ set image deployment/nginx nginx=nginx:1.26\n\n    # Check rollout status\n  \
+  \  kubectl rollout status deployment/nginx\n\n    # View rollout history\n    kubectl\
+  \ rollout history deployment/nginx\n\n    # Rollback deployment\n    kubectl rollout\
+  \ undo deployment/nginx\n    ```\n\n    Master these concepts through practical\
+  \ exercises!"
+exercises:
+- type: multiple_choice_question
+  sequence_order: 2
+  question: In Kubernetes RBAC, what is the primary purpose of a ServiceAccount?
+  options:
+  - To store application configuration
+  - To provide an identity for processes running in pods to interact with the Kubernetes
+    API
+  - To manage network policies
+  - To create persistent volumes
+  correct_answer: To provide an identity for processes running in pods to interact
+    with the Kubernetes API
+  explanation: ServiceAccounts provide identities for processes running in pods, enabling
+    them to authenticate with the Kubernetes API server and perform authorized operations.
+    Every namespace has a 'default' ServiceAccount automatically assigned to pods
+    that don't specify one. Applications running in pods can use the ServiceAccount's
+    token (automatically mounted at /var/run/secrets/kubernetes.io/serviceaccount/token)
+    to make API calls. Combined with RBAC (Roles and RoleBindings), ServiceAccounts
+    control what API operations pods can perform. For example, a CI/CD tool running
+    in a pod might need a ServiceAccount with permissions to create and update Deployments.
+    ServiceAccounts are different from user accounts (for humans) - they're namespace-scoped
+    and managed declaratively as Kubernetes resources. They don't store configuration
+    (that's ConfigMaps/Secrets), manage network policies (that's NetworkPolicy resources),
+    or create volumes (that's PersistentVolumeClaims). Understanding ServiceAccounts
+    is crucial for implementing the principle of least privilege in Kubernetes applications.
+  require_pass: true
+- type: terminal
+  sequence_order: 1
+  command: kubectl create deployment nginx --image=nginx:1.25 --replicas=3
+  description: 'Practice the command: kubectl create deployment nginx --image=nginx:1.25
+    --replicas=3'
+  hints:
+  - 'Try: kubectl create deployment nginx --image=nginx:1.25 --replicas=3'
+  - Use kubectl --help if you need help
+  timeout_sec: 60
+  require_pass: true
+- type: terminal
+  sequence_order: 2
+  command: kubectl scale deployment nginx --replicas=5
+  description: 'Practice the command: kubectl scale deployment nginx --replicas=5'
+  hints:
+  - 'Try: kubectl scale deployment nginx --replicas=5'
+  - Use kubectl --help if you need help
+  timeout_sec: 60
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: Which command creates a deployment with 3 replicas?
+  options:
+  - kubectl create deployment nginx --image=nginx --replicas=3
+  - kubectl make deployment nginx replicas=3
+  - kubectl deploy nginx --count=3
+  - kubectl new deployment nginx x3
+  correct_answer_index: 0
+  explanation: kubectl create deployment creates a deployment. The --replicas flag
+    specifies the number of pod replicas.
+  require_pass: true
+- type: code
+  sequence_order: 4
+  language: yaml
+  question: Create a deployment with 3 replicas of nginx
+  starter_code: '# Write your deployment YAML here
+
+    apiVersion: apps/v1
+
+    kind: Deployment
+
+    '
+  solution_code: "apiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: nginx-deployment\n\
+    spec:\n  replicas: 3\n  selector:\n    matchLabels:\n      app: nginx\n  template:\n\
+    \    metadata:\n      labels:\n        app: nginx\n    spec:\n      containers:\n\
+    \      - name: nginx\n        image: nginx:1.25\n        ports:\n        - containerPort:\
+    \ 80"
+  hints:
+  - 'Use apiVersion: apps/v1 for Deployments'
+  - Set spec.replicas to 3
+  - Define selector.matchLabels to match template.metadata.labels
+  require_pass: true

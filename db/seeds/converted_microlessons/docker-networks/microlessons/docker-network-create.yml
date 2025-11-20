@@ -1,0 +1,88 @@
+slug: docker-network-create
+title: Docker Network Create
+difficulty: medium
+sequence_order: 1
+estimated_minutes: 2
+key_concepts:
+- networking
+- docker-network
+- bridge
+- isolation
+prerequisites: []
+content_md: '# Docker Network Create 🚀
+
+
+  Create custom Docker networks for container communication
+
+
+  ## Syntax/Command
+
+
+  ```bash
+
+  docker network create my-network
+
+  ```
+
+
+  ## Example
+
+
+  ```bash
+
+  docker network create --driver bridge my-network
+
+  ```
+
+
+  ## Key Points
+
+
+  - Create network: docker network create <name>
+
+
+  - Specify driver: --driver bridge
+
+
+  - Set subnet: --subnet <cidr>'
+exercises:
+- type: terminal
+  problem_statement: Create a custom Docker network named 'my-network' to enable container-to-container communication
+  expected_output: Network ID returned confirming successful creation
+  language: bash
+  starter_code: "# Create custom network\n"
+  sequence_order: 1
+  command: docker network create my-network
+  description: Create a custom bridge network for service isolation
+  hints:
+  - 'Create network: docker network create <name>'
+  - 'Specify driver: --driver bridge'
+  - 'Set subnet: --subnet <cidr>'
+  validation:
+    must_not_include:
+    - Error
+    - 'panic:'
+  timeout_sec: 60
+  require_pass: true
+- type: sandbox
+  sequence_order: 99
+  hints:
+  - Run under CPU pressure to surface leaks or races
+  - Keep commands idempotent in CI
+  validation:
+    must_not_include:
+    - Error
+    - 'panic:'
+  timeout_sec: 60
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What is the default network driver in Docker?
+  options:
+  - bridge (for isolated container communication on a single host)
+  - host (containers share host's network stack)
+  - overlay (for multi-host swarm communication)
+  - macvlan (assigns MAC addresses to containers)
+  correct_answer: bridge (for isolated container communication on a single host)
+  explanation: "The default network driver in Docker is 'bridge', which creates an isolated network where containers can communicate with each other by name while being separated from the host network. Host driver removes network isolation, overlay is for swarm mode across multiple hosts, and macvlan gives containers their own MAC addresses."
+  require_pass: true

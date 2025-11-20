@@ -1,0 +1,59 @@
+slug: coupling-practice
+title: coupling — Practice
+difficulty: easy
+sequence_order: 1
+estimated_minutes: 2
+key_concepts:
+- coupling
+prerequisites: []
+content_md: '# coupling — Practice 🚀
+
+
+  C₆H₅N₂⁺Cl⁻ + C₆H₅OH → [NaOH] → p-HO-C₆H₄-N=N-C₆H₅ (p-Hydroxyazobenzene, orange colored
+  azo dye). Coupling reaction.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: 'Coupling of benzenediazonium chloride with phenol gives:'
+  options:
+  - p-Hydroxyazobenzene (orange azo dye)
+  - Benzene
+  - Diphenyl ether
+  - Benzoic acid
+  require_pass: true
+  correct_answer: p-Hydroxyazobenzene (orange azo dye)
+  explanation: 'When benzenediazonium chloride (C₆H₅N₂⁺Cl⁻) couples with phenol in presence of NaOH, it forms p-hydroxyazobenzene (p-HO-C₆H₄-N=N-C₆H₅), an orange-colored azo dye. The reaction is: C₆H₅N₂⁺Cl⁻ + C₆H₅OH → [NaOH, 0-5°C] → p-HO-C₆H₄-N=N-C₆H₅. This is called coupling reaction or azo coupling. The diazonium ion acts as an electrophile and attacks the activated benzene ring of phenol at the para position (phenol is a strong activating group due to +R effect of -OH). The product contains an azo group (-N=N-) and is an azo dye. Azo dyes are the largest class of synthetic dyes and are characterized by intense colors due to extended conjugation.'
+- type: mcq
+  sequence_order: 2
+  question: 'At which position does diazonium salt couple with phenol?'
+  options:
+  - Para position (p-)
+  - Ortho position (o-)
+  - Meta position (m-)
+  - Ipso position
+  require_pass: true
+  correct_answer: Para position (p-)
+  explanation: 'Diazonium salts couple with phenol preferentially at the para position because phenol is a strong ortho-para directing activating group. The -OH group has +R (positive resonance) effect, which increases electron density at ortho and para positions, making them nucleophilic. The para position is preferred over ortho due to less steric hindrance - the bulky diazonium electrophile can approach the para position more easily. If the para position is blocked, coupling occurs at ortho position. The coupling must be done in cold alkaline conditions (0-5°C, NaOH) because: (1) phenol must be converted to phenoxide ion (more reactive), and (2) low temperature prevents decomposition of diazonium salt.'
+- type: mcq
+  sequence_order: 3
+  question: 'Why must coupling reactions be performed in cold conditions (0-5°C)?'
+  options:
+  - Diazonium salts decompose at higher temperatures
+  - Phenol evaporates at room temperature
+  - NaOH is unstable at high temperature
+  - Azo dyes decompose in heat
+  require_pass: true
+  correct_answer: Diazonium salts decompose at higher temperatures
+  explanation: 'Coupling reactions must be performed in cold conditions (0-5°C) because diazonium salts are extremely unstable and decompose rapidly at temperatures above 5°C. When heated, diazonium salts undergo various decomposition reactions, losing N₂ gas and forming phenols, halides, or other products. For example: C₆H₅N₂⁺Cl⁻ + H₂O → C₆H₅OH + N₂ + HCl. This instability is due to N₂ being an excellent leaving group. At low temperature (ice-cold, 0-5°C), the diazonium salt remains stable long enough to couple with phenols or aromatic amines to form azo compounds. This temperature control is critical for successful azo dye synthesis.'

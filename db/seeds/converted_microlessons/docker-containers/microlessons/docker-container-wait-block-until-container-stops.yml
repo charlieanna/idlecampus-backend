@@ -1,0 +1,84 @@
+slug: docker-container-wait-block-until-container-stops
+title: 'Docker Container Wait: Block Until Container Stops'
+difficulty: medium
+sequence_order: 20
+estimated_minutes: 2
+key_concepts:
+- containers
+- docker-wait
+- scripting
+- automation
+prerequisites: []
+content_md: '# Docker Container Wait: Block Until Container Stops 🚀
+
+
+  Block until container stops and return its exit code - useful in scripts.
+
+
+  ## Syntax/Command
+
+
+  ```bash
+
+  docker container wait my-container
+
+  ```
+
+
+  ## Example
+
+
+  ```bash
+
+  docker container wait container1 container2
+
+  ```
+
+
+  ## Key Points
+
+
+  - Wait: docker container wait <name>
+
+
+  - Returns exit code when stopped'
+exercises:
+- type: terminal
+  problem_statement: Wait for a container named 'my-container' to stop and retrieve its exit code
+  expected_output: Exit code of the container (typically 0 for success, non-zero for errors)
+  language: bash
+  starter_code: "# Wait for container to stop\n"
+  sequence_order: 1
+  command: docker container wait my-container
+  description: Block script until container completes and get exit code
+  hints:
+  - 'Wait: docker container wait <name>'
+  - Returns exit code when stopped
+  validation:
+    must_not_include:
+    - Error
+    - 'panic:'
+  timeout_sec: 60
+  require_pass: true
+- type: sandbox
+  sequence_order: 99
+  hints:
+  - Run under CPU pressure to surface leaks or races
+  - Keep commands idempotent in CI
+  validation:
+    must_not_include:
+    - Error
+    - 'panic:'
+  timeout_sec: 60
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What does docker wait return?
+  options:
+  - The exit code of the container after it stops
+  - The container ID of the stopped container
+  - The container's process ID (PID)
+  - The timestamp when the container stopped
+  correct_answer: The exit code of the container after it stops
+  explanation: "docker container wait blocks until the specified container stops and then returns its exit code. This is useful in scripts where you need to wait for a container to finish and check if it succeeded (exit code 0) or failed (non-zero exit code)."
+  require_pass: true

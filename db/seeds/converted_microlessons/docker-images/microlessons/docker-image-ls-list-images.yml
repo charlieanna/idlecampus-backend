@@ -1,0 +1,89 @@
+slug: docker-image-ls-list-images
+title: 'Docker Image LS: List Images'
+difficulty: easy
+sequence_order: 8
+estimated_minutes: 2
+key_concepts:
+- images
+- docker-ls
+- listing
+- inventory
+prerequisites: []
+content_md: '# Docker Image LS: List Images 🚀
+
+
+  Modern command to list Docker images - equivalent to docker images but follows new
+  CLI structure.
+
+
+  ## Syntax/Command
+
+
+  ```bash
+
+  docker image ls
+
+  ```
+
+
+  ## Example
+
+
+  ```bash
+
+  docker image ls -a
+
+  ```
+
+
+  ## Key Points
+
+
+  - List images: docker image ls
+
+
+  - All including intermediates: docker image ls -a
+
+
+  - Filter dangling: docker image ls -f dangling=true'
+exercises:
+- type: terminal
+  problem_statement: List all Docker images stored locally using the modern docker image ls command
+  expected_output: Table showing all local images with REPOSITORY, TAG, IMAGE ID, CREATED, and SIZE columns
+  language: bash
+  starter_code: "# List all local images\n"
+  sequence_order: 1
+  command: docker image ls
+  description: List all images with custom formatting for audit report
+  hints:
+  - 'List images: docker image ls'
+  - 'All including intermediates: docker image ls -a'
+  - 'Filter dangling: docker image ls -f dangling=true'
+  validation:
+    must_not_include:
+    - Error
+    - 'panic:'
+  timeout_sec: 60
+  require_pass: true
+- type: sandbox
+  sequence_order: 99
+  hints:
+  - Run under CPU pressure to surface leaks or races
+  - Keep commands idempotent in CI
+  validation:
+    must_not_include:
+    - Error
+    - 'panic:'
+  timeout_sec: 60
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What is the difference between "docker images" and "docker image ls"?
+  options:
+  - They are equivalent commands with exactly the same functionality
+  - docker image ls shows more detailed information
+  - docker images is deprecated and will be removed
+  - docker image ls is faster and more efficient
+  correct_answer: They are equivalent commands with exactly the same functionality
+  explanation: "docker images and docker image ls are completely equivalent - they produce identical output. docker image ls follows Docker's newer management command structure (docker <object> <verb>), while docker images is the legacy command. Both are currently supported and neither is deprecated."
+  require_pass: true

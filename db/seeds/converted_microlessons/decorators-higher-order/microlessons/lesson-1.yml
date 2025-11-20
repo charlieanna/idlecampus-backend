@@ -1,0 +1,152 @@
+slug: lesson-1
+title: Lesson 1
+difficulty: easy
+sequence_order: 1
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Understanding Decorators\n\n    **Decorators**\
+  \ are a powerful Python feature that allows you to modify or enhance functions and\
+  \ classes without changing their source code.\n\n    ## Functions as First-Class\
+  \ Objects\n\n    In Python, functions are first-class objects - they can be:\n \
+  \   - Assigned to variables\n    - Passed as arguments\n    - Returned from other\
+  \ functions\n    - Stored in data structures\n\n    ```python\n    def greet(name):\n\
+  \        return f\"Hello, {name}!\"\n\n    # Assign to variable\n    say_hello =\
+  \ greet\n    print(say_hello(\"Alice\"))  # Hello, Alice!\n\n    # Store in list\n\
+  \    functions = [greet, len, str]\n    ```\n\n    ## Higher-Order Functions\n\n\
+  \    Functions that take functions as arguments or return functions:\n\n    ```python\n\
+  \    # Function that takes function as argument\n    def apply_twice(func, arg):\n\
+  \        return func(func(arg))\n\n    def add_five(x):\n        return x + 5\n\n\
+  \    result = apply_twice(add_five, 10)  # (10 + 5) + 5 = 20\n\n    # Function that\
+  \ returns function\n    def make_multiplier(n):\n        def multiplier(x):\n  \
+  \          return x * n\n        return multiplier\n\n    times_three = make_multiplier(3)\n\
+  \    print(times_three(5))  # 15\n    ```\n\n    ## Closures\n\n    **Inner functions\
+  \ that remember values from their enclosing scope**\n\n    ```python\n    def make_counter():\n\
+  \        count = 0  # Enclosed variable\n\n        def counter():\n            nonlocal\
+  \ count  # Access enclosing scope\n            count += 1\n            return count\n\
+  \n        return counter\n\n    # Each counter has its own closure\n    counter1\
+  \ = make_counter()\n    counter2 = make_counter()\n\n    print(counter1())  # 1\n\
+  \    print(counter1())  # 2\n    print(counter2())  # 1 - independent counter\n\
+  \    ```\n\n    ## Basic Decorator\n\n    **Wrapper function that modifies behavior:**\n\
+  \n    ```python\n    def my_decorator(func):\n        def wrapper():\n         \
+  \   print(\"Before function call\")\n            result = func()\n            print(\"\
+  After function call\")\n            return result\n        return wrapper\n\n  \
+  \  # Manual decoration\n    def say_hello():\n        print(\"Hello!\")\n\n    say_hello\
+  \ = my_decorator(say_hello)\n    say_hello()\n    # Output:\n    # Before function\
+  \ call\n    # Hello!\n    # After function call\n    ```\n\n    ## The @ Syntax\n\
+  \n    **Syntactic sugar for decorators:**\n\n    ```python\n    @my_decorator\n\
+  \    def say_hello():\n        print(\"Hello!\")\n\n    # Equivalent to: say_hello\
+  \ = my_decorator(say_hello)\n    ```\n\n    ## Decorators with Arguments\n\n   \
+  \ ```python\n    # Decorator that accepts any arguments\n    def my_decorator(func):\n\
+  \        def wrapper(*args, **kwargs):\n            print(f\"Called {func.__name__}\
+  \ with {args}, {kwargs}\")\n            result = func(*args, **kwargs)\n       \
+  \     print(f\"Returned {result}\")\n            return result\n        return wrapper\n\
+  \n    @my_decorator\n    def add(a, b):\n        return a + b\n\n    add(2, 3)\n\
+  \    # Called add with (2, 3), {}\n    # Returned 5\n    ```\n\n    ## Preserving\
+  \ Function Metadata\n\n    ```python\n    from functools import wraps\n\n    def\
+  \ my_decorator(func):\n        @wraps(func)  # Preserves func's metadata\n     \
+  \   def wrapper(*args, **kwargs):\n            return func(*args, **kwargs)\n  \
+  \      return wrapper\n\n    @my_decorator\n    def example():\n        \"\"\"This\
+  \ is the docstring\"\"\"\n        pass\n\n    print(example.__name__)  # 'example'\
+  \ (not 'wrapper')\n    print(example.__doc__)   # 'This is the docstring'\n    ```\n\
+  \n    ## Practical Decorators\n\n    ### Timing Decorator\n\n    ```python\n   \
+  \ import time\n    from functools import wraps\n\n    def timing_decorator(func):\n\
+  \        @wraps(func)\n        def wrapper(*args, **kwargs):\n            start\
+  \ = time.time()\n            result = func(*args, **kwargs)\n            end = time.time()\n\
+  \            print(f\"{func.__name__} took {end - start:.4f} seconds\")\n      \
+  \      return result\n        return wrapper\n\n    @timing_decorator\n    def slow_function():\n\
+  \        time.sleep(1)\n        return \"Done\"\n\n    slow_function()  # slow_function\
+  \ took 1.0001 seconds\n    ```\n\n    ### Caching/Memoization\n\n    ```python\n\
+  \    from functools import lru_cache\n\n    @lru_cache(maxsize=128)\n    def fibonacci(n):\n\
+  \        if n < 2:\n            return n\n        return fibonacci(n-1) + fibonacci(n-2)\n\
+  \n    # Much faster due to caching!\n    print(fibonacci(100))\n    ```\n\n    ###\
+  \ Logging Decorator\n\n    ```python\n    import logging\n\n    def log_calls(func):\n\
+  \        @wraps(func)\n        def wrapper(*args, **kwargs):\n            logging.info(f\"\
+  Calling {func.__name__}\")\n            result = func(*args, **kwargs)\n       \
+  \     logging.info(f\"{func.__name__} returned {result}\")\n            return result\n\
+  \        return wrapper\n\n    @log_calls\n    def divide(a, b):\n        return\
+  \ a / b\n    ```\n\n    ### Authentication Decorator\n\n    ```python\n    def require_auth(func):\n\
+  \        @wraps(func)\n        def wrapper(*args, **kwargs):\n            if not\
+  \ is_authenticated():\n                raise PermissionError(\"Authentication required\"\
+  )\n            return func(*args, **kwargs)\n        return wrapper\n\n    @require_auth\n\
+  \    def delete_user(user_id):\n        # Only runs if authenticated\n        pass\n\
+  \    ```\n\n    ## Decorators with Parameters\n\n    **Need an extra level of nesting:**\n\
+  \n    ```python\n    def repeat(times):\n        def decorator(func):\n        \
+  \    @wraps(func)\n            def wrapper(*args, **kwargs):\n                for\
+  \ _ in range(times):\n                    result = func(*args, **kwargs)\n     \
+  \           return result\n            return wrapper\n        return decorator\n\
+  \n    @repeat(3)\n    def greet(name):\n        print(f\"Hello, {name}!\")\n\n \
+  \   greet(\"Alice\")\n    # Hello, Alice!\n    # Hello, Alice!\n    # Hello, Alice!\n\
+  \    ```\n\n    ### Retry Decorator\n\n    ```python\n    import time\n\n    def\
+  \ retry(max_attempts=3, delay=1):\n        def decorator(func):\n            @wraps(func)\n\
+  \            def wrapper(*args, **kwargs):\n                for attempt in range(max_attempts):\n\
+  \                    try:\n                        return func(*args, **kwargs)\n\
+  \                    except Exception as e:\n                        if attempt\
+  \ == max_attempts - 1:\n                            raise\n                    \
+  \    print(f\"Attempt {attempt + 1} failed, retrying...\")\n                   \
+  \     time.sleep(delay)\n            return wrapper\n        return decorator\n\n\
+  \    @retry(max_attempts=3, delay=2)\n    def unstable_api_call():\n        # May\
+  \ fail randomly\n        pass\n    ```\n\n    ## Class Decorators\n\n    **Decorators\
+  \ can also modify classes:**\n\n    ```python\n    def singleton(cls):\n       \
+  \ instances = {}\n\n        @wraps(cls)\n        def get_instance(*args, **kwargs):\n\
+  \            if cls not in instances:\n                instances[cls] = cls(*args,\
+  \ **kwargs)\n            return instances[cls]\n\n        return get_instance\n\n\
+  \    @singleton\n    class Database:\n        def __init__(self):\n            print(\"\
+  Connecting to database...\")\n\n    db1 = Database()  # Connecting to database...\n\
+  \    db2 = Database()  # (no output - same instance)\n    print(db1 is db2)  # True\n\
+  \    ```\n\n    ## Stacking Decorators\n\n    ```python\n    @decorator1\n    @decorator2\n\
+  \    @decorator3\n    def my_function():\n        pass\n\n    # Equivalent to:\n\
+  \    # my_function = decorator1(decorator2(decorator3(my_function)))\n    # Innermost\
+  \ decorator executes first\n    ```\n\n    ### Example: Stacked Decorators\n\n \
+  \   ```python\n    @timing_decorator\n    @log_calls\n    @retry(max_attempts=3)\n\
+  \    def complex_operation():\n        # Retries if fails, logs calls, times execution\n\
+  \        pass\n    ```\n\n    ## Built-in Decorators\n\n    ### @property\n\n  \
+  \  ```python\n    class Circle:\n        def __init__(self, radius):\n         \
+  \   self._radius = radius\n\n        @property\n        def radius(self):\n    \
+  \        return self._radius\n\n        @radius.setter\n        def radius(self,\
+  \ value):\n            if value < 0:\n                raise ValueError(\"Radius\
+  \ must be positive\")\n            self._radius = value\n\n        @property\n \
+  \       def area(self):\n            return 3.14159 * self._radius ** 2\n\n    c\
+  \ = Circle(5)\n    print(c.radius)  # 5 (calls getter)\n    c.radius = 10    # Calls\
+  \ setter\n    print(c.area)    # Computed property\n    ```\n\n    ### @staticmethod\
+  \ and @classmethod\n\n    ```python\n    class MathUtils:\n        @staticmethod\n\
+  \        def add(a, b):\n            return a + b  # No self, no cls\n\n       \
+  \ @classmethod\n        def from_string(cls, string):\n            # Can create\
+  \ instances\n            return cls(int(string))\n    ```\n\n    **Next**: We'll\
+  \ explore generators and the iteration protocol!"
+exercises:
+  - type: mcq
+    sequence_order: 1
+    question: "What is a closure in Python and why is it important for decorators?"
+    options:
+      - "A function that runs faster than normal functions"
+      - "An inner function that remembers values from its enclosing scope, even after the outer function has finished executing"
+      - "A way to close file handles automatically"
+      - "A function that can only be called once"
+    correct_answer: "An inner function that remembers values from its enclosing scope, even after the outer function has finished executing"
+    explanation: "A closure is a powerful concept where an inner function 'closes over' variables from its enclosing (outer) function's scope, maintaining access to those variables even after the outer function has returned. Example: def make_counter(): count = 0; def counter(): nonlocal count; count += 1; return count; return counter. Here, the inner counter() function remembers the count variable. Each call to make_counter() creates a new, independent closure with its own count. Closures are fundamental to decorators because decorators return wrapper functions that need to remember the original function they're wrapping. The wrapper function (closure) has access to the func parameter from the decorator's scope. This enables patterns like: def my_decorator(func): def wrapper(*args): return func(*args); return wrapper. The wrapper remembers func through closure. Without closures, decorators wouldn't work - the wrapper would have no way to call the original function."
+    require_pass: true
+
+  - type: mcq
+    sequence_order: 2
+    question: "What does the @wraps decorator from functools do and why is it important?"
+    options:
+      - "It makes functions run faster"
+      - "It preserves the original function's metadata (__name__, __doc__, etc.) when creating a decorator, preventing loss of introspection information"
+      - "It automatically adds error handling"
+      - "It converts functions to classes"
+    correct_answer: "It preserves the original function's metadata (__name__, __doc__, etc.) when creating a decorator, preventing loss of introspection information"
+    explanation: "When you create a decorator, the wrapper function replaces the original function. Without @wraps, the decorated function loses its original metadata - its __name__ becomes 'wrapper', its __doc__ is lost, and introspection tools can't identify it properly. This breaks debugging, documentation generation, and reflection. The @wraps decorator copies metadata from the original function to the wrapper. Example WITHOUT @wraps: def my_decorator(func): def wrapper(*args): return func(*args); return wrapper; @my_decorator def example(): 'docstring'; pass; print(example.__name__) # 'wrapper' (WRONG!). Example WITH @wraps: from functools import wraps; def my_decorator(func): @wraps(func); def wrapper(*args): return func(*args); return wrapper; @my_decorator def example(): 'docstring'; pass; print(example.__name__) # 'example' (CORRECT!). Always use @wraps when writing decorators to maintain proper function identity and enable tools like help(), pdb debugger, and documentation generators to work correctly."
+    require_pass: true
+
+  - type: mcq
+    sequence_order: 3
+    question: "What is the difference between @decorator and @decorator() (with parentheses) when decorating a function?"
+    options:
+      - "There is no difference"
+      - "@decorator applies a simple decorator; @decorator() calls a decorator factory that returns a decorator, allowing parameters to be passed"
+      - "Parentheses make it run faster"
+      - "Parentheses are only for class decorators"
+    correct_answer: "@decorator applies a simple decorator; @decorator() calls a decorator factory that returns a decorator, allowing parameters to be passed"
+    explanation: "The presence or absence of parentheses changes what gets called. @decorator (no parens) directly applies a decorator function that takes a function and returns a wrapped function. @decorator(args) (with parens) calls a decorator factory that returns an actual decorator. Simple decorator: def simple_dec(func): def wrapper(): return func(); return wrapper; @simple_dec def f(): pass. This works because simple_dec(f) is called. Parameterized decorator: def repeat(times): def decorator(func): def wrapper(): for _ in range(times): func(); return wrapper; return decorator; @repeat(3) def f(): pass. Here, repeat(3) is called first (returns decorator), then that decorator is applied to f. The structure is: @repeat(3) → repeat(3) returns decorator → decorator(f) returns wrapper. If you forget parentheses on a parameterized decorator @repeat instead of @repeat(3), Python passes the function where times parameter was expected, causing a type error. This three-level nesting (factory → decorator → wrapper) is necessary for decorators that accept configuration parameters."
+    require_pass: true

@@ -1,0 +1,59 @@
+slug: adsorption-practice
+title: adsorption — Practice
+difficulty: easy
+sequence_order: 10
+estimated_minutes: 2
+key_concepts:
+- adsorption
+prerequisites: []
+content_md: '# adsorption — Practice 🚀
+
+
+  Easily liquefiable gases (high critical temperature) are readily adsorbed. NH₃ has
+  the highest critical temperature among these gases, so it is adsorbed most.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: Which gas will be adsorbed to the maximum extent on activated charcoal?
+  options:
+  - Ammonia (NH₃)
+  - Nitrogen (N₂)
+  - Oxygen (O₂)
+  - Hydrogen (H₂)
+  correct_answer: Ammonia (NH₃)
+  explanation: "Easily liquefiable gases (those with high critical temperature) are readily adsorbed because they have stronger intermolecular forces. Among these gases, NH₃ has the highest critical temperature (405.5 K), followed by O₂ (154.6 K), N₂ (126.2 K), and H₂ (33.2 K). Therefore, ammonia is adsorbed to the maximum extent on activated charcoal. This principle is important in gas separation and purification processes."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: 'Adsorption is different from absorption because:'
+  options:
+  - Adsorption occurs only at the surface while absorption occurs throughout the bulk
+  - Absorption is faster than adsorption
+  - Adsorption is always endothermic
+  - Absorption requires a catalyst
+  correct_answer: Adsorption occurs only at the surface while absorption occurs throughout the bulk
+  explanation: "Adsorption is a surface phenomenon where adsorbate molecules accumulate only on the surface of the adsorbent (like gas molecules on activated charcoal). In contrast, absorption is a bulk phenomenon where the substance penetrates and distributes throughout the entire volume of the material (like water absorbed by a sponge). Adsorption is typically exothermic and spontaneous, while the speed and catalysis requirements depend on specific conditions."
+  require_pass: false
+- type: mcq
+  sequence_order: 3
+  question: 'Which factor does NOT favor adsorption of gases on solids?'
+  options:
+  - High pressure
+  - Low temperature
+  - High critical temperature of gas
+  - High temperature
+  correct_answer: High temperature
+  explanation: "Adsorption is an exothermic process, so according to Le Chatelier's principle, it is favored by low temperature (not high temperature). High pressure increases gas concentration at the surface, low temperature shifts equilibrium toward adsorption, and gases with high critical temperature are easily liquefiable and thus more readily adsorbed. High temperature provides energy for desorption, reducing the extent of adsorption."
+  require_pass: false

@@ -1,0 +1,85 @@
+slug: conversiontooxide-practice
+title: conversion_to_oxide — Practice
+difficulty: medium
+sequence_order: 15
+estimated_minutes: 2
+key_concepts:
+- conversion_to_oxide
+prerequisites: []
+content_md: '# conversion_to_oxide — Practice 🚀
+
+
+  Roasting: heating in excess air (converts S to O). Calcination: heating in limited/no
+  air (removes CO₂, H₂O).
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 2
+  question: What is the difference between roasting and calcination?
+  options:
+  - 'Roasting: heating in excess air (for sulfides); Calcination: heating in limited
+    air (for carbonates/hydrates)'
+  - 'Roasting: heating for oxides; Calcination: heating for sulfides'
+  - Both are identical processes with different names
+  - Roasting uses flux; Calcination does not use flux
+  require_pass: true
+  correct_answer: 'Roasting: heating in excess air (for sulfides); Calcination: heating
+    in limited air (for carbonates/hydrates)'
+  explanation: 'Roasting and calcination are both thermal treatment processes but
+    differ in air supply and purpose: **Roasting** = Heating ore in excess air/oxygen.
+    Used for sulfide ores to convert them to oxides. The sulfur is oxidized to SO₂
+    and driven off. Example: 2ZnS + 3O₂ → 2ZnO + 2SO₂ (exothermic), 2Cu₂S + 3O₂ →
+    2Cu₂O + 2SO₂, 2PbS + 3O₂ → 2PbO + 2SO₂. **Calcination** = Heating ore in limited
+    or absent air. Used for carbonate and hydrated ores to remove volatile impurities
+    like CO₂ and H₂O. Examples: ZnCO₃ → ZnO + CO₂ (endothermic), CaCO₃ → CaO + CO₂
+    (limestone to quicklime), Al₂O₃·2H₂O → Al₂O₃ + 2H₂O (bauxite). The key difference:
+    roasting requires oxygen for oxidation of sulfur, calcination requires limited
+    air to prevent oxidation while removing volatiles.'
+- type: mcq
+  sequence_order: 3
+  question: Which process is used to convert zinc carbonate ore (calamine) to zinc
+    oxide?
+  options:
+  - Roasting
+  - Calcination
+  - Smelting
+  - Leaching
+  require_pass: true
+  correct_answer: Calcination
+  explanation: 'Calcination is used to convert zinc carbonate (ZnCO₃, calamine) to
+    zinc oxide (ZnO). The ore is heated strongly in limited air below its melting
+    point: ZnCO₃ → ZnO + CO₂↑ (endothermic reaction). The CO₂ gas escapes, leaving
+    behind zinc oxide. This is NOT roasting because: (1) No oxygen/air is needed
+    for the reaction, (2) The process removes CO₂, not SO₂, (3) It''s endothermic,
+    not exothermic. Other calcination examples: CaCO₃ → CaO + CO₂ (limestone to quicklime),
+    MgCO₃ → MgO + CO₂, Al₂O₃·2H₂O → Al₂O₃ + 2H₂O (removing water from bauxite). After
+    calcination, ZnO is reduced to Zn metal using carbon.'
+- type: mcq
+  sequence_order: 4
+  question: What is the main product released during roasting of zinc sulfide (ZnS)?
+  options:
+  - CO₂
+  - H₂O
+  - SO₂
+  - H₂S
+  require_pass: true
+  correct_answer: SO₂
+  explanation: 'During roasting of zinc sulfide (zinc blende, ZnS), sulfur dioxide
+    (SO₂) is the main gaseous product released: 2ZnS + 3O₂ → 2ZnO + 2SO₂↑ (exothermic).
+    The ore is heated strongly in excess air/oxygen. The sulfur in ZnS is oxidized
+    to SO₂ which escapes as a gas. The ZnO formed is then reduced to metallic Zn
+    using carbon (coke) in a blast furnace: ZnO + C → Zn + CO. Other sulfide roasting
+    reactions: 2Cu₂S + 3O₂ → 2Cu₂O + 2SO₂, 2PbS + 3O₂ → 2PbO + 2SO₂. Environmental
+    concern: SO₂ is an air pollutant causing acid rain, so modern smelters capture
+    it to produce H₂SO₄.'

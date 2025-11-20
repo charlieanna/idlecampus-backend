@@ -1,0 +1,75 @@
+slug: inverse-trig-values-practice
+title: inverse-trig-values — Practice
+difficulty: medium
+sequence_order: 3
+estimated_minutes: 2
+key_concepts:
+- inverse-trig-values
+prerequisites: []
+content_md: '# inverse-trig-values — Practice 🚀
+
+
+  Use principal value ranges
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What is the principal value of sin⁻¹(1/2)?
+  options:
+  - π/6
+  - π/3
+  - π/4
+  - 5π/6
+  require_pass: true
+  correct_answer: π/6
+  explanation: 'The principal value of sin⁻¹(1/2) is π/6 (or 30°). The principal
+    value range for sin⁻¹(x) is [-π/2, π/2], which includes only angles in quadrants
+    I and IV. Since sin(π/6) = 1/2 and π/6 is in the principal range, sin⁻¹(1/2)
+    = π/6. Note: While sin(5π/6) = 1/2 as well, 5π/6 is NOT in the principal range
+    of sin⁻¹, so it''s not the answer. Common values to remember: sin⁻¹(0) = 0, sin⁻¹(1/2)
+    = π/6, sin⁻¹(√2/2) = π/4, sin⁻¹(√3/2) = π/3, sin⁻¹(1) = π/2.'
+- type: mcq
+  sequence_order: 2
+  question: What is the range (principal value) of cos⁻¹(x)?
+  options:
+  - '[-π/2, π/2]'
+  - '[0, π]'
+  - '[-π, π]'
+  - '[0, 2π]'
+  require_pass: true
+  correct_answer: '[0, π]'
+  explanation: 'The principal value range of cos⁻¹(x) is [0, π], which includes angles
+    in quadrants I and II. This is different from sin⁻¹(x) which has range [-π/2,
+    π/2]. The range [0, π] ensures that each value of x in domain [-1, 1] maps to
+    exactly one angle. Examples: cos⁻¹(1) = 0, cos⁻¹(√3/2) = π/6, cos⁻¹(1/2) = π/3,
+    cos⁻¹(0) = π/2, cos⁻¹(-1/2) = 2π/3, cos⁻¹(-1) = π. For tan⁻¹(x), the range is
+    (-π/2, π/2). These ranges are chosen to make inverse trig functions single-valued
+    (functions must pass vertical line test).'
+- type: mcq
+  sequence_order: 3
+  question: 'Calculate: sin⁻¹(√3/2) + cos⁻¹(√3/2)'
+  options:
+  - π/2
+  - π/3
+  - π/6
+  - π
+  require_pass: true
+  correct_answer: π/2
+  explanation: 'sin⁻¹(√3/2) + cos⁻¹(√3/2) = π/3 + π/6 = π/2. Calculation: sin⁻¹(√3/2)
+    = π/3 (since sin(π/3) = √3/2 and π/3 is in range [-π/2, π/2]), cos⁻¹(√3/2) =
+    π/6 (since cos(π/6) = √3/2 and π/6 is in range [0, π]). Sum = π/3 + π/6 = 2π/6
+    + π/6 = 3π/6 = π/2. This follows the general identity: sin⁻¹(x) + cos⁻¹(x) =
+    π/2 for all x ∈ [-1, 1]. Proof: Let sin⁻¹(x) = θ, then x = sin(θ). So cos(π/2
+    - θ) = sin(θ) = x, which means cos⁻¹(x) = π/2 - θ = π/2 - sin⁻¹(x). Similar
+    identity: tan⁻¹(x) + cot⁻¹(x) = π/2.'

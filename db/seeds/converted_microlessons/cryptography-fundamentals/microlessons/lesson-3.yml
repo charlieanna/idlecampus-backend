@@ -1,0 +1,135 @@
+slug: lesson-3
+title: Lesson 3
+difficulty: easy
+sequence_order: 3
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# X.509 Certificates and PKI\n\n    **X.509\
+  \ certificates** bind public keys to identities and are the foundation of TLS authentication.\n\
+  \n    ## What is a Certificate?\n\n    A certificate contains:\n    - **Subject**:\
+  \ Who the certificate is for (domain name, organization)\n    - **Issuer**: Who\
+  \ signed it (Certificate Authority)\n    - **Public Key**: For encryption/verification\n\
+  \    - **Validity Period**: Not before / not after dates\n    - **Signature**: Issuer's\
+  \ digital signature\n    - **Extensions**: Additional information (SANs, key usage,\
+  \ etc.)\n\n    ### Certificate Example (OpenSSL output)\n    ```\n    Certificate:\n\
+  \        Version: 3\n        Serial Number: 0x1a2b3c4d5e6f\n        Signature Algorithm:\
+  \ sha256WithRSAEncryption\n        Issuer: C=US, O=Let's Encrypt, CN=R3\n      \
+  \  Validity:\n            Not Before: Jan 1 00:00:00 2024 GMT\n            Not After\
+  \ : Apr 1 00:00:00 2024 GMT\n        Subject: CN=example.com\n        Subject Public\
+  \ Key Info:\n            Public Key Algorithm: rsaEncryption\n            RSA Public-Key:\
+  \ (2048 bit)\n        X509v3 extensions:\n            X509v3 Subject Alternative\
+  \ Name:\n                DNS:example.com, DNS:www.example.com\n            X509v3\
+  \ Key Usage: critical\n                Digital Signature, Key Encipherment\n   \
+  \ ```\n\n    ## PKI (Public Key Infrastructure)\n\n    The trust system for certificates:\n\
+  \n    ```\n    Root CA (trusted by OS/browser)\n        ↓ signs\n    Intermediate\
+  \ CA\n        ↓ signs\n    Server Certificate (example.com)\n    ```\n\n    ###\
+  \ Trust Chain Verification\n\n    1. Browser checks server certificate\n    2. Verifies\
+  \ it's signed by intermediate CA\n    3. Verifies intermediate is signed by root\
+  \ CA\n    4. Root CA is in browser's trust store\n    5. If chain is valid → connection\
+  \ proceeds\n\n    ## Certificate Types\n\n    ### 1. Domain Validated (DV)\n   \
+  \ - Only proves domain ownership\n    - Automated validation\n    - Free (Let's\
+  \ Encrypt)\n    - Fast issuance (minutes)\n\n    ### 2. Organization Validated (OV)\n\
+  \    - Proves organization identity\n    - Manual verification required\n    - Shows\
+  \ organization name\n    - Takes days\n\n    ### 3. Extended Validation (EV)\n \
+  \   - Highest validation level\n    - Extensive vetting process\n    - ~~Shows green\
+  \ bar~~ (removed in modern browsers)\n    - Takes weeks\n    - Expensive\n\n   \
+  \ **Recommendation**: Use DV for most sites (Let's Encrypt is perfect)\n\n    ##\
+  \ Generating Certificates\n\n    ### Self-Signed Certificate (Development Only)\n\
+  \    ```bash\n    # Generate private key\n    openssl genrsa -out server.key 2048\n\
+  \n    # Generate certificate signing request (CSR)\n    openssl req -new -key server.key\
+  \ -out server.csr \\\n      -subj \"/CN=localhost\"\n\n    # Self-sign (NOT for\
+  \ production)\n    openssl x509 -req -days 365 -in server.csr \\\n      -signkey\
+  \ server.key -out server.crt\n    ```\n\n    ### Production Certificate with Let's\
+  \ Encrypt\n    ```bash\n    # Install certbot\n    sudo apt-get install certbot\n\
+  \n    # Get certificate (automatic)\n    sudo certbot certonly --standalone -d example.com\
+  \ -d www.example.com\n\n    # Certificates saved to:\n    # /etc/letsencrypt/live/example.com/fullchain.pem\n\
+  \    # /etc/letsencrypt/live/example.com/privkey.pem\n\n    # Auto-renew (Let's\
+  \ Encrypt certs expire in 90 days)\n    sudo certbot renew\n    ```\n\n    ### Manual\
+  \ CSR for Commercial CA\n    ```bash\n    # 1. Generate private key (keep this secret!)\n\
+  \    openssl genrsa -out example.com.key 2048\n\n    # 2. Generate CSR\n    openssl\
+  \ req -new -key example.com.key -out example.com.csr \\\n      -subj \"/C=US/ST=California/L=San\
+  \ Francisco/O=Example Inc/CN=example.com\"\n\n    # 3. Submit CSR to CA (DigiCert,\
+  \ GlobalSign, etc.)\n    # 4. Complete validation process\n    # 5. Download signed\
+  \ certificate\n    ```\n\n    ## Certificate Formats\n\n    ### PEM (Privacy Enhanced\
+  \ Mail)\n    ```\n    -----BEGIN CERTIFICATE-----\n    MIIDXTCCAkWgAwIBAgIJAKL...\n\
+  \    ...\n    -----END CERTIFICATE-----\n    ```\n    - Base64 encoded\n    - Most\
+  \ common\n    - Used by nginx, Apache\n\n    ### DER (Distinguished Encoding Rules)\n\
+  \    - Binary format\n    - Common in Java\n\n    ### P12/PFX (PKCS#12)\n    - Bundle:\
+  \ certificate + private key\n    - Password protected\n    - Common in Windows\n\
+  \n    ### Converting Formats\n    ```bash\n    # PEM to DER\n    openssl x509 -in\
+  \ cert.pem -outform DER -out cert.der\n\n    # DER to PEM\n    openssl x509 -in\
+  \ cert.der -inform DER -out cert.pem\n\n    # Create P12 bundle\n    openssl pkcs12\
+  \ -export -in cert.pem -inkey key.pem -out cert.p12\n    ```\n\n    ## Subject Alternative\
+  \ Names (SAN)\n\n    **Modern way to specify multiple domains:**\n\n    ```\n  \
+  \  X509v3 Subject Alternative Name:\n        DNS:example.com\n        DNS:www.example.com\n\
+  \        DNS:api.example.com\n        DNS:*.example.com (wildcard)\n        IP Address:192.0.2.1\n\
+  \    ```\n\n    ### Generating Certificate with SANs\n    ```bash\n    # Create\
+  \ config file\n    cat > san.cnf <<EOF\n    [req]\n    distinguished_name = req_distinguished_name\n\
+  \    req_extensions = v3_req\n\n    [req_distinguished_name]\n    CN = example.com\n\
+  \n    [v3_req]\n    subjectAltName = @alt_names\n\n    [alt_names]\n    DNS.1 =\
+  \ example.com\n    DNS.2 = www.example.com\n    DNS.3 = *.api.example.com\n    EOF\n\
+  \n    # Generate with SANs\n    openssl req -new -key server.key -out server.csr\
+  \ -config san.cnf\n    ```\n\n    ## Certificate Validation\n\n    ### What Browsers\
+  \ Check:\n\n    1. **Signature**: Certificate is signed by trusted CA\n    2. **Validity\
+  \ Period**: Current time is within not-before/not-after\n    3. **Hostname**: Domain\
+  \ matches CN or SAN\n    4. **Revocation**: Certificate not revoked (CRL/OCSP)\n\
+  \    5. **Chain**: Complete chain to trusted root\n\n    ### Common Certificate\
+  \ Errors:\n\n    **ERR_CERT_AUTHORITY_INVALID**\n    - Certificate not signed by\
+  \ trusted CA\n    - Self-signed certificate\n    - Incomplete chain\n\n    **ERR_CERT_DATE_INVALID**\n\
+  \    - Certificate expired or not yet valid\n    - Check system clock\n\n    **ERR_CERT_COMMON_NAME_INVALID**\n\
+  \    - Domain name doesn't match certificate\n    - Missing from SAN\n\n    ## Certificate\
+  \ Revocation\n\n    ### CRL (Certificate Revocation List)\n    - Published by CA\n\
+  \    - List of revoked certificates\n    - Client downloads and checks\n    - Can\
+  \ be large and slow\n\n    ### OCSP (Online Certificate Status Protocol)\n    -\
+  \ Real-time check with CA\n    - Query: \"Is cert X revoked?\"\n    - Response:\
+  \ Good / Revoked / Unknown\n\n    ### OCSP Stapling\n    - Server gets OCSP response\
+  \ from CA\n    - Includes it in TLS handshake\n    - Faster, more private\n\n  \
+  \  ```nginx\n    # Enable OCSP stapling in nginx\n    ssl_stapling on;\n    ssl_stapling_verify\
+  \ on;\n    ssl_trusted_certificate /path/to/chain.pem;\n    ```\n\n    ## Certificate\
+  \ Pinning\n\n    **Hard-code which certificates/keys are valid:**\n\n    ```javascript\n\
+  \    // HTTP Public Key Pinning (HPKP) - Deprecated!\n    // Use Certificate Transparency\
+  \ instead\n\n    // Pin in mobile app\n    const pins = [\n      'sha256/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=',\n\
+  \      'sha256/BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB='\n    ];\n    ```\n\n\
+  \    **Warning**: Pinning is risky! If pin is lost, app breaks.\n\n    ## Best Practices\n\
+  \n    1. **Use Let's Encrypt** for free automated certificates\n    2. **Automate\
+  \ renewal** (90-day expiry!)\n    3. **Include full chain** in server configuration\n\
+  \    4. **Enable OCSP stapling** for faster validation\n    5. **Monitor expiration**\
+  \ with alerting\n    6. **Use wildcard certs carefully** (wider attack surface)\n\
+  \    7. **Rotate keys** when certificate is compromised\n    8. **Test configuration**\
+  \ with SSL Labs\n\n    **Next**: We'll explore HTTPS implementation and securing\
+  \ web applications."
+exercises:
+  - type: multiple_choice_question
+    sequence_order: 1
+    question: "What does an X.509 certificate bind together?"
+    options:
+      - "A username and password"
+      - "A public key to an identity (domain name or organization)"
+      - "Two private keys for encryption"
+      - "A database connection to an application"
+    correct_answer: "A public key to an identity (domain name or organization)"
+    explanation: "X.509 certificates are digital documents that bind a public key to an identity, such as a domain name (example.com) or an organization. This binding is fundamental to establishing trust in TLS/SSL connections. The certificate contains the subject's public key along with information about who the certificate was issued to (Subject), who issued it (Issuer - typically a Certificate Authority), validity period, and a digital signature from the issuer. When a browser connects to an HTTPS website, the server presents its X.509 certificate, which contains the server's public key. The browser verifies that the certificate was signed by a trusted Certificate Authority and that the domain name in the certificate matches the website being accessed. This verification process ensures you're actually communicating with the legitimate server, not an imposter. Without this binding of public key to identity, an attacker could present their own public key and intercept communications through a man-in-the-middle attack. The certificate format is standardized in the X.509 specification, making it universally recognized across different platforms and software."
+    require_pass: true
+  - type: multiple_choice_question
+    sequence_order: 2
+    question: "What is the purpose of Subject Alternative Names (SANs) in a certificate?"
+    options:
+      - "To make the certificate more secure"
+      - "To specify multiple domain names that the certificate is valid for"
+      - "To add encryption to the certificate"
+      - "To create backup certificates"
+    correct_answer: "To specify multiple domain names that the certificate is valid for"
+    explanation: "Subject Alternative Names (SANs) are X.509 certificate extensions that allow a single certificate to be valid for multiple domain names. Instead of needing separate certificates for example.com, www.example.com, and api.example.com, you can have one certificate that includes all these domains in the SAN extension. This is more efficient and easier to manage than maintaining multiple certificates. SANs also support wildcards (*.example.com) to cover all subdomains, and can include IP addresses. Modern browsers primarily use SAN for domain validation rather than the older Common Name (CN) field. When a browser checks a certificate, it looks for the connecting domain in the SAN list. Let's Encrypt and other CAs make it easy to include multiple domains in SANs when generating certificates. The SAN extension has become the standard way to specify domains in certificates, with the CN field largely deprecated for this purpose. This is particularly important for modern web applications that often serve content from multiple subdomains or use both www and non-www versions of a site."
+    require_pass: true
+  - type: multiple_choice_question
+    sequence_order: 3
+    question: "Why does Let's Encrypt issue certificates with only 90-day validity?"
+    options:
+      - "To save disk space"
+      - "To encourage automation and regular renewal, improving security practices"
+      - "Because longer certificates are more expensive"
+      - "To make the certificates faster to generate"
+    correct_answer: "To encourage automation and regular renewal, improving security practices"
+    explanation: "Let's Encrypt deliberately uses a short 90-day validity period to encourage automation and better security practices. Traditional CAs issue certificates valid for one or two years, which leads to manual renewal processes that are often forgotten until the certificate expires, causing outages. The short validity period forces organizations to implement automated renewal (using tools like certbot), which is actually more reliable than manual processes. If a certificate's private key is compromised, a shorter validity period limits the window of exposure - the attacker can only use it for up to 90 days versus potentially years. Short validity also means organizations are more likely to have working renewal processes in place, reducing the risk of expired certificates. Automated renewal typically happens at 60 days (with 30 days remaining as a buffer), so systems should renew certificates multiple times per year. This automation aligns with modern DevOps practices and reduces human error. While the short validity might seem inconvenient, in practice it's better for security and, when properly automated, requires no manual intervention."
+    require_pass: true

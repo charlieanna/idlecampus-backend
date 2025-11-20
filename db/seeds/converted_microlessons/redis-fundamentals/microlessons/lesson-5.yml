@@ -1,0 +1,299 @@
+slug: lesson-5
+title: Lesson 5
+difficulty: easy
+sequence_order: 5
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Advanced Caching Patterns with Redis\n\n\
+  \    Caching is crucial for performance, but implementing it correctly requires\
+  \ understanding different patterns and their trade-offs.\n\n    ## Why Cache?\n\n\
+  \    ### Performance Benefits\n    - **10-100x faster** than database queries\n\
+  \    - **Reduced database load** - fewer queries\n    - **Better scalability** -\
+  \ handle more traffic\n    - **Lower latency** - sub-millisecond response times\n\
+  \n    ### Cost Benefits\n    - Smaller database instances\n    - Reduced cloud costs\n\
+  \    - Better resource utilization\n\n    ## Caching Patterns\n\n    ### 1. Cache-Aside\
+  \ (Lazy Loading)\n\n    **The application manages the cache**\n\n    ```\n    ┌──────────┐\
+  \         ┌───────┐         ┌──────────┐\n    │   App    │────1───▶│ Cache │   \
+  \      │ Database │\n    │          │◀───2────│       │         │          │\n \
+  \   │          │         └───────┘         │          │\n    │          │────3─────────────────────▶│\
+  \          │\n    │          │◀───4──────────────────────│          │\n    │   \
+  \       │────5───▶│       │         │          │\n    └──────────┘         └───────┘\
+  \         └──────────┘\n\n    1. Check cache\n    2. Cache miss\n    3. Query database\n\
+  \    4. Return data\n    5. Store in cache\n    ```\n\n    **Implementation:**\n\
+  \n    ```python\n    import redis\n    import json\n    from typing import Optional\n\
+  \n    r = redis.Redis(host='localhost', port=6379, decode_responses=True)\n\n  \
+  \  def get_user(user_id: int) -> Optional[dict]:\n        cache_key = f'user:{user_id}'\n\
+  \n        # 1. Try cache first\n        cached = r.get(cache_key)\n        if cached:\n\
+  \            print('Cache HIT')\n            return json.loads(cached)\n\n     \
+  \   print('Cache MISS')\n\n        # 2. Query database\n        user = db.query('SELECT\
+  \ * FROM users WHERE id = ?', user_id)\n\n        if user:\n            # 3. Store\
+  \ in cache\n            r.set(cache_key, json.dumps(user), ex=3600)  # 1 hour TTL\n\
+  \n        return user\n    ```\n\n    ```javascript\n    const Redis = require('ioredis');\n\
+  \    const redis = new Redis();\n\n    async function getUser(userId) {\n      \
+  \  const cacheKey = `user:${userId}`;\n\n        // 1. Try cache first\n       \
+  \ const cached = await redis.get(cacheKey);\n        if (cached) {\n           \
+  \ console.log('Cache HIT');\n            return JSON.parse(cached);\n        }\n\
+  \n        console.log('Cache MISS');\n\n        // 2. Query database\n        const\
+  \ user = await db.query('SELECT * FROM users WHERE id = $1', [userId]);\n\n    \
+  \    if (user) {\n            // 3. Store in cache\n            await redis.set(cacheKey,\
+  \ JSON.stringify(user), 'EX', 3600);\n        }\n\n        return user;\n    }\n\
+  \    ```\n\n    **Pros:**\n    - Simple to implement\n    - Only caches what's requested\
+  \ (no wasted space)\n    - Cache can be cleared without affecting app\n\n    **Cons:**\n\
+  \    - First request always slow (cache miss)\n    - Cache and DB can be inconsistent\n\
+  \    - Need to handle cache invalidation\n\n    **When to use:** Most common pattern,\
+  \ great for read-heavy workloads\n\n    ### 2. Write-Through Cache\n\n    **Data\
+  \ is written to cache and database simultaneously**\n\n    ```\n    ┌──────────┐\
+  \         ┌───────┐         ┌──────────┐\n    │   App    │────1───▶│ Cache │────2───▶│\
+  \ Database │\n    │          │◀───4────│       │◀───3────│          │\n    └──────────┘\
+  \         └───────┘         └──────────┘\n\n    1. Write to cache\n    2. Cache\
+  \ writes to database\n    3. Database confirms\n    4. Confirm to app\n    ```\n\
+  \n    **Implementation:**\n\n    ```python\n    def save_user(user_id: int, user_data:\
+  \ dict) -> bool:\n        cache_key = f'user:{user_id}'\n\n        try:\n      \
+  \      # 1. Write to database first\n            db.execute(\n                'UPDATE\
+  \ users SET name=?, email=? WHERE id=?',\n                user_data['name'], user_data['email'],\
+  \ user_id\n            )\n\n            # 2. Write to cache\n            r.set(cache_key,\
+  \ json.dumps(user_data), ex=3600)\n\n            return True\n        except Exception\
+  \ as e:\n            print(f'Error: {e}')\n            return False\n\n    def update_user(user_id:\
+  \ int, updates: dict) -> dict:\n        # Get current data\n        user = get_user_from_db(user_id)\n\
+  \n        # Apply updates\n        user.update(updates)\n\n        # Save (write-through)\n\
+  \        save_user(user_id, user)\n\n        return user\n    ```\n\n    ```javascript\n\
+  \    async function saveUser(userId, userData) {\n        const cacheKey = `user:${userId}`;\n\
+  \n        try {\n            // 1. Write to database\n            await db.query(\n\
+  \                'UPDATE users SET name=$1, email=$2 WHERE id=$3',\n           \
+  \     [userData.name, userData.email, userId]\n            );\n\n            //\
+  \ 2. Update cache\n            await redis.set(cacheKey, JSON.stringify(userData),\
+  \ 'EX', 3600);\n\n            return true;\n        } catch (error) {\n        \
+  \    console.error('Error:', error);\n            return false;\n        }\n   \
+  \ }\n    ```\n\n    **Pros:**\n    - Cache always consistent with database\n   \
+  \ - No stale data\n    - Read performance maintained\n\n    **Cons:**\n    - Write\
+  \ latency increased (two writes)\n    - Wasted cache space for rarely-read data\n\
+  \n    **When to use:** When consistency is critical, data is read frequently after\
+  \ writes\n\n    ### 3. Write-Behind (Write-Back) Cache\n\n    **Data written to\
+  \ cache first, asynchronously written to database**\n\n    ```\n    ┌──────────┐\
+  \         ┌───────┐         ┌──────────┐\n    │   App    │────1───▶│ Cache │   \
+  \      │ Database │\n    │          │◀───2────│       │         │          │\n \
+  \   │          │         │       │────3───▶│          │\n    └──────────┘      \
+  \   └───────┘         └──────────┘\n\n    1. Write to cache (fast)\n    2. Confirm\
+  \ immediately\n    3. Async write to DB later\n    ```\n\n    **Implementation:**\n\
+  \n    ```python\n    import time\n    from queue import Queue\n    from threading\
+  \ import Thread\n\n    write_queue = Queue()\n\n    def save_user_async(user_id:\
+  \ int, user_data: dict) -> bool:\n        cache_key = f'user:{user_id}'\n\n    \
+  \    # 1. Write to cache immediately\n        r.set(cache_key, json.dumps(user_data),\
+  \ ex=3600)\n\n        # 2. Mark as dirty (needs DB write)\n        r.sadd('dirty:users',\
+  \ user_id)\n\n        # 3. Queue for async write\n        write_queue.put(('user',\
+  \ user_id, user_data))\n\n        return True\n\n    # Background worker\n    def\
+  \ db_writer_worker():\n        while True:\n            item_type, item_id, data\
+  \ = write_queue.get()\n\n            try:\n                # Write to database\n\
+  \                if item_type == 'user':\n                    db.execute(\n    \
+  \                    'UPDATE users SET name=?, email=? WHERE id=?',\n          \
+  \              data['name'], data['email'], item_id\n                    )\n\n \
+  \               # Remove from dirty set\n                r.srem(f'dirty:{item_type}s',\
+  \ item_id)\n\n            except Exception as e:\n                print(f'DB write\
+  \ error: {e}')\n                # Re-queue for retry\n                write_queue.put((item_type,\
+  \ item_id, data))\n                time.sleep(5)\n\n            write_queue.task_done()\n\
+  \n    # Start background worker\n    worker = Thread(target=db_writer_worker, daemon=True)\n\
+  \    worker.start()\n    ```\n\n    ```javascript\n    const Queue = require('bull');\n\
+  \    const writeQueue = new Queue('database-writes', 'redis://localhost:6379');\n\
+  \n    async function saveUserAsync(userId, userData) {\n        const cacheKey =\
+  \ `user:${userId}`;\n\n        // 1. Write to cache immediately\n        await redis.set(cacheKey,\
+  \ JSON.stringify(userData), 'EX', 3600);\n\n        // 2. Mark as dirty\n      \
+  \  await redis.sadd('dirty:users', userId);\n\n        // 3. Queue for async write\n\
+  \        await writeQueue.add({\n            type: 'user',\n            id: userId,\n\
+  \            data: userData\n        }, {\n            attempts: 3,\n          \
+  \  backoff: {\n                type: 'exponential',\n                delay: 2000\n\
+  \            }\n        });\n\n        return true;\n    }\n\n    // Background\
+  \ worker\n    writeQueue.process(async (job) => {\n        const { type, id, data\
+  \ } = job.data;\n\n        // Write to database\n        await db.query(\n     \
+  \       'UPDATE users SET name=$1, email=$2 WHERE id=$3',\n            [data.name,\
+  \ data.email, id]\n        );\n\n        // Remove from dirty set\n        await\
+  \ redis.srem(`dirty:${type}s`, id);\n    });\n    ```\n\n    **Pros:**\n    - Extremely\
+  \ fast writes\n    - Batching possible (write multiple at once)\n    - Reduced database\
+  \ load\n\n    **Cons:**\n    - Risk of data loss if cache crashes\n    - Complexity\
+  \ in handling failures\n    - Eventual consistency\n\n    **When to use:** Write-heavy\
+  \ workloads, analytics, logging\n\n    ## Session Storage\n\n    **Redis excels\
+  \ at session management due to speed and automatic expiration**\n\n    ### Basic\
+  \ Session Implementation\n\n    ```python\n    import uuid\n    import hashlib\n\
+  \n    class SessionManager:\n        def __init__(self, redis_client):\n       \
+  \     self.r = redis_client\n            self.session_ttl = 86400  # 24 hours\n\n\
+  \        def create_session(self, user_id: int, user_data: dict) -> str:\n     \
+  \       # Generate session ID\n            session_id = str(uuid.uuid4())\n\n  \
+  \          # Store session data\n            session_key = f'session:{session_id}'\n\
+  \            self.r.hset(session_key, mapping={\n                'user_id': user_id,\n\
+  \                'created_at': time.time(),\n                'last_activity': time.time(),\n\
+  \                **user_data\n            })\n\n            # Set expiration\n \
+  \           self.r.expire(session_key, self.session_ttl)\n\n            # Index\
+  \ by user (for logout all devices)\n            self.r.sadd(f'user:{user_id}:sessions',\
+  \ session_id)\n\n            return session_id\n\n        def get_session(self,\
+  \ session_id: str) -> Optional[dict]:\n            session_key = f'session:{session_id}'\n\
+  \            session = self.r.hgetall(session_key)\n\n            if session:\n\
+  \                # Update last activity\n                self.r.hset(session_key,\
+  \ 'last_activity', time.time())\n                # Reset expiration (sliding window)\n\
+  \                self.r.expire(session_key, self.session_ttl)\n\n            return\
+  \ session if session else None\n\n        def destroy_session(self, session_id:\
+  \ str):\n            session = self.get_session(session_id)\n            if session:\n\
+  \                user_id = session.get('user_id')\n                # Remove session\n\
+  \                self.r.delete(f'session:{session_id}')\n                # Remove\
+  \ from user's session index\n                if user_id:\n                    self.r.srem(f'user:{user_id}:sessions',\
+  \ session_id)\n\n        def destroy_all_user_sessions(self, user_id: int):\n  \
+  \          # Get all user sessions\n            sessions = self.r.smembers(f'user:{user_id}:sessions')\n\
+  \n            # Delete all sessions\n            if sessions:\n                keys\
+  \ = [f'session:{sid}' for sid in sessions]\n                self.r.delete(*keys)\n\
+  \                self.r.delete(f'user:{user_id}:sessions')\n\n    # Usage\n    sm\
+  \ = SessionManager(r)\n\n    # Login\n    session_id = sm.create_session(1000, {\n\
+  \        'username': 'alice',\n        'email': 'alice@example.com'\n    })\n\n\
+  \    # Verify session\n    session = sm.get_session(session_id)\n    if session:\n\
+  \        print(f\"Logged in as {session['username']}\")\n\n    # Logout\n    sm.destroy_session(session_id)\n\
+  \n    # Logout all devices\n    sm.destroy_all_user_sessions(1000)\n    ```\n\n\
+  \    ```javascript\n    const { v4: uuidv4 } = require('uuid');\n\n    class SessionManager\
+  \ {\n        constructor(redisClient) {\n            this.redis = redisClient;\n\
+  \            this.sessionTTL = 86400; // 24 hours\n        }\n\n        async createSession(userId,\
+  \ userData) {\n            const sessionId = uuidv4();\n            const sessionKey\
+  \ = `session:${sessionId}`;\n\n            // Store session data\n            await\
+  \ this.redis.hset(sessionKey, {\n                user_id: userId,\n            \
+  \    created_at: Date.now(),\n                last_activity: Date.now(),\n     \
+  \           ...userData\n            });\n\n            // Set expiration\n    \
+  \        await this.redis.expire(sessionKey, this.sessionTTL);\n\n            //\
+  \ Index by user\n            await this.redis.sadd(`user:${userId}:sessions`, sessionId);\n\
+  \n            return sessionId;\n        }\n\n        async getSession(sessionId)\
+  \ {\n            const sessionKey = `session:${sessionId}`;\n            const session\
+  \ = await this.redis.hgetall(sessionKey);\n\n            if (Object.keys(session).length\
+  \ > 0) {\n                // Update last activity\n                await this.redis.hset(sessionKey,\
+  \ 'last_activity', Date.now());\n                // Reset expiration\n         \
+  \       await this.redis.expire(sessionKey, this.sessionTTL);\n\n              \
+  \  return session;\n            }\n\n            return null;\n        }\n\n   \
+  \     async destroySession(sessionId) {\n            const session = await this.getSession(sessionId);\n\
+  \            if (session) {\n                const userId = session.user_id;\n \
+  \               await this.redis.del(`session:${sessionId}`);\n                await\
+  \ this.redis.srem(`user:${userId}:sessions`, sessionId);\n            }\n      \
+  \  }\n    }\n    ```\n\n    ## Rate Limiting\n\n    **Prevent abuse and ensure fair\
+  \ resource usage**\n\n    ### Fixed Window Rate Limiting\n\n    ```python\n    def\
+  \ is_rate_limited_fixed(user_id: str, limit: int = 100, window: int = 60) -> bool:\n\
+  \        \"\"\"\n        Fixed window: 100 requests per minute\n        \"\"\"\n\
+  \        current_minute = int(time.time() / window)\n        key = f'rate:fixed:{user_id}:{current_minute}'\n\
+  \n        # Increment counter\n        count = r.incr(key)\n\n        # Set expiration\
+  \ on first request\n        if count == 1:\n            r.expire(key, window * 2)\
+  \  # Keep for 2 windows\n\n        return count > limit\n\n    # Usage\n    if is_rate_limited_fixed('user:1000',\
+  \ limit=100, window=60):\n        print('Rate limited! Try again later')\n    else:\n\
+  \        process_request()\n    ```\n\n    ### Sliding Window Rate Limiting\n\n\
+  \    ```python\n    def is_rate_limited_sliding(user_id: str, limit: int = 100,\
+  \ window: int = 60) -> bool:\n        \"\"\"\n        Sliding window: More accurate\
+  \ than fixed window\n        \"\"\"\n        now = time.time()\n        key = f'rate:sliding:{user_id}'\n\
+  \n        pipe = r.pipeline()\n\n        # Remove old entries\n        pipe.zremrangebyscore(key,\
+  \ 0, now - window)\n\n        # Count requests in window\n        pipe.zcard(key)\n\
+  \n        # Add current request\n        pipe.zadd(key, {str(now): now})\n\n   \
+  \     # Set expiration\n        pipe.expire(key, window)\n\n        results = pipe.execute()\n\
+  \        request_count = results[1]\n\n        return request_count >= limit\n\n\
+  \    # Usage\n    if is_rate_limited_sliding('user:1000', limit=100, window=60):\n\
+  \        print('Rate limited!')\n    else:\n        process_request()\n    ```\n\
+  \n    ### Token Bucket Rate Limiting\n\n    ```python\n    class TokenBucket:\n\
+  \        def __init__(self, redis_client, capacity: int, refill_rate: float):\n\
+  \            self.r = redis_client\n            self.capacity = capacity  # Max\
+  \ tokens\n            self.refill_rate = refill_rate  # Tokens per second\n\n  \
+  \      def allow_request(self, user_id: str) -> bool:\n            key = f'rate:bucket:{user_id}'\n\
+  \            now = time.time()\n\n            # Get current bucket state\n     \
+  \       data = self.r.hgetall(key)\n\n            if data:\n                tokens\
+  \ = float(data.get(b'tokens', self.capacity))\n                last_update = float(data.get(b'last_update',\
+  \ now))\n            else:\n                tokens = self.capacity\n           \
+  \     last_update = now\n\n            # Calculate new tokens\n            elapsed\
+  \ = now - last_update\n            tokens = min(self.capacity, tokens + elapsed\
+  \ * self.refill_rate)\n\n            # Try to consume token\n            if tokens\
+  \ >= 1:\n                tokens -= 1\n                allowed = True\n         \
+  \   else:\n                allowed = False\n\n            # Update bucket\n    \
+  \        self.r.hset(key, mapping={\n                'tokens': tokens,\n       \
+  \         'last_update': now\n            })\n            self.r.expire(key, 3600)\n\
+  \n            return allowed\n\n    # Usage\n    bucket = TokenBucket(r, capacity=100,\
+  \ refill_rate=10)  # 10 tokens/second\n\n    if bucket.allow_request('user:1000'):\n\
+  \        process_request()\n    else:\n        print('Rate limited!')\n    ```\n\
+  \n    ```javascript\n    class TokenBucket {\n        constructor(redis, capacity,\
+  \ refillRate) {\n            this.redis = redis;\n            this.capacity = capacity;\n\
+  \            this.refillRate = refillRate;\n        }\n\n        async allowRequest(userId)\
+  \ {\n            const key = `rate:bucket:${userId}`;\n            const now = Date.now()\
+  \ / 1000;\n\n            const data = await this.redis.hgetall(key);\n\n       \
+  \     let tokens = data.tokens ? parseFloat(data.tokens) : this.capacity;\n    \
+  \        let lastUpdate = data.last_update ? parseFloat(data.last_update) : now;\n\
+  \n            // Calculate new tokens\n            const elapsed = now - lastUpdate;\n\
+  \            tokens = Math.min(this.capacity, tokens + elapsed * this.refillRate);\n\
+  \n            // Try to consume token\n            let allowed = false;\n      \
+  \      if (tokens >= 1) {\n                tokens -= 1;\n                allowed\
+  \ = true;\n            }\n\n            // Update bucket\n            await this.redis.hset(key,\
+  \ {\n                tokens: tokens.toString(),\n                last_update: now.toString()\n\
+  \            });\n            await this.redis.expire(key, 3600);\n\n          \
+  \  return allowed;\n        }\n    }\n    ```\n\n    ## Leaderboards\n\n    **Sorted\
+  \ sets are perfect for leaderboards**\n\n    ```python\n    class Leaderboard:\n\
+  \        def __init__(self, redis_client, name: str):\n            self.r = redis_client\n\
+  \            self.key = f'leaderboard:{name}'\n\n        def add_score(self, player_id:\
+  \ str, score: float):\n            \"\"\"Add or update player score\"\"\"\n    \
+  \        self.r.zadd(self.key, {player_id: score})\n\n        def increment_score(self,\
+  \ player_id: str, amount: float):\n            \"\"\"Increment player score\"\"\"\
+  \n            return self.r.zincrby(self.key, amount, player_id)\n\n        def\
+  \ get_top(self, n: int = 10):\n            \"\"\"Get top N players\"\"\"\n     \
+  \       return self.r.zrevrange(self.key, 0, n - 1, withscores=True)\n\n       \
+  \ def get_rank(self, player_id: str):\n            \"\"\"Get player's rank (1-based)\"\
+  \"\"\n            rank = self.r.zrevrank(self.key, player_id)\n            return\
+  \ rank + 1 if rank is not None else None\n\n        def get_score(self, player_id:\
+  \ str):\n            \"\"\"Get player's score\"\"\"\n            return self.r.zscore(self.key,\
+  \ player_id)\n\n        def get_around(self, player_id: str, range: int = 5):\n\
+  \            \"\"\"Get players around given player\"\"\"\n            rank = self.r.zrevrank(self.key,\
+  \ player_id)\n            if rank is None:\n                return []\n\n      \
+  \      start = max(0, rank - range)\n            end = rank + range\n          \
+  \  return self.r.zrevrange(self.key, start, end, withscores=True)\n\n        def\
+  \ get_percentile(self, player_id: str):\n            \"\"\"Get player's percentile\"\
+  \"\"\n            total = self.r.zcard(self.key)\n            rank = self.r.zrevrank(self.key,\
+  \ player_id)\n\n            if rank is None or total == 0:\n                return\
+  \ None\n\n            return ((total - rank) / total) * 100\n\n    # Usage\n   \
+  \ lb = Leaderboard(r, 'global')\n\n    # Add scores\n    lb.add_score('player1',\
+  \ 1000)\n    lb.add_score('player2', 1500)\n    lb.add_score('player3', 1200)\n\n\
+  \    # Increment score\n    lb.increment_score('player1', 100)\n\n    # Get top\
+  \ 10\n    top = lb.get_top(10)\n    for i, (player, score) in enumerate(top, 1):\n\
+  \        print(f'{i}. {player}: {score}')\n\n    # Get player stats\n    rank =\
+  \ lb.get_rank('player1')\n    score = lb.get_score('player1')\n    percentile =\
+  \ lb.get_percentile('player1')\n    print(f'Rank: {rank}, Score: {score}, Top {percentile:.1f}%')\n\
+  \n    # Get nearby players\n    nearby = lb.get_around('player1', range=3)\n   \
+  \ ```\n\n    ## Real-time Analytics\n\n    **Track metrics in real-time using various\
+  \ data structures**\n\n    ```python\n    class Analytics:\n        def __init__(self,\
+  \ redis_client):\n            self.r = redis_client\n\n        def track_page_view(self,\
+  \ page: str, user_id: str = None):\n            \"\"\"Track page views\"\"\"\n \
+  \           date = time.strftime('%Y-%m-%d')\n            hour = time.strftime('%Y-%m-%d:%H')\n\
+  \n            pipe = self.r.pipeline()\n\n            # Total views\n          \
+  \  pipe.incr(f'analytics:views:{page}:{date}')\n            pipe.incr(f'analytics:views:{page}:{hour}')\n\
+  \n            # Unique views\n            if user_id:\n                pipe.sadd(f'analytics:unique:{page}:{date}',\
+  \ user_id)\n                pipe.sadd(f'analytics:unique:{page}:{hour}', user_id)\n\
+  \n            pipe.execute()\n\n        def get_page_stats(self, page: str, date:\
+  \ str = None):\n            \"\"\"Get page statistics\"\"\"\n            if date\
+  \ is None:\n                date = time.strftime('%Y-%m-%d')\n\n            total_views\
+  \ = self.r.get(f'analytics:views:{page}:{date}') or 0\n            unique_views\
+  \ = self.r.scard(f'analytics:unique:{page}:{date}')\n\n            return {\n  \
+  \              'total_views': int(total_views),\n                'unique_views':\
+  \ unique_views\n            }\n\n        def track_metric(self, metric: str, value:\
+  \ float):\n            \"\"\"Track time-series metric\"\"\"\n            timestamp\
+  \ = time.time()\n            key = f'metrics:{metric}'\n\n            # Store in\
+  \ sorted set (timestamp as score)\n            self.r.zadd(key, {json.dumps(value):\
+  \ timestamp})\n\n            # Keep only last 24 hours\n            cutoff = timestamp\
+  \ - 86400\n            self.r.zremrangebyscore(key, 0, cutoff)\n\n        def get_metric_stats(self,\
+  \ metric: str, last_minutes: int = 60):\n            \"\"\"Get metric statistics\"\
+  \"\"\n            cutoff = time.time() - (last_minutes * 60)\n            key =\
+  \ f'metrics:{metric}'\n\n            # Get all values in range\n            data\
+  \ = self.r.zrangebyscore(key, cutoff, '+inf')\n            if not data:\n      \
+  \          return None\n\n            values = [float(json.loads(d)) for d in data]\n\
+  \n            return {\n                'count': len(values),\n                'sum':\
+  \ sum(values),\n                'avg': sum(values) / len(values),\n            \
+  \    'min': min(values),\n                'max': max(values)\n            }\n\n\
+  \    # Usage\n    analytics = Analytics(r)\n\n    # Track page view\n    analytics.track_page_view('/products',\
+  \ user_id='user:1000')\n\n    # Get stats\n    stats = analytics.get_page_stats('/products')\n\
+  \    print(f\"Views: {stats['total_views']}, Unique: {stats['unique_views']}\")\n\
+  \n    # Track metrics\n    analytics.track_metric('api:latency', 45.5)\n    analytics.track_metric('api:latency',\
+  \ 52.3)\n\n    # Get metric stats\n    metric_stats = analytics.get_metric_stats('api:latency',\
+  \ last_minutes=60)\n    print(f\"Avg latency: {metric_stats['avg']:.2f}ms\")\n \
+  \   ```\n\n    ## Summary\n\n    | Pattern | Use Case | Pros | Cons |\n    |---------|----------|------|------|\n\
+  \    | **Cache-Aside** | General caching | Simple, flexible | First request slow\
+  \ |\n    | **Write-Through** | Consistency critical | Always consistent | Slower\
+  \ writes |\n    | **Write-Behind** | High write volume | Fast writes | Data loss\
+  \ risk |\n    | **Session Storage** | User sessions | Fast, auto-expire | Memory\
+  \ limited |\n    | **Rate Limiting** | API protection | Prevent abuse | Configuration\
+  \ needed |\n    | **Leaderboards** | Rankings | Real-time updates | Memory for all\
+  \ players |\n    | **Analytics** | Real-time metrics | Instant insights | Approximate\
+  \ counts |\n\n    ## Next Steps\n\n    You've mastered caching patterns! Next, we'll\
+  \ explore production Redis deployments with clustering, persistence, and optimization\
+  \ techniques."
+exercises: []

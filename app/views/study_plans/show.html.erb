@@ -1,0 +1,266 @@
+<div class="container py-4">
+  <div class="row">
+    <!-- Study Plan Overview -->
+    <div class="col-lg-8">
+      <div class="card shadow-sm mb-4">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+          <h4 class="mb-0">
+            <i class="fas fa-calendar-alt"></i> <%= @study_plan.title %>
+          </h4>
+          <div>
+            <% if @study_plan.status == 'active' %>
+              <%= link_to pause_study_plan_path(@study_plan), method: :patch, 
+                  class: "btn btn-sm btn-outline-light" do %>
+                <i class="fas fa-pause"></i> Pause
+              <% end %>
+            <% elsif @study_plan.status == 'paused' %>
+              <%= link_to resume_study_plan_path(@study_plan), method: :patch, 
+                  class: "btn btn-sm btn-light" do %>
+                <i class="fas fa-play"></i> Resume
+              <% end %>
+            <% end %>
+          </div>
+        </div>
+        
+        <div class="card-body">
+          <!-- Progress Overview -->
+          <div class="mb-4">
+            <div class="d-flex justify-content-between mb-2">
+              <span class="font-weight-bold">Overall Progress</span>
+              <span><%= @study_plan.progress_percentage %>%</span>
+            </div>
+            <div class="progress" style="height: 25px;">
+              <div class="progress-bar bg-<%= @study_plan.behind_schedule? ? 'warning' : @study_plan.ahead_of_schedule? ? 'success' : 'primary' %>" 
+                   role="progressbar" 
+                   style="width: <%= @study_plan.progress_percentage %>%">
+                <%= @study_plan.progress_percentage %>% Complete
+              </div>
+            </div>
+            
+            <div class="mt-2 text-muted">
+              <% if @study_plan.behind_schedule? %>
+                <i class="fas fa-exclamation-triangle text-warning"></i> Behind schedule - consider increasing daily study time
+              <% elsif @study_plan.ahead_of_schedule? %>
+                <i class="fas fa-check-circle text-success"></i> Ahead of schedule - great job!
+              <% else %>
+                <i class="fas fa-info-circle text-info"></i> On track to complete by <%= @study_plan.estimated_completion_date&.strftime('%B %d, %Y') %>
+              <% end %>
+            </div>
+          </div>
+          
+          <!-- Study Stats -->
+          <div class="row text-center mb-4">
+            <div class="col-md-3">
+              <div class="stat-box">
+                <h4><%= @study_plan.actual_days_studied %></h4>
+                <small class="text-muted">Days Studied</small>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="stat-box">
+                <h4><%= (@study_plan.total_time_spent / 60.0).round(1) %>h</h4>
+                <small class="text-muted">Total Time</small>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="stat-box">
+                <h4><%= @study_plan.days_remaining %></h4>
+                <small class="text-muted">Days Left</small>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="stat-box">
+                <h4><%= @study_plan.daily_recommendation %> min</h4>
+                <small class="text-muted">Recommended Today</small>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Continue Learning -->
+          <% if @enrollment %>
+            <%= link_to continue_course_path(@study_plan.course), 
+                class: "btn btn-primary btn-lg w-100" do %>
+              <i class="fas fa-play"></i> Continue Studying
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+      
+      <!-- Milestones -->
+      <div class="card shadow-sm mb-4">
+        <div class="card-header">
+          <h5 class="mb-0"><i class="fas fa-flag-checkered"></i> Milestones</h5>
+        </div>
+        <div class="card-body">
+          <% @study_plan.milestones_array.each do |milestone| %>
+            <div class="milestone-item <%= milestone['completed'] ? 'completed' : '' %>">
+              <div class="milestone-check">
+                <% if milestone['completed'] %>
+                  <i class="fas fa-check-circle text-success"></i>
+                <% else %>
+                  <i class="far fa-circle text-muted"></i>
+                <% end %>
+              </div>
+              <div class="milestone-content">
+                <h6 class="mb-1"><%= milestone['title'] %></h6>
+                <small class="text-muted">
+                  Target: <%= Date.parse(milestone['target_date']).strftime('%B %d') %>
+                  <% if milestone['completed'] && milestone['completed_date'] %>
+                    | Completed: <%= Date.parse(milestone['completed_date']).strftime('%B %d') %>
+                  <% end %>
+                </small>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Sidebar -->
+    <div class="col-lg-4">
+      <!-- Today's Progress -->
+      <div class="card shadow-sm mb-4">
+        <div class="card-header bg-info text-white">
+          <h5 class="mb-0"><i class="fas fa-calendar-day"></i> Today's Progress</h5>
+        </div>
+        <div class="card-body">
+          <% today_data = @daily_progress[Date.today] %>
+          <% if today_data %>
+            <div class="text-center mb-3">
+              <h3 class="mb-0"><%= today_data[:minutes] %> / <%= today_data[:target] %> min</h3>
+              <% if today_data[:met_target] %>
+                <span class="badge badge-success">Target Met!</span>
+              <% else %>
+                <span class="badge badge-warning">
+                  <%= today_data[:target] - today_data[:minutes] %> min to go
+                </span>
+              <% end %>
+            </div>
+            
+            <div class="progress mb-3" style="height: 20px;">
+              <div class="progress-bar bg-info" 
+                   role="progressbar" 
+                   style="width: <%= [(today_data[:minutes].to_f / today_data[:target] * 100), 100].min %>%">
+              </div>
+            </div>
+          <% else %>
+            <p class="text-center text-muted">No progress today yet</p>
+          <% end %>
+          
+          <%= link_to "Study Now", start_adaptive_practice_path, 
+              class: "btn btn-info w-100" %>
+        </div>
+      </div>
+      
+      <!-- Weekly Overview -->
+      <div class="card shadow-sm mb-4">
+        <div class="card-header">
+          <h5 class="mb-0"><i class="fas fa-chart-bar"></i> This Week</h5>
+        </div>
+        <div class="card-body">
+          <div class="weekly-chart">
+            <% @daily_progress.each do |date, data| %>
+              <div class="day-bar">
+                <div class="bar-fill" 
+                     style="height: <%= [(data[:minutes].to_f / data[:target] * 100), 100].min %>%"
+                     title="<%= data[:minutes] %> minutes">
+                </div>
+                <small><%= date.strftime('%a') %></small>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Recent Activity -->
+      <div class="card shadow-sm">
+        <div class="card-header">
+          <h5 class="mb-0"><i class="fas fa-history"></i> Recent Activity</h5>
+        </div>
+        <div class="card-body">
+          <% if @recent_activity.any? %>
+            <div class="activity-list">
+              <% @recent_activity.each do |event| %>
+                <div class="activity-item">
+                  <small class="text-muted">
+                    <%= time_ago_in_words(event.created_at) %> ago
+                  </small>
+                  <p class="mb-0 small">
+                    <%= event.event_type.humanize %>
+                    <% if event.time_spent_seconds > 0 %>
+                      (<%= (event.time_spent_seconds / 60.0).round %> min)
+                    <% end %>
+                  </p>
+                </div>
+              <% end %>
+            </div>
+          <% else %>
+            <p class="text-muted text-center mb-0">No recent activity</p>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .stat-box {
+    padding: 15px;
+    border-radius: 10px;
+    background: #f8f9fa;
+  }
+  
+  .milestone-item {
+    display: flex;
+    align-items: start;
+    padding: 15px 0;
+    border-bottom: 1px solid #e9ecef;
+  }
+  
+  .milestone-item:last-child {
+    border-bottom: none;
+  }
+  
+  .milestone-check {
+    margin-right: 15px;
+    font-size: 1.2rem;
+  }
+  
+  .milestone-item.completed .milestone-content {
+    opacity: 0.7;
+  }
+  
+  .weekly-chart {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-end;
+    height: 100px;
+    padding: 10px 0;
+  }
+  
+  .day-bar {
+    width: 12%;
+    text-align: center;
+    position: relative;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+  }
+  
+  .bar-fill {
+    background: #17a2b8;
+    border-radius: 3px 3px 0 0;
+    min-height: 5px;
+    transition: height 0.3s ease;
+  }
+  
+  .activity-item {
+    padding: 10px 0;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  
+  .activity-item:last-child {
+    border-bottom: none;
+  }
+</style>

@@ -1,0 +1,241 @@
+{
+  "metadata": {
+    "version": "1.0.0",
+    "total_problems": 4200,
+    "total_families": 350,
+    "difficulty_levels": ["easy", "medium", "hard", "expert"],
+    "last_updated": "2025-11-10",
+    "description": "Comprehensive coding interview preparation problem database with 4200+ problems organized into families for spaced repetition and adaptive learning"
+  },
+  "topics": [
+    {
+      "id": "arrays-strings",
+      "name": "Arrays & Strings",
+      "description": "Fundamental data structures for storing sequential data",
+      "subtopics": [
+        "Array Basics",
+        "String Manipulation",
+        "Two Pointers",
+        "Sliding Window",
+        "Prefix Sum",
+        "Matrix Operations",
+        "String Matching",
+        "Array Sorting",
+        "Subarray Problems",
+        "Palindromes"
+      ]
+    },
+    {
+      "id": "linked-lists",
+      "name": "Linked Lists",
+      "description": "Linear data structures with node-based storage",
+      "subtopics": [
+        "Singly Linked Lists",
+        "Doubly Linked Lists",
+        "Circular Linked Lists",
+        "Fast & Slow Pointers",
+        "List Reversal",
+        "List Merging",
+        "Cycle Detection",
+        "List Partitioning"
+      ]
+    },
+    {
+      "id": "stacks-queues",
+      "name": "Stacks & Queues",
+      "description": "LIFO and FIFO data structures",
+      "subtopics": [
+        "Stack Basics",
+        "Queue Basics",
+        "Monotonic Stack",
+        "Priority Queue",
+        "Deque Operations",
+        "Expression Evaluation",
+        "Next Greater Element",
+        "Circular Queue"
+      ]
+    },
+    {
+      "id": "trees",
+      "name": "Trees",
+      "description": "Hierarchical data structures",
+      "subtopics": [
+        "Binary Tree Traversal",
+        "Binary Search Trees",
+        "Tree Construction",
+        "Tree Properties",
+        "Lowest Common Ancestor",
+        "Tree Paths",
+        "N-ary Trees",
+        "Trie",
+        "Segment Tree",
+        "Fenwick Tree",
+        "AVL Trees",
+        "Red-Black Trees"
+      ]
+    },
+    {
+      "id": "graphs",
+      "name": "Graphs",
+      "description": "Non-linear data structures with vertices and edges",
+      "subtopics": [
+        "Graph Representation",
+        "DFS Applications",
+        "BFS Applications",
+        "Shortest Path",
+        "Minimum Spanning Tree",
+        "Topological Sort",
+        "Union Find",
+        "Strongly Connected Components",
+        "Bipartite Graphs",
+        "Graph Coloring",
+        "Network Flow"
+      ]
+    },
+    {
+      "id": "hash-tables",
+      "name": "Hash Tables & Sets",
+      "description": "O(1) lookup data structures",
+      "subtopics": [
+        "Hash Map Basics",
+        "Hash Set Operations",
+        "Collision Handling",
+        "Counting Problems",
+        "Anagrams",
+        "Two Sum Variants",
+        "LRU Cache",
+        "Design Problems"
+      ]
+    },
+    {
+      "id": "heaps",
+      "name": "Heaps & Priority Queues",
+      "description": "Tree-based priority structures",
+      "subtopics": [
+        "Min Heap",
+        "Max Heap",
+        "K-way Merge",
+        "Top K Elements",
+        "Running Median",
+        "Heap Sort",
+        "Custom Comparators"
+      ]
+    },
+    {
+      "id": "sorting-searching",
+      "name": "Sorting & Searching",
+      "description": "Fundamental algorithms for ordering and finding data",
+      "subtopics": [
+        "Comparison Sorts",
+        "Non-comparison Sorts",
+        "Binary Search",
+        "Search in Rotated Array",
+        "Search in 2D Matrix",
+        "Kth Element",
+        "Custom Sorting"
+      ]
+    },
+    {
+      "id": "dynamic-programming",
+      "name": "Dynamic Programming",
+      "description": "Optimization technique using memoization",
+      "subtopics": [
+        "1D DP",
+        "2D DP",
+        "Knapsack Problems",
+        "Longest Common Subsequence",
+        "Longest Increasing Subsequence",
+        "String DP",
+        "Tree DP",
+        "Digit DP",
+        "DP on Graphs",
+        "State Machine DP",
+        "Interval DP",
+        "Bitmask DP"
+      ]
+    },
+    {
+      "id": "greedy",
+      "name": "Greedy Algorithms",
+      "description": "Locally optimal choice strategy",
+      "subtopics": [
+        "Activity Selection",
+        "Interval Problems",
+        "Huffman Coding",
+        "Greedy on Arrays",
+        "Jump Game",
+        "Gas Station",
+        "Stock Problems"
+      ]
+    },
+    {
+      "id": "backtracking",
+      "name": "Backtracking",
+      "description": "Exhaustive search with pruning",
+      "subtopics": [
+        "Permutations",
+        "Combinations",
+        "Subsets",
+        "N-Queens",
+        "Sudoku Solver",
+        "Word Search",
+        "Path Finding",
+        "Constraint Satisfaction"
+      ]
+    },
+    {
+      "id": "recursion",
+      "name": "Recursion",
+      "description": "Self-referential problem solving",
+      "subtopics": [
+        "Basic Recursion",
+        "Tail Recursion",
+        "Tree Recursion",
+        "Memoization",
+        "Divide and Conquer"
+      ]
+    },
+    {
+      "id": "bit-manipulation",
+      "name": "Bit Manipulation",
+      "description": "Operations on binary representations",
+      "subtopics": [
+        "Bitwise Operators",
+        "Bit Tricks",
+        "Power of Two",
+        "Counting Bits",
+        "XOR Problems",
+        "Subset Generation",
+        "Bitmask DP"
+      ]
+    },
+    {
+      "id": "math",
+      "name": "Math & Number Theory",
+      "description": "Mathematical problem solving",
+      "subtopics": [
+        "Prime Numbers",
+        "GCD and LCM",
+        "Modular Arithmetic",
+        "Combinatorics",
+        "Geometry",
+        "Probability",
+        "Fast Exponentiation",
+        "Number Theory"
+      ]
+    },
+    {
+      "id": "design",
+      "name": "System & Object Design",
+      "description": "Design scalable systems and data structures",
+      "subtopics": [
+        "Data Structure Design",
+        "Iterator Design",
+        "Cache Design",
+        "Stream Processing",
+        "Rate Limiting",
+        "Distributed Systems"
+      ]
+    }
+  ],
+  "problem_families": [

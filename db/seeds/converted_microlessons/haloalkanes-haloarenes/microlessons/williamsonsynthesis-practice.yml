@@ -1,0 +1,59 @@
+slug: williamsonsynthesis-practice
+title: williamson_synthesis — Practice
+difficulty: medium
+sequence_order: 18
+estimated_minutes: 2
+key_concepts:
+- williamson_synthesis
+prerequisites: []
+content_md: '# williamson_synthesis — Practice 🚀
+
+
+  Williamson ether synthesis (R-X + R''-O⁻ → R-O-R'') works best with primary
+  alkyl halides via SN2 mechanism. Tertiary halides give elimination instead.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 2
+  question: Williamson ether synthesis works best with which combination?
+  options:
+  - Primary alkyl halide + alkoxide ion
+  - Tertiary alkyl halide + alkoxide ion
+  - Aryl halide + alkoxide ion
+  - Vinyl halide + alkoxide ion
+  correct_answer: Primary alkyl halide + alkoxide ion
+  explanation: "Williamson ether synthesis (R-X + R'-O⁻ → R-O-R') works best with primary alkyl halides because they undergo clean SN2 substitution. Tertiary alkyl halides undergo elimination (E2) instead of substitution. Aryl and vinyl halides are too unreactive for this synthesis under normal conditions because the C-X bond has partial double bond character. The primary alkyl halide provides an unhindered site for nucleophilic attack."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: What mechanism does Williamson ether synthesis follow?
+  options:
+  - SN1 mechanism
+  - SN2 mechanism
+  - E1 mechanism
+  - Free radical mechanism
+  correct_answer: SN2 mechanism
+  explanation: "Williamson ether synthesis proceeds via an SN2 mechanism. The alkoxide ion (R-O⁻) acts as a nucleophile and performs a backside attack on the primary alkyl halide, displacing the halogen in a single concerted step. This is why primary alkyl halides work best - they have minimal steric hindrance for SN2. Secondary alkyl halides give mixed SN2/E2 products, while tertiary halides predominantly undergo E2 elimination because they're too hindered for SN2. The reaction is typically carried out in aprotic solvents to maximize nucleophilicity of the alkoxide."
+  require_pass: true
+- type: mcq
+  sequence_order: 4
+  question: To prepare methyl phenyl ether (anisole) via Williamson synthesis, which is the BEST combination?
+  options:
+  - Phenol + CH₃-Br (methyl bromide)
+  - Methanol + C₆H₅-Br (bromobenzene)
+  - Sodium phenoxide + CH₃I (methyl iodide)
+  - Sodium methoxide + C₆H₅I (iodobenzene)
+  correct_answer: Sodium phenoxide + CH₃I (methyl iodide)
+  explanation: "To prepare methyl phenyl ether (C₆H₅-O-CH₃), the best combination is sodium phenoxide (C₆H₅O⁻Na⁺) + methyl iodide (CH₃I). The alkoxide should come from the phenol, and the alkyl halide should be the simple methyl halide. This works because CH₃I readily undergoes SN2 substitution. The reverse combination (sodium methoxide + iodobenzene) won't work because aryl halides like C₆H₅I don't undergo SN2 reactions under normal conditions - the C-X bond has partial π character from resonance with the benzene ring, making it unreactive."
+  require_pass: true

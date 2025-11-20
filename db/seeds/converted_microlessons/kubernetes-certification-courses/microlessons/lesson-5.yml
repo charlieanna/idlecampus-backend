@@ -1,0 +1,43 @@
+slug: lesson-5
+title: Lesson 5
+difficulty: easy
+sequence_order: 5
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Performance Tuning\n\n    - Resource limits/requests\
+  \ and binpacking\n    - kubelet/runtime flags"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What is the primary purpose of setting resource requests in Kubernetes?
+  options:
+  - To limit the maximum resources a container can use
+  - To help the scheduler decide which node can accommodate the pod
+  - To prevent pods from being evicted
+  - To automatically scale the number of replicas
+  correct_answer: To help the scheduler decide which node can accommodate the pod
+  explanation: "Resource requests in Kubernetes specify the minimum amount of CPU and memory that a container needs to run. The primary purpose of requests is to inform the Kubernetes scheduler about the resource requirements so it can make intelligent placement decisions. When scheduling a pod, the scheduler looks at the total requests of all containers in the pod and finds a node with sufficient available resources. Requests don't limit resource usage - that's the job of resource limits. The scheduler uses binpacking algorithms to efficiently place pods on nodes, trying to optimize resource utilization across the cluster. Without proper requests, the scheduler cannot make informed decisions, potentially leading to overcommitted nodes or poor resource distribution."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What happens when a pod exceeds its memory limit in Kubernetes?
+  options:
+  - The pod is automatically scaled horizontally
+  - The pod is OOMKilled (Out of Memory Killed) and restarted
+  - The pod continues running with degraded performance
+  - The pod is moved to a different node
+  correct_answer: The pod is OOMKilled (Out of Memory Killed) and restarted
+  explanation: "When a container within a pod exceeds its configured memory limit, the Linux kernel's Out-Of-Memory (OOM) killer terminates the container process, resulting in an OOMKilled status. Kubernetes then attempts to restart the container according to the pod's restart policy. This is different from CPU limits - when a pod exceeds CPU limits, it's throttled (slowed down) but not killed. Memory is considered an incompressible resource, meaning once allocated it cannot be easily reclaimed, whereas CPU is compressible and can be throttled. It's crucial to set appropriate memory limits based on actual application requirements to prevent OOMKilled errors, while also setting limits low enough to prevent a single pod from consuming all node memory and affecting other workloads."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: Which kubelet flag controls the frequency of pod eviction decisions based on resource pressure?
+  options:
+  - --eviction-interval
+  - --eviction-pressure-transition-period
+  - --housekeeping-interval
+  - --node-status-update-frequency
+  correct_answer: --eviction-pressure-transition-period
+  explanation: "The --eviction-pressure-transition-period kubelet flag controls how long the kubelet waits before transitioning out of a pressure condition. This affects the frequency and stability of eviction decisions. When a node experiences resource pressure (memory, disk, or PID pressure), the kubelet doesn't immediately start evicting pods; instead, it waits for the pressure to persist for this duration before taking action. This prevents thrashing where pods are repeatedly evicted and rescheduled due to temporary resource spikes. The default is typically 5 minutes. Other related flags include --eviction-hard and --eviction-soft for setting thresholds. Understanding these flags is essential for performance tuning as they directly impact how aggressively the kubelet responds to resource constraints, affecting both cluster stability and application availability."
+  require_pass: true

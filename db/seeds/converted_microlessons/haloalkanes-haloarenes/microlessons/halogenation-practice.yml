@@ -1,0 +1,60 @@
+slug: halogenation-practice
+title: halogenation — Practice
+difficulty: medium
+sequence_order: 11
+estimated_minutes: 2
+key_concepts:
+- halogenation
+prerequisites: []
+content_md: '# halogenation — Practice 🚀
+
+
+  Free radical halogenation: (1) Needs UV/heat ✓, (2) Free radical mechanism (not
+  carbocation) ✓, (3) Gives product mixture ✓, (4) Reactivity F₂ > Cl₂ > Br₂ > I₂
+  ✓.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 2
+  question: Which statements about free radical halogenation of alkanes are correct?
+  options:
+  - Requires UV light or heat for initiation
+  - Proceeds through carbocation intermediate
+  - Gives mixture of products
+  - 'Reactivity: F₂ > Cl₂ > Br₂ > I₂'
+  correct_answer: 'Reactivity: F₂ > Cl₂ > Br₂ > I₂'
+  explanation: "Free radical halogenation follows the reactivity order F₂ > Cl₂ > Br₂ > I₂ based on bond dissociation energies and exothermicity. While statement 1 (UV/heat initiation) and statement 3 (mixture of products) are also correct, the reactivity order is a fundamental characteristic. F₂ is so reactive it's explosive, Cl₂ and Br₂ are practical, and I₂ doesn't react. The reaction proceeds through free radical intermediates (not carbocations), with initiation, propagation, and termination steps."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: What is the correct sequence of steps in free radical halogenation?
+  options:
+  - Propagation → Initiation → Termination
+  - Initiation → Termination → Propagation
+  - Initiation → Propagation → Termination
+  - Termination → Initiation → Propagation
+  correct_answer: Initiation → Propagation → Termination
+  explanation: "Free radical halogenation proceeds in three distinct phases: (1) Initiation: UV light or heat causes homolytic cleavage of X₂ → 2X·, (2) Propagation: Chain reaction where X· + R-H → R· + HX, then R· + X₂ → R-X + X· (these steps repeat), (3) Termination: Two radicals combine to form stable products (X· + X·, R· + R·, or R· + X·). The propagation steps are self-sustaining and can occur thousands of times before termination."
+  require_pass: true
+- type: mcq
+  sequence_order: 4
+  question: Why is bromination more selective than chlorination in free radical halogenation?
+  options:
+  - Bromine is larger than chlorine
+  - Bromination is endothermic while chlorination is exothermic
+  - Bromine radicals are more stable
+  - Bromination occurs at lower temperature
+  correct_answer: Bromination is endothermic while chlorination is exothermic
+  explanation: "Bromination is more selective than chlorination because the hydrogen abstraction step in bromination is endothermic (requires energy) and has a higher activation energy, making it more selective for weaker C-H bonds (3° > 2° > 1°). Chlorination is highly exothermic with low activation energy, so it's less selective and reacts readily with all types of C-H bonds. This is an application of the Hammond postulate: endothermic reactions have transition states that resemble products, leading to greater selectivity based on product stability."
+  require_pass: true

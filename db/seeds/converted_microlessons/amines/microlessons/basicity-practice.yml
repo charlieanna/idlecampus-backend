@@ -1,0 +1,67 @@
+slug: basicity-practice
+title: basicity — Practice
+difficulty: easy
+sequence_order: 6
+estimated_minutes: 2
+key_concepts:
+- basicity
+prerequisites: []
+content_md: '# basicity — Practice 🚀
+
+
+  Aniline is less basic than aliphatic amines because the lone pair on N delocalizes
+  into the benzene ring (resonance). In aliphatic amines, lone pair is localized and
+  readily available for protonation.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 2
+  question: Why is aniline less basic than aliphatic amines?
+  options:
+  - Lone pair delocalizes into benzene ring
+  - Aniline is aromatic
+  - Aniline has higher molecular weight
+  - Nitrogen is sp³ in aniline
+  require_pass: true
+  correct_answer: Lone pair delocalizes into benzene ring
+  explanation: Aniline (C₆H₅-NH₂) is less basic than aliphatic amines because the
+    lone pair of electrons on nitrogen delocalizes into the benzene ring through resonance.
+    This delocalization makes the lone pair less available to accept a proton (H⁺).
+    In aliphatic amines, the lone pair is localized on nitrogen and readily available
+    for protonation. The resonance structures of aniline show the lone pair spreading
+    into the ortho and para positions of the ring, reducing electron density on nitrogen.
+    This decreased electron availability on nitrogen means aniline is a weaker base
+    (pKb ≈ 9.4) compared to aliphatic amines like methylamine (pKb ≈ 3.3).
+- type: mcq
+  sequence_order: 3
+  question: 'Arrange these in decreasing order of basicity: Aniline, Methylamine, Ammonia'
+  options:
+  - Methylamine > Ammonia > Aniline
+  - Aniline > Ammonia > Methylamine
+  - Ammonia > Methylamine > Aniline
+  - All have equal basicity
+  require_pass: true
+  correct_answer: Methylamine > Ammonia > Aniline
+  explanation: 'The correct order of basicity is: Methylamine (CH₃NH₂) > Ammonia (NH₃) > Aniline (C₆H₅NH₂). Methylamine is most basic because the methyl group has +I effect, increasing electron density on nitrogen, making it more willing to accept H⁺. Ammonia has moderate basicity with localized lone pair. Aniline is least basic because the lone pair delocalizes into benzene ring through resonance, making it less available for protonation. The pKb values confirm this: CH₃NH₂ (3.3) < NH₃ (4.75) < C₆H₅NH₂ (9.4). Remember: lower pKb = stronger base. This order demonstrates both electronic effects: +I increases basicity (alkyl groups) while resonance decreases basicity (aromatic amines).'
+- type: mcq
+  sequence_order: 4
+  question: 'Why is methylamine more basic than ammonia?'
+  options:
+  - Methyl group has +I effect, increasing electron density on nitrogen
+  - Methylamine has lower molecular weight
+  - Ammonia cannot accept protons
+  - Methylamine is aromatic
+  require_pass: true
+  correct_answer: Methyl group has +I effect, increasing electron density on nitrogen
+  explanation: 'Methylamine (CH₃NH₂) is more basic than ammonia (NH₃) because the methyl group (CH₃-) has positive inductive effect (+I), donating electron density through σ bonds to the nitrogen atom. This increases the electron density on nitrogen, making the lone pair more available and willing to accept a proton (H⁺), thus increasing basicity. The pKb of methylamine (3.3) is lower than ammonia (4.75), confirming it is a stronger base. This trend continues with more alkyl groups: (CH₃)₂NH > CH₃NH₂ > NH₃ in gas phase. However, in aqueous solution, the order is slightly different due to solvation effects, but generally aliphatic amines are more basic than ammonia due to +I effect of alkyl groups.'

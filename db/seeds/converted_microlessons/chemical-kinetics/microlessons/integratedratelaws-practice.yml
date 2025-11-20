@@ -1,0 +1,139 @@
+slug: integratedratelaws-practice
+title: integrated_rate_laws — Practice
+difficulty: easy
+sequence_order: 12
+estimated_minutes: 2
+key_concepts:
+- integrated_rate_laws
+prerequisites: []
+content_md: '# integrated_rate_laws — Practice 🚀
+
+
+  For second order: 1/[A] = 1/[A]₀ + kt. Plot of 1/[A] vs t gives straight line with
+  slope = k.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: For a second-order reaction, the integrated rate law is 1/[A] = 1/[A]₀
+    + kt. How do you determine the rate constant k from experimental data, and what
+    are the units of k for a second-order reaction?
+  options:
+  - Plot [A] vs t, slope = k; units of k are s⁻¹
+  - Plot 1/[A] vs t, slope = k; units of k are M⁻¹s⁻¹ (or L·mol⁻¹·s⁻¹)
+  - Plot ln[A] vs t, slope = -k; units of k are M⁻¹s⁻¹
+  - Plot [A]² vs t, slope = k; units of k are M·s⁻¹
+  correct_answer: Plot 1/[A] vs t, slope = k; units of k are M⁻¹s⁻¹ (or L·mol⁻¹·s⁻¹)
+  explanation: 'Integrated rate laws transform differential rate equations into forms
+    that relate concentration to time, enabling experimental determination of reaction
+    order and rate constants. SECOND-ORDER INTEGRATED RATE LAW: For a reaction A →
+    products with rate = k[A]², the differential form is -d[A]/dt = k[A]². Integrating
+    from initial concentration [A]₀ at t=0 to [A] at time t gives: 1/[A] - 1/[A]₀
+    = kt, which rearranges to 1/[A] = 1/[A]₀ + kt. This is a linear equation of the
+    form y = mx + b, where y = 1/[A], x = t, slope m = k, and intercept b = 1/[A]₀.
+    EXPERIMENTAL DETERMINATION: (1) Measure [A] at various times during the reaction
+    (using spectroscopy, titration, or other analytical methods). (2) Calculate 1/[A]
+    for each data point. (3) Plot 1/[A] on the y-axis vs time t on the x-axis. (4)
+    If the reaction is second-order, the plot will be LINEAR. (5) The slope of the
+    best-fit line equals the rate constant k. (6) The y-intercept equals 1/[A]₀. UNITS
+    OF k: From the integrated rate law, 1/[A] (units: M⁻¹) = kt (units: k × s). For
+    dimensional consistency, k must have units M⁻¹s⁻¹ (or equivalently L·mol⁻¹·s⁻¹).
+    This differs from first-order (k units: s⁻¹) and zero-order (k units: M·s⁻¹).
+    The units pattern: for nth-order reaction, k has units M¹⁻ⁿ·s⁻¹. DETERMINING REACTION
+    ORDER: If unsure of the order, plot multiple forms: [A] vs t (linear for zero-order),
+    ln[A] vs t (linear for first-order), 1/[A] vs t (linear for second-order). Whichever
+    plot is linear indicates the correct order. EXAMPLE: For decomposition of NO₂
+    (2NO₂ → 2NO + O₂) at 300°C, plotting 1/[NO₂] vs t gives a straight line with slope
+    0.54 M⁻¹s⁻¹, confirming second-order kinetics. HALF-LIFE: For second-order, t₁/₂
+    = 1/(k[A]₀), which depends on initial concentration (unlike first-order where
+    t₁/₂ is constant).'
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: How does the integrated rate law for a second-order reaction differ from
+    that of a first-order reaction, and how do their half-lives compare?
+  options:
+  - 'Second-order: 1/[A] = 1/[A]₀ + kt, t₁/₂ depends on [A]₀; First-order: ln[A] =
+    ln[A]₀ - kt, t₁/₂ is constant (independent of [A]₀)'
+  - 'Second-order: [A] = [A]₀ - kt; First-order: [A] = [A]₀e⁻ᵏᵗ; both have constant
+    half-lives'
+  - Both have identical integrated rate laws and half-lives
+  - Second-order has constant half-life; first-order half-life depends on concentration
+  correct_answer: 'Second-order: 1/[A] = 1/[A]₀ + kt, t₁/₂ depends on [A]₀; First-order:
+    ln[A] = ln[A]₀ - kt, t₁/₂ is constant (independent of [A]₀)'
+  explanation: 'The mathematical forms and physical interpretations of integrated
+    rate laws differ fundamentally between reaction orders, with important consequences
+    for kinetic analysis and half-life behavior. FIRST-ORDER REACTIONS: Differential
+    form: -d[A]/dt = k[A]. Integrated form: ln[A] = ln[A]₀ - kt (or [A] = [A]₀e⁻ᵏᵗ
+    in exponential form). This is linear when plotting ln[A] vs t, with slope = -k.
+    Half-life derivation: Set [A] = [A]₀/2 in ln[A] = ln[A]₀ - kt₁/₂ → ln([A]₀/2)
+    = ln[A]₀ - kt₁/₂ → ln(1/2) = -kt₁/₂ → t₁/₂ = ln(2)/k = 0.693/k. KEY PROPERTY:
+    t₁/₂ is CONSTANT, independent of initial concentration. Each successive half-life
+    is the same duration (if you start with 1.0 M, it takes time t₁/₂ to reach 0.5
+    M, another t₁/₂ to reach 0.25 M, etc.). Examples: Radioactive decay (¹⁴C dating
+    uses constant half-life), many decomposition reactions. SECOND-ORDER REACTIONS:
+    Differential form: -d[A]/dt = k[A]². Integrated form: 1/[A] = 1/[A]₀ + kt. Linear
+    when plotting 1/[A] vs t, with slope = k. Half-life derivation: Set [A] = [A]₀/2
+    → 1/([A]₀/2) = 1/[A]₀ + kt₁/₂ → 2/[A]₀ = 1/[A]₀ + kt₁/₂ → kt₁/₂ = 1/[A]₀ → t₁/₂
+    = 1/(k[A]₀). KEY PROPERTY: t₁/₂ DEPENDS ON INITIAL CONCENTRATION. As the reaction
+    proceeds and [A] decreases, each successive half-life becomes longer (if you start
+    with 1.0 M with k = 0.1 M⁻¹s⁻¹, first t₁/₂ = 1/(0.1×1.0) = 10 s; after reaching
+    0.5 M, next t₁/₂ = 1/(0.1×0.5) = 20 s). Doubling [A]₀ halves t₁/₂. Examples: Many
+    gas-phase reactions (2NO₂ → 2NO + O₂), some solution reactions. PRACTICAL IMPLICATIONS:
+    (1) Constant half-life is a diagnostic test for first-order kinetics. (2) Concentration-dependent
+    half-life indicates second (or other) order. (3) Zero-order reactions have t₁/₂
+    = [A]₀/(2k), also concentration-dependent but linearly proportional.'
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: If you experimentally measure concentration vs time data for a reaction
+    and are unsure of the reaction order, how would you systematically determine whether
+    the reaction is zero-order, first-order, or second-order?
+  options:
+  - Plot only [A] vs t; if linear, the reaction could be any order
+  - 'Create three plots: [A] vs t (linear = zero-order), ln[A] vs t (linear = first-order),
+    1/[A] vs t (linear = second-order); the plot that is most linear indicates the
+    reaction order'
+  - Calculate the half-life once; if it's constant, it's zero-order
+  - Use the rate constant units to determine order; experimental plots are unnecessary
+  correct_answer: 'Create three plots: [A] vs t (linear = zero-order), ln[A] vs t
+    (linear = first-order), 1/[A] vs t (linear = second-order); the plot that is most
+    linear indicates the reaction order'
+  explanation: 'Determining reaction order from experimental data requires systematic
+    analysis using integrated rate law plots, a fundamental skill in chemical kinetics.
+    THE METHOD OF INTEGRATED RATE LAWS: Each reaction order has a characteristic integrated
+    rate law that is linear in a specific form. By testing which transformation of
+    [A] vs t produces a straight line, you can identify the order. PROCEDURE: (1)
+    Collect experimental data: Measure [A] at various times throughout the reaction
+    using appropriate analytical techniques (spectrophotometry, titration, chromatography,
+    etc.). Record data pairs (t, [A]). (2) Create three plots using the same data:
+    PLOT 1: [A] vs t (direct concentration vs time), PLOT 2: ln[A] vs t (natural logarithm
+    of concentration vs time), PLOT 3: 1/[A] vs t (reciprocal of concentration vs
+    time). (3) Determine which plot is MOST LINEAR (highest R² correlation coefficient
+    if using linear regression, or visually assess which plot shows best straight-line
+    fit). (4) Interpret results: If [A] vs t is linear → ZERO-ORDER: rate = k, integrated
+    form: [A] = [A]₀ - kt, slope = -k. If ln[A] vs t is linear → FIRST-ORDER: rate
+    = k[A], integrated form: ln[A] = ln[A]₀ - kt, slope = -k. If 1/[A] vs t is linear
+    → SECOND-ORDER: rate = k[A]², integrated form: 1/[A] = 1/[A]₀ + kt, slope = k.
+    (5) Extract rate constant k from the slope of the linear plot (note sign and mathematical
+    relationship). VERIFICATION USING HALF-LIFE: As additional confirmation, calculate
+    half-lives at different concentrations: If t₁/₂ is constant (independent of [A]₀)
+    → confirms first-order. If t₁/₂ ∝ [A]₀ (linear relationship) → confirms zero-order.
+    If t₁/₂ ∝ 1/[A]₀ (inverse relationship) → confirms second-order. EXAMPLE: For
+    decomposition of N₂O₅, plotting ln[N₂O₅] vs t gives excellent linear fit (R² >
+    0.99), while [N₂O₅] vs t and 1/[N₂O₅] vs t are curved → confirms first-order kinetics.
+    Rate constant from slope of ln plot. ADVANCED CONSIDERATIONS: For reactions that
+    don''t fit zero, first, or second order, you may need to test fractional orders
+    or use differential methods (initial rates method with varying [A]₀).'
+  require_pass: true

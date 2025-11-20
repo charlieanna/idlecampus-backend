@@ -1,0 +1,138 @@
+slug: lesson-2
+title: Lesson 2
+difficulty: easy
+sequence_order: 2
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Deployments & ReplicaSets\n\n    Learn\
+  \ how to manage application replicas and perform zero-downtime updates using Deployments\
+  \ and ReplicaSets.\n\n    ## Deployments\n\n    Deployments provide declarative\
+  \ updates for Pods and ReplicaSets. They handle:\n    - Scaling applications up\
+  \ or down\n    - Rolling updates with zero downtime\n    - Rollback to previous\
+  \ versions\n    - Pausing and resuming updates\n\n    ## ReplicaSets\n\n    ReplicaSets\
+  \ ensure a specified number of pod replicas are running at all times. Features:\n\
+  \    - Self-healing: Automatically replaces failed pods\n    - Scaling: Adjusts\
+  \ replica count based on demand\n    - Label selectors: Identifies which pods to\
+  \ manage\n\n    ## Deployment Strategies\n\n    **Rolling Update (Default)**\n \
+  \   - Gradually replaces old pods with new ones\n    - Zero downtime\n    - Rollback\
+  \ capability\n\n    **Recreate**\n    - Terminates all old pods before creating\
+  \ new ones\n    - Brief downtime\n    - Useful for incompatible updates\n\n    ##\
+  \ Essential Commands\n\n    ```bash\n    # Create deployment\n    kubectl create\
+  \ deployment nginx --image=nginx:1.25 --replicas=3\n\n    # Scale deployment\n \
+  \   kubectl scale deployment nginx --replicas=5\n\n    # Update image\n    kubectl\
+  \ set image deployment/nginx nginx=nginx:1.26\n\n    # Check rollout status\n  \
+  \  kubectl rollout status deployment/nginx\n\n    # View rollout history\n    kubectl\
+  \ rollout history deployment/nginx\n\n    # Rollback deployment\n    kubectl rollout\
+  \ undo deployment/nginx\n    ```\n\n    Master these concepts through practical\
+  \ exercises!"
+exercises:
+- type: multiple_choice_question
+  sequence_order: 1
+  question: What is the main purpose of a Deployment in Kubernetes compared to directly
+    creating ReplicaSets?
+  options:
+  - Deployments are faster than ReplicaSets
+  - Deployments provide declarative updates, versioning, and rollback capabilities
+  - Deployments use less memory than ReplicaSets
+  - Deployments can only run one pod while ReplicaSets can run multiple
+  correct_answer: Deployments provide declarative updates, versioning, and rollback
+    capabilities
+  explanation: Deployments in Kubernetes provide a higher-level abstraction over ReplicaSets,
+    offering declarative updates, version management, and automated rollback capabilities.
+    While you could manually create and manage ReplicaSets, Deployments automate the
+    complex process of updating applications with zero downtime through rolling updates.
+    When you update a Deployment's pod template (e.g., changing the image version),
+    Kubernetes automatically creates a new ReplicaSet for the new version and gradually
+    shifts traffic from the old ReplicaSet to the new one, allowing you to maintain
+    availability during updates. Deployments maintain a revision history, enabling
+    you to view previous configurations and roll back to earlier versions if problems
+    occur. The declarative approach means you specify the desired state (e.g., 'I
+    want 3 replicas of nginx:1.26'), and Kubernetes handles all the steps to achieve
+    that state, including creating ReplicaSets, managing pod creation/deletion, and
+    handling failures. Deployments don't inherently use less memory or run faster
+    than ReplicaSets - they simply manage ReplicaSets for you. Both Deployments and
+    ReplicaSets can manage multiple pod replicas. Understanding this hierarchy (Deployment
+    manages ReplicaSet manages Pods) is fundamental to Kubernetes application management.
+  require_pass: true
+- type: multiple_choice_question
+  sequence_order: 2
+  question: What is the key difference between Rolling Update and Recreate deployment
+    strategies?
+  options:
+  - Rolling Update is faster than Recreate
+  - Rolling Update gradually replaces pods with zero downtime while Recreate terminates
+    all pods before creating new ones
+  - Recreate is the default strategy in Kubernetes
+  - Rolling Update can only update one pod at a time
+  correct_answer: Rolling Update gradually replaces pods with zero downtime while
+    Recreate terminates all pods before creating new ones
+  explanation: The Rolling Update strategy (the default) gradually replaces old pods
+    with new ones, ensuring that some instances of your application remain available
+    throughout the update process, achieving zero-downtime deployments. It creates
+    new pods incrementally while terminating old ones, controlled by maxSurge and
+    maxUnavailable parameters. For example, with 10 replicas, it might create 2 new
+    pods, wait for them to be ready, then terminate 2 old pods, repeating until all
+    pods are updated. The Recreate strategy, in contrast, terminates ALL existing
+    pods before creating any new ones, resulting in a brief period of complete downtime
+    where your application is unavailable. Recreate is useful when you need to perform
+    incompatible updates (e.g., database schema changes that can't coexist with the
+    old version) or when zero-downtime isn't critical. Rolling Update is the default
+    precisely because it provides zero-downtime capabilities. The speed difference
+    isn't the main distinction - both can be fast or slow depending on pod startup
+    time. Rolling Update can update multiple pods simultaneously (controlled by maxSurge),
+    not just one at a time. Choosing between these strategies depends on your application's
+    architecture and availability requirements.
+  require_pass: true
+- type: terminal
+  sequence_order: 1
+  command: kubectl create deployment nginx --image=nginx:1.25 --replicas=3
+  description: 'Practice the command: kubectl create deployment nginx --image=nginx:1.25
+    --replicas=3'
+  hints:
+  - 'Try: kubectl create deployment nginx --image=nginx:1.25 --replicas=3'
+  - Use kubectl --help if you need help
+  timeout_sec: 60
+  require_pass: true
+- type: terminal
+  sequence_order: 2
+  command: kubectl scale deployment nginx --replicas=5
+  description: 'Practice the command: kubectl scale deployment nginx --replicas=5'
+  hints:
+  - 'Try: kubectl scale deployment nginx --replicas=5'
+  - Use kubectl --help if you need help
+  timeout_sec: 60
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: Which command creates a deployment with 3 replicas?
+  options:
+  - kubectl create deployment nginx --image=nginx --replicas=3
+  - kubectl make deployment nginx replicas=3
+  - kubectl deploy nginx --count=3
+  - kubectl new deployment nginx x3
+  correct_answer_index: 0
+  explanation: kubectl create deployment creates a deployment. The --replicas flag
+    specifies the number of pod replicas.
+  require_pass: true
+- type: code
+  sequence_order: 4
+  language: yaml
+  question: Create a deployment with 3 replicas of nginx
+  starter_code: '# Write your deployment YAML here
+
+    apiVersion: apps/v1
+
+    kind: Deployment
+
+    '
+  solution_code: "apiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: nginx-deployment\n\
+    spec:\n  replicas: 3\n  selector:\n    matchLabels:\n      app: nginx\n  template:\n\
+    \    metadata:\n      labels:\n        app: nginx\n    spec:\n      containers:\n\
+    \      - name: nginx\n        image: nginx:1.25\n        ports:\n        - containerPort:\
+    \ 80"
+  hints:
+  - 'Use apiVersion: apps/v1 for Deployments'
+  - Set spec.replicas to 3
+  - Define selector.matchLabels to match template.metadata.labels
+  require_pass: true

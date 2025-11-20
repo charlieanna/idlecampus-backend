@@ -1,0 +1,17 @@
+course:
+  slug: concurrency
+  title: Concurrency
+  description: ''
+  estimated_hours: null
+  level: null
+modules:
+- slug: default
+  title: Default Module
+  lessons:
+  - fan-outfan-in-pipeline
+  - refactor-to-interfaces-make-it-idiomatic
+  - worker-pool-basics-goroutines-channels
+  - contexts-cancellation
+  - race-hunt-detect-and-fix-data-races
+  - deadlock-hunt-diagnose-lock-order-inversion
+  - rate-limiter-channel-semaphore

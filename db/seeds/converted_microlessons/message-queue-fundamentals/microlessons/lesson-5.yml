@@ -1,0 +1,376 @@
+slug: lesson-5
+title: Lesson 5
+difficulty: easy
+sequence_order: 5
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Event-Driven Systems\n\n    **Event-driven\
+  \ architecture** builds systems that react to events rather than direct calls.\n\
+  \n    ## Event Sourcing Pattern\n\n    **Store all changes as a sequence of events**\n\
+  \n    ### Traditional CRUD Approach\n\n    ```python\n    # Traditional: Store current\
+  \ state only\n    class User:\n        id: int\n        name: str\n        email:\
+  \ str\n        balance: Decimal\n\n    # Update user\n    user = db.get_user(123)\n\
+  \    user.balance = 1000.00  # Lost: What was old balance? When? Why?\n    db.save(user)\n\
+  \    ```\n\n    **Problems:**\n    - Lost history (what was the balance before?)\n\
+  \    - No audit trail (who changed it? when?)\n    - Can't reconstruct past states\n\
+  \    - No reason for changes\n\n    ### Event Sourcing Approach\n\n    **Store events,\
+  \ derive state**\n\n    ```python\n    # Events: Immutable log of what happened\n\
+  \    Event 1: UserCreated(user_id=123, name=\"Alice\", email=\"alice@ex.com\")\n\
+  \    Event 2: BalanceIncreased(user_id=123, amount=500, reason=\"deposit\")\n  \
+  \  Event 3: BalanceIncreased(user_id=123, amount=500, reason=\"deposit\")\n    Event\
+  \ 4: BalanceDecreased(user_id=123, amount=100, reason=\"purchase\")\n\n    # Current\
+  \ state: Replay all events\n    def get_user_state(user_id):\n        events = event_store.get_events(user_id)\n\
+  \n        state = {}\n        for event in events:\n            state = apply_event(state,\
+  \ event)\n\n        return state\n\n    # Result: {id: 123, name: \"Alice\", balance:\
+  \ 900}\n    ```\n\n    **Benefits:**\n    - Complete audit trail\n    - Can reconstruct\
+  \ any past state\n    - Time travel (what was balance on Jan 1?)\n    - Debug issues\
+  \ (replay events to find bug)\n    - Build new features on historical data\n\n \
+  \   ### Event Store Implementation\n\n    ```python\n    # Event Store with PostgreSQL\n\
+  \    import json\n    from datetime import datetime\n\n    class EventStore:\n \
+  \       def __init__(self, db):\n            self.db = db\n\n        def append_event(self,\
+  \ stream_id, event_type, data, metadata=None):\n            \"\"\"Append event to\
+  \ stream (aggregate)\"\"\"\n            query = \"\"\"\n                INSERT INTO\
+  \ events (stream_id, event_type, data, metadata, version, created_at)\n        \
+  \        VALUES (?, ?, ?, ?,\n                    (SELECT COALESCE(MAX(version),\
+  \ 0) + 1 FROM events WHERE stream_id = ?),\n                    ?)\n           \
+  \     RETURNING id, version\n            \"\"\"\n\n            result = self.db.execute(\n\
+  \                query,\n                stream_id,\n                event_type,\n\
+  \                json.dumps(data),\n                json.dumps(metadata or {}),\n\
+  \                stream_id,\n                datetime.utcnow()\n            )\n\n\
+  \            return result.fetchone()\n\n        def get_events(self, stream_id,\
+  \ from_version=0):\n            \"\"\"Get all events for an aggregate\"\"\"\n  \
+  \          query = \"\"\"\n                SELECT id, stream_id, event_type, data,\
+  \ metadata, version, created_at\n                FROM events\n                WHERE\
+  \ stream_id = ? AND version > ?\n                ORDER BY version ASC\n        \
+  \    \"\"\"\n\n            rows = self.db.execute(query, stream_id, from_version).fetchall()\n\
+  \n            return [\n                {\n                    'id': row[0],\n \
+  \                   'stream_id': row[1],\n                    'event_type': row[2],\n\
+  \                    'data': json.loads(row[3]),\n                    'metadata':\
+  \ json.loads(row[4]),\n                    'version': row[5],\n                \
+  \    'created_at': row[6]\n                }\n                for row in rows\n\
+  \            ]\n\n        def get_all_events(self, from_position=0, limit=100):\n\
+  \            \"\"\"Get global event stream (for projections)\"\"\"\n           \
+  \ query = \"\"\"\n                SELECT id, stream_id, event_type, data, metadata,\
+  \ version, created_at\n                FROM events\n                WHERE id > ?\n\
+  \                ORDER BY id ASC\n                LIMIT ?\n            \"\"\"\n\n\
+  \            rows = self.db.execute(query, from_position, limit).fetchall()\n  \
+  \          return [self._row_to_event(row) for row in rows]\n\n    # Event Store\
+  \ Schema\n    CREATE TABLE events (\n        id BIGSERIAL PRIMARY KEY,\n       \
+  \ stream_id VARCHAR(255) NOT NULL,      -- Aggregate ID\n        event_type VARCHAR(255)\
+  \ NOT NULL,     -- Event name\n        data JSONB NOT NULL,                  --\
+  \ Event data\n        metadata JSONB,                       -- User, timestamp,\
+  \ etc.\n        version INTEGER NOT NULL,             -- Version within stream\n\
+  \        created_at TIMESTAMP NOT NULL,\n\n        UNIQUE(stream_id, version)  \
+  \          -- Optimistic concurrency\n    );\n\n    CREATE INDEX idx_stream_id ON\
+  \ events(stream_id);\n    CREATE INDEX idx_created_at ON events(created_at);\n \
+  \   ```\n\n    ### Bank Account Example\n\n    ```python\n    # Domain Events\n\
+  \    class AccountCreated:\n        def __init__(self, account_id, owner, initial_balance):\n\
+  \            self.account_id = account_id\n            self.owner = owner\n    \
+  \        self.initial_balance = initial_balance\n\n    class MoneyDeposited:\n \
+  \       def __init__(self, account_id, amount):\n            self.account_id = account_id\n\
+  \            self.amount = amount\n\n    class MoneyWithdrawn:\n        def __init__(self,\
+  \ account_id, amount):\n            self.account_id = account_id\n            self.amount\
+  \ = amount\n\n    # Aggregate: Bank Account\n    class BankAccount:\n        def\
+  \ __init__(self, account_id):\n            self.account_id = account_id\n      \
+  \      self.balance = 0\n            self.owner = None\n            self.version\
+  \ = 0\n            self.uncommitted_events = []\n\n        # Command: Create account\n\
+  \        def create(self, owner, initial_balance):\n            if self.owner is\
+  \ not None:\n                raise ValueError(\"Account already created\")\n\n \
+  \           event = AccountCreated(self.account_id, owner, initial_balance)\n  \
+  \          self._apply_event(event)\n            self.uncommitted_events.append(event)\n\
+  \n        # Command: Deposit money\n        def deposit(self, amount):\n       \
+  \     if amount <= 0:\n                raise ValueError(\"Amount must be positive\"\
+  )\n\n            event = MoneyDeposited(self.account_id, amount)\n            self._apply_event(event)\n\
+  \            self.uncommitted_events.append(event)\n\n        # Command: Withdraw\
+  \ money\n        def withdraw(self, amount):\n            if amount <= 0:\n    \
+  \            raise ValueError(\"Amount must be positive\")\n            if self.balance\
+  \ < amount:\n                raise ValueError(\"Insufficient funds\")\n\n      \
+  \      event = MoneyWithdrawn(self.account_id, amount)\n            self._apply_event(event)\n\
+  \            self.uncommitted_events.append(event)\n\n        # Apply event to change\
+  \ state\n        def _apply_event(self, event):\n            if isinstance(event,\
+  \ AccountCreated):\n                self.owner = event.owner\n                self.balance\
+  \ = event.initial_balance\n            elif isinstance(event, MoneyDeposited):\n\
+  \                self.balance += event.amount\n            elif isinstance(event,\
+  \ MoneyWithdrawn):\n                self.balance -= event.amount\n\n           \
+  \ self.version += 1\n\n        # Reconstitute from events\n        @classmethod\n\
+  \        def from_events(cls, account_id, events):\n            account = cls(account_id)\n\
+  \            for event in events:\n                account._apply_event(event)\n\
+  \            return account\n\n    # Repository\n    class BankAccountRepository:\n\
+  \        def __init__(self, event_store):\n            self.event_store = event_store\n\
+  \n        def get(self, account_id):\n            events = self.event_store.get_events(f\"\
+  account-{account_id}\")\n            return BankAccount.from_events(account_id,\
+  \ events)\n\n        def save(self, account):\n            for event in account.uncommitted_events:\n\
+  \                self.event_store.append_event(\n                    stream_id=f\"\
+  account-{account.account_id}\",\n                    event_type=event.__class__.__name__,\n\
+  \                    data=event.__dict__\n                )\n            account.uncommitted_events.clear()\n\
+  \n    # Usage\n    repo = BankAccountRepository(event_store)\n\n    # Create account\n\
+  \    account = BankAccount(123)\n    account.create(owner=\"Alice\", initial_balance=1000)\n\
+  \    repo.save(account)\n\n    # Deposit\n    account = repo.get(123)\n    account.deposit(500)\n\
+  \    repo.save(account)\n\n    # Withdraw\n    account = repo.get(123)\n    account.withdraw(200)\n\
+  \    repo.save(account)\n\n    # Check balance\n    account = repo.get(123)\n  \
+  \  print(account.balance)  # 1300\n    ```\n\n    ## CQRS (Command Query Responsibility\
+  \ Segregation)\n\n    **Separate read and write models**\n\n    ### Problem: Single\
+  \ Model\n\n    ```python\n    # Same model for reads and writes\n    class Order:\n\
+  \        def place_order(self, items):\n            # Complex business logic\n \
+  \           self.validate()\n            self.calculate_total()\n            self.reserve_inventory()\n\
+  \            db.save(self)  # Write\n\n        def get_order_summary(self):\n  \
+  \          # Complex joins for display\n            return db.query(\"\"\"\n   \
+  \             SELECT o.*, oi.*, p.*\n                FROM orders o\n           \
+  \     JOIN order_items oi ON ...\n                JOIN products p ON ...\n     \
+  \       \"\"\")  # Read\n    ```\n\n    **Problems:**\n    - Write model optimized\
+  \ for consistency (normalized)\n    - Read model needs performance (denormalized)\n\
+  \    - Can't optimize for both simultaneously\n\n    ### CQRS Solution\n\n    **Separate\
+  \ write model (commands) from read model (queries)**\n\n    ```python\n    # Write\
+  \ Model: Optimized for business logic\n    class OrderCommandService:\n        def\
+  \ place_order(self, user_id, items):\n            # Validate\n            if not\
+  \ items:\n                raise ValueError(\"No items\")\n\n            # Create\
+  \ aggregate\n            order = Order.create(user_id, items)\n\n            # Save\
+  \ events\n            event_store.append_event(\n                f\"order-{order.id}\"\
+  ,\n                \"OrderPlaced\",\n                order.to_dict()\n         \
+  \   )\n\n            # Publish event\n            event_bus.publish(\"OrderPlaced\"\
+  , order)\n\n            return order.id\n\n    # Read Model: Optimized for queries\n\
+  \    class OrderQueryService:\n        def get_order_summary(self, order_id):\n\
+  \            # Fast lookup in denormalized table\n            return db.query(\n\
+  \                \"SELECT * FROM order_summaries WHERE id = ?\",\n             \
+  \   order_id\n            )\n\n        def get_user_orders(self, user_id):\n   \
+  \         # Optimized for this specific query\n            return db.query(\n  \
+  \              \"SELECT * FROM user_order_view WHERE user_id = ?\",\n          \
+  \      user_id\n            )\n\n    # Projection: Build read model from events\n\
+  \    class OrderProjection:\n        def handle_order_placed(self, event):\n   \
+  \         order = event.data\n\n            # Update denormalized read model\n \
+  \           db.execute(\"\"\"\n                INSERT INTO order_summaries\n   \
+  \             (id, user_id, items, total, status)\n                VALUES (?, ?,\
+  \ ?, ?, ?)\n            \"\"\", order['id'], order['user_id'],\n               \
+  \  json.dumps(order['items']),\n                 order['total'], 'placed')\n\n \
+  \       def handle_order_shipped(self, event):\n            db.execute(\"\"\"\n\
+  \                UPDATE order_summaries\n                SET status = 'shipped',\
+  \ shipped_at = ?\n                WHERE id = ?\n            \"\"\", event.data['shipped_at'],\
+  \ event.data['order_id'])\n    ```\n\n    **Benefits:**\n    - Write model: Normalized,\
+  \ consistent, optimized for business logic\n    - Read model: Denormalized, fast,\
+  \ optimized for queries\n    - Scale reads and writes independently\n    - Multiple\
+  \ read models for different use cases\n\n    ## Kafka for Event Streaming\n\n  \
+  \  **Apache Kafka** is a distributed event streaming platform.\n\n    ### Kafka\
+  \ Architecture\n\n    ```\n    Producer → Topic (Partitions) → Consumer Group\n\
+  \                 ├─ Partition 0 → Consumer 1\n                 ├─ Partition 1 →\
+  \ Consumer 2\n                 └─ Partition 2 → Consumer 3\n    ```\n\n    **Components:**\n\
+  \    - **Topic**: Category of events (e.g., \"orders\")\n    - **Partition**: Ordered\
+  \ log within topic (for parallelism)\n    - **Producer**: Publishes events\n   \
+  \ - **Consumer Group**: Consumers working together\n    - **Offset**: Position in\
+  \ partition (consumer tracks it)\n\n    ### Kafka Producer (Python)\n\n    ```python\n\
+  \    from kafka import KafkaProducer\n    import json\n\n    class OrderEventProducer:\n\
+  \        def __init__(self):\n            self.producer = KafkaProducer(\n     \
+  \           bootstrap_servers=['localhost:9092'],\n                value_serializer=lambda\
+  \ v: json.dumps(v).encode('utf-8'),\n                key_serializer=lambda k: k.encode('utf-8'),\n\
+  \                acks='all',  # Wait for all replicas\n                retries=3\n\
+  \            )\n\n        def publish_order_created(self, order):\n            event\
+  \ = {\n                'event_type': 'OrderCreated',\n                'order_id':\
+  \ order['id'],\n                'user_id': order['user_id'],\n                'items':\
+  \ order['items'],\n                'total': order['total'],\n                'timestamp':\
+  \ time.time()\n            }\n\n            # Partition by order_id (all events\
+  \ for same order go to same partition)\n            self.producer.send(\n      \
+  \          topic='orders',\n                key=str(order['id']),  # Partition key\n\
+  \                value=event\n            )\n\n            # Flush to ensure delivery\n\
+  \            self.producer.flush()\n\n    # Usage\n    producer = OrderEventProducer()\n\
+  \    producer.publish_order_created({\n        'id': 123,\n        'user_id': 456,\n\
+  \        'items': [{'product': 'laptop', 'quantity': 1}],\n        'total': 999.99\n\
+  \    })\n    ```\n\n    ### Kafka Consumer (Python)\n\n    ```python\n    from kafka\
+  \ import KafkaConsumer\n\n    class OrderEventConsumer:\n        def __init__(self,\
+  \ group_id):\n            self.consumer = KafkaConsumer(\n                'orders',\
+  \  # Topic\n                bootstrap_servers=['localhost:9092'],\n            \
+  \    group_id=group_id,  # Consumer group\n                auto_offset_reset='earliest',\
+  \  # Start from beginning\n                enable_auto_commit=False,  # Manual commit\n\
+  \                value_deserializer=lambda m: json.loads(m.decode('utf-8'))\n  \
+  \          )\n\n        def start(self):\n            print(\"Consuming events...\"\
+  )\n\n            for message in self.consumer:\n                try:\n         \
+  \           event = message.value\n\n                    print(f\"Received: {event['event_type']}\
+  \ for order {event['order_id']}\")\n\n                    # Process event\n    \
+  \                self.process_event(event)\n\n                    # Commit offset\n\
+  \                    self.consumer.commit()\n\n                except Exception\
+  \ as e:\n                    print(f\"Error processing event: {e}\")\n         \
+  \           # Don't commit - will retry\n\n        def process_event(self, event):\n\
+  \            if event['event_type'] == 'OrderCreated':\n                self.handle_order_created(event)\n\
+  \            elif event['event_type'] == 'OrderShipped':\n                self.handle_order_shipped(event)\n\
+  \n        def handle_order_created(self, event):\n            print(f\"Sending confirmation\
+  \ email for order {event['order_id']}\")\n            # Your business logic\n\n\
+  \        def handle_order_shipped(self, event):\n            print(f\"Sending shipping\
+  \ notification for order {event['order_id']}\")\n\n    # Usage\n    consumer = OrderEventConsumer(group_id='email-service')\n\
+  \    consumer.start()\n    ```\n\n    ## Eventual Consistency\n\n    **Data becomes\
+  \ consistent over time, not immediately**\n\n    ### Example: Social Media Feed\n\
+  \n    ```python\n    # User posts update\n    def post_update(user_id, content):\n\
+  \        # 1. Save to database\n        post = db.create_post(user_id, content)\n\
+  \n        # 2. Publish event\n        kafka.publish('posts.created', {\n       \
+  \     'post_id': post.id,\n            'user_id': user_id,\n            'content':\
+  \ content\n        })\n\n        return post  # Returns immediately!\n\n    # Background:\
+  \ Fan out to followers\n    def handle_post_created(event):\n        user_id = event['user_id']\n\
+  \        post_id = event['post_id']\n\n        # Get followers (100,000 followers)\n\
+  \        followers = db.get_followers(user_id)\n\n        # Add to each follower's\
+  \ feed\n        for follower in followers:\n            cache.add_to_feed(follower.id,\
+  \ post_id)\n\n        # Takes 10 seconds for 100k followers\n        # But user\
+  \ got immediate response!\n\n    # Different users see post at different times\n\
+  \    # Follower A: Sees post immediately (processed first)\n    # Follower B: Sees\
+  \ post after 5 seconds\n    # Follower C: Sees post after 10 seconds\n    # Eventually:\
+  \ All followers see the post ✓\n    ```\n\n    **Trade-offs:**\n    - ✅ Better performance\
+  \ (no waiting)\n    - ✅ Better availability (no blocking)\n    - ❌ Temporary inconsistency\n\
+  \n    ## Saga Pattern\n\n    **Manage distributed transactions across services**\n\
+  \n    ### Problem: Distributed Transactions\n\n    ```python\n    # Can't use single\
+  \ database transaction\n    def book_trip(user_id, flight, hotel):\n        # Different\
+  \ services, different databases\n        flight_booking = flight_service.book(flight)\
+  \  # Service 1\n        hotel_booking = hotel_service.book(hotel)     # Service\
+  \ 2\n        payment = payment_service.charge(user_id)     # Service 3\n\n     \
+  \   # What if payment fails? Need to undo flight and hotel!\n    ```\n\n    ###\
+  \ Saga Solution: Choreography\n\n    **Services react to events, handle compensation**\n\
+  \n    ```python\n    # Service 1: Flight Service\n    def handle_trip_requested(event):\n\
+  \        try:\n            booking = book_flight(event['flight'])\n            kafka.publish('flight.booked',\
+  \ {\n                'trip_id': event['trip_id'],\n                'booking_id':\
+  \ booking.id\n            })\n        except Exception:\n            kafka.publish('flight.booking.failed',\
+  \ {\n                'trip_id': event['trip_id']\n            })\n\n    # Service\
+  \ 2: Hotel Service\n    def handle_flight_booked(event):\n        try:\n       \
+  \     booking = book_hotel(event['hotel'])\n            kafka.publish('hotel.booked',\
+  \ {\n                'trip_id': event['trip_id'],\n                'booking_id':\
+  \ booking.id\n            })\n        except Exception:\n            # Compensate:\
+  \ Cancel flight\n            kafka.publish('flight.cancel', {\n                'trip_id':\
+  \ event['trip_id']\n            })\n            kafka.publish('hotel.booking.failed',\
+  \ {\n                'trip_id': event['trip_id']\n            })\n\n    # Service\
+  \ 3: Payment Service\n    def handle_hotel_booked(event):\n        try:\n      \
+  \      charge_payment(event['trip_id'])\n            kafka.publish('payment.completed',\
+  \ {\n                'trip_id': event['trip_id']\n            })\n        except\
+  \ Exception:\n            # Compensate: Cancel flight and hotel\n            kafka.publish('flight.cancel',\
+  \ {'trip_id': event['trip_id']})\n            kafka.publish('hotel.cancel', {'trip_id':\
+  \ event['trip_id']})\n            kafka.publish('payment.failed', {'trip_id': event['trip_id']})\n\
+  \n    # Compensating actions\n    def handle_flight_cancel(event):\n        cancel_flight_booking(event['trip_id'])\n\
+  \        refund_customer(event['trip_id'], 'flight')\n    ```\n\n    ### Saga Solution:\
+  \ Orchestration\n\n    **Central coordinator manages saga**\n\n    ```python\n \
+  \   class TripBookingSaga:\n        def __init__(self, trip_id):\n            self.trip_id\
+  \ = trip_id\n            self.state = 'started'\n            self.compensations\
+  \ = []\n\n        def execute(self, trip_data):\n            try:\n            \
+  \    # Step 1: Book flight\n                flight = self.book_flight(trip_data['flight'])\n\
+  \                self.compensations.append(lambda: self.cancel_flight(flight))\n\
+  \n                # Step 2: Book hotel\n                hotel = self.book_hotel(trip_data['hotel'])\n\
+  \                self.compensations.append(lambda: self.cancel_hotel(hotel))\n\n\
+  \                # Step 3: Charge payment\n                payment = self.charge_payment(trip_data['amount'])\n\
+  \                self.compensations.append(lambda: self.refund_payment(payment))\n\
+  \n                self.state = 'completed'\n                return {'status': 'success',\
+  \ 'trip_id': self.trip_id}\n\n            except Exception as e:\n             \
+  \   # Rollback: Execute compensations in reverse\n                self.compensate()\n\
+  \                self.state = 'failed'\n                return {'status': 'failed',\
+  \ 'error': str(e)}\n\n        def compensate(self):\n            for compensation\
+  \ in reversed(self.compensations):\n                try:\n                    compensation()\n\
+  \                except Exception as e:\n                    # Log compensation\
+  \ failure\n                    logger.error(f\"Compensation failed: {e}\")\n\n \
+  \   # Usage\n    saga = TripBookingSaga(trip_id=123)\n    result = saga.execute({\n\
+  \        'flight': {'from': 'NYC', 'to': 'LAX'},\n        'hotel': {'name': 'Grand\
+  \ Hotel', 'nights': 3},\n        'amount': 500.00\n    })\n    ```\n\n    **Comparison:**\n\
+  \n    | Pattern | Pros | Cons |\n    |---------|------|------|\n    | Choreography\
+  \ | Loose coupling, no single point of failure | Hard to track saga state |\n  \
+  \  | Orchestration | Clear flow, easy to track | Central coordinator is single point\
+  \ of failure |\n\n    ## Real-World Example: E-Commerce\n\n    ```python\n    #\
+  \ Event-driven order processing\n\n    # 1. Order Service: Create order\n    def\
+  \ create_order(user_id, items):\n        order_id = generate_id()\n\n        event_store.append({\n\
+  \            'type': 'OrderCreated',\n            'order_id': order_id,\n      \
+  \      'user_id': user_id,\n            'items': items\n        })\n\n        kafka.publish('orders',\
+  \ {'type': 'OrderCreated', ...})\n        return order_id\n\n    # 2. Inventory\
+  \ Service: Reserve stock\n    def handle_order_created(event):\n        for item\
+  \ in event['items']:\n            reserve_item(item['product_id'], item['quantity'])\n\
+  \n        kafka.publish('orders', {'type': 'InventoryReserved', ...})\n\n    # 3.\
+  \ Payment Service: Charge customer\n    def handle_inventory_reserved(event):\n\
+  \        charge_customer(event['user_id'], event['total'])\n        kafka.publish('orders',\
+  \ {'type': 'PaymentCompleted', ...})\n\n    # 4. Shipping Service: Create shipment\n\
+  \    def handle_payment_completed(event):\n        create_shipment(event['order_id'])\n\
+  \        kafka.publish('orders', {'type': 'OrderShipped', ...})\n\n    # 5. Read\
+  \ Model: Build order summary\n    class OrderSummaryProjection:\n        def handle_event(self,\
+  \ event):\n            if event['type'] == 'OrderCreated':\n                db.insert_order_summary(event['order_id'],\
+  \ status='created')\n            elif event['type'] == 'InventoryReserved':\n  \
+  \              db.update_order_summary(event['order_id'], status='reserved')\n \
+  \           elif event['type'] == 'PaymentCompleted':\n                db.update_order_summary(event['order_id'],\
+  \ status='paid')\n            elif event['type'] == 'OrderShipped':\n          \
+  \      db.update_order_summary(event['order_id'], status='shipped')\n    ```\n\n\
+  \    **Next**: We'll explore production patterns for message queues including idempotency\
+  \ and monitoring."
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What is Event Sourcing and how does it differ from traditional CRUD databases?
+  options:
+  - Event Sourcing stores events in a queue, CRUD stores data in tables
+  - Event Sourcing stores all state changes as immutable events instead of current
+    state, enabling complete audit trail and time travel
+  - Event Sourcing is faster than CRUD for all operations
+  - Event Sourcing and CRUD are the same, just different terminology
+  correct_answer: Event Sourcing stores all state changes as immutable events instead
+    of current state, enabling complete audit trail and time travel
+  explanation: 'Event Sourcing is an architectural pattern where all changes to application
+    state are stored as a sequence of immutable events, instead of storing current
+    state. Traditional CRUD: Store only current state. UPDATE users SET balance=1000
+    WHERE id=123 loses previous balance - can''t answer "what was balance yesterday?"
+    Event Sourcing: Store all events. AccountCreated(id=123, balance=0) → MoneyDeposited(id=123,
+    amount=500) → MoneyDeposited(id=123, amount=500) → MoneyWithdrawn(id=123, amount=100).
+    Current state derived by replaying events: balance = 0 + 500 + 500 - 100 = 900.
+    Benefits: (1) Complete audit trail - every change recorded with timestamp, user,
+    reason, (2) Time travel - replay events to recreate state at any point in time,
+    (3) Debugging - replay events to reproduce bugs, (4) New features from history
+    - build analytics on historical data without migration, (5) Event-driven architecture
+    - other services can subscribe to events. Trade-offs: (1) Complexity - need to
+    write event handlers, snapshot management, (2) Eventual consistency - state is
+    derived asynchronously, (3) Storage - events accumulate (mitigated by snapshots:
+    store state snapshot at event 1000, replay from there). Use when: Banking/finance
+    (audit requirements), systems requiring time travel, event-driven architectures.'
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: In Event Sourcing, what is a "snapshot" and why is it important?
+  options:
+  - A snapshot is a backup of the event database
+  - A snapshot is a saved state at a point in time, preventing need to replay all
+    events from the beginning
+  - A snapshot is a screenshot of the application for testing
+  - A snapshot is a compressed version of events to save storage
+  correct_answer: A snapshot is a saved state at a point in time, preventing need
+    to replay all events from the beginning
+  explanation: 'Snapshots are a performance optimization in Event Sourcing that store
+    the derived state at specific points, avoiding replaying thousands/millions of
+    events every time. Problem: Bank account with 1,000,000 transactions. To get current
+    balance, must replay all 1,000,000 events on every request - takes seconds, unacceptable.
+    Solution: Snapshots store state at intervals. Save snapshot at event 1000, 2000,
+    3000, etc. To get current state: (1) Load latest snapshot (e.g., snapshot at event
+    3000: balance=50000), (2) Replay only events AFTER snapshot (events 3001-3100),
+    (3) Derive current state (much faster - only 100 events). Implementation: (1)
+    Snapshot every N events (every 100 or 1000 events), (2) Snapshot on schedule (hourly,
+    daily), (3) On-demand snapshots (before major operations). Storage: CREATE TABLE
+    snapshots (stream_id VARCHAR, version INT, data JSONB, created_at TIMESTAMP).
+    Trade-offs: (1) Storage cost - snapshots take space, (2) Staleness - snapshot
+    may be slightly behind, (3) Complexity - need snapshot logic. When to snapshot:
+    (1) High event volume streams (user accounts, orders), (2) Frequently queried
+    aggregates, (3) Performance-critical systems. Not needed for low-volume streams
+    or event streams that are rarely read.'
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: What is the difference between Commands and Events in Event Sourcing?
+  options:
+  - Commands and Events are the same thing with different names
+  - Commands are requests to change state (can fail), Events are facts that state
+    changed (immutable, already happened)
+  - Commands are faster than Events
+  - Events are stored in the database, Commands are not
+  correct_answer: Commands are requests to change state (can fail), Events are facts
+    that state changed (immutable, already happened)
+  explanation: 'Commands and Events have distinct roles in Event Sourcing and CQRS
+    (Command Query Responsibility Segregation). Commands: Requests/intentions to change
+    state. Named in imperative: CreateAccount, DepositMoney, WithdrawMoney. Can be
+    rejected/fail. Example: WithdrawMoney(accountId=123, amount=1000) can fail if
+    insufficient funds. Validation happens before command succeeds. Command flow:
+    (1) Validate business rules, (2) If valid, generate event(s), (3) If invalid,
+    reject command. Events: Facts about what happened in the past. Named in past tense:
+    AccountCreated, MoneyDeposited, MoneyWithdrawn. Cannot fail - already happened.
+    Immutable - never modified or deleted. Events are the source of truth. Event flow:
+    (1) Store in event store, (2) Apply to aggregate to update state, (3) Publish
+    to event bus for other services. Example interaction: User clicks "Withdraw $1000"
+    → Application sends WithdrawMoney command → Account aggregate validates (balance
+    >= 1000) → If valid: MoneyWithdrawn event created and stored → Event applied to
+    reduce balance → Event published to notification service to send confirmation.
+    Key difference: Commands can be rejected based on current state. Events represent
+    state changes that are already committed. This separation enables: (1) Clear business
+    logic, (2) Validation before state change, (3) Event-driven reactions, (4) Audit
+    trail of what actually happened.'
+  require_pass: true

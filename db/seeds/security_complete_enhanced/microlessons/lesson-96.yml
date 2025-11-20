@@ -1,0 +1,58 @@
+slug: lesson-96
+title: Lesson 96
+sequence_order: 96
+estimated_minutes: 2
+difficulty: easy
+content_md: "# Microlesson \U0001F680\n\n# Container Images and Registries\n\n   \
+  \ ## Building Container Images\n\n    ### Dockerfile Best Practices\n\n    ```dockerfile\n\
+  \    # Use specific base image versions\n    FROM node:18-alpine\n\n    # Set working\
+  \ directory\n    WORKDIR /app\n\n    # Copy dependency files first (better caching)\n\
+  \    COPY package*.json ./\n    RUN npm ci --only=production\n\n    # Copy application\
+  \ code\n    COPY . .\n\n    # Use non-root user\n    USER node\n\n    # Expose port\n\
+  \    EXPOSE 3000\n\n    # Define command\n    CMD [\"node\", \"server.js\"]\n  \
+  \  ```\n\n    ### Multi-stage Builds\n\n    ```dockerfile\n    # Build stage\n \
+  \   FROM golang:1.20 AS builder\n    WORKDIR /app\n    COPY . .\n    RUN CGO_ENABLED=0\
+  \ go build -o myapp\n\n    # Runtime stage\n    FROM alpine:latest\n    COPY --from=builder\
+  \ /app/myapp /\n    CMD [\"/myapp\"]\n    ```\n\n    ## Image Registries\n\n   \
+  \ ### Docker Hub\n    ```bash\n    # Tag image\n    docker tag myapp:latest username/myapp:v1.0\n\
+  \n    # Push to Docker Hub\n    docker push username/myapp:v1.0\n    ```\n\n   \
+  \ ### Private Registries\n    ```bash\n    # Tag for private registry\n    docker\
+  \ tag myapp:latest registry.example.com/myapp:v1.0\n\n    # Push to private registry\n\
+  \    docker push registry.example.com/myapp:v1.0\n    ```\n\n    ## Kubernetes Image\
+  \ Pull\n\n    ### Using Public Images\n    ```yaml\n    apiVersion: v1\n    kind:\
+  \ Pod\n    metadata:\n      name: nginx-pod\n    spec:\n      containers:\n    \
+  \  - name: nginx\n        image: nginx:1.21\n        imagePullPolicy: IfNotPresent\n\
+  \    ```\n\n    ### Using Private Registries\n    ```yaml\n    apiVersion: v1\n\
+  \    kind: Pod\n    metadata:\n      name: private-app\n    spec:\n      containers:\n\
+  \      - name: app\n        image: registry.example.com/myapp:v1.0\n      imagePullSecrets:\n\
+  \      - name: regcred\n    ```\n\n    ### Creating Image Pull Secret\n    ```bash\n\
+  \    kubectl create secret docker-registry regcred \\\n      --docker-server=registry.example.com\
+  \ \\\n      --docker-username=myuser \\\n      --docker-password=mypass \\\n   \
+  \   --docker-email=myemail@example.com\n    ```\n\n    ## Image Pull Policies\n\n\
+  \    - **Always**: Always pull the image\n    - **IfNotPresent**: Pull if not cached\
+  \ locally\n    - **Never**: Never pull, use local image only\n\n    ## Security\
+  \ Best Practices\n\n    1. Use specific image tags (not `latest`)\n    2. Scan images\
+  \ for vulnerabilities\n    3. Use minimal base images (alpine, distroless)\n   \
+  \ 4. Don't run as root\n    5. Remove unnecessary packages\n    6. Use multi-stage\
+  \ builds"
+exercises:
+- type: mcq
+  slug: lesson-96-mcq
+  sequence_order: 1
+  question: What is the main focus of this lesson on Lesson 96?
+  options:
+  - Understanding core concepts and practical applications related to Lesson 96
+  - Only theoretical knowledge without application
+  - Memorizing definitions without context
+  - Learning unrelated peripheral topics
+  correct_answer_index: 0
+  explanation: This lesson on Lesson 96 aims to build both conceptual understanding
+    and practical knowledge. Effective learning combines theory with application,
+    allowing you to not only understand concepts but also apply them in real-world
+    contexts. This integrated approach is more valuable than rote memorization or
+    purely theoretical study.
+objectives:
+- Apply least privilege
+- Design policies
+- Harden auth & keys
+next_recommended: []

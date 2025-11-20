@@ -1,0 +1,44 @@
+slug: lesson-116
+title: Lesson 116
+difficulty: easy
+sequence_order: 116
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Network Policies for Microservices\n\n\
+  \    - policyTypes, podSelector, namespaceSelector\n    - common allow/deny patterns\n\
+  \    - testing connectivity"
+exercises:
+  - type: mcq
+    sequence_order: 1
+    question: "What is the default behavior in Kubernetes when no NetworkPolicy exists for a pod?"
+    options:
+      - "All traffic is blocked"
+      - "All traffic is allowed to and from all pods"
+      - "Only traffic within the same namespace is allowed"
+      - "Only egress traffic is allowed"
+    correct_answer: "All traffic is allowed to and from all pods"
+    explanation: "By default, Kubernetes operates in a non-isolated network mode where all pods can communicate with all other pods across all namespaces without any restrictions. This 'allow all' default makes initial setup simple but isn't secure for production environments. Once you create a NetworkPolicy that selects a pod (via podSelector), that pod becomes isolated and only traffic explicitly allowed by NetworkPolicies is permitted - the default changes from 'allow all' to 'deny all' for selected pods. This is an important security consideration: NetworkPolicies are additive (they only add allow rules, never deny), and they use a whitelist approach (anything not explicitly allowed is denied once isolation is enabled). For example, if you create a NetworkPolicy selecting pods with label 'app: database' that allows ingress from 'app: api', the database pods become isolated and ONLY accept traffic from api pods - all other traffic is blocked. To implement zero-trust networking, you'd create a default-deny policy: 'podSelector: {}' (selects all pods) with empty ingress/egress rules (blocks everything), then create specific allow policies for required communication. Note that NetworkPolicy enforcement requires a network plugin that supports it (like Calico, Cilium, Weave Net) - GKE, AKS, and EKS support this with their CNI plugins. Without a supporting CNI, NetworkPolicies are accepted but not enforced, leaving the cluster in default 'allow all' mode."
+    require_pass: true
+  - type: mcq
+    sequence_order: 2
+    question: "In a NetworkPolicy, what does the 'policyTypes' field specify?"
+    options:
+      - "The type of network protocol (TCP/UDP)"
+      - "Whether the policy applies to Ingress traffic, Egress traffic, or both"
+      - "The priority level of the policy"
+      - "Which namespaces the policy applies to"
+    correct_answer: "Whether the policy applies to Ingress traffic, Egress traffic, or both"
+    explanation: "The policyTypes field in a NetworkPolicy specifies whether the policy controls Ingress traffic (incoming to the selected pods), Egress traffic (outgoing from the selected pods), or both. This is important because a NetworkPolicy can define one or both directions of traffic control. The field accepts an array with values 'Ingress' and/or 'Egress'. If policyTypes includes 'Ingress', the policy enables ingress isolation for selected pods - by default blocking all incoming traffic unless explicitly allowed by ingress rules. Similarly, 'Egress' enables egress isolation, blocking outgoing traffic unless allowed. If you specify 'policyTypes: [Ingress, Egress]' but only define ingress rules, egress traffic is completely blocked (the absence of egress rules means deny all egress). For example, to allow a web app to receive traffic on port 80 but prevent it from making any outbound connections (except DNS), you'd set 'policyTypes: [Ingress, Egress]', define ingress rules allowing port 80, and egress rules allowing only port 53 to kube-dns. If policyTypes is omitted, Kubernetes infers it from the presence of ingress/egress rule sections: if ingress rules exist, Ingress is added; if egress rules exist, Egress is added. Best practice is to explicitly set policyTypes for clarity. Common patterns: Ingress-only for stateless services, Egress-only for restricting outbound connections (data exfiltration prevention), and both for complete isolation of sensitive workloads like databases."
+    require_pass: true
+  - type: mcq
+    sequence_order: 3
+    question: "How would you test if a NetworkPolicy is working correctly?"
+    options:
+      - "Check if the NetworkPolicy resource exists with kubectl get networkpolicy"
+      - "Use kubectl exec to run network connectivity tests from affected pods to target endpoints"
+      - "NetworkPolicies cannot be tested"
+      - "Use kubectl describe to view the policy status"
+    correct_answer: "Use kubectl exec to run network connectivity tests from affected pods to target endpoints"
+    explanation: "Testing NetworkPolicies requires actively verifying network connectivity rather than just checking if the resource exists, because policies might be created but not enforced (if using an unsupported CNI). The most reliable testing approach is using kubectl exec to run connectivity tests from pods. For example, to test if pod-a can reach pod-b on port 80, run 'kubectl exec pod-a -- wget -T 2 -O- http://pod-b-ip:80'. If the connection succeeds when it should be blocked (or fails when it should succeed), your policy isn't working as expected. A comprehensive testing workflow: 1) Identify the expected behavior (which connections should succeed/fail), 2) Create test pods in relevant namespaces with appropriate labels, 3) Use tools like wget, curl, nc (netcat), or nslookup from within pods via kubectl exec, 4) Test both positive cases (allowed traffic works) and negative cases (blocked traffic fails), 5) Test from multiple source pods to verify selector matching. For example, 'kubectl run test-pod --image=busybox -it --rm -- wget -T 2 -O- http://service-name:8080' creates a temporary pod and tests connectivity. For more sophisticated testing, use tools like Cilium Network Policy Editor (web-based visualizer), or netshoot container image which includes extensive networking tools. Common issues to test: verify CNI supports NetworkPolicies (check CNI documentation), ensure pod labels match selectors exactly (kubectl get pods --show-labels), confirm namespace selectors work correctly, and test port-level restrictions. Always test NetworkPolicies in non-production first, as mistakes can break critical communication paths."
+    require_pass: true

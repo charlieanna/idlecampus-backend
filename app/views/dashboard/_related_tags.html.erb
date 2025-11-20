@@ -1,0 +1,6 @@
+<h2><%= site_name.capitalize %> Related Tags</h2>
+<% @related_tags[site_name].each do |original_tag, related_tags| %>
+  <p>
+    <%= related_tags.map { |related_tag_name, related_weight| link_to "#{related_tag_name}", { controller: 'tags', action: 'show', site_name: site_name, tag_name: related_tag_name }, target: "_blank" }.join(', ').html_safe %>
+  </p>
+<% end %>

@@ -1,0 +1,82 @@
+slug: lesson-121
+title: Lesson 121
+difficulty: easy
+sequence_order: 121
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Resource Limits and Requests\n\n    - CPU/memory\
+  \ units\n    - QoS classes and scheduling impact\n    - Best practices for sizing"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What unit does '1000m' represent for CPU resources in Kubernetes?
+  options:
+  - 1000 megabytes
+  - 1 full CPU core (1000 millicores)
+  - 1000 minutes of CPU time
+  - 0.001 CPU cores
+  correct_answer: 1 full CPU core (1000 millicores)
+  explanation: 'In Kubernetes, CPU resources are measured in cores, with the unit
+    ''m'' representing millicores (1/1000th of a core). So ''1000m'' equals 1 full
+    CPU core, ''500m'' equals half a core, and ''100m'' equals one-tenth of a core.
+    You can also specify CPU without the ''m'' suffix - ''1'' means 1 core, equivalent
+    to ''1000m''. This fractional representation allows precise CPU allocation. For
+    example, a container with ''requests.cpu: 250m'' is guaranteed one-quarter of
+    a CPU core. The millicore unit is especially useful for microservices that don''t
+    need full cores. One CPU core in Kubernetes corresponds to: 1 AWS vCPU, 1 GCP
+    Core, 1 Azure vCore, or 1 hyperthread on bare metal with hyperthreading. CPU is
+    a compressible resource - if a container exceeds its limit, it''s throttled not
+    killed. Memory, by contrast, is measured in bytes with units like Ki (kibibyte,
+    1024 bytes), Mi (mebibyte, 1024 KiB), Gi (gibibyte, 1024 MiB). For example, ''128Mi''
+    means 128 mebibytes or approximately 134 megabytes. Always use binary units (Ki,
+    Mi, Gi) not decimal (K, M, G) for clarity. Best practices: start with small CPU
+    requests (100m-250m) for typical microservices and tune based on monitoring, set
+    limits 2-4x higher than requests to allow bursting, monitor actual usage with
+    Prometheus metrics like container_cpu_usage_seconds_total, and remember that 1000m
+    is a common starting point for CPU-intensive applications but many services run
+    fine on much less.'
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What is the best practice for sizing resource requests in production?
+  options:
+  - Set requests equal to the maximum possible usage
+  - Set requests based on typical/average usage and limits at peak usage
+  - Don't set any requests to allow maximum flexibility
+  - Always use the cluster's maximum available resources
+  correct_answer: Set requests based on typical/average usage and limits at peak usage
+  explanation: 'The best practice for resource sizing is setting requests based on
+    typical/average usage (what your application normally needs) and limits at peak/maximum
+    usage (the highest it should ever consume). This approach balances several concerns:
+    Requests determine scheduling - the scheduler ensures a node has enough capacity
+    to satisfy requests. If you set requests too high (at peak), you waste resources
+    as most pods won''t use their full request most of the time, leading to poor cluster
+    utilization. If you set requests too low, multiple pods might spike simultaneously,
+    causing node resource exhaustion. Limits prevent runaway resource consumption
+    - they cap maximum usage protecting against bugs or attacks. Setting limits much
+    higher than requests (2-4x) allows bursting for temporary spikes while preventing
+    unbounded growth. For example, a web service might typically use 200m CPU and
+    256Mi memory, but spike to 800m CPU during traffic bursts. Appropriate settings:
+    ''requests: cpu: 200m, memory: 256Mi, limits: cpu: 800m, memory: 512Mi''. This
+    ensures: pods schedule predictably, node resources aren''t overcommitted beyond
+    safety margins, applications can handle bursts, and misbehaving containers don''t
+    crash nodes. To determine proper values: 1) Start with educated guesses, 2) Deploy
+    with monitoring (Prometheus/Grafana), 3) Observe actual usage over days/weeks,
+    4) Set requests at p50-p75 usage, limits at p95-p99, 5) Test with load testing,
+    6) Iterate and tune. Use Vertical Pod Autoscaler (VPA) recommendations for data-driven
+    sizing. Monitor QoS classes to ensure critical pods get Guaranteed or Burstable
+    QoS.'
+  require_pass: true
+- type: mcq
+  sequence_order: 1
+  question: What kubectl command checks if you can perform an action?
+  options:
+  - kubectl auth can-i create pods
+  - kubectl check permissions create pods
+  - kubectl verify action create pods
+  - kubectl test auth create pods
+  correct_answer_index: 0
+  explanation: kubectl auth can-i <action> <resource> checks if the current user has
+    permission to perform the specified action.
+  require_pass: true

@@ -1,0 +1,28 @@
+course:
+  slug: linux-bash-fundamentals
+  title: Linux & Bash Fundamentals — Complete
+  description: 'Practical Linux and shell skills: permissions, processes, pipes, text
+    processing, find/xargs, archiving, networking, SSH/rsync, cron, env, scripting,
+    and systemd.'
+  estimated_hours: 8
+  level: beginner
+modules:
+- slug: linux-core
+  title: Linux Core Skills
+  lessons:
+  - introduction-to-bash-and-shell-scripting
+  - lesson-2
+  - lesson-5
+  - codesprout-exposing-containers-with-port-mapping
+  - docker-ps-listing-running-containers
+  - lesson-1
+  - docker-run-creating-and-starting-containers
+  - docker-stop-gracefully-stopping-containers
+  - lesson-3
+  - docker-rm-removing-containers
+  - lesson-4
+  - lesson-6
+  - listing-containers
+  - run-nginx-in-the-background
+  - executing-commands-in-containers
+  - viewing-container-logs

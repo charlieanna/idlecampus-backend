@@ -1,0 +1,378 @@
+<div class="container mt-4">
+  <!-- Course Header -->
+  <div class="row mb-4">
+    <div class="col-md-8">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><%= link_to "Courses", courses_path %></li>
+          <li class="breadcrumb-item active"><%= @course.title %></li>
+        </ol>
+      </nav>
+      
+      <h1 class="mb-3">
+        <%= @course.title %>
+        <span class="badge bg-<%= @course.difficulty_level == 'beginner' ? 'success' : (@course.difficulty_level == 'intermediate' ? 'warning' : 'danger') %>">
+          <%= @course.difficulty_level.upcase %>
+        </span>
+      </h1>
+      
+      <p class="lead"><%= @course.description %></p>
+    </div>
+    
+    <div class="col-md-4">
+      <div class="card">
+        <div class="card-body">
+          <% if @enrollment %>
+            <h5 class="mb-3">Your Progress</h5>
+            <div class="progress mb-3" style="height: 30px;">
+              <div class="progress-bar bg-success" role="progressbar" 
+                   style="width: <%= @enrollment.completion_percentage %>%">
+                <%= @enrollment.completion_percentage %>%
+              </div>
+            </div>
+            <p class="small text-muted mb-3">
+              <i class="fas fa-check-circle"></i> <%= @progress_summary[:completed_modules] %> of <%= @progress_summary[:total_modules] %> modules completed
+            </p>
+            <%= link_to continue_course_path(@course), class: "btn btn-success btn-lg w-100 mb-2" do %>
+              <i class="fas fa-play"></i> Continue Learning
+            <% end %>
+            <% unless current_user.study_plans.active.exists?(course: @course) %>
+              <%= link_to new_study_plan_path(course_id: @course.id), class: "btn btn-outline-primary w-100" do %>
+                <i class="fas fa-calendar-plus"></i> Create Study Plan
+              <% end %>
+            <% end %>
+          <% else %>
+            <h5 class="mb-3">Course Info</h5>
+            <div class="mb-2">
+              <i class="fas fa-clock"></i> <%= @course.estimated_hours %> hours
+            </div>
+            <div class="mb-2">
+              <i class="fas fa-layer-group"></i> <%= @course.course_modules.count %> modules
+            </div>
+            <% if @course.certification_track.present? %>
+              <div class="mb-3">
+                <span class="badge bg-info">
+                  <i class="fas fa-certificate"></i> <%= @course.certification_track.upcase %> Aligned
+                </span>
+              </div>
+            <% end %>
+            <%= button_to enroll_course_path(@course), method: :post, class: "btn btn-primary btn-lg w-100" do %>
+              <i class="fas fa-book"></i> Enroll Now
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Learning Objectives -->
+  <% if @course.learning_objectives.present? %>
+    <div class="row mb-4">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header bg-primary text-white">
+            <h5 class="mb-0"><i class="fas fa-bullseye"></i> What You'll Learn</h5>
+          </div>
+          <div class="card-body">
+            <ul class="list-unstyled mb-0">
+              <% JSON.parse(@course.learning_objectives).each do |objective| %>
+                <li class="mb-2">
+                  <i class="fas fa-check-circle text-success"></i> <%= objective %>
+                </li>
+              <% end %>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+  
+  <!-- Visual Learning Path -->
+  <% if @course.slug == 'docker-fundamentals' || @course.title.include?('CKAD') %>
+    <div class="row mb-4">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header bg-light">
+            <h5 class="mb-0"><i class="fas fa-route"></i> Your Learning Journey</h5>
+          </div>
+          <div class="card-body">
+            <div class="simple-path">
+              <div class="path-item <%= @enrollment && @enrollment.completion_percentage > 0 ? 'active' : '' %>">
+                <i class="fas fa-play-circle"></i>
+                <span>Start Course</span>
+              </div>
+              <div class="path-arrow">→</div>
+              <div class="path-item <%= @enrollment && @enrollment.completion_percentage > 25 ? 'active' : '' %>">
+                <i class="fas fa-book-reader"></i>
+                <span>Learn Concepts</span>
+              </div>
+              <div class="path-arrow">→</div>
+              <div class="path-item <%= @enrollment && @enrollment.completion_percentage > 50 ? 'active' : '' %>">
+                <i class="fas fa-flask"></i>
+                <span>Practice Labs</span>
+              </div>
+              <div class="path-arrow">→</div>
+              <div class="path-item <%= @enrollment && @enrollment.completion_percentage > 75 ? 'active' : '' %>">
+                <i class="fas fa-clipboard-check"></i>
+                <span>Pass Quizzes</span>
+              </div>
+              <div class="path-arrow">→</div>
+              <div class="path-item <%= @enrollment && @enrollment.completion_percentage == 100 ? 'active' : '' %>">
+                <i class="fas fa-certificate"></i>
+                <span>Get Certified</span>
+              </div>
+            </div>
+            <% if !@enrollment %>
+              <div class="text-center mt-4">
+                <p class="text-muted">Enroll to start tracking your progress on this journey!</p>
+              </div>
+            <% elsif @enrollment.completion_percentage < 100 %>
+              <div class="text-center mt-4">
+                <p class="text-muted">You're <strong><%= @enrollment.completion_percentage %>%</strong> of the way there! Keep going!</p>
+              </div>
+            <% else %>
+              <div class="text-center mt-4">
+                <p class="text-success"><i class="fas fa-trophy"></i> Congratulations! Ready for certification!</p>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+  
+  <!-- Prerequisites -->
+  <% if @course.prerequisites.present? %>
+    <div class="row mb-4">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header bg-warning text-dark">
+            <h5 class="mb-0"><i class="fas fa-exclamation-triangle"></i> Prerequisites</h5>
+          </div>
+          <div class="card-body">
+            <ul class="list-unstyled mb-0">
+              <% JSON.parse(@course.prerequisites).each do |prereq| %>
+                <li class="mb-2">
+                  <i class="fas fa-arrow-right text-warning"></i> <%= prereq %>
+                </li>
+              <% end %>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+  
+  <!-- Course Modules -->
+  <div class="row mb-4">
+    <div class="col-md-12">
+      <h2 class="mb-3">Course Curriculum</h2>
+      
+      <div class="accordion" id="modulesAccordion">
+        <% @course.course_modules.ordered.each_with_index do |course_module, index| %>
+          <% module_progress = @enrollment ? @enrollment.module_progresses.find_by(course_module: course_module) : nil %>
+          <% is_completed = module_progress&.status == 'completed' %>
+          <% is_in_progress = module_progress&.status == 'in_progress' %>
+          
+          <div class="accordion-item module-item">
+            <h2 class="accordion-header" id="heading<%= course_module.id %>">
+              <button class="accordion-button <%= index == 0 ? '' : 'collapsed' %>" type="button" 
+                      data-bs-toggle="collapse" data-bs-target="#collapse<%= course_module.id %>">
+                <div class="d-flex justify-content-between align-items-center w-100 pe-3">
+                  <div>
+                    <span class="badge bg-secondary me-2">Module <%= index + 1 %></span>
+                    <strong><%= course_module.title %></strong>
+                    <% if is_completed %>
+                      <i class="fas fa-check-circle text-success ms-2"></i>
+                    <% elsif is_in_progress %>
+                      <i class="fas fa-spinner text-primary ms-2"></i>
+                    <% end %>
+                  </div>
+                  <div class="text-muted small">
+                    <i class="fas fa-clock"></i> <%= course_module.estimated_minutes %> min
+                  </div>
+                </div>
+              </button>
+            </h2>
+            <div id="collapse<%= course_module.id %>" 
+                 class="accordion-collapse collapse <%= index == 0 ? 'show' : '' %>" 
+                 data-bs-parent="#modulesAccordion">
+              <div class="accordion-body">
+                <p class="text-muted"><%= course_module.description %></p>
+                
+                <!-- Module Progress -->
+                <% if module_progress %>
+                  <div class="progress mb-3" style="height: 20px;">
+                    <div class="progress-bar" role="progressbar" 
+                         style="width: <%= module_progress.completion_percentage %>%">
+                      <%= module_progress.completion_percentage %>% Complete
+                    </div>
+                  </div>
+                <% end %>
+                
+                <!-- Module Items -->
+                <ul class="list-group">
+                  <% course_module.module_items.ordered.each do |item| %>
+                    <% content = item.item %>
+                    <% is_completed = @enrollment && item.completed_by?(current_user) %>
+                    
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                      <div>
+                        <% if content.is_a?(CourseLesson) %>
+                          <i class="fas fa-book text-primary"></i>
+                          <strong>Lesson:</strong> <%= content.title %>
+                          <% if content.reading_time_minutes %>
+                            <span class="text-muted small ms-2">(<%= content.reading_time_minutes %> min)</span>
+                          <% end %>
+                        <% elsif content.is_a?(Quiz) %>
+                          <i class="fas fa-question-circle text-warning"></i>
+                          <strong>Quiz:</strong> <%= content.title %>
+                          <span class="text-muted small ms-2">(<%= content.quiz_questions.count %> questions)</span>
+                        <% elsif content.is_a?(HandsOnLab) %>
+                          <i class="fas fa-flask text-success"></i>
+                          <strong>Lab:</strong> <%= content.title %>
+                          <span class="text-muted small ms-2">(<%= content.estimated_minutes %> min)</span>
+                        <% end %>
+                        
+                        <% if is_completed %>
+                          <span class="badge bg-success ms-2">Completed</span>
+                        <% end %>
+                      </div>
+                      
+                      <% if @enrollment %>
+                        <% is_current = (@enrollment.current_item == content) %>
+                        <% if is_completed %>
+                        <% if content.is_a?(CourseLesson) %>
+                          <%= link_to lesson_path(content), class: "btn btn-sm btn-outline-primary" do %>
+                              <i class="fas fa-play"></i> Review
+                          <% end %>
+                        <% elsif content.is_a?(Quiz) %>
+                          <%= link_to quiz_path(content), class: "btn btn-sm btn-outline-warning" do %>
+                              <i class="fas fa-play"></i> Retake
+                          <% end %>
+                        <% elsif content.is_a?(HandsOnLab) %>
+                          <%= link_to hands_on_lab_path(content), class: "btn btn-sm btn-outline-success" do %>
+                              <i class="fas fa-play"></i> Redo
+                            <% end %>
+                          <% end %>
+                        <% elsif is_current %>
+                          <% if content.is_a?(CourseLesson) %>
+                            <%= link_to lesson_path(content), class: "btn btn-sm btn-primary" do %>
+                              <i class="fas fa-play"></i> Continue
+                            <% end %>
+                          <% elsif content.is_a?(Quiz) %>
+                            <%= link_to quiz_path(content), class: "btn btn-sm btn-warning" do %>
+                              <i class="fas fa-play"></i> Start
+                            <% end %>
+                          <% elsif content.is_a?(HandsOnLab) %>
+                            <%= link_to hands_on_lab_path(content), class: "btn btn-sm btn-success" do %>
+                              <i class="fas fa-play"></i> Start
+                            <% end %>
+                          <% end %>
+                        <% else %>
+                          <button class="btn btn-sm btn-secondary" disabled>
+                            <i class="fas fa-lock"></i> Locked
+                          </button>
+                        <% end %>
+                      <% else %>
+                        <i class="fas fa-lock text-muted"></i>
+                      <% end %>
+                    </li>
+                  <% end %>
+                </ul>
+                
+                <!-- View Module Button -->
+                <% if @enrollment %>
+                  <div class="text-center mt-3">
+                    <%= link_to course_module_path(@course, course_module), class: "btn btn-primary" do %>
+                      <i class="fas fa-arrow-right"></i> Go to Module
+                    <% end %>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* Simple Learning Path Styles */
+  .simple-path {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding: 20px;
+  }
+  
+  .path-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 15px;
+    margin: 10px;
+    border: 2px solid #dee2e6;
+    border-radius: 10px;
+    background: #f8f9fa;
+    transition: all 0.3s ease;
+  }
+  
+  .path-item i {
+    font-size: 2rem;
+    margin-bottom: 10px;
+    color: #6c757d;
+  }
+  
+  .path-item span {
+    font-size: 0.9rem;
+    text-align: center;
+  }
+  
+  .path-item.active {
+    border-color: #28a745;
+    background: #d4edda;
+  }
+  
+  .path-item.active i {
+    color: #28a745;
+  }
+  
+  .path-arrow {
+    font-size: 1.5rem;
+    color: #6c757d;
+    margin: 0 10px;
+  }
+  
+  @media (max-width: 768px) {
+    .simple-path {
+      flex-direction: column;
+    }
+    
+    .path-arrow {
+      transform: rotate(90deg);
+      margin: 10px 0;
+    }
+  }
+</style>
+
+<style>
+  .module-item {
+    margin-bottom: 0.5rem;
+  }
+  
+  .module-item .accordion-button:not(.collapsed) {
+    background-color: #e7f3ff;
+  }
+  
+  .list-group-item {
+    border-left: 3px solid transparent;
+  }
+  
+  .list-group-item:hover {
+    border-left-color: #0d6efd;
+    background-color: #f8f9fa;
+  }
+</style>

@@ -1,0 +1,132 @@
+slug: docker-compose-down-stop-and-remove-stack
+title: 'Docker Compose Down: Stop and Remove Stack'
+difficulty: medium
+sequence_order: 2
+estimated_minutes: 2
+key_concepts:
+- docker-compose
+- cleanup
+- teardown
+- lifecycle
+- management
+prerequisites: []
+content_md: "# Docker Compose Down: Stop and Remove Stack \U0001F680\n\n# Mastering\
+  \ docker-compose down: Clean Stack Teardown\n\n    ## What is docker-compose down?\n\
+  \    `docker-compose down` stops all services and removes containers, networks,\
+  \ and optionally volumes created by `docker-compose up`. It's the clean way to tear\
+  \ down your entire application stack, returning to a clean slate.\n\n    ## Why\
+  \ Down Matters\n    - **Complete Cleanup**: Removes containers AND networks\n  \
+  \  - **Resource Management**: Frees ports, memory, and disk\n    - **Fresh Start**:\
+  \ Ensures clean state for next deployment\n    - **CI/CD Essential**: Cleanup step\
+  \ in automated pipelines\n    - **Safer than docker stop**: Handles dependencies\
+  \ and networks properly\n\n    ## Basic Syntax\n    ```bash\n    docker-compose\
+  \ down [OPTIONS]\n    ```\n\n    ## Common Use Cases\n\n    ### 1. Standard Teardown\n\
+  \    ```bash\n    docker-compose down\n    ```\n    Stops and removes containers\
+  \ and networks (keeps volumes and images).\n\n    ### 2. Remove Volumes Too\n  \
+  \  ```bash\n    docker-compose down -v\n    ```\n    **DANGER**: Also removes named\
+  \ volumes, deleting all data!\n\n    ### 3. Remove Images\n    ```bash\n    docker-compose\
+  \ down --rmi all\n    ```\n    Removes all images used by services (thorough cleanup).\n\
+  \n    ### 4. Remove Orphans\n    ```bash\n    docker-compose down --remove-orphans\n\
+  \    ```\n    Removes containers for services not in current compose file.\n\n \
+  \   ## How docker-compose down Works\n\n    ```\n    1. Stop all containers gracefully\
+  \ (SIGTERM)\n       ↓\n    2. Wait for graceful shutdown (10s timeout)\n       ↓\n\
+  \    3. Force kill if needed (SIGKILL)\n       ↓\n    4. Remove all containers\n\
+  \       ↓\n    5. Remove custom networks\n       ↓\n    6. Remove volumes (if -v\
+  \ flag used)\n       ↓\n    7. Remove images (if --rmi flag used)\n    ```\n\n \
+  \   ## What Gets Removed vs Kept\n\n    ### Always Removed\n    - Containers created\
+  \ by up\n    - Networks created by up\n    - Internal networks\n\n    ### Kept by\
+  \ Default\n    - Volumes (data persistence)\n    - Images (avoid re-downloading)\n\
+  \    - External networks\n\n    ### Removed with Flags\n    - Volumes: use `-v`\
+  \ or `--volumes`\n    - Images: use `--rmi all` or `--rmi local`\n\n    ## Common\
+  \ Options\n\n    | Option | Description | Use Case |\n    |--------|-------------|----------|\n\
+  \    | `-v, --volumes` | Remove named volumes | Clean slate, delete data |\n   \
+  \ | `--rmi all` | Remove all images | Complete cleanup |\n    | `--rmi local` |\
+  \ Remove images without tags | Cleanup build artifacts |\n    | `--remove-orphans`\
+  \ | Remove unlisted containers | After compose file changes |\n    | `-t, --timeout`\
+  \ | Shutdown timeout seconds | Graceful shutdown control |\n\n    ## Volume Preservation\
+  \ Example\n\n    ```bash\n    # First run\n    docker-compose up -d\n    # Database\
+  \ writes data to volume\n\n    # Teardown\n    docker-compose down\n    # Volume\
+  \ still exists with data!\n\n    # Next run\n    docker-compose up -d\n    # Database\
+  \ finds existing data - no loss!\n    ```\n\n    ## Dangerous Operations\n\n   \
+  \ ### Delete All Data (Volumes)\n    ```bash\n    docker-compose down -v\n    ```\n\
+  \    ⚠️ **WARNING**: Deletes database data, uploaded files, etc.!\n\n    ### Complete\
+  \ Cleanup\n    ```bash\n    docker-compose down -v --rmi all --remove-orphans\n\
+  \    ```\n    ⚠️ **WARNING**: Nuclear option - removes everything!\n\n    ## vs\
+  \ docker-compose stop\n\n    ### docker-compose stop\n    - Stops containers\n \
+  \   - **Keeps** containers\n    - **Keeps** networks\n    - Fast restart with `docker-compose\
+  \ start`\n\n    ### docker-compose down\n    - Stops containers\n    - **Removes**\
+  \ containers\n    - **Removes** networks\n    - Must use `docker-compose up` to\
+  \ restart\n\n    ## Common Mistakes\n\n    1. **Using down -v in production**: Accidentally\
+  \ deletes all data\n    2. **Forgetting --remove-orphans**: Old containers linger\
+  \ after config changes\n    3. **Not specifying timeout**: Long-running tasks get\
+  \ killed abruptly\n    4. **Wrong directory**: Must be in same directory as docker-compose.yml\n\
+  \n    ## Best Practices\n\n    ### Development Workflow\n    ```bash\n    # End\
+  \ of day\n    docker-compose down  # Clean shutdown, keep data\n\n    # Fresh start\
+  \ (no data)\n    docker-compose down -v  # Remove data for testing\n    ```\n\n\
+  \    ### CI/CD Cleanup\n    ```bash\n    # After tests\n    docker-compose down\
+  \ -v --remove-orphans  # Complete cleanup\n    ```\n\n    ### Production Deployment\n\
+  \    ```bash\n    # NEVER use -v in production!\n    docker-compose down  # Keeps\
+  \ volumes with data\n    ```\n\n    ## Pro Tips\n\n    1. **Preserve data**: Never\
+  \ use `-v` in production\n    2. **Use in scripts**: Add `|| true` to ignore errors\
+  \ if nothing running\n    3. **Increase timeout**: Use `-t 30` for services needing\
+  \ graceful shutdown\n    4. **Check before down -v**: Verify you want to delete\
+  \ all data\n    5. **Remove orphans regularly**: Clean up after compose file changes\n\
+  \    6. **Combine with up**: `docker-compose down && docker-compose up -d` for fresh\
+  \ restart\n\n    ## When to Use docker-compose down\n\n    - End of development\
+  \ session\n    - Before major configuration changes\n    - CI/CD pipeline cleanup\
+  \ steps\n    - When you need to free ports\n    - Switching between different projects\n\
+  \    - Complete environment reset\n\n## Syntax/Command\n\n```bash\ndocker-compose\
+  \ down\n```\n\n## Example\n\n```bash\ndocker-compose down -v\n```\n\n## Key Points\n\
+  \n- Standard cleanup: docker-compose down\n\n- Remove volumes too: docker-compose\
+  \ down -v\n\n- Remove images: docker-compose down --rmi all"
+exercises:
+- type: terminal
+  sequence_order: 1
+  command: docker-compose down
+  description: Stop and remove all services while keeping persistent data volumes
+    intact
+  hints:
+  - 'Standard cleanup: docker-compose down'
+  - 'Remove volumes too: docker-compose down -v'
+  - 'Remove images: docker-compose down --rmi all'
+  validation:
+    must_not_include:
+    - Error
+    - 'panic:'
+  timeout_sec: 60
+  require_pass: true
+- type: sandbox
+  sequence_order: 99
+  hints:
+  - Run under CPU pressure to surface leaks or races
+  - Keep commands idempotent in CI
+  validation:
+    must_not_include:
+    - Error
+    - 'panic:'
+  timeout_sec: 60
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What is the difference between docker-compose down and docker-compose
+    stop?
+  options:
+  - down removes containers and networks, stop only pauses containers
+  - They are identical commands with different names
+  - stop is faster because it skips network cleanup
+  - down only works in production environments
+  require_pass: true
+  correct_answer: down removes containers and networks, stop only pauses containers
+  explanation: '**docker-compose down** vs **docker-compose stop** are fundamentally
+    different: **down** (complete teardown): (1) Stops containers gracefully (SIGTERM,
+    then SIGKILL after timeout), (2) **Removes containers**, (3) **Removes networks**
+    created by up, (4) Optionally removes volumes with `-v`, (5) Frees all resources
+    completely. After down, you must use `docker-compose up` to restart. **stop**
+    (pause operation): (1) Stops containers only, (2) **Keeps containers** (in stopped
+    state), (3) **Keeps networks**, (4) Keeps all resources allocated. After stop,
+    you can quickly restart with `docker-compose start` (faster than up). Use cases:
+    Use **stop** for: temporary pause during development, quick restart needed, debugging
+    stopped containers. Use **down** for: end of work day cleanup, switching projects,
+    CI/CD cleanup, freeing ports/resources. They are NOT identical; down is NOT only
+    for production; down is NOT faster (it does more work). Key insight: stop is reversible
+    with start, down requires full up to recreate.'

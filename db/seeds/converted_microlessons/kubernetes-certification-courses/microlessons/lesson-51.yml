@@ -1,0 +1,65 @@
+slug: lesson-51
+title: Lesson 51
+difficulty: easy
+sequence_order: 51
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Service Types and Endpoints\n\n    - ClusterIP,\
+  \ NodePort, LoadBalancer\n    - headless services and Endpoints/EndpointSlice\n\
+  \    - Session affinity and externalTrafficPolicy"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What is the default Service type in Kubernetes if no type is specified?
+  options:
+  - NodePort
+  - LoadBalancer
+  - ClusterIP
+  - ExternalName
+  correct_answer: ClusterIP
+  explanation: ClusterIP is the default Service type in Kubernetes. It creates a virtual
+    IP address that is accessible only within the cluster, providing a stable endpoint
+    for pods selected by the Service's selector. This internal-only IP enables pod-to-pod
+    communication within the cluster but doesn't expose the Service externally. ClusterIP
+    Services are ideal for internal microservices that don't need external access
+    - for example, a database service that should only be accessible by application
+    pods. NodePort builds on ClusterIP by additionally exposing the Service on a static
+    port on each node's IP, making it accessible from outside. LoadBalancer builds
+    on NodePort by provisioning an external load balancer (in supported cloud environments).
+    ExternalName creates a CNAME record for external services. Most Services in a
+    cluster are ClusterIP for internal communication.
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What is the purpose of setting sessionAffinity to ClientIP on a Service?
+  options:
+  - To encrypt traffic between client and service
+  - To ensure requests from the same client IP are routed to the same pod
+  - To restrict which IPs can access the service
+  - To enable IPv6 support
+  correct_answer: To ensure requests from the same client IP are routed to the same
+    pod
+  explanation: Setting sessionAffinity to ClientIP (instead of the default 'None')
+    ensures that requests from the same client IP address are consistently routed
+    to the same backend pod for the duration of a session. This is also known as sticky
+    sessions. By default, Services load balance requests across all backend pods without
+    regard to which pod served previous requests. Session affinity is useful for stateful
+    applications that store session data locally (though ideally, cloud-native apps
+    should be stateless with external session storage). When enabled, Kubernetes tracks
+    client IPs and maintains the routing for a configurable timeout period (sessionAffinityConfig.clientIP.timeoutSeconds).
+    Note that this works at the IP level, so multiple users behind the same NAT gateway
+    would be routed to the same pod, which may not be ideal for load distribution.
+  require_pass: true
+- type: mcq
+  sequence_order: 1
+  question: What is the default service type in Kubernetes?
+  options:
+  - ClusterIP
+  - NodePort
+  - LoadBalancer
+  - ExternalName
+  correct_answer_index: 0
+  explanation: ClusterIP is the default service type. It exposes the service on an
+    internal cluster IP, making it only reachable within the cluster.
+  require_pass: true

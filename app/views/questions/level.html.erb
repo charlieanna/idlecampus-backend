@@ -1,0 +1,32 @@
+<table>
+<% @data.each do |key, value| %>
+    <tr>
+    <th>Distance: <%= key %></th>
+    <% if value %>
+        <% value.sort_by {|_key, value| -value["inlinks"]}.each do |val1| %>
+            <td>
+                
+                <% if @service == "stackoverflow" %>
+                    <div><%= link_to val1[1]["title"], "https://stackoverflow.com/questions/#{val1[0]}", target: '_blank' %></div>
+                <% elsif @service == "serverfault" %>
+                    <div><%= link_to val1[1]["title"], "https://serverfault.com/questions/#{val1[0]}", target: '_blank' %></div>
+                <% elsif @service == "superuser" %>
+                    <div><%= link_to val1[1]["title"], "https://superuser.com/questions/#{val1[0]}", target: '_blank' %></div>
+                <% else %>
+                    <div><%= link_to val1[1]["title"], "https://#{@service}.stackexchange.com/questions/#{val1[0]}", target: '_blank' %></div>
+                <% end %>
+                Tags<%= val1[1]["tag_names"] %>, 
+                Score: <%= val1[1]["score"] %>,
+                Inlinks: <%= val1[1]["inlinks"] %>, 
+                Outlinks: <%= val1[1]["outlinks"] %>
+                <%= link_to "Level", "/posts/level/#{val1[0]}?service=#{@service}", target: '_blank' %>
+                <%= link_to "RLevel", "/posts/rlevel/#{val1[0]}?service=#{@service}", target: '_blank' %>
+                <%= link_to "Sources", "/posts/sources/#{val1[0]}?service=#{@service}", target: '_blank' %>
+                <%= link_to "Sinks", "/posts/sinks/#{val1[0]}?service=#{@service}", target: '_blank' %>
+            </td>
+        <% end %>
+      
+    <% end %>
+    </tr>
+<% end %>
+</table>

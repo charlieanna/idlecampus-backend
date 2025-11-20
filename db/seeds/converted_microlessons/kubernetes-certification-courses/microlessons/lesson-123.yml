@@ -1,0 +1,87 @@
+slug: lesson-123
+title: Lesson 123
+difficulty: easy
+sequence_order: 123
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Service Accounts and RBAC for Apps\n\n\
+  \    - Default service account behavior\n    - Binding Roles to service accounts\n\
+  \    - Token/ProjectedVolume considerations"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What service account does a pod use if none is specified?
+  options:
+  - The cluster-admin service account
+  - The 'default' service account in the pod's namespace
+  - A randomly generated service account
+  - No service account; the pod cannot access the API
+  correct_answer: The 'default' service account in the pod's namespace
+  explanation: 'Every Kubernetes namespace automatically gets a ''default'' ServiceAccount
+    created when the namespace is created. If you don''t explicitly specify a ServiceAccount
+    in a pod spec, Kubernetes automatically assigns this default ServiceAccount. The
+    default ServiceAccount has minimal permissions - it can only discover the Kubernetes
+    API server but has no permissions to read or modify resources (unless additional
+    RoleBindings grant it permissions). The ServiceAccount determines: what identity
+    the pod has when calling the Kubernetes API, what permissions it has via RBAC
+    bindings, and what authentication token is mounted into the pod (typically at
+    /var/run/secrets/kubernetes.io/serviceaccount/token). This auto-mounting can be
+    a security concern - pods that don''t need API access shouldn''t have tokens mounted.
+    To prevent this, set ''automountServiceAccountToken: false'' in either the ServiceAccount
+    or pod spec. For example, a static website pod doesn''t need API access and should
+    have ''automountServiceAccountToken: false''. For pods that do need API access,
+    create dedicated ServiceAccounts with minimal required permissions rather than
+    using the default. For instance, a monitoring pod might have a ServiceAccount
+    bound to a Role that allows ''get, list, watch'' on pods and nodes. Best practices:
+    create dedicated ServiceAccounts for each application or component, grant least-privilege
+    permissions via RoleBindings/ClusterRoleBindings, disable token automounting for
+    pods that don''t need API access, and never grant cluster-admin to service accounts
+    unless absolutely necessary. Use ''kubectl create serviceaccount myapp'' to create
+    ServiceAccounts, then reference them in pod specs with ''serviceAccountName: myapp''.'
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: How does a pod's ServiceAccount enable it to interact with the Kubernetes
+    API?
+  options:
+  - It stores the API server's IP address
+  - It provides an authentication token that's automatically mounted into the pod
+  - It opens a direct network connection to the API server
+  - It doesn't; pods cannot interact with the API
+  correct_answer: It provides an authentication token that's automatically mounted
+    into the pod
+  explanation: 'When a pod is created with a ServiceAccount, Kubernetes automatically
+    mounts three things into the pod at the path /var/run/secrets/kubernetes.io/serviceaccount/:
+    1) token - a JWT (JSON Web Token) that authenticates API requests as this ServiceAccount,
+    2) ca.crt - the cluster''s CA certificate for verifying the API server''s TLS
+    certificate, 3) namespace - the namespace the pod runs in. Applications inside
+    the pod can read this token and use it to make authenticated requests to the Kubernetes
+    API server. For example, a monitoring tool might read the token, then make API
+    calls like ''curl -H "Authorization: Bearer $(cat /var/run/secrets/kubernetes.io/serviceaccount/token)"
+    https://kubernetes.default.svc/api/v1/pods''. The API server validates the token,
+    identifies which ServiceAccount it belongs to, and checks RBAC permissions to
+    authorize the request. Modern Kubernetes (v1.21+) uses projected volume tokens
+    by default, which are more secure: they''re bound to specific pods, have limited
+    lifetimes, and can be rotated. You can configure this with ''serviceAccountToken''
+    volume type. The permissions the ServiceAccount has are determined entirely by
+    RBAC - the token just proves identity, RoleBindings/ClusterRoleBindings grant
+    permissions. For example, to allow a pod to list pods, you''d create a Role with
+    ''resources: [pods], verbs: [list]'' and bind it to the ServiceAccount with a
+    RoleBinding. Security considerations: tokens grant API access, so limit ServiceAccount
+    permissions strictly, use automountServiceAccountToken: false when API access
+    isn''t needed, and regularly audit ServiceAccount permissions with tools like
+    kubectl-who-can or rbac-lookup.'
+  require_pass: true
+- type: mcq
+  sequence_order: 1
+  question: What is the default service type in Kubernetes?
+  options:
+  - ClusterIP
+  - NodePort
+  - LoadBalancer
+  - ExternalName
+  correct_answer_index: 0
+  explanation: ClusterIP is the default service type. It exposes the service on an
+    internal cluster IP, making it only reachable within the cluster.
+  require_pass: true

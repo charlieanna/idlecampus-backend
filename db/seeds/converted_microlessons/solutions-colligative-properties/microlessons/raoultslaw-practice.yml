@@ -1,0 +1,58 @@
+slug: raoultslaw-practice
+title: raoults_law — Practice
+difficulty: medium
+sequence_order: 10
+estimated_minutes: 2
+key_concepts:
+- raoults_law
+prerequisites: []
+content_md: '# raoults_law — Practice 🚀
+
+
+  Total moles = 10. X_water = 9/10 = 0.9. P = P° × X = 30 × 0.9 = 27 mm Hg
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: 'A solution contains 1 mol of non-volatile solute and 9 mol of water. If vapor pressure of pure water is 30 mm Hg, what is the vapor pressure of solution?'
+  options:
+  - '27 mm Hg'
+  - '30 mm Hg'
+  - '3 mm Hg'
+  - '33 mm Hg'
+  correct_answer: '27 mm Hg'
+  explanation: "Using Raoult's law: P = P° × X_solvent. Total moles = 1 + 9 = 10. Mole fraction of water X_water = 9/10 = 0.9. Vapor pressure P = 30 × 0.9 = 27 mm Hg. The vapor pressure is lowered because solute particles occupy space at the surface, reducing the number of solvent molecules that can escape into the vapor phase. This vapor pressure lowering is the basis for other colligative properties."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: 'Raoult\'s law states that:'
+  options:
+  - Vapor pressure of solvent is proportional to its mole fraction
+  - Vapor pressure increases with solute addition
+  - Boiling point decreases with solute addition
+  - Freezing point increases with solute addition
+  correct_answer: Vapor pressure of solvent is proportional to its mole fraction
+  explanation: "Raoult's law states that the partial vapor pressure of a component in an ideal solution is equal to the vapor pressure of the pure component multiplied by its mole fraction in the solution: P_A = X_A × P_A°. For a solution with non-volatile solute, only the solvent contributes to vapor pressure, and P_solution = X_solvent × P°_solvent. Since X_solvent < 1 (due to solute presence), P_solution < P°_solvent. This explains vapor pressure lowering."
+  require_pass: false
+- type: mcq
+  sequence_order: 3
+  question: 'Relative lowering of vapor pressure equals:'
+  options:
+  - Mole fraction of solute
+  - Mole fraction of solvent
+  - Molality of solution
+  - Molarity of solution
+  correct_answer: Mole fraction of solute
+  explanation: "The relative lowering of vapor pressure is given by: (P° - P)/P° = X_solute, where P° is vapor pressure of pure solvent and P is vapor pressure of solution. This can be derived from Raoult's law: P = X_solvent × P°, so (P° - P)/P° = (P° - X_solvent × P°)/P° = 1 - X_solvent = X_solute. This relationship is used to determine molar mass of non-volatile solutes. It's independent of the nature of solute particles (colligative property)."
+  require_pass: false

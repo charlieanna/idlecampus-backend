@@ -1,0 +1,355 @@
+slug: introduction-to-bash-and-shell-scripting
+title: Introduction to Bash and Shell Scripting
+difficulty: easy
+sequence_order: 4
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Introduction to Bash and Shell Scripting \U0001F680\n\n# Introduction\
+  \ to Bash and Shell Scripting\n\n    Bash (Bourne Again Shell) is the default shell\
+  \ on most Linux and macOS systems. It's both a command-line interface and a powerful\
+  \ scripting language.\n\n    ## What is a Shell?\n\n    A **shell** is a program\
+  \ that:\n    - Provides an interface between the user and the operating system\n\
+  \    - Interprets commands typed by the user\n    - Executes programs and scripts\n\
+  \    - Manages input/output redirection\n\n    ### Types of Shells\n\n    | Shell\
+  \ | Description |\n    |-------|-------------|\n    | **sh** | Bourne Shell (original)\
+  \ |\n    | **bash** | Bourne Again Shell (most popular) |\n    | **zsh** | Z Shell\
+  \ (macOS default since Catalina) |\n    | **fish** | Friendly Interactive Shell\
+  \ |\n    | **ksh** | Korn Shell |\n    | **csh/tcsh** | C Shell / TENEX C Shell\
+  \ |\n\n    ## Why Learn Bash?\n\n    ### 1. Automation\n    - Automate repetitive\
+  \ tasks\n    - Schedule jobs with cron\n    - Batch process files\n    - System\
+  \ maintenance scripts\n\n    ### 2. System Administration\n    - Manage users and\
+  \ permissions\n    - Monitor system resources\n    - Configure services\n    - Deploy\
+  \ applications\n\n    ### 3. DevOps & CI/CD\n    - Build and deployment scripts\n\
+  \    - Infrastructure automation\n    - Docker and Kubernetes workflows\n    - Git\
+  \ hooks\n\n    ### 4. Data Processing\n    - Parse log files\n    - Transform text\
+  \ data\n    - ETL pipelines\n    - Report generation\n\n    ## Your First Shell\
+  \ Script\n\n    ### Hello World\n\n    Create a file named `hello.sh`:\n\n    ```bash\n\
+  \    #!/bin/bash\n    # My first shell script\n\n    echo \"Hello, World!\"\n  \
+  \  ```\n\n    ### Make it Executable\n\n    ```bash\n    chmod +x hello.sh\n   \
+  \ ```\n\n    ### Run it\n\n    ```bash\n    ./hello.sh\n    # Output: Hello, World!\n\
+  \    ```\n\n    ## The Shebang (#!)\n\n    The first line `#!/bin/bash` is called\
+  \ the **shebang**:\n\n    ```bash\n    #!/bin/bash         # Use bash\n    #!/bin/sh\
+  \           # Use sh (POSIX shell)\n    #!/usr/bin/env bash # Use bash from PATH\
+  \ (portable)\n    #!/usr/bin/python3  # Use Python 3\n    ```\n\n    **Best Practice:**\
+  \ Use `#!/usr/bin/env bash` for portability.\n\n    ## Basic Commands\n\n    ###\
+  \ Navigation\n\n    ```bash\n    pwd          # Print working directory\n    cd\
+  \ /path     # Change directory\n    cd ~         # Go to home directory\n    cd\
+  \ -         # Go to previous directory\n    ls           # List files\n    ls -la\
+  \       # List all files (long format, including hidden)\n    ```\n\n    ### File\
+  \ Operations\n\n    ```bash\n    touch file.txt       # Create empty file\n    mkdir\
+  \ directory      # Create directory\n    mkdir -p dir1/dir2   # Create nested directories\n\
+  \    cp file1 file2       # Copy file\n    cp -r dir1 dir2      # Copy directory\
+  \ recursively\n    mv file1 file2       # Move/rename file\n    rm file.txt    \
+  \      # Remove file\n    rm -r directory      # Remove directory recursively\n\
+  \    rm -rf directory     # Force remove (be careful!)\n    ```\n\n    ### Viewing\
+  \ Files\n\n    ```bash\n    cat file.txt         # Display entire file\n    less\
+  \ file.txt        # View file page by page (q to quit)\n    head file.txt      \
+  \  # Show first 10 lines\n    head -n 5 file.txt   # Show first 5 lines\n    tail\
+  \ file.txt        # Show last 10 lines\n    tail -n 5 file.txt   # Show last 5 lines\n\
+  \    tail -f log.txt      # Follow file (live updates)\n    ```\n\n    ### Searching\n\
+  \n    ```bash\n    grep \"pattern\" file.txt          # Search for pattern\n   \
+  \ grep -i \"pattern\" file.txt       # Case-insensitive search\n    grep -r \"pattern\"\
+  \ directory/     # Recursive search\n    grep -n \"pattern\" file.txt       # Show\
+  \ line numbers\n    find . -name \"*.txt\"             # Find files by name\n  \
+  \  find . -type f -mtime -7         # Files modified in last 7 days\n    ```\n\n\
+  \    ## Input and Output\n\n    ### Standard Streams\n\n    - **stdin (0)**: Standard\
+  \ input (keyboard)\n    - **stdout (1)**: Standard output (terminal)\n    - **stderr\
+  \ (2)**: Standard error (terminal)\n\n    ### Output with echo\n\n    ```bash\n\
+  \    echo \"Hello\"              # Print to stdout\n    echo -n \"No newline\" \
+  \     # No trailing newline\n    echo -e \"Line1\\\\nLine2\"   # Enable escape sequences\n\
+  \    ```\n\n    ### Output with printf\n\n    ```bash\n    printf \"Hello, %s!\\\
+  \\n\" \"World\"      # Formatted output\n    printf \"%d + %d = %d\\\\n\" 1 2 3\
+  \      # Integer formatting\n    printf \"%.2f\\\\n\" 3.14159            # Float\
+  \ with 2 decimals\n    ```\n\n    ## Redirection\n\n    ### Output Redirection\n\
+  \n    ```bash\n    echo \"Hello\" > file.txt         # Overwrite file\n    echo\
+  \ \"World\" >> file.txt        # Append to file\n    command 2> error.log      \
+  \      # Redirect stderr\n    command > output.log 2>&1       # Redirect both stdout\
+  \ and stderr\n    command &> all.log              # Redirect both (shorthand)\n\
+  \    ```\n\n    ### Input Redirection\n\n    ```bash\n    command < input.txt  \
+  \           # Read from file\n    cat < file.txt                  # Same as: cat\
+  \ file.txt\n    ```\n\n    ### Here Documents\n\n    ```bash\n    cat << EOF\n \
+  \   Line 1\n    Line 2\n    EOF\n    # Outputs multiple lines\n    ```\n\n    ###\
+  \ Here Strings\n\n    ```bash\n    grep \"pattern\" <<< \"string to search\"\n \
+  \   ```\n\n    ## Pipes\n\n    Pipes (`|`) connect the output of one command to\
+  \ the input of another:\n\n    ```bash\n    ls -la | grep \".txt\"             \
+  \  # List only .txt files\n    cat file.txt | sort | uniq         # Sort and remove\
+  \ duplicates\n    ps aux | grep nginx                # Find nginx processes\n  \
+  \  cat access.log | wc -l             # Count lines in file\n    ```\n\n    ###\
+  \ Common Pipeline Patterns\n\n    ```bash\n    # Count files in directory\n    ls\
+  \ | wc -l\n\n    # Top 10 largest files\n    du -sh * | sort -rh | head -10\n\n\
+  \    # Find most common words\n    cat file.txt | tr ' ' '\\\\n' | sort | uniq -c\
+  \ | sort -rn | head -10\n\n    # Monitor log file in real-time\n    tail -f /var/log/syslog\
+  \ | grep error\n    ```\n\n    ## Command Substitution\n\n    Capture command output\
+  \ in a variable:\n\n    ```bash\n    # Modern syntax (preferred)\n    current_date=$(date)\n\
+  \    file_count=$(ls | wc -l)\n\n    # Old syntax (backticks)\n    current_date=`date`\n\
+  \    file_count=`ls | wc -l`\n    ```\n\n    ### Example\n\n    ```bash\n    #!/bin/bash\n\
+  \    echo \"Current user: $(whoami)\"\n    echo \"Current directory: $(pwd)\"\n\
+  \    echo \"Number of files: $(ls | wc -l)\"\n    ```\n\n    ## Exit Status\n\n\
+  \    Every command returns an **exit status** (0 = success, non-zero = error):\n\
+  \n    ```bash\n    command\n    echo $?  # Print exit status of last command\n\n\
+  \    # Common exit codes\n    # 0   = Success\n    # 1   = General error\n    #\
+  \ 2   = Misuse of command\n    # 126 = Command not executable\n    # 127 = Command\
+  \ not found\n    # 130 = Ctrl+C pressed\n    ```\n\n    ### Using Exit Status\n\n\
+  \    ```bash\n    if ls /nonexistent 2>/dev/null; then\n        echo \"Directory\
+  \ exists\"\n    else\n        echo \"Directory does not exist\"\n    fi\n\n    #\
+  \ Short-circuit evaluation\n    command1 && command2  # Run command2 only if command1\
+  \ succeeds\n    command1 || command2  # Run command2 only if command1 fails\n  \
+  \  ```\n\n    ## Common Utilities\n\n    ### Text Processing\n\n    ```bash\n  \
+  \  sort file.txt              # Sort lines\n    uniq file.txt              # Remove\
+  \ adjacent duplicates\n    cut -d: -f1 /etc/passwd    # Extract first field (delimiter\
+  \ :)\n    tr 'a-z' 'A-Z'             # Translate lowercase to uppercase\n    sed\
+  \ 's/old/new/g' file     # Replace text\n    awk '{print $1}' file      # Print\
+  \ first column\n    ```\n\n    ### File Information\n\n    ```bash\n    wc file.txt\
+  \                # Count lines, words, bytes\n    wc -l file.txt             # Count\
+  \ lines only\n    du -sh directory           # Disk usage\n    df -h           \
+  \           # Filesystem disk space\n    file document.pdf          # Determine\
+  \ file type\n    ```\n\n    ### Process Management\n\n    ```bash\n    ps aux  \
+  \                   # List all processes\n    top                        # Interactive\
+  \ process viewer\n    htop                       # Better alternative to top\n \
+  \   kill <PID>                 # Send SIGTERM to process\n    kill -9 <PID>    \
+  \          # Force kill process\n    killall process_name       # Kill all matching\
+  \ processes\n    ```\n\n    ## Practical Examples\n\n    ### Example 1: Backup Script\n\
+  \n    ```bash\n    #!/bin/bash\n    # Simple backup script\n\n    SOURCE=\"/home/user/documents\"\
+  \n    DEST=\"/backup\"\n    DATE=$(date +%Y-%m-%d)\n\n    tar -czf \"$DEST/backup-$DATE.tar.gz\"\
+  \ \"$SOURCE\"\n    echo \"Backup completed: backup-$DATE.tar.gz\"\n    ```\n\n \
+  \   ### Example 2: System Information\n\n    ```bash\n    #!/bin/bash\n    # Display\
+  \ system information\n\n    echo \"=== System Information ===\"\n    echo \"Hostname:\
+  \ $(hostname)\"\n    echo \"OS: $(uname -s)\"\n    echo \"Kernel: $(uname -r)\"\n\
+  \    echo \"Uptime: $(uptime -p)\"\n    echo \"Load Average: $(uptime | awk -F'load\
+  \ average:' '{print $2}')\"\n    echo \"Disk Usage:\"\n    df -h | grep -v tmpfs\n\
+  \    ```\n\n    ### Example 3: Log Analyzer\n\n    ```bash\n    #!/bin/bash\n  \
+  \  # Analyze nginx access log\n\n    LOG_FILE=\"/var/log/nginx/access.log\"\n\n\
+  \    echo \"Top 10 IP addresses:\"\n    awk '{print $1}' \"$LOG_FILE\" | sort |\
+  \ uniq -c | sort -rn | head -10\n\n    echo \"\"\n    echo \"Top 10 requested URLs:\"\
+  \n    awk '{print $7}' \"$LOG_FILE\" | sort | uniq -c | sort -rn | head -10\n\n\
+  \    echo \"\"\n    echo \"HTTP status codes:\"\n    awk '{print $9}' \"$LOG_FILE\"\
+  \ | sort | uniq -c | sort -rn\n    ```\n\n    ## Best Practices\n\n    ### 1. Always\
+  \ Use Shebang\n\n    ```bash\n    #!/usr/bin/env bash\n    ```\n\n    ### 2. Add\
+  \ Comments\n\n    ```bash\n    # This script does something important\n    # Author:\
+  \ Your Name\n    # Date: 2024-01-01\n    ```\n\n    ### 3. Quote Variables\n\n \
+  \   ```bash\n    # ❌ Bad - can break with spaces\n    echo $variable\n\n    # ✅\
+  \ Good\n    echo \"$variable\"\n    ```\n\n    ### 4. Use `set -e`\n\n    Exit immediately\
+  \ if any command fails:\n\n    ```bash\n    #!/bin/bash\n    set -e  # Exit on error\n\
+  \n    mkdir /path/to/dir\n    cd /path/to/dir\n    # If mkdir fails, script stops\n\
+  \    ```\n\n    ### 5. Use `set -u`\n\n    Treat unset variables as errors:\n\n\
+  \    ```bash\n    #!/bin/bash\n    set -u  # Error on undefined variable\n\n   \
+  \ echo \"$undefined_var\"  # This will cause an error\n    ```\n\n    ### 6. Use\
+  \ `set -x`\n\n    Print commands before executing (debugging):\n\n    ```bash\n\
+  \    #!/bin/bash\n    set -x  # Debug mode\n\n    echo \"Hello\"\n    # Output:\
+  \ + echo Hello\n    #         Hello\n    ```\n\n    ### Combine Options\n\n    ```bash\n\
+  \    #!/bin/bash\n    set -euo pipefail  # Exit on error, undefined var, pipe failure\n\
+  \    ```\n\n    ## Key Takeaways\n\n    1. **Bash is powerful** - Automate tasks,\
+  \ manage systems\n    2. **Shebang matters** - Use `#!/usr/bin/env bash`\n    3.\
+  \ **Pipes are your friend** - Chain commands together\n    4. **Quote variables**\
+  \ - Prevent word splitting and globbing\n    5. **Check exit status** - Use `$?`\
+  \ or `&&` / `||`\n    6. **Use set options** - `set -euo pipefail` for robust scripts\n\
+  \    7. **Learn core utilities** - grep, sed, awk, find, etc.\n    8. **Practice\
+  \ regularly** - The more you use it, the better you get"
+exercises:
+- type: terminal
+  slug: bash-intro-hello-script
+  sequence_order: 1
+  description: Create and run your first bash script
+  command: echo '#!/usr/bin/env bash' > hello.sh && echo 'echo "Hello, Bash World!"' >> hello.sh && chmod +x hello.sh && ./hello.sh
+  validation:
+    must_include:
+      - "Hello, Bash World!"
+    must_not_include:
+      - Error
+      - Permission denied
+  hints:
+    - The shebang #!/usr/bin/env bash tells the system to use bash
+    - chmod +x makes the script executable
+    - ./hello.sh runs the script in the current directory
+  timeout_sec: 60
+  require_pass: true
+- type: terminal
+  slug: bash-intro-navigation
+  sequence_order: 2
+  description: Practice basic navigation and listing commands
+  command: pwd && cd ~ && echo "Home directory:" && pwd && ls -la | head -5
+  validation:
+    must_include:
+      - "Home directory:"
+    must_not_include:
+      - "command not found"
+      - Error
+  hints:
+    - pwd prints your current working directory
+    - cd ~ takes you to your home directory
+    - ls -la shows all files including hidden ones
+  timeout_sec: 60
+  require_pass: true
+- type: terminal
+  slug: bash-intro-file-ops
+  sequence_order: 3
+  description: Create directory structure and files
+  command: mkdir -p project/src project/docs && touch project/src/main.sh project/docs/README.md && ls -R project
+  validation:
+    must_include:
+      - "project"
+      - "src"
+      - "docs"
+      - "main.sh"
+      - "README.md"
+    must_not_include:
+      - Error
+      - "No such file"
+  hints:
+    - mkdir -p creates parent directories as needed
+    - touch creates empty files
+    - ls -R shows recursive directory listing
+  timeout_sec: 60
+  require_pass: true
+- type: terminal
+  slug: bash-intro-pipes-redirection
+  sequence_order: 4
+  description: Use pipes and output redirection
+  command: echo -e "apple\nbanana\ncherry\napple\nbanana" > fruits.txt && cat fruits.txt | sort | uniq && echo "Total lines:" && cat fruits.txt | wc -l
+  validation:
+    must_include:
+      - "apple"
+      - "banana"
+      - "cherry"
+      - "Total lines:"
+      - "5"
+    must_not_include:
+      - Error
+  hints:
+    - The > operator redirects output to a file
+    - The | pipe connects output of one command to input of another
+    - sort orders lines alphabetically
+    - uniq removes adjacent duplicate lines
+    - wc -l counts lines
+  timeout_sec: 60
+  require_pass: true
+- type: terminal
+  slug: bash-intro-command-substitution
+  sequence_order: 5
+  description: Use command substitution to capture output
+  command: current_user=$(whoami) && current_dir=$(pwd) && echo "User $current_user is in directory $current_dir"
+  validation:
+    must_include:
+      - "User"
+      - "is in directory"
+    must_not_include:
+      - Error
+  hints:
+    - $() captures command output in a variable
+    - whoami shows your username
+    - pwd shows current directory
+    - Use "$variable" to expand variables
+  timeout_sec: 60
+  require_pass: true
+- type: terminal
+  slug: bash-intro-exit-status
+  sequence_order: 6
+  description: Check command exit status and use conditional execution
+  command: ls /tmp > /dev/null && echo "Directory exists" || echo "Directory not found"
+  validation:
+    must_include:
+      - "Directory exists"
+    must_not_include:
+      - "Directory not found"
+  hints:
+    - Every command returns an exit status (0=success, non-zero=error)
+    - && executes the next command only if previous succeeded
+    - "|| executes the next command only if previous failed"
+    - /dev/null discards output
+  timeout_sec: 60
+  require_pass: true
+- type: mcq
+  slug: bash-intro-mcq-1
+  sequence_order: 7
+  question: 'What is the purpose of the shebang line #!/usr/bin/env bash at the beginning
+    of a shell script, and why is it preferred over #!/bin/bash?'
+  options:
+  - It makes the script run faster by using environment variables
+  - It locates bash in the user's PATH, making the script more portable across different
+    systems
+  - It enables debugging mode for the bash interpreter
+  - It allows the script to run on any shell, not just bash
+  correct_answer: It locates bash in the user's PATH, making the script more portable
+    across different systems
+  explanation: 'The shebang (#!/usr/bin/env bash) tells the operating system which
+    interpreter to use when executing the script. The "env" approach is preferred
+    over hardcoding #!/bin/bash because it searches for bash in the user''s PATH environment
+    variable rather than assuming bash is located at /bin/bash. Different systems
+    may install bash in different locations (/usr/local/bin/bash on macOS, /bin/bash
+    on Linux, etc.). Using /usr/bin/env makes the script portable across various Unix-like
+    systems. When you run ./script.sh, the kernel reads the shebang, finds bash using
+    env, and executes the script with that interpreter. Without a shebang, the script
+    runs with the user''s current shell (which might not be bash), potentially causing
+    compatibility issues. This is a best practice for any scripting language (Python,
+    Ruby, etc.).'
+  require_pass: true
+- type: mcq
+  slug: bash-intro-mcq-2
+  sequence_order: 8
+  question: What is the difference between command > file.txt 2>&1 and command &>
+    file.txt?
+  options:
+  - The first redirects only stdout, the second redirects both stdout and stderr
+  - They are functionally equivalent - both redirect stdout and stderr to file.txt
+  - The first appends to the file, the second overwrites it
+  - The second is deprecated and should not be used in modern bash scripts
+  correct_answer: They are functionally equivalent - both redirect stdout and stderr
+    to file.txt
+  explanation: 'Both command > file.txt 2>&1 and command &> file.txt achieve the same
+    result: redirecting both standard output (stdout, file descriptor 1) and standard
+    error (stderr, file descriptor 2) to file.txt. The first syntax (> file.txt 2>&1)
+    works in two steps: (1) > file.txt redirects stdout to the file, (2) 2>&1 redirects
+    stderr (fd 2) to wherever stdout (fd 1) is going (the file). The &> syntax is
+    a bash shorthand introduced in Bash 4.0+ that does the same thing in one operation.
+    Both are valid, though the longer form is more portable (works in older shells
+    and POSIX sh). Understanding file descriptors is crucial: 0=stdin, 1=stdout, 2=stderr.
+    The 2>&1 syntax specifically means "redirect file descriptor 2 to wherever file
+    descriptor 1 points." Order matters: > file.txt 2>&1 works, but 2>&1 > file.txt
+    does not (stderr would go to the terminal, not the file).'
+  require_pass: true
+- type: mcq
+  slug: bash-intro-mcq-3
+  sequence_order: 9
+  question: What does the set -euo pipefail command do in a bash script, and why is
+    it considered a best practice?
+  options:
+  - It enables debugging mode and prints all commands before execution
+  - It makes the script exit on errors, undefined variables, and pipeline failures,
+    creating robust error handling
+  - It sets the script to run in parallel, using pipes for inter-process communication
+  - It configures the script to use strict POSIX compliance mode
+  correct_answer: It makes the script exit on errors, undefined variables, and pipeline
+    failures, creating robust error handling
+  explanation: 'The set -euo pipefail command combines three important bash options
+    for robust scripting: (1) -e (errexit): exits immediately if any command returns
+    a non-zero exit status (error). Without this, scripts continue running after errors,
+    potentially causing cascading failures. (2) -u (nounset): treats unset variables
+    as errors. This catches typos like echo "$usrname" (instead of $username) which
+    would otherwise silently expand to empty string. (3) -o pipefail: changes pipeline
+    behavior so the entire pipeline fails if any command in the pipe fails. Normally,
+    only the last command''s exit status matters (ls /nonexistent | wc -l returns
+    0 even though ls failed). With pipefail, the pipeline fails if any component fails.
+    Together, these create "fail-fast" behavior: scripts stop immediately when something
+    goes wrong rather than continuing in an error state. This is critical for production
+    scripts, CI/CD pipelines, and deployment automation where silent failures can
+    cause serious problems.'
+  require_pass: true
+- type: reflection
+  slug: bash-intro-reflect
+  sequence_order: 10
+  prompt: |
+    Think about a repetitive task you do regularly (backing up files, processing data, deploying code, etc.).
+    How could you automate it with a bash script? What commands would you use?
+    What error handling would be important?
+- type: checkpoint
+  slug: bash-intro-checkpoint
+  sequence_order: 11
+  prompt: |
+    Write a bash script that:
+    1. Creates a backup directory with today's date
+    2. Copies all .txt files from the current directory to the backup
+    3. Counts how many files were backed up
+    4. Prints a summary message
+
+    Include the shebang, error handling (set -e), and explain what each command does.

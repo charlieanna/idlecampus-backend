@@ -1,0 +1,91 @@
+slug: lesson-124
+title: Lesson 124
+difficulty: easy
+sequence_order: 124
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# RBAC and Authentication in Kubernetes\n\
+  \n    ## Role-Based Access Control (RBAC)\n\n    ### Key Concepts\n\n    - **Subjects**:\
+  \ Users, Groups, ServiceAccounts\n    - **Resources**: Pods, Services, Deployments,\
+  \ etc.\n    - **Verbs**: get, list, create, update, delete, watch\n\n    ### Roles\
+  \ and ClusterRoles\n\n    **Role** (namespace-scoped):\n    ```yaml\n    apiVersion:\
+  \ rbac.authorization.k8s.io/v1\n    kind: Role\n    metadata:\n      namespace:\
+  \ development\n      name: pod-reader\n    rules:\n    - apiGroups: [\"\"]\n   \
+  \   resources: [\"pods\"]\n      verbs: [\"get\", \"list\"]\n    ```\n\n    **ClusterRole**\
+  \ (cluster-wide):\n    ```yaml\n    apiVersion: rbac.authorization.k8s.io/v1\n \
+  \   kind: ClusterRole\n    metadata:\n      name: secret-reader\n    rules:\n  \
+  \  - apiGroups: [\"\"]\n      resources: [\"secrets\"]\n      verbs: [\"get\", \"\
+  list\"]\n    ```\n\n    ### RoleBindings and ClusterRoleBindings\n\n    **RoleBinding**:\n\
+  \    ```yaml\n    apiVersion: rbac.authorization.k8s.io/v1\n    kind: RoleBinding\n\
+  \    metadata:\n      name: read-pods\n      namespace: development\n    subjects:\n\
+  \    - kind: User\n      name: jane\n      apiGroup: rbac.authorization.k8s.io\n\
+  \    roleRef:\n      kind: Role\n      name: pod-reader\n      apiGroup: rbac.authorization.k8s.io\n\
+  \    ```\n\n    **ClusterRoleBinding**:\n    ```yaml\n    apiVersion: rbac.authorization.k8s.io/v1\n\
+  \    kind: ClusterRoleBinding\n    metadata:\n      name: read-secrets-global\n\
+  \    subjects:\n    - kind: Group\n      name: admins\n      apiGroup: rbac.authorization.k8s.io\n\
+  \    roleRef:\n      kind: ClusterRole\n      name: secret-reader\n      apiGroup:\
+  \ rbac.authorization.k8s.io\n    ```\n\n    ## Authentication Methods\n\n    ###\
+  \ 1. X.509 Client Certificates\n    ```bash\n    # Create private key\n    openssl\
+  \ genrsa -out jane.key 2048\n\n    # Create certificate signing request\n    openssl\
+  \ req -new -key jane.key -out jane.csr -subj \"/CN=jane/O=developers\"\n\n    #\
+  \ Sign with cluster CA\n    openssl x509 -req -in jane.csr -CA /etc/kubernetes/pki/ca.crt\
+  \ \\\n      -CAkey /etc/kubernetes/pki/ca.key -CAcreateserial \\\n      -out jane.crt\
+  \ -days 365\n    ```\n\n    ### 2. Service Account Tokens\n    ```yaml\n    apiVersion:\
+  \ v1\n    kind: ServiceAccount\n    metadata:\n      name: build-bot\n      namespace:\
+  \ ci-cd\n    ```\n\n    ```bash\n    # Get token\n    kubectl create token build-bot\
+  \ -n ci-cd\n    ```\n\n    ### 3. OpenID Connect (OIDC)\n    Configure in kube-apiserver:\n\
+  \    ```\n    --oidc-issuer-url=https://accounts.google.com\n    --oidc-client-id=kubernetes\n\
+  \    --oidc-username-claim=email\n    --oidc-groups-claim=groups\n    ```\n\n  \
+  \  ## Checking Permissions\n\n    ```bash\n    # Check if you can create deployments\n\
+  \    kubectl auth can-i create deployments --namespace=production\n\n    # Check\
+  \ permissions for another user\n    kubectl auth can-i list pods --as=jane --namespace=development\n\
+  \n    # List all permissions for a user\n    kubectl auth can-i --list --as=jane\
+  \ --namespace=development\n    ```\n\n    ## Best Practices\n\n    1. **Principle\
+  \ of Least Privilege**: Grant minimum necessary permissions\n    2. **Use ServiceAccounts**:\
+  \ For pod authentication\n    3. **Avoid Wildcards**: Be specific with resources\
+  \ and verbs\n    4. **Regular Audits**: Review and update RBAC policies\n    5.\
+  \ **Separate Namespaces**: Isolate workloads\n    6. **Use Groups**: Manage permissions\
+  \ via groups, not individual users\n\n    ## Common RBAC Patterns\n\n    ### Read-Only\
+  \ Access\n    ```yaml\n    rules:\n    - apiGroups: [\"\", \"apps\", \"batch\"]\n\
+  \      resources: [\"*\"]\n      verbs: [\"get\", \"list\", \"watch\"]\n    ```\n\
+  \n    ### Developer Access\n    ```yaml\n    rules:\n    - apiGroups: [\"\", \"\
+  apps\"]\n      resources: [\"pods\", \"deployments\", \"services\"]\n      verbs:\
+  \ [\"get\", \"list\", \"create\", \"update\", \"delete\"]\n    - apiGroups: [\"\"\
+  ]\n      resources: [\"pods/log\"]\n      verbs: [\"get\"]\n    ```\n\n    ### Cluster\
+  \ Admin\n    ```yaml\n    rules:\n    - apiGroups: [\"*\"]\n      resources: [\"\
+  *\"]\n      verbs: [\"*\"]\n    ```"
+exercises:
+  - type: mcq
+    sequence_order: 1
+    question: "What is the difference between a Role and a ClusterRole in Kubernetes RBAC?"
+    options:
+      - "Role is for users; ClusterRole is for service accounts"
+      - "Role is namespace-scoped; ClusterRole is cluster-wide and can access resources across all namespaces"
+      - "Role has more permissions than ClusterRole"
+      - "They are identical, just different names"
+    correct_answer: "Role is namespace-scoped; ClusterRole is cluster-wide and can access resources across all namespaces"
+    explanation: "Role and ClusterRole are both RBAC resources that define sets of permissions, but they differ in scope. A Role is namespace-scoped - it defines permissions for resources within a specific namespace. For example, a Role in the 'development' namespace can grant permissions to manage pods in 'development', but has no effect in other namespaces. ClusterRole, in contrast, is cluster-wide and can: 1) Grant permissions to cluster-scoped resources (like nodes, namespaces, persistentvolumes) that don't belong to any namespace, 2) Grant permissions to namespaced resources across all namespaces, or 3) Grant permissions to non-resource endpoints like /healthz. ClusterRoles are commonly used for: cluster-admin roles, allowing access to cluster-level resources, defining permissions that can be reused across multiple namespaces via RoleBindings, or creating aggregated roles. Interestingly, you can bind a ClusterRole to a specific namespace using a RoleBinding - this grants the ClusterRole's permissions only within that namespace. For example, a ClusterRole 'pod-reader' can be bound via RoleBinding in 'development' namespace, granting pod read permissions only there. This enables reusable permission sets. The binding type determines the scope: RoleBinding (namespace-scoped) can reference Role or ClusterRole but only grants permissions in its namespace. ClusterRoleBinding (cluster-wide) can only reference ClusterRole and grants permissions cluster-wide. Common pattern: create ClusterRoles for common permissions (viewer, editor), then use RoleBindings to grant them namespace-by-namespace. Use 'kubectl create clusterrole' vs 'kubectl create role' to create each type."
+    require_pass: true
+  - type: mcq
+    sequence_order: 2
+    question: "What kubectl command checks if a user can perform a specific action?"
+    options:
+      - "kubectl check permissions"
+      - "kubectl auth can-i <verb> <resource>"
+      - "kubectl verify access"
+      - "kubectl rbac test"
+    correct_answer: "kubectl auth can-i <verb> <resource>"
+    explanation: "The 'kubectl auth can-i' command is the primary tool for checking permissions in Kubernetes RBAC. It queries the API server to determine if a user or ServiceAccount can perform a specific action. Basic syntax: 'kubectl auth can-i <verb> <resource>' returns 'yes', 'no', or 'no - <reason>'. For example, 'kubectl auth can-i create deployments --namespace=production' checks if you can create deployments in production namespace. Additional options make it more powerful: '--as=username' checks permissions for another user ('kubectl auth can-i delete pods --as=jane --namespace=dev'), '--as-group=groupname' checks for a group, '--namespace=X' specifies namespace (defaults to default namespace or cluster-scope), '--all-namespaces' checks across all namespaces, '--list' shows all permissions you have in a namespace ('kubectl auth can-i --list --namespace=production'), and '--subresource=X' checks subresources like 'logs' or 'exec'. These commands are invaluable for: testing RBAC configurations, debugging permission issues, security audits, and verifying least-privilege setups. For example, after creating a ServiceAccount and RoleBinding for a monitoring tool, you'd test: 'kubectl auth can-i list pods --as=system:serviceaccount:monitoring:prometheus --namespace=default'. The command contacts the API server's authorization webhook, which evaluates all Roles, ClusterRoles, RoleBindings, and ClusterRoleBindings to determine if the action is allowed. This provides accurate, real-time permission checking. For comprehensive audits, tools like kubectl-who-can (plugin) answer 'who can delete pods?' while kubectl auth can-i answers 'can I delete pods?' - they're complementary."
+    require_pass: true
+  - type: mcq
+    sequence_order: 3
+    question: "What is the principle of least privilege in Kubernetes RBAC?"
+    options:
+      - "Give all users cluster-admin access for simplicity"
+      - "Grant only the minimum permissions necessary for users/ServiceAccounts to perform their required tasks"
+      - "Use only namespace-scoped roles, never cluster roles"
+      - "Allow read access to everything but restrict write access"
+    correct_answer: "Grant only the minimum permissions necessary for users/ServiceAccounts to perform their required tasks"
+    explanation: "The principle of least privilege is a security best practice where you grant only the minimum permissions necessary for a user, ServiceAccount, or application to perform its legitimate functions - nothing more. This minimizes the potential damage from compromised accounts, bugs, or malicious actions. In Kubernetes RBAC, this means: avoid wildcard permissions ('resources: [*], verbs: [*]') except for cluster-admin roles, grant specific resources and verbs ('resources: [pods, services], verbs: [get, list]' instead of 'verbs: [*]'), use namespace-scoped Roles instead of ClusterRoles when possible, create dedicated ServiceAccounts per application with tailored permissions, avoid binding cluster-admin to ServiceAccounts or regular users, and regularly audit and prune unnecessary permissions. For example, a CI/CD pipeline deploying to one namespace needs: create/update/delete permissions for deployments, services, configmaps in that namespace only - not cluster-admin. A monitoring tool needs: get/list/watch permissions for pods, nodes, services cluster-wide - no write permissions. Implementation: start with no permissions, add permissions as errors occur and requirements are confirmed, document why each permission is needed, use tools like kubectl-who-can to audit who can perform dangerous actions, implement approval processes for privilege escalation requests, and use admission controllers to enforce that new ServiceAccounts start with minimal permissions. Least privilege reduces the blast radius of security incidents - if a pod is compromised, limited ServiceAccount permissions prevent lateral movement or cluster takeover. Combine with other security practices like network policies, pod security standards, and secret encryption for defense-in-depth."
+    require_pass: true

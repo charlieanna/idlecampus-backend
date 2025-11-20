@@ -1,0 +1,58 @@
+slug: sigmapibonds-practice
+title: sigma_pi_bonds — Practice
+difficulty: hard
+sequence_order: 13
+estimated_minutes: 2
+key_concepts:
+- sigma_pi_bonds
+prerequisites: []
+content_md: '# sigma_pi_bonds — Practice 🚀
+
+
+  C₂H₂ has: 2 C-H bonds (2σ) + C≡C (1σ + 2π) = 3σ + 2π = 5 total bonds
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: How many sigma (σ) and pi (π) bonds are in acetylene (C₂H₂)?
+  options:
+  - 3σ and 2π
+  - 2σ and 3π
+  - 4σ and 1π
+  - 5σ and 0π
+  require_pass: true
+  correct_answer: 3σ and 2π
+  explanation: 'C₂H₂ (acetylene/ethyne) has 3 sigma (σ) bonds and 2 pi (π) bonds, totaling 5 bonds. Structure: H-C≡C-H. Breaking it down: (1) 2 C-H single bonds = 2σ bonds, (2) C≡C triple bond = 1σ bond + 2π bonds. Total: 3σ + 2π = 5 total bonds. The C≡C triple bond consists of one sigma bond from head-on overlap of sp hybrid orbitals, plus two pi bonds from sideways overlap of the two unhybridized p orbitals on each carbon. The sigma bonds form the molecular framework with strong electron density along the bond axis, while pi bonds have electron density above and below the internuclear axis. This triple bond makes acetylene very strong but also reactive, used in welding torches due to high energy release on combustion.'
+- type: mcq
+  sequence_order: 2
+  question: Which statement correctly describes the difference between sigma (σ) and pi (π) bonds?
+  options:
+  - Sigma bonds are weaker than pi bonds
+  - Sigma bonds involve sideways overlap; pi bonds involve head-on overlap
+  - Sigma bonds have electron density along the bond axis; pi bonds have electron density above and below the axis
+  - Pi bonds can rotate freely; sigma bonds cannot
+  require_pass: true
+  correct_answer: Sigma bonds have electron density along the bond axis; pi bonds have electron density above and below the axis
+  explanation: 'Sigma (σ) bonds have electron density concentrated along the internuclear axis (imaginary line connecting the two nuclei), formed by head-on overlap of orbitals (s-s, s-p, or p-p end-to-end). Pi (π) bonds have electron density above and below the internuclear axis, formed by sideways overlap of parallel p orbitals. Key differences: (1) σ bonds are stronger than π bonds because head-on overlap is more effective than sideways overlap, (2) σ bonds allow free rotation around the bond axis (single bonds), while π bonds restrict rotation (double/triple bonds are rigid), (3) every covalent bond has one σ bond; additional bonds are π bonds (double bond = 1σ + 1π; triple bond = 1σ + 2π), (4) bond strength order: single (1σ) < double (1σ + 1π) < triple (1σ + 2π).'
+- type: mcq
+  sequence_order: 3
+  question: In ethene (C₂H₄) with structure H₂C=CH₂, how many total sigma and pi bonds are present?
+  options:
+  - 4σ and 1π
+  - 5σ and 1π
+  - 6σ and 0π
+  - 4σ and 2π
+  require_pass: true
+  correct_answer: 5σ and 1π
+  explanation: 'Ethene (C₂H₄) has 5 sigma (σ) bonds and 1 pi (π) bond, totaling 6 bonds. Structure: H₂C=CH₂ (planar molecule). Breaking it down: (1) 4 C-H single bonds = 4σ bonds, (2) C=C double bond = 1σ bond + 1π bond. Total: 5σ + 1π = 6 bonds. Each carbon is sp² hybridized, using three sp² hybrid orbitals to form three σ bonds (2 to H, 1 to the other C). The unhybridized p orbital on each carbon overlaps sideways to form the π bond. The C=C double bond (σ + π) is stronger than a single bond but weaker than a triple bond. The π bond restricts rotation around the C=C axis, keeping all atoms in the same plane and explaining geometric isomerism in alkenes (cis/trans isomers).'

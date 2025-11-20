@@ -1,0 +1,53 @@
+slug: working-with-processes
+title: Working with Processes
+difficulty: easy
+sequence_order: 15
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Working with Processes \U0001F680\n\n# Working with Processes\n\n \
+  \   ## Viewing Processes\n\n    ```bash\n    # Show processes for current user\n\
+  \    ps\n\n    # Show all processes\n    ps aux\n\n    # Show process tree\n   \
+  \ ps auxf\n    pstree\n\n    # Interactive process viewer\n    top\n\n    # Better\
+  \ top alternative (if installed)\n    htop\n    ```\n\n    ## Process Information\n\
+  \n    ```bash\n    # Find process by name\n    pgrep nginx\n    ps aux | grep nginx\n\
+  \n    # Show specific process details\n    ps -p 1234 -f\n    ```\n\n    ## Managing\
+  \ Processes\n\n    ```bash\n    # Run command in background\n    long_command &\n\
+  \n    # List background jobs\n    jobs\n\n    # Bring job to foreground\n    fg\
+  \ %1\n\n    # Send job to background\n    bg %1\n\n    # Suspend current process\n\
+  \    Ctrl+Z\n\n    # Kill current process\n    Ctrl+C\n    ```\n\n    ## Killing\
+  \ Processes\n\n    ```bash\n    # Graceful shutdown (SIGTERM)\n    kill 1234\n\n\
+  \    # Force kill (SIGKILL)\n    kill -9 1234\n    kill -KILL 1234\n\n    # Kill\
+  \ by name\n    pkill nginx\n    killall nginx\n\n    # Kill all processes matching\
+  \ pattern\n    pkill -f \"python.*server\"\n    ```\n\n    ## Common Signals\n\n\
+  \    | Signal | Number | Description |\n    |--------|--------|-------------|\n\
+  \    | SIGTERM | 15 | Graceful termination (default) |\n    | SIGKILL | 9 | Force\
+  \ kill (cannot be caught) |\n    | SIGHUP | 1 | Hangup (reload config) |\n    |\
+  \ SIGINT | 2 | Interrupt (Ctrl+C) |\n    | SIGSTOP | 19 | Pause process |\n    |\
+  \ SIGCONT | 18 | Continue paused process |\n\n    ## Background Processes\n\n  \
+  \  ```bash\n    # Run and detach from terminal\n    nohup long_command &\n\n   \
+  \ # Output goes to nohup.out by default\n    nohup ./script.sh > output.log 2>&1\
+  \ &\n    ```"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: Which command forcefully terminates a process?
+  options:
+  - ps aux | grep <process>
+  - kill -9 <PID>
+  - top
+  - nohup <command> &
+  require_pass: true
+  correct_answer: kill -9 <PID>
+  explanation: 'The `kill -9 <PID>` command sends SIGKILL signal (signal number 9)
+    to forcefully terminate a process. This is the "nuclear option" for process termination:
+    (1) **Cannot be caught or ignored**: SIGKILL immediately terminates the process
+    without allowing cleanup, (2) **No graceful shutdown**: Process cannot close files,
+    flush buffers, or save state, (3) **Use as last resort**: Try graceful `kill <PID>`
+    (SIGTERM) first, which allows process to shut down cleanly. Common usage: `kill
+    1234` sends SIGTERM (graceful, default signal 15), `kill -9 1234` sends SIGKILL
+    (force kill), `kill -KILL 1234` is equivalent to -9. Process won''t respond to
+    SIGTERM? That''s when you use -9. Alternative commands: `pkill -9 process_name`
+    kills by name, `killall -9 nginx` kills all nginx processes. Warning: SIGKILL
+    can leave zombie processes if parent isn''t handling SIGCHLD properly. Best practice:
+    Always try SIGTERM first, wait a few seconds, then SIGKILL if needed.'

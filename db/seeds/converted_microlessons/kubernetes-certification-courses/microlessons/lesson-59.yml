@@ -1,0 +1,63 @@
+slug: lesson-59
+title: Lesson 59
+difficulty: easy
+sequence_order: 59
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Resource Limits and Requests\n\n    - CPU/memory\
+  \ units\n    - QoS classes and scheduling impact\n    - Best practices for sizing"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What does '500m' mean when specifying CPU resources in Kubernetes?
+  options:
+  - 500 megabytes
+  - 500 millicores (0.5 CPU cores)
+  - 500 cores
+  - 500 milliseconds
+  correct_answer: 500 millicores (0.5 CPU cores)
+  explanation: 'In Kubernetes, CPU is specified in cores, and ''500m'' means 500 millicores,
+    which equals 0.5 CPU cores (half a core). 1000m = 1 core. You can also specify
+    CPU as a decimal like 0.5, which is equivalent to 500m. One CPU core corresponds
+    to 1 AWS vCPU, 1 GCP Core, 1 Azure vCore, or 1 hyperthread on a bare-metal processor.
+    CPU is a compressible resource - if a container exceeds its CPU limit, it''s throttled
+    (slowed down) but not killed. This is different from memory, which is incompressible.
+    CPU requests are used by the scheduler to find nodes with sufficient capacity,
+    while limits enforce maximum usage via cgroups. Setting appropriate CPU values
+    is crucial: too low causes performance issues, too high wastes cluster resources
+    and increases costs.'
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What are the three QoS (Quality of Service) classes in Kubernetes?
+  options:
+  - Low, Medium, High
+  - Guaranteed, Burstable, BestEffort
+  - Critical, Normal, Low
+  - Premium, Standard, Economy
+  correct_answer: Guaranteed, Burstable, BestEffort
+  explanation: 'Kubernetes assigns pods one of three QoS classes based on resource
+    requests and limits: (1) Guaranteed - all containers have memory and CPU limits
+    set, and requests equal limits. These are highest priority and last to be evicted.
+    (2) Burstable - at least one container has memory or CPU requests or limits set,
+    but doesn''t meet Guaranteed criteria. Medium priority. (3) BestEffort - no containers
+    have any requests or limits set. Lowest priority, first to be evicted under resource
+    pressure. QoS affects eviction order when nodes run out of resources - BestEffort
+    pods are evicted first, then Burstable (starting with those using the most resources
+    beyond requests), and finally Guaranteed. This mechanism helps Kubernetes make
+    informed decisions about which pods to evict during resource contention, protecting
+    critical workloads.'
+  require_pass: true
+- type: mcq
+  sequence_order: 1
+  question: What kubectl command checks if you can perform an action?
+  options:
+  - kubectl auth can-i create pods
+  - kubectl check permissions create pods
+  - kubectl verify action create pods
+  - kubectl test auth create pods
+  correct_answer_index: 0
+  explanation: kubectl auth can-i <action> <resource> checks if the current user has
+    permission to perform the specified action.
+  require_pass: true

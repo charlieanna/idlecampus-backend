@@ -1,0 +1,399 @@
+slug: lesson-2
+title: Lesson 2
+difficulty: easy
+sequence_order: 2
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Integration and E2E Testing\n\n    **Integration\
+  \ tests** verify that multiple components work together correctly. **E2E tests**\
+  \ verify complete user workflows from start to finish.\n\n    ## API Testing\n\n\
+  \    ### Testing REST APIs with SuperTest (Node.js)\n\n    ```javascript\n    //\
+  \ app.js\n    const express = require('express');\n    const app = express();\n\
+  \    app.use(express.json());\n\n    const users = [];\n\n    app.post('/api/users',\
+  \ (req, res) => {\n      const { name, email } = req.body;\n\n      if (!name ||\
+  \ !email) {\n        return res.status(400).json({ error: 'Name and email required'\
+  \ });\n      }\n\n      const user = { id: users.length + 1, name, email };\n  \
+  \    users.push(user);\n      res.status(201).json(user);\n    });\n\n    app.get('/api/users/:id',\
+  \ (req, res) => {\n      const user = users.find(u => u.id === parseInt(req.params.id));\n\
+  \      if (!user) {\n        return res.status(404).json({ error: 'User not found'\
+  \ });\n      }\n      res.json(user);\n    });\n\n    module.exports = app;\n\n\
+  \    // app.test.js\n    const request = require('supertest');\n    const app =\
+  \ require('./app');\n\n    describe('Users API', () => {\n      describe('POST /api/users',\
+  \ () => {\n        test('creates user with valid data', async () => {\n        \
+  \  // ARRANGE\n          const userData = { name: 'Alice', email: 'alice@example.com'\
+  \ };\n\n          // ACT\n          const response = await request(app)\n      \
+  \      .post('/api/users')\n            .send(userData)\n            .expect(201);\n\
+  \n          // ASSERT\n          expect(response.body).toMatchObject({\n       \
+  \     id: expect.any(Number),\n            name: 'Alice',\n            email: 'alice@example.com'\n\
+  \          });\n        });\n\n        test('returns 400 when name is missing',\
+  \ async () => {\n          const response = await request(app)\n            .post('/api/users')\n\
+  \            .send({ email: 'alice@example.com' })\n            .expect(400);\n\n\
+  \          expect(response.body.error).toBe('Name and email required');\n      \
+  \  });\n      });\n\n      describe('GET /api/users/:id', () => {\n        test('returns\
+  \ user by id', async () => {\n          // ARRANGE: Create user first\n        \
+  \  const createResponse = await request(app)\n            .post('/api/users')\n\
+  \            .send({ name: 'Bob', email: 'bob@example.com' });\n          const\
+  \ userId = createResponse.body.id;\n\n          // ACT\n          const response\
+  \ = await request(app)\n            .get(`/api/users/${userId}`)\n            .expect(200);\n\
+  \n          // ASSERT\n          expect(response.body).toEqual({\n            id:\
+  \ userId,\n            name: 'Bob',\n            email: 'bob@example.com'\n    \
+  \      });\n        });\n\n        test('returns 404 for non-existent user', async\
+  \ () => {\n          const response = await request(app)\n            .get('/api/users/99999')\n\
+  \            .expect(404);\n\n          expect(response.body.error).toBe('User not\
+  \ found');\n        });\n      });\n    });\n    ```\n\n    ### Testing REST APIs\
+  \ with Pytest (Python)\n\n    ```python\n    # app.py (Flask)\n    from flask import\
+  \ Flask, request, jsonify\n\n    app = Flask(__name__)\n    users = []\n\n    @app.route('/api/users',\
+  \ methods=['POST'])\n    def create_user():\n        data = request.get_json()\n\
+  \n        if not data.get('name') or not data.get('email'):\n            return\
+  \ jsonify({'error': 'Name and email required'}), 400\n\n        user = {\n     \
+  \       'id': len(users) + 1,\n            'name': data['name'],\n            'email':\
+  \ data['email']\n        }\n        users.append(user)\n        return jsonify(user),\
+  \ 201\n\n    @app.route('/api/users/<int:user_id>', methods=['GET'])\n    def get_user(user_id):\n\
+  \        user = next((u for u in users if u['id'] == user_id), None)\n        if\
+  \ not user:\n            return jsonify({'error': 'User not found'}), 404\n    \
+  \    return jsonify(user)\n\n    # test_app.py\n    import pytest\n    from app\
+  \ import app\n\n    @pytest.fixture\n    def client():\n        app.config['TESTING']\
+  \ = True\n        with app.test_client() as client:\n            yield client\n\n\
+  \    class TestUsersAPI:\n        def test_create_user_with_valid_data(self, client):\n\
+  \            # ARRANGE\n            user_data = {'name': 'Alice', 'email': 'alice@example.com'}\n\
+  \n            # ACT\n            response = client.post('/api/users', json=user_data)\n\
+  \n            # ASSERT\n            assert response.status_code == 201\n       \
+  \     data = response.get_json()\n            assert data['name'] == 'Alice'\n \
+  \           assert data['email'] == 'alice@example.com'\n            assert 'id'\
+  \ in data\n\n        def test_create_user_missing_name(self, client):\n        \
+  \    # ACT\n            response = client.post('/api/users', json={'email': 'alice@example.com'})\n\
+  \n            # ASSERT\n            assert response.status_code == 400\n       \
+  \     data = response.get_json()\n            assert data['error'] == 'Name and\
+  \ email required'\n\n        def test_get_user_by_id(self, client):\n          \
+  \  # ARRANGE: Create user first\n            create_response = client.post('/api/users',\
+  \ json={\n                'name': 'Bob',\n                'email': 'bob@example.com'\n\
+  \            })\n            user_id = create_response.get_json()['id']\n\n    \
+  \        # ACT\n            response = client.get(f'/api/users/{user_id}')\n\n \
+  \           # ASSERT\n            assert response.status_code == 200\n         \
+  \   data = response.get_json()\n            assert data['name'] == 'Bob'\n     \
+  \       assert data['email'] == 'bob@example.com'\n\n        def test_get_nonexistent_user(self,\
+  \ client):\n            # ACT\n            response = client.get('/api/users/99999')\n\
+  \n            # ASSERT\n            assert response.status_code == 404\n       \
+  \     assert response.get_json()['error'] == 'User not found'\n    ```\n\n    ##\
+  \ Database Testing\n\n    ### Option 1: In-Memory Database (SQLite)\n\n    ```javascript\n\
+  \    // database.js\n    const { Sequelize, DataTypes } = require('sequelize');\n\
+  \n    const sequelize = new Sequelize('sqlite::memory:');\n\n    const User = sequelize.define('User',\
+  \ {\n      name: {\n        type: DataTypes.STRING,\n        allowNull: false\n\
+  \      },\n      email: {\n        type: DataTypes.STRING,\n        allowNull: false,\n\
+  \        unique: true\n      }\n    });\n\n    module.exports = { sequelize, User\
+  \ };\n\n    // database.test.js\n    const { sequelize, User } = require('./database');\n\
+  \n    describe('User Model', () => {\n      beforeAll(async () => {\n        await\
+  \ sequelize.sync({ force: true });\n      });\n\n      afterEach(async () => {\n\
+  \        await User.destroy({ where: {} });\n      });\n\n      test('creates user\
+  \ successfully', async () => {\n        // ARRANGE\n        const userData = { name:\
+  \ 'Alice', email: 'alice@example.com' };\n\n        // ACT\n        const user =\
+  \ await User.create(userData);\n\n        // ASSERT\n        expect(user.id).toBeDefined();\n\
+  \        expect(user.name).toBe('Alice');\n        expect(user.email).toBe('alice@example.com');\n\
+  \      });\n\n      test('enforces unique email constraint', async () => {\n   \
+  \     // ARRANGE\n        await User.create({ name: 'Alice', email: 'alice@example.com'\
+  \ });\n\n        // ACT & ASSERT\n        await expect(\n          User.create({\
+  \ name: 'Bob', email: 'alice@example.com' })\n        ).rejects.toThrow();\n   \
+  \   });\n\n      test('finds user by email', async () => {\n        // ARRANGE\n\
+  \        await User.create({ name: 'Alice', email: 'alice@example.com' });\n\n \
+  \       // ACT\n        const user = await User.findOne({ where: { email: 'alice@example.com'\
+  \ } });\n\n        // ASSERT\n        expect(user).toBeDefined();\n        expect(user.name).toBe('Alice');\n\
+  \      });\n    });\n    ```\n\n    ### Option 2: Test Containers (Real Database)\n\
+  \n    ```javascript\n    // database.test.js (with Testcontainers)\n    const {\
+  \ GenericContainer } = require('testcontainers');\n    const { Sequelize, DataTypes\
+  \ } = require('sequelize');\n\n    describe('User Model with PostgreSQL', () =>\
+  \ {\n      let container;\n      let sequelize;\n      let User;\n\n      beforeAll(async\
+  \ () => {\n        // Start PostgreSQL container\n        container = await new\
+  \ GenericContainer('postgres:15')\n          .withEnvironment({ POSTGRES_PASSWORD:\
+  \ 'test' })\n          .withExposedPorts(5432)\n          .start();\n\n        const\
+  \ host = container.getHost();\n        const port = container.getMappedPort(5432);\n\
+  \n        // Connect to PostgreSQL\n        sequelize = new Sequelize({\n      \
+  \    dialect: 'postgres',\n          host,\n          port,\n          username:\
+  \ 'postgres',\n          password: 'test',\n          database: 'postgres',\n  \
+  \        logging: false\n        });\n\n        User = sequelize.define('User',\
+  \ {\n          name: DataTypes.STRING,\n          email: { type: DataTypes.STRING,\
+  \ unique: true }\n        });\n\n        await sequelize.sync({ force: true });\n\
+  \      }, 60000);\n\n      afterAll(async () => {\n        await sequelize.close();\n\
+  \        await container.stop();\n      });\n\n      test('creates user in real\
+  \ PostgreSQL', async () => {\n        const user = await User.create({\n       \
+  \   name: 'Alice',\n          email: 'alice@example.com'\n        });\n\n      \
+  \  expect(user.id).toBeDefined();\n\n        // Verify in database\n        const\
+  \ found = await User.findByPk(user.id);\n        expect(found.name).toBe('Alice');\n\
+  \      });\n    });\n    ```\n\n    ### Python with Testcontainers\n\n    ```python\n\
+  \    # test_database.py\n    import pytest\n    from testcontainers.postgres import\
+  \ PostgresContainer\n    from sqlalchemy import create_engine, Column, Integer,\
+  \ String\n    from sqlalchemy.ext.declarative import declarative_base\n    from\
+  \ sqlalchemy.orm import sessionmaker\n\n    Base = declarative_base()\n\n    class\
+  \ User(Base):\n        __tablename__ = 'users'\n        id = Column(Integer, primary_key=True)\n\
+  \        name = Column(String, nullable=False)\n        email = Column(String, unique=True,\
+  \ nullable=False)\n\n    @pytest.fixture(scope='module')\n    def database():\n\
+  \        with PostgresContainer('postgres:15') as postgres:\n            engine\
+  \ = create_engine(postgres.get_connection_url())\n            Base.metadata.create_all(engine)\n\
+  \            Session = sessionmaker(bind=engine)\n            yield Session()\n\n\
+  \    class TestUserModel:\n        def test_create_user(self, database):\n     \
+  \       # ARRANGE\n            session = database\n\n            # ACT\n       \
+  \     user = User(name='Alice', email='alice@example.com')\n            session.add(user)\n\
+  \            session.commit()\n\n            # ASSERT\n            assert user.id\
+  \ is not None\n\n            # Verify in database\n            found = session.query(User).filter_by(email='alice@example.com').first()\n\
+  \            assert found.name == 'Alice'\n\n        def test_unique_email_constraint(self,\
+  \ database):\n            # ARRANGE\n            session = database\n          \
+  \  user1 = User(name='Alice', email='alice@example.com')\n            session.add(user1)\n\
+  \            session.commit()\n\n            # ACT & ASSERT\n            user2 =\
+  \ User(name='Bob', email='alice@example.com')\n            session.add(user2)\n\n\
+  \            with pytest.raises(Exception):  # Unique constraint violation\n   \
+  \             session.commit()\n    ```\n\n    ## End-to-End Testing with Cypress\n\
+  \n    ### Setup Cypress\n\n    ```bash\n    npm install --save-dev cypress\n   \
+  \ npx cypress open\n    ```\n\n    ### Example 1: User Registration Flow\n\n   \
+  \ ```javascript\n    // cypress/e2e/registration.cy.js\n    describe('User Registration',\
+  \ () => {\n      beforeEach(() => {\n        // Reset database before each test\n\
+  \        cy.task('db:reset');\n        cy.visit('/register');\n      });\n\n   \
+  \   it('successfully registers a new user', () => {\n        // ARRANGE & ACT\n\
+  \        cy.get('input[name=\"name\"]').type('Alice Johnson');\n        cy.get('input[name=\"\
+  email\"]').type('alice@example.com');\n        cy.get('input[name=\"password\"]').type('SecurePass123!');\n\
+  \        cy.get('input[name=\"confirmPassword\"]').type('SecurePass123!');\n   \
+  \     cy.get('button[type=\"submit\"]').click();\n\n        // ASSERT\n        cy.url().should('include',\
+  \ '/dashboard');\n        cy.contains('Welcome, Alice Johnson').should('be.visible');\n\
+  \n        // Verify email was sent (check via API)\n        cy.request('/api/test/emails').then((response)\
+  \ => {\n          const emails = response.body;\n          expect(emails).to.have.length(1);\n\
+  \          expect(emails[0].to).to.equal('alice@example.com');\n          expect(emails[0].subject).to.include('Welcome');\n\
+  \        });\n      });\n\n      it('shows error for duplicate email', () => {\n\
+  \        // ARRANGE: Create user first\n        cy.task('db:createUser', {\n   \
+  \       name: 'Existing User',\n          email: 'alice@example.com'\n        });\n\
+  \n        // ACT\n        cy.get('input[name=\"name\"]').type('Alice Johnson');\n\
+  \        cy.get('input[name=\"email\"]').type('alice@example.com');\n        cy.get('input[name=\"\
+  password\"]').type('SecurePass123!');\n        cy.get('input[name=\"confirmPassword\"\
+  ]').type('SecurePass123!');\n        cy.get('button[type=\"submit\"]').click();\n\
+  \n        // ASSERT\n        cy.contains('Email already exists').should('be.visible');\n\
+  \        cy.url().should('include', '/register');\n      });\n\n      it('validates\
+  \ password requirements', () => {\n        // ACT\n        cy.get('input[name=\"\
+  name\"]').type('Alice Johnson');\n        cy.get('input[name=\"email\"]').type('alice@example.com');\n\
+  \        cy.get('input[name=\"password\"]').type('weak');\n        cy.get('input[name=\"\
+  confirmPassword\"]').type('weak');\n        cy.get('button[type=\"submit\"]').click();\n\
+  \n        // ASSERT\n        cy.contains('Password must be at least 8 characters').should('be.visible');\n\
+  \      });\n    });\n    ```\n\n    ### Example 2: Shopping Cart E2E Test\n\n  \
+  \  ```javascript\n    // cypress/e2e/shopping-cart.cy.js\n    describe('Shopping\
+  \ Cart', () => {\n      beforeEach(() => {\n        cy.task('db:reset');\n     \
+  \   cy.task('db:seedProducts');\n        cy.visit('/');\n      });\n\n      it('adds\
+  \ items to cart and completes checkout', () => {\n        // Browse products\n \
+  \       cy.contains('MacBook Pro').click();\n        cy.contains('Add to Cart').click();\n\
+  \        cy.contains('Added to cart').should('be.visible');\n\n        // View cart\n\
+  \        cy.get('[data-testid=\"cart-icon\"]').click();\n        cy.url().should('include',\
+  \ '/cart');\n\n        // Verify item in cart\n        cy.contains('MacBook Pro').should('be.visible');\n\
+  \        cy.contains('$2,399.00').should('be.visible');\n\n        // Update quantity\n\
+  \        cy.get('input[type=\"number\"]').clear().type('2');\n        cy.contains('$4,798.00').should('be.visible');\n\
+  \n        // Proceed to checkout\n        cy.contains('Checkout').click();\n   \
+  \     cy.url().should('include', '/checkout');\n\n        // Fill shipping info\n\
+  \        cy.get('input[name=\"fullName\"]').type('Alice Johnson');\n        cy.get('input[name=\"\
+  address\"]').type('123 Main St');\n        cy.get('input[name=\"city\"]').type('San\
+  \ Francisco');\n        cy.get('select[name=\"state\"]').select('CA');\n       \
+  \ cy.get('input[name=\"zip\"]').type('94102');\n\n        // Fill payment info\n\
+  \        cy.get('input[name=\"cardNumber\"]').type('4111111111111111');\n      \
+  \  cy.get('input[name=\"expiry\"]').type('12/25');\n        cy.get('input[name=\"\
+  cvv\"]').type('123');\n\n        // Submit order\n        cy.contains('Place Order').click();\n\
+  \n        // Verify success\n        cy.url().should('include', '/order/confirmation');\n\
+  \        cy.contains('Order confirmed').should('be.visible');\n        cy.contains('Order\
+  \ #').should('be.visible');\n\n        // Verify email sent\n        cy.request('/api/test/emails').then((response)\
+  \ => {\n          const emails = response.body;\n          const confirmationEmail\
+  \ = emails.find(e =>\n            e.subject.includes('Order Confirmation')\n   \
+  \       );\n          expect(confirmationEmail).to.exist;\n        });\n      });\n\
+  \n      it('applies discount code', () => {\n        // Add item to cart\n     \
+  \   cy.contains('MacBook Pro').click();\n        cy.contains('Add to Cart').click();\n\
+  \        cy.get('[data-testid=\"cart-icon\"]').click();\n\n        // Apply discount\n\
+  \        cy.get('input[name=\"discountCode\"]').type('SAVE20');\n        cy.contains('Apply').click();\n\
+  \n        // Verify discount applied\n        cy.contains('Discount (20%)').should('be.visible');\n\
+  \        cy.contains('$1,919.20').should('be.visible'); // $2,399 - 20%\n      });\n\
+  \    });\n    ```\n\n    ## End-to-End Testing with Selenium\n\n    ```python\n\
+  \    # test_e2e.py (Python + Selenium)\n    import pytest\n    from selenium import\
+  \ webdriver\n    from selenium.webdriver.common.by import By\n    from selenium.webdriver.support.ui\
+  \ import WebDriverWait\n    from selenium.webdriver.support import expected_conditions\
+  \ as EC\n\n    @pytest.fixture\n    def driver():\n        driver = webdriver.Chrome()\n\
+  \        driver.implicitly_wait(10)\n        yield driver\n        driver.quit()\n\
+  \n    class TestUserRegistration:\n        def test_successful_registration(self,\
+  \ driver):\n            # ARRANGE\n            driver.get('http://localhost:3000/register')\n\
+  \n            # ACT\n            driver.find_element(By.NAME, 'name').send_keys('Alice\
+  \ Johnson')\n            driver.find_element(By.NAME, 'email').send_keys('alice@example.com')\n\
+  \            driver.find_element(By.NAME, 'password').send_keys('SecurePass123!')\n\
+  \            driver.find_element(By.NAME, 'confirmPassword').send_keys('SecurePass123!')\n\
+  \            driver.find_element(By.CSS_SELECTOR, 'button[type=\"submit\"]').click()\n\
+  \n            # ASSERT\n            WebDriverWait(driver, 10).until(\n         \
+  \       EC.url_contains('/dashboard')\n            )\n            assert 'Welcome,\
+  \ Alice Johnson' in driver.page_source\n\n        def test_duplicate_email_error(self,\
+  \ driver):\n            # ARRANGE: User already exists\n            # (Assume database\
+  \ seeded with user)\n\n            # ACT\n            driver.get('http://localhost:3000/register')\n\
+  \            driver.find_element(By.NAME, 'name').send_keys('Alice Johnson')\n \
+  \           driver.find_element(By.NAME, 'email').send_keys('existing@example.com')\n\
+  \            driver.find_element(By.NAME, 'password').send_keys('SecurePass123!')\n\
+  \            driver.find_element(By.NAME, 'confirmPassword').send_keys('SecurePass123!')\n\
+  \            driver.find_element(By.CSS_SELECTOR, 'button[type=\"submit\"]').click()\n\
+  \n            # ASSERT\n            error_message = WebDriverWait(driver, 10).until(\n\
+  \                EC.presence_of_element_located((By.CLASS_NAME, 'error-message'))\n\
+  \            )\n            assert 'Email already exists' in error_message.text\n\
+  \n    class TestLoginFlow:\n        def test_successful_login(self, driver):\n \
+  \           # ACT\n            driver.get('http://localhost:3000/login')\n     \
+  \       driver.find_element(By.NAME, 'email').send_keys('user@example.com')\n  \
+  \          driver.find_element(By.NAME, 'password').send_keys('password123')\n \
+  \           driver.find_element(By.CSS_SELECTOR, 'button[type=\"submit\"]').click()\n\
+  \n            # ASSERT\n            WebDriverWait(driver, 10).until(\n         \
+  \       EC.url_contains('/dashboard')\n            )\n            profile_button\
+  \ = driver.find_element(By.ID, 'user-profile')\n            assert profile_button.is_displayed()\n\
+  \n        def test_invalid_credentials(self, driver):\n            # ACT\n     \
+  \       driver.get('http://localhost:3000/login')\n            driver.find_element(By.NAME,\
+  \ 'email').send_keys('user@example.com')\n            driver.find_element(By.NAME,\
+  \ 'password').send_keys('wrongpassword')\n            driver.find_element(By.CSS_SELECTOR,\
+  \ 'button[type=\"submit\"]').click()\n\n            # ASSERT\n            error_message\
+  \ = WebDriverWait(driver, 10).until(\n                EC.presence_of_element_located((By.CLASS_NAME,\
+  \ 'error'))\n            )\n            assert 'Invalid email or password' in error_message.text\n\
+  \    ```\n\n    ## Cypress vs Selenium\n\n    | Feature | Cypress | Selenium |\n\
+  \    |---------|---------|----------|\n    | **Speed** | Fast (runs in browser)\
+  \ | Slower (WebDriver protocol) |\n    | **Setup** | Easy (npm install) | Complex\
+  \ (drivers, grid) |\n    | **Debugging** | Excellent (time travel, snapshots) |\
+  \ Basic |\n    | **Languages** | JavaScript only | Multiple (Python, Java, JS, etc.)\
+  \ |\n    | **Real browser** | Chrome/Firefox/Edge | All browsers |\n    | **Cross-browser**\
+  \ | Limited | Excellent |\n    | **Mobile** | No | Yes (Appium) |\n    | **Community**\
+  \ | Growing | Mature |\n\n    **Choose Cypress if:**\n    - JavaScript project\n\
+  \    - Focus on modern browsers\n    - Want fast feedback and great DX\n\n    **Choose\
+  \ Selenium if:**\n    - Need multiple languages\n    - Need all browsers (Safari,\
+  \ IE)\n    - Need mobile testing\n    - Large existing Selenium investment\n\n \
+  \   ## Best Practices for Integration/E2E Tests\n\n    ### 1. Use Test Data Builders\n\
+  \n    ```javascript\n    // test-helpers/builders.js\n    class UserBuilder {\n\
+  \      constructor() {\n        this.user = {\n          name: 'Test User',\n  \
+  \        email: `test${Date.now()}@example.com`,\n          password: 'TestPass123!'\n\
+  \        };\n      }\n\n      withName(name) {\n        this.user.name = name;\n\
+  \        return this;\n      }\n\n      withEmail(email) {\n        this.user.email\
+  \ = email;\n        return this;\n      }\n\n      build() {\n        return this.user;\n\
+  \      }\n    }\n\n    // Usage in tests\n    test('creates user', async () => {\n\
+  \      const user = new UserBuilder()\n        .withName('Alice')\n        .withEmail('alice@test.com')\n\
+  \        .build();\n\n      const response = await request(app)\n        .post('/api/users')\n\
+  \        .send(user);\n\n      expect(response.status).toBe(201);\n    });\n   \
+  \ ```\n\n    ### 2. Clean Up Test Data\n\n    ```javascript\n    describe('Users\
+  \ API', () => {\n      const createdUserIds = [];\n\n      afterEach(async () =>\
+  \ {\n        // Clean up created users\n        for (const id of createdUserIds)\
+  \ {\n          await User.destroy({ where: { id } });\n        }\n        createdUserIds.length\
+  \ = 0;\n      });\n\n      test('creates user', async () => {\n        const response\
+  \ = await request(app)\n          .post('/api/users')\n          .send({ name: 'Alice',\
+  \ email: 'alice@test.com' });\n\n        createdUserIds.push(response.body.id);\n\
+  \        expect(response.status).toBe(201);\n      });\n    });\n    ```\n\n   \
+  \ ### 3. Use Page Object Pattern (E2E)\n\n    ```javascript\n    // cypress/pages/LoginPage.js\n\
+  \    class LoginPage {\n      visit() {\n        cy.visit('/login');\n      }\n\n\
+  \      fillEmail(email) {\n        cy.get('input[name=\"email\"]').type(email);\n\
+  \        return this;\n      }\n\n      fillPassword(password) {\n        cy.get('input[name=\"\
+  password\"]').type(password);\n        return this;\n      }\n\n      submit() {\n\
+  \        cy.get('button[type=\"submit\"]').click();\n        return this;\n    \
+  \  }\n\n      shouldShowError(message) {\n        cy.contains(message).should('be.visible');\n\
+  \        return this;\n      }\n    }\n\n    // cypress/e2e/login.cy.js\n    import\
+  \ LoginPage from '../pages/LoginPage';\n\n    describe('Login', () => {\n      const\
+  \ loginPage = new LoginPage();\n\n      it('logs in successfully', () => {\n   \
+  \     loginPage\n          .visit()\n          .fillEmail('user@example.com')\n\
+  \          .fillPassword('password123')\n          .submit();\n\n        cy.url().should('include',\
+  \ '/dashboard');\n      });\n\n      it('shows error for invalid credentials', ()\
+  \ => {\n        loginPage\n          .visit()\n          .fillEmail('user@example.com')\n\
+  \          .fillPassword('wrongpassword')\n          .submit()\n          .shouldShowError('Invalid\
+  \ email or password');\n      });\n    });\n    ```\n\n    ### 4. Wait for Async\
+  \ Operations\n\n    ```javascript\n    // ❌ Bad: Fixed timeout\n    cy.wait(5000);\n\
+  \n    // ✅ Good: Wait for specific condition\n    cy.get('[data-testid=\"loading\"\
+  ]').should('not.exist');\n    cy.get('[data-testid=\"user-profile\"]').should('be.visible');\n\
+  \n    // ✅ Good: Wait for network request\n    cy.intercept('GET', '/api/users').as('getUsers');\n\
+  \    cy.visit('/users');\n    cy.wait('@getUsers');\n    cy.get('.user-list').should('be.visible');\n\
+  \    ```\n\n    **Next**: We'll dive into Test-Driven Development (TDD) and testing\
+  \ best practices."
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What is the key difference between integration tests and E2E tests, and
+    when would you use an in-memory database vs test containers?
+  options:
+  - Integration tests verify UI; E2E tests verify APIs; always use test containers
+  - Integration tests verify multiple components work together; E2E tests verify complete
+    user workflows; use in-memory databases for speed, test containers for production
+    parity
+  - E2E tests are faster than integration tests; use in-memory databases for production
+  - Integration and E2E tests are identical; database choice doesn't matter
+  correct_answer: Integration tests verify multiple components work together; E2E
+    tests verify complete user workflows; use in-memory databases for speed, test
+    containers for production parity
+  explanation: 'Integration tests and E2E tests serve different scopes. INTEGRATION
+    TESTS verify that multiple components (modules, classes, services) work together
+    correctly, typically testing APIs, database operations, or service interactions
+    without a full UI. Example: Testing a REST API endpoint that creates a user in
+    the database - verifies controller, service layer, and database all integrate
+    properly. SuperTest (Node.js) and pytest with test_client (Python) enable this
+    by making HTTP requests to your app without starting a full server. E2E (End-to-End)
+    TESTS verify complete user workflows from start to finish, simulating real user
+    interactions through the UI. Example: User registration flow - filling forms,
+    clicking buttons, verifying redirects, checking emails sent. Tools like Cypress
+    and Selenium drive real browsers, testing the entire stack: frontend, backend,
+    database, email services. DATABASE STRATEGIES: (1) IN-MEMORY databases (SQLite
+    :memory:) are fast (no disk I/O), easy to set up (no external dependencies), and
+    clean (fresh database per test). Perfect for unit/integration tests where speed
+    matters. However, they lack production parity - SQLite doesn''t perfectly match
+    PostgreSQL/MySQL behavior (different SQL dialects, constraints, features). (2)
+    TEST CONTAINERS spin up real databases (PostgreSQL, MySQL, MongoDB) in Docker
+    containers for each test suite. Provides production parity - exact database engine,
+    same SQL behavior, realistic constraints. Slower than in-memory but catches database-specific
+    bugs. Choose based on need: speed (in-memory) vs accuracy (test containers).'
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: In E2E testing, why is the Page Object Pattern recommended, and how does
+    it improve test maintainability?
+  options:
+  - It makes tests run faster by caching page elements
+  - It encapsulates page structure and interactions in reusable classes, so UI changes
+    require updates in one place rather than across all tests
+  - It automatically generates test cases from page layouts
+  - It only works with Cypress, not Selenium
+  correct_answer: It encapsulates page structure and interactions in reusable classes,
+    so UI changes require updates in one place rather than across all tests
+  explanation: 'The Page Object Pattern is a design pattern that addresses E2E test
+    brittleness. Without it, tests directly interact with UI elements using selectors
+    scattered throughout test code: cy.get(''input[name="email"]'').type(...). When
+    UI changes (e.g., selector changes from name="email" to id="user-email"), you
+    must update every test that uses it - fragile and time-consuming. PAGE OBJECT
+    PATTERN: Encapsulates each page/component as a class with methods representing
+    user actions and properties representing elements. Example: class LoginPage {
+    visit() { cy.visit(''/login''); } fillEmail(email) { cy.get(''input[name="email"]'').type(email);
+    return this; } submit() { cy.get(''button[type="submit"]'').click(); } }. Tests
+    use the abstraction: loginPage.visit().fillEmail(''user@example.com'').submit().
+    BENEFITS: (1) Single Source of Truth - selectors defined once in the page class.
+    If UI changes, update only the page class, not every test. (2) Readability - tests
+    read like user stories: loginPage.fillEmail().fillPassword().submit() vs complex
+    selector chains. (3) Reusability - multiple tests share the same page methods.
+    (4) Method chaining (return this) enables fluent interfaces. (5) Maintenance -
+    when adding new elements, extend the page class without touching tests. The pattern
+    doesn''t improve performance, but drastically reduces maintenance costs as UI
+    evolves. Works with any E2E framework (Cypress, Selenium, Playwright).'
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: Why should E2E tests avoid fixed timeouts (cy.wait(5000)) and instead
+    wait for specific conditions, and what are the consequences of fixed waits?
+  options:
+  - Fixed timeouts make tests slower; condition-based waits are always instant
+  - Fixed timeouts are brittle (too short = flaky tests, too long = slow tests); waiting
+    for specific conditions (element visible, request complete) is reliable and fast
+  - Fixed timeouts don't work in CI/CD environments
+  - Condition-based waits only work with modern browsers
+  correct_answer: Fixed timeouts are brittle (too short = flaky tests, too long =
+    slow tests); waiting for specific conditions (element visible, request complete)
+    is reliable and fast
+  explanation: 'Fixed timeouts (cy.wait(5000), time.sleep(5)) are a common anti-pattern
+    in E2E testing. THE PROBLEM: Asynchronous operations (API calls, animations, data
+    loading) have variable duration depending on server load, network conditions,
+    machine performance. A 5-second wait might work on a fast dev machine but fail
+    in CI (slower), or be unnecessarily slow when the operation completes in 1 second.
+    This creates two failure modes: (1) TOO SHORT - Test fails intermittently ("flakiness")
+    when the operation occasionally takes longer than the fixed timeout. Flaky tests
+    erode confidence - you can''t distinguish real bugs from timing issues. (2) TOO
+    LONG - Tests waste time waiting even after the operation completes. With hundreds
+    of E2E tests, this accumulates to significant CI time (and cost). SOLUTION: Wait
+    for specific conditions that indicate the operation completed: (1) Element state:
+    cy.get(''[data-testid="user-profile"]'').should(''be.visible'') - waits until
+    element appears, fails fast if it never does, succeeds immediately when visible.
+    (2) Network completion: cy.intercept(''GET'', ''/api/users'').as(''getUsers'');
+    cy.visit(''/users''); cy.wait(''@getUsers'') - waits for specific API call, no
+    guessing required. (3) Absence of loading indicators: cy.get(''[data-testid="loading"]'').should(''not.exist'').
+    These provide ADAPTIVE TIMING - fast when operation is quick, patient when needed
+    (up to a reasonable default timeout like 10-30s), deterministic failure if condition
+    never occurs. Modern frameworks (Cypress, Playwright) have built-in retry/wait
+    mechanisms for assertions, making condition-based waits the default.'
+  require_pass: true

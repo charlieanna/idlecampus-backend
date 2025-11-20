@@ -1,0 +1,97 @@
+slug: lesson-11
+title: Lesson 11
+difficulty: easy
+sequence_order: 11
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Sorting Algorithms\n\n    ## Comparison\
+  \ of Sorting Algorithms\n\n    | Algorithm | Time (Best) | Time (Avg) | Time (Worst)\
+  \ | Space | Stable |\n    |-----------|-------------|------------|--------------|-------|--------|\n\
+  \    | Bubble Sort | O(n) | O(n²) | O(n²) | O(1) | Yes |\n    | Selection Sort |\
+  \ O(n²) | O(n²) | O(n²) | O(1) | No |\n    | Insertion Sort | O(n) | O(n²) | O(n²)\
+  \ | O(1) | Yes |\n    | Merge Sort | O(n log n) | O(n log n) | O(n log n) | O(n)\
+  \ | Yes |\n    | Quick Sort | O(n log n) | O(n log n) | O(n²) | O(log n) | No |\n\
+  \    | Heap Sort | O(n log n) | O(n log n) | O(n log n) | O(1) | No |\n\n    ##\
+  \ Quick Sort\n\n    **Divide and conquer, pick pivot, partition**\n\n    ```python\n\
+  \    def quick_sort(arr):\n        if len(arr) <= 1:\n            return arr\n\n\
+  \        pivot = arr[len(arr) // 2]\n        left = [x for x in arr if x < pivot]\n\
+  \        middle = [x for x in arr if x == pivot]\n        right = [x for x in arr\
+  \ if x > pivot]\n\n        return quick_sort(left) + middle + quick_sort(right)\n\
+  \n    # Average: O(n log n), Worst: O(n²)\n    # Space: O(log n) for recursion\n\
+  \    ```\n\n    **In-place Quick Sort**\n\n    ```python\n    def quick_sort_inplace(arr,\
+  \ low=0, high=None):\n        if high is None:\n            high = len(arr) - 1\n\
+  \n        if low < high:\n            pi = partition(arr, low, high)\n         \
+  \   quick_sort_inplace(arr, low, pi - 1)\n            quick_sort_inplace(arr, pi\
+  \ + 1, high)\n\n        return arr\n\n    def partition(arr, low, high):\n     \
+  \   pivot = arr[high]\n        i = low - 1\n\n        for j in range(low, high):\n\
+  \            if arr[j] <= pivot:\n                i += 1\n                arr[i],\
+  \ arr[j] = arr[j], arr[i]\n\n        arr[i + 1], arr[high] = arr[high], arr[i +\
+  \ 1]\n        return i + 1\n    ```\n\n    ## Merge Sort\n\n    **Divide and conquer,\
+  \ always O(n log n)**\n\n    ```python\n    def merge_sort(arr):\n        if len(arr)\
+  \ <= 1:\n            return arr\n\n        mid = len(arr) // 2\n        left = merge_sort(arr[:mid])\n\
+  \        right = merge_sort(arr[mid:])\n\n        return merge(left, right)\n\n\
+  \    def merge(left, right):\n        result = []\n        i = j = 0\n\n       \
+  \ while i < len(left) and j < len(right):\n            if left[i] <= right[j]:\n\
+  \                result.append(left[i])\n                i += 1\n            else:\n\
+  \                result.append(right[j])\n                j += 1\n\n        result.extend(left[i:])\n\
+  \        result.extend(right[j:])\n        return result\n\n    # Time: O(n log\
+  \ n), Space: O(n)\n    # Stable sort!\n    ```\n\n    ## Binary Search\n\n    **Search\
+  \ in sorted array**\n\n    ```python\n    def binary_search(arr, target):\n    \
+  \    left, right = 0, len(arr) - 1\n\n        while left <= right:\n           \
+  \ mid = left + (right - left) // 2  # Avoid overflow\n\n            if arr[mid]\
+  \ == target:\n                return mid\n            elif arr[mid] < target:\n\
+  \                left = mid + 1\n            else:\n                right = mid\
+  \ - 1\n\n        return -1\n\n    # Time: O(log n), Space: O(1)\n    ```\n\n   \
+  \ **Binary Search Variations**\n\n    ```python\n    # Find first occurrence\n \
+  \   def find_first(arr, target):\n        left, right = 0, len(arr) - 1\n      \
+  \  result = -1\n\n        while left <= right:\n            mid = left + (right\
+  \ - left) // 2\n\n            if arr[mid] == target:\n                result = mid\n\
+  \                right = mid - 1  # Continue searching left\n            elif arr[mid]\
+  \ < target:\n                left = mid + 1\n            else:\n               \
+  \ right = mid - 1\n\n        return result\n\n    # Find insertion position\n  \
+  \  def search_insert(arr, target):\n        left, right = 0, len(arr)\n\n      \
+  \  while left < right:\n            mid = left + (right - left) // 2\n         \
+  \   if arr[mid] < target:\n                left = mid + 1\n            else:\n \
+  \               right = mid\n\n        return left\n    ```\n\n    ## Interview\
+  \ Tips\n\n    1. **Always ask if input is sorted** - enables binary search\n   \
+  \ 2. **For small datasets**: Simple sorts (insertion) are fine\n    3. **For large\
+  \ datasets**: Use O(n log n) sorts\n    4. **Need stable sort?** Use merge sort\
+  \ or insertion sort\n    5. **Limited memory?** Use in-place sorts (quick sort,\
+  \ heap sort)\n\n    **Next**: Dynamic Programming!"
+exercises:
+  - type: mcq
+    sequence_order: 1
+    question: "Why is merge sort preferred over quick sort when stability is required?"
+    options:
+      - "Merge sort is always faster than quick sort"
+      - "Merge sort is stable (preserves relative order of equal elements) while quick sort is not"
+      - "Merge sort uses less memory than quick sort"
+      - "Merge sort has better worst-case complexity than quick sort"
+    correct_answer: "Merge sort is stable (preserves relative order of equal elements) while quick sort is not"
+    explanation: "A sorting algorithm is stable if it preserves the relative order of elements with equal keys. Merge sort is stable because when merging two sorted arrays, if elements are equal, it always takes from the left array first: if left[i] <= right[j]: result.append(left[i]). This maintains the original order. Quick sort, however, involves swapping elements during partitioning, which can change the relative order of equal elements. Stability matters when sorting by multiple criteria - for example, sorting students first by grade, then by name requires the name order to be preserved within each grade group. Both have O(n log n) average time, but merge sort guarantees O(n log n) worst case while quick sort can degrade to O(n²). The tradeoff is space: merge sort uses O(n) extra space, while in-place quick sort uses only O(log n) for recursion. Understanding these properties helps choose the right algorithm for specific requirements."
+    require_pass: true
+
+  - type: mcq
+    sequence_order: 2
+    question: "In binary search, why do we use 'mid = left + (right - left) // 2' instead of 'mid = (left + right) // 2'?"
+    options:
+      - "It's faster to compute"
+      - "To avoid integer overflow when left + right exceeds maximum integer value"
+      - "It gives a different midpoint"
+      - "It works better with negative numbers"
+    correct_answer: "To avoid integer overflow when left + right exceeds maximum integer value"
+    explanation: "While both formulas mathematically give the same result, 'mid = left + (right - left) // 2' prevents integer overflow in languages with fixed-size integers. If left and right are both large numbers near the maximum integer value (e.g., 2^31 - 1 in 32-bit systems), adding them together could exceed this limit and cause overflow, resulting in a negative number or incorrect value. The safer formula computes the difference first (right - left), which is always smaller, then adds it to left. For example, if left = 2,000,000,000 and right = 2,000,000,100, left + right = 4,000,000,100 (overflow in 32-bit), but right - left = 100, then left + 100/2 = 2,000,000,050 (correct). In Python, integers can be arbitrarily large so overflow isn't an issue, but this practice is essential in Java, C++, and other languages. It demonstrates defensive programming and understanding of low-level computer arithmetic."
+    require_pass: true
+
+  - type: mcq
+    sequence_order: 3
+    question: "What is the worst-case time complexity of quick sort and when does it occur?"
+    options:
+      - "O(n log n) when array is random"
+      - "O(n²) when array is already sorted or reverse sorted with poor pivot selection"
+      - "O(n) when using three-way partitioning"
+      - "O(n²) always, regardless of input"
+    correct_answer: "O(n²) when array is already sorted or reverse sorted with poor pivot selection"
+    explanation: "Quick sort's worst-case O(n²) time complexity occurs when the pivot consistently creates maximally unbalanced partitions. This happens when the array is already sorted (or reverse sorted) and we always pick the first, last, or middle element as pivot, resulting in partitions of size 0 and n-1. For each of n elements, we perform O(n) work, giving O(n²) total. The recursion looks like: partition of n, then n-1, then n-2, ..., giving 1+2+...+n = n(n+1)/2 = O(n²). For example, sorting [1,2,3,4,5] with last element as pivot: first partition has left=[], right=[1,2,3,4], then left=[], right=[1,2,3], etc. To avoid this, use randomized pivot selection or median-of-three (first, middle, last). Despite the worst case, quick sort averages O(n log n) and is often faster than merge sort in practice due to better cache locality and lower constant factors. Understanding when algorithms perform poorly helps avoid pathological cases in production systems."
+    require_pass: true

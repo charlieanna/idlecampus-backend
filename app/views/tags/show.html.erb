@@ -1,0 +1,134 @@
+<!-- app/views/posts/index.html.erb -->
+
+<h1>All Posts</h1>
+
+<button id="filter-button">Show Questions with 0 Outlinks</button>
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Title</th>
+      <th>Score</th>
+      <th>Tags</th>
+      <th>Out Degree</th>
+      <th>In Degree</th>
+    </tr>
+  </thead>
+
+  <tbody id="posts-body">
+    <% @json_data.each do |post| %>
+      <% is_interested = @current_user.interests.exists?(post_id: post['id'], database: post['database']) %>
+      <%= render partial: 'post', locals: { post: post, is_interested: is_interested } %>
+    <% end %>
+  </tbody>
+</table>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    let showingZeroOutlinks = false;
+
+   // 2. Handle the Filter Button (showing only posts with 0 outlinks)
+    const filterButton = document.getElementById('filter-button');
+    filterButton.addEventListener('click', () => {
+      const rows = document.getElementById('posts-body').rows;
+      showingZeroOutlinks = !showingZeroOutlinks;
+
+      for (let row of rows) {
+        const outDegreeCell = row.cells[4];
+        const outDegree = parseInt(outDegreeCell.textContent.trim(), 10) || 0;
+        if (showingZeroOutlinks) {
+          if (outDegree !== 0) {
+            row.style.display = 'none';
+          } else {
+            row.style.display = '';
+          }
+        } else {
+          row.style.display = '';
+        }
+      }
+      filterButton.textContent = showingZeroOutlinks
+        ? 'Show All Posts'
+        : 'Show Questions with 0 Outlinks';
+    });
+
+    // 3. Handle Interested Buttons (Event Delegation)
+    const postsBody = document.getElementById('posts-body');
+    postsBody.addEventListener('click', (event) => {
+      if (event.target && event.target.matches('button.interested-button')) {
+        const button = event.target;
+        const postId = button.getAttribute('data-post-id');
+        const database = button.getAttribute('data-database');
+        const action = button.getAttribute('data-action'); // 'mark' or 'unmark'
+
+        let url = '';
+        let method = '';
+        let newAction = '';
+        let newText = '';
+
+        if (action === 'mark') {
+          url = `/posts/${postId}/mark_interested`;
+          method = 'POST';
+          newAction = 'unmark';
+          newText = 'Interested ✅';
+        } else if (action === 'unmark') {
+          url = `/posts/${postId}/unmark_interested?database=${encodeURIComponent(database)}`;
+          method = 'DELETE';
+          newAction = 'mark';
+          newText = 'Interested';
+        }
+
+        // Disable the button to prevent multiple clicks
+        button.disabled = true;
+        button.textContent = action === 'mark' ? 'Marking...' : 'Removing...';
+
+        // Prepare fetch options
+        const fetchOptions = {
+          method: method,
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-Token': getCSRFToken(),
+            'Accept': 'application/json'
+          }
+        };
+
+        // For 'mark' action, include the database in the body
+        if (action === 'mark') {
+          fetchOptions.body = JSON.stringify({ database: database });
+        }
+
+        fetch(url, fetchOptions)
+          .then(response => {
+            if (response.ok) {
+              return response.json();
+            } else if (response.status === 422 || response.status === 404) {
+              return response.json().then(data => { throw new Error(data.message || 'An error occurred.'); });
+            } else {
+              throw new Error('Network response was not ok.');
+            }
+          })
+          .then(data => {
+            if (data.success) {
+              button.textContent = newText;
+              button.setAttribute('data-action', newAction);
+            } else {
+              button.textContent = action === 'mark' ? 'Interested' : 'Interested ✅';
+              alert(data.message || 'Operation failed.');
+            }
+            button.disabled = false;
+          })
+          .catch(error => {
+            console.error('There was a problem with the fetch operation:', error);
+            alert(error.message || 'An error occurred.');
+            button.textContent = action === 'mark' ? 'Interested' : 'Interested ✅';
+            button.disabled = false;
+          });
+      }
+    });
+
+    // 4. Get CSRF token
+    function getCSRFToken() {
+      const meta = document.querySelector('meta[name="csrf-token"]');
+      return meta ? meta.getAttribute('content') : '';
+    }
+  });
+</script>

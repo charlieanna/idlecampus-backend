@@ -1,0 +1,89 @@
+slug: lesson-19
+title: Lesson 19
+sequence_order: 19
+estimated_minutes: 2
+difficulty: easy
+key_concepts: []
+content_md: "# Microlesson \U0001F680\n\n# File Input/Output\n\n    Learn to read\
+  \ from and write to files in Python.\n\n    ## Reading Files\n\n    ### Read entire\
+  \ file\n    ```python\n    # Basic read\n    file = open('data.txt', 'r')\n    content\
+  \ = file.read()\n    file.close()\n\n    # Better: Using with (auto-closes file)\n\
+  \    with open('data.txt', 'r') as file:\n        content = file.read()\n      \
+  \  print(content)\n    ```\n\n    ### Read line by line\n    ```python\n    with\
+  \ open('data.txt', 'r') as file:\n        for line in file:\n            print(line.strip())\
+  \  # Remove newline\n\n    # Or read all lines into list\n    with open('data.txt',\
+  \ 'r') as file:\n        lines = file.readlines()\n    ```\n\n    ## Writing Files\n\
+  \n    ```python\n    # Write mode (overwrites existing)\n    with open('output.txt',\
+  \ 'w') as file:\n        file.write(\"Hello, World!\\\\n\")\n        file.write(\"\
+  Second line\\\\n\")\n\n    # Append mode (adds to end)\n    with open('output.txt',\
+  \ 'a') as file:\n        file.write(\"Appended line\\\\n\")\n\n    # Write multiple\
+  \ lines\n    lines = [\"Line 1\\\\n\", \"Line 2\\\\n\", \"Line 3\\\\n\"]\n    with\
+  \ open('output.txt', 'w') as file:\n        file.writelines(lines)\n    ```\n\n\
+  \    ## File Modes\n\n    | Mode | Description |\n    |------|-------------|\n \
+  \   | `'r'` | Read (default) |\n    | `'w'` | Write (overwrites) |\n    | `'a'`\
+  \ | Append |\n    | `'x'` | Create (fails if exists) |\n    | `'b'` | Binary mode\
+  \ |\n    | `'t'` | Text mode (default) |\n    | `'+'` | Read and write |\n\n   \
+  \ ## Working with Paths\n\n    ```python\n    from pathlib import Path\n\n    #\
+  \ Create Path object\n    path = Path('data/files/info.txt')\n\n    # Check if exists\n\
+  \    if path.exists():\n        print(\"File exists!\")\n\n    # Get file info\n\
+  \    print(path.name)      # 'info.txt'\n    print(path.stem)      # 'info'\n  \
+  \  print(path.suffix)    # '.txt'\n    print(path.parent)    # 'data/files'\n\n\
+  \    # Read/write with Path\n    path.write_text(\"Hello!\")\n    content = path.read_text()\n\
+  \n    # List directory\n    for file in Path('.').glob('*.txt'):\n        print(file)\n\
+  \    ```\n\n    ## CSV Files\n\n    ```python\n    import csv\n\n    # Read CSV\n\
+  \    with open('data.csv', 'r') as file:\n        reader = csv.reader(file)\n  \
+  \      for row in reader:\n            print(row)\n\n    # Read as dictionaries\n\
+  \    with open('data.csv', 'r') as file:\n        reader = csv.DictReader(file)\n\
+  \        for row in reader:\n            print(row['name'], row['age'])\n\n    #\
+  \ Write CSV\n    data = [\n        ['Name', 'Age', 'City'],\n        ['Alice', 25,\
+  \ 'NYC'],\n        ['Bob', 30, 'LA']\n    ]\n\n    with open('output.csv', 'w',\
+  \ newline='') as file:\n        writer = csv.writer(file)\n        writer.writerows(data)\n\
+  \    ```\n\n    ## JSON Files\n\n    ```python\n    import json\n\n    # Read JSON\n\
+  \    with open('data.json', 'r') as file:\n        data = json.load(file)\n\n  \
+  \  # Write JSON\n    data = {\n        'name': 'Alice',\n        'age': 25,\n  \
+  \      'cities': ['NYC', 'LA']\n    }\n\n    with open('output.json', 'w') as file:\n\
+  \        json.dump(data, file, indent=2)\n\n    # JSON strings\n    json_str = json.dumps(data,\
+  \ indent=2)\n    data = json.loads(json_str)\n    ```\n\n    **Practice:** Try the\
+  \ File Processing lab!"
+exercises:
+- type: mcq
+  slug: lesson-19-mcq-1
+  sequence_order: 1
+  question: What is the difference between a list and a tuple in Python?
+  options:
+  - Lists are mutable (can be modified), tuples are immutable (cannot be changed)
+  - Lists are faster than tuples
+  - Tuples can only store strings
+  - Lists use less memory
+  correct_answer_index: 0
+  explanation: Lists are mutable - you can add, remove, or modify elements after creation using methods like append(), remove(), etc. Tuples are immutable - once created, they cannot be modified. Tuples are slightly faster and use less memory, making them ideal for fixed collections of data.
+- type: mcq
+  slug: lesson-19-mcq-2
+  sequence_order: 2
+  question: What is a list comprehension in Python?
+  options:
+  - A concise way to create lists using a single line of code with optional filtering
+  - A method to compress lists
+  - A way to compare two lists
+  - A list sorting algorithm
+  correct_answer_index: 0
+  explanation: List comprehensions provide a concise syntax to create lists: [expression for item in iterable if condition]. For example, [x**2 for x in range(10) if x % 2 == 0] creates a list of squares of even numbers. This is more readable and often faster than traditional loops.
+- type: mcq
+  slug: lesson-19-mcq-3
+  sequence_order: 3
+  question: What does the try-except block do in Python?
+  options:
+  - Handles exceptions (errors) gracefully without crashing the program
+  - Tries to optimize code performance
+  - Tests if code syntax is correct
+  - Executes code multiple times until it succeeds
+  correct_answer_index: 0
+  explanation: try-except blocks catch and handle exceptions, preventing program crashes. Code in the try block is executed, and if an exception occurs, the except block handles it. For example, catching ValueError when converting user input to int prevents crashes from invalid input.
+objectives:
+- Understand core concepts of File Input/Output
+- Apply learned concepts in practical scenarios
+- Identify best practices and common patterns
+- Recognize trade-offs in different approaches
+next_recommended:
+- control
+- data-structures

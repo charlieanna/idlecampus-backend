@@ -1,0 +1,356 @@
+{
+  "course_id": "cat-exam-prep-mba",
+  "version": "1.0.0",
+  "adaptive_learning": {
+    "enabled": true,
+    "struggle_threshold": 0.6,
+    "mastery_threshold": 0.85,
+    "review_interval_days": [1, 3, 7, 14, 30],
+    "difficulty_progression": {
+      "starting_level": "easy",
+      "promotion_criteria": {
+        "consecutive_correct": 3,
+        "accuracy_threshold": 0.8
+      },
+      "demotion_criteria": {
+        "consecutive_wrong": 2,
+        "accuracy_threshold": 0.4
+      }
+    }
+  },
+  "personalization": {
+    "learning_style_detection": true,
+    "weak_topic_focus": 0.4,
+    "current_topic_focus": 0.4,
+    "challenge_topic_focus": 0.2,
+    "daily_practice_set": {
+      "total_questions": 20,
+      "time_limit_minutes": 40,
+      "composition": {
+        "weak_areas": 8,
+        "current_learning": 8,
+        "challenge": 4
+      }
+    },
+    "mock_test_settings": {
+      "full_length": {
+        "duration_minutes": 120,
+        "questions": {
+          "varc": 24,
+          "dilr": 20,
+          "qa": 22
+        },
+        "sections_timed_separately": true
+      },
+      "sectional_test": {
+        "duration_minutes": 40,
+        "questions": 22
+      }
+    },
+    "study_plan_generator": {
+      "enabled": true,
+      "factors": [
+        "exam_date",
+        "current_score",
+        "weak_areas",
+        "available_time_per_day",
+        "learning_pace"
+      ]
+    }
+  },
+  "scoring_system": {
+    "cat_pattern": {
+      "correct_answer": 3,
+      "wrong_answer": -1,
+      "unattempted": 0
+    },
+    "practice_scoring": {
+      "easy": 10,
+      "medium": 20,
+      "hard": 30
+    },
+    "percentile_calculation": true,
+    "performance_analytics": {
+      "accuracy_tracking": true,
+      "time_analysis": true,
+      "topic_wise_performance": true,
+      "improvement_trends": true
+    }
+  },
+  "content_adaptation": {
+    "automatic_content_improvement": true,
+    "struggle_analysis": {
+      "hint_usage_weight": 0.25,
+      "time_taken_weight": 0.25,
+      "error_patterns_weight": 0.30,
+      "retry_count_weight": 0.20
+    },
+    "remediation_triggers": {
+      "low_accuracy_threshold": 0.5,
+      "high_time_threshold_multiplier": 2.0,
+      "pattern_error_count": 3
+    }
+  },
+  "gamification": {
+    "enabled": true,
+    "features": {
+      "streaks": {
+        "daily_practice_streak": true,
+        "bonus_points_per_day": 10
+      },
+      "achievements": [
+        {
+          "id": "first_lesson",
+          "title": "First Step",
+          "description": "Complete your first lesson",
+          "points": 50
+        },
+        {
+          "id": "week_streak",
+          "title": "Consistent Learner",
+          "description": "7-day practice streak",
+          "points": 100
+        },
+        {
+          "id": "topic_master",
+          "title": "Topic Master",
+          "description": "Score 90%+ in all problems of a topic",
+          "points": 200
+        },
+        {
+          "id": "speed_demon",
+          "title": "Speed Demon",
+          "description": "Solve 10 problems under expected time",
+          "points": 150
+        },
+        {
+          "id": "perfect_mock",
+          "title": "Perfect Score",
+          "description": "Score 100% in any mock test",
+          "points": 500
+        },
+        {
+          "id": "comeback_king",
+          "title": "Comeback King",
+          "description": "Improve weak topic from <50% to >80%",
+          "points": 300
+        }
+      ],
+      "leaderboard": {
+        "global": true,
+        "weekly": true,
+        "topic_wise": true
+      }
+    }
+  },
+  "notifications": {
+    "study_reminders": true,
+    "progress_updates": "weekly",
+    "weak_topic_alerts": true,
+    "streak_warnings": true,
+    "mock_test_recommendations": true
+  },
+  "topics": {
+    "quantitative_aptitude": {
+      "weight": 0.333,
+      "subtopics": [
+        {
+          "id": "number-systems",
+          "name": "Number Systems",
+          "weight": 0.15,
+          "prerequisites": []
+        },
+        {
+          "id": "percentages-profit-loss",
+          "name": "Percentages & Profit-Loss",
+          "weight": 0.12,
+          "prerequisites": ["number-systems"]
+        },
+        {
+          "id": "ratio-proportion",
+          "name": "Ratio & Proportion",
+          "weight": 0.10,
+          "prerequisites": ["percentages-profit-loss"]
+        },
+        {
+          "id": "time-speed-distance",
+          "name": "Time, Speed & Distance",
+          "weight": 0.15,
+          "prerequisites": ["ratio-proportion"]
+        },
+        {
+          "id": "time-work",
+          "name": "Time & Work",
+          "weight": 0.10,
+          "prerequisites": ["ratio-proportion"]
+        },
+        {
+          "id": "algebra",
+          "name": "Algebra",
+          "weight": 0.12,
+          "prerequisites": ["number-systems"]
+        },
+        {
+          "id": "geometry",
+          "name": "Geometry & Mensuration",
+          "weight": 0.12,
+          "prerequisites": []
+        },
+        {
+          "id": "permutations-combinations",
+          "name": "Permutations & Combinations",
+          "weight": 0.08,
+          "prerequisites": ["number-systems"]
+        },
+        {
+          "id": "probability",
+          "name": "Probability",
+          "weight": 0.06,
+          "prerequisites": ["permutations-combinations"]
+        }
+      ]
+    },
+    "data_interpretation_logical_reasoning": {
+      "weight": 0.333,
+      "subtopics": [
+        {
+          "id": "tables",
+          "name": "Table Analysis",
+          "weight": 0.15,
+          "prerequisites": []
+        },
+        {
+          "id": "bar-charts",
+          "name": "Bar Charts",
+          "weight": 0.10,
+          "prerequisites": ["tables"]
+        },
+        {
+          "id": "line-graphs",
+          "name": "Line Graphs",
+          "weight": 0.10,
+          "prerequisites": ["tables"]
+        },
+        {
+          "id": "pie-charts",
+          "name": "Pie Charts",
+          "weight": 0.10,
+          "prerequisites": ["tables"]
+        },
+        {
+          "id": "seating-arrangements",
+          "name": "Seating Arrangements",
+          "weight": 0.20,
+          "prerequisites": []
+        },
+        {
+          "id": "blood-relations",
+          "name": "Blood Relations",
+          "weight": 0.10,
+          "prerequisites": []
+        },
+        {
+          "id": "puzzles",
+          "name": "Puzzles & Constraints",
+          "weight": 0.15,
+          "prerequisites": ["seating-arrangements"]
+        },
+        {
+          "id": "syllogisms",
+          "name": "Syllogisms",
+          "weight": 0.10,
+          "prerequisites": []
+        }
+      ]
+    },
+    "verbal_ability_reading_comprehension": {
+      "weight": 0.334,
+      "subtopics": [
+        {
+          "id": "reading-comprehension",
+          "name": "Reading Comprehension",
+          "weight": 0.60,
+          "prerequisites": []
+        },
+        {
+          "id": "para-jumbles",
+          "name": "Para Jumbles",
+          "weight": 0.15,
+          "prerequisites": []
+        },
+        {
+          "id": "para-summary",
+          "name": "Para Summary",
+          "weight": 0.10,
+          "prerequisites": ["reading-comprehension"]
+        },
+        {
+          "id": "odd-sentence",
+          "name": "Odd Sentence Out",
+          "weight": 0.10,
+          "prerequisites": ["para-jumbles"]
+        },
+        {
+          "id": "critical-reasoning",
+          "name": "Critical Reasoning",
+          "weight": 0.05,
+          "prerequisites": []
+        }
+      ]
+    }
+  },
+  "study_resources": {
+    "formula_sheets": [
+      "quantitative_formulas.pdf",
+      "geometry_theorems.pdf",
+      "algebra_identities.pdf"
+    ],
+    "vocabulary_lists": [
+      "gre_words_top_1000.json",
+      "cat_high_frequency_words.json"
+    ],
+    "shortcut_guides": [
+      "vedic_math_shortcuts.pdf",
+      "mental_math_techniques.pdf"
+    ]
+  },
+  "exam_strategy": {
+    "time_management": {
+      "varc_per_question_seconds": 90,
+      "dilr_per_set_minutes": 12,
+      "qa_per_question_seconds": 120
+    },
+    "attempt_strategy": {
+      "recommended_attempts": {
+        "varc": 20,
+        "dilr": 16,
+        "qa": 18
+      },
+      "accuracy_target": 0.85
+    },
+    "section_order_recommendations": [
+      "Start with strongest section",
+      "Attempt 70-80% of questions",
+      "Leave time for review",
+      "Mark and move for difficult questions"
+    ]
+  },
+  "analytics_dashboard": {
+    "metrics": [
+      "overall_score",
+      "section_wise_percentile",
+      "accuracy_rate",
+      "average_time_per_question",
+      "improvement_graph",
+      "weak_areas_heatmap",
+      "streak_calendar",
+      "predicted_percentile"
+    ],
+    "reports": {
+      "daily_summary": true,
+      "weekly_analysis": true,
+      "monthly_progress": true,
+      "pre_exam_readiness": true
+    }
+  }
+}

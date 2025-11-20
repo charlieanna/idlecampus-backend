@@ -1,0 +1,137 @@
+slug: mastering-quantifiers
+title: Mastering Quantifiers
+sequence_order: 3
+estimated_minutes: 2
+difficulty: easy
+content_md: "# Mastering Quantifiers \U0001F680\n\n# Mastering Quantifiers\n\n   \
+  \ Quantifiers specify how many times an element (character, group, or class) should\
+  \ be matched.\n\n    ## Basic Quantifiers\n\n    ### Zero or More: *\n\n    ```python\n\
+  \    import re\n\n    pattern = r\"ca*t\"\n    # Matches: ct, cat, caat, caaat,\
+  \ ...\n    ```\n\n    **Examples:**\n    ```python\n    text = \"ct cat caat caaat\"\
+  \n    matches = re.findall(r\"ca*t\", text)\n    print(matches)  # ['ct', 'cat',\
+  \ 'caat', 'caaat']\n\n    # Match \"color\" and \"colour\"\n    pattern = r\"colou*r\"\
+  \n    # Matches: color, colour, colouur, ...\n    ```\n\n    ### One or More: +\n\
+  \n    ```python\n    pattern = r\"ca+t\"\n    # Matches: cat, caat, caaat, ... (NOT\
+  \ ct)\n    ```\n\n    **Examples:**\n    ```python\n    text = \"ct cat caat caaat\"\
+  \n    matches = re.findall(r\"ca+t\", text)\n    print(matches)  # ['cat', 'caat',\
+  \ 'caaat'] (no 'ct')\n\n    # Match one or more digits\n    pattern = r\"\\\\d+\"\
+  \n    text = \"Item 123 costs $45\"\n    matches = re.findall(pattern, text)\n \
+  \   print(matches)  # ['123', '45']\n    ```\n\n    ### Zero or One: ?\n\n    ```python\n\
+  \    pattern = r\"ca?t\"\n    # Matches: ct, cat (NOT caat)\n    ```\n\n    **Examples:**\n\
+  \    ```python\n    text = \"ct cat caat\"\n    matches = re.findall(r\"ca?t\",\
+  \ text)\n    print(matches)  # ['ct', 'cat']\n\n    # Match \"color\" or \"colour\"\
+  \n    pattern = r\"colou?r\"\n    # Matches: color, colour (exactly)\n\n    # Optional\
+  \ \"s\" for plural\n    pattern = r\"files?\"\n    # Matches: file, files\n    ```\n\
+  \n    ## Specific Quantifiers\n\n    ### Exactly N: {n}\n\n    ```python\n    pattern\
+  \ = r\"a{3}\"\n    # Matches: aaa (exactly 3 'a's)\n    ```\n\n    **Examples:**\n\
+  \    ```python\n    # Match exactly 10-digit phone number\n    pattern = r\"\\\\\
+  d{10}\"\n    text = \"Call 5551234567\"\n    match = re.search(pattern, text)\n\
+  \    print(match.group())  # '5551234567'\n\n    # Match 3-letter airport code\n\
+  \    pattern = r\"\\\\b[A-Z]{3}\\\\b\"\n    text = \"Fly from LAX to JFK\"\n   \
+  \ matches = re.findall(pattern, text)\n    print(matches)  # ['LAX', 'JFK']\n  \
+  \  ```\n\n    ### N or More: {n,}\n\n    ```python\n    pattern = r\"a{2,}\"\n \
+  \   # Matches: aa, aaa, aaaa, ... (2 or more)\n    ```\n\n    **Examples:**\n  \
+  \  ```python\n    # Match 2 or more repeated characters\n    pattern = r\"(.)\\\\\
+  1{1,}\"\n    text = \"hello goooood\"\n    matches = re.findall(pattern, text)\n\
+  \    print(matches)  # ['l', 'o']\n\n    # Match long words (8+ characters)\n  \
+  \  pattern = r\"\\\\b\\\\w{8,}\\\\b\"\n    text = \"This is a comprehensive explanation\"\
+  \n    matches = re.findall(pattern, text)\n    print(matches)  # ['comprehensive',\
+  \ 'explanation']\n    ```\n\n    ### Between N and M: {n,m}\n\n    ```python\n \
+  \   pattern = r\"a{2,4}\"\n    # Matches: aa, aaa, aaaa (NOT a or aaaaa)\n    ```\n\
+  \n    **Examples:**\n    ```python\n    # Match 2-4 digit numbers\n    pattern =\
+  \ r\"\\\\b\\\\d{2,4}\\\\b\"\n    text = \"Years: 1, 99, 2024, 12345\"\n    matches\
+  \ = re.findall(pattern, text)\n    print(matches)  # ['99', '2024']\n\n    # Username:\
+  \ 3-16 characters\n    pattern = r\"^[a-zA-Z0-9_]{3,16}$\"\n    usernames = [\"\
+  ab\", \"user123\", \"this_is_too_long_username\"]\n    for username in usernames:\n\
+  \        if re.match(pattern, username):\n            print(f\"{username}: valid\"\
+  )\n    # Output: user123: valid\n    ```\n\n    ## Greedy vs Lazy Quantifiers\n\n\
+  \    ### Greedy (Default Behavior)\n\n    Quantifiers are **greedy** by default—they\
+  \ match as much as possible:\n\n    ```python\n    text = \"<html><head><title>Page</title></head></html>\"\
+  \n    pattern = r\"<.*>\"\n\n    match = re.search(pattern, text)\n    print(match.group())\n\
+  \    # Matches entire string: \"<html><head><title>Page</title></head></html>\"\n\
+  \    ```\n\n    ### Lazy (Non-Greedy)\n\n    Add `?` after the quantifier to make\
+  \ it **lazy**—match as little as possible:\n\n    ```python\n    text = \"<html><head><title>Page</title></head></html>\"\
+  \n    pattern = r\"<.*?>\"\n\n    matches = re.findall(pattern, text)\n    print(matches)\n\
+  \    # Matches each tag separately: ['<html>', '<head>', '<title>', '</title>',\
+  \ '</head>', '</html>']\n    ```\n\n    ### Comparison Table\n\n    | Greedy | Lazy\
+  \ | Description |\n    |--------|------|-------------|\n    | `*` | `*?` | 0 or\
+  \ more (lazy) |\n    | `+` | `+?` | 1 or more (lazy) |\n    | `?` | `??` | 0 or\
+  \ 1 (lazy) |\n    | `{n,}` | `{n,}?` | n or more (lazy) |\n    | `{n,m}` | `{n,m}?`\
+  \ | Between n and m (lazy) |\n\n    ### Practical Examples\n\n    #### Extract Quoted\
+  \ Strings\n\n    ```python\n    text = 'He said \"Hello\" and she said \"World\"\
+  '\n\n    # ❌ Greedy - matches too much\n    pattern = r'\".*\"'\n    match = re.search(pattern,\
+  \ text)\n    print(match.group())  # '\"Hello\" and she said \"World\"'\n\n    #\
+  \ ✅ Lazy - matches each quote separately\n    pattern = r'\".*?\"'\n    matches\
+  \ = re.findall(pattern, text)\n    print(matches)  # ['\"Hello\"', '\"World\"']\n\
+  \    ```\n\n    #### Extract HTML/XML Tags\n\n    ```python\n    html = \"<div>Content</div><p>More</p>\"\
+  \n\n    # ❌ Greedy\n    pattern = r\"<.+>\"\n    match = re.search(pattern, html)\n\
+  \    print(match.group())  # '<div>Content</div><p>More</p>'\n\n    # ✅ Lazy\n \
+  \   pattern = r\"<.+?>\"\n    matches = re.findall(pattern, html)\n    print(matches)\
+  \  # ['<div>', '</div>', '<p>', '</p>']\n    ```\n\n    #### Parse CSV-like Data\n\
+  \n    ```python\n    data = \"name,age,city\"\n\n    # ❌ Greedy - matches entire\
+  \ string\n    pattern = r\".+,\"\n    match = re.search(pattern, data)\n    print(match.group())\
+  \  # 'name,age,'\n\n    # ✅ Lazy - matches first field only\n    pattern = r\".+?,\"\
+  \n    match = re.search(pattern, data)\n    print(match.group())  # 'name,'\n  \
+  \  ```\n\n    ## Combining Quantifiers\n\n    ### Multiple Quantifiers\n\n    ```python\n\
+  \    # Match variable names: letter/underscore + 0+ word chars\n    pattern = r\"\
+  [a-zA-Z_]\\\\w*\"\n\n    # Match floats: optional sign, digits, optional decimal\
+  \ part\n    pattern = r\"-?\\\\d+(\\\\.\\\\d+)?\"\n    ```\n\n    ### Nested Quantifiers\
+  \ (Careful!)\n\n    ```python\n    # ❌ Can be very slow (catastrophic backtracking)\n\
+  \    pattern = r\"(a+)+\"\n\n    # ✅ Better\n    pattern = r\"a+\"\n    ```\n\n\
+  \    ## Real-World Examples\n\n    ### Email Validation (Simplified)\n\n    ```python\n\
+  \    pattern = r\"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\\\.[a-zA-Z]{2,}$\"\n    # \
+  \          ────────────┬────────  ───────┬──────  ──┬──\n    #           Local part\
+  \ (1+)     @ Domain (1+)    .TLD(2+)\n    ```\n\n    ### URL Matching\n\n    ```python\n\
+  \    pattern = r\"https?://[\\\\w.-]+(\\\\/[\\\\w./-]*)?\"\n    #         ───┬─\
+  \  ──────┬───── ─────┬─────\n    #         http(s)?  Domain    Optional path\n \
+  \   ```\n\n    ### Credit Card Numbers\n\n    ```python\n    # 4 groups of 4 digits\n\
+  \    pattern = r\"\\\\b\\\\d{4}[- ]?\\\\d{4}[- ]?\\\\d{4}[- ]?\\\\d{4}\\\\b\"\n\
+  \    # Matches: 1234 5678 9012 3456\n    #          1234-5678-9012-3456\n    # \
+  \         1234567890123456\n    ```\n\n    ### IP Address\n\n    ```python\n   \
+  \ # Simple version (not validating ranges)\n    pattern = r\"\\\\b\\\\d{1,3}\\\\\
+  .\\\\d{1,3}\\\\.\\\\d{1,3}\\\\.\\\\d{1,3}\\\\b\"\n    # Matches: 192.168.1.1\n \
+  \   ```\n\n    ### Time Formats\n\n    ```python\n    # HH:MM or HH:MM:SS\n    pattern\
+  \ = r\"\\\\b([01]?\\\\d|2[0-3]):[0-5]\\\\d(:[0-5]\\\\d)?\\\\b\"\n    # Matches:\
+  \ 09:30, 23:59:59, 5:45\n    ```\n\n    ## Performance Considerations\n\n    ###\
+  \ Catastrophic Backtracking\n\n    **Problem:** Nested quantifiers can cause exponential\
+  \ time complexity:\n\n    ```python\n    # ❌ DANGEROUS - can hang on long strings\n\
+  \    pattern = r\"(a+)+\"\n    pattern = r\"(a*)*\"\n    pattern = r\"(a+)*b\"\n\
+  \    ```\n\n    **Solution:** Be specific and avoid nested quantifiers:\n\n    ```python\n\
+  \    # ✅ SAFE\n    pattern = r\"a+\"\n    pattern = r\"a*b\"\n    ```\n\n    ###\
+  \ Use Possessive Quantifiers (Advanced)\n\n    Some engines support possessive quantifiers\
+  \ (not standard Python):\n\n    ```python\n    # Atomic group (doesn't backtrack)\n\
+  \    pattern = r\"(?>a+)b\"  # Not in Python's re module\n    ```\n\n    ## Common\
+  \ Patterns Summary\n\n    ```python\n    # Integer\n    r\"-?\\\\d+\"\n\n    # Float\n\
+  \    r\"-?\\\\d+\\\\.\\\\d+\"\n\n    # Phone (US)\n    r\"\\\\(? \\\\d{3}\\\\)?[-\
+  \ ]?\\\\d{3}[- ]?\\\\d{4}\"\n\n    # Date (YYYY-MM-DD)\n    r\"\\\\d{4}-\\\\d{2}-\\\
+  \\d{2}\"\n\n    # Hex color\n    r\"#[0-9A-Fa-f]{6}\"\n\n    # Username (3-20 chars)\n\
+  \    r\"^[a-zA-Z0-9_]{3,20}$\"\n\n    # Strong password (8+ chars, mixed case, digit,\
+  \ special)\n    r\"^(?=.*[a-z])(?=.*[A-Z])(?=.*\\\\d)(?=.*[@$!%*?&])[A-Za-z\\\\\
+  d@$!%*?&]{8,}$\"\n    ```\n\n    ## Key Takeaways\n\n    1. **Basic quantifiers**:\
+  \ `*` (0+), `+` (1+), `?` (0-1)\n    2. **Specific quantifiers**: `{n}`, `{n,}`,\
+  \ `{n,m}`\n    3. **Greedy by default**: Match as much as possible\n    4. **Lazy\
+  \ with `?`**: Match as little as possible\n    5. **Watch for catastrophic backtracking**:\
+  \ Avoid nested quantifiers\n    6. **Be specific**: More specific = better performance\n\
+  \    7. **Test with edge cases**: Empty strings, very long strings\n    8. **Use\
+  \ online tools**: Visualize how quantifiers behave"
+exercises:
+- type: mcq
+  slug: mastering-quantifiers-mcq
+  sequence_order: 1
+  question: What is the difference between greedy and non-greedy (lazy) quantifiers
+    in regex?
+  options:
+  - Greedy matches as much as possible; non-greedy matches as little as possible
+  - Greedy is faster than non-greedy
+  - Non-greedy only works in some languages
+  - Greedy requires more memory
+  correct_answer_index: 0
+  explanation: 'Greedy quantifiers (*, +, {n,}) match as many characters as possible
+    while still allowing the overall pattern to match. Non-greedy quantifiers (*?,
+    +?, {n,}?) match as few characters as possible. Example: .*? in ''<b>text</b>''
+    matches ''<b>'' while .* matches ''<b>text</b>''.'
+objectives:
+- Understand the fundamental concepts and mechanisms of mastering quantifiers
+- Apply chemical principles to solve related problems
+- Identify key reactions, equations, and chemical behaviors
+next_recommended: []

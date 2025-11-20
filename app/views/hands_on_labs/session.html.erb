@@ -1,0 +1,463 @@
+<div class="container-fluid py-4">
+  <!-- Breadcrumb -->
+  <nav aria-label="breadcrumb" class="mb-3">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><%= link_to "Dashboard", dashboard_path %></li>
+      <% if @course %>
+        <li class="breadcrumb-item"><%= link_to "Courses", courses_path %></li>
+        <li class="breadcrumb-item"><%= link_to @course.title, course_path(@course) %></li>
+        <li class="breadcrumb-item"><%= link_to @course_module.title, course_module_path(@course, @course_module) %></li>
+      <% end %>
+      <li class="breadcrumb-item"><%= link_to @lab.title, hands_on_lab_path(@lab) %></li>
+      <li class="breadcrumb-item active" aria-current="page">Lab Session</li>
+    </ol>
+  </nav>
+
+  <div class="row">
+    <!-- Main Content Area -->
+    <div class="col-lg-8">
+      <!-- Lab Header -->
+      <div class="card mb-3">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-start">
+            <div>
+              <h3 class="mb-1"><%= @lab.title %></h3>
+              <p class="text-muted mb-0">
+                <span class="badge badge-<%= @lab.difficulty == 'easy' ? 'success' : @lab.difficulty == 'medium' ? 'warning' : 'danger' %>">
+                  <%= @lab.difficulty.titleize %>
+                </span>
+                <span class="ml-2"><i class="fas fa-clock"></i> <%= @lab.estimated_minutes %> min</span>
+              </p>
+            </div>
+            <div class="text-right">
+              <button class="btn btn-sm btn-warning" id="pauseBtn">
+                <i class="fas fa-pause"></i> Pause
+              </button>
+              <button class="btn btn-sm btn-danger" onclick="confirmExit()">
+                <i class="fas fa-times"></i> Exit
+              </button>
+            </div>
+          </div>
+          
+          <!-- Progress Bar -->
+          <div class="mt-3">
+            <div class="d-flex justify-content-between mb-1">
+              <small>Progress: <span id="progressText"><%= @session.steps_completed %> / <%= @steps.length %></span></small>
+              <small><span id="percentageText"><%= @session.completion_percentage.to_i %>%</span></small>
+            </div>
+            <div class="progress" style="height: 8px;">
+              <div class="progress-bar bg-success" id="progressBar" role="progressbar" 
+                   style="width: <%= @session.completion_percentage %>%" 
+                   aria-valuenow="<%= @session.completion_percentage %>" 
+                   aria-valuemin="0" 
+                   aria-valuemax="100">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Current Step Display -->
+      <div class="card mb-3" id="stepCard">
+        <div class="card-header bg-primary text-white">
+          <h5 class="mb-0">
+            <i class="fas fa-tasks"></i> 
+            Step <span id="currentStepNumber"><%= @current_step_index + 1 %></span> of <%= @steps.length %>
+            <span class="float-right">
+              <i class="fas fa-lightbulb"></i> 
+              <span id="hintsRemaining"><%= @session.max_hints_allowed - @session.hints_used %></span> hints left
+            </span>
+          </h5>
+        </div>
+        <div class="card-body">
+          <% if @current_step %>
+            <h5 class="mb-3" id="stepTitle"><%= @current_step['title'] %></h5>
+            <p id="stepDescription"><%= @current_step['description'] %></p>
+            
+            <% if @current_step['example'] %>
+              <div class="alert alert-info">
+                <strong><i class="fas fa-code"></i> Example:</strong><br>
+                <code id="stepExample"><%= @current_step['example'] %></code>
+              </div>
+            <% end %>
+            
+            <!-- Hint Display (hidden by default) -->
+            <div class="alert alert-warning d-none" id="hintDisplay">
+              <strong><i class="fas fa-lightbulb"></i> Hint:</strong>
+              <p class="mb-0" id="hintText"></p>
+            </div>
+            
+            <!-- Command Input -->
+            <div class="form-group">
+              <label for="commandInput"><strong>Enter your command:</strong></label>
+              <div class="input-group">
+                <input type="text" 
+                       class="form-control font-monospace" 
+                       id="commandInput" 
+                       placeholder="Type your command here..."
+                       style="font-family: 'Courier New', monospace;">
+                <div class="input-group-append">
+                  <button class="btn btn-primary" type="button" id="submitCommandBtn">
+                    <i class="fas fa-play"></i> Run Command
+                  </button>
+                </div>
+              </div>
+              <small class="form-text text-muted">
+                Press Enter to submit or click the Run Command button
+              </small>
+            </div>
+            
+            <!-- Validation Feedback -->
+            <div class="mt-3 d-none" id="feedbackArea">
+              <div class="alert" id="feedbackAlert" role="alert"></div>
+            </div>
+            
+            <!-- Action Buttons -->
+            <div class="d-flex justify-content-between mt-4">
+              <button class="btn btn-outline-secondary" id="requestHintBtn">
+                <i class="fas fa-question-circle"></i> Request Hint
+              </button>
+              <button class="btn btn-success d-none" id="nextStepBtn">
+                Next Step <i class="fas fa-arrow-right"></i>
+              </button>
+            </div>
+          <% else %>
+            <div class="alert alert-success">
+              <h5><i class="fas fa-check-circle"></i> Lab Completed!</h5>
+              <p>Congratulations! You've completed all steps.</p>
+              <button class="btn btn-primary" id="completeLab">
+                Complete Lab
+              </button>
+            </div>
+          <% end %>
+        </div>
+      </div>
+
+      <!-- Terminal Emulator (simulated) -->
+      <div class="card">
+        <div class="card-header bg-dark text-white">
+          <i class="fas fa-terminal"></i> Terminal Output
+        </div>
+        <div class="card-body bg-dark text-light" style="min-height: 200px; max-height: 400px; overflow-y: auto; font-family: 'Courier New', monospace;">
+          <div id="terminalOutput">
+            <div class="text-success">$ Lab session started...</div>
+            <div class="text-muted">Waiting for your first command...</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="col-lg-4">
+      <!-- Stats Card -->
+      <div class="card mb-3">
+        <div class="card-header">
+          <h6 class="mb-0"><i class="fas fa-chart-line"></i> Session Stats</h6>
+        </div>
+        <div class="card-body">
+          <div class="mb-2">
+            <strong>Time Elapsed:</strong>
+            <span class="float-right" id="timeElapsed">0m 0s</span>
+          </div>
+          <div class="mb-2">
+            <strong>Steps Completed:</strong>
+            <span class="float-right"><span id="stepsCompleted"><%= @session.steps_completed %></span> / <%= @steps.length %></span>
+          </div>
+          <div class="mb-2">
+            <strong>Attempts Used:</strong>
+            <span class="float-right" id="attemptsUsed"><%= @session.attempts_used %></span>
+          </div>
+          <div class="mb-2">
+            <strong>Hints Used:</strong>
+            <span class="float-right" id="hintsUsed"><%= @session.hints_used %></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Steps Navigator -->
+      <div class="card">
+        <div class="card-header">
+          <h6 class="mb-0"><i class="fas fa-list-ol"></i> Lab Steps</h6>
+        </div>
+        <div class="card-body p-0">
+          <div class="list-group list-group-flush" id="stepsNavigator">
+            <% @steps.each_with_index do |step, index| %>
+              <div class="list-group-item list-group-item-action <%= 'active' if index == @current_step_index %> <%= 'list-group-item-success' if index < @current_step_index %>" 
+                   data-step="<%= index %>">
+                <div class="d-flex w-100 justify-content-between align-items-center">
+                  <span>
+                    <% if index < @current_step_index %>
+                      <i class="fas fa-check-circle text-success"></i>
+                    <% elsif index == @current_step_index %>
+                      <i class="fas fa-circle text-primary"></i>
+                    <% else %>
+                      <i class="far fa-circle text-muted"></i>
+                    <% end %>
+                    <strong>Step <%= index + 1 %>:</strong> <%= step['title'].truncate(30) %>
+                  </span>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+
+      <!-- Learning Objectives -->
+      <div class="card mt-3">
+        <div class="card-header">
+          <h6 class="mb-0"><i class="fas fa-bullseye"></i> Learning Objectives</h6>
+        </div>
+        <div class="card-body">
+          <ul class="mb-0">
+            <% if @lab.learning_objectives.is_a?(Array) %>
+              <% @lab.learning_objectives.each do |objective| %>
+                <li><small><%= objective %></small></li>
+              <% end %>
+            <% else %>
+              <li><small>Complete hands-on practice with <%= @lab.title %></small></li>
+            <% end %>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Exit Confirmation Modal -->
+<div class="modal fade" id="exitModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Exit Lab Session?</h5>
+        <button type="button" class="close" data-dismiss="modal">
+          <span>&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to exit? Your progress will be saved, but the lab session will be paused.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <a href="<%= hands_on_lab_path(@lab) %>" class="btn btn-danger">Exit Lab</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Session data
+  const sessionId = <%= @session.id %>;
+  const labId = <%= @lab.id %>;
+  const steps = <%= raw @steps.to_json %>;
+  let currentStepIndex = <%= @current_step_index %>;
+  let startTime = new Date();
+  
+  // Timer
+  setInterval(() => {
+    const elapsed = Math.floor((new Date() - startTime) / 1000);
+    const minutes = Math.floor(elapsed / 60);
+    const seconds = elapsed % 60;
+    document.getElementById('timeElapsed').textContent = `${minutes}m ${seconds}s`;
+  }, 1000);
+  
+  // Command input handler
+  document.getElementById('commandInput').addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+      submitCommand();
+    }
+  });
+  
+  document.getElementById('submitCommandBtn').addEventListener('click', submitCommand);
+  
+  function submitCommand() {
+    const command = document.getElementById('commandInput').value.trim();
+    
+    if (!command) {
+      showFeedback('Please enter a command', 'warning');
+      return;
+    }
+    
+    // Add to terminal
+    addToTerminal(`$ ${command}`, 'text-info');
+    addToTerminal('Validating command...', 'text-muted');
+    
+    // Validate via AJAX
+    fetch(`/hands_on_labs/${labId}/validate_step`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
+      },
+      body: JSON.stringify({
+        session_id: sessionId,
+        step_number: currentStepIndex,
+        user_command: command
+      })
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.correct) {
+        handleCorrectAnswer(data);
+      } else {
+        handleIncorrectAnswer(data);
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      showFeedback('An error occurred. Please try again.', 'danger');
+    });
+  }
+  
+  function handleCorrectAnswer(data) {
+    addToTerminal('✓ Command validated successfully!', 'text-success');
+    showFeedback('Correct! ' + data.message, 'success');
+    document.getElementById('commandInput').value = '';
+    
+    // Update progress
+    const stepsCompleted = currentStepIndex + 1;
+    document.getElementById('stepsCompleted').textContent = stepsCompleted;
+    document.getElementById('progressText').textContent = `${stepsCompleted} / ${steps.length}`;
+    
+    const percentage = Math.round((stepsCompleted / steps.length) * 100);
+    document.getElementById('percentageText').textContent = `${percentage}%`;
+    document.getElementById('progressBar').style.width = `${percentage}%`;
+    
+    // Update attempts
+    const currentAttempts = parseInt(document.getElementById('attemptsUsed').textContent) || 0;
+    document.getElementById('attemptsUsed').textContent = currentAttempts + 1;
+    
+    if (data.completed) {
+      // Lab completed
+      showCompletionMessage(data);
+    } else {
+      // Show next step button
+      document.getElementById('nextStepBtn').classList.remove('d-none');
+      document.getElementById('nextStepBtn').onclick = () => loadNextStep(data.next_step);
+    }
+  }
+  
+  function handleIncorrectAnswer(data) {
+    addToTerminal('✗ Command validation failed', 'text-danger');
+    showFeedback(data.message, 'danger');
+    
+    if (data.hint) {
+      document.getElementById('hintText').textContent = data.hint;
+      document.getElementById('hintDisplay').classList.remove('d-none');
+    }
+    
+    // Update attempts
+    const currentAttempts = parseInt(document.getElementById('attemptsUsed').textContent) || 0;
+    document.getElementById('attemptsUsed').textContent = currentAttempts + 1;
+  }
+  
+  function loadNextStep(stepIndex) {
+    window.location.reload();
+  }
+  
+  function showCompletionMessage(data) {
+    const html = `
+      <div class="alert alert-success">
+        <h5><i class="fas fa-trophy"></i> Congratulations!</h5>
+        <p>You've completed the lab! Score: ${data.score}</p>
+        <a href="/hands_on_labs/${labId}/result?session_id=${sessionId}" class="btn btn-primary">
+          View Results
+        </a>
+      </div>
+    `;
+    document.getElementById('stepCard').querySelector('.card-body').innerHTML = html;
+  }
+  
+  function showFeedback(message, type) {
+    const feedbackArea = document.getElementById('feedbackArea');
+    const feedbackAlert = document.getElementById('feedbackAlert');
+    
+    feedbackAlert.className = `alert alert-${type}`;
+    feedbackAlert.innerHTML = `<i class="fas fa-${type === 'success' ? 'check' : 'exclamation'}-circle"></i> ${message}`;
+    feedbackArea.classList.remove('d-none');
+    
+    setTimeout(() => {
+      if (type !== 'success') {
+        feedbackArea.classList.add('d-none');
+      }
+    }, 5000);
+  }
+  
+  function addToTerminal(text, className = '') {
+    const terminal = document.getElementById('terminalOutput');
+    const line = document.createElement('div');
+    line.className = className;
+    line.textContent = text;
+    terminal.appendChild(line);
+    terminal.scrollTop = terminal.scrollHeight;
+  }
+  
+  // Request hint
+  document.getElementById('requestHintBtn').addEventListener('click', () => {
+    fetch(`/hands_on_labs/${labId}/request_hint`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
+      },
+      body: JSON.stringify({
+        session_id: sessionId,
+        step_number: currentStepIndex
+      })
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        document.getElementById('hintText').textContent = data.hint;
+        document.getElementById('hintDisplay').classList.remove('d-none');
+        
+        // Update hints counter
+        const hintsUsed = parseInt(document.getElementById('hintsUsed').textContent) + 1;
+        document.getElementById('hintsUsed').textContent = hintsUsed;
+        document.getElementById('hintsRemaining').textContent = 3 - hintsUsed;
+      } else {
+        showFeedback(data.error, 'warning');
+      }
+    });
+  });
+  
+  // Pause button
+  document.getElementById('pauseBtn').addEventListener('click', () => {
+    fetch(`/hands_on_labs/${labId}/pause`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
+      },
+      body: JSON.stringify({ session_id: sessionId })
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        window.location.href = `/hands_on_labs/${labId}`;
+      }
+    });
+  });
+  
+  function confirmExit() {
+    $('#exitModal').modal('show');
+  }
+</script>
+
+<style>
+  .font-monospace {
+    font-family: 'Courier New', Courier, monospace;
+  }
+  
+  #terminalOutput div {
+    padding: 2px 0;
+  }
+  
+  .list-group-item.active {
+    background-color: #007bff;
+    border-color: #007bff;
+  }
+  
+  .list-group-item-success {
+    background-color: #d4edda;
+  }
+</style>

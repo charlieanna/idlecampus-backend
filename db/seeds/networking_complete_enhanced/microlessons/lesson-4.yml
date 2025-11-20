@@ -1,0 +1,287 @@
+slug: lesson-4
+title: Lesson 4
+sequence_order: 4
+estimated_minutes: 2
+difficulty: easy
+content_md: "# Microlesson \U0001F680\n\n# GraphQL Basics and Schema Design\n\n  \
+  \  **GraphQL** is a query language for APIs and a runtime for executing those queries.\
+  \ Developed by Facebook in 2012 and open-sourced in 2015.\n\n    ## GraphQL vs REST\n\
+  \n    ### REST Approach\n\n    ```javascript\n    // Get user info - requires 3\
+  \ requests\n    GET /users/123\n    {\n      \"id\": 123,\n      \"name\": \"Alice\"\
+  ,\n      \"email\": \"alice@example.com\"\n    }\n\n    GET /users/123/posts\n \
+  \   [\n      {\"id\": 1, \"title\": \"First Post\"},\n      {\"id\": 2, \"title\"\
+  : \"Second Post\"}\n    ]\n\n    GET /users/123/followers\n    [\n      {\"id\"\
+  : 456, \"name\": \"Bob\"},\n      {\"id\": 789, \"name\": \"Charlie\"}\n    ]\n\n\
+  \    // Problem: 3 round trips, over-fetching, under-fetching\n    ```\n\n    ###\
+  \ GraphQL Approach\n\n    ```graphql\n    # Single request - get exactly what you\
+  \ need\n    query {\n      user(id: 123) {\n        name\n        email\n      \
+  \  posts {\n          title\n        }\n        followers {\n          name\n  \
+  \      }\n      }\n    }\n\n    # Response - single request!\n    {\n      \"data\"\
+  : {\n        \"user\": {\n          \"name\": \"Alice\",\n          \"email\": \"\
+  alice@example.com\",\n          \"posts\": [\n            {\"title\": \"First Post\"\
+  },\n            {\"title\": \"Second Post\"}\n          ],\n          \"followers\"\
+  : [\n            {\"name\": \"Bob\"},\n            {\"name\": \"Charlie\"}\n   \
+  \       ]\n        }\n      }\n    }\n    ```\n\n    ### Key Differences\n\n   \
+  \ | Feature | REST | GraphQL |\n    |---------|------|---------|\n    | **Endpoints**\
+  \ | Multiple endpoints | Single endpoint |\n    | **Data fetching** | Fixed response\
+  \ | Client specifies exact data |\n    | **Over-fetching** | Common | Never |\n\
+  \    | **Under-fetching** | Common (N+1) | Solved with careful schema |\n    | **Versioning**\
+  \ | /v1, /v2 | Schema evolution |\n    | **Documentation** | Separate (Swagger)\
+  \ | Built-in (introspection) |\n    | **Caching** | HTTP caching | Requires implementation\
+  \ |\n\n    ## Schema Definition Language (SDL)\n\n    GraphQL uses a **strongly-typed\
+  \ schema** to define your API.\n\n    ### Basic Types\n\n    ```graphql\n    # Scalar\
+  \ types (built-in)\n    Int       # Signed 32-bit integer\n    Float     # Signed\
+  \ double-precision float\n    String    # UTF-8 character sequence\n    Boolean\
+  \   # true or false\n    ID        # Unique identifier (serialized as String)\n\n\
+  \    # Custom scalar\n    scalar Date\n    scalar DateTime\n    scalar JSON\n  \
+  \  ```\n\n    ### Object Types\n\n    ```graphql\n    # User type\n    type User\
+  \ {\n      id: ID!              # ! means non-nullable (required)\n      name: String!\n\
+  \      email: String!\n      age: Int\n      isActive: Boolean!\n      createdAt:\
+  \ DateTime!\n      posts: [Post!]!      # Array of posts (array and items non-null)\n\
+  \      followers: [User!]   # Array can be null, but items can't\n    }\n\n    #\
+  \ Post type\n    type Post {\n      id: ID!\n      title: String!\n      content:\
+  \ String!\n      author: User!        # Relationship to User\n      published: Boolean!\n\
+  \      tags: [String!]!\n      createdAt: DateTime!\n      updatedAt: DateTime!\n\
+  \    }\n\n    # Comment type\n    type Comment {\n      id: ID!\n      text: String!\n\
+  \      author: User!\n      post: Post!\n      createdAt: DateTime!\n    }\n   \
+  \ ```\n\n    ### Query Type\n\n    **Entry point for reading data**\n\n    ```graphql\n\
+  \    type Query {\n      # Get single user by ID\n      user(id: ID!): User\n\n\
+  \      # Get all users (with pagination)\n      users(limit: Int, offset: Int):\
+  \ [User!]!\n\n      # Search users\n      searchUsers(query: String!): [User!]!\n\
+  \n      # Get single post\n      post(id: ID!): Post\n\n      # Get all posts (with\
+  \ filters)\n      posts(\n        authorId: ID\n        published: Boolean\n   \
+  \     limit: Int\n        offset: Int\n      ): [Post!]!\n\n      # Get current\
+  \ logged-in user\n      me: User\n    }\n    ```\n\n    ### Mutation Type\n\n  \
+  \  **Entry point for modifying data**\n\n    ```graphql\n    type Mutation {\n \
+  \     # User mutations\n      createUser(input: CreateUserInput!): User!\n     \
+  \ updateUser(id: ID!, input: UpdateUserInput!): User!\n      deleteUser(id: ID!):\
+  \ Boolean!\n\n      # Post mutations\n      createPost(input: CreatePostInput!):\
+  \ Post!\n      updatePost(id: ID!, input: UpdatePostInput!): Post!\n      deletePost(id:\
+  \ ID!): Boolean!\n      publishPost(id: ID!): Post!\n\n      # Comment mutations\n\
+  \      addComment(postId: ID!, text: String!): Comment!\n      deleteComment(id:\
+  \ ID!): Boolean!\n    }\n    ```\n\n    ### Input Types\n\n    **Used for complex\
+  \ arguments**\n\n    ```graphql\n    input CreateUserInput {\n      name: String!\n\
+  \      email: String!\n      age: Int\n      password: String!\n    }\n\n    input\
+  \ UpdateUserInput {\n      name: String\n      email: String\n      age: Int\n \
+  \   }\n\n    input CreatePostInput {\n      title: String!\n      content: String!\n\
+  \      tags: [String!]\n      published: Boolean\n    }\n\n    input UpdatePostInput\
+  \ {\n      title: String\n      content: String\n      tags: [String!]\n      published:\
+  \ Boolean\n    }\n    ```\n\n    ### Enums\n\n    ```graphql\n    enum Role {\n\
+  \      ADMIN\n      MODERATOR\n      USER\n      GUEST\n    }\n\n    enum PostStatus\
+  \ {\n      DRAFT\n      PUBLISHED\n      ARCHIVED\n    }\n\n    type User {\n  \
+  \    id: ID!\n      name: String!\n      role: Role!\n    }\n\n    type Post {\n\
+  \      id: ID!\n      title: String!\n      status: PostStatus!\n    }\n    ```\n\
+  \n    ### Interfaces\n\n    **Abstract type that other types can implement**\n\n\
+  \    ```graphql\n    interface Node {\n      id: ID!\n      createdAt: DateTime!\n\
+  \      updatedAt: DateTime!\n    }\n\n    type User implements Node {\n      id:\
+  \ ID!\n      createdAt: DateTime!\n      updatedAt: DateTime!\n      name: String!\n\
+  \      email: String!\n    }\n\n    type Post implements Node {\n      id: ID!\n\
+  \      createdAt: DateTime!\n      updatedAt: DateTime!\n      title: String!\n\
+  \      content: String!\n    }\n\n    # Query using interface\n    type Query {\n\
+  \      node(id: ID!): Node\n    }\n    ```\n\n    ### Unions\n\n    **Type that\
+  \ could be one of several types**\n\n    ```graphql\n    union SearchResult = User\
+  \ | Post | Comment\n\n    type Query {\n      search(query: String!): [SearchResult!]!\n\
+  \    }\n\n    # Client query with fragments\n    query {\n      search(query: \"\
+  graphql\") {\n        ... on User {\n          name\n          email\n        }\n\
+  \        ... on Post {\n          title\n          content\n        }\n        ...\
+  \ on Comment {\n          text\n          author { name }\n        }\n      }\n\
+  \    }\n    ```\n\n    ## Complete Blog API Schema Example\n\n    ```graphql\n \
+  \   # Scalars\n    scalar DateTime\n    scalar JSON\n\n    # Enums\n    enum Role\
+  \ {\n      ADMIN\n      MODERATOR\n      USER\n    }\n\n    enum PostStatus {\n\
+  \      DRAFT\n      PUBLISHED\n      ARCHIVED\n    }\n\n    # Types\n    type User\
+  \ {\n      id: ID!\n      name: String!\n      email: String!\n      role: Role!\n\
+  \      avatar: String\n      bio: String\n      posts: [Post!]!\n      comments:\
+  \ [Comment!]!\n      followers: [User!]!\n      following: [User!]!\n      createdAt:\
+  \ DateTime!\n      updatedAt: DateTime!\n    }\n\n    type Post {\n      id: ID!\n\
+  \      title: String!\n      content: String!\n      excerpt: String\n      status:\
+  \ PostStatus!\n      author: User!\n      tags: [String!]!\n      comments: [Comment!]!\n\
+  \      likes: Int!\n      viewCount: Int!\n      createdAt: DateTime!\n      updatedAt:\
+  \ DateTime!\n      publishedAt: DateTime\n    }\n\n    type Comment {\n      id:\
+  \ ID!\n      text: String!\n      author: User!\n      post: Post!\n      parent:\
+  \ Comment          # For nested comments\n      replies: [Comment!]!\n      createdAt:\
+  \ DateTime!\n      updatedAt: DateTime!\n    }\n\n    # Input types\n    input CreateUserInput\
+  \ {\n      name: String!\n      email: String!\n      password: String!\n      avatar:\
+  \ String\n      bio: String\n    }\n\n    input UpdateUserInput {\n      name: String\n\
+  \      email: String\n      avatar: String\n      bio: String\n    }\n\n    input\
+  \ CreatePostInput {\n      title: String!\n      content: String!\n      excerpt:\
+  \ String\n      tags: [String!]\n      status: PostStatus\n    }\n\n    input UpdatePostInput\
+  \ {\n      title: String\n      content: String\n      excerpt: String\n      tags:\
+  \ [String!]\n      status: PostStatus\n    }\n\n    # Queries\n    type Query {\n\
+  \      # User queries\n      me: User\n      user(id: ID!): User\n      users(limit:\
+  \ Int = 10, offset: Int = 0): [User!]!\n\n      # Post queries\n      post(id: ID!):\
+  \ Post\n      posts(\n        authorId: ID\n        status: PostStatus\n       \
+  \ tag: String\n        limit: Int = 10\n        offset: Int = 0\n      ): [Post!]!\n\
+  \      searchPosts(query: String!): [Post!]!\n\n      # Comment queries\n      comment(id:\
+  \ ID!): Comment\n      comments(postId: ID!, limit: Int = 20): [Comment!]!\n   \
+  \ }\n\n    # Mutations\n    type Mutation {\n      # Authentication\n      register(input:\
+  \ CreateUserInput!): AuthPayload!\n      login(email: String!, password: String!):\
+  \ AuthPayload!\n      logout: Boolean!\n\n      # User mutations\n      updateUser(input:\
+  \ UpdateUserInput!): User!\n      deleteUser: Boolean!\n      followUser(userId:\
+  \ ID!): User!\n      unfollowUser(userId: ID!): User!\n\n      # Post mutations\n\
+  \      createPost(input: CreatePostInput!): Post!\n      updatePost(id: ID!, input:\
+  \ UpdatePostInput!): Post!\n      deletePost(id: ID!): Boolean!\n      likePost(id:\
+  \ ID!): Post!\n      unlikePost(id: ID!): Post!\n\n      # Comment mutations\n \
+  \     addComment(postId: ID!, text: String!, parentId: ID): Comment!\n      updateComment(id:\
+  \ ID!, text: String!): Comment!\n      deleteComment(id: ID!): Boolean!\n    }\n\
+  \n    # Subscriptions (real-time)\n    type Subscription {\n      postCreated: Post!\n\
+  \      commentAdded(postId: ID!): Comment!\n      userJoined: User!\n    }\n\n \
+  \   type AuthPayload {\n      token: String!\n      user: User!\n    }\n    ```\n\
+  \n    ## Resolvers with Context and Arguments\n\n    Resolvers are functions that\
+  \ return data for each field.\n\n    ### Basic Resolver Structure\n\n    ```javascript\n\
+  \    // resolver function signature\n    fieldName: (parent, args, context, info)\
+  \ => {\n      // parent: result from parent resolver\n      // args: field arguments\n\
+  \      // context: shared data (db, user, etc.)\n      // info: query metadata\n\
+  \    }\n    ```\n\n    ### Query Resolvers\n\n    ```javascript\n    const resolvers\
+  \ = {\n      Query: {\n        // Simple resolver\n        me: (parent, args, context)\
+  \ => {\n          // context contains authenticated user\n          if (!context.user)\
+  \ {\n            throw new Error('Not authenticated');\n          }\n          return\
+  \ context.db.users.findById(context.user.id);\n        },\n\n        // Resolver\
+  \ with arguments\n        user: async (parent, args, context) => {\n          const\
+  \ { id } = args;\n          return await context.db.users.findById(id);\n      \
+  \  },\n\n        // Resolver with multiple arguments\n        posts: async (parent,\
+  \ args, context) => {\n          const { authorId, status, tag, limit, offset }\
+  \ = args;\n\n          let query = context.db.posts;\n\n          if (authorId)\
+  \ {\n            query = query.where({ authorId });\n          }\n          if (status)\
+  \ {\n            query = query.where({ status });\n          }\n          if (tag)\
+  \ {\n            query = query.whereJsonContains('tags', tag);\n          }\n\n\
+  \          return await query\n            .limit(limit)\n            .offset(offset)\n\
+  \            .orderBy('createdAt', 'desc');\n        },\n\n        // Search resolver\n\
+  \        searchPosts: async (parent, args, context) => {\n          const { query\
+  \ } = args;\n          return await context.db.posts\n            .where('title',\
+  \ 'like', `%${query}%`)\n            .orWhere('content', 'like', `%${query}%`)\n\
+  \            .limit(20);\n        }\n      }\n    };\n    ```\n\n    ### Mutation\
+  \ Resolvers\n\n    ```javascript\n    const resolvers = {\n      Mutation: {\n \
+  \       // Create user\n        createUser: async (parent, args, context) => {\n\
+  \          const { input } = args;\n          const { name, email, password } =\
+  \ input;\n\n          // Hash password\n          const hashedPassword = await bcrypt.hash(password,\
+  \ 10);\n\n          // Create user\n          const user = await context.db.users.create({\n\
+  \            name,\n            email,\n            password: hashedPassword\n \
+  \         });\n\n          return user;\n        },\n\n        // Update user (with\
+  \ auth check)\n        updateUser: async (parent, args, context) => {\n        \
+  \  if (!context.user) {\n            throw new Error('Not authenticated');\n   \
+  \       }\n\n          const { input } = args;\n          const userId = context.user.id;\n\
+  \n          const user = await context.db.users.update(userId, input);\n       \
+  \   return user;\n        },\n\n        // Create post\n        createPost: async\
+  \ (parent, args, context) => {\n          if (!context.user) {\n            throw\
+  \ new Error('Not authenticated');\n          }\n\n          const { input } = args;\n\
+  \          const post = await context.db.posts.create({\n            ...input,\n\
+  \            authorId: context.user.id,\n            status: input.status || 'DRAFT'\n\
+  \          });\n\n          return post;\n        },\n\n        // Like post (idempotent)\n\
+  \        likePost: async (parent, args, context) => {\n          if (!context.user)\
+  \ {\n            throw new Error('Not authenticated');\n          }\n\n        \
+  \  const { id } = args;\n\n          // Check if already liked\n          const\
+  \ existing = await context.db.likes.findOne({\n            userId: context.user.id,\n\
+  \            postId: id\n          });\n\n          if (!existing) {\n         \
+  \   await context.db.likes.create({\n              userId: context.user.id,\n  \
+  \            postId: id\n            });\n\n            // Increment like count\n\
+  \            await context.db.posts.increment('likes', { id });\n          }\n\n\
+  \          return await context.db.posts.findById(id);\n        },\n\n        //\
+  \ Add comment\n        addComment: async (parent, args, context) => {\n        \
+  \  if (!context.user) {\n            throw new Error('Not authenticated');\n   \
+  \       }\n\n          const { postId, text, parentId } = args;\n\n          const\
+  \ comment = await context.db.comments.create({\n            text,\n            authorId:\
+  \ context.user.id,\n            postId,\n            parentId\n          });\n\n\
+  \          // Publish to subscription\n          context.pubsub.publish('COMMENT_ADDED',\
+  \ {\n            commentAdded: comment,\n            postId\n          });\n\n \
+  \         return comment;\n        }\n      }\n    };\n    ```\n\n    ### Field\
+  \ Resolvers\n\n    **Resolve nested fields**\n\n    ```javascript\n    const resolvers\
+  \ = {\n      // Field resolvers for User type\n      User: {\n        // Resolve\
+  \ user's posts\n        posts: async (parent, args, context) => {\n          //\
+  \ parent is the User object\n          return await context.db.posts.where({ authorId:\
+  \ parent.id });\n        },\n\n        // Resolve user's followers\n        followers:\
+  \ async (parent, args, context) => {\n          const followers = await context.db.follows\n\
+  \            .where({ followingId: parent.id })\n            .select('followerId');\n\
+  \n          const userIds = followers.map(f => f.followerId);\n          return\
+  \ await context.db.users.whereIn('id', userIds);\n        },\n\n        // Resolve\
+  \ user's following\n        following: async (parent, args, context) => {\n    \
+  \      const following = await context.db.follows\n            .where({ followerId:\
+  \ parent.id })\n            .select('followingId');\n\n          const userIds =\
+  \ following.map(f => f.followingId);\n          return await context.db.users.whereIn('id',\
+  \ userIds);\n        }\n      },\n\n      // Field resolvers for Post type\n   \
+  \   Post: {\n        // Resolve post's author\n        author: async (parent, args,\
+  \ context) => {\n          return await context.db.users.findById(parent.authorId);\n\
+  \        },\n\n        // Resolve post's comments\n        comments: async (parent,\
+  \ args, context) => {\n          return await context.db.comments\n            .where({\
+  \ postId: parent.id })\n            .orderBy('createdAt', 'asc');\n        },\n\n\
+  \        // Generate excerpt if not stored\n        excerpt: (parent) => {\n   \
+  \       if (parent.excerpt) return parent.excerpt;\n          return parent.content.substring(0,\
+  \ 200) + '...';\n        }\n      },\n\n      // Field resolvers for Comment type\n\
+  \      Comment: {\n        author: async (parent, args, context) => {\n        \
+  \  return await context.db.users.findById(parent.authorId);\n        },\n\n    \
+  \    post: async (parent, args, context) => {\n          return await context.db.posts.findById(parent.postId);\n\
+  \        },\n\n        // Nested comments\n        replies: async (parent, args,\
+  \ context) => {\n          return await context.db.comments\n            .where({\
+  \ parentId: parent.id })\n            .orderBy('createdAt', 'asc');\n        },\n\
+  \n        parent: async (parent, args, context) => {\n          if (!parent.parentId)\
+  \ return null;\n          return await context.db.comments.findById(parent.parentId);\n\
+  \        }\n      }\n    };\n    ```\n\n    ### Context Object\n\n    ```javascript\n\
+  \    // Apollo Server setup with context\n    const { ApolloServer } = require('apollo-server');\n\
+  \    const jwt = require('jsonwebtoken');\n\n    const server = new ApolloServer({\n\
+  \      typeDefs,\n      resolvers,\n      context: async ({ req }) => {\n      \
+  \  // Get token from header\n        const token = req.headers.authorization ||\
+  \ '';\n\n        // Verify token and get user\n        let user = null;\n      \
+  \  if (token) {\n          try {\n            const decoded = jwt.verify(\n    \
+  \          token.replace('Bearer ', ''),\n              process.env.JWT_SECRET\n\
+  \            );\n            user = await db.users.findById(decoded.userId);\n \
+  \         } catch (err) {\n            // Invalid token\n          }\n        }\n\
+  \n        // Return context object (available in all resolvers)\n        return\
+  \ {\n          db,           // Database instance\n          user,         // Authenticated\
+  \ user (or null)\n          pubsub,       // For subscriptions\n          loaders:\
+  \ {    // DataLoaders (see next lesson)\n            user: userLoader,\n       \
+  \     post: postLoader\n          }\n        };\n      }\n    });\n\n    server.listen().then(({\
+  \ url }) => {\n      console.log(`\U0001F680 Server ready at ${url}`);\n    });\n\
+  \    ```\n\n    ## Client Queries\n\n    ### Query Examples\n\n    ```graphql\n\
+  \    # Get user with posts\n    query GetUser($id: ID!) {\n      user(id: $id) {\n\
+  \        id\n        name\n        email\n        posts {\n          id\n      \
+  \    title\n          excerpt\n          createdAt\n        }\n      }\n    }\n\n\
+  \    # Variables\n    {\n      \"id\": \"123\"\n    }\n\n    # Get posts with filters\n\
+  \    query GetPosts($authorId: ID, $status: PostStatus, $limit: Int) {\n      posts(authorId:\
+  \ $authorId, status: $status, limit: $limit) {\n        id\n        title\n    \
+  \    excerpt\n        author {\n          name\n          avatar\n        }\n  \
+  \      tags\n        likes\n        createdAt\n      }\n    }\n\n    # Get post\
+  \ with nested comments\n    query GetPost($id: ID!) {\n      post(id: $id) {\n \
+  \       id\n        title\n        content\n        author {\n          name\n \
+  \         avatar\n        }\n        comments {\n          id\n          text\n\
+  \          author {\n            name\n          }\n          replies {\n      \
+  \      id\n            text\n            author {\n              name\n        \
+  \    }\n          }\n        }\n      }\n    }\n    ```\n\n    ### Mutation Examples\n\
+  \n    ```graphql\n    # Create post\n    mutation CreatePost($input: CreatePostInput!)\
+  \ {\n      createPost(input: $input) {\n        id\n        title\n        content\n\
+  \        status\n        createdAt\n      }\n    }\n\n    # Variables\n    {\n \
+  \     \"input\": {\n        \"title\": \"Getting Started with GraphQL\",\n     \
+  \   \"content\": \"GraphQL is amazing...\",\n        \"tags\": [\"graphql\", \"\
+  api\"],\n        \"status\": \"PUBLISHED\"\n      }\n    }\n\n    # Add comment\n\
+  \    mutation AddComment($postId: ID!, $text: String!) {\n      addComment(postId:\
+  \ $postId, text: $text) {\n        id\n        text\n        author {\n        \
+  \  name\n        }\n        createdAt\n      }\n    }\n\n    # Like post\n    mutation\
+  \ LikePost($id: ID!) {\n      likePost(id: $id) {\n        id\n        likes\n \
+  \     }\n    }\n    ```\n\n    ### Fragments\n\n    ```graphql\n    # Define reusable\
+  \ fragment\n    fragment UserInfo on User {\n      id\n      name\n      email\n\
+  \      avatar\n    }\n\n    fragment PostInfo on Post {\n      id\n      title\n\
+  \      excerpt\n      createdAt\n      author {\n        ...UserInfo\n      }\n\
+  \    }\n\n    # Use fragments\n    query GetFeed {\n      posts(limit: 10) {\n \
+  \       ...PostInfo\n        comments {\n          id\n          text\n        \
+  \  author {\n            ...UserInfo\n          }\n        }\n      }\n    }\n \
+  \   ```\n\n    **Next**: We'll explore advanced GraphQL patterns including pagination,\
+  \ DataLoader, and subscriptions."
+exercises:
+- type: mcq
+  slug: lesson-4-mcq
+  sequence_order: 1
+  question: What is a key consideration when working with GraphQL Basics and Schema
+    Design?
+  options:
+  - Understanding the core principles and best practices of GraphQL Basics and Schema
+    Design
+  - Ignoring documentation
+  - Skipping testing
+  - Avoiding industry standards
+  correct_answer_index: 0
+  explanation: When working with GraphQL Basics and Schema Design, it's essential
+    to understand the fundamental principles, follow best practices, and stay updated
+    with current standards to ensure effective implementation and maintenance.
+objectives:
+- Understand the fundamental concepts and mechanisms of lesson 4
+- Apply chemical principles to solve related problems
+- Identify key reactions, equations, and chemical behaviors
+next_recommended: []

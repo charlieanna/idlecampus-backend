@@ -1,0 +1,65 @@
+slug: acidbasetheories-practice
+title: acid_base_theories — Practice
+difficulty: easy
+sequence_order: 9
+estimated_minutes: 2
+key_concepts:
+- acid_base_theories
+prerequisites: []
+content_md: '# acid_base_theories — Practice 🚀
+
+
+  Conjugate base is formed by removing one H⁺. H₂PO₄⁻ → HPO₄²⁻ + H⁺
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What is the conjugate base of H₂PO₄⁻?
+  options:
+  - H₃PO₄
+  - HPO₄²⁻
+  - PO₄³⁻
+  - H₂PO₄⁺
+  require_pass: true
+  correct_answer: HPO₄²⁻
+  explanation: 'The conjugate base of a species is formed by removing one proton (H⁺)
+    from it. For H₂PO₄⁻ (dihydrogen phosphate): H₂PO₄⁻ → HPO₄²⁻ + H⁺. The conjugate
+    base is HPO₄²⁻ (hydrogen phosphate or monohydrogen phosphate). This is part of
+    the phosphate buffer system important in biological systems. The complete series
+    for phosphoric acid: H₃PO₄ (acid) ⇌ H₂PO₄⁻ (conjugate base of H₃PO₄, also an acid)
+    ⇌ HPO₄²⁻ (conjugate base of H₂PO₄⁻, also an acid) ⇌ PO₄³⁻ (conjugate base of HPO₄²⁻).
+    Each step involves loss of one H⁺. Conjugate acid-base pairs differ by exactly
+    one proton.'
+- type: mcq
+  sequence_order: 2
+  question: 'According to Bronsted-Lowry theory, which species can act as BOTH an acid and a base (amphoteric)?'
+  options:
+  - HCl
+  - NH₃
+  - H₂O
+  - Na⁺
+  require_pass: true
+  correct_answer: H₂O
+  explanation: 'H₂O is amphoteric - it can act as both acid and base according to Bronsted-Lowry theory. As an acid (proton donor): H₂O + NH₃ → NH₄⁺ + OH⁻ (H₂O donates H⁺ to NH₃). As a base (proton acceptor): H₂O + HCl → H₃O⁺ + Cl⁻ (H₂O accepts H⁺ from HCl). Other amphoteric species: HCO₃⁻ (bicarbonate), HSO₄⁻ (hydrogen sulfate), H₂PO₄⁻ (dihydrogen phosphate), HPO₄²⁻ (hydrogen phosphate). Analysis of other options: HCl - only acts as acid (strong proton donor), NH₃ - only acts as base (proton acceptor), Na⁺ - neither acid nor base (doesn''t participate in proton transfer). Bronsted-Lowry theory (1923) is broader than Arrhenius theory because: (1) It applies to non-aqueous solvents, (2) Doesn''t require H⁺ or OH⁻ ions in solution, (3) Focuses on proton transfer rather than ion dissociation. The ability of H₂O to act as both acid and base explains autoionization: 2H₂O ⇌ H₃O⁺ + OH⁻.'
+- type: mcq
+  sequence_order: 3
+  question: 'In the reaction: NH₃ + H₂O ⇌ NH₄⁺ + OH⁻, what are the two Bronsted-Lowry acids?'
+  options:
+  - NH₃ and H₂O
+  - NH₃ and NH₄⁺
+  - H₂O and NH₄⁺
+  - NH₄⁺ and OH⁻
+  require_pass: true
+  correct_answer: H₂O and NH₄⁺
+  explanation: 'The Bronsted-Lowry acids are H₂O and NH₄⁺ (proton donors). Analysis: Forward reaction: H₂O donates H⁺ to NH₃ → H₂O is the acid, NH₃ is the base. Reverse reaction: NH₄⁺ donates H⁺ to OH⁻ → NH₄⁺ is the acid, OH⁻ is the base. Conjugate acid-base pairs: (1) H₂O (acid) and OH⁻ (conjugate base), (2) NH₄⁺ (acid) and NH₃ (conjugate base). Important: In any Bronsted-Lowry equilibrium, there are always two acid-base pairs. The stronger acid-base pair will be favored in reverse direction. Here: H₂O (very weak acid) + NH₃ (weak base) → equilibrium favors reactants (Kb for NH₃ = 1.8 × 10⁻⁵, meaning weak base). Remember: Acid = proton donor (loses H⁺), Base = proton acceptor (gains H⁺). This theory explains acid-base behavior in any solvent, not just water, making it more versatile than Arrhenius theory.'

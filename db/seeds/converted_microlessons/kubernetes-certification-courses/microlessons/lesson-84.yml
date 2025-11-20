@@ -1,0 +1,43 @@
+slug: lesson-84
+title: Lesson 84
+difficulty: easy
+sequence_order: 84
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Storage Troubleshooting\n\n    - Pending\
+  \ PVC causes\n    - Node/pod mount errors and driver logs"
+exercises:
+  - type: mcq
+    sequence_order: 1
+    question: "What is the most common cause of a PersistentVolumeClaim (PVC) remaining in Pending status in a Kubernetes cluster?"
+    options:
+      - "The Pod using the PVC is not running"
+      - "No PersistentVolume matches the PVC's requirements (capacity, access mode, storage class)"
+      - "The storage driver is corrupted"
+      - "The namespace has exceeded its quota"
+    correct_answer: "No PersistentVolume matches the PVC's requirements (capacity, access mode, storage class)"
+    explanation: "A PVC remains in Pending status when the scheduler cannot find a suitable PersistentVolume that matches the claim's requirements. This includes matching the requested storage capacity, access modes (ReadWriteOnce, ReadOnlyMany, ReadWriteMany), and storage class. The PVC binding process requires an exact match on storage class and access mode, plus sufficient capacity. If no PV exists that satisfies these criteria, the PVC will stay Pending until either a matching PV is created or the PVC's requirements are modified. This is distinct from Pod issues or quota problems, which would manifest differently. Storage driver issues would typically cause mount failures rather than Pending PVCs."
+    require_pass: true
+  - type: mcq
+    sequence_order: 2
+    question: "When troubleshooting a pod that fails to mount a volume, which log source should you check first to identify CSI driver-related issues?"
+    options:
+      - "kubelet logs on the node where the pod is scheduled"
+      - "kube-controller-manager logs"
+      - "etcd logs"
+      - "API server logs"
+    correct_answer: "kubelet logs on the node where the pod is scheduled"
+    explanation: "When a pod fails to mount a volume, the kubelet logs on the node where the pod is scheduled are the primary source for troubleshooting. The kubelet is responsible for coordinating with the CSI (Container Storage Interface) driver to attach and mount volumes to pods. These logs will show detailed error messages from the volume attachment and mount operations, including any CSI driver errors, permission issues, or connectivity problems. The kubelet logs contain information about volume plugin operations, mount attempts, and communication with the CSI driver sidecars. While controller-manager logs may show PV/PVC binding issues, the actual mount errors and driver-specific problems are logged by the kubelet. API server and etcd logs typically don't contain volume mounting details as these operations occur at the node level."
+    require_pass: true
+  - type: mcq
+    sequence_order: 3
+    question: "Which command helps diagnose why a pod cannot mount a PersistentVolume after the PVC is bound?"
+    options:
+      - "kubectl logs -n kube-system <csi-driver-pod>"
+      - "kubectl get pv -o yaml"
+      - "kubectl describe node <node-name>"
+      - "kubectl get events --all-namespaces"
+    correct_answer: "kubectl logs -n kube-system <csi-driver-pod>"
+    explanation: "When a PVC is successfully bound to a PV but the pod still cannot mount the volume, checking the CSI driver logs is crucial for diagnosis. CSI (Container Storage Interface) drivers run as pods in the kube-system namespace and handle the actual volume attachment and mounting operations. These logs contain detailed error messages about mount failures, such as permission errors, backend storage unavailability, network connectivity issues, or driver-specific problems. The CSI driver consists of multiple components (controller and node plugins) that log their operations comprehensively. While kubectl describe node and kubectl get events can provide some information, the CSI driver logs offer the most detailed insights into mount operation failures. Getting PV YAML shows configuration but not runtime errors that prevent mounting."
+    require_pass: true

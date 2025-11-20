@@ -1,0 +1,86 @@
+slug: lesson-120
+title: Lesson 120
+difficulty: easy
+sequence_order: 120
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Environment Variables and Command Arguments\n\
+  \n    - env and envFrom with ConfigMap/Secret\n    - args and command for entrypoint\
+  \ configuration"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What is the difference between 'command' and 'args' fields in a Kubernetes
+    container spec?
+  options:
+  - command sets the working directory; args sets environment variables
+  - command overrides the Docker ENTRYPOINT; args overrides the Docker CMD
+  - They are identical and interchangeable
+  - command is for init containers only; args is for app containers
+  correct_answer: command overrides the Docker ENTRYPOINT; args overrides the Docker
+    CMD
+  explanation: 'In Kubernetes pod specs, the ''command'' field overrides the Docker
+    image''s ENTRYPOINT, while ''args'' overrides the Docker CMD. Understanding this
+    mapping is crucial for correctly configuring container startup. In a Dockerfile,
+    ENTRYPOINT defines the executable, and CMD provides default arguments to it. For
+    example, a Dockerfile with ''ENTRYPOINT ["/app/server"]'' and ''CMD ["--port=8080"]''
+    would run ''/app/server --port=8080''. In Kubernetes: if you specify only ''args:
+    ["--port=9090"]'', it runs ''/app/server --port=9090'' (keeping ENTRYPOINT, changing
+    CMD). If you specify ''command: ["/app/debug-server"]'', it runs ''/app/debug-server''
+    ignoring both ENTRYPOINT and CMD. If you specify both ''command: ["/app/server"]''
+    and ''args: ["--debug", "--port=9090"]'', it runs ''/app/server --debug --port=9090''.
+    Common patterns: use args to pass configuration flags while keeping the image''s
+    executable, use command to completely override the image''s behavior (useful for
+    debugging or using the image in unexpected ways), and combine both for full control.
+    Best practices: prefer args for configuration to maintain image portability, document
+    any command overrides as they deviate from image defaults, and test that args
+    are properly parsed by your application. Note that command and args are arrays
+    of strings - they don''t go through shell expansion unless you explicitly use
+    a shell like ''command: ["/bin/sh", "-c", "echo $ENV_VAR"]''.'
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: How do environment variables from ConfigMaps and Secrets differ in terms
+    of security?
+  options:
+  - They are identical in security; both are base64-encoded
+  - ConfigMaps are for non-sensitive data; Secrets provide additional features like
+    encryption at rest and RBAC controls
+  - ConfigMaps are encrypted; Secrets are plain text
+  - Secrets cannot be used as environment variables
+  correct_answer: ConfigMaps are for non-sensitive data; Secrets provide additional
+    features like encryption at rest and RBAC controls
+  explanation: 'ConfigMaps and Secrets serve different purposes with different security
+    characteristics. ConfigMaps are designed for non-sensitive configuration data
+    like application settings, feature flags, or connection URLs. They''re stored
+    in plaintext in etcd and can be read by anyone with namespace access. Secrets,
+    while also base64-encoded by default (not encrypted), are designed for sensitive
+    data and offer additional security features: 1) They can be encrypted at rest
+    in etcd using EncryptionConfiguration with KMS providers, 2) RBAC policies can
+    restrict Secret access separately from ConfigMaps (principle of least privilege),
+    3) Secrets are not included in describe output by default, 4) They support specialized
+    types like TLS certificates and Docker registry credentials, and 5) Audit logs
+    distinguish between ConfigMap and Secret access. When used as environment variables,
+    both appear similarly in the container, but the distinction matters for security
+    policies and compliance. For example, a database connection string might be split:
+    non-sensitive parts (host, port, database name) in ConfigMap, sensitive parts
+    (username, password) in Secret. Best practices: never store passwords, tokens,
+    or keys in ConfigMaps, use Secrets even for moderately sensitive data, enable
+    encryption at rest for Secrets, use RBAC to limit Secret access, consider external
+    secret management (Vault, AWS Secrets Manager) for highly sensitive environments,
+    and prefer volume mounts over environment variables for secrets to avoid exposure
+    in ''kubectl describe pod'' and process listings.'
+  require_pass: true
+- type: mcq
+  sequence_order: 1
+  question: What kubectl command checks if you can perform an action?
+  options:
+  - kubectl auth can-i create pods
+  - kubectl check permissions create pods
+  - kubectl verify action create pods
+  - kubectl test auth create pods
+  correct_answer_index: 0
+  explanation: kubectl auth can-i <action> <resource> checks if the current user has
+    permission to perform the specified action.
+  require_pass: true

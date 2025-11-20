@@ -1,0 +1,86 @@
+slug: docker-top-display-running-processes-in-container
+title: 'Docker Top: Display Running Processes in Container'
+difficulty: easy
+sequence_order: 8
+estimated_minutes: 2
+key_concepts:
+- containers
+- docker-top
+- processes
+- monitoring
+- debugging
+prerequisites: []
+content_md: '# Docker Top: Display Running Processes in Container 🚀
+
+
+  Display running processes inside a container, similar to the Unix top command but
+  for containerized processes.
+
+
+  ## Syntax/Command
+
+
+  ```bash
+
+  docker top my-container
+
+  ```
+
+
+  ## Example
+
+
+  ```bash
+
+  docker top container
+
+  ```
+
+
+  ## Key Points
+
+
+  - View processes: docker top <container>
+
+
+  - With ps options: docker top <container> aux'
+exercises:
+- type: terminal
+  problem_statement: Display all running processes inside a container named 'my-container'
+  expected_output: Table showing PID, USER, TIME, COMMAND for processes in the container
+  language: bash
+  starter_code: "# View container processes\n"
+  sequence_order: 1
+  command: docker top my-container
+  description: List all processes running in a container to identify resource hogs
+  hints:
+  - 'View processes: docker top <container>'
+  - 'With ps options: docker top <container> aux'
+  validation:
+    must_not_include:
+    - Error
+    - 'panic:'
+  timeout_sec: 60
+  require_pass: true
+- type: sandbox
+  sequence_order: 99
+  hints:
+  - Run under CPU pressure to surface leaks or races
+  - Keep commands idempotent in CI
+  validation:
+    must_not_include:
+    - Error
+    - 'panic:'
+  timeout_sec: 60
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What does docker top display?
+  options:
+  - Running processes inside the specified container, similar to Unix 'ps' command
+  - The containers using the most resources on the system
+  - Complete container configuration and metadata
+  - Recent log entries from the container
+  correct_answer: Running processes inside the specified container, similar to Unix 'ps' command
+  explanation: "docker top shows the running processes inside a container, displaying information like PID, USER, TIME, and COMMAND. It's similar to running 'ps' inside the container without needing to exec into it."
+  require_pass: true

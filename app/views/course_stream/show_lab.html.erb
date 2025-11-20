@@ -1,0 +1,251 @@
+<div class="container-fluid p-4" style="min-height: 100vh;">
+  <div class="row">
+    <div class="col-lg-8">
+      <div class="card border-0 shadow-sm mb-4">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-start mb-3">
+            <div>
+              <h2 class="mb-2"><%= @lab.title %></h2>
+              <div class="mb-2">
+                <span class="badge badge-<%= @lab.difficulty == 'easy' ? 'success' : @lab.difficulty == 'medium' ? 'warning' : 'danger' %>">
+                  <%= @lab.difficulty.to_s.titleize %>
+                </span>
+                <span class="badge badge-secondary ml-2">
+                  Step <%= @current_step_index + 1 %> of <%= @steps.length %>
+                </span>
+              </div>
+              <p class="text-muted mb-0">
+                <i class="fas fa-clock"></i> <%= @lab.estimated_minutes %> minutes
+                <span class="ml-3"><i class="fas fa-star"></i> <%= @lab.points_reward %> points</span>
+              </p>
+            </div>
+          </div>
+
+          <div class="progress mb-3" style="height: 20px;">
+            <div class="progress-bar bg-success" role="progressbar"
+                 style="width: <%= (@session.steps_completed.to_f / @steps.length * 100).round(1) %>%">
+              <%= @session.steps_completed %> / <%= @steps.length %> steps completed
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <% if @current_step %>
+        <div class="card mb-4">
+          <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">
+              <i class="fas fa-tasks"></i>
+              Step <%= @current_step_index + 1 %>: <%= @current_step['title'] %>
+            </h5>
+          </div>
+          <div class="card-body">
+            <div class="mb-3">
+              <h6>Instructions:</h6>
+              <p class="lead"><%= @current_step['instruction'] %></p>
+            </div>
+
+            <div class="mb-3">
+              <label for="user_command" class="form-label">Enter your command:</label>
+              <div class="input-group">
+                <input type="text" class="form-control" id="user_command"
+                       placeholder="Type your command here..."
+                       data-step="<%= @current_step_index %>">
+                <button class="btn btn-primary" type="button" onclick="validateLabStep(<%= @current_step_index %>)">
+                  <i class="fas fa-check"></i> Validate
+                </button>
+              </div>
+            </div>
+
+            <% expected_cmd = @current_step['expected_command'] || @current_step['command'] %>
+            <% if expected_cmd.present? %>
+              <div class="mb-3">
+                <h6>Expected Command:</h6>
+                <code class="bg-light p-2 d-block"><%= expected_cmd %></code>
+              </div>
+            <% end %>
+
+            <div class="mb-3">
+              <button class="btn btn-outline-info btn-sm" onclick="requestLabHint(<%= @current_step_index %>)">
+                <i class="fas fa-lightbulb"></i> Get Hint
+              </button>
+              <button class="btn btn-outline-secondary btn-sm ml-2" data-toggle="collapse" data-target="#quick-refresher" aria-expanded="false" aria-controls="quick-refresher">
+                <i class="fas fa-book-open"></i> Quick Refresher
+              </button>
+              <small class="text-muted ml-2">
+                Hints remaining: <span id="hints-remaining"><%= @session.hints_remaining %></span>
+              </small>
+            </div>
+
+            <div id="validation-result" class="mt-3" style="display:none;"></div>
+          </div>
+        </div>
+      <% else %>
+        <div class="card mb-4">
+          <div class="card-header bg-success text-white">
+            <h5 class="mb-0"><i class="fas fa-check-circle"></i> Lab Completed!</h5>
+          </div>
+          <div class="card-body text-center">
+            <h3 class="text-success mb-3">Great job!</h3>
+            <p class="lead">You've completed all lab steps.</p>
+          </div>
+        </div>
+      <% end %>
+
+      <div class="card">
+        <div class="card-header">
+          <h5 class="mb-0"><i class="fas fa-list"></i> All Steps</h5>
+        </div>
+        <div class="card-body">
+          <div class="list-group">
+            <% @steps.each_with_index do |step, index| %>
+              <div class="list-group-item <%= 'active' if index == @current_step_index %>">
+                <div class="d-flex w-100 justify-content-between">
+                  <div>
+                    <h6 class="mb-1">
+                      <span class="badge badge-<%= index < @session.steps_completed ? 'success' : index == @current_step_index ? 'primary' : 'secondary' %> mr-2"><%= index + 1 %></span>
+                      <%= step['title'] %>
+                    </h6>
+                    <p class="mb-1 text-muted"><%= step['instruction'] %></p>
+                  </div>
+                  <div>
+                    <% if index < @session.steps_completed %>
+                      <i class="fas fa-check-circle text-success"></i>
+                    <% elsif index == @current_step_index %>
+                      <i class="fas fa-play-circle text-primary"></i>
+                    <% else %>
+                      <i class="fas fa-circle text-muted"></i>
+                    <% end %>
+                  </div>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-4">
+      <div class="collapse mb-3" id="quick-refresher">
+        <div class="card border-primary">
+          <div class="card-header bg-primary text-white">
+            <h6 class="mb-0"><i class="fas fa-book-open"></i> Quick Refresher</h6>
+          </div>
+          <div class="card-body">
+            <% if @refresher_units.present? %>
+              <p class="small text-muted">Recommended lessons for this step:</p>
+              <ul class="list-unstyled mb-2">
+                <% @refresher_units.each do |u| %>
+                  <li class="mb-2">
+                    <i class="fas fa-graduation-cap text-primary mr-1"></i>
+                    <%= link_to u.title, interactive_learning_path(u.slug), target: "_blank" %>
+                  </li>
+                <% end %>
+              </ul>
+              <small class="text-muted">Opens in a new tab so you keep your place here.</small>
+            <% else %>
+              <p class="small text-muted mb-0">No refresher available for this step.</p>
+            <% end %>
+          </div>
+        </div>
+      </div>
+
+      <div class="card mb-3">
+        <div class="card-header">
+          <h6 class="mb-0"><i class="fas fa-info-circle"></i> Session Info</h6>
+        </div>
+        <div class="card-body small">
+          <div class="mb-2">
+            <strong>Status:</strong>
+            <span class="badge badge-<%= @session.status == 'active' ? 'success' : 'warning' %> ml-2"><%= @session.status.titleize %></span>
+          </div>
+          <div class="mb-2"><strong>Started:</strong> <span class="float-right"><%= @session.started_at&.strftime('%H:%M') %></span></div>
+          <div class="mb-2"><strong>Time Spent:</strong> <span class="float-right"><%= @session.time_elapsed_minutes %> min</span></div>
+          <div class="mb-2"><strong>Progress:</strong> <span class="float-right"><%= @session.completion_percentage %>%</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function validateLabStep(stepNumber) {
+  const userCommand = document.getElementById('user_command').value;
+  if (!userCommand.trim()) {
+    showLabResult('Please enter a command.', 'warning');
+    return;
+  }
+
+  showLabResult('Validating...', 'info');
+
+  fetch('<%= validate_step_hands_on_lab_path(@lab, session_id: @session.id) %>', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
+    },
+    body: JSON.stringify({ step_number: stepNumber, user_command: userCommand })
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.success) {
+      if (data.correct) {
+        showLabResult(data.message, 'success');
+        setTimeout(() => { window.location.reload(); }, 1200);
+      } else {
+        let msg = data.message;
+        if (data.hint) msg += `<br><small>${data.hint}</small>`;
+        showLabResult(msg, 'danger');
+      }
+    } else {
+      showLabResult('Validation failed. Please try again.', 'danger');
+    }
+  })
+  .catch(() => {
+    showLabResult('An error occurred. Please try again.', 'danger');
+  });
+}
+
+function requestLabHint(stepNumber) {
+  fetch('<%= request_hint_hands_on_lab_path(@lab, session_id: @session.id) %>', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
+    },
+    body: JSON.stringify({ step_number: stepNumber })
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.success) {
+      showLabResult('Hint: ' + data.hint, 'info');
+      if (data.hints_remaining !== undefined) {
+        document.getElementById('hints-remaining').textContent = data.hints_remaining;
+      }
+    } else {
+      showLabResult(data.error || 'Failed to get hint.', 'warning');
+    }
+  })
+  .catch(() => {
+    showLabResult('Failed to get hint.', 'warning');
+  });
+}
+
+function showLabResult(message, type) {
+  const resultDiv = document.getElementById('validation-result');
+  resultDiv.innerHTML = `
+    <div class="alert alert-${type} alert-dismissible fade show" role="alert">
+      ${message}
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+  `;
+  resultDiv.style.display = 'block';
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  const commandInput = document.getElementById('user_command');
+  if (commandInput) { commandInput.focus(); }
+});
+</script>
+

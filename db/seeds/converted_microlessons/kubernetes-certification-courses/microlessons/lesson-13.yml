@@ -1,0 +1,89 @@
+slug: lesson-13
+title: Lesson 13
+difficulty: easy
+sequence_order: 13
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Authentication Methods\n\n    - Client\
+  \ certs, bearer tokens, OIDC\n    - API server flags and configuration"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What is the purpose of client certificate authentication in Kubernetes?
+  options:
+  - To encrypt network traffic between nodes
+  - To authenticate users and service accounts using X.509 certificates signed by
+    the cluster's CA
+  - To validate container images before deployment
+  - To secure etcd database connections only
+  correct_answer: To authenticate users and service accounts using X.509 certificates
+    signed by the cluster's CA
+  explanation: 'Client certificate authentication is one of Kubernetes'' primary authentication
+    methods, using X.509 certificates signed by the cluster''s Certificate Authority
+    (CA) to verify user identity. When enabled, the API server validates client certificates
+    during TLS handshake, extracting the Common Name (CN) as the username and Organization
+    (O) fields as group memberships. For example, a certificate with ''CN=jane, O=developers,
+    O=admins'' authenticates as user ''jane'' in groups ''developers'' and ''admins''.
+    These credentials are then used for RBAC authorization. The process: 1) Generate
+    a private key and Certificate Signing Request (CSR), 2) Submit CSR to cluster
+    for signing (kubectl certificate approve), 3) Receive signed certificate, 4) Configure
+    kubectl with the certificate and key, 5) API server validates the certificate
+    on each request. Client certificates are commonly used for: human users (kubectl
+    access), service accounts in external systems, component authentication (kubelet
+    to API server), and kubeconfig contexts. Advantages include strong cryptographic
+    authentication, no need for password management, and integration with existing
+    PKI infrastructure. Disadvantages include certificate lifecycle management (expiration,
+    rotation), revocation challenges (no native revocation mechanism - certificates
+    are valid until expiry), and operational overhead. For production, many organizations
+    prefer OIDC authentication integrated with corporate identity providers (like
+    Okta, Google, Azure AD) which provides better user management, single sign-on,
+    and automatic revocation. Client certificates are still widely used for automation,
+    CI/CD systems, and administrative break-glass access.'
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What is OIDC (OpenID Connect) authentication in Kubernetes?
+  options:
+  - A built-in user database in Kubernetes
+  - Integration with external identity providers like Google, Azure AD, or Okta for
+    authentication
+  - A method to encrypt secrets in etcd
+  - A protocol for pod-to-pod authentication
+  correct_answer: Integration with external identity providers like Google, Azure
+    AD, or Okta for authentication
+  explanation: 'OpenID Connect (OIDC) is an authentication layer on top of OAuth 2.0
+    that allows Kubernetes to delegate authentication to external identity providers
+    (IdPs) like Google, Azure AD, Okto, Keycloak, or Dex. This solves a major limitation
+    - Kubernetes has no built-in user database. With OIDC, users authenticate against
+    your organization''s IdP, receive an ID token (JWT), and present it to the Kubernetes
+    API server. The API server validates the token''s signature and extracts user
+    identity (username, groups) from claims. Configuration requires API server flags:
+    ''--oidc-issuer-url'' (IdP''s URL), ''--oidc-client-id'' (application ID), ''--oidc-username-claim''
+    (which claim contains username, usually ''email''), ''--oidc-groups-claim'' (which
+    claim contains groups), and optionally ''--oidc-ca-file'' for custom CAs. The
+    flow: 1) User authenticates to IdP (e.g., logs into Google), 2) IdP returns ID
+    token, 3) kubectl includes token in Authorization header when calling API, 4)
+    API server validates token signature and expiry, 5) Extracts username/groups from
+    token claims, 6) Proceeds to RBAC authorization. Benefits include: centralized
+    user management (add/remove users in IdP, not cluster), single sign-on across
+    multiple clusters, MFA and conditional access policies from IdP, automatic token
+    expiry/refresh, and integration with corporate identity systems. kubectl plugins
+    like kubelogin or kubectl-oidc help users obtain and refresh tokens. OIDC is the
+    recommended authentication method for production clusters with human users, while
+    ServiceAccounts with tokens remain best for automation. Many managed Kubernetes
+    services (GKE, EKS, AKS) have streamlined OIDC integration with their respective
+    cloud identity providers.'
+  require_pass: true
+- type: mcq
+  sequence_order: 1
+  question: What kubectl command checks if you can perform an action?
+  options:
+  - kubectl auth can-i create pods
+  - kubectl check permissions create pods
+  - kubectl verify action create pods
+  - kubectl test auth create pods
+  correct_answer_index: 0
+  explanation: kubectl auth can-i <action> <resource> checks if the current user has
+    permission to perform the specified action.
+  require_pass: true

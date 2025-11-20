@@ -1,0 +1,59 @@
+slug: hydrogenspectrum-practice
+title: hydrogen_spectrum — Practice
+difficulty: medium
+sequence_order: 12
+estimated_minutes: 2
+key_concepts:
+- hydrogen_spectrum
+prerequisites: []
+content_md: '# hydrogen_spectrum — Practice 🚀
+
+
+  From n=5: Number of lines = n(n-1)/2 = 5(4)/2 = 10 lines. These include: 5→4, 5→3,
+  5→2, 5→1, 4→3, 4→2, 4→1, 3→2, 3→1, 2→1
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: 'The Balmer series in the hydrogen spectrum corresponds to electron transitions ending at which energy level?'
+  options:
+  - n = 1
+  - n = 2
+  - n = 3
+  - n = 4
+  correct_answer: n = 2
+  explanation: 'The hydrogen emission spectrum is divided into several series based on the final energy level (n_f) to which the electron falls. The Balmer series corresponds to transitions ending at n = 2 (from higher levels n > 2). These transitions produce visible light, which is why the Balmer series was discovered first. Spectral series in hydrogen: (1) LYMAN SERIES: n_f = 1 (n_i = 2, 3, 4...). Transitions to ground state. Produces UV radiation. (2) BALMER SERIES: n_f = 2 (n_i = 3, 4, 5...). First four lines are visible: H-alpha (red, 656 nm), H-beta (blue-green, 486 nm), H-gamma (blue, 434 nm), H-delta (violet, 410 nm). (3) PASCHEN SERIES: n_f = 3 (n_i = 4, 5, 6...). Produces infrared radiation. (4) BRACKETT SERIES: n_f = 4 (n_i = 5, 6, 7...). Far infrared. (5) PFUND SERIES: n_f = 5 (n_i = 6, 7, 8...). Far infrared. The Rydberg formula calculates wavelength: 1/λ = R_H × (1/n_f² - 1/n_i²), where R_H = 1.097 × 10⁷ m⁻¹ is the Rydberg constant. For Balmer series: 1/λ = R_H × (1/4 - 1/n_i²) with n_i = 3, 4, 5...'
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: 'How many spectral lines are observed when electrons in hydrogen atoms excited to the n=5 level return to the ground state?'
+  options:
+  - 5
+  - 10
+  - 15
+  - 20
+  correct_answer: 10
+  explanation: 'When electrons are excited to n=5, they can return to ground state via multiple pathways, producing different spectral lines. The number of possible transitions (spectral lines) from level n is given by n(n-1)/2. For n=5: Number of lines = 5(5-1)/2 = 5×4/2 = 10 lines. These 10 transitions are: Direct transitions: 5→4, 5→3, 5→2, 5→1 (4 lines). From n=4: 4→3, 4→2, 4→1 (3 lines). From n=3: 3→2, 3→1 (2 lines). From n=2: 2→1 (1 line). Total: 4+3+2+1 = 10 lines. Distribution among series: Lyman (ending at n=1): 5→1, 4→1, 3→1, 2→1 (4 lines, UV). Balmer (ending at n=2): 5→2, 4→2, 3→2 (3 lines, visible). Paschen (ending at n=3): 5→3, 4→3 (2 lines, IR). Brackett (ending at n=4): 5→4 (1 line, IR). The formula n(n-1)/2 comes from combinatorics: choosing 2 levels from n levels for a transition = C(n,2) = n!/(2!(n-2)!) = n(n-1)/2.'
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: 'The energy of a photon emitted during a transition from n=3 to n=2 in hydrogen is closest to:'
+  options:
+  - 1.89 eV
+  - 3.40 eV
+  - 10.2 eV
+  - 12.1 eV
+  correct_answer: 1.89 eV
+  explanation: 'The energy of the emitted photon equals the energy difference between the two levels: ΔE = E_i - E_f = E₃ - E₂. Using the Bohr formula: E_n = -13.6/n² eV. Calculate: E₃ = -13.6/3² = -13.6/9 = -1.51 eV. E₂ = -13.6/2² = -13.6/4 = -3.40 eV. ΔE = E₃ - E₂ = (-1.51) - (-3.40) = -1.51 + 3.40 = 1.89 eV. The photon energy is 1.89 eV (positive, as energy is released). This transition (3→2) is the first line in the Balmer series, called H-alpha, which appears as red light (wavelength ~656 nm). Verification using wavelength: E = hc/λ → λ = hc/E = (1240 eV·nm)/1.89 eV = 656 nm ✓. Key points: (1) Energy levels are negative (bound states), with n=1 most negative (-13.6 eV). (2) Transitions to lower n release energy (emission). (3) The photon energy equals |ΔE|. (4) Higher energy transitions produce shorter wavelengths (UV), lower energy transitions produce longer wavelengths (IR). The 1.89 eV photon has wavelength in the visible red region, confirming it is part of the visible Balmer series.'
+  require_pass: true

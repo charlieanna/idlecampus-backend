@@ -1,0 +1,12 @@
+<% @questions.each do |question| %>
+    <div class="question">
+        <%= link_to question.title, question.link %>
+        
+        <% user_question = @user_questions[question.id] %>
+        
+        <%= button_to "Done", set_status_dashboard_path(question, status: 'done'), method: :post if user_question&.done? %>
+        <%= button_to "Review Later", set_status_dashboard_path(question, status: 'review_later'), method: :post if user_question&.review_later? %>
+        <%= button_to "Very Important", set_status_dashboard_path(question, status: 'very_important'), method: :post if user_question&.very_important? %>
+    </div>
+<% end %>
+  

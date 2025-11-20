@@ -1,0 +1,44 @@
+slug: lesson-37
+title: Lesson 37
+difficulty: easy
+sequence_order: 37
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# DaemonSets and Jobs\n\n    - DaemonSets\
+  \ ensure a Pod runs on every node or subset\n    - Jobs run a task to completion;\
+  \ CronJobs schedule Jobs"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What is the primary purpose of a DaemonSet in Kubernetes?
+  options:
+  - To run a specific number of pod replicas across the cluster
+  - To ensure a copy of a pod runs on all (or some) nodes
+  - To schedule one-time tasks
+  - To provide load balancing for services
+  correct_answer: To ensure a copy of a pod runs on all (or some) nodes
+  explanation: "DaemonSets ensure that a copy of a pod runs on every node (or a subset of nodes matching specific criteria) in the cluster. As nodes are added to the cluster, pods are automatically added to them. When nodes are removed, those pods are garbage collected. This is perfect for cluster-wide services that need to run on every node, such as log collectors (Fluentd, Filebeat), monitoring agents (node exporters, Datadog agents), network plugins (kube-proxy, Calico), or storage daemons. You can use node selectors, affinity rules, or taints/tolerations to control which nodes get DaemonSet pods. Unlike Deployments which distribute a fixed number of replicas across available nodes, DaemonSets scale automatically with the cluster - adding a new node means adding a new DaemonSet pod."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What is the difference between a Job and a CronJob in Kubernetes?
+  options:
+  - Jobs run continuously while CronJobs run once
+  - Jobs run a task to completion once, while CronJobs schedule Jobs on a recurring basis
+  - Jobs handle batch processing while CronJobs handle real-time processing
+  - There is no difference, they are aliases
+  correct_answer: Jobs run a task to completion once, while CronJobs schedule Jobs on a recurring basis
+  explanation: "Jobs and CronJobs serve different purposes in Kubernetes. A Job is designed to run a task to completion one or more times (you can specify parallelism and completions), ensuring that a specified number of pods successfully terminate. Jobs are useful for batch processing, data migrations, or one-time tasks. A CronJob, on the other hand, creates Jobs on a time-based schedule using cron format (e.g., '0 2 * * *' for 2 AM daily). CronJobs are essentially Job schedulers - they create Job objects at scheduled times. Use CronJobs for recurring tasks like database backups, report generation, or cleanup operations. The CronJob controller manages the Job creation, while the Job controller manages pod creation and completion tracking."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: Which field in a DaemonSet spec allows you to run the DaemonSet only on nodes with specific labels?
+  options:
+  - nodeSelector
+  - podSelector
+  - namespaceSelector
+  - labelSelector
+  correct_answer: nodeSelector
+  explanation: "The nodeSelector field in a DaemonSet spec allows you to constrain which nodes the DaemonSet pods run on based on node labels. For example, if you want to run a DaemonSet only on nodes with SSD storage, you could use 'nodeSelector: {disktype: ssd}'. This is useful when you have heterogeneous clusters where certain daemon services should only run on specific node types - perhaps GPU monitoring agents only on GPU nodes, or specific storage daemons only on storage nodes. For more complex scheduling requirements, you can also use node affinity rules or tolerations. If no nodeSelector is specified, the DaemonSet runs on all nodes (unless prevented by taints). The podSelector field is used in NetworkPolicies, not DaemonSets, to select which pods a policy applies to."
+  require_pass: true

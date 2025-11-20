@@ -1,0 +1,240 @@
+slug: lesson-3
+title: NumPy Array Indexing and Slicing
+difficulty: easy
+sequence_order: 3
+estimated_minutes: 15
+key_concepts:
+  - Array indexing
+  - Array slicing
+  - Boolean indexing
+  - Fancy indexing
+  - Multi-dimensional indexing
+prerequisites:
+  - lesson-1
+content_md: |
+  # NumPy Array Indexing and Slicing
+
+  ## Introduction
+
+  Accessing and modifying array elements is fundamental to working with NumPy. NumPy provides powerful indexing and slicing capabilities that go beyond Python lists.
+
+  ## Basic Indexing (1D Arrays)
+
+  ```python
+  arr = np.array([10, 20, 30, 40, 50])
+
+  # Access single elements
+  print(arr[0])     # 10 (first element)
+  print(arr[2])     # 30 (third element)
+  print(arr[-1])    # 50 (last element)
+  print(arr[-2])    # 40 (second to last)
+
+  # Modify elements
+  arr[0] = 100
+  print(arr)  # [100  20  30  40  50]
+  ```
+
+  ## Slicing (1D Arrays)
+
+  Syntax: `arr[start:stop:step]`
+
+  ```python
+  arr = np.array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
+
+  # Basic slicing
+  print(arr[2:5])      # [2 3 4] (elements 2, 3, 4)
+  print(arr[:3])       # [0 1 2] (first 3 elements)
+  print(arr[5:])       # [5 6 7 8 9] (from index 5 to end)
+  print(arr[:])        # [0 1 2 3 4 5 6 7 8 9] (entire array)
+
+  # Step parameter
+  print(arr[::2])      # [0 2 4 6 8] (every 2nd element)
+  print(arr[1::2])     # [1 3 5 7 9] (odd indices)
+  print(arr[::-1])     # [9 8 7 6 5 4 3 2 1 0] (reverse)
+
+  # Negative indices
+  print(arr[-3:])      # [7 8 9] (last 3 elements)
+  print(arr[:-2])      # [0 1 2 3 4 5 6 7] (all but last 2)
+  ```
+
+  ## Multi-dimensional Indexing
+
+  For 2D arrays (matrices):
+
+  ```python
+  arr2d = np.array([[1, 2, 3, 4],
+                    [5, 6, 7, 8],
+                    [9, 10, 11, 12]])
+
+  # Access single element
+  print(arr2d[0, 0])    # 1 (row 0, column 0)
+  print(arr2d[1, 2])    # 7 (row 1, column 2)
+  print(arr2d[-1, -1])  # 12 (last row, last column)
+
+  # Access entire row
+  print(arr2d[0])       # [1 2 3 4] (first row)
+  print(arr2d[1, :])    # [5 6 7 8] (second row, explicit)
+
+  # Access entire column
+  print(arr2d[:, 0])    # [1 5 9] (first column)
+  print(arr2d[:, 2])    # [3 7 11] (third column)
+  ```
+
+  ## 2D Array Slicing
+
+  ```python
+  arr2d = np.array([[1, 2, 3, 4],
+                    [5, 6, 7, 8],
+                    [9, 10, 11, 12]])
+
+  # Slice rows and columns
+  print(arr2d[0:2, 1:3])
+  # [[2 3]
+  #  [6 7]]
+
+  # First 2 rows, all columns
+  print(arr2d[:2, :])
+  # [[1 2 3 4]
+  #  [5 6 7 8]]
+
+  # All rows, columns 1 and 2
+  print(arr2d[:, 1:3])
+  # [[2 3]
+  #  [6 7]
+  #  [10 11]]
+  ```
+
+  ## Boolean Indexing
+
+  Use boolean arrays to filter elements:
+
+  ```python
+  arr = np.array([10, 15, 20, 25, 30, 35, 40])
+
+  # Create boolean mask
+  mask = arr > 25
+  print(mask)  # [False False False False  True  True  True]
+
+  # Apply mask
+  result = arr[mask]
+  print(result)  # [30 35 40]
+
+  # Direct filtering
+  print(arr[arr > 25])     # [30 35 40]
+  print(arr[arr % 2 == 0]) # [10 20 30 40] (even numbers)
+
+  # Multiple conditions
+  print(arr[(arr > 15) & (arr < 35)])  # [20 25 30]
+  print(arr[(arr < 20) | (arr > 35)])  # [10 15 40]
+  ```
+
+  ## Fancy Indexing
+
+  Use arrays of indices to access multiple elements:
+
+  ```python
+  arr = np.array([10, 20, 30, 40, 50, 60, 70, 80, 90])
+
+  # Array of indices
+  indices = [0, 2, 5, 7]
+  print(arr[indices])  # [10 30 60 80]
+
+  # Negative indices work too
+  indices = [-1, -2, -3]
+  print(arr[indices])  # [90 80 70]
+
+  # 2D fancy indexing
+  arr2d = np.array([[1, 2, 3],
+                    [4, 5, 6],
+                    [7, 8, 9]])
+
+  rows = [0, 2]
+  cols = [1, 2]
+  print(arr2d[rows, cols])  # [2 9] (elements at (0,1) and (2,2))
+  ```
+
+  ## Views vs Copies
+
+  **Important:** Slicing creates views (not copies)!
+
+  ```python
+  arr = np.array([1, 2, 3, 4, 5])
+
+  # Slicing creates a view
+  slice_arr = arr[1:4]
+  slice_arr[0] = 999
+  print(arr)  # [1 999 3 4 5] - original is modified!
+
+  # Create a copy instead
+  copy_arr = arr[1:4].copy()
+  copy_arr[0] = 777
+  print(arr)  # [1 999 3 4 5] - original unchanged
+  ```
+
+  ## Modifying with Indexing
+
+  ```python
+  arr = np.array([1, 2, 3, 4, 5])
+
+  # Modify single element
+  arr[0] = 100
+
+  # Modify slice
+  arr[1:4] = [20, 30, 40]
+
+  # Modify with boolean indexing
+  arr[arr > 30] = 0
+  print(arr)  # [100  20   0   0   5]
+
+  # Set multiple elements
+  arr[[0, 2, 4]] = [10, 30, 50]
+  ```
+
+  ## Practical Examples
+
+  ```python
+  # Extract diagonal
+  matrix = np.array([[1, 2, 3],
+                     [4, 5, 6],
+                     [7, 8, 9]])
+  diagonal = np.diag(matrix)  # [1 5 9]
+
+  # Replace values conditionally
+  data = np.array([5, -2, 8, -1, 3, -7])
+  data[data < 0] = 0
+  print(data)  # [5 0 8 0 3 0]
+
+  # Extract every nth element
+  arr = np.arange(100)
+  every_10th = arr[::10]  # [0 10 20 30 40 50 60 70 80 90]
+  ```
+
+exercises:
+  - type: mcq
+    question: "What is the result of arr[2:5] for arr = np.array([0, 1, 2, 3, 4, 5, 6])?"
+    options:
+      - "[2, 3, 4, 5]"
+      - "[2, 3, 4]"
+      - "[3, 4, 5]"
+      - "[2, 3, 4, 5, 6]"
+    correct_answer: "[2, 3, 4]"
+    explanation: "Slicing is inclusive of start (2) and exclusive of stop (5), so it returns elements at indices 2, 3, and 4."
+    sequence_order: 1
+
+  - type: mcq
+    question: "For arr2d = np.array([[1,2,3],[4,5,6],[7,8,9]]), what does arr2d[:, 1] return?"
+    options:
+      - "[1 4 7]"
+      - "[2 5 8]"
+      - "[[2], [5], [8]]"
+      - "[1 2 3]"
+    correct_answer: "[2 5 8]"
+    explanation: "The colon : selects all rows, and index 1 selects the second column (0-indexed), giving [2, 5, 8]."
+    sequence_order: 2
+
+  - type: short_answer
+    question: "Does slicing a NumPy array create a copy or a view of the original array?"
+    expected_answer: "view"
+    explanation: "Slicing creates a view, not a copy. Modifications to the slice affect the original array. Use .copy() to create an independent copy."
+    sequence_order: 3
+

@@ -1,0 +1,217 @@
+slug: lesson-1
+title: Lesson 1
+sequence_order: 1
+estimated_minutes: 2
+difficulty: easy
+content_md: "# Microlesson \U0001F680\n\n# Web Performance Metrics and Optimization\n\
+  \n    Performance directly impacts user experience, conversion rates, and SEO rankings.\
+  \ Understanding and optimizing Core Web Vitals is essential for modern web development.\n\
+  \n    ## Core Web Vitals\n\n    Google's Core Web Vitals measure real-world user\
+  \ experience across three dimensions:\n\n    ### 1. Largest Contentful Paint (LCP)\n\
+  \n    **Measures loading performance** - when the largest content element becomes\
+  \ visible.\n\n    **Target: < 2.5 seconds**\n\n    ```javascript\n    // Measuring\
+  \ LCP with PerformanceObserver\n    const observer = new PerformanceObserver((list)\
+  \ => {\n      const entries = list.getEntries();\n      const lastEntry = entries[entries.length\
+  \ - 1];\n\n      console.log('LCP:', lastEntry.renderTime || lastEntry.loadTime);\n\
+  \      console.log('LCP Element:', lastEntry.element);\n    });\n\n    observer.observe({\
+  \ type: 'largest-contentful-paint', buffered: true });\n    ```\n\n    **Common\
+  \ LCP elements:**\n    - Hero images\n    - Video thumbnails\n    - Background images\
+  \ via CSS\n    - Text blocks\n\n    **How to optimize LCP:**\n\n    ```html\n  \
+  \  <!-- 1. Preload critical resources -->\n    <link rel=\"preload\" as=\"image\"\
+  \ href=\"/hero.jpg\" fetchpriority=\"high\">\n\n    <!-- 2. Use appropriate image\
+  \ formats -->\n    <picture>\n      <source srcset=\"/hero.webp\" type=\"image/webp\"\
+  >\n      <source srcset=\"/hero.avif\" type=\"image/avif\">\n      <img src=\"/hero.jpg\"\
+  \ alt=\"Hero\" width=\"1200\" height=\"600\">\n    </picture>\n\n    <!-- 3. Optimize\
+  \ server response time -->\n    <!-- Use CDN, HTTP/2, server-side caching -->\n\
+  \    ```\n\n    ### 2. First Input Delay (FID) / Interaction to Next Paint (INP)\n\
+  \n    **Measures interactivity** - time from user interaction to browser response.\n\
+  \n    **Target FID: < 100ms | Target INP: < 200ms**\n\n    ```javascript\n    //\
+  \ Measuring FID\n    const observer = new PerformanceObserver((list) => {\n    \
+  \  for (const entry of list.getEntries()) {\n        const FID = entry.processingStart\
+  \ - entry.startTime;\n        console.log('FID:', FID);\n\n        // Send to analytics\n\
+  \        gtag('event', 'web_vitals', {\n          event_category: 'Web Vitals',\n\
+  \          event_label: 'FID',\n          value: Math.round(FID)\n        });\n\
+  \      }\n    });\n\n    observer.observe({ type: 'first-input', buffered: true\
+  \ });\n    ```\n\n    **How to optimize FID/INP:**\n\n    ```javascript\n    //\
+  \ 1. Break up long tasks\n    // Bad: Blocking task\n    function processLargeArray(items)\
+  \ {\n      items.forEach(item => {\n        // Heavy processing\n        processItem(item);\n\
+  \      });\n    }\n\n    // Good: Yield to main thread\n    async function processLargeArray(items)\
+  \ {\n      for (let i = 0; i < items.length; i++) {\n        processItem(items[i]);\n\
+  \n        // Yield to browser every 50ms\n        if (i % 100 === 0) {\n       \
+  \   await new Promise(resolve => setTimeout(resolve, 0));\n        }\n      }\n\
+  \    }\n\n    // 2. Use web workers for heavy computation\n    // main.js\n    const\
+  \ worker = new Worker('worker.js');\n    worker.postMessage({ data: largeDataset\
+  \ });\n    worker.onmessage = (e) => {\n      console.log('Result:', e.data);\n\
+  \    };\n\n    // worker.js\n    self.onmessage = (e) => {\n      const result =\
+  \ heavyComputation(e.data);\n      self.postMessage(result);\n    };\n\n    // 3.\
+  \ Defer non-critical JavaScript\n    // Use async/defer attributes\n    ```\n\n\
+  \    ### 3. Cumulative Layout Shift (CLS)\n\n    **Measures visual stability** -\
+  \ unexpected layout shifts during page load.\n\n    **Target: < 0.1**\n\n    ```javascript\n\
+  \    // Measuring CLS\n    let clsScore = 0;\n\n    const observer = new PerformanceObserver((list)\
+  \ => {\n      for (const entry of list.getEntries()) {\n        if (!entry.hadRecentInput)\
+  \ {\n          clsScore += entry.value;\n          console.log('CLS:', clsScore);\n\
+  \          console.log('Shifted element:', entry.sources);\n        }\n      }\n\
+  \    });\n\n    observer.observe({ type: 'layout-shift', buffered: true });\n  \
+  \  ```\n\n    **How to optimize CLS:**\n\n    ```html\n    <!-- 1. Always set image\
+  \ dimensions -->\n    <img src=\"/image.jpg\" width=\"800\" height=\"600\" alt=\"\
+  Photo\">\n\n    <!-- 2. Reserve space for ads/embeds -->\n    <div class=\"ad-container\"\
+  \ style=\"min-height: 250px;\">\n      <!-- Ad loads here -->\n    </div>\n\n  \
+  \  <!-- 3. Use aspect ratio boxes -->\n    <style>\n      .video-container {\n \
+  \       aspect-ratio: 16 / 9;\n        width: 100%;\n      }\n    </style>\n   \
+  \ <div class=\"video-container\">\n      <iframe src=\"video.mp4\"></iframe>\n \
+  \   </div>\n\n    <!-- 4. Preload fonts to avoid FOIT/FOUT -->\n    <link rel=\"\
+  preload\" href=\"/fonts/main.woff2\" as=\"font\" type=\"font/woff2\" crossorigin>\n\
+  \    ```\n\n    ## Lighthouse Scoring\n\n    Lighthouse audits performance across\
+  \ multiple categories:\n\n    ```javascript\n    // Run Lighthouse programmatically\n\
+  \    const lighthouse = require('lighthouse');\n    const chromeLauncher = require('chrome-launcher');\n\
+  \n    async function runLighthouse(url) {\n      const chrome = await chromeLauncher.launch({\
+  \ chromeFlags: ['--headless'] });\n\n      const options = {\n        logLevel:\
+  \ 'info',\n        output: 'json',\n        port: chrome.port\n      };\n\n    \
+  \  const runnerResult = await lighthouse(url, options);\n\n      // Performance\
+  \ score\n      console.log('Performance:', runnerResult.lhr.categories.performance.score\
+  \ * 100);\n\n      // Core Web Vitals\n      console.log('LCP:', runnerResult.lhr.audits['largest-contentful-paint'].numericValue);\n\
+  \      console.log('TBT:', runnerResult.lhr.audits['total-blocking-time'].numericValue);\n\
+  \      console.log('CLS:', runnerResult.lhr.audits['cumulative-layout-shift'].numericValue);\n\
+  \n      await chrome.kill();\n    }\n    ```\n\n    **Lighthouse scoring weights:**\n\
+  \    - First Contentful Paint: 10%\n    - Speed Index: 10%\n    - Largest Contentful\
+  \ Paint: 25%\n    - Total Blocking Time: 30%\n    - Cumulative Layout Shift: 25%\n\
+  \n    ## Critical Rendering Path\n\n    Understanding how browsers render pages\
+  \ is key to optimization:\n\n    ```\n    HTML → DOM Tree\n    CSS  → CSSOM Tree\n\
+  \              ↓\n        Render Tree\n              ↓\n          Layout\n     \
+  \         ↓\n           Paint\n              ↓\n         Composite\n    ```\n\n\
+  \    ### Optimizing Critical Rendering Path\n\n    ```html\n    <!DOCTYPE html>\n\
+  \    <html>\n    <head>\n      <!-- 1. Inline critical CSS -->\n      <style>\n\
+  \        /* Above-the-fold styles */\n        .hero { background: #fff; padding:\
+  \ 20px; }\n        .nav { display: flex; }\n      </style>\n\n      <!-- 2. Preload\
+  \ critical resources -->\n      <link rel=\"preload\" as=\"style\" href=\"/styles.css\"\
+  >\n      <link rel=\"preload\" as=\"script\" href=\"/main.js\">\n\n      <!-- 3.\
+  \ Load non-critical CSS asynchronously -->\n      <link rel=\"preload\" as=\"style\"\
+  \ href=\"/non-critical.css\"\n            onload=\"this.onload=null;this.rel='stylesheet'\"\
+  >\n      <noscript><link rel=\"stylesheet\" href=\"/non-critical.css\"></noscript>\n\
+  \n      <!-- 4. Defer JavaScript -->\n      <script src=\"/main.js\" defer></script>\n\
+  \    </head>\n    <body>\n      <!-- Content -->\n    </body>\n    </html>\n   \
+  \ ```\n\n    ## Resource Loading Optimization\n\n    ### Resource Hints\n\n    ```html\n\
+  \    <!-- DNS Prefetch: Resolve DNS early -->\n    <link rel=\"dns-prefetch\" href=\"\
+  //api.example.com\">\n\n    <!-- Preconnect: Establish connection early -->\n  \
+  \  <link rel=\"preconnect\" href=\"https://cdn.example.com\" crossorigin>\n\n  \
+  \  <!-- Prefetch: Load for next navigation -->\n    <link rel=\"prefetch\" href=\"\
+  /next-page.html\">\n\n    <!-- Preload: Load critical resource immediately -->\n\
+  \    <link rel=\"preload\" href=\"/critical.js\" as=\"script\">\n\n    <!-- Prerender:\
+  \ Render entire page in background (use sparingly) -->\n    <link rel=\"prerender\"\
+  \ href=\"/next-page.html\">\n    ```\n\n    ### Priority Hints\n\n    ```html\n\
+  \    <!-- High priority for hero image -->\n    <img src=\"/hero.jpg\" fetchpriority=\"\
+  high\" alt=\"Hero\">\n\n    <!-- Low priority for below-fold images -->\n    <img\
+  \ src=\"/footer-logo.jpg\" fetchpriority=\"low\" alt=\"Logo\">\n\n    <!-- High\
+  \ priority for critical script -->\n    <script src=\"/critical.js\" fetchpriority=\"\
+  high\"></script>\n    ```\n\n    ## Image Optimization\n\n    ### Modern Image Formats\n\
+  \n    ```html\n    <!-- Use picture element for format fallbacks -->\n    <picture>\n\
+  \      <!-- AVIF: Best compression (60% smaller than JPEG) -->\n      <source srcset=\"\
+  /image.avif\" type=\"image/avif\">\n\n      <!-- WebP: Good compression (30% smaller\
+  \ than JPEG) -->\n      <source srcset=\"/image.webp\" type=\"image/webp\">\n\n\
+  \      <!-- JPEG: Fallback for older browsers -->\n      <img src=\"/image.jpg\"\
+  \ alt=\"Description\" width=\"800\" height=\"600\">\n    </picture>\n    ```\n\n\
+  \    ### Responsive Images\n\n    ```html\n    <!-- Serve different sizes based\
+  \ on viewport -->\n    <img\n      src=\"/image-800.jpg\"\n      srcset=\"\n   \
+  \     /image-400.jpg 400w,\n        /image-800.jpg 800w,\n        /image-1200.jpg\
+  \ 1200w,\n        /image-1600.jpg 1600w\n      \"\n      sizes=\"\n        (max-width:\
+  \ 400px) 400px,\n        (max-width: 800px) 800px,\n        (max-width: 1200px)\
+  \ 1200px,\n        1600px\n      \"\n      alt=\"Responsive image\"\n      width=\"\
+  1600\"\n      height=\"900\"\n    >\n    ```\n\n    ### Lazy Loading\n\n    ```html\n\
+  \    <!-- Native lazy loading -->\n    <img src=\"/image.jpg\" loading=\"lazy\"\
+  \ alt=\"Lazy image\">\n\n    <!-- JavaScript implementation with Intersection Observer\
+  \ -->\n    <script>\n      const images = document.querySelectorAll('img[data-src]');\n\
+  \n      const imageObserver = new IntersectionObserver((entries, observer) => {\n\
+  \        entries.forEach(entry => {\n          if (entry.isIntersecting) {\n   \
+  \         const img = entry.target;\n            img.src = img.dataset.src;\n  \
+  \          img.removeAttribute('data-src');\n            observer.unobserve(img);\n\
+  \          }\n        });\n      }, {\n        rootMargin: '50px' // Load 50px before\
+  \ entering viewport\n      });\n\n      images.forEach(img => imageObserver.observe(img));\n\
+  \    </script>\n    ```\n\n    ### Image Compression\n\n    ```javascript\n    //\
+  \ Using sharp for server-side optimization\n    const sharp = require('sharp');\n\
+  \n    async function optimizeImage(inputPath, outputPath) {\n      await sharp(inputPath)\n\
+  \        .resize(1200, 900, { fit: 'cover' })\n        .webp({ quality: 80 })\n\
+  \        .toFile(outputPath);\n    }\n\n    // Generate multiple formats\n    async\
+  \ function generateResponsiveImages(input) {\n      const sizes = [400, 800, 1200,\
+  \ 1600];\n\n      for (const size of sizes) {\n        // WebP\n        await sharp(input)\n\
+  \          .resize(size)\n          .webp({ quality: 80 })\n          .toFile(`image-${size}.webp`);\n\
+  \n        // AVIF\n        await sharp(input)\n          .resize(size)\n       \
+  \   .avif({ quality: 75 })\n          .toFile(`image-${size}.avif`);\n\n       \
+  \ // JPEG fallback\n        await sharp(input)\n          .resize(size)\n      \
+  \    .jpeg({ quality: 85 })\n          .toFile(`image-${size}.jpg`);\n      }\n\
+  \    }\n    ```\n\n    ## Font Optimization\n\n    ### Font Loading Strategies\n\
+  \n    ```html\n    <head>\n      <!-- 1. Preload critical fonts -->\n      <link\
+  \ rel=\"preload\" href=\"/fonts/main.woff2\"\n            as=\"font\" type=\"font/woff2\"\
+  \ crossorigin>\n\n      <!-- 2. Use font-display for control -->\n      <style>\n\
+  \        @font-face {\n          font-family: 'MainFont';\n          src: url('/fonts/main.woff2')\
+  \ format('woff2');\n          font-display: swap; /* Show fallback immediately */\n\
+  \          font-weight: 400;\n          font-style: normal;\n        }\n\n     \
+  \   /* Optional: Reduce layout shift */\n        @font-face {\n          font-family:\
+  \ 'MainFont';\n          src: local('Arial'); /* Use system font as fallback */\n\
+  \          size-adjust: 95%; /* Match x-height of web font */\n          ascent-override:\
+  \ 90%;\n          descent-override: 20%;\n        }\n      </style>\n    </head>\n\
+  \    ```\n\n    ### Font Display Options\n\n    ```css\n    @font-face {\n     \
+  \ font-family: 'MyFont';\n      src: url('/font.woff2') format('woff2');\n\n   \
+  \   /* font-display options */\n      font-display: auto;     /* Browser default\
+  \ (usually block) */\n      font-display: block;    /* Hide text up to 3s, then\
+  \ swap */\n      font-display: swap;     /* Show fallback immediately, swap when\
+  \ loaded */\n      font-display: fallback; /* 100ms invisible, 3s swap period, then\
+  \ stick with fallback */\n      font-display: optional; /* 100ms block, browser\
+  \ decides to swap or not */\n    }\n    ```\n\n    ### Subsetting Fonts\n\n    ```javascript\n\
+  \    // Using glyphhanger to subset fonts\n    // Install: npm install -g glyphhanger\n\
+  \n    // Generate subset for specific characters\n    // glyphhanger --subset=font.ttf\
+  \ --whitelist=\"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789\"\
+  \n\n    // In CSS, use unicode-range\n    @font-face {\n      font-family: 'MyFont';\n\
+  \      src: url('/font-latin.woff2') format('woff2');\n      unicode-range: U+0000-00FF;\
+  \ /* Latin characters only */\n    }\n\n    @font-face {\n      font-family: 'MyFont';\n\
+  \      src: url('/font-extended.woff2') format('woff2');\n      unicode-range: U+0100-017F;\
+  \ /* Latin Extended */\n    }\n    ```\n\n    ### Variable Fonts\n\n    ```css\n\
+  \    /* Use variable fonts to reduce file count */\n    @font-face {\n      font-family:\
+  \ 'MyVariableFont';\n      src: url('/font-variable.woff2') format('woff2-variations');\n\
+  \      font-weight: 100 900; /* Entire weight range in one file */\n      font-display:\
+  \ swap;\n    }\n\n    .heading {\n      font-family: 'MyVariableFont';\n      font-weight:\
+  \ 700; /* Interpolated from variable font */\n    }\n\n    .body {\n      font-family:\
+  \ 'MyVariableFont';\n      font-weight: 400;\n    }\n    ```\n\n    ## Performance\
+  \ Monitoring\n\n    ### Using Performance API\n\n    ```javascript\n    // Navigation\
+  \ Timing\n    const perfData = performance.getEntriesByType('navigation')[0];\n\
+  \    console.log('DNS lookup:', perfData.domainLookupEnd - perfData.domainLookupStart);\n\
+  \    console.log('TCP connection:', perfData.connectEnd - perfData.connectStart);\n\
+  \    console.log('Request:', perfData.responseStart - perfData.requestStart);\n\
+  \    console.log('Response:', perfData.responseEnd - perfData.responseStart);\n\
+  \    console.log('DOM Processing:', perfData.domComplete - perfData.domLoading);\n\
+  \n    // Resource Timing\n    const resources = performance.getEntriesByType('resource');\n\
+  \    resources.forEach(resource => {\n      console.log(`${resource.name}: ${resource.duration}ms`);\n\
+  \    });\n\n    // Custom marks and measures\n    performance.mark('operation-start');\n\
+  \    // ... perform operation\n    performance.mark('operation-end');\n    performance.measure('operation',\
+  \ 'operation-start', 'operation-end');\n\n    const measure = performance.getEntriesByName('operation')[0];\n\
+  \    console.log('Operation took:', measure.duration, 'ms');\n    ```\n\n    ##\
+  \ Best Practices Summary\n\n    1. **Measure First**: Use Lighthouse, WebPageTest,\
+  \ and real user monitoring\n    2. **Optimize Images**: Use modern formats (AVIF,\
+  \ WebP), responsive images, lazy loading\n    3. **Minimize Critical Resources**:\
+  \ Inline critical CSS, defer non-critical JavaScript\n    4. **Use Resource Hints**:\
+  \ Preconnect to important origins, preload critical resources\n    5. **Optimize\
+  \ Fonts**: Preload critical fonts, use font-display: swap, subset fonts\n    6.\
+  \ **Reduce Layout Shifts**: Set image dimensions, reserve space for dynamic content\n\
+  \    7. **Monitor Continuously**: Track Core Web Vitals in production with RUM\n\
+  \n    Performance is not a one-time task but an ongoing process. Set performance\
+  \ budgets and monitor them continuously."
+exercises:
+- type: mcq
+  slug: lesson-1-mcq
+  sequence_order: 1
+  question: What is the target threshold for Largest Contentful Paint (LCP) in Core
+    Web Vitals?
+  options:
+  - Less than 2.5 seconds
+  - Less than 100ms
+  - Less than 0.1
+  - Less than 5 seconds
+  correct_answer_index: 0
+  explanation: LCP (Largest Contentful Paint) measures loading performance and should
+    occur within 2.5 seconds of when the page first starts loading. It represents
+    when the largest content element becomes visible to the user, indicating the main
+    content has loaded.
+objectives:
+- Understand the fundamental concepts and mechanisms of lesson 1
+- Apply chemical principles to solve related problems
+- Identify key reactions, equations, and chemical behaviors
+next_recommended: []

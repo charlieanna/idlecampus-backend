@@ -1,0 +1,222 @@
+slug: lesson-7
+title: Lesson 7
+difficulty: easy
+sequence_order: 7
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# AWS Global Infrastructure\n\n    ### Why\
+  \ Does AWS Have a Global Infrastructure?\n\n    **The Problem:**\n    Running a\
+  \ website from ONE location means:\n    - Users far away experience high latency\n\
+  \    - One power outage = entire service down\n    - Legal restrictions on where\
+  \ data can be stored\n\n    **AWS's Solution:**\n    Distribute infrastructure globally\
+  \ across **Regions**, **Availability Zones**, and **Edge Locations** to provide:\n\
+  \    - Low latency worldwide\n    - High availability (survive failures)\n    -\
+  \ Data sovereignty compliance\n\n    ## Regions: Geographic Locations\n\n    **What\
+  \ is an AWS Region?**\n\n    A **Region** is a separate geographic area (like a\
+  \ country or state) containing multiple data centers. Each region is completely\
+  \ independent.\n\n    **Current Regions (33+):**\n    - **North America**: `us-east-1`\
+  \ (Virginia), `us-west-2` (Oregon), `ca-central-1` (Canada)\n    - **Europe**: `eu-west-1`\
+  \ (Ireland), `eu-central-1` (Frankfurt), `eu-north-1` (Stockholm)\n    - **Asia\
+  \ Pacific**: `ap-southeast-1` (Singapore), `ap-northeast-1` (Tokyo), `ap-south-1`\
+  \ (Mumbai)\n    - **South America**: `sa-east-1` (São Paulo)\n    - **Middle East/Africa**:\
+  \ `me-south-1` (Bahrain), `af-south-1` (Cape Town)\n\n    ### Why Multiple Regions?\n\
+  \n    **1. Latency (Speed)**\n    - Light travels at 300,000 km/s\n    - New York\
+  \ to London: ~50ms\n    - New York to Singapore: ~220ms\n\n    **Example:**\n  \
+  \  If your users are in Europe but your servers are in the US:\n    - Every page\
+  \ load: +100ms latency\n    - Every API call: +100ms latency\n    - Video streaming:\
+  \ buffering issues\n\n    **Solution:** Deploy in `eu-west-1` (Ireland) for European\
+  \ users.\n\n    **2. Data Sovereignty (Legal Requirements)**\n\n    Some countries\
+  \ require data to stay within borders:\n    - **GDPR (EU)**: European citizen data\
+  \ must stay in EU\n    - **China**: Data must stay in China regions\n    - **Banking**:\
+  \ Financial data often has residency requirements\n\n    **Example:**\n    A German\
+  \ healthcare company MUST use `eu-central-1` (Frankfurt) due to patient privacy\
+  \ laws.\n\n    **3. Disaster Recovery**\n\n    If one region fails (earthquake,\
+  \ political unrest), your app continues in another region.\n\n    **4. Service Availability**\n\
+  \n    Newer AWS services launch in popular regions first:\n    - `us-east-1` (Virginia):\
+  \ Almost all services immediately\n    - Smaller regions: Services arrive 6-12 months\
+  \ later\n\n    ### How to Choose a Region\n\n    **Decision Framework:**\n\n   \
+  \ ```\n    1. Where are your users?\n       → Pick closest region for lowest latency\n\
+  \n    2. Any legal requirements?\n       → Must use specific region(s)\n\n    3.\
+  \ Does this region have the services you need?\n       → Check AWS Regional Services\
+  \ list\n\n    4. What's your budget?\n       → Prices vary 10-30% between regions\n\
+  \          (us-east-1 is usually cheapest)\n    ```\n\n    **Real-World Example:**\n\
+  \n    You're building a video streaming app:\n    - **Primary users**: United States\n\
+  \    - **Legal requirement**: None\n    - **Services needed**: S3, CloudFront, Lambda\n\
+  \    - **Budget**: Cost-conscious\n\n    **Best choice**: `us-east-1` (Virginia)\n\
+  \    - Lowest latency for US users\n    - Cheapest region\n    - All services available\
+  \ first\n\n    ## Availability Zones (AZs): Isolated Data Centers\n\n    **What\
+  \ is an Availability Zone?**\n\n    An **AZ** is one or more data centers within\
+  \ a region. Think of it as a separate building with its own power, cooling, and\
+  \ network.\n\n    **Key Facts:**\n    - Each region has **2-6 AZs** (usually 3)\n\
+  \    - AZs are **physically separated** (miles apart)\n    - Connected by **high-speed,\
+  \ low-latency** private fiber links\n    - Naming: `us-east-1a`, `us-east-1b`, `us-east-1c`\n\
+  \n    ### Why Availability Zones Exist\n\n    **The Problem:**\n    Data centers\
+  \ can fail:\n    - Power outages\n    - Network failures\n    - Fire, flood, cooling\
+  \ failure\n    - Human error (someone trips over a cable!)\n\n    **The Solution:\
+  \ Redundancy**\n    Deploy your app across MULTIPLE AZs. If one fails, others keep\
+  \ running.\n\n    ### High Availability Architecture\n\n    **Single AZ (BAD - No\
+  \ redundancy):**\n    ```\n    Region: us-east-1\n    └── AZ us-east-1a\n      \
+  \  ├── Web Server (if this AZ fails = downtime!)\n        └── Database\n    ```\n\
+  \    **Risk**: One AZ failure = entire service down.\n\n    **Multi-AZ (GOOD - High\
+  \ availability):**\n    ```\n    Region: us-east-1\n    ├── AZ us-east-1a\n    │\
+  \   ├── Web Server 1\n    │   └── Database Replica\n    ├── AZ us-east-1b\n    │\
+  \   ├── Web Server 2\n    │   └── Database Primary\n    └── AZ us-east-1c\n    \
+  \    ├── Web Server 3\n        └── Database Replica\n    ```\n\n    **What happens\
+  \ if `us-east-1b` fails?**\n    - Load balancer stops sending traffic to Web Server\
+  \ 2\n    - Web Servers 1 and 3 handle requests\n    - Database replica in `us-east-1a`\
+  \ becomes primary\n    - Users experience NO downtime! ✓\n\n    ### Real-World Example:\
+  \ Netflix\n\n    Netflix uses multi-AZ deployment:\n    1. Load balancer distributes\
+  \ traffic across 3 AZs\n    2. If one AZ goes down, traffic shifts to other 2\n\
+  \    3. Databases replicate across AZs\n    4. Users keep streaming without interruption\n\
+  \n    **Cost of high availability?**\n    Running 3 instances instead of 1, but\
+  \ you get 99.99% uptime.\n\n    ### AZ Naming Confusion\n\n    ⚠️ **Important**:\
+  \ Your `us-east-1a` might be a different physical AZ than mine!\n\n    AWS randomizes\
+  \ AZ names per account to distribute load:\n    - Your account: `us-east-1a` = Physical\
+  \ AZ 1\n    - My account: `us-east-1a` = Physical AZ 3\n\n    **Why?** Prevents\
+  \ everyone from using \"1a\" and overloading it.\n\n    **Solution**: Use AZ IDs\
+  \ (`use1-az1`, `use1-az2`) for coordination between accounts.\n\n    ## Edge Locations:\
+  \ Content Delivery\n\n    **What is an Edge Location?**\n\n    A smaller data center\
+  \ that caches content for CloudFront (AWS's CDN). Not a full AWS region.\n\n   \
+  \ **Purpose:** Deliver static content (images, videos, JavaScript) faster by caching\
+  \ it closer to users.\n\n    **Scale:**\n    - 400+ edge locations worldwide\n \
+  \   - In major cities globally\n    - Much more than 33 regions\n\n    ### How Edge\
+  \ Locations Work\n\n    **Without CloudFront (Slow):**\n    ```\n    User in Tokyo\
+  \ → \U0001F30D → Your server in Virginia (200ms latency)\n    User in Tokyo → \U0001F30D\
+  \ → Your server in Virginia (200ms latency)\n    User in Tokyo → \U0001F30D → Your\
+  \ server in Virginia (200ms latency)\n    [Every request goes halfway around the\
+  \ world!]\n    ```\n\n    **With CloudFront (Fast):**\n    ```\n    User in Tokyo\
+  \ → Local edge location in Tokyo (5ms latency) ✓\n    [Content cached at edge, no\
+  \ need to reach Virginia]\n    ```\n\n    **When to use Edge Locations:**\n    -\
+  \ Serving images, videos, CSS, JavaScript\n    - Streaming media\n    - Software\
+  \ downloads\n    - API acceleration\n\n    ## Local Zones: Ultra-Low Latency\n\n\
+  \    **What is a Local Zone?**\n\n    An extension of a region placed in major cities\
+  \ for **single-digit millisecond latency**.\n\n    **Available in:**\n    - Los\
+  \ Angeles, Boston, Houston, Miami (US)\n    - Other major metros\n\n    **Use Cases:**\n\
+  \    - Real-time gaming (lag = bad experience)\n    - Live video production (broadcast\
+  \ TV)\n    - Machine learning inference (milliseconds matter)\n    - Financial trading\
+  \ (microseconds = money)\n\n    **Example:**\n    A gaming company serving Los Angeles\
+  \ gamers:\n    - Regular region (`us-west-2` Oregon): 20ms latency\n    - Local\
+  \ Zone (`us-west-2-lax-1a` LA): 2ms latency\n    - **10x improvement** for better\
+  \ gameplay\n\n    ## Comparing Infrastructure Components\n\n    | Component | Count\
+  \ | Purpose | Latency | Services |\n    |-----------|-------|---------|---------|----------|\n\
+  \    | **Regions** | 33+ | Geographic independence | 50-200ms between | All AWS\
+  \ services |\n    | **Availability Zones** | 100+ (2-6 per region) | High availability\
+  \ | <2ms within region | All services |\n    | **Edge Locations** | 400+ | Content\
+  \ caching | <10ms to users | CloudFront only |\n    | **Local Zones** | 20+ | Ultra-low\
+  \ latency | <5ms | Select compute/storage |\n\n    ### Decision Tree\n\n    ```\n\
+  \    Need to run compute/databases?\n    ├─ Yes → Use Region + Multiple AZs\n  \
+  \  └─ No → Just serving static content?\n           └─ Yes → Use CloudFront (Edge\
+  \ Locations)\n\n    Need <5ms latency in specific city?\n    └─ Yes → Consider Local\
+  \ Zone\n    ```\n\n    ## AWS Services Categories\n\n    ### Compute\n    - EC2\
+  \ (Virtual Machines)\n    - Lambda (Serverless Functions)\n    - ECS/EKS (Containers)\n\
+  \n    ### Storage\n    - S3 (Object Storage)\n    - EBS (Block Storage)\n    - EFS\
+  \ (File Storage)\n\n    ### Database\n    - RDS (Relational)\n    - DynamoDB (NoSQL)\n\
+  \    - ElastiCache (In-memory)\n\n    ### Networking\n    - VPC (Virtual Private\
+  \ Cloud)\n    - Route 53 (DNS)\n    - CloudFront (CDN)\n\n    ### Security\n   \
+  \ - IAM (Identity & Access)\n    - KMS (Key Management)\n    - WAF (Web Application\
+  \ Firewall)\n\n    ## Shared Responsibility Model\n\n    **AWS Responsibility**\
+  \ (Security OF the cloud):\n    - Physical security\n    - Hardware maintenance\n\
+  \    - Network infrastructure\n    - Hypervisor\n\n    **Customer Responsibility**\
+  \ (Security IN the cloud):\n    - OS patches\n    - Application security\n    -\
+  \ Data encryption\n    - IAM configuration\n    - Network firewall rules\n\n   \
+  \ **Practice**: Try the AWS Fundamentals lab!"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What is the difference between an AWS Region and an Availability Zone?
+  options:
+  - A Region is a geographic area containing 2-6 Availability Zones which are isolated
+    data centers within that region
+  - Regions and Availability Zones are the same thing
+  - An Availability Zone contains multiple Regions
+  - Regions are for storage only while AZs are for compute
+  correct_answer: A Region is a geographic area containing 2-6 Availability Zones
+    which are isolated data centers within that region
+  explanation: 'AWS global infrastructure is organized hierarchically with Regions
+    at the top level and Availability Zones within them. Region: Geographic area like
+    US East (Virginia), EU West (Ireland), Asia Pacific (Singapore), completely independent
+    with own power, cooling, networking, typically 1000+ miles apart, contains 2-6
+    Availability Zones (usually 3), has all AWS services or receives them first. Currently
+    33+ regions worldwide. Example: us-east-1 (Virginia), eu-west-1 (Ireland), ap-southeast-1
+    (Singapore). Availability Zone (AZ): One or more data centers within a Region,
+    physically separated by miles (different buildings, different city areas), connected
+    by high-speed low-latency private fiber (<2ms latency), has independent power,
+    cooling, network to prevent correlated failures, named with region + letter (us-east-1a,
+    us-east-1b, us-east-1c). Purpose of AZs: Enable high availability within a Region.
+    Deploy across multiple AZs so if one fails (power outage, network issue), others
+    continue serving traffic. Example multi-AZ architecture: Run web servers in us-east-1a,
+    us-east-1b, us-east-1c, use load balancer to distribute traffic, if us-east-1a
+    loses power, load balancer routes to 1b and 1c, users experience no downtime.
+    Region vs AZ use: Choose Region based on latency to users, data sovereignty, service
+    availability, cost. Use multiple AZs within Region for fault tolerance. Real-world:
+    Netflix deploys across 3 AZs in each Region for 99.99% availability, even surviving
+    complete AZ failures.'
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: Why would you choose us-east-1 (Virginia) versus eu-central-1 (Frankfurt)
+    for deploying your application?
+  options:
+  - Choose based on user location (latency), legal requirements (data sovereignty),
+    and cost (us-east-1 typically cheapest)
+  - Always use us-east-1 because it's the fastest region globally
+  - Regions make no difference, they all perform identically
+  - Choose randomly, it doesn't matter
+  correct_answer: Choose based on user location (latency), legal requirements (data
+    sovereignty), and cost (us-east-1 typically cheapest)
+  explanation: 'Region selection significantly impacts application performance, compliance,
+    and cost. Factor 1 - Latency: Physical distance affects speed of light propagation.
+    New York to Virginia (us-east-1): ~20ms, New York to Ireland (eu-west-1): ~70ms,
+    New York to Singapore (ap-southeast-1): ~220ms. Rule: Deploy close to users for
+    lowest latency. European users should use eu-west-1 or eu-central-1, Asian users
+    ap-southeast-1. Example: E-commerce site with 80% US customers should use us-east-1
+    for primary deployment. Factor 2 - Data Sovereignty: Legal requirements mandate
+    data location. GDPR (EU): European citizen data must remain in EU regions (eu-west-1,
+    eu-central-1, eu-north-1), violating risks €20M fines. China: Data must stay in
+    China regions (cn-north-1, cn-northwest-1). Healthcare: HIPAA may require US regions.
+    Banking: Financial regulations often require in-country storage. Example: German
+    healthcare company MUST use eu-central-1 (Frankfurt) for patient data. Factor
+    3 - Service Availability: New services launch in us-east-1 first, smaller regions
+    wait 6-12 months. us-east-1 has nearly every AWS service immediately. Check AWS
+    Regional Services table before choosing. Factor 4 - Cost: Prices vary 10-30% between
+    regions. us-east-1 typically cheapest due to scale. Example: EC2 t3.medium costs
+    $0.0416/hour in us-east-1, $0.0456/hour in ap-south-1 (10% more). S3 storage $0.023/GB
+    in us-east-1, $0.025/GB in eu-west-1. Decision framework: Start with user location,
+    check legal requirements, verify service availability, compare costs.'
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: How do CloudFront Edge Locations improve application performance compared
+    to serving content directly from an AWS Region?
+  options:
+  - Edge Locations cache content in 400+ cities worldwide, reducing latency from 200ms
+    to 10ms by serving from nearest location
+  - Edge Locations store the original data, not cached copies
+  - Edge Locations are slower than Regions but cheaper
+  - Edge Locations only work for video streaming
+  correct_answer: Edge Locations cache content in 400+ cities worldwide, reducing
+    latency from 200ms to 10ms by serving from nearest location
+  explanation: 'CloudFront Edge Locations dramatically reduce latency by caching content
+    close to users worldwide. Problem without Edge Locations: Application in us-east-1
+    serving global users. US user requests image: 20ms latency (close). Tokyo user
+    requests same image: 180ms latency (halfway around world). Sydney user: 200ms
+    latency. Every request travels thousands of miles. Solution with CloudFront: 400+
+    Edge Locations in major cities globally (vs 33 Regions), user routed to nearest
+    edge location automatically, edge location caches content from origin (S3, EC2),
+    subsequent requests served from cache without origin trip. Example flow: (1) Tokyo
+    user requests logo.png, (2) CloudFront routes to Tokyo edge location, (3) Edge
+    location checks cache - miss (first request), (4) Edge fetches from us-east-1
+    origin (180ms), (5) Edge caches logo.png locally, (6) Returns to user (total 180ms),
+    (7) Next 1000 Tokyo users get logo.png from Tokyo edge cache (5ms each). Performance
+    improvement: Without CloudFront: Every Tokyo user waits 180ms. With CloudFront:
+    First user 180ms, remaining users 5ms (36x faster). Use cases: Static assets (images,
+    CSS, JavaScript), video streaming (Netflix, YouTube), software downloads, API acceleration,
+    dynamic content with cache headers. Cost: CloudFront data transfer $0.085/GB (first
+    10 TB) vs direct S3 $0.09/GB, plus caching reduces origin load (fewer EC2 instances
+    needed). Configuration: Create CloudFront distribution pointing to S3 bucket or
+    EC2, set cache TTL (how long edge caches content), distribute via CloudFront domain
+    or custom domain. Real-world: Serving 1 million requests from Sydney. Direct from
+    us-east-1: 200ms each = poor UX. CloudFront from Sydney edge: 10ms each = excellent
+    UX.'
+  require_pass: true

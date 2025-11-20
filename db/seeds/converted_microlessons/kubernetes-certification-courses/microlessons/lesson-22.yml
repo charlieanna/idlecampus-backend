@@ -1,0 +1,88 @@
+slug: lesson-22
+title: Lesson 22
+difficulty: easy
+sequence_order: 22
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Storage Troubleshooting\n\n    - Pending\
+  \ PVC causes\n    - Node/pod mount errors and driver logs"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What are common reasons for a PVC to remain in 'Pending' state?
+  options:
+  - The pod is not running yet
+  - No PV matches the PVC requirements, StorageClass doesn't exist, or insufficient
+    resources in the storage backend
+  - The namespace quota is exceeded
+  - Network connectivity issues
+  correct_answer: No PV matches the PVC requirements, StorageClass doesn't exist,
+    or insufficient resources in the storage backend
+  explanation: 'A PVC in Pending state indicates it cannot be bound to a PV. Common
+    causes include: No matching PV available - for static provisioning, no manually
+    created PV matches the PVC''s size, accessModes, or storageClassName. Non-existent
+    StorageClass - the PVC references a StorageClass that doesn''t exist (''kubectl
+    get storageclass'' shows nothing matching). Provisioner failure - dynamic provisioning
+    failed due to storage backend issues (insufficient quota, API errors, zone constraints).
+    Topology/zone mismatches - in multi-zone clusters with immediate volumeBindingMode,
+    the PV is created in a zone incompatible with pod scheduling. Insufficient storage
+    capacity - the storage backend has reached capacity limits. Resource quotas -
+    namespace ResourceQuota limits storage requests. Waiting for consumer - with volumeBindingMode:
+    WaitForFirstConsumer, PVC intentionally stays Pending until a pod using it is
+    scheduled. To troubleshoot: 1) Check PVC events: ''kubectl describe pvc <name>''
+    shows error messages, 2) Verify StorageClass exists: ''kubectl get sc'', 3) Check
+    provisioner logs (for cloud providers, check controller-manager or CSI driver
+    pods in kube-system), 4) Verify permissions (ServiceAccount for provisioner has
+    permissions), 5) Check storage backend (cloud console for quota/limits), 6) For
+    WaitForFirstConsumer, create pod using the PVC. Example error: ''ProvisioningFailed:
+    Failed to provision volume with StorageClass "gp2": error getting handle for DataSource:
+    Snapshot not found''. Resolution strategies: create missing PVs manually, fix
+    or create the StorageClass, increase storage quotas, use volumeBindingMode: WaitForFirstConsumer
+    for zone issues, or check CSI driver installation and logs.'
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: Where should you look first when troubleshooting volume mount errors for
+    pods?
+  options:
+  - Network logs
+  - Pod events and describe output, then CSI driver/node logs
+  - Application logs
+  - API server logs
+  correct_answer: Pod events and describe output, then CSI driver/node logs
+  explanation: 'When pods fail to mount volumes, follow a systematic troubleshooting
+    approach: First, check pod events: ''kubectl describe pod <name>'' shows events
+    like ''FailedMount'', ''FailedAttachVolume'', or ''Unable to attach or mount volumes''.
+    Common errors include ''Volume is already attached by pod'', ''Volume is already
+    exclusively attached to one node and can''t be attached to another'', ''Failed
+    to get device path'', or ''Mount failed: exit status 32''. Second, check kubelet
+    logs on the node where pod is scheduled: ''journalctl -u kubelet -f'' or ''kubectl
+    logs -n kube-system <kubelet-pod>'' for containerized kubelet. Look for mount
+    syscall errors, permission issues, or driver errors. Third, check CSI driver logs:
+    CSI drivers run as DaemonSets/Deployments in kube-system. Find them with ''kubectl
+    get pods -n kube-system | grep csi'', then check logs ''kubectl logs -n kube-system
+    <csi-driver-pod> -c <container>''. Look for attachment failures, API errors, or
+    filesystem errors. Common issues: Pod trying to use RWO volume already attached
+    to another node (fix: delete old pod or wait for detachment timeout), Filesystem
+    corruption (check dmesg, run fsck), Permission issues (check SecurityContext,
+    fsGroup), Driver not installed or misconfigured (verify driver pods running, check
+    installation), Resource limits on CSI driver pods (increase resources), Zone/topology
+    constraints violated (use WaitForFirstConsumer), and Node not ready or network
+    partitioned. Tools: ''kubectl get volumeattachment'' shows volume-to-node attachments,
+    ''kubectl get pv'' shows PV status, and provider-specific tools (aws ec2 describe-volumes
+    for EBS). Resolution: detach stale attachments, fix node issues, reinstall CSI
+    drivers, or adjust topology constraints.'
+  require_pass: true
+- type: mcq
+  sequence_order: 1
+  question: What command lists all pods in all namespaces?
+  options:
+  - kubectl get pods -A
+  - kubectl list pods --all
+  - kubectl get pods --everywhere
+  - kubectl pods list -A
+  correct_answer_index: 0
+  explanation: kubectl get pods -A (or --all-namespaces) lists pods across all namespaces.
+    The -A flag is shorthand for --all-namespaces.
+  require_pass: true

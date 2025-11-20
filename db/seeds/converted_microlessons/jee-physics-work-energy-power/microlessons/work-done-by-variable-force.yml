@@ -1,0 +1,213 @@
+slug: work-done-by-variable-force
+title: "Work Done by Variable Force"
+difficulty: advanced
+sequence_order: 2
+estimated_minutes: 16
+key_concepts:
+- variable-force
+- integration
+- work-energy
+- spring-force
+- position-dependent
+prerequisites:
+- work-done-by-constant-force
+content_md: |
+  # Work Done by Variable Force
+
+  ## Why Integration?
+
+  When force varies with position, we can't use W = F·d directly. We must integrate:
+  ```
+  W = ∫F⃗ · dr⃗ = ∫F cos θ dx
+
+  For 1D: W = ∫ₓ₁ˣ² F(x) dx
+  ```
+
+  ## Common Variable Forces
+
+  ### 1. Spring Force (Hooke's Law)
+  ```
+  F = -kx (restoring force)
+
+  W_spring = -½kx₂² + ½kx₁²
+  ```
+
+  Work done BY spring when stretched from x₁ to x₂.
+
+  ### 2. Gravitational Force (Large distances)
+  ```
+  F = -GMm/r²
+
+  W = GMm(1/r₂ - 1/r₁)
+  ```
+
+  Work done BY gravity when moving from r₁ to r₂.
+
+  ### 3. Linear Force F = kx
+  ```
+  W = ∫₀ˣ kx dx = ½kx²
+  ```
+
+  ### 4. Force F = ax + b
+  ```
+  W = ∫ₓ₁ˣ² (ax + b)dx = a(x₂² - x₁²)/2 + b(x₂ - x₁)
+  ```
+
+  ## Spring Energy
+
+  ### Elastic Potential Energy:
+  ```
+  U = ½kx²
+
+  Stored when spring stretched or compressed
+  ```
+
+  ### Work Done Against Spring:
+  ```
+  W_external = ½kx² (stretching from natural length)
+  ```
+
+  ### Work Done By Spring:
+  ```
+  W_spring = -½k(x₂² - x₁²)
+
+  Negative when stretched, positive when released
+  ```
+
+  ## Graphical Method
+
+  **Work = Area under F-x graph**
+
+  ### Triangle (F = kx):
+  ```
+  W = ½ × base × height = ½ × x × F = ½kx²
+  ```
+
+  ### Rectangle (F = constant):
+  ```
+  W = F × Δx
+  ```
+
+  ### Trapezoid:
+  ```
+  W = ½(F₁ + F₂) × Δx
+  ```
+
+  ## Work-Energy Theorem
+
+  Still valid for variable forces:
+  ```
+  W_net = ΔKE = ½mv₂² - ½mv₁²
+
+  ∫F dx = ½m(v₂² - v₁²)
+  ```
+
+  ## Power with Variable Force
+
+  ```
+  P = dW/dt = F · v
+
+  Average power: P_avg = W_total/t_total
+  ```
+
+  ## Important Derivations
+
+  ### Spring Stretched by Distance x:
+  ```
+  W_ext = ∫₀ˣ kx dx = ½kx²
+  W_spring = -∫₀ˣ kx dx = -½kx²
+  ```
+
+  External work becomes elastic PE.
+
+  ### Gravity at Large Distances:
+  ```
+  W = ∫ᵣ₁ʳ² (-GMm/r²)dr = GMm[1/r]ᵣ₁ʳ²
+  W = GMm(1/r₂ - 1/r₁)
+  ```
+
+  If r₂ > r₁ (moving away), W < 0 (gravity does negative work).
+
+  ## Numerical Examples
+
+  **Example 1:** Spring with k = 200 N/m compressed by 10 cm. Find work done by spring when released.
+
+  **Solution:**
+  ```
+  x₁ = 0.1 m (compressed), x₂ = 0 (natural)
+  W_spring = ½k(x₁² - x₂²) = ½(200)(0.1² - 0)
+  W = 100 × 0.01 = 1 J
+
+  Spring does positive work when returning to natural length.
+  ```
+
+  **Example 2:** Force F = 3x² N acts on 2 kg mass. Find velocity when moved from x = 0 to x = 4 m (starting from rest).
+
+  **Solution:**
+  ```
+  W = ∫₀⁴ 3x² dx = 3[x³/3]₀⁴ = [x³]₀⁴ = 64 J
+
+  By work-energy theorem:
+  64 = ½(2)v² - 0
+  v² = 64, v = 8 m/s
+  ```
+
+  **Example 3:** Find work done by force F = (2x + 3) N from x = 1 to x = 5 m.
+
+  **Solution:**
+  ```
+  W = ∫₁⁵ (2x + 3)dx = [x² + 3x]₁⁵
+  = (25 + 15) - (1 + 3) = 40 - 4 = 36 J
+  ```
+
+  ## JEE Common Mistakes
+
+  1. ❌ Using W = Fd for variable force
+  2. ❌ Forgetting negative sign in spring force
+  3. ❌ Confusing work BY spring vs work ON spring
+  4. ❌ Not using limits of integration correctly
+  5. ❌ Missing factor of ½ in spring energy
+
+  ## Key Formulas Summary
+
+  | Force Type | Expression | Work Done |
+  |------------|-----------|-----------|
+  | Spring | F = -kx | W = ½k(x₁² - x₂²) |
+  | F = ax | - | W = ½ax² |
+  | F = ax + b | - | W = ½a(x₂²-x₁²) + b(x₂-x₁) |
+  | Gravity (far) | F = -GMm/r² | W = GMm(1/r₂ - 1/r₁) |
+
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: "A spring with k = 100 N/m is stretched from 5 cm to 10 cm. Work done BY the spring is:"
+  options:
+  - "0.375 J"
+  - "-0.375 J"
+  - "0.75 J"
+  - "-0.125 J"
+  correct_answer: "-0.375 J"
+  explanation: "W_spring = ½k(x₁² - x₂²) = ½(100)(0.05² - 0.10²) = 50(0.0025 - 0.01) = 50(-0.0075) = -0.375 J. The negative work indicates spring opposes stretching. Work done ON spring = +0.375 J (by external agent). This energy is stored as elastic PE: ΔPE = ½k(0.1² - 0.05²) = 0.375 J. Note: Spring force always opposes deformation, hence does negative work when stretched and positive work when released."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: "Force acting on a particle is F = 5x N. Work done in moving particle from x = 2 m to x = 4 m is:"
+  options:
+  - "10 J"
+  - "20 J"
+  - "30 J"
+  - "40 J"
+  correct_answer: "30 J"
+  explanation: "W = ∫₂⁴ 5x dx = 5[x²/2]₂⁴ = 5/2[16 - 4] = 5/2 × 12 = 30 J. Alternatively, use graphical method: F-x graph is straight line from (2,10) to (4,20). Area = trapezoid = ½(10 + 20)(2) = 30 J. For variable force, integration or area method is essential. If force were constant at 15 N (average), W = 15 × 2 = 30 J. The average value theorem works here because force varies linearly."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: "A 1 kg block attached to spring (k = 100 N/m) is pulled 10 cm from equilibrium. When released, its maximum speed is:"
+  options:
+  - "0.1 m/s"
+  - "1 m/s"
+  - "10 m/s"
+  - "0.5 m/s"
+  correct_answer: "1 m/s"
+  explanation: "At extreme position: all energy is PE = ½kx² = ½(100)(0.1)² = 0.5 J. At equilibrium (x=0): all PE converts to KE = ½mv²_max. By energy conservation: 0.5 = ½(1)v²_max, so v²_max = 1, v_max = 1 m/s. This is maximum speed because at equilibrium, displacement is zero (no PE) and kinetic energy is maximum. As block moves past equilibrium, it decelerates as PE increases again. This is characteristic of simple harmonic motion."
+  require_pass: true

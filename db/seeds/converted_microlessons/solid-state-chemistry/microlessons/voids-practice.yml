@@ -1,0 +1,59 @@
+slug: voids-practice
+title: voids — Practice
+difficulty: medium
+sequence_order: 12
+estimated_minutes: 2
+key_concepts:
+- voids
+prerequisites: []
+content_md: '# voids — Practice 🚀
+
+
+  Number of tetrahedral voids = 2n, where n = number of atoms. Here n = 4, so tetrahedral
+  voids = 2×4 = 8.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: If a close-packed structure has 4 atoms, how many tetrahedral voids are present?
+  options:
+  - '2'
+  - '4'
+  - '8'
+  - '16'
+  correct_answer: '8'
+  explanation: "The number of tetrahedral voids = 2n, where n = number of atoms in the packing. Here n = 4, so tetrahedral voids = 2 × 4 = 8. Tetrahedral voids are formed when a sphere is placed in the hollow created by three spheres."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: How many octahedral voids are present per atom in a close-packed structure?
+  options:
+  - 1 octahedral void per atom
+  - 2 octahedral voids per atom
+  - 0.5 octahedral voids per atom
+  - 4 octahedral voids per atom
+  correct_answer: 1 octahedral void per atom
+  explanation: "In a close-packed structure, the number of octahedral voids equals the number of atoms (n). So there is 1 octahedral void per atom. Octahedral voids are formed when a sphere is placed in the hollow created by six spheres arranged octahedrally."
+  require_pass: false
+- type: mcq
+  sequence_order: 3
+  question: Which void is larger in a close-packed structure?
+  options:
+  - Tetrahedral void
+  - Octahedral void
+  - Both are equal
+  - Depends on the atom size
+  correct_answer: Octahedral void
+  explanation: "Octahedral voids are larger than tetrahedral voids in a close-packed structure. The radius ratio for octahedral voids is 0.414, while for tetrahedral voids it is 0.225. This means larger cations can occupy octahedral voids."
+  require_pass: false

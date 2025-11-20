@@ -1,0 +1,179 @@
+slug: principles-of-metallurgy-and-extraction-methods
+title: Principles of Metallurgy and Extraction Methods
+difficulty: medium
+sequence_order: 1
+estimated_minutes: 18
+key_concepts:
+  - Metallurgy
+  - Ore concentration
+  - Roasting and calcination
+  - Reduction processes
+  - Refining methods
+  - Ellingham diagrams
+  - Thermodynamic principles
+prerequisites:
+  - redox-reactions
+  - thermodynamics
+content_md: |
+  # Principles of Metallurgy and Extraction Methods
+
+  ## Introduction to Metallurgy
+
+  **Metallurgy** is the science and technology of extracting metals from their ores and refining them for use. The extraction process depends on the reactivity and chemical nature of the metal.
+
+  ## Steps in Metallurgical Processes
+
+  ### 1. Concentration of Ore
+
+  Removal of unwanted material (gangue) from the ore.
+
+  **Methods:**
+  - **Hydraulic washing:** Based on density differences (e.g., gold, tin ores)
+  - **Magnetic separation:** Separates magnetic from non-magnetic materials
+  - **Froth flotation:** Uses wetting properties with oil and water (sulfide ores)
+  - **Leaching:** Chemical treatment to dissolve the ore (bauxite with NaOH)
+
+  ### 2. Conversion to Oxide (Calcination and Roasting)
+
+  **Calcination:**
+  - Heating carbonate ores in limited air
+  - Removes volatile impurities (CO₂, H₂O)
+  - Example: CaCO₃ → CaO + CO₂
+
+  **Roasting:**
+  - Heating sulfide ores in excess air
+  - Converts to oxides
+  - Example: 2ZnS + 3O₂ → 2ZnO + 2SO₂
+
+  ### 3. Reduction to Metal
+
+  Conversion of metal oxide to free metal using suitable reducing agents.
+
+  **Reduction Methods:**
+
+  #### a) Carbon Reduction
+  Used for metals less reactive than carbon (Zn, Fe, Sn, Pb)
+  ```
+  ZnO + C → Zn + CO
+  Fe₂O₃ + 3C → 2Fe + 3CO
+  ```
+
+  #### b) Self-Reduction (Auto-reduction)
+  Partial roasting followed by heating with unroasted ore
+  ```
+  2Cu₂S + 3O₂ → 2Cu₂O + 2SO₂
+  2Cu₂O + Cu₂S → 6Cu + SO₂
+  ```
+
+  #### c) Electrolytic Reduction
+  For highly reactive metals (Na, K, Ca, Al)
+  ```
+  At cathode: Na⁺ + e⁻ → Na
+  At anode: 2Cl⁻ → Cl₂ + 2e⁻
+  ```
+
+  #### d) Thermite Process
+  Using aluminum as reducing agent
+  ```
+  Cr₂O₃ + 2Al → 2Cr + Al₂O₃ (highly exothermic)
+  ```
+
+  ### 4. Refining
+
+  Purification of the crude metal.
+
+  **Refining Methods:**
+  - **Electrolytic refining:** Cu, Ag, Au, Zn
+  - **Zone refining:** Si, Ge (semiconductors)
+  - **Liquation:** Sn, Pb, Bi (low melting metals)
+  - **Distillation:** Zn, Hg, Cd (low boiling metals)
+  - **Vapour phase refining (Mond process):** Ni
+
+  ## Thermodynamic Principles
+
+  ### Ellingham Diagrams
+
+  Graphs showing ΔG° vs. Temperature for the formation of oxides.
+
+  **Key Points:**
+  - More negative ΔG° = more stable oxide
+  - Metal oxide with higher ΔG° can be reduced by metal with lower ΔG°
+  - Slope change indicates phase transitions
+
+  **Uses:**
+  - Predict feasibility of reduction
+  - Choose appropriate reducing agent
+  - Determine optimal temperature
+
+  ### Gibbs Energy and Reduction
+
+  For a reduction to be spontaneous:
+  ```
+  ΔG = ΔG° + RT ln Q < 0
+  ```
+
+  At equilibrium: ΔG° = -RT ln K
+
+  ## Specific Extraction Processes
+
+  ### Extraction of Aluminum (Hall-Heroult Process)
+
+  1. Ore: Bauxite (Al₂O₃·2H₂O)
+  2. Purification: Bayer's process with NaOH
+  3. Electrolysis: Al₂O₃ dissolved in molten cryolite (Na₃AlF₆)
+  4. Cathode: Al³⁺ + 3e⁻ → Al
+  5. Anode: C + O²⁻ → CO (anode gets consumed)
+
+  ### Extraction of Iron (Blast Furnace)
+
+  1. Ore: Hematite (Fe₂O₃) or magnetite (Fe₃O₄)
+  2. Reducing agent: Coke (C)
+  3. Flux: Limestone (CaCO₃) removes silica impurities
+  4. Key reactions:
+     - C + O₂ → CO₂
+     - CO₂ + C → 2CO
+     - Fe₂O₃ + 3CO → 2Fe + 3CO₂
+
+  ### Extraction of Copper
+
+  1. Ore: Chalcopyrite (CuFeS₂)
+  2. Concentration: Froth flotation
+  3. Roasting: Removes Fe as slag
+  4. Smelting: Self-reduction
+  5. Refining: Electrolytic using copper sulfate
+
+  ## Environmental Considerations
+
+  - SO₂ emissions from roasting (acid rain)
+  - CO₂ from carbon reduction (greenhouse gas)
+  - Slag and tailings disposal
+  - Energy consumption in electrolysis
+
+exercises:
+  - type: mcq
+    question: "Which method is used to concentrate sulfide ores?"
+    options:
+      - "Hydraulic washing"
+      - "Magnetic separation"
+      - "Froth flotation"
+      - "Electrolysis"
+    correct_answer: "Froth flotation"
+    explanation: "Froth flotation is specifically used for sulfide ores, utilizing the difference in wetting properties between ore and gangue."
+    sequence_order: 1
+
+  - type: mcq
+    question: "Which of the following metals is extracted by electrolytic reduction?"
+    options:
+      - "Iron"
+      - "Zinc"
+      - "Aluminum"
+      - "Copper"
+    correct_answer: "Aluminum"
+    explanation: "Aluminum is highly reactive and cannot be reduced by carbon. It requires electrolytic reduction using the Hall-Heroult process."
+    sequence_order: 2
+
+  - type: short_answer
+    question: "What is the main difference between roasting and calcination?"
+    expected_answer: "Roasting heats ore in excess air to convert sulfides to oxides, while calcination heats ore in limited air to remove volatile impurities like CO₂ and H₂O from carbonates."
+    explanation: "Both are heating processes but differ in the amount of air used and the type of ore processed."
+    sequence_order: 3

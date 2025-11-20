@@ -1,0 +1,63 @@
+slug: lesson-80
+title: Lesson 80
+difficulty: easy
+sequence_order: 80
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Persistent Volumes Deep Dive\n\n    - PV\
+  \ lifecycle and reclaim policies\n    - Access modes and binding"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What happens to a PersistentVolume with a reclaim policy of Delete when
+    its bound PVC is deleted?
+  options:
+  - The PV and underlying storage are automatically deleted
+  - The PV is retained for manual cleanup
+  - The PV is recycled for reuse
+  - Nothing happens
+  correct_answer: The PV and underlying storage are automatically deleted
+  explanation: When a PersistentVolume has a reclaimPolicy of Delete and its bound
+    PersistentVolumeClaim is deleted, both the PV object and the underlying storage
+    resource (e.g., AWS EBS volume, GCE Persistent Disk) are automatically deleted.
+    This is the default for dynamically provisioned volumes and is convenient but
+    potentially dangerous - accidental PVC deletion leads to permanent data loss.
+    The Retain policy keeps both the PV and underlying storage after PVC deletion,
+    requiring manual cleanup but preventing accidental data loss. The Recycle policy
+    (deprecated) performs a basic scrub (rm -rf) and makes the PV available for new
+    claims. For production data, many teams use Retain or implement backup strategies
+    before allowing Delete. Understanding reclaim policies is critical for data protection.
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What does the ReadWriteMany (RWX) access mode mean for a PersistentVolume?
+  options:
+  - Multiple pods can mount the volume, but only one can write
+  - The volume can be mounted as read-write by many nodes simultaneously
+  - The volume can be written by the cluster admin only
+  - The volume supports automatic replication
+  correct_answer: The volume can be mounted as read-write by many nodes simultaneously
+  explanation: ReadWriteMany (RWX) access mode allows a volume to be mounted as read-write
+    by pods on multiple nodes simultaneously. This is required for applications like
+    shared file servers or distributed applications where multiple pods across different
+    nodes need write access to the same storage. Not all storage types support RWX
+    - it typically requires network file systems like NFS, CephFS, or GlusterFS. ReadWriteOnce
+    (RWO) allows mounting by pods on a single node only (most common, supported by
+    block storage like EBS, Azure Disk). ReadOnlyMany (ROX) allows read-only mounts
+    by pods on many nodes. Choose the access mode based on your application's needs
+    and your storage backend's capabilities. Attempting to use RWX with storage that
+    doesn't support it will cause PVC to remain Pending.
+  require_pass: true
+- type: mcq
+  sequence_order: 1
+  question: What kubectl command checks if you can perform an action?
+  options:
+  - kubectl auth can-i create pods
+  - kubectl check permissions create pods
+  - kubectl verify action create pods
+  - kubectl test auth create pods
+  correct_answer_index: 0
+  explanation: kubectl auth can-i <action> <resource> checks if the current user has
+    permission to perform the specified action.
+  require_pass: true

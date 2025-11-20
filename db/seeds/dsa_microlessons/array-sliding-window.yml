@@ -1,0 +1,160 @@
+---
+slug: array-sliding-window
+title: Sliding Window
+sequence_order: 2
+estimated_minutes: 15
+difficulty: medium
+key_concepts:
+- Sliding Window
+- Fixed Window
+content_md: |
+  # Sliding Window
+
+  Efficient technique for processing subarrays or substrings by maintaining a window
+
+  ---
+
+  ## Sliding Window Technique
+
+  The sliding window pattern is used to solve problems involving subarrays, substrings, or sequential data where you need to find optimal subarrays.
+
+  **Types of Sliding Windows:**
+
+  ### 1. Fixed-Size Window
+  Window size is predetermined and constant throughout.
+
+  ### 2. Dynamic-Size Window
+  Window expands and contracts based on conditions.
+
+  **Key Characteristics:**
+  - Reduces time complexity from O(n²) or O(n³) to O(n)
+  - Maintains state as window moves
+  - Uses two pointers (left and right)
+
+  **When Window is Valid:**
+  - Fixed size: when right - left + 1 == k
+  - Dynamic: when condition is satisfied
+
+
+  ---
+
+  ## Common Patterns
+
+  ### Pattern 1: Fixed Window
+  ```python
+  def fixed_window(arr, k):
+      window_sum = sum(arr[:k])  # Initial window
+      max_sum = window_sum
+
+      for i in range(k, len(arr)):
+          # Slide window: remove left, add right
+          window_sum = window_sum - arr[i-k] + arr[i]
+          max_sum = max(max_sum, window_sum)
+
+      return max_sum
+  ```
+
+  ### Pattern 2: Dynamic Window (Expand/Contract)
+  ```python
+  def dynamic_window(s):
+      left = 0
+      char_set = set()
+      max_length = 0
+
+      for right in range(len(s)):
+          # Expand window
+          while s[right] in char_set:
+              # Contract window if invalid
+              char_set.remove(s[left])
+              left += 1
+
+          char_set.add(s[right])
+          max_length = max(max_length, right - left + 1)
+
+      return max_length
+  ```
+
+  ### Pattern 3: Window with HashMap
+  ```python
+  def window_with_map(s, k):
+      char_count = {}
+      left = 0
+
+      for right in range(len(s)):
+          char_count[s[right]] = char_count.get(s[right], 0) + 1
+
+          # Maintain window constraint
+          if len(char_count) > k:
+              char_count[s[left]] -= 1
+              if char_count[s[left]] == 0:
+                  del char_count[s[left]]
+              left += 1
+  ```
+
+
+  ---
+
+  ## When to Use This Technique
+
+  Use sliding window for problems involving contiguous subarrays/substrings, finding min/max/optimal subarray, or problems with "longest/shortest/maximum/minimum substring/subarray" keywords.
+
+  ---
+
+  ## Common Pitfalls to Avoid
+
+  - Not handling window shrinking correctly
+  - Off-by-one errors in window size calculation
+  - Forgetting to update window state when sliding
+  - Not initializing the first window properly
+  - Confusing when to expand vs contract
+
+  ---
+
+  ## Practice Problems
+
+  Start with these problems to master this concept:
+
+  ### 1. Maximum Sum Subarray of Size K [Easy]
+
+  Find maximum sum of any contiguous subarray of size k.
+
+  **Complexity:** Time O(O(n)), Space O(O(1))
+
+
+  ### 2. Minimum Window Substring [Hard]
+
+  Find minimum window in S that contains all characters of T.
+
+  **Complexity:** Time O(O(m+n)), Space O(O(m+n))
+
+
+  ### 3. Substring with Concatenation of All Words [Hard]
+
+  Find substrings that are concatenation of all words.
+
+  **Complexity:** Time O(O(n*m*len)), Space O(O(m))
+
+
+  ### 4. Longest Substring Without Repeating Characters [Medium]
+
+  Find length of longest substring without repeating characters.
+
+  **Complexity:** Time O(O(n)), Space O(O(min(m,n)))
+
+
+  ### 5. Longest Substring with At Most K Distinct Characters [Medium]
+
+  Find longest substring with at most k distinct characters.
+
+  **Complexity:** Time O(O(n)), Space O(O(k))
+
+
+
+  ---
+
+  ## Key Takeaways
+
+  - Sliding Window is essential for efficient technique for processing subarrays or substrings by maintaining a window
+  - Time complexity improvements can be significant with this technique
+  - Practice problems in order of difficulty to build intuition
+  - Focus on recognizing patterns in problem statements

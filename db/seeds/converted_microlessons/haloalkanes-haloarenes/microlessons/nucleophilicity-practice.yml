@@ -1,0 +1,59 @@
+slug: nucleophilicity-practice
+title: nucleophilicity — Practice
+difficulty: easy
+sequence_order: 17
+estimated_minutes: 2
+key_concepts:
+- nucleophilicity
+prerequisites: []
+content_md: '# nucleophilicity — Practice 🚀
+
+
+  In protic solvents, nucleophilicity order: I⁻ > Br⁻ > Cl⁻ > F⁻ (opposite of basicity).
+  Larger ions are less solvated and more nucleophilic.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 2
+  question: In protic solvents, which is the best nucleophile?
+  options:
+  - F⁻
+  - Cl⁻
+  - Br⁻
+  - I⁻
+  correct_answer: I⁻
+  explanation: "In protic solvents (like water or alcohols), nucleophilicity follows the order I⁻ > Br⁻ > Cl⁻ > F⁻, which is opposite to basicity. Larger ions like I⁻ are less solvated by protic solvents because their charge is more diffuse, making them more 'naked' and better nucleophiles. Smaller ions like F⁻ are heavily solvated (surrounded by solvent molecules) which hinders their nucleophilic attack. This trend reverses in aprotic solvents where solvation is less important."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: How does nucleophilicity trend differ in aprotic vs protic solvents?
+  options:
+  - Nucleophilicity is the same in both solvents
+  - In aprotic solvents, F⁻ is more nucleophilic than I⁻
+  - In protic solvents, nucleophilicity increases with size
+  - Temperature determines nucleophilicity, not solvent
+  correct_answer: In aprotic solvents, F⁻ is more nucleophilic than I⁻
+  explanation: "In aprotic solvents (like DMSO, DMF, acetone), the nucleophilicity order reverses to match basicity: F⁻ > Cl⁻ > Br⁻ > I⁻. This is because aprotic solvents cannot form strong hydrogen bonds with anions, so the nucleophiles remain relatively unsolvated. In this case, the smaller, more basic F⁻ is more nucleophilic. In protic solvents, however, heavy solvation of small anions makes larger ions like I⁻ better nucleophiles. The solvent type is crucial in determining nucleophilicity trends."
+  require_pass: true
+- type: mcq
+  sequence_order: 4
+  question: Which is the better nucleophile in most SN2 reactions?
+  options:
+  - NH₃ (ammonia)
+  - H₂O (water)
+  - CH₃OH (methanol)
+  - HCl (hydrogen chloride)
+  correct_answer: NH₃ (ammonia)
+  explanation: "Ammonia (NH₃) is a better nucleophile than water or alcohols because nitrogen is less electronegative than oxygen, making its lone pair more available for donation. Additionally, NH₃ is more basic than H₂O or CH₃OH. For neutral nucleophiles, nucleophilicity generally correlates with basicity. HCl is not a nucleophile - it's an acid that donates protons. The nucleophilicity order for neutral species generally follows: R₃N > R₂NH > RNH₂ > NH₃ > R₂O > ROH > H₂O."
+  require_pass: true

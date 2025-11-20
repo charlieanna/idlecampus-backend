@@ -1,0 +1,59 @@
+slug: micelles-practice
+title: micelles — Practice
+difficulty: easy
+sequence_order: 27
+estimated_minutes: 2
+key_concepts:
+- micelles
+prerequisites: []
+content_md: '# micelles — Practice 🚀
+
+
+  CMC is the minimum concentration of surfactant at which micelles start forming.
+  Below CMC, molecules exist individually. Above CMC, micelles form.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: 'What is the critical micelle concentration (CMC)?'
+  options:
+  - Minimum concentration at which micelles start forming
+  - Maximum solubility of surfactant in water
+  - Concentration at which micelles break down
+  - Temperature at which micelles form
+  correct_answer: Minimum concentration at which micelles start forming
+  explanation: "The Critical Micelle Concentration (CMC) is the minimum concentration of a surfactant at which micelle formation begins. Below the CMC, surfactant molecules exist as individual molecules (monomers) dispersed in solution. Above the CMC, additional surfactant molecules aggregate to form micelles. Each surfactant has a characteristic CMC value - for example, sodium dodecyl sulfate has CMC ≈ 8 mM. Properties like surface tension, conductivity, and osmotic pressure change sharply at the CMC."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: 'In aqueous solution, the structure of a micelle is:'
+  options:
+  - Hydrophobic tails point inward, hydrophilic heads point outward
+  - Hydrophilic heads point inward, hydrophobic tails point outward
+  - Random arrangement
+  - Linear chain structure
+  correct_answer: Hydrophobic tails point inward, hydrophilic heads point outward
+  explanation: "In aqueous solutions, micelles form with hydrophobic (water-repelling) alkyl tails pointing toward the interior, away from water, while hydrophilic (water-attracting) polar heads point outward toward the water. This spherical arrangement minimizes unfavorable contact between hydrophobic tails and water. The hydrophobic core can solubilize oil-soluble substances, which is the basis of cleaning action. In non-polar solvents, reverse micelles form with the opposite orientation."
+  require_pass: false
+- type: mcq
+  sequence_order: 3
+  question: 'Which property changes sharply at the CMC?'
+  options:
+  - Surface tension shows a break point
+  - Boiling point increases linearly
+  - Density becomes zero
+  - pH becomes neutral
+  correct_answer: Surface tension shows a break point
+  explanation: "At the CMC, several properties show sharp changes or break points: (1) Surface tension - decreases up to CMC, then remains constant, (2) Conductivity - shows a change in slope, (3) Osmotic pressure - deviates from ideal behavior, (4) Solubilization of hydrophobic substances - increases dramatically above CMC. These discontinuities occur because above CMC, added surfactant forms micelles rather than individual molecules, changing the solution properties fundamentally."
+  require_pass: false

@@ -1,0 +1,89 @@
+slug: docker-container-ls-list-containers
+title: 'Docker Container LS: List Containers'
+difficulty: easy
+sequence_order: 12
+estimated_minutes: 2
+key_concepts:
+- containers
+- docker-ls
+- listing
+- inspection
+- management
+prerequisites: []
+content_md: '# Docker Container LS: List Containers 🚀
+
+
+  List containers with various filters - modern alternative to docker ps command.
+
+
+  ## Syntax/Command
+
+
+  ```bash
+
+  docker container ls
+
+  ```
+
+
+  ## Example
+
+
+  ```bash
+
+  docker container ls -a
+
+  ```
+
+
+  ## Key Points
+
+
+  - List running: docker container ls
+
+
+  - List all: docker container ls -a
+
+
+  - Filter by status: docker container ls --filter "status=exited"'
+exercises:
+- type: terminal
+  problem_statement: List all running containers using the docker container ls command
+  expected_output: Table showing running containers with CONTAINER ID, IMAGE, COMMAND, STATUS, etc.
+  language: bash
+  starter_code: "# List containers\n"
+  sequence_order: 1
+  command: docker container ls
+  description: List all containers and filter by specific criteria
+  hints:
+  - 'List running: docker container ls'
+  - 'List all: docker container ls -a'
+  - 'Filter by status: docker container ls --filter "status=exited"'
+  validation:
+    must_not_include:
+    - Error
+    - 'panic:'
+  timeout_sec: 60
+  require_pass: true
+- type: sandbox
+  sequence_order: 99
+  hints:
+  - Run under CPU pressure to surface leaks or races
+  - Keep commands idempotent in CI
+  validation:
+    must_not_include:
+    - Error
+    - 'panic:'
+  timeout_sec: 60
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What is the difference between "docker container ls" and "docker ps"?
+  options:
+  - They are equivalent commands with same functionality
+  - docker container ls shows more details than docker ps
+  - docker ps only shows running containers while ls shows all
+  - docker container ls is deprecated in favor of docker ps
+  correct_answer: They are equivalent commands with same functionality
+  explanation: "docker container ls and docker ps are aliases - they perform identical operations. docker container ls is the newer syntax following Docker's command structure pattern, but docker ps remains supported for backward compatibility."
+  require_pass: true

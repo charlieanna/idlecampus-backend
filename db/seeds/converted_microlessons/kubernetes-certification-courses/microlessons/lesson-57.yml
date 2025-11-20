@@ -1,0 +1,65 @@
+slug: lesson-57
+title: Lesson 57
+difficulty: easy
+sequence_order: 57
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Secrets Management and Security\n\n   \
+  \ - Opaque secrets and stringData\n    - Mounting secrets and envFrom\n    - Secret\
+  \ encryption at rest (KMS)"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: How does Kubernetes store Secrets by default?
+  options:
+  - Encrypted in etcd automatically
+  - Base64-encoded (not encrypted) in etcd
+  - In a separate secret management system
+  - In encrypted files on nodes
+  correct_answer: Base64-encoded (not encrypted) in etcd
+  explanation: By default, Kubernetes stores Secrets as base64-encoded values in etcd,
+    which provides obfuscation but not encryption. Base64 is easily reversible, so
+    anyone with access to etcd or the Kubernetes API (with appropriate RBAC) can decode
+    Secrets. This is a critical security consideration - etcd backups contain unencrypted
+    Secrets. To properly secure Secrets, you should enable encryption at rest using
+    a KMS (Key Management Service) provider, which encrypts Secret data before storing
+    it in etcd. Configure this via the EncryptionConfiguration in the API server.
+    Additionally, use RBAC to restrict who can read Secrets, and consider external
+    secret management solutions like HashiCorp Vault, AWS Secrets Manager, or Azure
+    Key Vault integrated via tools like External Secrets Operator. The base64 encoding
+    exists to allow binary data in YAML, not for security.
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What is the difference between the 'data' and 'stringData' fields in a
+    Secret manifest?
+  options:
+  - data is for text, stringData is for binary data
+  - data requires base64-encoded values, stringData accepts plain text
+  - There is no difference
+  - stringData is deprecated
+  correct_answer: data requires base64-encoded values, stringData accepts plain text
+  explanation: 'In a Secret manifest, the ''data'' field requires values to be base64-encoded,
+    while ''stringData'' accepts plain text values which Kubernetes automatically
+    encodes. For example, ''data: {password: cGFzc3dvcmQxMjM=}'' vs ''stringData:
+    {password: password123}''. Both result in the same stored Secret, but stringData
+    is more convenient for creating Secrets manually via YAML. When you kubectl get
+    secret with -o yaml, you only see the ''data'' field with base64 values - stringData
+    is write-only and not persisted in that form. This is useful in manifests checked
+    into version control (though storing secrets in Git is generally a bad practice
+    - use sealed secrets or external secret management instead). The stringData field
+    provides user convenience without changing how Secrets are stored.'
+  require_pass: true
+- type: mcq
+  sequence_order: 1
+  question: What kubectl command checks if you can perform an action?
+  options:
+  - kubectl auth can-i create pods
+  - kubectl check permissions create pods
+  - kubectl verify action create pods
+  - kubectl test auth create pods
+  correct_answer_index: 0
+  explanation: kubectl auth can-i <action> <resource> checks if the current user has
+    permission to perform the specified action.
+  require_pass: true

@@ -1,0 +1,85 @@
+slug: lesson-16
+title: Lesson 16
+difficulty: easy
+sequence_order: 16
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Working with Pods\n\n      Pods are the\
+  \ smallest deployable units in Kubernetes. They encapsulate one or more containers\
+  \ that share storage and network resources.\n\n      ## Key Commands\n\n      ###\
+  \ Creating Pods\n\n      ```bash\n      # Create a pod from a YAML file\n      kubectl\
+  \ apply -f pod.yaml\n\n      # Create a pod imperatively\n      kubectl run nginx\
+  \ --image=nginx:1.25\n\n      # Create pod with custom command\n      kubectl run\
+  \ busybox --image=busybox -- sleep 3600\n\n      # Create pod with environment variable\n\
+  \      kubectl run nginx --image=nginx --env=\"ENV=production\"\n      ```\n\n \
+  \     ### Viewing Pods\n\n      ```bash\n      # List all pods in current namespace\n\
+  \      kubectl get pods\n\n      # List pods with more details\n      kubectl get\
+  \ pods -o wide\n\n      # List pods in all namespaces\n      kubectl get pods --all-namespaces\n\
+  \      kubectl get pods -A\n\n      # Get detailed information about a pod\n   \
+  \   kubectl describe pod nginx\n\n      # Get pod YAML definition\n      kubectl\
+  \ get pod nginx -o yaml\n\n      # Watch pods in real-time\n      kubectl get pods\
+  \ --watch\n      ```\n\n      ### Managing Pods\n\n      ```bash\n      # Delete\
+  \ a pod\n      kubectl delete pod nginx\n\n      # Delete pod immediately (force)\n\
+  \      kubectl delete pod nginx --force --grace-period=0\n\n      # View pod logs\n\
+  \      kubectl logs nginx\n\n      # Follow logs (like tail -f)\n      kubectl logs\
+  \ -f nginx\n\n      # View logs from previous container instance\n      kubectl\
+  \ logs nginx --previous\n\n      # Execute commands in a pod\n      kubectl exec\
+  \ nginx -- ls /usr/share/nginx/html\n\n      # Open interactive shell\n      kubectl\
+  \ exec -it nginx -- bash\n\n      # Copy files to/from pod\n      kubectl cp ./index.html\
+  \ nginx:/usr/share/nginx/html/\n      kubectl cp nginx:/etc/nginx/nginx.conf ./nginx.conf\n\
+  \      ```\n\n      ## Pod Lifecycle\n\n      Pods go through these phases:\n  \
+  \    - **Pending**: Pod is created but containers aren't running yet\n      - **Running**:\
+  \ All containers are running\n      - **Succeeded**: All containers terminated successfully\n\
+  \      - **Failed**: At least one container terminated with failure\n      - **Unknown**:\
+  \ Pod state cannot be determined\n\n      ## Multi-Container Pods\n\n      Pods\
+  \ can run multiple containers that work together:\n\n      ```yaml\n      apiVersion:\
+  \ v1\n      kind: Pod\n      metadata:\n        name: multi-container-pod\n    \
+  \  spec:\n        containers:\n        - name: app\n          image: nginx\n   \
+  \       volumeMounts:\n          - name: shared-data\n            mountPath: /usr/share/nginx/html\n\
+  \        - name: sidecar\n          image: busybox\n          command: ['sh', '-c',\
+  \ 'while true; do date >> /data/index.html; sleep 10; done']\n          volumeMounts:\n\
+  \          - name: shared-data\n            mountPath: /data\n        volumes:\n\
+  \        - name: shared-data\n          emptyDir: {}\n      ```\n\n      ### Common\
+  \ Patterns\n\n      1. **Sidecar**: Helper container that enhances main container\
+  \ (logging, monitoring)\n      2. **Ambassador**: Proxy container that simplifies\
+  \ network access\n      3. **Adapter**: Transforms output of main container to standard\
+  \ format\n\n      ### Working with Multi-Container Pods\n\n      ```bash\n     \
+  \ # View logs from specific container\n      kubectl logs multi-container-pod -c\
+  \ app\n      kubectl logs multi-container-pod -c sidecar\n\n      # Execute in specific\
+  \ container\n      kubectl exec -it multi-container-pod -c app -- bash\n      ```\n\
+  \n      Try these commands in the hands-on lab!"
+exercises:
+  - type: multiple_choice_question
+    sequence_order: 1
+    question: "What is the fundamental difference between creating a pod with 'kubectl run' versus creating a Deployment?"
+    options:
+      - "kubectl run creates a standalone pod while Deployments create managed pods with self-healing capabilities"
+      - "kubectl run is for production while Deployments are for development only"
+      - "Deployments can only run one pod while kubectl run can create multiple pods"
+      - "kubectl run provides automatic scaling while Deployments require manual scaling"
+    correct_answer: "kubectl run creates a standalone pod while Deployments create managed pods with self-healing capabilities"
+    explanation: "When you use 'kubectl run nginx --image=nginx', you create a standalone, naked pod that is not managed by any controller. If this pod is deleted or crashes, it's gone forever - Kubernetes won't recreate it. In contrast, a Deployment creates pods managed by a ReplicaSet controller, which continuously monitors the desired state and ensures the specified number of replicas are always running. If a Deployment-managed pod crashes or is deleted, the controller automatically creates a replacement. Deployments also provide rolling updates, rollback capabilities, and declarative scaling. Standalone pods created with kubectl run are useful for quick debugging, testing, or running one-off tasks, but they lack the resilience and management features needed for production workloads. For production, you should always use higher-level controllers like Deployments, StatefulSets, or DaemonSets. Note that in older Kubernetes versions (pre-1.18), 'kubectl run' actually created a Deployment by default, but this was changed to create standalone pods to make the behavior more predictable and explicit. Both approaches can create single or multiple pods (Deployments through replicas), and both require explicit scaling commands (Deployments with kubectl scale, standalone pods require creating new pods manually)."
+    require_pass: true
+  - type: multiple_choice_question
+    sequence_order: 2
+    question: "In a multi-container pod, how do containers within the pod communicate with each other?"
+    options:
+      - "Through the Kubernetes service mesh"
+      - "Through localhost/127.0.0.1 since they share the same network namespace"
+      - "Through cluster DNS using service names"
+      - "Through shared environment variables only"
+    correct_answer: "Through localhost/127.0.0.1 since they share the same network namespace"
+    explanation: "Containers within the same pod share the same network namespace, which means they can communicate with each other using localhost (127.0.0.1) and can access each other's ports directly. This is a fundamental characteristic of Kubernetes pods - all containers in a pod share the same IP address, network namespace, and IPC namespace. For example, if one container listens on port 8080 and another container in the same pod needs to connect to it, it simply connects to localhost:8080. This makes multi-container pods perfect for sidecar patterns where a helper container needs to interact closely with the main application container. Containers in a pod also share the same storage volumes (mounted at different paths), allowing file-based communication. They do NOT communicate through Kubernetes services (services are for inter-pod communication), nor through service mesh features (which are also for separate pods), nor solely through environment variables (though they can share environment variables). The shared network namespace is why you cannot have two containers in the same pod listening on the same port - it would create a port conflict. This tight coupling is why pods are considered the atomic unit of deployment - containers in a pod are always scheduled together on the same node and scale together as a unit."
+    require_pass: true
+  - type: multiple_choice_question
+    sequence_order: 3
+    question: "What is the 'Pending' pod phase typically indicates and what should you check first?"
+    options:
+      - "The pod is running but not responding; check application logs"
+      - "The pod has been scheduled but containers cannot start; check for resource availability and PVC binding"
+      - "The pod is being deleted; check for finalizers"
+      - "The pod has completed successfully; check exit codes"
+    correct_answer: "The pod has been scheduled but containers cannot start; check for resource availability and PVC binding"
+    explanation: "A pod in the 'Pending' phase means Kubernetes has accepted the pod but it hasn't been scheduled to a node yet, or it's been scheduled but the containers cannot start. The most common causes are: insufficient CPU or memory resources on available nodes (pod's resource requests exceed available capacity), pending PersistentVolumeClaim binding (waiting for storage to be provisioned or attached), node selectors or affinity rules preventing scheduling (no nodes match the criteria), or taints on nodes that don't have corresponding tolerations on the pod. To diagnose, first run 'kubectl describe pod <name>' which shows scheduling events and reasons for pending status. Check node resources with 'kubectl top nodes' and 'kubectl describe nodes' to see available capacity. Verify PVC status with 'kubectl get pvc' to ensure volumes are bound. Review pod resource requests to ensure they're not unreasonably large. Check for node selectors or affinity rules that might be too restrictive. The Pending phase is distinctly different from Running (containers are executing), Succeeded (completed successfully), Failed (terminated with errors), or Unknown (cannot communicate with the kubelet). A pod that's responsive but not ready would be in Running phase with readiness probe failures, not Pending. Understanding the Pending state is crucial for troubleshooting scheduling and resource issues."
+    require_pass: true

@@ -1,0 +1,137 @@
+slug: lesson-5
+title: Lesson 5
+difficulty: easy
+sequence_order: 5
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Day 2: IP Addressing and Subnetting Basics\n\
+  \n    ## Learning Goals\n\n    - Develop a solid understanding of IP addresses (especially\
+  \ IPv4)\n    - Learn how networks are divided into subnets\n    - Interpret CIDR\
+  \ notation (e.g., /24) and perform basic subnet calculations\n    - Distinguish\
+  \ between public vs private IP ranges\n    - Understand why private networks use\
+  \ NAT to reach the internet\n\n    ## What is an IP Address?\n\n    An **IP address**\
+  \ is a numerical label assigned to every device on a network. Think of it as a mailing\
+  \ address for your computer – it tells other devices where to send data.\n\n   \
+  \ ### IPv4 Address Anatomy\n\n    - **Format**: 32-bit address shown in dotted-decimal\
+  \ notation\n    - **Example**: `192.168.4.12`\n    - **Structure**: Four octets\
+  \ (bytes), each ranging from 0-255\n    - **Binary**: Each octet is 8 bits: `11000000.10101000.00000100.00001100`\n\
+  \n    ### IPv4 Address Space\n\n    - **Total addresses**: 2³² = ~4.3 billion addresses\n\
+  \    - **Problem**: We're running out due to internet growth\n    - **Solution**:\
+  \ IPv6 (128-bit addresses), NAT, and private IP ranges\n\n    ## Subnet Masks and\
+  \ Network/Host Division\n\n    A subnet mask splits an IP address into two parts:\n\
+  \    1. **Network portion**: Identifies which network the device is on\n    2. **Host\
+  \ portion**: Identifies the specific device within that network\n\n    ### Example:\
+  \ 192.168.5.0/24\n\n    - **IP Range**: `192.168.5.0/24`\n    - **Subnet Mask**:\
+  \ `255.255.255.0`\n    - **/24 means**: First 24 bits are network, last 8 bits are\
+  \ hosts\n    - **Network portion**: `192.168.5` (first 24 bits)\n    - **Host portion**:\
+  \ last 8 bits = 256 possible addresses\n    - **Usable hosts**: 254 (we subtract\
+  \ network address .0 and broadcast .255)\n\n    ## CIDR Notation (Classless Inter-Domain\
+  \ Routing)\n\n    CIDR notation uses a slash followed by the number of network bits:\n\
+  \n    | CIDR | Subnet Mask | Network Bits | Host Bits | Total IPs | Usable Hosts\
+  \ |\n    |------|-------------|--------------|-----------|-----------|--------------|\n\
+  \    | /32 | 255.255.255.255 | 32 | 0 | 1 | 1 (single host) |\n    | /30 | 255.255.255.252\
+  \ | 30 | 2 | 4 | 2 |\n    | /29 | 255.255.255.248 | 29 | 3 | 8 | 6 |\n    | /28\
+  \ | 255.255.255.240 | 28 | 4 | 16 | 14 |\n    | /27 | 255.255.255.224 | 27 | 5 |\
+  \ 32 | 30 |\n    | /26 | 255.255.255.192 | 26 | 6 | 64 | 62 |\n    | /25 | 255.255.255.128\
+  \ | 25 | 7 | 128 | 126 |\n    | /24 | 255.255.255.0 | 24 | 8 | 256 | 254 |\n   \
+  \ | /16 | 255.255.0.0 | 16 | 16 | 65,536 | 65,534 |\n    | /8 | 255.0.0.0 | 8 |\
+  \ 24 | 16,777,216 | 16,777,214 |\n\n    ### Calculating Usable Hosts\n\n    For\
+  \ a subnet with N host bits:\n    - **Total addresses**: 2ᴺ\n    - **Usable hosts**:\
+  \ 2ᴺ - 2 (subtract network and broadcast addresses)\n\n    **Example**: /26 subnet\n\
+  \    - Host bits: 32 - 26 = 6\n    - Total addresses: 2⁶ = 64\n    - Usable hosts:\
+  \ 64 - 2 = 62\n\n    ## Private vs Public IP Addresses\n\n    ### Private IP Ranges\
+  \ (RFC 1918)\n\n    These IP ranges are reserved for internal networks and NOT routable\
+  \ on the public internet:\n\n    | Class | Range | CIDR | Total IPs |\n    |-------|-------|------|-----------|\n\
+  \    | A | 10.0.0.0 - 10.255.255.255 | 10.0.0.0/8 | 16,777,216 |\n    | B | 172.16.0.0\
+  \ - 172.31.255.255 | 172.16.0.0/12 | 1,048,576 |\n    | C | 192.168.0.0 - 192.168.255.255\
+  \ | 192.168.0.0/16 | 65,536 |\n\n    **Uses:**\n    - Home networks (typically 192.168.x.x)\n\
+  \    - Corporate internal networks\n    - Cloud VPCs (often use 10.x.x.x or 172.16.x.x)\n\
+  \n    ### Public IP Addresses\n\n    - **Globally unique** addresses assigned by\
+  \ IANA/ISPs\n    - **Routable** on the public internet\n    - **Examples**: `8.8.8.8`\
+  \ (Google DNS), `1.1.1.1` (Cloudflare DNS)\n    - **Cost**: Public IPs are a limited\
+  \ resource and often cost money in cloud environments\n\n    ### Why Both Private\
+  \ and Public?\n\n    - **IPv4 address exhaustion**: Not enough public IPs for every\
+  \ device\n    - **Security**: Private networks hidden behind NAT\n    - **Flexibility**:\
+  \ Reuse same private ranges in different organizations\n\n    ## NAT (Network Address\
+  \ Translation)\n\n    NAT allows multiple devices on a private network to share\
+  \ a single public IP address when accessing the internet.\n\n    ### How NAT Works\n\
+  \n    1. **Internal device** (192.168.1.100) wants to access Google (142.250.64.78)\n\
+  \    2. **Device sends packet** with source IP 192.168.1.100\n    3. **Router (NAT\
+  \ device)** receives packet, replaces source IP with its own public IP (e.g., 203.0.113.5)\n\
+  \    4. **Router tracks** the connection in a NAT table\n    5. **Google responds**\
+  \ to 203.0.113.5\n    6. **Router receives response**, looks up NAT table, forwards\
+  \ to 192.168.1.100\n\n    ### Types of NAT\n\n    - **Static NAT**: One-to-one mapping\
+  \ (one private IP to one public IP)\n    - **Dynamic NAT**: Pool of public IPs shared\
+  \ among private IPs\n    - **PAT (Port Address Translation)**: Most common – many\
+  \ private IPs share one public IP using different port numbers\n\n    ## Subnetting:\
+  \ Dividing Networks\n\n    **Subnetting** is dividing a network into smaller networks\
+  \ (subnets) for:\n    - Efficient IP address allocation\n    - Improved security\
+  \ (isolate network segments)\n    - Reduced broadcast traffic\n    - Organizational\
+  \ structure (one subnet per department/floor)\n\n    ### Subnetting Example\n\n\
+  \    **Given**: 10.0.0.0/16 network\n    **Goal**: Create 4 equal subnets\n\n  \
+  \  **Solution**:\n    - Original: /16 (16 network bits, 16 host bits)\n    - Need\
+  \ 4 subnets: 2² = 4, so borrow 2 bits from host portion\n    - New prefix: /18 (16\
+  \ + 2 = 18)\n    - Each subnet: 2⁽³²⁻¹⁸⁾ = 2¹⁴ = 16,384 addresses\n\n    **Result**:\n\
+  \    1. 10.0.0.0/18 (10.0.0.0 - 10.0.63.255)\n    2. 10.0.64.0/18 (10.0.64.0 - 10.0.127.255)\n\
+  \    3. 10.0.128.0/18 (10.0.128.0 - 10.0.191.255)\n    4. 10.0.192.0/18 (10.0.192.0\
+  \ - 10.0.255.255)\n\n    ## Special IP Addresses\n\n    - **0.0.0.0**: Default route\
+  \ or \"this network\"\n    - **127.0.0.1**: Localhost (loopback address)\n    -\
+  \ **169.254.x.x**: Link-local addresses (APIPA - auto-configured when DHCP fails)\n\
+  \    - **224.0.0.0/4**: Multicast addresses\n    - **First IP in subnet**: Network\
+  \ address (identifies the subnet)\n    - **Last IP in subnet**: Broadcast address\
+  \ (send to all hosts in subnet)\n\n    ## IP Addressing in Cloud VPCs\n\n    When\
+  \ designing cloud networks (AWS VPC, Azure VNet, GCP VPC):\n\n    1. **Choose a\
+  \ large enough CIDR block**: e.g., 10.0.0.0/16 gives 65,536 addresses\n    2. **Subnet\
+  \ for different tiers**:\n       - Public subnet: 10.0.0.0/24 (web servers)\n  \
+  \     - Private subnet: 10.0.1.0/24 (app servers)\n       - Database subnet: 10.0.2.0/24\
+  \ (databases)\n    3. **Avoid overlapping**: If connecting VPCs or to on-premises,\
+  \ ensure no overlap\n    4. **Reserve IPs**: Cloud providers reserve some IPs in\
+  \ each subnet (e.g., AWS reserves .0, .1, .2, .3, .255)\n\n    ## Key Takeaways\n\
+  \n    1. **IPv4 addresses** are 32-bit addresses in dotted-decimal notation\n  \
+  \  2. **Subnet masks** divide addresses into network and host portions\n    3. **CIDR\
+  \ notation** (/24, /16, etc.) indicates the number of network bits\n    4. **Private\
+  \ IP ranges** (10.x.x.x, 172.16.x.x, 192.168.x.x) are for internal networks\n  \
+  \  5. **Public IPs** are globally unique and routable on the internet\n    6. **NAT**\
+  \ allows private IPs to access the internet via a shared public IP\n    7. **Subnetting**\
+  \ divides networks for better organization and security\n    8. **Calculating hosts**:\
+  \ For /N, hosts = 2⁽³²⁻ᴺ⁾ - 2\n\n    ## Practice Calculations\n\n    **Exercise\
+  \ 1**: What is the network address and broadcast address for 192.168.10.50/24?\n\
+  \    - Network: 192.168.10.0\n    - Broadcast: 192.168.10.255\n\n    **Exercise\
+  \ 2**: How many usable hosts in a /27 subnet?\n    - Host bits: 32 - 27 = 5\n  \
+  \  - Total: 2⁵ = 32\n    - Usable: 32 - 2 = 30\n\n    **Exercise 3**: Is 172.20.5.10\
+  \ a private or public IP?\n    - Private (falls within 172.16.0.0/12 range)"
+exercises:
+  - type: multiple_choice_question
+    sequence_order: 1
+    question: "How many usable host addresses are in a /27 subnet?"
+    options:
+      - "32 addresses"
+      - "30 addresses"
+      - "28 addresses"
+      - "64 addresses"
+    correct_answer: "30 addresses"
+    explanation: "A /27 subnet provides 30 usable host addresses. To calculate this, start with the CIDR notation: /27 means 27 bits are used for the network portion, leaving 32 - 27 = 5 bits for hosts. With 5 host bits, the total number of addresses is 2^5 = 32. However, two of these addresses have special purposes and cannot be assigned to hosts: the first address (.0) is the network address identifying the subnet itself, and the last address (.255 in this case) is the broadcast address used to send packets to all hosts in the subnet. Therefore, usable hosts = 32 - 2 = 30 addresses. This pattern applies to all subnets: total addresses = 2^(host bits), usable = total - 2. Understanding this calculation is essential for network design and troubleshooting. When planning cloud VPCs or corporate networks, you need to ensure your subnet size provides enough addresses for current and future needs. A /27 subnet works well for small segments like a single application tier in a microservices architecture, while larger deployments might need /24 (254 usable hosts) or /16 (65,534 usable hosts) subnets. Note that cloud providers like AWS reserve additional addresses beyond the standard network and broadcast addresses."
+    require_pass: true
+  - type: multiple_choice_question
+    sequence_order: 2
+    question: "Which of the following IP addresses are private (RFC 1918) and not routable on the public internet?"
+    options:
+      - "8.8.8.8"
+      - "172.20.15.10"
+      - "142.250.64.78"
+      - "1.1.1.1"
+    correct_answer: "172.20.15.10"
+    explanation: "The IP address 172.20.15.10 is a private IP address defined in RFC 1918, specifically falling within the 172.16.0.0/12 range (172.16.0.0 - 172.31.255.255). Private IP addresses are reserved for use in internal networks and are not routable on the public internet - routers on the internet will not forward packets with these addresses as source or destination. The three private IP ranges are: 10.0.0.0/8 (10.0.0.0 - 10.255.255.255) providing 16.7 million addresses, 172.16.0.0/12 (172.16.0.0 - 172.31.255.255) providing 1 million addresses, and 192.168.0.0/16 (192.168.0.0 - 192.168.255.255) providing 65,536 addresses. In contrast, 8.8.8.8 is Google's public DNS server, 142.250.64.78 is a Google public server address, and 1.1.1.1 is Cloudflare's public DNS - all globally unique, routable public addresses. Private addresses enable organizations to design internal networks without consuming limited public IPv4 address space and provide a security layer through NAT. When a device with a private IP needs internet access, NAT translates the private address to a public address. This is why multiple organizations can all use 192.168.1.x internally without conflict - they're in isolated private address spaces."
+    require_pass: true
+  - type: multiple_choice_question
+    sequence_order: 3
+    question: "What is the purpose of a subnet mask?"
+    options:
+      - "To encrypt network traffic"
+      - "To divide an IP address into network and host portions"
+      - "To assign IP addresses automatically"
+      - "To translate domain names to IP addresses"
+    correct_answer: "To divide an IP address into network and host portions"
+    explanation: "A subnet mask's purpose is to divide an IP address into two parts: the network portion (identifying which network a device belongs to) and the host portion (identifying the specific device within that network). The subnet mask is a 32-bit number that, when used with bitwise AND operations on an IP address, extracts the network address. For example, with IP 192.168.5.100 and subnet mask 255.255.255.0 (/24), the first 24 bits (192.168.5) represent the network, and the last 8 bits (100) represent the host. This division enables routers to make forwarding decisions - they can quickly determine if a destination IP is on the local network (same network portion) or requires routing to another network (different network portion). Subnet masks also define the size of address space: 255.255.255.0 allows 256 addresses (254 usable), while 255.255.255.128 splits that in half to 128 addresses (126 usable) each. This is not encryption (which protects data confidentiality), not DHCP (which assigns IPs automatically), and not DNS (which resolves names to IPs). Understanding subnet masks is fundamental to IP networking, enabling proper network segmentation, routing configuration, and IP address planning in both traditional and cloud environments."
+    require_pass: true

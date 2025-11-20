@@ -1,0 +1,59 @@
+slug: noblegases-practice
+title: noble_gases — Practice
+difficulty: medium
+sequence_order: 17
+estimated_minutes: 2
+key_concepts:
+- noble_gases
+prerequisites: []
+content_md: '# noble_gases — Practice 🚀
+
+
+  XeF₄ has square planar structure (sp³d² hybridization, 2 lone pairs axial, 4 bond
+  pairs planar). XeF₂ is linear, XeF₆ is distorted octahedral.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 2
+  question: Which noble gas compound has square planar structure?
+  options:
+  - XeF₄
+  - XeF₂
+  - XeF₆
+  - XeO₃
+  correct_answer: XeF₄
+  explanation: "XeF₄ (xenon tetrafluoride) has a square planar molecular geometry due to sp³d² hybridization with 2 lone pairs in axial positions and 4 bonding pairs in the equatorial plane. XeF₂ is linear (sp³d hybridization, 3 lone pairs equatorial, 2 bonds axial), XeF₆ is distorted octahedral (sp³d³ hybridization, 1 lone pair), and XeO₃ is pyramidal. The square planar shape minimizes repulsion between the 4 bond pairs and 2 lone pairs."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: Why do heavier noble gases (Kr, Xe, Rn) form compounds while He, Ne, Ar do not?
+  options:
+  - Heavier noble gases have incomplete octets
+  - Heavier noble gases have lower ionization energies and available d-orbitals
+  - Heavier noble gases are more electronegative
+  - Heavier noble gases have smaller atomic radii
+  correct_answer: Heavier noble gases have lower ionization energies and available d-orbitals
+  explanation: "Heavier noble gases (Kr, Xe, Rn) can form compounds because they have lower ionization energies (making it easier to remove electrons), larger atomic sizes (allowing accommodation of more bonds), and vacant d-orbitals available for bonding. Helium, neon, and argon have very high ionization energies, small atomic sizes, and no available d-orbitals, making compound formation extremely difficult. Xenon compounds are most common because xenon has the optimal balance of properties. The most electronegative element, fluorine, is the best partner for these compounds."
+  require_pass: true
+- type: mcq
+  sequence_order: 4
+  question: Who prepared the first noble gas compound and what was it?
+  options:
+  - Neil Bartlett prepared Xe⁺[PtF₆]⁻ in 1962
+  - Linus Pauling prepared XeF₄ in 1960
+  - Henry Cavendish prepared XeO₃ in 1950
+  - Dmitri Mendeleev prepared KrF₂ in 1955
+  correct_answer: Neil Bartlett prepared Xe⁺[PtF₆]⁻ in 1962
+  explanation: "Neil Bartlett prepared the first noble gas compound, Xe⁺[PtF₆]⁻, in 1962. This discovery was revolutionary because until then, noble gases were believed to be completely inert and incapable of forming any compounds due to their complete octets. Bartlett observed that O₂ could be oxidized by PtF₆ to form O₂⁺[PtF₆]⁻, and since the ionization energy of xenon (1170 kJ/mol) was close to that of O₂ (1175 kJ/mol), he successfully synthesized Xe⁺[PtF₆]⁻. This opened up an entire new field of noble gas chemistry."
+  require_pass: true

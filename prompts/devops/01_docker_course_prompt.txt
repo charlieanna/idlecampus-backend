@@ -1,0 +1,230 @@
+=======================================
+MICROLESSON GENERATOR - DOCKER COURSE
+=======================================
+
+[READY TO USE: Copy this entire prompt + attach all files listed below to GPT-5 Pro]
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+STEP 1: ATTACH THESE FILES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+From: idlecampus/backend/db/seeds/
+
+□ docker_containers_units.rb
+□ docker_images_units.rb
+□ docker_volumes_units.rb
+□ docker_networks_units.rb
+□ docker_compose_units.rb
+□ docker_security_units.rb
+□ docker_registry_units.rb
+□ docker_swarm_units.rb
+□ docker_basics_units.rb
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+STEP 2: PASTE THIS PROMPT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+You are an expert educational content designer and Ruby on Rails developer.
+
+I've attached ALL seed files for the Docker Fundamentals course. Convert each into microlesson format.
+
+# COURSE INFORMATION
+
+**Course:** Docker Fundamentals
+**Total Files:** 9
+
+**Modules to Generate:**
+
+1. Container Lifecycle (docker-containers)
+   - From: docker_containers_units.rb
+
+2. Image Management (docker-images)
+   - From: docker_images_units.rb
+
+3. Volumes & Persistence (docker-volumes)
+   - From: docker_volumes_units.rb
+
+4. Networking (docker-networks)
+   - From: docker_networks_units.rb
+
+5. Docker Compose (docker-compose)
+   - From: docker_compose_units.rb
+
+6. Security Best Practices (docker-security)
+   - From: docker_security_units.rb
+
+7. Registry & Distribution (docker-registry)
+   - From: docker_registry_units.rb
+
+8. Docker Swarm (docker-swarm)
+   - From: docker_swarm_units.rb
+
+9. Docker Basics (docker-basics)
+   - From: docker_basics_units.rb
+
+# CONVERSION RULES
+
+## Microlesson Size
+- **1 concept per microlesson** (2-3 minutes)
+- Split by: commands, features, or sub-concepts
+
+## Content Format
+```markdown
+# [Title] 🚀
+
+## What is [concept]?
+
+[2-3 sentence explanation]
+
+## Syntax
+
+```bash
+[command or code]
+```
+
+## Example
+
+```bash
+[specific example]
+```
+
+[Expected output]
+
+## Key Points
+
+- Point 1
+- Point 2
+- Point 3
+```
+
+## Exercise Generation
+
+**Count per microlesson (based on difficulty):**
+- Easy: 1-2 exercises
+- Medium: 2-3 exercises
+- Hard: 3-4 exercises
+
+**Types:**
+1. **terminal**: CLI command practice
+2. **mcq**: Multiple choice (4 options)
+
+**Progressive Hints (3 per exercise):**
+- Hint 1: Gentle nudge
+- Hint 2: More specific guidance
+- Hint 3: Nearly the full answer
+
+## Prerequisites
+
+Analyze content to infer dependencies:
+- First lesson: `prerequisite_ids: []`
+- Sequential: Previous lesson
+- Advanced: Multiple prerequisites if needed
+
+# OUTPUT FORMAT
+
+Generate 9 complete Ruby seed files:
+
+```ruby
+# db/seeds/microlessons/docker_containers_microlessons.rb
+# AUTO-GENERATED from docker_containers_units.rb
+
+puts "Creating Microlessons for Container Lifecycle..."
+
+module_var = CourseModule.find_by(slug: 'docker-containers')
+
+# === MICROLESSON 1: [Title] ===
+lesson_1 = MicroLesson.create!(
+  course_module: module_var,
+  title: '[Concise Title]',
+  content: <<~MARKDOWN,
+    # [Title] 🚀
+
+    [Follow format above]
+  MARKDOWN
+  sequence_order: 1,
+  estimated_minutes: 2,
+  difficulty: 'easy',
+  key_concepts: ['concept1', 'concept2'],
+  prerequisite_ids: []
+)
+
+# Exercise 1: Terminal
+Exercise.create!(
+  micro_lesson: lesson_1,
+  exercise_type: 'terminal',
+  sequence_order: 1,
+  exercise_data: {
+    command: '[exact command]',
+    description: '[what user should do]',
+    difficulty: 'easy',
+    hints: [
+      '[Hint 1]',
+      '[Hint 2]',
+      '[Hint 3]'
+    ]
+  }
+)
+
+# Exercise 2: MCQ
+Exercise.create!(
+  micro_lesson: lesson_1,
+  exercise_type: 'mcq',
+  sequence_order: 2,
+  exercise_data: {
+    question: '[Test understanding]',
+    options: [
+      '[Correct]',
+      '[Plausible wrong]',
+      '[Common misconception]',
+      '[Clearly wrong]'
+    ],
+    correct_answer: 0,
+    explanation: '[Why correct + why others wrong]',
+    difficulty: 'easy'
+  }
+)
+
+# [More microlessons...]
+
+puts "✓ Created [N] microlessons for Container Lifecycle"
+```
+
+# QUALITY CHECKLIST
+
+For EACH microlesson:
+- [ ] Covers exactly 1 concept
+- [ ] 2-3 minutes estimated time
+- [ ] Clear examples with output
+- [ ] Exercises test understanding (not memorization)
+- [ ] MCQ options are all plausible
+- [ ] Hints progress: gentle → specific → answer
+- [ ] Prerequisites are logical
+- [ ] Ruby syntax is correct
+
+# NOW GENERATE
+
+Process all 9 files and output 9 complete microlesson seed files.
+
+For each file, clearly label:
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FILE: docker_containers_microlessons.rb
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[Ruby code here]
+```
+
+After all 9 files, provide summary:
+```
+=== GENERATION SUMMARY ===
+
+1. docker_containers_microlessons.rb
+   - Original units: X
+   - Microlessons: Y
+   - Exercises: Z
+
+[... for all 9 files ...]
+
+Total: XX microlessons, YY exercises
+```
+
+START GENERATION NOW.

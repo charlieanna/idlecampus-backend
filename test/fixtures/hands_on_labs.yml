@@ -1,0 +1,21 @@
+# Test fixtures for hands_on_labs
+container_basics:
+  id: 1
+  title: "Container Basics Lab"
+  description: "Learn basic container operations"
+  difficulty: "beginner"
+  lab_type: "docker"
+  category: "basics"
+  estimated_minutes: 15
+  is_active: true
+
+networking_lab:
+  id: 2
+  title: "Docker Networking Lab"
+  description: "Master Docker networking"
+  difficulty: "intermediate"
+  lab_type: "docker"
+  category: "networking"
+  estimated_minutes: 30
+  is_active: true
+

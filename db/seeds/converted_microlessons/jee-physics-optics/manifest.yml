@@ -1,0 +1,23 @@
+course:
+  slug: jee-physics-optics
+  title: "JEE Physics: Optics"
+  description: "Ray optics, wave optics, interference, diffraction, and polarization for IIT JEE"
+  estimated_hours: 18
+  level: advanced
+modules:
+- slug: ray-optics
+  title: Ray Optics and Optical Instruments
+  lessons:
+  - reflection-plane-spherical-mirrors
+  - refraction-snells-law
+  - total-internal-reflection
+  - lenses-thin-lens-formula
+  - optical-instruments-microscope-telescope
+- slug: wave-optics
+  title: Wave Optics
+  lessons:
+  - huygens-principle
+  - youngs-double-slit-interference
+  - thin-film-interference
+  - diffraction-single-slit
+  - polarization-malus-law

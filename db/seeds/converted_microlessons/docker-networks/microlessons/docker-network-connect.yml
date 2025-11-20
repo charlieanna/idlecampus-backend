@@ -1,0 +1,88 @@
+slug: docker-network-connect
+title: Docker Network Connect
+difficulty: medium
+sequence_order: 4
+estimated_minutes: 2
+key_concepts:
+- networking
+- docker-network
+- connect
+- multi-network
+prerequisites: []
+content_md: '# Docker Network Connect 🚀
+
+
+  Connect a running container to a network
+
+
+  ## Syntax/Command
+
+
+  ```bash
+
+  docker network connect my-network my-container
+
+  ```
+
+
+  ## Example
+
+
+  ```bash
+
+  docker network connect --ip 172.18.0.22 my-network my-container
+
+  ```
+
+
+  ## Key Points
+
+
+  - Connect container: docker network connect <network> <container>
+
+
+  - Assign IP: --ip <address>
+
+
+  - Add alias: --alias <name>'
+exercises:
+- type: terminal
+  problem_statement: Connect a running container named 'my-container' to the network 'my-network' to enable communication with other containers on that network
+  expected_output: Silent success (container connected with no output)
+  language: bash
+  starter_code: "# Connect container to network\n"
+  sequence_order: 1
+  command: docker network connect my-network my-container
+  description: Connect a running container to a custom network
+  hints:
+  - 'Connect container: docker network connect <network> <container>'
+  - 'Assign IP: --ip <address>'
+  - 'Add alias: --alias <name>'
+  validation:
+    must_not_include:
+    - Error
+    - 'panic:'
+  timeout_sec: 60
+  require_pass: true
+- type: sandbox
+  sequence_order: 99
+  hints:
+  - Run under CPU pressure to surface leaks or races
+  - Keep commands idempotent in CI
+  validation:
+    must_not_include:
+    - Error
+    - 'panic:'
+  timeout_sec: 60
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: Can a container be connected to multiple networks simultaneously?
+  options:
+  - Yes, containers can join multiple networks and will have network interfaces for each
+  - No, containers can only be on one network at a time
+  - Only in Docker Swarm mode
+  - Only with overlay networks
+  correct_answer: Yes, containers can join multiple networks and will have network interfaces for each
+  explanation: "A container can be connected to multiple networks simultaneously using docker network connect. The container will have a separate network interface for each network it's connected to. This enables complex networking scenarios like connecting a web server to both a public network and a private database network."
+  require_pass: true

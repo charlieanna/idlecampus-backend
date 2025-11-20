@@ -1,0 +1,58 @@
+slug: phcalculations-practice
+title: ph_calculations — Practice
+difficulty: easy
+sequence_order: 7
+estimated_minutes: 2
+key_concepts:
+- ph_calculations
+prerequisites: []
+content_md: '# ph_calculations — Practice 🚀
+
+
+  HCl is strong acid. [H⁺] = 0.001 = 10⁻³ M. pH = -log(10⁻³) = 3
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: 'Calculate the pH of 0.001 M HCl solution.'
+  options:
+  - 2
+  - 3
+  - 11
+  - 14
+  require_pass: true
+  correct_answer: 3
+  explanation: 'HCl is a strong acid that completely dissociates: HCl → H⁺ + Cl⁻. Therefore, [H⁺] = [HCl] = 0.001 M = 1 × 10⁻³ M. pH = -log[H⁺] = -log(10⁻³) = 3. Important points: (1) Strong acids (HCl, HNO₃, H₂SO₄) completely ionize, so [H⁺] = initial acid concentration, (2) Lower pH means higher acidity (pH 3 is acidic), (3) pH scale ranges from 0-14: pH < 7 (acidic), pH = 7 (neutral), pH > 7 (basic). Relationship between concentration and pH: 1 M HCl → pH = 0, 0.1 M HCl → pH = 1, 0.01 M HCl → pH = 2, 0.001 M HCl → pH = 3. Each 10-fold dilution increases pH by 1 unit. For comparison: 0.001 M weak acid would have pH > 3 due to incomplete ionization. The pH calculation for strong acids is straightforward because complete dissociation assumption is valid.'
+- type: mcq
+  sequence_order: 2
+  question: 'What is the pOH of a solution with pH = 4?'
+  options:
+  - 4
+  - 7
+  - 10
+  - 14
+  require_pass: true
+  correct_answer: 10
+  explanation: 'At 25°C, pH + pOH = 14 (this comes from Kw = [H⁺][OH⁻] = 10⁻¹⁴). Given pH = 4: pOH = 14 - pH = 14 - 4 = 10. This tells us: (1) [H⁺] = 10⁻⁴ M (from pH = 4), (2) [OH⁻] = 10⁻¹⁰ M (from pOH = 10), (3) The solution is acidic (pH < 7, [H⁺] > [OH⁻]). The relationship is reciprocal: Lower pH (more acidic) → higher pOH (less basic), Higher pH (more basic) → lower pOH (less acidic). Examples: pH 0 ↔ pOH 14 (strongly acidic), pH 7 ↔ pOH 7 (neutral), pH 14 ↔ pOH 0 (strongly basic). To find [OH⁻]: [OH⁻] = 10⁻pOH = 10⁻¹⁰ M. The pH + pOH = 14 relationship only holds at 25°C; at different temperatures, use pH + pOH = -log(Kw).'
+- type: mcq
+  sequence_order: 3
+  question: 'Calculate the pH of 0.01 M NaOH solution.'
+  options:
+  - 2
+  - 7
+  - 12
+  - 14
+  require_pass: true
+  correct_answer: 12
+  explanation: 'NaOH is a strong base that completely dissociates: NaOH → Na⁺ + OH⁻. [OH⁻] = [NaOH] = 0.01 M = 10⁻² M. Method 1 (using pOH): pOH = -log[OH⁻] = -log(10⁻²) = 2, pH = 14 - pOH = 14 - 2 = 12. Method 2 (using [H⁺]): [H⁺] = Kw/[OH⁻] = (10⁻¹⁴)/(10⁻²) = 10⁻¹² M, pH = -log(10⁻¹²) = 12. The pH of 12 indicates a strongly basic solution. Concentration-pH relationship for strong bases: 1 M NaOH → pH = 14, 0.1 M NaOH → pH = 13, 0.01 M NaOH → pH = 12, 0.001 M NaOH → pH = 11. Each 10-fold dilution decreases pH by 1 unit. For weak bases (like NH₃), pH would be lower than this due to incomplete ionization. Strong bases (NaOH, KOH, Ba(OH)₂) calculations are straightforward using complete dissociation assumption.'

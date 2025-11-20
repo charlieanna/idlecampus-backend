@@ -1,0 +1,9 @@
+<% @posts.each do |question| %>
+  <div class="well well-large">
+    <dl>
+      <dt> <%= link_to question[1], "https://stackoverflow.com/questions/#{question[0]}", target: "_blank" %></dt>
+      <dd><%= question[2] %></dd>
+      <dd><%= link_to "More", "http://localhost:3000/posts/#{question[0]}", target: "_blank" %></dd>
+    </dl>
+  </div>
+<% end %>

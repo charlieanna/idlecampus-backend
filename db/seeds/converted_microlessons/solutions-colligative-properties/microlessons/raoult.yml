@@ -1,0 +1,103 @@
+slug: raoult
+title: Raoult\
+difficulty: easy
+sequence_order: 5
+estimated_minutes: 2
+key_concepts:
+- Raoults law
+- Vapor pressure
+- Ideal solutions
+- Non-ideal solutions
+- Azeotropes
+prerequisites: []
+content_md: "# Raoult\\ \U0001F680\n\n# Raoult's Law & Ideal/Non-Ideal Solutions\n\
+  \n    ## Vapor Pressure of Solutions\n\n    **Vapor pressure** = Pressure exerted\
+  \ by vapor in equilibrium with liquid\n\n    When non-volatile solute is added:\n\
+  \    - Vapor pressure **decreases**\n    - Fewer solvent molecules can escape to\
+  \ vapor phase\n\n    ## Raoult's Law\n\n    **For solution containing non-volatile\
+  \ solute:**\n\n    **P = P° × X_solvent**\n\n    Where:\n    - P = vapor pressure\
+  \ of solution\n    - P° = vapor pressure of pure solvent\n    - X_solvent = mole\
+  \ fraction of solvent\n\n    ### Alternate Form:\n\n    **P° - P = P° × X_solute**\n\
+  \n    **ΔP = P° × X_solute** (lowering of vapor pressure)\n\n    ### Relative Lowering:\n\
+  \n    **(P° - P)/P° = X_solute**\n\n    This is **independent of temperature**\n\
+  \n    ### For Binary Solution of Volatile Components:\n\n    **P_total = P°ₐ × Xₐ\
+  \ + P°ᵦ × Xᵦ**\n\n    Where both components contribute to vapor pressure\n\n   \
+  \ ## Ideal Solutions\n\n    **Definition:** Solutions that obey Raoult's law at\
+  \ all concentrations and temperatures\n\n    ### Characteristics:\n\n    1. **ΔH_mixing\
+  \ = 0** (no heat change on mixing)\n    2. **ΔV_mixing = 0** (no volume change on\
+  \ mixing)\n    3. **A-A, B-B, and A-B interactions are similar**\n    4. **Obey\
+  \ Raoult's law:** P = P° × X\n\n    ### Examples:\n    - Benzene + Toluene\n   \
+  \ - n-Hexane + n-Heptane\n    - Chlorobenzene + Bromobenzene\n    - Ethyl bromide\
+  \ + Ethyl iodide\n\n    **Condition:** Components must be chemically similar\n\n\
+  \    ## Non-Ideal Solutions\n\n    **Definition:** Solutions that deviate from Raoult's\
+  \ law\n\n    ### Types:\n\n    ### 1. Positive Deviation (P > P_ideal)\n\n    **Characteristics:**\n\
+  \    - A-B interactions **weaker** than A-A and B-B\n    - Molecules escape **more\
+  \ easily**\n    - **P_observed > P_Raoult**\n    - **ΔH_mixing > 0** (endothermic)\n\
+  \    - **ΔV_mixing > 0** (volume increases)\n\n    **Examples:**\n    - Ethanol\
+  \ + Water\n    - Ethanol + Cyclohexane\n    - Acetone + CS₂\n    - CHCl₃ + CCl₄\n\
+  \n    ### 2. Negative Deviation (P < P_ideal)\n\n    **Characteristics:**\n    -\
+  \ A-B interactions **stronger** than A-A and B-B\n    - Molecules escape **less\
+  \ easily**\n    - **P_observed < P_Raoult**\n    - **ΔH_mixing < 0** (exothermic)\n\
+  \    - **ΔV_mixing < 0** (volume decreases)\n\n    **Examples:**\n    - CHCl₃ +\
+  \ Acetone (H-bonding)\n    - HCl + Water\n    - HNO₃ + Water\n    - Acetic acid\
+  \ + Pyridine\n\n    ## Azeotropes\n\n    **Definition:** Constant boiling mixtures\
+  \ that cannot be separated by simple distillation\n\n    ### Types:\n\n    ### 1.\
+  \ Minimum Boiling Azeotrope\n\n    - Shows **positive deviation**\n    - Boils at\
+  \ **lower temperature** than components\n    - Examples:\n      - Ethanol (95.5%)\
+  \ + Water (4.5%), BP = 78.2°C\n      - HCl (20.2%) + Water (79.8%), BP = 108.6°C\n\
+  \n    ### 2. Maximum Boiling Azeotrope\n\n    - Shows **negative deviation**\n \
+  \   - Boils at **higher temperature** than components\n    - Examples:\n      -\
+  \ HNO₃ (68%) + Water (32%), BP = 121.9°C\n      - HCl (20.2%) + Water (79.8%)\n\n\
+  \    ## Solved Problems\n\n    ### Problem 1: Raoult's Law\n\n    **Q: Calculate\
+  \ vapor pressure of solution containing 2 mol glucose in 18 mol water at 25°C. (P°_water\
+  \ = 24 mm Hg)**\n\n    Solution:\n    - Total moles = 2 + 18 = 20\n    - X_water\
+  \ = 18/20 = 0.9\n    - P = P° × X_water\n    - P = 24 × 0.9 = **21.6 mm Hg**\n\n\
+  \    ### Problem 2: Relative Lowering\n\n    **Q: Relative lowering of vapor pressure\
+  \ for solution is 0.1. If solution contains 18 g water, find mass of solute (M =\
+  \ 60 g/mol).**\n\n    Solution:\n    - (P° - P)/P° = X_solute = 0.1\n    - X_solute\
+  \ = n_solute/(n_solute + n_solvent)\n    - n_water = 18/18 = 1 mol\n    - 0.1 =\
+  \ n_s/(n_s + 1)\n    - 0.1(n_s + 1) = n_s\n    - 0.1 + 0.1n_s = n_s\n    - 0.9n_s\
+  \ = 0.1\n    - n_s = 0.111 mol\n    - Mass = 0.111 × 60 = **6.67 g**\n\n    ###\
+  \ Problem 3: Binary Volatile Solution\n\n    **Q: P°_A = 100 mm Hg, P°_B = 200 mm\
+  \ Hg. In solution, Xₐ = 0.4, Xᵦ = 0.6. Find total vapor pressure.**\n\n    Solution:\n\
+  \    - P_total = P°ₐ × Xₐ + P°ᵦ × Xᵦ\n    - P_total = 100(0.4) + 200(0.6)\n    -\
+  \ P_total = 40 + 120 = **160 mm Hg**\n\n    ### Problem 4: IIT JEE Level\n\n   \
+  \ **Q: At 300 K, vapor pressure of pure A is 400 mm and pure B is 200 mm. If mixture\
+  \ has mole fraction of A = 0.5, find:**\n    **(a) Total vapor pressure**\n    **(b)\
+  \ Mole fraction of A in vapor phase**\n\n    Solution:\n\n    **(a) Total pressure:**\n\
+  \    - P_total = 400(0.5) + 200(0.5) = 200 + 100 = **300 mm Hg**\n\n    **(b) Partial\
+  \ pressure of A in vapor:**\n    - Pₐ = 400 × 0.5 = 200 mm Hg\n    - Mole fraction\
+  \ in vapor: Yₐ = Pₐ/P_total\n    - Yₐ = 200/300 = **0.667 or 2/3**\n\n    ## Composition\
+  \ of Vapor vs Liquid\n\n    For volatile binary solution:\n\n    **Yₐ/Yᵦ = (P°ₐ/P°ᵦ)\
+  \ × (Xₐ/Xᵦ)**\n\n    Where:\n    - Y = mole fraction in vapor\n    - X = mole fraction\
+  \ in liquid\n\n    **More volatile component is enriched in vapor phase**\n\n  \
+  \  ## Vapor Pressure Diagrams\n\n    ### For Ideal Solutions:\n    - Linear relationship\
+  \ between P and X\n    - P_total varies linearly with composition\n\n    ### For\
+  \ Non-Ideal Solutions:\n    - **Positive deviation:** Curve above ideal line\n \
+  \   - **Negative deviation:** Curve below ideal line\n    - **Azeotrope:** Maximum\
+  \ or minimum in curve\n\n    ## Colligative Properties Introduction\n\n    **Colligative\
+  \ properties** depend only on **number of solute particles**, not their nature\n\
+  \n    Four main colligative properties:\n    1. Relative lowering of vapor pressure\n\
+  \    2. Elevation of boiling point\n    3. Depression of freezing point\n    4.\
+  \ Osmotic pressure\n\n    ### Why Called Colligative?\n\n    From Latin \"colligatus\"\
+  \ meaning \"bound together\"\n    - Properties depend on **collective effect** of\
+  \ particles\n    - Don't depend on **identity** of solute\n\n    ### Requirements:\n\
+  \    - Solute must be **non-volatile**\n    - Solution should be **dilute**\n  \
+  \  - Solute should **not dissociate** (for non-electrolytes)\n\n    ## IIT JEE Key\
+  \ Points\n\n    1. **Raoult's Law:** P = P° × X_solvent\n    2. **Relative lowering:**\
+  \ (P° - P)/P° = X_solute\n    3. **Ideal solution:** ΔH = 0, ΔV = 0, obeys Raoult's\
+  \ law\n    4. **Positive deviation:** A-B weaker, P ↑, ΔH > 0\n    5. **Negative\
+  \ deviation:** A-B stronger, P ↓, ΔH < 0\n    6. **Azeotropes:** Constant boiling\
+  \ mixtures\n    7. **Min. boiling:** Positive deviation (ethanol + water)\n    8.\
+  \ **Max. boiling:** Negative deviation (HNO₃ + water)\n    9. Vapor is **enriched**\
+  \ in more volatile component\n    10. **Colligative properties** depend on particle\
+  \ count\n\n    ## Quick Reference\n\n    | Solution Type | Deviation | ΔH | ΔV |\
+  \ P |\n    |---------------|-----------|----|----|---|\n    | Ideal | None | 0 |\
+  \ 0 | P=P°X |\n    | Positive | +ve | >0 | >0 | P>P_ideal |\n    | Negative | -ve\
+  \ | <0 | <0 | P<P_ideal |\n\n    ## Important Examples\n\n    | Type | Examples\
+  \ |\n    |------|----------|\n    | Ideal | Benzene+Toluene, n-Hexane+n-Heptane\
+  \ |\n    | Positive | Ethanol+Water, Acetone+CS₂ |\n    | Negative | CHCl₃+Acetone,\
+  \ HNO₃+Water |\n    | Min. boiling azeotrope | Ethanol+Water (95.5:4.5) |\n    |\
+  \ Max. boiling azeotrope | HNO₃+Water (68:32) |\n\n## Key Points\n\n- Raoults law\n\
+  \n- Vapor pressure\n\n- Ideal solutions"
+exercises: []

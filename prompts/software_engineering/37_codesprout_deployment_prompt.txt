@@ -1,0 +1,258 @@
+=======================================
+MICROLESSON GENERATOR - CODESPROUT DEPLOYMENT
+=======================================
+
+[READY TO USE: Copy this entire prompt + attach all files listed below to GPT-5 Pro]
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+STEP 1: ATTACH THESE FILES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+From: idlecampus/backend/db/seeds/
+
+□ codesprout_deployment_units.rb
+□ codesprout_deployment_labs.rb
+□ codesprout_curriculum.rb
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+STEP 2: PASTE THIS PROMPT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+You are an expert educational content designer and Ruby on Rails developer.
+
+I've attached ALL seed files for the CodeSprout Deployment course. Convert each into microlesson format.
+
+# COURSE INFORMATION
+
+**Course:** CodeSprout Deployment
+**Total Files:** 3
+**Focus:** Deployment pipelines, CI/CD, infrastructure setup
+
+# MICROLESSON RULES
+
+**Size:** 1 concept per microlesson, 2-3 minutes each
+
+**Content Structure:**
+```markdown
+# [Title] 🚀
+
+## What is [concept]?
+[2-3 sentence explanation]
+
+## Syntax/Command
+```bash
+[deployment command or config]
+```
+
+## Example
+```bash
+[specific example with output]
+```
+
+## Key Points
+- Point 1
+- Point 2
+- Point 3
+```
+
+# EXERCISE RULES
+
+**Count based on difficulty:**
+- Easy: 1-2 exercises
+- Medium: 2-3 exercises
+- Hard: 3-4 exercises
+
+**Types:**
+1. **terminal**: Deployment CLI commands
+2. **mcq**: Multiple choice with 4 options
+3. **code**: Configuration files (YAML, JSON, Dockerfile)
+4. **short_answer**: Architecture and design questions
+
+**Progressive Hints (3 per exercise):**
+- Hint 1: Gentle nudge
+- Hint 2: More specific
+- Hint 3: Nearly the answer
+
+# PREREQUISITES
+
+Analyze content to infer dependencies:
+- First lesson: `prerequisite_ids: []`
+- Sequential lessons: Previous lesson as prerequisite
+- Advanced topics: Multiple prerequisites
+
+# OUTPUT FORMAT
+
+Generate complete Ruby seed files:
+
+```ruby
+# db/seeds/microlessons/codesprout_deployment_microlessons.rb
+# AUTO-GENERATED from codesprout seed files
+
+puts "Creating Microlessons for CodeSprout Deployment..."
+
+module_var = CourseModule.find_by(slug: 'codesprout-deployment')
+
+# === MICROLESSON 1: [Title] ===
+lesson_1 = MicroLesson.create!(
+  course_module: module_var,
+  title: '[Short, clear title]',
+  content: <<~MARKDOWN,
+    # [Title] 🚀
+
+    ## What is [concept]?
+
+    [Explanation]
+
+    ## Setup/Command
+
+    ```bash
+    [deployment command]
+    ```
+
+    ## Example
+
+    ```bash
+    deploy --env production --app codesprout
+    # Deploying to production...
+    # Build successful
+    # Deployment complete: https://codesprout.example.com
+    ```
+
+    ## Key Points
+
+    - Point 1
+    - Point 2
+    - Point 3
+  MARKDOWN
+  sequence_order: 1,
+  estimated_minutes: 2,
+  difficulty: 'easy',
+  key_concepts: ['concept1', 'concept2'],
+  prerequisite_ids: []
+)
+
+# Exercise 1: Terminal Command
+Exercise.create!(
+  micro_lesson: lesson_1,
+  exercise_type: 'terminal',
+  sequence_order: 1,
+  exercise_data: {
+    command: '[exact command]',
+    description: '[what to do]',
+    expected_output: '[what should happen]',
+    validation_type: 'output_contains',
+    difficulty: 'easy',
+    hints: [
+      '[Hint 1: gentle]',
+      '[Hint 2: specific]',
+      '[Hint 3: nearly answer]'
+    ]
+  }
+)
+
+# Exercise 2: Configuration/Code
+Exercise.create!(
+  micro_lesson: lesson_1,
+  exercise_type: 'code',
+  sequence_order: 2,
+  exercise_data: {
+    prompt: '[Write deployment config]',
+    starter_code: '[starter YAML/JSON]',
+    solution: '[complete solution]',
+    test_cases: [{description: '...', passes: true}],
+    language: 'yaml',
+    difficulty: 'medium',
+    hints: [
+      '[Hint 1]',
+      '[Hint 2]',
+      '[Hint 3]'
+    ]
+  }
+)
+
+# [More microlessons...]
+
+puts "✓ Created [N] microlessons for CodeSprout Deployment"
+```
+
+# QUALITY CHECKLIST
+
+For EACH microlesson:
+- [ ] Covers exactly 1 deployment concept
+- [ ] 2-3 minutes estimated time
+- [ ] Clear commands/configs with output
+- [ ] Exercises test practical skills
+- [ ] Config examples are valid
+- [ ] Hints progress logically
+- [ ] Prerequisites make sense
+- [ ] Ruby syntax is valid
+
+# DEPLOYMENT TOPICS TO COVER
+
+Break down by deployment stages:
+
+**Setup & Configuration:**
+- Environment setup
+- Configuration management
+- Environment variables
+- Secrets management
+
+**CI/CD Pipeline:**
+- Build process
+- Testing automation
+- Deployment stages
+- Rollback strategies
+
+**Infrastructure:**
+- Server provisioning
+- Load balancing
+- Database migrations
+- Static assets
+
+**Monitoring & Troubleshooting:**
+- Health checks
+- Log aggregation
+- Error tracking
+- Performance monitoring
+
+# OUTPUT INSTRUCTIONS
+
+For each seed file, generate output with clear labels:
+
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FILE: codesprout_deployment_microlessons.rb
+FROM: codesprout_deployment_units.rb
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+[Complete Ruby code here]
+```
+
+After all files, provide summary:
+
+```
+=== GENERATION SUMMARY ===
+
+Course: CodeSprout Deployment
+
+Files Generated:
+1. codesprout_deployment_microlessons.rb
+   - Original units: X
+   - Microlessons created: Y
+   - Total exercises: Z
+   - Prerequisites linked: N
+
+Grand Total:
+- Microlessons: XX
+- Exercises: YY
+- Terminal: ZZ
+- MCQ: AA
+- Code: BB
+- Short Answer: CC
+```
+
+# NOW GENERATE
+
+Process all 3 attached seed files and generate complete microlesson files following all rules above.
+
+START GENERATION NOW.

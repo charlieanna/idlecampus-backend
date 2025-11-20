@@ -1,0 +1,83 @@
+slug: understanding-permissions
+title: Understanding Permissions
+difficulty: easy
+sequence_order: 12
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Understanding Permissions \U0001F680\n\n# Understanding File Permissions\n\
+  \n    Linux uses a permission system to control access to files and directories.\n\
+  \n    ## Permission Types\n\n    Each file has three permission types:\n    - **r\
+  \ (read)**: View file contents or list directory\n    - **w (write)**: Modify file\
+  \ or directory contents\n    - **x (execute)**: Run file as program or access directory\n\
+  \n    ## Permission Groups\n\n    Permissions apply to three groups:\n    - **Owner\
+  \ (u)**: The user who owns the file\n    - **Group (g)**: Users in the file's group\n\
+  \    - **Others (o)**: Everyone else\n\n    ## Reading Permissions\n\n    ```bash\n\
+  \    ls -l file.txt\n    # -rw-r--r-- 1 user group 1234 Jan 15 10:00 file.txt\n\
+  \    #  │││ │││ │││\n    #  │││ │││ │└─ others permissions (r--)\n    #  │││ │└────\
+  \ group permissions (r--)\n    #  │└────── owner permissions (rw-)\n    #  └─────────\
+  \ file type (- = regular file, d = directory)\n    ```\n\n    ### Permission Breakdown\n\
+  \n    | Position | Meaning | Example |\n    |----------|---------|---------|\n \
+  \   | 1 | File type | `-` (file), `d` (directory), `l` (link) |\n    | 2-4 | Owner\
+  \ permissions | `rw-` (read, write, no execute) |\n    | 5-7 | Group permissions\
+  \ | `r--` (read only) |\n    | 8-10 | Other permissions | `r--` (read only) |\n\n\
+  \    ## Numeric (Octal) Permissions\n\n    Permissions can be represented as numbers:\n\
+  \    - **r (read) = 4**\n    - **w (write) = 2**\n    - **x (execute) = 1**\n\n\
+  \    Add them together for each group:\n\n    ```\n    rwx = 4 + 2 + 1 = 7\n   \
+  \ rw- = 4 + 2 + 0 = 6\n    r-- = 4 + 0 + 0 = 4\n    r-x = 4 + 0 + 1 = 5\n    ```\n\
+  \n    ### Common Permission Modes\n\n    | Octal | Symbolic | Meaning |\n    |-------|----------|---------|\n\
+  \    | 644 | rw-r--r-- | Owner read/write, others read |\n    | 755 | rwxr-xr-x\
+  \ | Owner all, others read/execute |\n    | 600 | rw------- | Owner read/write only\
+  \ |\n    | 700 | rwx------ | Owner all, no access for others |\n    | 777 | rwxrwxrwx\
+  \ | Everyone all (dangerous!) |\n\n    ## Changing Permissions with chmod\n\n  \
+  \  ### Symbolic Mode\n\n    ```bash\n    # Add execute for owner\n    chmod u+x\
+  \ script.sh\n\n    # Remove write for group\n    chmod g-w file.txt\n\n    # Set\
+  \ read for others\n    chmod o=r file.txt\n\n    # Add read for everyone\n    chmod\
+  \ a+r file.txt\n\n    # Multiple changes\n    chmod u+x,g-w,o-r file.txt\n    ```\n\
+  \n    ### Numeric Mode\n\n    ```bash\n    # Owner: rw-, Group: r--, Others: r--\
+  \ (644)\n    chmod 644 file.txt\n\n    # Owner: rwx, Group: r-x, Others: r-x (755)\n\
+  \    chmod 755 script.sh\n\n    # Owner: rwx, Group: ---, Others: --- (700)\n  \
+  \  chmod 700 private_script.sh\n\n    # Recursive chmod\n    chmod -R 755 /var/www/html/\n\
+  \    ```\n\n    ## Changing Ownership\n\n    ```bash\n    # Change owner\n    sudo\
+  \ chown newuser file.txt\n\n    # Change owner and group\n    sudo chown newuser:newgroup\
+  \ file.txt\n\n    # Change group only\n    sudo chgrp newgroup file.txt\n\n    #\
+  \ Recursive ownership change\n    sudo chown -R user:group /path/to/directory/\n\
+  \    ```\n\n    ## Best Practices\n\n    1. **Principle of Least Privilege**: Grant\
+  \ minimum permissions needed\n    2. **Avoid 777**: Never use unless absolutely\
+  \ necessary\n    3. **Scripts**: Use 755 for executable scripts\n    4. **Config\
+  \ Files**: Use 644 for readable configs, 600 for secrets\n    5. **Directories**:\
+  \ Need execute (x) permission to access contents"
+exercises:
+  - type: mcq
+    sequence_order: 1
+    question: "A file has permissions -rw-r--r--. What does this mean?"
+    options:
+      - "Owner can read and write; group and others can only read"
+      - "Everyone has full permissions"
+      - "Only the owner can read the file"
+      - "The file is a directory"
+    correct_answer: "Owner can read and write; group and others can only read"
+    explanation: "Let's decode the permission string -rw-r--r-- character by character. Position 1: - (file type indicator): - means regular file, d would mean directory, l would mean symbolic link. Positions 2-4: rw- (owner permissions): r (read, value 4) allows viewing file contents, w (write, value 2) allows modifying file contents, - (no execute) means cannot run as a program. Positions 5-7: r-- (group permissions): r (read only), -- (no write or execute). Positions 8-10: r-- (others permissions): r (read only), -- (no write or execute). In numeric notation, this is 644 (6=rw- for owner, 4=r-- for group, 4=r-- for others). This permission pattern is extremely common for data files because it allows: the owner to modify the file, while group members and everyone else can read but not modify it. Real-world examples: configuration files like /etc/passwd use 644 (anyone can read user list, only root can modify). Web server files often use 644 (web server can read to serve content, but files can't be modified by the web process for security). Why not executable? Text/data files don't need execute permission—only scripts and binaries do. Granting execute on a data file serves no purpose and could be a security risk if the file contains malicious code."
+    require_pass: true
+  - type: mcq
+    sequence_order: 2
+    question: "What does the command 'chmod 755 script.sh' do?"
+    options:
+      - "Deletes the file"
+      - "Sets permissions to rwxr-xr-x (owner has all permissions, group and others can read and execute)"
+      - "Sets all permissions to write-only"
+      - "Changes the file owner"
+    correct_answer: "Sets permissions to rwxr-xr-x (owner has all permissions, group and others can read and execute)"
+    explanation: "The numeric chmod notation uses three octal digits to set permissions for owner, group, and others respectively. Breaking down 755: First digit (7 = owner): 7 = 4+2+1 = read+write+execute = rwx. Second digit (5 = group): 5 = 4+0+1 = read+no-write+execute = r-x. Third digit (5 = others): 5 = 4+0+1 = read+no-write+execute = r-x. This results in rwxr-xr-x. This permission pattern (755) is the standard for executable scripts and programs because: (1) The owner can read, modify, and execute the script (rwx); (2) Group members and others can read and execute the script but cannot modify it (r-x, preventing accidental or malicious changes). Real-world usage: system binaries in /usr/bin typically have 755 permissions (everyone can execute programs like ls, cat, etc., but only root can modify them). Shell scripts you want to share: chmod 755 deploy.sh allows teammates to run your deployment script without being able to change it. Web server CGI scripts: 755 allows the web server to execute scripts while preventing modification. Why not 777? Granting write permission (rwx rwx rwx = 777) to everyone is dangerous—anyone could modify your script to inject malicious code. Use 755 for scripts that should be widely executable but only modifiable by the owner, ensuring both usability and security."
+    require_pass: true
+  - type: mcq
+    sequence_order: 3
+    question: "Why should you avoid using chmod 777 on files?"
+    options:
+      - "It makes the file read-only"
+      - "It grants read, write, and execute permissions to everyone, creating serious security risks"
+      - "It deletes the file automatically after 24 hours"
+      - "It's only for directories, not files"
+    correct_answer: "It grants read, write, and execute permissions to everyone, creating serious security risks"
+    explanation: "chmod 777 sets permissions to rwxrwxrwx, giving everyone (owner, group, and others) full read, write, and execute permissions. This is dangerous for multiple reasons: (1) Security vulnerability: ANY user on the system can modify the file. A malicious user could inject malware into a script, modify configuration files to create backdoors, or replace binaries with compromised versions. (2) Accidental changes: Well-meaning users might accidentally modify or delete critical files. (3) Compliance violations: Security standards like PCI-DSS, HIPAA, and SOC 2 explicitly prohibit overly permissive file permissions. Audits flag 777 permissions as critical findings. (4) No accountability: When everyone can write, you can't determine who made changes. Real-world disasters: Web servers with 777 on upload directories allow attackers to upload and execute malicious PHP shells. Configuration files with 777 can be modified by compromised services to escalate privileges. Better alternatives: Files with sensitive data: use 600 (rw-------) or 640 (rw-r-----). Executable scripts: use 755 (rwxr-xr-x). Shared directories where multiple users need write access: use 775 (rwxrwxr-x) with appropriate group ownership. Web-writable directories: use 755 for the directory itself, 644 for files, and ensure the web server runs as a restricted user. The principle of least privilege dictates granting only the minimum permissions required for functionality—never use 777 unless you have an extremely specific, temporary need (and even then, it's usually wrong)."
+    require_pass: true

@@ -1,0 +1,63 @@
+slug: introduction-to-cryptography
+title: Introduction to Cryptography
+sequence_order: 8
+estimated_minutes: 2
+difficulty: easy
+content_md: "# Introduction to Cryptography \U0001F680\n\n# Introduction to Cryptography\n\
+  \n    Cryptography is the foundation of modern security, protecting data in transit\
+  \ and at rest.\n\n    ## Core Concepts\n\n    ### Confidentiality, Integrity, Availability\
+  \ (CIA Triad)\n    - **Confidentiality**: Only authorized parties can access data\n\
+  \    - **Integrity**: Data hasn't been tampered with\n    - **Availability**: Systems\
+  \ and data are accessible when needed\n\n    ### Types of Cryptography\n\n    ##\
+  \ 1. Symmetric Encryption\n    Same key for encryption and decryption.\n\n    **Pros:**\n\
+  \    - Fast and efficient\n    - Good for large amounts of data\n\n    **Cons:**\n\
+  \    - Key distribution problem\n    - Need secure channel to share key\n\n    **Common\
+  \ Algorithms:**\n    - **AES (Advanced Encryption Standard)**: Industry standard,\
+  \ very secure\n    - **ChaCha20**: Fast, used in TLS\n    - **3DES**: Legacy, being\
+  \ phased out\n\n    ```bash\n    # Encrypt file with AES-256\n    openssl enc -aes-256-cbc\
+  \ -salt -in file.txt -out file.txt.enc\n\n    # Decrypt file\n    openssl enc -d\
+  \ -aes-256-cbc -in file.txt.enc -out file.txt\n    ```\n\n    ## 2. Asymmetric Encryption\
+  \ (Public Key Cryptography)\n    Uses key pairs: public key (encrypt) and private\
+  \ key (decrypt).\n\n    **Pros:**\n    - Solves key distribution problem\n    -\
+  \ Enables digital signatures\n\n    **Cons:**\n    - Slower than symmetric encryption\n\
+  \    - More computationally expensive\n\n    **Common Algorithms:**\n    - **RSA**:\
+  \ Widely used, 2048-bit or 4096-bit\n    - **ECDSA**: Elliptic Curve, smaller keys,\
+  \ faster\n    - **Ed25519**: Modern, fast, secure\n\n    ## 3. Hashing (One-Way\
+  \ Functions)\n    Creates fixed-size fingerprint of data. Cannot be reversed.\n\n\
+  \    **Use Cases:**\n    - Password storage\n    - Data integrity verification\n\
+  \    - Digital signatures\n\n    **Common Algorithms:**\n    - **SHA-256**: 256-bit\
+  \ hash, very secure\n    - **SHA-512**: 512-bit hash, even more secure\n    - **bcrypt**:\
+  \ Designed for passwords, includes salt\n    - **MD5**: **BROKEN - DO NOT USE**\n\
+  \n    ```bash\n    # Generate SHA-256 hash\n    echo \"Hello World\" | sha256sum\n\
+  \n    # Verify file integrity\n    sha256sum file.txt > file.txt.sha256\n    sha256sum\
+  \ -c file.txt.sha256\n    ```\n\n    ## Practical Applications\n\n    ### Passwords\n\
+  \    **Never store passwords in plain text!**\n\n    ```bash\n    # Bad: Storing\
+  \ password directly\n    PASSWORD=\"secret123\"\n\n    # Good: Store hashed password\
+  \ with salt\n    # System does this automatically with bcrypt/scrypt\n    ```\n\n\
+  \    ### Data at Rest\n    Encrypt sensitive files, databases, disk volumes.\n\n\
+  \    ### Data in Transit\n    Use TLS/SSL to encrypt network communication.\n\n\
+  ## Key Points\n\n- Symmetric vs Asymmetric encryption\n\n- Hashing and integrity\n\
+  \n- AES, RSA, SHA-256"
+exercises:
+- type: mcq
+  slug: introduction-to-cryptography-mcq
+  sequence_order: 1
+  question: What is the main difference between symmetric and asymmetric encryption?
+  options:
+  - Symmetric uses the same key for encryption and decryption, while asymmetric uses
+    a public/private key pair
+  - Symmetric is slower than asymmetric encryption
+  - Symmetric can only encrypt small amounts of data
+  - Symmetric cannot be used for secure communication
+  correct_answer_index: 0
+  explanation: 'The fundamental difference is in key usage. Symmetric encryption (like
+    AES) uses the same secret key for both encryption and decryption, making it fast
+    but requiring secure key distribution. Asymmetric encryption (like RSA) uses a
+    public key for encryption and a private key for decryption, solving the key distribution
+    problem but being slower. In practice, they are often combined: asymmetric encryption
+    securely exchanges a symmetric key, which then encrypts the actual data.'
+objectives:
+- Define the control
+- Choose tooling
+- Integrate checks in CI/CD
+next_recommended: []

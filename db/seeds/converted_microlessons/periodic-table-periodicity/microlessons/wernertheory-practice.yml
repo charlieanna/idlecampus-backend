@@ -1,0 +1,59 @@
+slug: wernertheory-practice
+title: werner_theory — Practice
+difficulty: easy
+sequence_order: 20
+estimated_minutes: 2
+key_concepts:
+- werner_theory
+prerequisites: []
+content_md: '# werner_theory — Practice 🚀
+
+
+  Primary valence = oxidation state = ionizable bonds. Complex has +3 charge (to balance
+  3 Cl⁻), so primary valence = 3.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What is the primary valence of Cr in [Cr(H₂O)₆]Cl₃?
+  options:
+  - '1'
+  - '2'
+  - '3'
+  - '6'
+  correct_answer: '3'
+  explanation: "According to Werner's theory, primary valence = oxidation state = ionizable bonds. The complex [Cr(H₂O)₆]Cl₃ has +3 charge (to balance 3 Cl⁻), so primary valence = 3. This represents the number of negative ions needed to satisfy the charge."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What is the secondary valence (coordination number) in [Cr(H₂O)₆]Cl₃?
+  options:
+  - '3'
+  - '4'
+  - '6'
+  - '9'
+  correct_answer: '6'
+  explanation: "According to Werner's theory, secondary valence = coordination number = number of ligands/donor atoms directly bonded to the metal. In [Cr(H₂O)₆]Cl₃, there are 6 H₂O molecules bonded to Cr, so secondary valence = 6. These are non-ionizable bonds."
+  require_pass: false
+- type: mcq
+  sequence_order: 3
+  question: According to Werner's theory, primary valence is
+  options:
+  - ionizable and represented by dotted lines
+  - non-ionizable and represented by thick lines
+  - the coordination number
+  - always equal to 6
+  correct_answer: ionizable and represented by dotted lines
+  explanation: "Werner's postulates: (1) Primary valence is ionizable, satisfied by negative ions, and represented by dotted lines - it equals the oxidation state, (2) Secondary valence is non-ionizable, satisfied by ligands, and represented by thick lines - it equals the coordination number. Primary valence varies depending on the metal's oxidation state."
+  require_pass: false

@@ -1,0 +1,107 @@
+slug: lesson-10
+title: Lesson 10
+difficulty: easy
+sequence_order: 10
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Binary Trees and Binary Search Trees\n\n\
+  \    ## Binary Tree\n\n    **Each node has at most 2 children**\n\n    ```python\n\
+  \    class TreeNode:\n        def __init__(self, val=0, left=None, right=None):\n\
+  \            self.val = val\n            self.left = left\n            self.right\
+  \ = right\n    ```\n\n    ### Tree Traversals\n\n    **In-Order (Left → Root → Right)**\n\
+  \n    ```python\n    def inorder(root):\n        if not root:\n            return\
+  \ []\n        return inorder(root.left) + [root.val] + inorder(root.right)\n\n \
+  \   # For BST, returns sorted order!\n    # Time: O(n), Space: O(h) where h = height\n\
+  \    ```\n\n    **Pre-Order (Root → Left → Right)**\n\n    ```python\n    def preorder(root):\n\
+  \        if not root:\n            return []\n        return [root.val] + preorder(root.left)\
+  \ + preorder(root.right)\n\n    # Good for copying tree structure\n    ```\n\n \
+  \   **Post-Order (Left → Right → Root)**\n\n    ```python\n    def postorder(root):\n\
+  \        if not root:\n            return []\n        return postorder(root.left)\
+  \ + postorder(root.right) + [root.val]\n\n    # Good for deleting tree (delete children\
+  \ first)\n    ```\n\n    **Level-Order (BFS)**\n\n    ```python\n    from collections\
+  \ import deque\n\n    def level_order(root):\n        if not root:\n           \
+  \ return []\n\n        result = []\n        queue = deque([root])\n\n        while\
+  \ queue:\n            level = []\n            for _ in range(len(queue)):\n    \
+  \            node = queue.popleft()\n                level.append(node.val)\n\n\
+  \                if node.left:\n                    queue.append(node.left)\n  \
+  \              if node.right:\n                    queue.append(node.right)\n\n\
+  \            result.append(level)\n\n        return result\n\n    # Time: O(n),\
+  \ Space: O(w) where w = max width\n    ```\n\n    ## Binary Search Tree (BST)\n\n\
+  \    **Left subtree < Root < Right subtree**\n\n    ```python\n    class BST:\n\
+  \        def __init__(self):\n            self.root = None\n\n        def insert(self,\
+  \ val):\n            self.root = self._insert(self.root, val)\n\n        def _insert(self,\
+  \ node, val):\n            if not node:\n                return TreeNode(val)\n\n\
+  \            if val < node.val:\n                node.left = self._insert(node.left,\
+  \ val)\n            else:\n                node.right = self._insert(node.right,\
+  \ val)\n\n            return node\n\n        def search(self, val):\n          \
+  \  return self._search(self.root, val)\n\n        def _search(self, node, val):\n\
+  \            if not node or node.val == val:\n                return node\n\n  \
+  \          if val < node.val:\n                return self._search(node.left, val)\n\
+  \            return self._search(node.right, val)\n\n        # Time: O(h) average\
+  \ O(log n), worst O(n)\n    ```\n\n    ### Common Tree Problems\n\n    **Maximum\
+  \ Depth**\n\n    ```python\n    def max_depth(root):\n        if not root:\n   \
+  \         return 0\n\n        left_depth = max_depth(root.left)\n        right_depth\
+  \ = max_depth(root.right)\n\n        return 1 + max(left_depth, right_depth)\n\n\
+  \    # Time: O(n), Space: O(h)\n    ```\n\n    **Validate BST**\n\n    ```python\n\
+  \    def is_valid_bst(root):\n        def validate(node, min_val, max_val):\n  \
+  \          if not node:\n                return True\n\n            if not (min_val\
+  \ < node.val < max_val):\n                return False\n\n            return (validate(node.left,\
+  \ min_val, node.val) and\n                    validate(node.right, node.val, max_val))\n\
+  \n        return validate(root, float('-inf'), float('inf'))\n\n    # Time: O(n),\
+  \ Space: O(h)\n    ```\n\n    **Lowest Common Ancestor**\n\n    ```python\n    def\
+  \ lowest_common_ancestor(root, p, q):\n        if not root or root == p or root\
+  \ == q:\n            return root\n\n        left = lowest_common_ancestor(root.left,\
+  \ p, q)\n        right = lowest_common_ancestor(root.right, p, q)\n\n        if\
+  \ left and right:\n            return root\n\n        return left or right\n\n \
+  \   # Time: O(n), Space: O(h)\n    ```\n\n    **Serialize and Deserialize**\n\n\
+  \    ```python\n    def serialize(root):\n        def dfs(node):\n            if\
+  \ not node:\n                vals.append('#')\n                return\n        \
+  \    vals.append(str(node.val))\n            dfs(node.left)\n            dfs(node.right)\n\
+  \n        vals = []\n        dfs(root)\n        return ','.join(vals)\n\n    def\
+  \ deserialize(data):\n        def dfs():\n            val = next(vals)\n       \
+  \     if val == '#':\n                return None\n            node = TreeNode(int(val))\n\
+  \            node.left = dfs()\n            node.right = dfs()\n            return\
+  \ node\n\n        vals = iter(data.split(','))\n        return dfs()\n    ```\n\n\
+  \    ## Tree Properties\n\n    - **Complete Binary Tree**: All levels filled except\
+  \ last, filled left to right\n    - **Full Binary Tree**: Every node has 0 or 2\
+  \ children\n    - **Perfect Binary Tree**: All internal nodes have 2 children, all\
+  \ leaves same level\n    - **Balanced Tree**: Height difference of subtrees ≤ 1\n\
+  \n    **Height of balanced tree**: O(log n)\n    **Height of unbalanced tree**:\
+  \ O(n)\n\n    **Next**: Graphs and Graph Algorithms!"
+exercises:
+  - type: mcq
+    sequence_order: 1
+    question: "Why does in-order traversal of a Binary Search Tree (BST) return elements in sorted order?"
+    options:
+      - "Because BST automatically sorts elements during insertion"
+      - "Because in-order visits left subtree first, then root, then right subtree, and BST property ensures left < root < right"
+      - "Because in-order is the fastest traversal method"
+      - "Because BST stores elements in an array"
+    correct_answer: "Because in-order visits left subtree first, then root, then right subtree, and BST property ensures left < root < right"
+    explanation: "In-order traversal visits nodes in the order: left subtree → root → right subtree. Combined with the BST property that all values in the left subtree are less than the root, and all values in the right subtree are greater than the root, this produces a sorted sequence. For example, consider a BST with root 5, left child 3, and right child 7. In-order traversal visits: left (3), root (5), right (7), producing [3, 5, 7] - a sorted array. The recursive implementation is simple: inorder(root.left) + [root.val] + inorder(root.right). This property is extremely useful for validating BSTs, converting BSTs to sorted arrays, and finding the kth smallest element. Time complexity is O(n) as we visit each node once, space complexity is O(h) for the recursion stack where h is the tree height. This demonstrates why BSTs are powerful for maintaining sorted data with efficient insertions and deletions."
+    require_pass: true
+
+  - type: mcq
+    sequence_order: 2
+    question: "What is the time complexity of searching in a balanced Binary Search Tree versus an unbalanced one?"
+    options:
+      - "Both are always O(log n)"
+      - "Balanced: O(log n), Unbalanced: O(n) worst case"
+      - "Both are always O(n)"
+      - "Balanced: O(1), Unbalanced: O(n)"
+    correct_answer: "Balanced: O(log n), Unbalanced: O(n) worst case"
+    explanation: "The time complexity of BST operations depends critically on tree balance. In a balanced BST (where height difference between subtrees is at most 1), the height is O(log n), and search, insert, and delete operations all take O(log n) time because we eliminate roughly half the remaining nodes at each level. However, if the tree is unbalanced, it can degenerate into essentially a linked list. For example, inserting elements in sorted order [1, 2, 3, 4, 5] creates a tree where each node has only a right child, resulting in height O(n). Searching for element 5 would require O(n) comparisons. The code for search is: if not node or node.val == val: return node; if val < node.val: return search(node.left, val); else: return search(node.right, val). This is why self-balancing trees like AVL trees and Red-Black trees were invented - they guarantee O(log n) operations by maintaining balance through rotations."
+    require_pass: true
+
+  - type: mcq
+    sequence_order: 3
+    question: "In the level-order (BFS) traversal of a binary tree, what is the space complexity and why?"
+    options:
+      - "O(1) because we only need a queue"
+      - "O(h) where h is height, for the recursion stack"
+      - "O(w) where w is maximum width of the tree, for the queue"
+      - "O(n²) for storing all nodes"
+    correct_answer: "O(w) where w is maximum width of the tree, for the queue"
+    explanation: "Level-order traversal uses a queue to process nodes level by level from left to right. The space complexity is determined by the maximum number of nodes in the queue at any point, which equals the maximum width of the tree. For a complete binary tree, the maximum width occurs at the last level and can be up to n/2 nodes, so space is O(n) in the worst case. The implementation is: queue = deque([root]); while queue: for _ in range(len(queue)): node = queue.popleft(); process(node); queue.append(node.left); queue.append(node.right). For a perfect binary tree of height h, the last level has 2^h nodes. In contrast, depth-first traversals (in-order, pre-order, post-order) use O(h) space for the recursion stack. Level-order is particularly useful for finding the shortest path in unweighted trees or processing nodes level by level. Understanding the space-time tradeoffs between BFS and DFS is crucial for choosing the right traversal method."
+    require_pass: true

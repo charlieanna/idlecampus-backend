@@ -1,0 +1,43 @@
+slug: lesson-92
+title: Lesson 92
+difficulty: easy
+sequence_order: 92
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Node Selectors and Affinity\n\n    - nodeSelector\
+  \ vs nodeAffinity\n    - requiredDuringScheduling vs preferredDuringScheduling"
+exercises:
+  - type: mcq
+    sequence_order: 1
+    question: "What is the key difference between nodeSelector and nodeAffinity in Kubernetes pod scheduling?"
+    options:
+      - "nodeSelector is deprecated while nodeAffinity is the current standard"
+      - "nodeSelector provides simple label matching, while nodeAffinity offers more expressive rules with required and preferred constraints"
+      - "nodeSelector works with pods while nodeAffinity works with services"
+      - "nodeSelector is more powerful than nodeAffinity"
+    correct_answer: "nodeSelector provides simple label matching, while nodeAffinity offers more expressive rules with required and preferred constraints"
+    explanation: "nodeSelector and nodeAffinity both control which nodes a pod can be scheduled on, but differ significantly in expressiveness. nodeSelector is a simple, straightforward field that requires exact label matches - you specify key-value pairs and the pod will only run on nodes with all those labels. It's easy to use but limited in functionality. nodeAffinity, introduced to provide more sophisticated scheduling control, supports complex expressions using operators like In, NotIn, Exists, DoesNotExist, Gt, and Lt. More importantly, nodeAffinity distinguishes between hard requirements (requiredDuringSchedulingIgnoredDuringExecution) and soft preferences (preferredDuringSchedulingIgnoredDuringExecution). Hard requirements must be met for scheduling, while preferences influence scoring but don't prevent scheduling if not met. This allows you to express rules like 'must run on nodes in zones A or B' (required) and 'preferably on nodes with SSD storage' (preferred). nodeSelector is not deprecated and remains useful for simple cases, but nodeAffinity provides the flexibility needed for complex scheduling scenarios."
+    require_pass: true
+  - type: mcq
+    sequence_order: 2
+    question: "What does 'requiredDuringSchedulingIgnoredDuringExecution' mean in the context of nodeAffinity?"
+    options:
+      - "The affinity rule must be satisfied during scheduling and the pod will be evicted if conditions change"
+      - "The affinity rule must be satisfied during scheduling, but the pod won't be evicted if node labels change after scheduling"
+      - "The affinity rule is optional during scheduling and can be ignored"
+      - "The affinity rule only applies during pod execution, not during scheduling"
+    correct_answer: "The affinity rule must be satisfied during scheduling, but the pod won't be evicted if node labels change after scheduling"
+    explanation: "The term 'requiredDuringSchedulingIgnoredDuringExecution' describes the enforcement policy for nodeAffinity rules and consists of two parts. 'RequiredDuringScheduling' means the scheduler must find a node that satisfies the affinity rules or the pod will remain unscheduled (Pending state). The affinity rule acts as a hard constraint during the scheduling decision. 'IgnoredDuringExecution' means that if a pod is already running and the node's labels change such that the affinity rules are no longer satisfied, the pod will not be evicted or rescheduled - it continues running. This design balances scheduling control with stability. For example, if you require nodes with label 'disktype=ssd', the pod will only be scheduled on nodes with that label. But if the label is later removed from the node, the already-running pod stays put. Kubernetes has considered introducing 'requiredDuringSchedulingRequiredDuringExecution' which would evict pods when affinity rules become violated, but this is not yet implemented. Understanding these policies is crucial for predictable pod placement and cluster management."
+    require_pass: true
+  - type: mcq
+    sequence_order: 3
+    question: "How does 'preferredDuringSchedulingIgnoredDuringExecution' affect pod scheduling decisions?"
+    options:
+      - "It prevents the pod from being scheduled if the preference cannot be satisfied"
+      - "It influences node scoring to prefer matching nodes, but allows scheduling on non-matching nodes if necessary"
+      - "It only applies to pods that have already been scheduled"
+      - "It requires at least 50% of the preferences to be satisfied"
+    correct_answer: "It influences node scoring to prefer matching nodes, but allows scheduling on non-matching nodes if necessary"
+    explanation: "The 'preferredDuringSchedulingIgnoredDuringExecution' policy creates soft constraints that influence but don't mandate scheduling decisions. During the scheduling process, after nodes pass all required affinity rules and other hard constraints (filtering phase), the scheduler enters the scoring phase where it ranks remaining nodes. Preferred affinity rules contribute to this scoring - nodes matching the preferences receive higher scores (weighted by the specified preference weight, 1-100). However, if no nodes match the preferences, or if matching nodes lack sufficient resources, the scheduler can still place the pod on non-matching nodes. This is valuable for expressing preferences like 'preferably run on nodes with SSD storage' or 'preferably run in availability zone A' without making these mandatory. Each preferred rule has a weight that determines its influence relative to other scoring factors. This flexibility ensures pods can be scheduled even when ideal conditions aren't available, while still optimizing placement when possible. It's a middle ground between strict requirements and complete lack of control."
+    require_pass: true

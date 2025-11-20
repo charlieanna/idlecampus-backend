@@ -1,0 +1,129 @@
+slug: galvanic-cells-emf-and-nernst-equation
+title: Galvanic Cells, EMF and Nernst Equation
+sequence_order: 18
+estimated_minutes: 2
+difficulty: easy
+content_md: "# Galvanic Cells, EMF and Nernst Equation \U0001F680\n\n# Galvanic Cells,\
+  \ EMF and Nernst Equation\n\n    ## Electrochemical Cells\n\n    **Electrochemical\
+  \ cell:** Device that converts chemical energy to electrical energy (or vice versa)\n\
+  \n    ### Types:\n\n    **1. Galvanic (Voltaic) Cell:** Chemical → Electrical energy\n\
+  \    - Spontaneous redox reaction\n    - Generates electricity\n    - Example: Daniell\
+  \ cell\n\n    **2. Electrolytic Cell:** Electrical → Chemical energy\n    - Non-spontaneous\
+  \ reaction\n    - Requires external voltage\n    - Example: Electrolysis of water\n\
+  \n    ## Galvanic Cell (Daniell Cell)\n\n    ### Construction:\n\n    **Anode (oxidation):**\
+  \ Zn rod in ZnSO₄ solution\n    **Cathode (reduction):** Cu rod in CuSO₄ solution\n\
+  \    **Salt bridge:** KCl or KNO₃ solution in agar gel\n\n    ### Reactions:\n\n\
+  \    **Anode (oxidation):** Zn(s) → Zn²⁺(aq) + 2e⁻\n    **Cathode (reduction):**\
+  \ Cu²⁺(aq) + 2e⁻ → Cu(s)\n\n    **Overall:** Zn(s) + Cu²⁺(aq) → Zn²⁺(aq) + Cu(s)\n\
+  \n    ### Important Points:\n\n    - **Anode:** Negative terminal, oxidation occurs\n\
+  \    - **Cathode:** Positive terminal, reduction occurs\n    - **Electrons flow:**\
+  \ Anode → Cathode (external circuit)\n    - **Anions move:** Toward anode (in solution)\n\
+  \    - **Cations move:** Toward cathode (in solution)\n\n    **Mnemonic: AN OX and\
+  \ RED CAT**\n    - **AN**ode **OX**idation\n    - **RED**uction **CAT**hode\n\n\
+  \    ### Salt Bridge Function:\n\n    1. **Completes circuit** (allows ion flow)\n\
+  \    2. **Maintains electrical neutrality**\n    3. **Prevents mixing** of solutions\n\
+  \    4. Uses **inert electrolyte** (KCl, KNO₃, NH₄NO₃)\n\n    ## Cell Notation (IUPAC\
+  \ Convention)\n\n    **Anode | Anode solution || Cathode solution | Cathode**\n\n\
+  \    **Example:** Daniell cell\n    **Zn(s) | Zn²⁺(aq) || Cu²⁺(aq) | Cu(s)**\n\n\
+  \    **Notes:**\n    - Single line (|): Phase boundary\n    - Double line (||):\
+  \ Salt bridge\n    - Anode (oxidation) on left\n    - Cathode (reduction) on right\n\
+  \n    ### More Examples:\n\n    **1. Pt | H₂(g) | H⁺(aq) || Ag⁺(aq) | Ag(s)**\n\n\
+  \    Anode: H₂ → 2H⁺ + 2e⁻\n    Cathode: Ag⁺ + e⁻ → Ag\n\n    **2. Zn(s) | Zn²⁺(aq)\
+  \ || Ag⁺(aq) | Ag(s)**\n\n    Anode: Zn → Zn²⁺ + 2e⁻\n    Cathode: Ag⁺ + e⁻ → Ag\n\
+  \n    ## Standard Electrode Potential (E°)\n\n    **Definition:** Potential of half-cell\
+  \ measured against Standard Hydrogen Electrode (SHE) under standard conditions\n\
+  \n    **Standard conditions:**\n    - Temperature: 25°C (298 K)\n    - Concentration:\
+  \ 1 M\n    - Pressure: 1 atm (for gases)\n\n    ### Standard Hydrogen Electrode\
+  \ (SHE):\n\n    **2H⁺(aq, 1M) + 2e⁻ → H₂(g, 1 atm)**\n    **E° = 0.00 V** (reference)\n\
+  \n    Construction: Pt electrode in 1M HCl, H₂ gas at 1 atm\n\n    ## Standard Cell\
+  \ Potential (E°cell)\n\n    **E°cell = E°cathode - E°anode**\n\n    Or: **E°cell\
+  \ = E°reduction - E°oxidation**\n\n    ### Important:\n    - Use **reduction potentials**\
+  \ from tables\n    - For oxidation half-cell, use **same E°** (don't reverse sign\
+  \ for calculation)\n    - **Positive E°cell:** Spontaneous reaction\n\n    ### Example:\
+  \ Daniell Cell\n\n    **Cathode:** Cu²⁺ + 2e⁻ → Cu, E° = +0.34 V\n    **Anode:**\
+  \ Zn → Zn²⁺ + 2e⁻, E°(Zn²⁺/Zn) = -0.76 V\n\n    **E°cell = E°cathode - E°anode**\n\
+  \    **E°cell = 0.34 - (-0.76) = 1.10 V**\n\n    ## Relationship Between ΔG° and\
+  \ E°cell\n\n    **ΔG° = -nFE°cell**\n\n    Where:\n    - n = number of electrons\
+  \ transferred\n    - F = Faraday constant = 96,500 C/mol\n    - E°cell = standard\
+  \ cell potential (V)\n    - ΔG° = standard Gibbs free energy (J)\n\n    **Spontaneity:**\n\
+  \    - **E°cell > 0:** ΔG° < 0, spontaneous\n    - **E°cell < 0:** ΔG° > 0, non-spontaneous\n\
+  \    - **E°cell = 0:** ΔG° = 0, equilibrium\n\n    ### Example:\n\n    For Daniell\
+  \ cell: E°cell = 1.10 V, n = 2\n\n    ΔG° = -2 × 96,500 × 1.10\n    ΔG° = -212,300\
+  \ J = **-212.3 kJ** (spontaneous)\n\n    ## Relationship Between E°cell and K\n\n\
+  \    **E°cell = (RT/nF) ln K** or **E°cell = (0.0591/n) log K** at 25°C\n\n    Or:\
+  \ **E°cell = (2.303RT/nF) log K**\n\n    At 25°C: **E°cell = (0.0591/n) log K**\n\
+  \n    **K = equilibrium constant**\n\n    ### Example:\n\n    For Daniell cell:\
+  \ E°cell = 1.10 V, n = 2\n\n    1.10 = (0.0591/2) log K\n    log K = (1.10 × 2)/0.0591\
+  \ = 37.23\n    **K = 10³⁷·²³** (very large, nearly complete reaction)\n\n    ##\
+  \ Nernst Equation\n\n    **For non-standard conditions**, cell potential depends\
+  \ on concentration:\n\n    **General form:**\n    **E = E° - (RT/nF) ln Q**\n\n\
+  \    **At 25°C:**\n    **E = E° - (0.0591/n) log Q**\n\n    Where Q = reaction quotient\n\
+  \n    ### For Half-Cell:\n\n    For: **Mⁿ⁺ + ne⁻ → M**\n\n    **E = E° - (0.0591/n)\
+  \ log(1/[Mⁿ⁺])**\n\n    **E = E° + (0.0591/n) log[Mⁿ⁺]**\n\n    ### For Complete\
+  \ Cell:\n\n    For: **aA + bB → cC + dD**\n\n    **E = E° - (0.0591/n) log([C]ᶜ[D]ᵈ/[A]ᵃ[B]ᵇ)**\n\
+  \n    ### Example 1: Daniell Cell\n\n    **Zn + Cu²⁺ → Zn²⁺ + Cu**\n    **E° = 1.10\
+  \ V, n = 2**\n\n    If [Zn²⁺] = 0.1 M, [Cu²⁺] = 1.0 M:\n\n    E = 1.10 - (0.0591/2)\
+  \ log([Zn²⁺]/[Cu²⁺])\n    E = 1.10 - 0.02955 log(0.1/1.0)\n    E = 1.10 - 0.02955\
+  \ × (-1)\n    E = 1.10 + 0.03 = **1.13 V**\n\n    ### Example 2: Hydrogen Electrode\n\
+  \n    **2H⁺ + 2e⁻ → H₂**, E° = 0.00 V\n\n    If [H⁺] = 0.01 M, P(H₂) = 1 atm:\n\n\
+  \    E = 0 + (0.0591/2) log([H⁺]²/P(H₂))\n    E = 0.02955 log(0.01)²\n    E = 0.02955\
+  \ × (-4)\n    E = **-0.118 V**\n\n    ## Concentration Cell\n\n    **Definition:**\
+  \ Cell with same electrodes but different concentrations\n\n    **Example:** Zn\
+  \ | Zn²⁺(C₁) || Zn²⁺(C₂) | Zn\n\n    **E°cell = 0** (same electrodes)\n\n    **E\
+  \ = 0 - (0.0591/n) log(C₁/C₂)**\n    **E = (0.0591/n) log(C₂/C₁)**\n\n    **Note:**\
+  \ Higher concentration is cathode (reduction), lower is anode (oxidation)\n\n  \
+  \  ### Example:\n\n    Zn | Zn²⁺(0.01 M) || Zn²⁺(1.0 M) | Zn\n\n    E = (0.0591/2)\
+  \ log(1.0/0.01)\n    E = 0.02955 × 2\n    E = **0.059 V**\n\n    ## Applications\
+  \ of Nernst Equation\n\n    1. **Calculate EMF** at non-standard conditions\n  \
+  \  2. **Determine pH** using pH electrode\n    3. **Find equilibrium constant**\
+  \ from E°\n    4. **Concentration cells** calculations\n    5. **Predict spontaneity**\
+  \ under various conditions\n\n    ### pH Calculation:\n\n    For hydrogen electrode:\n\
+  \    **E = 0 - 0.0591 pH**\n\n    If E = -0.295 V:\n    -0.295 = -0.0591 pH\n  \
+  \  pH = 0.295/0.0591 = **5.0**\n\n    ## Solved Problems\n\n    ### Problem 1: Calculate\
+  \ E°cell\n\n    **Q: Calculate E°cell for Zn | Zn²⁺ || Ag⁺ | Ag**\n    **E°(Zn²⁺/Zn)\
+  \ = -0.76 V, E°(Ag⁺/Ag) = +0.80 V**\n\n    Solution:\n    - Cathode (reduction):\
+  \ Ag⁺ + e⁻ → Ag, E° = +0.80 V\n    - Anode (oxidation): Zn → Zn²⁺ + 2e⁻, E° = -0.76\
+  \ V\n\n    E°cell = E°cathode - E°anode\n    E°cell = 0.80 - (-0.76) = **1.56 V**\n\
+  \n    ### Problem 2: Nernst equation\n\n    **Q: For Daniell cell, E° = 1.10 V.\
+  \ Calculate E when [Zn²⁺] = 0.01 M, [Cu²⁺] = 0.1 M.**\n\n    Solution:\n    E =\
+  \ E° - (0.0591/n) log([Zn²⁺]/[Cu²⁺])\n    E = 1.10 - (0.0591/2) log(0.01/0.1)\n\
+  \    E = 1.10 - 0.02955 log(0.1)\n    E = 1.10 - 0.02955 × (-1)\n    E = 1.10 +\
+  \ 0.03 = **1.13 V**\n\n    ### Problem 3: Calculate K\n\n    **Q: E°cell = 0.46\
+  \ V for a 2-electron transfer. Calculate K at 25°C.**\n\n    Solution:\n    E° =\
+  \ (0.0591/n) log K\n    0.46 = (0.0591/2) log K\n    log K = (0.46 × 2)/0.0591 =\
+  \ 15.57\n    **K = 10¹⁵·⁵⁷ ≈ 3.7 × 10¹⁵**\n\n    ### Problem 4: Concentration cell\n\
+  \n    **Q: Calculate EMF of Ag | Ag⁺(0.001 M) || Ag⁺(0.1 M) | Ag**\n\n    Solution:\n\
+  \    E = (0.0591/n) log(C₂/C₁)\n    E = (0.0591/1) log(0.1/0.001)\n    E = 0.0591\
+  \ log(100)\n    E = 0.0591 × 2 = **0.118 V**\n\n    ### Problem 5: Calculate ΔG°\n\
+  \n    **Q: E°cell = 1.10 V for 2-electron transfer. Calculate ΔG°.**\n\n    Solution:\n\
+  \    ΔG° = -nFE°\n    ΔG° = -2 × 96,500 × 1.10\n    ΔG° = -212,300 J = **-212.3\
+  \ kJ**\n\n    ## IIT JEE Key Points\n\n    1. **Galvanic cell:** Chemical → Electrical\
+  \ (spontaneous)\n    2. **Anode:** Oxidation, negative, electron source\n    3.\
+  \ **Cathode:** Reduction, positive, electron sink\n    4. **E°cell = E°cathode -\
+  \ E°anode**\n    5. **ΔG° = -nFE°cell**\n    6. **E°cell = (0.0591/n) log K** at\
+  \ 25°C\n    7. **Nernst:** E = E° - (0.0591/n) log Q\n    8. **Concentration cell:**\
+  \ E°cell = 0\n    9. **F = 96,500 C/mol**\n    10. **Positive E°cell:** Spontaneous\n\
+  \n    ## Quick Formulas\n\n    | Concept | Formula |\n    |---------|---------|\n\
+  \    | E°cell | E°cathode - E°anode |\n    | ΔG° | -nFE°cell |\n    | E° and K |\
+  \ E° = (0.0591/n) log K |\n    | Nernst equation | E = E° - (0.0591/n) log Q |\n\
+  \    | Concentration cell | E = (0.0591/n) log(C₂/C₁) |\n\n    ## Important Constants\n\
+  \n    - **F (Faraday)** = 96,500 C/mol ≈ 96,487 C/mol\n    - **R** = 8.314 J/(mol·K)\n\
+  \    - **T** = 298 K (25°C)\n    - **2.303RT/F** = 0.0591 V at 25°C\n\n## Key Points\n\
+  \n- Galvanic cells\n\n- Standard electrode potential\n\n- Cell EMF"
+exercises:
+- type: mcq
+  slug: galvanic-cells-emf-and-nernst-equation-mcq
+  sequence_order: 1
+  question: Pick the correct statement based on this concept.
+  options:
+  - Statement A
+  - Statement B
+  - Statement C
+  - Statement D
+  correct_answer_index: 0
+  explanation: Review the definition and common exceptions.
+objectives:
+- Define the core idea
+- Identify governing formulae or rules
+- Practice with mixed-difficulty problems
+next_recommended: []

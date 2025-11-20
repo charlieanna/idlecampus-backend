@@ -1,0 +1,79 @@
+slug: docker-container-restart-stop-and-start-containers
+title: 'Docker Container Restart: Stop and Start Containers'
+difficulty: easy
+sequence_order: 15
+estimated_minutes: 2
+key_concepts:
+- containers
+- docker-restart
+- lifecycle
+prerequisites: []
+content_md: '# Docker Container Restart: Stop and Start Containers 🚀
+
+
+  Restart containers by stopping and starting them - equivalent to stop + start.
+
+
+  ## Syntax/Command
+
+
+  ```bash
+
+  docker container restart my-container
+
+  ```
+
+
+  ## Example
+
+
+  ```bash
+
+  docker container restart -t 30 container
+
+  ```
+
+
+  ## Key Points
+
+
+  - Restart: docker container restart <name>'
+exercises:
+- type: terminal
+  problem_statement: Restart a container named 'my-container' to apply configuration changes
+  expected_output: Container ID or name confirming restart
+  language: bash
+  starter_code: "# Restart a container\n"
+  sequence_order: 1
+  command: docker container restart my-container
+  description: Restart container to resolve temporary issues
+  hints:
+  - 'Restart: docker container restart <name>'
+  validation:
+    must_not_include:
+    - Error
+    - 'panic:'
+  timeout_sec: 60
+  require_pass: true
+- type: sandbox
+  sequence_order: 99
+  hints:
+  - Run under CPU pressure to surface leaks or races
+  - Keep commands idempotent in CI
+  validation:
+    must_not_include:
+    - Error
+    - 'panic:'
+  timeout_sec: 60
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What does docker restart do?
+  options:
+  - Stops then starts the container - equivalent to stop followed by start
+  - Only stops the container without restarting
+  - Reloads configuration without stopping the container
+  - Creates a new container from the same image
+  correct_answer: Stops then starts the container - equivalent to stop followed by start
+  explanation: "docker container restart performs a graceful stop (SIGTERM followed by SIGKILL if needed) and then starts the container again. It's useful for applying configuration changes or resolving temporary issues."
+  require_pass: true

@@ -1,0 +1,65 @@
+slug: tests-practice
+title: tests — Practice
+difficulty: easy
+sequence_order: 9
+estimated_minutes: 2
+key_concepts:
+- tests
+prerequisites: []
+content_md: '# tests — Practice 🚀
+
+
+  Carbylamine: R-NH₂ + CHCl₃ + KOH → R-NC (foul smell). ONLY 1° amines give offensive
+  smell of isocyanide. 2° and 3° do not react.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 2
+  question: 'Carbylamine test is positive for:'
+  options:
+  - 1° amines only
+  - 2° amines only
+  - All amines
+  - 3° amines only
+  require_pass: true
+  correct_answer: 1° amines only
+  explanation: 'The carbylamine test (also called isocyanide test) is specific for
+    primary amines. When a primary amine (R-NH₂) is heated with chloroform (CHCl₃)
+    and alcoholic KOH, it forms an isocyanide (R-NC) which has an extremely offensive,
+    foul smell. The reaction is: R-NH₂ + CHCl₃ + 3KOH → R-NC + 3KCl + 3H₂O. Secondary
+    (2°) and tertiary (3°) amines do not give this reaction because they lack the
+    two hydrogen atoms on nitrogen required for the reaction mechanism. This makes
+    it a reliable test to distinguish primary amines from secondary and tertiary amines.'
+- type: mcq
+  sequence_order: 3
+  question: 'What is the characteristic observation in a positive carbylamine test?'
+  options:
+  - Offensive, foul smell of isocyanide
+  - Yellow precipitate
+  - Silver mirror
+  - Blue color
+  require_pass: true
+  correct_answer: Offensive, foul smell of isocyanide
+  explanation: 'The characteristic observation in a positive carbylamine test is an extremely offensive, foul smell of the isocyanide (R-NC) formed. When a primary amine is heated with chloroform (CHCl₃) and alcoholic KOH, it produces isocyanide which has one of the most disagreeable odors in organic chemistry - often described as nauseating or putrid. This distinctive smell is so characteristic that it makes the test very reliable. The reaction is: R-NH₂ + CHCl₃ + 3KOH → R-NC (foul smell) + 3KCl + 3H₂O. There is no color change or precipitate - the smell is the diagnostic feature. Secondary and tertiary amines do not produce this smell because they cannot form isocyanides.'
+- type: mcq
+  sequence_order: 4
+  question: 'Why do secondary and tertiary amines NOT give carbylamine test?'
+  options:
+  - They lack two hydrogen atoms on nitrogen required for the reaction
+  - They are too basic
+  - They do not react with chloroform
+  - They form different colored products
+  require_pass: true
+  correct_answer: They lack two hydrogen atoms on nitrogen required for the reaction
+  explanation: 'Secondary (R₂NH) and tertiary (R₃N) amines do NOT give carbylamine test because they lack the two hydrogen atoms on nitrogen that are required for the reaction mechanism. Primary amines (R-NH₂) have two H atoms on nitrogen. During the carbylamine test, the amine must react with dichlorocarbene (:CCl₂) intermediate generated from chloroform and base. The mechanism requires both H atoms on nitrogen to be substituted/eliminated sequentially to form the isocyanide (R-N≡C:). Secondary amines (R₂NH) have only one H on nitrogen, and tertiary amines (R₃N) have no H on nitrogen, so they cannot complete the reaction sequence. This structural requirement makes the test specific for distinguishing primary amines from other amines.'

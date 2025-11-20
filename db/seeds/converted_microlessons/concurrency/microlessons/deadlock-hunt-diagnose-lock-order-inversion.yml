@@ -1,0 +1,96 @@
+slug: deadlock-hunt-diagnose-lock-order-inversion
+title: 'Deadlock Hunt: Diagnose Lock-Order Inversion'
+difficulty: medium
+sequence_order: 6
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: '# Deadlock Hunt: Diagnose Lock-Order Inversion 🚀
+
+
+  Reproduce a deadlock caused by inconsistent lock ordering. Then fix by enforcing
+  a global lock order or using a channel-based redesign.
+
+
+  ## Mental model
+
+  Deadlock arises from a cycle in the wait‑for graph; consistent global lock order
+  breaks cycles.
+
+
+  ## Validate
+
+  ```bash
+
+  go test ./examples/go-concurrency-capstone/internal/deadlock -run TestDeadlock_Reproduce
+  -timeout 2s -count=1
+
+  ```
+
+
+  ## Key Points
+
+  - Always acquire multiple locks in a consistent global order
+
+  - Reduce lock scope; avoid holding locks while calling out
+
+  - Consider redesign: pipeline via channels over shared locks'
+exercises:
+- type: terminal
+  problem_statement: Run the deadlock test to reproduce a lock-order inversion deadlock, then fix the code so the test completes within the timeout without goroutines deadlocking
+  expected_output: Test completes successfully within 2 seconds with no deadlock errors
+  language: bash
+  starter_code: "# Run deadlock test with timeout\n"
+  sequence_order: 1
+  command: go test ./examples/go-concurrency-capstone/internal/deadlock -run TestDeadlock_Reproduce
+    -timeout 2s -count=1
+  description: Reproduce deadlock; then fix and prove test completes under timeout.
+  hints:
+  - Always acquire multiple locks in a consistent global order
+  - Reduce lock scope; avoid holding locks while calling out
+  - 'Consider redesign: pipeline via channels over shared locks'
+  validation:
+    must_not_include:
+    - 'fatal error: all goroutines are asleep'
+  timeout_sec: 10
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What prevents lock-order inversion deadlocks?
+  options:
+  - Consistently acquiring locks in the same global order
+  - Increasing timeouts
+  - Using defer with all locks
+  - Adding more goroutines
+  correct_answer: Consistently acquiring locks in the same global order
+  explanation: "Lock-order inversion deadlocks occur when different goroutines acquire multiple locks in different orders, creating a cycle in the wait-for graph. The solution is to enforce a consistent global lock order - always acquire locks in the same sequence (e.g., by memory address or a defined hierarchy). Timeouts, defer, or more goroutines don't prevent the fundamental race condition that causes deadlock."
+  require_pass: true
+- type: code
+  problem_statement: Fix the deadlock in the following code by ensuring locks are always acquired in a consistent order. Two accounts need to transfer money between each other, but the lock order differs depending on which account initiates the transfer.
+  language: go
+  starter_code: |
+    package main
+
+    import "sync"
+
+    type Account struct {
+        mu      sync.Mutex
+        balance int
+        id      int
+    }
+
+    // Transfer money from 'from' to 'to'
+    // TODO: Fix this to avoid deadlock by acquiring locks in consistent order
+    func Transfer(from, to *Account, amount int) {
+        from.mu.Lock()
+        defer from.mu.Unlock()
+
+        to.mu.Lock()
+        defer to.mu.Unlock()
+
+        from.balance -= amount
+        to.balance += amount
+    }
+  expected_output: Code that acquires locks in consistent order (e.g., by account ID) to prevent deadlock
+  sequence_order: 3
+  require_pass: true

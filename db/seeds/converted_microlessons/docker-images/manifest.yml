@@ -1,0 +1,21 @@
+course:
+  slug: docker-images
+  title: Docker Images
+  description: ''
+  estimated_hours: null
+  level: null
+modules:
+- slug: default
+  title: Default Module
+  lessons:
+  - docker-build-building-images-from-dockerfile
+  - docker-images-list-local-images
+  - docker-pull-download-images-from-registry
+  - docker-push-upload-images-to-registry
+  - docker-tag-create-image-aliases
+  - docker-rmi-remove-images
+  - docker-image-prune-clean-unused-images
+  - docker-image-ls-list-images
+  - docker-image-rm-remove-images
+  - docker-image-inspect-detailed-image-information
+  - docker-history-show-image-build-history

@@ -1,0 +1,233 @@
+<div class="container py-4">
+  <!-- Breadcrumb -->
+  <nav aria-label="breadcrumb" class="mb-4">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><%= link_to "Dashboard", dashboard_path %></li>
+      <% if @course %>
+        <li class="breadcrumb-item"><%= link_to "Courses", courses_path %></li>
+        <li class="breadcrumb-item"><%= link_to @course.title, course_path(@course) %></li>
+        <li class="breadcrumb-item"><%= link_to @course_module.title, course_module_path(@course, @course_module) %></li>
+      <% end %>
+      <li class="breadcrumb-item active" aria-current="page"><%= @lab.title %></li>
+    </ol>
+  </nav>
+
+  <div class="row">
+    <div class="col-lg-8">
+      <!-- Lab Header -->
+      <div class="card border-0 shadow-sm mb-4">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-start mb-3">
+            <div>
+              <h2 class="mb-2"><%= @lab.title %></h2>
+              <div class="mb-2">
+                <span class="badge badge-<%= @lab.difficulty == 'easy' ? 'success' : @lab.difficulty == 'medium' ? 'warning' : 'danger' %>">
+                  <%= @lab.difficulty.titleize %>
+                </span>
+                <span class="badge badge-info ml-2">
+                  <%= @lab.lab_type.titleize %>
+                </span>
+                <span class="badge badge-secondary ml-2">
+                  <%= @lab.category.titleize %>
+                </span>
+              </div>
+              <p class="text-muted mb-0">
+                <i class="fas fa-clock"></i> <%= @lab.estimated_minutes %> minutes
+                <span class="ml-3"><i class="fas fa-star"></i> <%= @lab.points_reward %> points</span>
+                <span class="ml-3"><i class="fas fa-redo"></i> <%= @lab.max_attempts %> attempts max</span>
+              </p>
+            </div>
+          </div>
+
+          <p class="lead"><%= @lab.description %></p>
+
+          <!-- Start Lab Button -->
+          <% if @active_session %>
+            <div class="alert alert-info">
+              <i class="fas fa-info-circle"></i> 
+              You have an active session for this lab.
+              <%= link_to "Resume Lab", lab_session_hands_on_lab_path(@lab, session_id: @active_session.id), class: "btn btn-primary btn-sm ml-2" %>
+            </div>
+          <% elsif @can_attempt %>
+            <%= button_to start_hands_on_lab_path(@lab), method: :post, class: "btn btn-success btn-lg" do %>
+              <i class="fas fa-play"></i> Start Lab
+            <% end %>
+          <% else %>
+            <div class="alert alert-warning">
+              <i class="fas fa-exclamation-triangle"></i>
+              You have reached the maximum number of attempts for this lab.
+            </div>
+          <% end %>
+        </div>
+      </div>
+
+      <!-- Learning Objectives -->
+      <div class="card mb-4">
+        <div class="card-header">
+          <h5 class="mb-0"><i class="fas fa-bullseye"></i> Learning Objectives</h5>
+        </div>
+        <div class="card-body">
+          <ul>
+            <% if @lab.learning_objectives.is_a?(Array) %>
+              <% @lab.learning_objectives.each do |objective| %>
+                <li><%= objective %></li>
+              <% end %>
+            <% else %>
+              <li>Complete hands-on practice with <%= @lab.title %></li>
+            <% end %>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Prerequisites -->
+      <% if @lab.has_prerequisites? %>
+        <div class="card mb-4">
+          <div class="card-header">
+            <h5 class="mb-0"><i class="fas fa-list-check"></i> Prerequisites</h5>
+          </div>
+          <div class="card-body">
+            <ul>
+              <% @lab.prerequisite_list.each do |prereq| %>
+                <li><%= prereq %></li>
+              <% end %>
+            </ul>
+          </div>
+        </div>
+      <% end %>
+
+      <!-- Lab Steps Overview -->
+      <div class="card mb-4">
+        <div class="card-header">
+          <h5 class="mb-0"><i class="fas fa-tasks"></i> Lab Steps (<%= @lab.step_count %> steps)</h5>
+        </div>
+        <div class="card-body">
+          <% if @lab.steps.is_a?(Array) %>
+            <div class="list-group">
+              <% @lab.steps.each_with_index do |step, index| %>
+                <div class="list-group-item">
+                  <div class="d-flex w-100 justify-content-between">
+                    <h6 class="mb-1">
+                      <span class="badge badge-primary mr-2"><%= index + 1 %></span>
+                      <%= step['title'] %>
+                    </h6>
+                  </div>
+                  <p class="mb-1 text-muted"><%= step['description'] %></p>
+                </div>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+
+      <!-- Previous Attempts -->
+      <% if @previous_attempts.any? %>
+        <div class="card">
+          <div class="card-header">
+            <h5 class="mb-0"><i class="fas fa-history"></i> Previous Attempts</h5>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-sm">
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Score</th>
+                    <th>Time</th>
+                    <th>Steps</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% @previous_attempts.each do |attempt| %>
+                    <tr>
+                      <td><%= attempt.completed_at.strftime('%m/%d/%Y %H:%M') %></td>
+                      <td>
+                        <span class="badge badge-<%= attempt.passed? ? 'success' : 'danger' %>">
+                          <%= attempt.score %>%
+                        </span>
+                      </td>
+                      <td><%= attempt.time_elapsed_minutes %> min</td>
+                      <td><%= attempt.steps_completed %> / <%= @lab.step_count %></td>
+                      <td>
+                        <% if attempt.passed? %>
+                          <span class="text-success"><i class="fas fa-check-circle"></i> Passed</span>
+                        <% else %>
+                          <span class="text-danger"><i class="fas fa-times-circle"></i> Failed</span>
+                        <% end %>
+                      </td>
+                    </tr>
+                  <% end %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="col-lg-4">
+      <!-- Quick Stats -->
+      <div class="card mb-3">
+        <div class="card-header">
+          <h6 class="mb-0"><i class="fas fa-chart-bar"></i> Lab Statistics</h6>
+        </div>
+        <div class="card-body">
+          <div class="mb-2">
+            <strong>Completion Rate:</strong>
+            <span class="float-right"><%= @lab.success_percentage %>%</span>
+          </div>
+          <div class="mb-2">
+            <strong>Times Completed:</strong>
+            <span class="float-right"><%= @lab.times_completed %></span>
+          </div>
+          <div class="mb-2">
+            <strong>Avg. Time:</strong>
+            <span class="float-right"><%= @lab.average_time_minutes %> min</span>
+          </div>
+          <% if @best_attempt %>
+            <hr>
+            <div class="mb-2">
+              <strong>Your Best Score:</strong>
+              <span class="float-right">
+                <span class="badge badge-success"><%= @best_attempt.score %>%</span>
+              </span>
+            </div>
+          <% end %>
+        </div>
+      </div>
+
+      <!-- Required Tools -->
+      <% if @lab.required_tool_list.any? %>
+        <div class="card mb-3">
+          <div class="card-header">
+            <h6 class="mb-0"><i class="fas fa-tools"></i> Required Tools</h6>
+          </div>
+          <div class="card-body">
+            <ul class="mb-0">
+              <% @lab.required_tool_list.each do |tool| %>
+                <li><%= tool %></li>
+              <% end %>
+            </ul>
+          </div>
+        </div>
+      <% end %>
+
+      <!-- Tips -->
+      <div class="card border-info">
+        <div class="card-header bg-info text-white">
+          <h6 class="mb-0"><i class="fas fa-lightbulb"></i> Tips for Success</h6>
+        </div>
+        <div class="card-body">
+          <ul class="mb-0">
+            <li>Read each step carefully before executing</li>
+            <li>Use hints sparingly - they deduct points</li>
+            <li>Double-check your commands before submitting</li>
+            <li>Take your time - accuracy is more important than speed</li>
+            <li>Learn from mistakes in previous attempts</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,89 @@
+slug: understanding-tlsssl
+title: Understanding TLS/SSL
+difficulty: easy
+sequence_order: 10
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Understanding TLS/SSL \U0001F680\n\n# Understanding TLS/SSL\n\n   \
+  \ TLS (Transport Layer Security) encrypts data in transit between clients and servers.\n\
+  \n    ## What is TLS?\n\n    **TLS** (formerly SSL) provides:\n    - **Encryption**:\
+  \ Data is encrypted in transit\n    - **Authentication**: Verify server identity\n\
+  \    - **Integrity**: Detect tampering\n\n    ## TLS Handshake Process\n\n    ```\n\
+  \    Client                                    Server\n      |                 \
+  \                        |\n      |--- ClientHello (supported ciphers) ---->|\n\
+  \      |                                         |\n      |<--- ServerHello (chosen\
+  \ cipher) --------|\n      |<--- Certificate (server's cert) --------|\n      |<---\
+  \ ServerHelloDone -------------------|\n      |                                \
+  \         |\n      |--- ClientKeyExchange ----------------->|\n      |--- ChangeCipherSpec\
+  \ ------------------>|\n      |--- Finished -------------------------->|\n     \
+  \ |                                         |\n      |<--- ChangeCipherSpec ------------------|\n\
+  \      |<--- Finished --------------------------|\n      |                     \
+  \                    |\n      |<========== Encrypted Data ===========>|\n    ```\n\
+  \n    ### Steps Explained:\n\n    1. **ClientHello**: Client sends supported TLS\
+  \ versions and cipher suites\n    2. **ServerHello**: Server chooses TLS version\
+  \ and cipher\n    3. **Certificate**: Server sends its certificate (public key)\n\
+  \    4. **Certificate Verification**: Client validates certificate\n    5. **Key\
+  \ Exchange**: Generate shared session key\n    6. **Finished**: Both confirm encryption\
+  \ is working\n    7. **Encrypted Communication**: All data now encrypted\n\n   \
+  \ ## Certificates\n\n    ### Certificate Components\n\n    - **Subject**: Who the\
+  \ certificate is issued to (domain name)\n    - **Issuer**: Who signed the certificate\
+  \ (CA)\n    - **Public Key**: Server's public key\n    - **Validity Period**: Start\
+  \ and end dates\n    - **Signature**: CA's digital signature\n\n    ### Certificate\
+  \ Types\n\n    1. **Self-Signed**: You sign your own certificate\n       - ⚠️ Browsers\
+  \ will show warnings\n       - ✅ Good for testing/development\n       - ✅ Good for\
+  \ internal services\n\n    2. **Certificate Authority (CA) Signed**: Trusted third\
+  \ party\n       - ✅ Browsers trust automatically\n       - ✅ Required for public\
+  \ websites\n       - Examples: Let's Encrypt, DigiCert, Comodo\n\n    3. **Wildcard**:\
+  \ Covers all subdomains\n       - `*.example.com` covers `api.example.com`, `www.example.com`\n\
+  \n    ## TLS Versions\n\n    - **TLS 1.3**: Current, fastest, most secure ✅\n  \
+  \  - **TLS 1.2**: Still widely used, secure ✅\n    - **TLS 1.1**: Deprecated ⚠️\n\
+  \    - **TLS 1.0**: Deprecated ⚠️\n    - **SSL 3.0**: Broken, do not use ❌\n   \
+  \ - **SSL 2.0**: Broken, do not use ❌\n\n    ## Common Ports\n\n    | Protocol |\
+  \ Port | Description |\n    |----------|------|-------------|\n    | HTTP | 80 |\
+  \ Unencrypted web traffic |\n    | HTTPS | 443 | Encrypted web traffic (TLS) |\n\
+  \    | SMTP (TLS) | 587 | Encrypted email submission |\n    | IMAP (TLS) | 993 |\
+  \ Encrypted email retrieval |\n\n    ## Certificate Authorities (CAs)\n\n    ###\
+  \ Root CA\n    Browsers and operating systems trust a set of root CAs.\n\n    ###\
+  \ Chain of Trust\n    ```\n    Root CA (trusted by browser)\n      └── Intermediate\
+  \ CA\n            └── Your Certificate\n    ```\n\n    ### Let's Encrypt\n    Free,\
+  \ automated certificate authority.\n\n    ```bash\n    # Install certbot\n    sudo\
+  \ apt install certbot\n\n    # Get certificate for domain\n    sudo certbot certonly\
+  \ --standalone -d example.com\n    ```\n\n    ## Certificate Pinning\n\n    **Hard-code**\
+  \ expected certificate or public key in application.\n    - Extra security against\
+  \ compromised CAs\n    - Used in mobile apps, critical services\n    - ⚠️ Requires\
+  \ careful key rotation"
+exercises:
+  - type: multiple_choice_question
+    sequence_order: 1
+    question: "What are the three main security properties provided by TLS?"
+    options:
+      - "Compression, caching, and speed"
+      - "Encryption, authentication, and integrity"
+      - "Routing, filtering, and monitoring"
+      - "Compression, encryption, and routing"
+    correct_answer: "Encryption, authentication, and integrity"
+    explanation: "TLS (Transport Layer Security) provides three fundamental security properties. First, encryption ensures that data transmitted between client and server is unreadable to anyone intercepting the communication, protecting confidentiality. Second, authentication verifies that you're actually communicating with the intended server, not an imposter, typically through certificate validation. Third, integrity ensures that data cannot be tampered with during transmission without detection, using message authentication codes (MACs). These three properties together form the foundation of secure internet communication. Without encryption, attackers could read passwords and sensitive data. Without authentication, attackers could perform man-in-the-middle attacks, pretending to be your bank while intercepting your credentials. Without integrity, attackers could modify data in transit, changing transaction amounts or injecting malicious code. The TLS handshake establishes these protections before any application data is transmitted. Modern TLS 1.3 improves on TLS 1.2 by reducing handshake complexity, removing weak cryptographic algorithms, and encrypting more of the handshake itself. Understanding these three properties helps explain why HTTPS is essential for any website handling sensitive data or user authentication."
+    require_pass: true
+  - type: multiple_choice_question
+    sequence_order: 2
+    question: "Why should you never use SSL 3.0 or earlier versions?"
+    options:
+      - "They are too slow for modern applications"
+      - "They have known security vulnerabilities and are considered broken"
+      - "They don't support encryption"
+      - "They are incompatible with all modern browsers"
+    correct_answer: "They have known security vulnerabilities and are considered broken"
+    explanation: "SSL 3.0 and all earlier SSL versions have critical security vulnerabilities that make them unsafe for any use. SSL 3.0 is vulnerable to the POODLE attack (Padding Oracle On Downgraded Legacy Encryption), which allows attackers to decrypt encrypted data. SSL 2.0 has even more severe vulnerabilities. These aren't theoretical issues – they can be exploited in practice to compromise encrypted communications. Security researchers have demonstrated practical attacks that can steal cookies, session tokens, and other sensitive data from SSL 3.0 connections. As a result, all major browsers have removed support for SSL 3.0 and earlier, and security standards like PCI DSS explicitly prohibit their use. The industry has moved to TLS (Transport Layer Security), which is SSL's successor. TLS 1.0 and 1.1 are also deprecated due to vulnerabilities. Current best practice is to use only TLS 1.2 and TLS 1.3. Server configurations should explicitly disable SSL 2.0, SSL 3.0, TLS 1.0, and TLS 1.1. Using outdated cryptographic protocols is like using a lock that everyone knows how to pick – it provides an illusion of security while being fundamentally insecure."
+    require_pass: true
+  - type: multiple_choice_question
+    sequence_order: 3
+    question: "What happens during the TLS handshake?"
+    options:
+      - "The client and server exchange usernames and passwords"
+      - "The client and server negotiate encryption methods and establish a secure session"
+      - "The server downloads the web page content"
+      - "The client installs a security certificate"
+    correct_answer: "The client and server negotiate encryption methods and establish a secure session"
+    explanation: "The TLS handshake is the initial negotiation process where client and server establish a secure encrypted connection before any application data is transmitted. The process begins with the ClientHello message where the client announces which TLS versions and cipher suites it supports. The server responds with ServerHello selecting the cipher suite to use, then sends its certificate (containing its public key) to prove its identity. The client verifies this certificate against trusted Certificate Authorities to ensure it's connecting to the legitimate server. Next, the client and server perform a key exchange to generate a shared session key (symmetric encryption key) that will be used to encrypt all subsequent communication. This often uses asymmetric encryption (like RSA or DHKE) to securely exchange the symmetric key. Finally, both sides send Finished messages to confirm the handshake succeeded, and all further communication is encrypted with the session key. The handshake doesn't involve passwords (that's application layer), doesn't transfer the actual web content (that comes after), and the client doesn't install certificates (it validates them). Modern TLS 1.3 streamlines this process, reducing round trips and improving connection speed while maintaining security."
+    require_pass: true

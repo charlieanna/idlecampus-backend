@@ -1,0 +1,138 @@
+slug: introduction-to-regular-expressions
+title: Introduction to Regular Expressions
+sequence_order: 1
+estimated_minutes: 2
+difficulty: easy
+content_md: "# Introduction to Regular Expressions \U0001F680\n\n# Introduction to\
+  \ Regular Expressions\n\n    Regular expressions (regex) are powerful patterns used\
+  \ for matching and manipulating text. They're supported in virtually every programming\
+  \ language and are essential for text processing tasks.\n\n    ## What are Regular\
+  \ Expressions?\n\n    A regular expression is a sequence of characters that defines\
+  \ a search pattern. When you run a regex against text, it returns matches or allows\
+  \ you to perform substitutions.\n\n    ### Common Use Cases\n\n    - **Validation**:\
+  \ Email addresses, phone numbers, passwords\n    - **Parsing**: Log files, data\
+  \ extraction, web scraping\n    - **Search & Replace**: Text editors, IDEs, code\
+  \ refactoring\n    - **Data Cleaning**: Removing whitespace, formatting\n    - **Tokenization**:\
+  \ Breaking text into words or sentences\n\n    ## Your First Regex\n\n    ### Literal\
+  \ Matches\n\n    The simplest regex matches exact text:\n\n    ```python\n    import\
+  \ re\n\n    text = \"The cat sat on the mat\"\n    pattern = \"cat\"\n\n    match\
+  \ = re.search(pattern, text)\n    print(match.group())  # Output: cat\n    ```\n\
+  \n    ## Basic Metacharacters\n\n    Metacharacters are special characters with\
+  \ special meanings:\n\n    | Character | Meaning | Example |\n    |-----------|---------|---------|\n\
+  \    | `.` | Any character except newline | `c.t` matches \"cat\", \"cot\", \"cut\"\
+  \ |\n    | `^` | Start of string | `^The` matches \"The\" at beginning |\n    |\
+  \ `$` | End of string | `end$` matches \"end\" at end |\n    | `*` | 0 or more repetitions\
+  \ | `ca*t` matches \"ct\", \"cat\", \"caat\" |\n    | `+` | 1 or more repetitions\
+  \ | `ca+t` matches \"cat\", \"caat\" but not \"ct\" |\n    | `?` | 0 or 1 repetition\
+  \ (optional) | `colou?r` matches \"color\" and \"colour\" |\n    | `|` | OR operator\
+  \ | `cat|dog` matches \"cat\" or \"dog\" |\n    | `\\\\` | Escape special character\
+  \ | `\\\\.` matches literal \".\" |\n\n    ### The Dot (.) - Universal Wildcard\n\
+  \n    ```python\n    pattern = \"c.t\"\n    # Matches: cat, cot, cut, c9t, c@t,\
+  \ etc.\n    # Does NOT match: ct (no character between c and t)\n    ```\n\n   \
+  \ ### Escape Characters (\\\\)\n\n    To match special characters literally, escape\
+  \ them:\n\n    ```python\n    pattern = \"\\\\.\"      # Matches literal \".\"\n\
+  \    pattern = \"\\\\$\"      # Matches literal \"$\"\n    pattern = \"\\\\?\" \
+  \     # Matches literal \"?\"\n    pattern = \"\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"\
+  \      # Matches literal \"\\\\\\\\\\\\\\\\\"\n    ```\n\n    ## Character Classes\n\
+  \n    Character classes match one character from a set:\n\n    ### Basic Syntax:\
+  \ [...]\n\n    ```python\n    pattern = \"[aeiou]\"      # Matches any vowel\n \
+  \   pattern = \"[0-9]\"        # Matches any digit\n    pattern = \"[a-z]\"    \
+  \    # Matches any lowercase letter\n    pattern = \"[A-Z]\"        # Matches any\
+  \ uppercase letter\n    pattern = \"[a-zA-Z]\"     # Matches any letter\n    pattern\
+  \ = \"[a-zA-Z0-9]\"  # Matches alphanumeric\n    ```\n\n    ### Negated Character\
+  \ Classes: [^...]\n\n    ```python\n    pattern = \"[^0-9]\"   # Matches any NON-digit\n\
+  \    pattern = \"[^aeiou]\" # Matches any NON-vowel\n    ```\n\n    ### Predefined\
+  \ Character Classes\n\n    | Class | Equivalent | Meaning |\n    |-------|------------|---------|\n\
+  \    | `\\\\d` | `[0-9]` | Any digit |\n    | `\\\\D` | `[^0-9]` | Any non-digit\
+  \ |\n    | `\\\\w` | `[a-zA-Z0-9_]` | Any word character |\n    | `\\\\W` | `[^a-zA-Z0-9_]`\
+  \ | Any non-word character |\n    | `\\\\s` | `[ \\\\t\\\\n\\\\r\\\\f\\\\v]` | Any\
+  \ whitespace |\n    | `\\\\S` | `[^ \\\\t\\\\n\\\\r\\\\f\\\\v]` | Any non-whitespace\
+  \ |\n\n    ### Examples\n\n    ```python\n    # Match a 3-digit number\n    pattern\
+  \ = \"\\\\d\\\\d\\\\d\"\n    # Matches: 123, 456, 999\n\n    # Match a word\n  \
+  \  pattern = \"\\\\w+\"\n    # Matches: hello, world123, test_case\n\n    # Match\
+  \ whitespace-separated words\n    pattern = \"\\\\w+\\\\s+\\\\w+\"\n    # Matches:\
+  \ \"hello world\", \"foo bar\"\n    ```\n\n    ## Quantifiers\n\n    Quantifiers\
+  \ specify how many times a character or group should appear:\n\n    | Quantifier\
+  \ | Meaning | Example |\n    |------------|---------|---------|\n    | `*` | 0 or\
+  \ more | `a*` matches \"\", \"a\", \"aa\", \"aaa\" |\n    | `+` | 1 or more | `a+`\
+  \ matches \"a\", \"aa\", \"aaa\" (not \"\") |\n    | `?` | 0 or 1 | `a?` matches\
+  \ \"\", \"a\" |\n    | `{n}` | Exactly n | `a{3}` matches \"aaa\" |\n    | `{n,}`\
+  \ | n or more | `a{2,}` matches \"aa\", \"aaa\", \"aaaa\" |\n    | `{n,m}` | Between\
+  \ n and m | `a{2,4}` matches \"aa\", \"aaa\", \"aaaa\" |\n\n    ### Practical Examples\n\
+  \n    ```python\n    # Phone number: 3 digits, dash, 4 digits\n    pattern = \"\\\
+  \\d{3}-\\\\d{4}\"\n    # Matches: 555-1234\n\n    # Flexible phone: optional area\
+  \ code\n    pattern = \"(\\\\d{3}-)?\\\\d{3}-\\\\d{4}\"\n    # Matches: 555-1234\
+  \ or 800-555-1234\n\n    # One or more words\n    pattern = \"\\\\w+\"\n    # Matches:\
+  \ hello, world123, test\n\n    # Optional plural\n    pattern = \"cats?\"\n    #\
+  \ Matches: cat or cats\n    ```\n\n    ## Anchors and Boundaries\n\n    Anchors\
+  \ don't match characters—they match positions:\n\n    | Anchor | Meaning | Example\
+  \ |\n    |--------|---------|---------|\n    | `^` | Start of string/line | `^Hello`\
+  \ matches \"Hello\" at start |\n    | `$` | End of string/line | `world$` matches\
+  \ \"world\" at end |\n    | `\\\\b` | Word boundary | `\\\\bcat\\\\b` matches \"\
+  cat\" but not \"category\" |\n    | `\\\\B` | Non-word boundary | `\\\\Bcat\\\\\
+  B` matches \"category\" but not \"cat\" |\n\n    ### Examples\n\n    ```python\n\
+  \    # Entire string must be digits\n    pattern = \"^\\\\d+$\"\n    # Matches:\
+  \ \"12345\" (entire string)\n    # Does NOT match: \"abc123\" or \"123abc\"\n\n\
+  \    # Match \"cat\" as a whole word\n    pattern = \"\\\\bcat\\\\b\"\n    # Matches:\
+  \ \"the cat sat\" (matches \"cat\")\n    # Does NOT match: \"category\" or \"scattered\"\
+  \n\n    # Email validation (simplified)\n    pattern = \"^[\\\\w.-]+@[\\\\w.-]+\\\
+  \\.\\\\w+$\"\n    # Matches: user@example.com\n    ```\n\n    ## Greedy vs Lazy\
+  \ Matching\n\n    ### Greedy (Default)\n    Quantifiers are greedy by default—they\
+  \ match as much as possible:\n\n    ```python\n    text = \"<html><body></body></html>\"\
+  \n    pattern = \"<.*>\"\n    # Matches: \"<html><body></body></html>\" (everything!)\n\
+  \    ```\n\n    ### Lazy (Non-Greedy)\n    Add `?` after quantifier to make it lazy—match\
+  \ as little as possible:\n\n    ```python\n    text = \"<html><body></body></html>\"\
+  \n    pattern = \"<.*?>\"\n    # Matches: \"<html>\", \"<body>\", \"</body>\", \"\
+  </html>\" (separately)\n    ```\n\n    | Greedy | Lazy | Meaning |\n    |--------|------|---------|\n\
+  \    | `*` | `*?` | 0 or more (lazy) |\n    | `+` | `+?` | 1 or more (lazy) |\n\
+  \    | `?` | `??` | 0 or 1 (lazy) |\n    | `{n,m}` | `{n,m}?` | Between n and m\
+  \ (lazy) |\n\n    ## Practical Examples\n\n    ### Validate Email Address (Simple)\n\
+  \    ```python\n    pattern = \"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\\\.[a-zA-Z]{2,}$\"\
+  \n    ```\n\n    ### Extract URLs\n    ```python\n    pattern = \"https?://[\\\\\
+  w.-]+\\\\.[a-zA-Z]{2,}(/[\\\\w.-]*)*\"\n    ```\n\n    ### Match Phone Numbers\n\
+  \    ```python\n    # Format: (123) 456-7890 or 123-456-7890\n    pattern = \"\\\
+  \\(?(\\\\d{3})\\\\)?[- ]?(\\\\d{3})[- ]?(\\\\d{4})\"\n    ```\n\n    ### Extract\
+  \ Hashtags\n    ```python\n    pattern = \"#\\\\w+\"\n    # Matches: #python, #regex,\
+  \ #coding\n    ```\n\n    ## Testing Your Regex\n\n    ### Online Tools\n    - **regex101.com**\
+  \ - Best for learning (explanations + testing)\n    - **regexr.com** - Interactive\
+  \ with cheat sheet\n    - **regexpal.com** - Simple and fast\n\n    ### In Python\n\
+  \    ```python\n    import re\n\n    pattern = r\"\\\\d{3}-\\\\d{4}\"\n    text\
+  \ = \"Call me at 555-1234\"\n\n    # Search for first match\n    match = re.search(pattern,\
+  \ text)\n    if match:\n        print(f\"Found: {match.group()}\")\n\n    # Find\
+  \ all matches\n    matches = re.findall(pattern, text)\n    print(f\"All matches:\
+  \ {matches}\")\n    ```\n\n    ## Common Pitfalls\n\n    ### 1. Forgetting to Escape\
+  \ Special Characters\n    ```python\n    # ❌ Wrong - tries to match any character\n\
+  \    pattern = \".\"\n\n    # ✅ Correct - matches literal period\n    pattern =\
+  \ \"\\\\.\"\n    ```\n\n    ### 2. Greedy Matching\n    ```python\n    # ❌ Matches\
+  \ too much\n    pattern = \"\\\".*\\\"\"\n    text = '\"Hello\" and \"World\"'\n\
+  \    # Matches: \"Hello\" and \"World\" (entire string!)\n\n    # ✅ Use lazy quantifier\n\
+  \    pattern = \"\\\".*?\\\"\"\n    # Matches: \"Hello\" and \"World\" (separately)\n\
+  \    ```\n\n    ### 3. Not Using Raw Strings (Python)\n    ```python\n    # ❌ Need\
+  \ double backslashes\n    pattern = \"\\\\\\\\d+\"\n\n    # ✅ Use raw string\n \
+  \   pattern = r\"\\\\d+\"\n    ```\n\n    ## Key Takeaways\n\n    1. **Start simple**\
+  \ - Build complex patterns incrementally\n    2. **Test frequently** - Use online\
+  \ tools to visualize matches\n    3. **Use raw strings** - `r\"...\"` in Python\
+  \ to avoid double escaping\n    4. **Character classes** - `[...]` for sets, `\\\
+  \\d \\\\w \\\\s` for common patterns\n    5. **Quantifiers** - `* + ? {n,m}` for\
+  \ repetition\n    6. **Anchors** - `^ $ \\\\b` for position matching\n    7. **Lazy\
+  \ matching** - Add `?` after quantifiers when needed\n    8. **Practice** - The\
+  \ best way to learn is by doing!"
+exercises:
+- type: mcq
+  slug: introduction-to-regular-expressions-mcq
+  sequence_order: 1
+  question: In regex, what does the metacharacter '.' represent?
+  options:
+  - Any single character except newline
+  - A literal period
+  - The end of a line
+  - Zero or more characters
+  correct_answer_index: 0
+  explanation: 'The dot (.) matches any single character except newline. To match
+    a literal period, you must escape it: \. Other common metacharacters: * (zero
+    or more), + (one or more), ? (zero or one), ^ (start of line), $ (end of line).'
+objectives:
+- Understand the fundamental concepts and mechanisms of introduction to regular expressions
+- Apply chemical principles to solve related problems
+- Identify key reactions, equations, and chemical behaviors
+next_recommended: []

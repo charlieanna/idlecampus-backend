@@ -1,0 +1,60 @@
+slug: fajansrules-practice
+title: fajans_rules — Practice
+difficulty: medium
+sequence_order: 14
+estimated_minutes: 2
+key_concepts:
+- fajans_rules
+prerequisites: []
+content_md: '# fajans_rules — Practice 🚀
+
+
+  Smaller cations have higher charge density (polarizing power) and distort the electron
+  cloud of anions more, increasing covalent character. Example: Li⁺ (small) gives
+  more covalent compounds than Na⁺ (larger).
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: According to Fajans' rules, which cation will give more covalent character to its compounds?
+  options:
+  - Li⁺ (smaller)
+  - Na⁺ (larger)
+  - K⁺ (larger)
+  - Rb⁺ (larger)
+  correct_answer: Li⁺ (smaller)
+  explanation: "Smaller cations have higher charge density (polarizing power) and distort the electron cloud of anions more, increasing covalent character. Li⁺ is the smallest alkali metal cation, so LiCl has more covalent character than NaCl, KCl, or RbCl."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: Fajans' rules predict that covalent character increases when
+  options:
+  - cation is small and anion is large
+  - cation is large and anion is small
+  - both ions are large
+  - both ions are small
+  correct_answer: cation is small and anion is large
+  explanation: "Covalent character increases when: (1) Cation is small (high charge density, high polarizing power), (2) Anion is large (easily polarizable), (3) Cation has high charge, (4) Cation has pseudo-noble gas configuration (d¹⁰ like Cu⁺, Ag⁺). Small cation + large anion maximizes polarization and covalent character."
+  require_pass: false
+- type: mcq
+  sequence_order: 3
+  question: Which compound has more covalent character according to Fajans' rules?
+  options:
+  - NaCl
+  - NaI
+  - Both equal
+  - Cannot be determined
+  correct_answer: NaI
+  explanation: "NaI has more covalent character than NaCl because I⁻ is a larger anion (more polarizable) than Cl⁻. According to Fajans' rules, larger anions are more easily polarized by cations, leading to greater distortion of the electron cloud and increased covalent character."
+  require_pass: false

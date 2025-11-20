@@ -1,0 +1,59 @@
+slug: ligands-practice
+title: ligands — Practice
+difficulty: hard
+sequence_order: 22
+estimated_minutes: 2
+key_concepts:
+- ligands
+prerequisites: []
+content_md: '# ligands — Practice 🚀
+
+
+  EDTA (ethylenediaminetetraacetic acid) is hexadentate with 2 N and 4 O donor atoms.
+  Forms highly stable 6-membered chelate rings due to chelate effect.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What is the denticity of EDTA?
+  options:
+  - Monodentate
+  - Bidentate
+  - Tridentate
+  - Hexadentate
+  correct_answer: Hexadentate
+  explanation: "EDTA (ethylenediaminetetraacetic acid) is a hexadentate ligand with 6 donor atoms: 2 nitrogen atoms (from -NH- groups) and 4 oxygen atoms (from -COO⁻ carboxylate groups). It forms very stable chelate complexes by wrapping around the metal ion, forming multiple coordinate bonds."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: Which of the following is a bidentate ligand?
+  options:
+  - NH₃
+  - en (ethylenediamine)
+  - Cl⁻
+  - H₂O
+  correct_answer: en (ethylenediamine)
+  explanation: "Ethylenediamine (en = H₂N-CH₂-CH₂-NH₂) is a bidentate ligand with 2 donor nitrogen atoms. NH₃, Cl⁻, and H₂O are monodentate ligands (one donor atom each). Bidentate ligands form chelate rings, which are more stable than complexes with monodentate ligands."
+  require_pass: false
+- type: mcq
+  sequence_order: 3
+  question: What is the denticity of a monodentate ligand?
+  options:
+  - '1'
+  - '2'
+  - '4'
+  - '6'
+  correct_answer: '1'
+  explanation: "Monodentate ligands have one donor atom and form one coordinate bond with the central metal. Examples include NH₃ (donor: N), H₂O (donor: O), Cl⁻, CN⁻, and CO. The term 'monodentate' means 'one tooth,' indicating a single binding site."
+  require_pass: false

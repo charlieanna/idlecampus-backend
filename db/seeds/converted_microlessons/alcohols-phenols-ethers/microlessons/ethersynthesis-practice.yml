@@ -1,0 +1,66 @@
+slug: ethersynthesis-practice
+title: ether_synthesis — Practice
+difficulty: easy
+sequence_order: 16
+estimated_minutes: 2
+key_concepts:
+- ether_synthesis
+prerequisites: []
+content_md: '# ether_synthesis — Practice 🚀
+
+
+  Williamson synthesis (R-O⁻ + R\
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 2
+  question: Williamson ether synthesis works best with which combination?
+  options:
+  - Alkoxide + tertiary alkyl halide
+  - Alkoxide + primary alkyl halide
+  - Alcohol + alkyl halide
+  - Phenoxide + aryl halide
+  require_pass: true
+  correct_answer: Alkoxide + primary alkyl halide
+  explanation: 'The Williamson ether synthesis (R-O⁻ + R''-X → R-O-R'' + X⁻) works
+    best when using a strong nucleophile (alkoxide ion, R-O⁻) with a primary alkyl
+    halide (R''-X where X = Cl, Br, I). This combination favors the SN2 mechanism,
+    giving good yields of ether. Using tertiary alkyl halides leads to elimination
+    (E2) rather than substitution because the alkoxide is both a good nucleophile
+    and a strong base. Secondary alkyl halides give mixed results (both substitution
+    and elimination). Primary alkyl halides have the least steric hindrance and favor
+    SN2 substitution. The reaction requires the alkoxide to be pre-formed (usually
+    by reacting alcohol with sodium or potassium metal): R-OH + Na → R-O⁻Na⁺ + ½H₂.'
+- type: mcq
+  sequence_order: 3
+  question: 'Which reaction would be most suitable to prepare tert-butyl methyl ether (CH₃)₃C-O-CH₃?'
+  options:
+  - (CH₃)₃C-O⁻ + CH₃I
+  - (CH₃)₃C-Br + CH₃O⁻
+  - Both would work equally well
+  - Neither would work
+  require_pass: true
+  correct_answer: (CH₃)₃C-O⁻ + CH₃I
+  explanation: 'To prepare tert-butyl methyl ether, use the Williamson synthesis with tert-butoxide ion ((CH₃)₃C-O⁻) and methyl iodide (CH₃I). The key principle is: use the LESS hindered component as the alkyl halide and the MORE hindered component as the alkoxide. Since methyl is the least hindered group and tert-butyl is highly hindered (3°), we must use CH₃I as the alkyl halide. The reaction (CH₃)₃C-O⁻ + CH₃I → (CH₃)₃C-O-CH₃ proceeds via SN2 on the unhindered methyl group. The alternative approach ((CH₃)₃C-Br + CH₃O⁻) would fail because tert-butyl bromide is a tertiary alkyl halide. With a strong nucleophile/base like CH₃O⁻, tertiary halides undergo E2 elimination to form alkenes ((CH₃)₂C=CH₂) rather than SN2 substitution. Always remember: in Williamson synthesis, the alkyl halide should be primary (or methyl) for best results.'
+- type: mcq
+  sequence_order: 4
+  question: 'What is the first step in a typical Williamson ether synthesis?'
+  options:
+  - React two alcohols directly with heat
+  - Form an alkoxide ion by reacting alcohol with a strong base
+  - React an alkyl halide with water
+  - Oxidize an alcohol to an aldehyde
+  require_pass: true
+  correct_answer: Form an alkoxide ion by reacting alcohol with a strong base
+  explanation: 'The Williamson ether synthesis requires two steps. Step 1: Form the alkoxide ion (R-O⁻) by deprotonating an alcohol with a strong base. Common bases include sodium metal (Na), sodium hydride (NaH), or potassium tert-butoxide. For example: R-OH + Na → R-O⁻Na⁺ + ½H₂ (gas). The alkoxide is a much stronger nucleophile than the neutral alcohol. Step 2: React the alkoxide ion with a primary alkyl halide in an SN2 reaction: R-O⁻ + R''-X → R-O-R'' + X⁻. Simply heating two alcohols together does not produce ethers efficiently (that would be acid-catalyzed dehydration, which works only for symmetric ethers and gives alkenes as byproducts). The Williamson synthesis is superior because it works for both symmetric and asymmetric ethers and gives good control over the structure. The reaction is named after Alexander Williamson who developed it in 1850.'

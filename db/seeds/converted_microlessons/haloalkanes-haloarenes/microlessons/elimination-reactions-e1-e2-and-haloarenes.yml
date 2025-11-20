@@ -1,0 +1,160 @@
+slug: elimination-reactions-e1-e2-and-haloarenes
+title: Elimination Reactions (E1, E2) and Haloarenes
+difficulty: easy
+sequence_order: 6
+estimated_minutes: 2
+key_concepts:
+- Elimination reactions
+- E1 mechanism
+- E2 mechanism
+- Saytzeff rule
+- Haloarenes
+- Low reactivity
+prerequisites: []
+content_md: "# Elimination Reactions (E1, E2) and Haloarenes \U0001F680\n\n# Elimination\
+  \ Reactions and Haloarenes\n\n    ## Elimination Reactions\n\n    **Elimination**\
+  \ is the removal of two atoms or groups from adjacent carbons to form a double bond.\n\
+  \n    **General reaction:**\n    ```\n    H-C-C-X + Base → C=C + HX\n    | |\n \
+  \   ```\n\n    **Product:** Alkene (C=C double bond)\n\n    **Two major mechanisms:**\n\
+  \    1. **E1:** Elimination, Unimolecular\n    2. **E2:** Elimination, Bimolecular\n\
+  \n    ---\n\n    ## E2 Mechanism (Bimolecular Elimination)\n\n    ### Characteristics\n\
+  \n    **E** = Elimination\n    **2** = Second order (depends on [R-X] and [Base])\n\
+  \n    ### Mechanism (One-Step, Concerted)\n\n    ```\n         H     X\n       \
+  \  |     |\n    Base-C-----C   →   C=C + Base-H + X⁻\n         |     |\n    ```\n\
+  \n    **Features:**\n    - **Single step** (concerted)\n    - **Simultaneous:**\
+  \ H removal + C-X breaking + C=C formation\n    - **Anti-periplanar geometry** required\
+  \ (H and X on opposite sides, 180°)\n\n    ### Rate Equation\n    ```\n    Rate\
+  \ = k[R-X][Base]\n    ```\n\n    **Second order**\n\n    ### Stereochemistry: Anti-Elimination\n\
+  \n    **Requires anti-periplanar geometry:**\n\n    ```\n         H\n         |\n\
+  \    -----C-----\n         |     \\\n         |      X  (H and X must be anti, 180°)\n\
+  \         |     /\n    -----C-----\n    ```\n\n    **Example:**\n    - For elimination\
+  \ from CH₃CHBrCH₃, H and Br must be anti-periplanar\n\n    ### Factors Affecting\
+  \ E2 Rate\n\n    #### 1. Structure of Alkyl Halide\n    ```\n    3° > 2° > 1° (ease\
+  \ of H removal, stability of alkene formed)\n    ```\n\n    #### 2. Strength of\
+  \ Base\n    **Strong base required**\n    - Examples: OH⁻, RO⁻ (especially bulky\
+  \ bases like (CH₃)₃CO⁻)\n\n    #### 3. Leaving Group\n    **Better leaving group\
+  \ → Faster elimination**\n    - I⁻ > Br⁻ > Cl⁻ > F⁻\n\n    ---\n\n    ## E1 Mechanism\
+  \ (Unimolecular Elimination)\n\n    ### Characteristics\n\n    **E** = Elimination\n\
+  \    **1** = First order (depends only on [R-X])\n\n    ### Mechanism (Two-Step)\n\
+  \n    **Step 1: Ionization (slow)**\n    ```\n    R-X → R⁺ + X⁻  (slow, forms carbocation)\n\
+  \    ```\n\n    **Step 2: Deprotonation (fast)**\n    ```\n    R⁺ → C=C + H⁺  (fast)\n\
+  \    ```\n\n    ### Rate Equation\n    ```\n    Rate = k[R-X]\n    ```\n\n    **First\
+  \ order** (same as SN1)\n\n    ### Factors Affecting E1 Rate\n\n    #### 1. Structure\
+  \ of Alkyl Halide\n    ```\n    3° > 2° >> 1° (carbocation stability)\n    ```\n\
+  \n    #### 2. Solvent\n    **Polar protic solvents favor E1** (stabilize carbocation)\n\
+  \n    ---\n\n    ## Comparison: E1 vs E2\n\n    | Property | E1 | E2 |\n    |----------|----|----|\n\
+  \    | **Mechanism** | Two-step (carbocation) | One-step (concerted) |\n    | **Rate**\
+  \ | k[R-X] | k[R-X][Base] |\n    | **Order** | First | Second |\n    | **Base**\
+  \ | Weak base OK | Strong base required |\n    | **Alkyl halide** | 3° > 2° >> 1°\
+  \ | 3° > 2° > 1° |\n    | **Stereochemistry** | No specific requirement | Anti-periplanar\
+  \ |\n    | **Carbocation** | Yes (can rearrange) | No |\n    | **Solvent** | Polar\
+  \ protic | Any |\n\n    ---\n\n    ## Competition: Substitution vs Elimination\n\
+  \n    ### Factors Favoring Elimination Over Substitution\n\n    #### 1. Structure\
+  \ of Alkyl Halide\n    - **3° halides:** Favor elimination (especially E2 with strong\
+  \ base)\n    - **1° halides:** Favor substitution (SN2)\n    - **2° halides:** Depends\
+  \ on conditions\n\n    #### 2. Base/Nucleophile\n    - **Strong, bulky base:** Favors\
+  \ elimination (E2)\n    - **Example:** (CH₃)₃CO⁻ (tert-butoxide) - strong base,\
+  \ poor nucleophile\n    - **Small nucleophile:** Favors substitution\n\n    ####\
+  \ 3. Temperature\n    - **High temperature:** Favors elimination (higher activation\
+  \ energy)\n    - **Low temperature:** Favors substitution\n\n    ### Summary Table\n\
+  \n    | Alkyl Halide | Conditions | Major Product |\n    |--------------|-----------|---------------|\n\
+  \    | 1° | Strong nucleophile, low temp | SN2 |\n    | 1° | Strong base, high temp\
+  \ | E2 |\n    | 2° | Strong nucleophile | SN2 |\n    | 2° | Strong base | E2 |\n\
+  \    | 3° | Weak nucleophile, polar protic | SN1 + E1 |\n    | 3° | Strong base\
+  \ | E2 (major) |\n\n    ---\n\n    ## Saytzeff's Rule (Zaitsev's Rule)\n\n    **Statement:**\
+  \ In elimination reactions, the **more substituted alkene** (more stable) is the\
+  \ major product.\n\n    **Reason:** More substituted alkenes are more stable (hyperconjugation)\n\
+  \n    ### Stability of Alkenes\n    ```\n    Tetra > Tri > Di > Mono > Unsubstituted\n\
+  \    ```\n\n    ### Example 1\n    ```\n    CH₃-CHBr-CH₂-CH₃ + Base\n\n    Products:\n\
+  \    CH₃-CH=CH-CH₃ (2-butene, trisubstituted) - MAJOR (Saytzeff)\n    CH₂=CH-CH₂-CH₃\
+  \ (1-butene, disubstituted) - MINOR (Hofmann)\n    ```\n\n    ### Example 2\n  \
+  \  ```\n    (CH₃)₂CH-CH₂Br + Base\n\n    Products:\n    (CH₃)₂C=CH₂ (2-methylpropene)\
+  \ - MAJOR (Saytzeff)\n    ```\n\n    **Hofmann product:** Less substituted alkene\
+  \ (minor, with bulky bases)\n\n    ---\n\n    ## Haloarenes (Aryl Halides)\n\n \
+  \   ### Introduction\n\n    **Haloarenes:** Halogen directly attached to benzene\
+  \ ring\n\n    **Examples:**\n    - C₆H₅Cl (Chlorobenzene)\n    - C₆H₅Br (Bromobenzene)\n\
+  \    - o-C₆H₄Cl₂ (o-Dichlorobenzene)\n\n    ### Nomenclature\n\n    | Structure\
+  \ | IUPAC Name | Common Name |\n    |-----------|------------|-------------|\n \
+  \   | C₆H₅Cl | Chlorobenzene | Phenyl chloride |\n    | C₆H₅Br | Bromobenzene |\
+  \ Phenyl bromide |\n    | C₆H₅I | Iodobenzene | Phenyl iodide |\n    | C₆H₅CH₂Cl\
+  \ | (Chloromethyl)benzene | Benzyl chloride* |\n\n    *Note: Benzyl chloride is\
+  \ NOT a haloarene (Cl not on ring)\n\n    ---\n\n    ## Preparation of Haloarenes\n\
+  \n    ### Method 1: Direct Halogenation\n    ```\n    C₆H₆ + X₂ --[FeBr₃ or AlCl₃]-->\
+  \ C₆H₅X + HX\n    ```\n\n    **Mechanism:** Electrophilic aromatic substitution\n\
+  \n    **Lewis acid catalyst required:** FeBr₃, AlCl₃, Fe\n\n    ### Method 2: Sandmeyer\
+  \ Reaction\n    ```\n    C₆H₅NH₂ --[NaNO₂/HCl, 0-5°C]--> C₆H₅N₂⁺Cl⁻ --[CuX]--> C₆H₅X\
+  \ + N₂\n\n    X = Cl, Br, CN\n    ```\n\n    **Best method for:** Chlorobenzene,\
+  \ bromobenzene\n\n    ### Method 3: Gattermann Reaction\n    ```\n    C₆H₅N₂⁺Cl⁻\
+  \ + Cu/HX → C₆H₅X + N₂\n    ```\n\n    **Similar to Sandmeyer, uses Cu metal instead\
+  \ of CuX**\n\n    ### Method 4: Balz-Schiemann Reaction\n    ```\n    C₆H₅N₂⁺BF₄⁻\
+  \ --[heat]--> C₆H₅F + N₂ + BF₃\n    ```\n\n    **Best method for:** Fluorobenzene\n\
+  \n    ---\n\n    ## Properties of Haloarenes\n\n    ### Physical Properties\n  \
+  \  - Colorless liquids or solids\n    - Pleasant smell (but toxic)\n    - Insoluble\
+  \ in water, soluble in organic solvents\n    - Higher boiling point than benzene\n\
+  \n    ### Chemical Properties: Low Reactivity\n\n    **Haloarenes are MUCH LESS\
+  \ reactive than haloalkanes**\n\n    #### Reasons for Low Reactivity:\n\n    **1.\
+  \ Resonance Stabilization**\n    ```\n    Lone pair on halogen delocalizes into\
+  \ benzene ring\n    C-X bond acquires partial double bond character\n    Stronger\
+  \ bond → Harder to break\n    ```\n\n    **2. sp² Carbon**\n    - C-X bond is shorter\
+  \ and stronger (sp² > sp³)\n    - Halogen attached to sp² carbon (benzene)\n\n \
+  \   **3. Steric Hindrance**\n    - Benzene ring provides steric protection\n\n \
+  \   ### Reactions of Haloarenes\n\n    #### 1. Nucleophilic Substitution (Very Difficult)\n\
+  \    **Does NOT undergo SN1 or SN2 under normal conditions**\n\n    **Requires:**\
+  \ Very harsh conditions\n    - High temperature (300-400°C)\n    - High pressure\n\
+  \    - Strong nucleophile\n\n    **Example:**\n    ```\n    C₆H₅Cl + NaOH --[623\
+  \ K, 300 atm]--> C₆H₅OH + NaCl\n    ```\n\n    #### 2. Electrophilic Substitution\
+  \ (Easy)\n    **Halogen is ortho-para directing, deactivating**\n\n    **Example:**\
+  \ Further halogenation\n    ```\n    C₆H₅Cl + Br₂ --[FeBr₃]--> o-ClC₆H₄Br + p-ClC₆H₄Br\n\
+  \    ```\n\n    #### 3. Reduction\n    ```\n    C₆H₅Cl + H₂ --[Ni]--> C₆H₆ + HCl\n\
+  \    ```\n\n    #### 4. Wurtz-Fittig Reaction\n    ```\n    C₆H₅Br + 2Na + BrCH₃\
+  \ → C₆H₅-CH₃ + 2NaBr\n    ```\n\n    **Coupling of aryl and alkyl halides**\n\n\
+  \    ---\n\n    ## Comparison: Haloalkanes vs Haloarenes\n\n    | Property | Haloalkanes\
+  \ (R-X) | Haloarenes (Ar-X) |\n    |----------|-------------------|-------------------|\n\
+  \    | **C-X bond** | sp³, longer, weaker | sp², shorter, stronger |\n    | **Resonance**\
+  \ | No resonance | Resonance with ring |\n    | **SN reactions** | Easy (SN1, SN2)\
+  \ | Very difficult |\n    | **Reactivity** | High | Low |\n    | **Conditions for\
+  \ Nu-Sub** | Mild | Very harsh (623 K, 300 atm) |\n    | **Directing effect** |\
+  \ — | ortho-para directing |\n\n    ---\n\n    ## IIT JEE Key Points\n\n    1. **E2:**\
+  \ One-step, anti-periplanar, strong base, Rate = k[R-X][Base]\n    2. **E1:** Two-step,\
+  \ carbocation, weak base, Rate = k[R-X]\n    3. **Saytzeff rule:** More substituted\
+  \ alkene is major product\n    4. **Elimination vs Substitution:** 3° → E2, 1° →\
+  \ SN2\n    5. **Bulky base** favors elimination over substitution\n    6. **Haloarenes:**\
+  \ C-X on benzene ring, very low reactivity\n    7. **Resonance** makes C-X bond\
+  \ stronger in haloarenes\n    8. **Sandmeyer reaction:** Best for Cl, Br (via diazonium\
+  \ salt)\n    9. **Balz-Schiemann:** For fluorobenzene (via diazonium fluoroborate)\n\
+  \    10. **Haloarenes:** ortho-para directing, deactivating in EAS\n\n## Key Points\n\
+  \n- Elimination reactions\n\n- E1 mechanism\n\n- E2 mechanism"
+exercises:
+  - type: mcq
+    sequence_order: 1
+    question: "When 2-bromobutane (CH₃CHBrCH₂CH₃) is treated with alcoholic KOH, which alkene is the MAJOR product according to Saytzeff's rule?"
+    options:
+      - "1-Butene (CH₂=CHCH₂CH₃)"
+      - "2-Butene (CH₃CH=CHCH₃)"
+      - "Cyclobutane"
+      - "2-Methylpropene"
+    correct_answer: "2-Butene (CH₃CH=CHCH₃)"
+    explanation: "According to Saytzeff's rule (also spelled Zaitsev's rule), in elimination reactions, the major product is the more substituted and more stable alkene. When 2-bromobutane undergoes E2 elimination with alcoholic KOH, two different alkenes can form depending on which β-hydrogen is removed: (1) If H is removed from C-1, we get 2-butene (CH₃CH=CHCH₃), which is a trisubstituted alkene (three alkyl groups attached to the C=C). (2) If H is removed from C-3, we get 1-butene (CH₂=CHCH₂CH₃), which is a disubstituted alkene (two alkyl groups on C=C). The stability order of alkenes is: tetrasubstituted > trisubstituted > disubstituted > monosubstituted > unsubstituted. This stability is due to hyperconjugation - more alkyl groups provide more hyperconjugative stabilization. Therefore, 2-butene (trisubstituted) is more stable and forms as the major Saytzeff product, while 1-butene (disubstituted) forms as the minor Hofmann product."
+    require_pass: true
+  - type: mcq
+    sequence_order: 2
+    question: "Why are haloarenes (e.g., chlorobenzene) much LESS reactive toward nucleophilic substitution compared to haloalkanes (e.g., chloroethane)?"
+    options:
+      - "The benzene ring is electron-donating, making the C-Cl bond stronger"
+      - "Resonance delocalization of the halogen lone pair into the benzene ring gives the C-X bond partial double bond character"
+      - "Haloarenes are less polar than haloalkanes"
+      - "The benzene ring prevents the formation of carbocation intermediates"
+    correct_answer: "Resonance delocalization of the halogen lone pair into the benzene ring gives the C-X bond partial double bond character"
+    explanation: "Haloarenes exhibit remarkably low reactivity toward nucleophilic substitution due to resonance stabilization. In chlorobenzene (C₆H₅Cl), the chlorine atom has three lone pairs of electrons in p-orbitals that can overlap with the π-electron system of the benzene ring. This resonance delocalization creates several resonance structures where the lone pair on chlorine is partially delocalized into the aromatic ring. As a result, the C-Cl bond acquires partial double bond character (approximately 20% double bond character), making it shorter, stronger, and much harder to break compared to a normal C-Cl single bond in haloalkanes. Additionally, the carbon in haloarenes is sp² hybridized (versus sp³ in haloalkanes), which creates a shorter and stronger C-X bond. Furthermore, the benzene ring provides steric protection. These factors combine to make haloarenes require extremely harsh conditions (300-400°C, 300 atm pressure) for nucleophilic substitution, whereas haloalkanes react readily under mild conditions. This fundamental difference in reactivity is crucial for understanding aromatic substitution chemistry."
+    require_pass: true
+  - type: mcq
+    sequence_order: 3
+    question: "Which combination of substrate and conditions would favor E2 elimination as the MAJOR pathway over SN2 substitution?"
+    options:
+      - "Primary alkyl halide with strong nucleophile at low temperature"
+      - "Tertiary alkyl halide with strong, bulky base like (CH₃)₃CO⁻ at elevated temperature"
+      - "Methyl halide with weak base"
+      - "Secondary alkyl halide with weak nucleophile in polar protic solvent"
+    correct_answer: "Tertiary alkyl halide with strong, bulky base like (CH₃)₃CO⁻ at elevated temperature"
+    explanation: "The competition between elimination (E2) and substitution (SN2) depends on several factors: substrate structure, base/nucleophile properties, and temperature. E2 elimination is strongly favored by: (1) Tertiary alkyl halides - these have the most substituted β-carbons, making H-abstraction easier, and steric hindrance prevents SN2. (2) Strong, bulky bases like tert-butoxide (CH₃)₃CO⁻ - bulky bases are strong enough to abstract protons but too sterically hindered to act as good nucleophiles for backside attack in SN2. (3) Elevated temperature - elimination has higher activation energy than substitution, so higher temperature favors the elimination pathway (ΔS is positive for elimination). In contrast, primary halides with small nucleophiles at low temperature strongly favor SN2 due to easy backside access and lower activation energy. The combination of tertiary halide + bulky base + heat essentially forces the reaction pathway toward E2 elimination, often giving >90% elimination product. This principle is widely used in synthesis when alkenes are desired products."
+    require_pass: true

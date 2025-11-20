@@ -1,0 +1,208 @@
+---
+slug: backtrack-permutations
+title: Permutations & Backtracking
+sequence_order: 82
+estimated_minutes: 15
+difficulty: medium
+key_concepts:
+- Permutations & Backtracking
+- Basic Permutations
+content_md: |
+  # Permutations & Backtracking
+
+  Generating all permutations using backtracking technique
+
+  ---
+
+  ## Backtracking for Permutations
+
+  Backtracking is a general algorithmic technique for finding all (or some) solutions by incrementally building candidates and abandoning candidates ("backtracking") when they fail to satisfy constraints.
+
+  **Permutation:** Arrangement of elements in specific order
+  - n elements have n! permutations
+  - Order matters: [1,2,3] ≠ [3,2,1]
+
+  **Backtracking Process:**
+  1. Choose: Make a choice
+  2. Explore: Recursively explore consequences
+  3. Unchoose: Backtrack and try different choice
+
+  **Complexity:**
+  - Time: O(n! × n) - n! permutations, O(n) to copy each
+  - Space: O(n) for recursion stack
+
+
+  ---
+
+  ## Common Patterns
+
+  ### Pattern 1: Basic Permutations
+  ```python
+  def permute(nums):
+      result = []
+
+      def backtrack(current, remaining):
+          # Base case: no elements remaining
+          if not remaining:
+              result.append(current[:])
+              return
+
+          for i in range(len(remaining)):
+              # Choose
+              current.append(remaining[i])
+
+              # Explore with remaining elements
+              new_remaining = remaining[:i] + remaining[i+1:]
+              backtrack(current, new_remaining)
+
+              # Unchoose (backtrack)
+              current.pop()
+
+      backtrack([], nums)
+      return result
+  ```
+
+  ### Pattern 2: Permutations with Swapping
+  ```python
+  def permute_swap(nums):
+      result = []
+
+      def backtrack(start):
+          if start == len(nums):
+              result.append(nums[:])
+              return
+
+          for i in range(start, len(nums)):
+              # Swap
+              nums[start], nums[i] = nums[i], nums[start]
+
+              # Recurse
+              backtrack(start + 1)
+
+              # Backtrack (swap back)
+              nums[start], nums[i] = nums[i], nums[start]
+
+      backtrack(0)
+      return result
+  ```
+
+  ### Pattern 3: Permutations with Duplicates
+  ```python
+  def permute_unique(nums):
+      result = []
+      nums.sort()  # Sort to group duplicates
+
+      def backtrack(current, used):
+          if len(current) == len(nums):
+              result.append(current[:])
+              return
+
+          for i in range(len(nums)):
+              # Skip if used or duplicate
+              if used[i]:
+                  continue
+              if i > 0 and nums[i] == nums[i-1] and not used[i-1]:
+                  continue
+
+              # Choose
+              current.append(nums[i])
+              used[i] = True
+
+              # Explore
+              backtrack(current, used)
+
+              # Unchoose
+              current.pop()
+              used[i] = False
+
+      backtrack([], [False] * len(nums))
+      return result
+  ```
+
+  ### Pattern 4: Next Permutation
+  ```python
+  def next_permutation(nums):
+      # Find first decreasing element from right
+      i = len(nums) - 2
+      while i >= 0 and nums[i] >= nums[i + 1]:
+          i -= 1
+
+      if i >= 0:  # Not last permutation
+          # Find element just larger than nums[i]
+          j = len(nums) - 1
+          while nums[j] <= nums[i]:
+              j -= 1
+          nums[i], nums[j] = nums[j], nums[i]
+
+      # Reverse suffix
+      nums[i + 1:] = reversed(nums[i + 1:])
+  ```
+
+
+  ---
+
+  ## When to Use This Technique
+
+  Use backtracking for permutations when: need all arrangements, solving constraint satisfaction, generating sequences, or exploring all possibilities with pruning.
+
+  ---
+
+  ## Common Pitfalls to Avoid
+
+  - Not making a copy when storing result (shallow copy issues)
+  - Forgetting to backtrack (undo choices)
+  - Not handling duplicates correctly
+  - Stack overflow with large inputs
+  - Not pruning unnecessary branches
+  - Modifying input array without restoring
+
+  ---
+
+  ## Practice Problems
+
+  Start with these problems to master this concept:
+
+  ### 1. Permutations 4 [Hard]
+
+  Backtracking: permutations.
+
+  **Complexity:** Time O(O(2^n)), Space O(O(n))
+
+
+  ### 2. Permutations 5 [Hard]
+
+  Backtracking: permutations.
+
+  **Complexity:** Time O(O(2^n)), Space O(O(n))
+
+
+  ### 3. Permutations 10 [Hard]
+
+  Backtracking: permutations.
+
+  **Complexity:** Time O(O(2^n)), Space O(O(n))
+
+
+  ### 4. Permutations 12 [Hard]
+
+  Backtracking: permutations.
+
+  **Complexity:** Time O(O(2^n)), Space O(O(n))
+
+
+  ### 5. Permutations 15 [Hard]
+
+  Backtracking: permutations.
+
+  **Complexity:** Time O(O(2^n)), Space O(O(n))
+
+
+
+  ---
+
+  ## Key Takeaways
+
+  - Permutations & Backtracking is essential for generating all permutations using backtracking technique
+  - Time complexity improvements can be significant with this technique
+  - Practice problems in order of difficulty to build intuition
+  - Focus on recognizing patterns in problem statements

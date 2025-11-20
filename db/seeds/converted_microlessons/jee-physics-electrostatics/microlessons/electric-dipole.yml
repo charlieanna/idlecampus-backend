@@ -1,0 +1,212 @@
+slug: electric-dipole
+title: "Electric Dipole and Dipole Moment"
+difficulty: intermediate
+sequence_order: 5
+estimated_minutes: 16
+key_concepts:
+- electric-dipole
+- dipole-moment
+- torque-on-dipole
+- potential-energy-dipole
+- dipole-field
+prerequisites:
+- electric-field-intensity
+- electric-potential-work-done
+content_md: |
+  # Electric Dipole and Dipole Moment
+
+  ## Definition of Electric Dipole
+
+  **Two equal and opposite charges separated by small distance.**
+
+  ```
+  Dipole moment: p = qd
+
+  q = magnitude of each charge
+  d = separation distance
+  Direction: -q to +q (negative to positive)
+
+  Unit: C·m (Coulomb-meter)
+  ```
+
+  ## Electric Field Due to Dipole
+
+  ### On Axial Line (End-On Position):
+  ```
+  E_axial = 2kp/r³ = p/(2πε₀r³)
+
+  Direction: Along p (same as dipole moment)
+  Valid for r >> d
+  ```
+
+  ### On Equatorial Line (Broad-Side Position):
+  ```
+  E_equatorial = kp/r³ = p/(4πε₀r³)
+
+  Direction: Opposite to p (against dipole moment)
+  Valid for r >> d
+  ```
+
+  ### Relation:
+  ```
+  E_axial = 2 × E_equatorial
+
+  Axial field is twice the equatorial field!
+  ```
+
+  ### General Point:
+  ```
+  E = (kp/r³)√(1 + 3cos²θ)
+
+  θ = angle from axial line
+  ```
+
+  ## Electric Potential Due to Dipole
+
+  ```
+  V = kp cos θ/r² = p cos θ/(4πε₀r²)
+
+  θ = angle from axis
+  ```
+
+  ### Special Cases:
+  - On axis (θ = 0°): V = kp/r²
+  - On equatorial (θ = 90°): V = 0
+  - At +q end: V > 0
+  - At -q end: V < 0
+
+  ## Torque on Dipole in Uniform Field
+
+  ```
+  τ = p × E
+
+  Magnitude: τ = pE sin θ
+
+  θ = angle between p and E
+  ```
+
+  ### Equilibrium Positions:
+  - θ = 0°: Stable equilibrium (p ∥ E)
+  - θ = 180°: Unstable equilibrium (p ↑↓ E)
+
+  At stable equilibrium, dipole aligns with field.
+
+  ## Potential Energy of Dipole
+
+  ```
+  U = -p·E = -pE cos θ
+
+  U_min = -pE (at θ = 0°, stable)
+  U_max = +pE (at θ = 180°, unstable)
+  ```
+
+  ### Work Done to Rotate:
+  ```
+  W = U_f - U_i = -pE(cos θ_f - cos θ_i)
+  ```
+
+  From θ = 0° to θ = 90°: W = pE
+  From θ = 90° to θ = 180°: W = pE
+  From θ = 0° to θ = 180°: W = 2pE
+
+  ## Force on Dipole
+
+  ### In Uniform Field:
+  ```
+  F_net = 0 (equal and opposite forces on charges)
+  ```
+
+  Only torque, no net force.
+
+  ### In Non-Uniform Field:
+  ```
+  F = p(dE/dx)
+
+  Dipole moves towards stronger field region.
+  ```
+
+  ## Dipole Oscillations
+
+  Small angular oscillations in uniform field:
+  ```
+  Restoring torque: τ = -pE sin θ ≈ -pEθ (for small θ)
+
+  Time period: T = 2π√(I/pE)
+
+  I = moment of inertia of dipole
+  ```
+
+  ## Numerical Examples
+
+  **Example 1:** Dipole has charges ±2 μC separated by 2 cm. Find dipole moment.
+
+  **Solution:**
+  ```
+  p = qd = (2×10⁻⁶)(0.02) = 4×10⁻⁸ C·m
+
+  Direction: from -2 μC to +2 μC
+  ```
+
+  **Example 2:** Electric field on axis at 10 cm from dipole (p = 10⁻²⁹ C·m).
+
+  **Solution:**
+  ```
+  E = 2kp/r³ = 2(9×10⁹)(10⁻²⁹)/(0.1)³
+  E = 18×10⁻²⁰/10⁻³ = 18×10⁻¹⁷ N/C
+
+  Very weak field from small dipole!
+  ```
+
+  **Example 3:** Dipole (p = 10⁻⁶ C·m) in field E = 10⁴ N/C at 60°. Find torque.
+
+  **Solution:**
+  ```
+  τ = pE sin θ = (10⁻⁶)(10⁴) sin 60°
+  τ = 10⁻² × (√3/2) = 0.00866 N·m
+
+  This torque tends to align p with E.
+  ```
+
+  ## JEE Key Points
+
+  1. **p = qd** (dipole moment, -q to +q)
+  2. **E_axial = 2kp/r³** (along p)
+  3. **E_equatorial = kp/r³** (opposite to p)
+  4. **τ = pE sin θ** (torque)
+  5. **U = -pE cos θ** (potential energy)
+  6. **Stable: p ∥ E, Unstable: p ↑↓ E**
+
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: "Electric field on axial line of dipole varies as:"
+  options:
+  - "1/r"
+  - "1/r²"
+  - "1/r³"
+  - "1/r⁴"
+  correct_answer: "1/r³"
+  explanation: "E_axial = 2kp/r³, so E ∝ 1/r³. This is faster decay than point charge (1/r²). Reason: Dipole has +q and -q whose fields partially cancel at large distances. The 1/r³ dependence is characteristic of dipole fields. At very large r, dipole field becomes negligible compared to monopole field. This rapid decay means dipole effects are short-ranged. Compare: Monopole (single charge) → 1/r², Dipole → 1/r³, Quadrupole → 1/r⁴. On equatorial line also E ∝ 1/r³ (but coefficient is half). The 1/r³ law applies when r >> d (far-field approximation)."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: "Work done to rotate dipole from stable to unstable equilibrium in uniform field E is:"
+  options:
+  - "pE"
+  - "2pE"
+  - "pE/2"
+  - "Zero"
+  correct_answer: "2pE"
+  explanation: "Stable: θ = 0°, U = -pE. Unstable: θ = 180°, U = +pE. Work done = ΔU = pE - (-pE) = 2pE. The dipole gains 2pE of potential energy. At stable equilibrium, dipole is aligned with field (minimum PE). At unstable, it's anti-aligned (maximum PE). If released from unstable position, dipole would oscillate with amplitude 2pE in PE. In molecular terms, this energy difference determines how molecules align in external fields. Polar molecules (like water) have permanent dipoles and align with applied fields. This property explains dielectric behavior and polar molecule interactions."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: "Electric potential on equatorial line of dipole is:"
+  options:
+  - "kp/r²"
+  - "kp/r³"
+  - "Zero"
+  - "-kp/r²"
+  correct_answer: "Zero"
+  explanation: "V = kp cos θ/r². On equatorial line, θ = 90°, so cos 90° = 0, making V = 0. This makes physical sense: equatorial line is equidistant from +q and -q, so potentials from both charges exactly cancel (V = kq/r - kq/r = 0). On axial line: V = ±kp/r² (depending on which end). The zero potential on equatorial plane is important concept. Work done moving charge along equatorial line is zero (no potential difference). But electric FIELD is not zero there - it points opposite to dipole moment. So field exists where potential is zero! This distinction between V and E is crucial for understanding dipole behavior."
+  require_pass: true

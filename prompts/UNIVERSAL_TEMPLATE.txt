@@ -1,0 +1,247 @@
+=======================================
+⚠️ THIS IS A TEMPLATE - DO NOT USE DIRECTLY ⚠️
+MICROLESSON GENERATOR - UNIVERSAL TEMPLATE
+=======================================
+
+🚫 **DO NOT USE THIS FILE WITH GPT-5 PRO** 🚫
+
+This is a TEMPLATE for creating new prompts. It contains placeholders
+like [file1.rb] which will cause "Missing seed file" errors if used directly.
+
+✅ **INSTEAD**: Use one of the 45 course-specific prompts (01-45)
+   - devops/01_docker_course_prompt.txt
+   - programming/11_python_prompt.txt
+   - etc.
+
+📝 **IF YOU NEED A NEW COURSE**: Replace all [PLACEHOLDERS] below with
+   actual file names and course info, THEN use it.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+[INSTRUCTIONS: Replace [PLACEHOLDERS] with your course info, then copy + attach files to GPT-5 Pro]
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+STEP 1: CUSTOMIZE THIS SECTION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+COURSE NAME: [e.g., "PostgreSQL Fundamentals"]
+
+FILES TO ATTACH (from MASTER_COURSE_INDEX.md):
+□ [file1.rb]
+□ [file2.rb]
+□ [file3.rb]
+
+MODULE SLUGS (if known):
+- [module-slug-1] → [Module Name 1]
+- [module-slug-2] → [Module Name 2]
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+STEP 2: COPY EVERYTHING BELOW + PASTE INTO GPT-5
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+You are an expert educational content designer and Ruby on Rails developer.
+
+I've attached seed files for the [COURSE NAME] course. Convert them into microlesson format.
+
+# IMPORTANT: INPUT FORMAT
+
+The attached seed files may use different formats:
+- **Format 1**: `InteractiveLearningUnit.find_or_create_by!` (legacy Docker files)
+- **Format 2**: `Course/CourseModule/Lesson.find_or_create_by!` (most courses)
+
+**Process BOTH formats**. Extract lesson content, commands, and concepts regardless of which structure is used. If a file doesn't have InteractiveLearningUnit blocks, look for Lesson/CourseLesson blocks instead.
+
+# TASK
+
+Split each attached seed file into very small microlessons with exercises.
+
+# MICROLESSON RULES
+
+**Size:** 1 concept per microlesson, 2-3 minutes each
+
+**Content Structure:**
+```markdown
+# [Title] 🚀
+
+## What is [concept]?
+[2-3 sentence explanation]
+
+## Syntax/Command
+\`\`\`
+[code or command]
+\`\`\`
+
+## Example
+\`\`\`
+[specific example with output]
+\`\`\`
+
+## Key Points
+- Point 1
+- Point 2
+- Point 3
+```
+
+# EXERCISE RULES
+
+**Count based on difficulty:**
+- Easy: 1-2 exercises
+- Medium: 2-3 exercises
+- Hard: 3-4 exercises
+
+**Types:**
+1. **terminal**: CLI commands (for CLI courses)
+2. **mcq**: Multiple choice with 4 options
+3. **code**: Programming challenges (for coding courses)
+
+**Progressive Hints (3 per exercise):**
+- Hint 1: Gentle nudge
+- Hint 2: More specific
+- Hint 3: Nearly the answer
+
+# PREREQUISITES
+
+Analyze content to infer dependencies:
+- First lesson: `prerequisite_ids: []`
+- Sequential lessons: Previous lesson as prerequisite
+- Advanced topics: Multiple prerequisites
+
+# OUTPUT FORMAT
+
+Generate complete Ruby seed files:
+
+```ruby
+# db/seeds/microlessons/[module_name]_microlessons.rb
+# AUTO-GENERATED from [original_file].rb
+
+puts "Creating Microlessons for [Module Name]..."
+
+module_var = CourseModule.find_by(slug: '[module-slug]')
+
+# === MICROLESSON 1: [Title] ===
+lesson_1 = MicroLesson.create!(
+  course_module: module_var,
+  title: '[Short, clear title]',
+  content: <<~MARKDOWN,
+    # [Title] 🚀
+
+    ## What is [concept]?
+
+    [Explanation]
+
+    ## [Syntax/Command/Usage]
+
+    \`\`\`[language]
+    [code]
+    \`\`\`
+
+    ## Example
+
+    \`\`\`[language]
+    [example]
+    \`\`\`
+
+    [Expected output or result]
+
+    ## Key Points
+
+    - Point 1
+    - Point 2
+    - Point 3
+  MARKDOWN
+  sequence_order: 1,
+  estimated_minutes: 2,
+  difficulty: 'easy',
+  key_concepts: ['concept1', 'concept2'],
+  prerequisite_ids: []
+)
+
+# Exercise 1: [Type]
+Exercise.create!(
+  micro_lesson: lesson_1,
+  exercise_type: '[terminal|mcq|code]',
+  sequence_order: 1,
+  exercise_data: {
+    # For terminal:
+    command: '[exact command]',
+    description: '[what to do]',
+
+    # For MCQ:
+    question: '[question]',
+    options: ['[correct]', '[wrong]', '[wrong]', '[wrong]'],
+    correct_answer: 0,
+    explanation: '[why]',
+
+    # For code:
+    starter_code: '[starter]',
+    solution: '[solution]',
+    test_cases: [{input: '...', expected: '...'}],
+
+    # All types:
+    difficulty: 'easy',
+    hints: [
+      '[Hint 1: gentle]',
+      '[Hint 2: specific]',
+      '[Hint 3: nearly answer]'
+    ]
+  }
+)
+
+# [More microlessons...]
+
+puts "✓ Created [N] microlessons for [Module Name]"
+```
+
+# QUALITY CHECKLIST
+
+For EACH microlesson:
+- [ ] Covers exactly 1 concept
+- [ ] 2-3 minutes estimated time
+- [ ] Clear, practical examples
+- [ ] Exercises test understanding
+- [ ] MCQ options are plausible
+- [ ] Hints progress logically
+- [ ] Prerequisites make sense
+- [ ] Ruby syntax is valid
+
+# OUTPUT INSTRUCTIONS
+
+For each seed file, generate output with clear labels:
+
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FILE: [module_name]_microlessons.rb
+FROM: [original_file].rb
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+[Complete Ruby code here]
+```
+
+After all files, provide summary:
+
+```
+=== GENERATION SUMMARY ===
+
+Course: [Course Name]
+
+Files Generated:
+1. [file1]_microlessons.rb
+   - Original units: X
+   - Microlessons created: Y
+   - Total exercises: Z
+   - Prerequisites linked: N
+
+[... for each file ...]
+
+Grand Total:
+- Microlessons: XX
+- Exercises: YY
+- Terminal: ZZ
+- MCQ: AA
+```
+
+# NOW GENERATE
+
+Process all attached seed files and generate microlesson files following all rules above.
+
+START GENERATION NOW.

@@ -1,0 +1,88 @@
+slug: lesson-25
+title: Lesson 25
+difficulty: easy
+sequence_order: 25
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# CNI and Network Plugins\n\n    - CNI basics\
+  \ and plugin architecture\n    - Popular CNIs (Calico, Cilium, Weave)"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What is CNI (Container Network Interface) in Kubernetes?
+  options:
+  - A built-in networking solution
+  - A specification and plugin framework for configuring container networking
+  - A command-line tool for network management
+  - A type of network policy
+  correct_answer: A specification and plugin framework for configuring container networking
+  explanation: 'CNI (Container Network Interface) is a specification and plugin framework
+    that standardizes how container runtimes configure networking for containers.
+    It''s not a specific networking solution but a standard interface that allows
+    different networking implementations to work with Kubernetes. The CNI specification
+    defines: how network plugins are invoked, what parameters they receive, what results
+    they return, and how to manage network lifecycle (add/delete). When a pod is created,
+    the kubelet calls the CNI plugin to: allocate an IP address, configure network
+    interfaces, set up routing, and configure DNS. Popular CNI plugins include: Calico
+    (policy-driven networking with BGP, supports NetworkPolicies, popular for on-prem),
+    Flannel (simple overlay network, easy to set up, good for basic use cases), Cilium
+    (eBPF-based, advanced features like HTTP/gRPC protocol visibility, high performance),
+    Weave Net (automatic mesh networking, built-in encryption), AWS VPC CNI (uses
+    native AWS networking, pods get VPC IP addresses), Azure CNI, and GKE dataplane
+    V2 (based on Cilium). CNI plugins are installed as DaemonSets, running on every
+    node. They typically consist of: CNI binary (installed in /opt/cni/bin), configuration
+    file (in /etc/cni/net.d), and daemon pods for network management. Different CNI
+    plugins have different features: some support NetworkPolicies (Calico, Cilium,
+    Weave), some provide encryption (Weave, Cilium), some are optimized for specific
+    clouds (AWS VPC CNI, Azure CNI). Choosing a CNI depends on requirements: NetworkPolicy
+    support, performance needs, cloud integration, IPv6/dual-stack support, and operational
+    complexity. Understanding CNI is crucial for troubleshooting network issues and
+    selecting appropriate networking solutions.'
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What are key differences between Calico and Cilium CNI plugins?
+  options:
+  - They are identical in functionality
+  - Calico uses BGP routing and IP tables; Cilium uses eBPF for higher performance
+    and protocol-aware policies
+  - Calico is for cloud only; Cilium is for on-premises
+  - Cilium doesn't support NetworkPolicies
+  correct_answer: Calico uses BGP routing and IP tables; Cilium uses eBPF for higher
+    performance and protocol-aware policies
+  explanation: 'Calico and Cilium are both popular, feature-rich CNI plugins but differ
+    significantly in architecture and capabilities. Calico uses traditional Linux
+    networking: BGP (Border Gateway Protocol) for route distribution between nodes,
+    enabling direct L3 routing without overlays (though VXLAN overlay is also supported).
+    It uses iptables/nftables for packet filtering and NetworkPolicy enforcement.
+    Calico is mature, widely deployed, works well in on-premises and cloud environments,
+    and excels at large-scale deployments with efficient routing. Its features include:
+    robust NetworkPolicy support, encryption via WireGuard, IPv6 and dual-stack, and
+    integration with service meshes. Cilium uses eBPF (extended Berkeley Packet Filter)
+    for networking and security. eBPF allows running programs in the Linux kernel
+    without kernel modules, providing: significantly higher performance (bypasses
+    iptables overhead), lower latency, identity-based security (not just IP-based),
+    and protocol-aware policies (can filter HTTP methods, gRPC services, Kafka topics,
+    DNS queries). Cilium''s unique features: L7 NetworkPolicies (allow GET /api/v1/*
+    but deny POST), transparent encryption, Hubble for network visibility (flow logs,
+    service maps), and advanced load balancing. Performance benchmarks often show
+    Cilium with 2-3x better throughput than iptables-based solutions. Use Calico when:
+    you need proven, stable networking, BGP integration is important, or your team
+    prefers traditional networking concepts. Use Cilium when: you need maximum performance,
+    L7 policies are required, advanced observability is valuable, or you want cutting-edge
+    eBPF capabilities. Both support NetworkPolicies, Kubernetes services, and multi-cluster
+    scenarios.'
+  require_pass: true
+- type: mcq
+  sequence_order: 1
+  question: What kubectl command checks if you can perform an action?
+  options:
+  - kubectl auth can-i create pods
+  - kubectl check permissions create pods
+  - kubectl verify action create pods
+  - kubectl test auth create pods
+  correct_answer_index: 0
+  explanation: kubectl auth can-i <action> <resource> checks if the current user has
+    permission to perform the specified action.
+  require_pass: true

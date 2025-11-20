@@ -1,0 +1,43 @@
+slug: lesson-4
+title: Lesson 4
+difficulty: easy
+sequence_order: 4
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Operating System Upgrades\n\n    - Node\
+  \ image updates\n    - Kernel and container runtime considerations"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What is the recommended approach when upgrading the operating system on a Kubernetes node?
+  options:
+  - Upgrade the OS directly while the node is running workloads
+  - Drain the node first, then upgrade the OS, and finally uncordon the node
+  - Delete all pods on the node and then upgrade
+  - Upgrade the kernel without restarting the node
+  correct_answer: Drain the node first, then upgrade the OS, and finally uncordon the node
+  explanation: "When performing OS upgrades on Kubernetes nodes, the best practice is to follow a safe three-step process: (1) Drain the node using 'kubectl drain' to gracefully evict all pods and mark the node as unschedulable, (2) Perform the OS upgrade including kernel updates and container runtime patches, which typically requires a reboot, and (3) Uncordon the node using 'kubectl uncordon' to make it schedulable again. This approach ensures zero downtime for applications as pods are rescheduled to other healthy nodes before the upgrade begins. Draining respects pod disruption budgets and graceful termination periods, making it safer than directly deleting pods or upgrading without evacuation."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: Which component compatibility must be verified before upgrading the container runtime on a Kubernetes node?
+  options:
+  - Only the Kubernetes API version
+  - Kubelet version and Kubernetes version compatibility
+  - Only the kernel version
+  - Only the etcd version
+  correct_answer: Kubelet version and Kubernetes version compatibility
+  explanation: "Before upgrading the container runtime (such as containerd, CRI-O, or Docker), it's critical to verify compatibility between the kubelet version, the Kubernetes cluster version, and the container runtime version. The kubelet communicates with the container runtime through the Container Runtime Interface (CRI), and different Kubernetes versions support different CRI implementations and versions. Incompatible versions can cause node failures, pod scheduling issues, or container startup problems. Additionally, while kernel compatibility is important for the runtime itself, the primary compatibility concern from a Kubernetes perspective is ensuring the kubelet can properly communicate with the runtime. Always consult the Kubernetes version compatibility matrix and container runtime documentation before upgrading."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: What happens to running pods on a node during a kernel upgrade that requires a reboot?
+  options:
+  - Pods automatically migrate to other nodes
+  - Pods continue running if they are stateless
+  - Pods are terminated abruptly unless the node is drained first
+  - Pods are paused and resumed after reboot
+  correct_answer: Pods are terminated abruptly unless the node is drained first
+  explanation: "When a node undergoes a kernel upgrade requiring a reboot, all running pods on that node are terminated abruptly if the node hasn't been properly drained beforehand. Kubernetes does not automatically migrate pods during unexpected node shutdowns - this is why draining is essential. When you drain a node, Kubernetes gracefully terminates pods, respecting their termination grace periods, and reschedules them on other available nodes. Without draining, pods experience hard terminations which can lead to data loss, incomplete transactions, or service disruptions. For stateful applications, this is particularly critical as they may be in the middle of writing data. Best practice is to always drain nodes before any maintenance that requires a reboot, ensuring high availability and data integrity for your workloads."
+  require_pass: true

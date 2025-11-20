@@ -1,0 +1,227 @@
+slug: electric-field-intensity
+title: "Electric Field Intensity and Field Lines"
+difficulty: intermediate
+sequence_order: 3
+estimated_minutes: 17
+key_concepts:
+- electric-field
+- field-lines
+- field-due-to-point-charge
+- superposition
+- continuous-charge-distribution
+prerequisites:
+- coulombs-law-superposition
+content_md: |
+  # Electric Field Intensity and Field Lines
+
+  ## Electric Field Concept
+
+  **Region around a charge where other charges experience force.**
+
+  ### Definition:
+  ```
+  E = F/q₀ (force per unit positive test charge)
+
+  Unit: N/C = V/m
+  ```
+
+  ### Vector quantity:
+  - Direction: Force on positive test charge
+  - Magnitude: Force per unit charge
+
+  ## Electric Field Due to Point Charge
+
+  ```
+  E = kQ/r² = Q/(4πε₀r²)
+
+  Direction: Radially outward for +Q
+             Radially inward for -Q
+  ```
+
+  ### Properties:
+  - E ∝ Q (charge)
+  - E ∝ 1/r² (inverse square law)
+  - Independent of test charge q₀
+
+  ## Electric Field Lines (Lines of Force)
+
+  ### Properties:
+  1. **Start from + charge, end at - charge** (or infinity)
+  2. **Tangent gives direction** of E at that point
+  3. **Density of lines ∝ E magnitude**
+  4. **Never cross** each other
+  5. **Continuous curves** (except at charges)
+  6. **Perpendicular to equipotential** surfaces
+
+  ### Patterns:
+  - Isolated + charge: Radial outward lines
+  - Isolated - charge: Radial inward lines
+  - + and - charges: Lines from + to -
+  - Two + charges: Lines repel, spread apart
+  - Two - charges: Lines repel, spread apart
+
+  ## Superposition of Electric Fields
+
+  ```
+  E_net = E₁ + E₂ + E₃ + ... (vector sum)
+  ```
+
+  Total field is vector sum of individual fields.
+
+  ## Field on Axis of Dipole
+
+  ```
+  E_axial = 2kp/r³ = p/(2πε₀r³)
+
+  p = qd = dipole moment
+  Direction: Along dipole axis (+ to -)
+  ```
+
+  ## Field on Equatorial Line of Dipole
+
+  ```
+  E_equatorial = kp/r³ = p/(4πε₀r³)
+
+  Direction: Opposite to dipole moment (- to +)
+  ```
+
+  Note: E_axial = 2 × E_equatorial (at same distance)
+
+  ## Continuous Charge Distributions
+
+  ### Linear Charge (λ C/m):
+  ```
+  dE = k(λ dl)/r²
+
+  Infinite line: E = 2kλ/r = λ/(2πε₀r)
+  Direction: Perpendicular to wire (radial)
+  ```
+
+  ### Surface Charge (σ C/m²):
+  ```
+  Infinite plane: E = σ/(2ε₀)
+
+  Direction: Perpendicular to surface
+  Independent of distance!
+  ```
+
+  ### Volume Charge (ρ C/m³):
+  ```
+  Inside sphere: E = kρr/3 = ρr/(3ε₀)
+  Outside sphere: E = kQ/r² (point charge)
+  ```
+
+  ## Electric Field Due to Ring
+
+  On axis at distance x:
+  ```
+  E = kQx/(R² + x²)^(3/2)
+
+  Direction: Along axis
+  Maximum at x = R/√2
+  At center (x=0): E = 0
+  ```
+
+  ## Electric Field Due to Disc
+
+  On axis:
+  ```
+  E = (σ/2ε₀)[1 - x/√(R² + x²)]
+
+  As R → ∞: E = σ/(2ε₀) (infinite plane)
+  At center (x=0, close): E ≈ σ/(2ε₀)
+  ```
+
+  ## Motion of Charge in Uniform Field
+
+  ```
+  Force F = qE (constant)
+  Acceleration a = qE/m (constant)
+  ```
+
+  Like projectile in gravity, but horizontal acceleration.
+
+  ### Deflection:
+  ```
+  y = ½at² = qEt²/(2m) = qEx²/(2mv₀²)
+
+  Parabolic path!
+  ```
+
+  ## Numerical Examples
+
+  **Example 1:** Electric field at 0.3 m from 2 μC charge?
+
+  **Solution:**
+  ```
+  E = kQ/r² = (9×10⁹)(2×10⁻⁶)/(0.3)²
+  E = 18×10³/0.09 = 2×10⁵ N/C = 200 kN/C
+
+  Very strong field near charge!
+  ```
+
+  **Example 2:** Two charges +4 μC and -2 μC are 0.6 m apart. Find field at midpoint.
+
+  **Solution:**
+  ```
+  Distance from each = 0.3 m
+  E₁ = k(4×10⁻⁶)/(0.3)² = 4×10⁵ N/C (away from +)
+  E₂ = k(2×10⁻⁶)/(0.3)² = 2×10⁵ N/C (toward -)
+
+  Both fields point in same direction (toward -)
+  E_net = 4×10⁵ + 2×10⁵ = 6×10⁵ N/C
+  ```
+
+  **Example 3:** Infinite line charge λ = 2 μC/m. Field at 0.1 m?
+
+  **Solution:**
+  ```
+  E = 2kλ/r = 2(9×10⁹)(2×10⁻⁶)/(0.1)
+  E = 36×10³/0.1 = 3.6×10⁵ N/C
+
+  Note: E ∝ 1/r (not 1/r²) for line charge.
+  ```
+
+  ## JEE Key Points
+
+  1. **E = kQ/r²** (point charge)
+  2. **Field lines:** + to -, never cross
+  3. **E_axial = 2kp/r³** (dipole)
+  4. **Infinite plane: E = σ/(2ε₀)** (constant!)
+  5. **Superposition:** Vector addition
+  6. **E ⊥ equipotential surfaces**
+
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: "Electric field at distance r from infinite line charge (λ C/m) is proportional to:"
+  options:
+  - "1/r"
+  - "1/r²"
+  - "r"
+  - "r²"
+  correct_answer: "1/r"
+  explanation: "For infinite line charge: E = 2kλ/r = λ/(2πε₀r), so E ∝ 1/r. This is different from point charge (E ∝ 1/r²) and infinite plane (E = constant). The reason: line charge is 1D distribution. As you move away, more charges contribute to field (longer effective length visible), partially compensating for 1/r² decrease from each element. Result: 1/r dependence. For plane (2D), compensation is complete, giving constant E. This pattern: point (0D) → 1/r², line (1D) → 1/r, plane (2D) → constant. Important for electrostatics problems."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: "Two point charges +q and -q are placed at distance d apart. Electric field at point equidistant from both charges (on perpendicular bisector):"
+  options:
+  - "Zero"
+  - "Parallel to line joining charges"
+  - "Perpendicular to line joining charges"
+  - "Makes 45° angle"
+  correct_answer: "Parallel to line joining charges"
+  explanation: "This forms a dipole. At equidistant point on perpendicular bisector: E₁ from +q points away from +q (radially), E₂ from -q points toward -q (radially). Magnitudes are equal (same distance from both charges). Adding vectors: components perpendicular to dipole axis cancel, components parallel add up. Net field is parallel to dipole axis, pointing from + to - (which is actually opposite to dipole moment vector). Magnitude: E = kp/r³ where r is distance from center. This analysis shows why equatorial field direction is opposite to axial field direction."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: "A charged particle enters uniform electric field perpendicular to field lines with velocity v. Path is:"
+  options:
+  - "Straight line"
+  - "Circle"
+  - "Parabola"
+  - "Helix"
+  correct_answer: "Parabola"
+  explanation: "Uniform E means constant force F = qE (constant acceleration). Initial velocity perpendicular to field → like projectile motion in gravity. Horizontal: uniform motion (no force). Vertical: uniformly accelerated motion. Result: parabolic path! Equation: y = qEx²/(2mv²). This is exactly like ball thrown horizontally in Earth's gravity. Compare: In magnetic field, path is circular (force always perpendicular to velocity). In non-uniform electric field, path could be more complex. If initial velocity is parallel to E: straight line with acceleration. If at angle: still parabolic but inclined. This principle is used in cathode ray tubes, particle accelerators."
+  require_pass: true

@@ -1,0 +1,59 @@
+slug: galvaniccells-practice
+title: galvanic_cells — Practice
+difficulty: easy
+sequence_order: 8
+estimated_minutes: 2
+key_concepts:
+- galvanic_cells
+prerequisites: []
+content_md: '# galvanic_cells — Practice 🚀
+
+
+  In IUPAC cell notation, anode (oxidation) is on left, cathode (reduction) on right.
+  Oxidation occurs at anode (A).
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: 'In IUPAC cell notation A|B||C|D, oxidation occurs at:'
+  options:
+  - A (left electrode)
+  - B (left electrolyte)
+  - C (right electrolyte)
+  - D (right electrode)
+  correct_answer: A (left electrode)
+  explanation: "In IUPAC cell notation, the anode (where oxidation occurs) is always written on the left, and the cathode (where reduction occurs) on the right. In the notation A|B||C|D: A is the anode electrode (oxidation), B is the anodic electrolyte, || represents the salt bridge, C is the cathodic electrolyte, and D is the cathode electrode (reduction). For example, Zn|Zn²⁺||Cu²⁺|Cu represents: Zn → Zn²⁺ + 2e⁻ (oxidation at left) and Cu²⁺ + 2e⁻ → Cu (reduction at right)."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: 'In a galvanic cell, electrons flow from:'
+  options:
+  - Anode to cathode through external circuit
+  - Cathode to anode through external circuit
+  - Anode to cathode through electrolyte
+  - Salt bridge to electrodes
+  correct_answer: Anode to cathode through external circuit
+  explanation: "In a galvanic (voltaic) cell, electrons flow from the anode (negative terminal) to the cathode (positive terminal) through the external circuit. At the anode, oxidation releases electrons which travel through the wire to the cathode where reduction consumes them. Ions move through the electrolyte to complete the circuit: cations migrate toward the cathode, anions toward the anode. The salt bridge allows ion flow to maintain charge neutrality but electrons only flow through the external wire."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: 'What is the purpose of the salt bridge in a galvanic cell?'
+  options:
+  - To maintain electrical neutrality by allowing ion flow
+  - To allow electron flow between electrodes
+  - To prevent any chemical reaction
+  - To increase cell voltage
+  correct_answer: To maintain electrical neutrality by allowing ion flow
+  explanation: "The salt bridge maintains electrical neutrality in both half-cells by allowing ions to flow between them. As oxidation at the anode releases positive ions into solution (making it positively charged), the salt bridge supplies anions to neutralize it. Similarly, as reduction at the cathode consumes positive ions (making it negatively charged), the salt bridge supplies cations. Without the salt bridge, charge buildup would stop the reaction. Note: Electrons flow through the external wire, not through the salt bridge. Common salt bridges use KCl or KNO₃ in agar gel."
+  require_pass: true

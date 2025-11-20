@@ -1,0 +1,16 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+
+    <p>Just a reminder to solve any question from the tag</p>
+    <% @user.tags_to_answer.each do |tag| %>
+      <p>
+      <%= tag %>
+      </p>
+    <% end %>
+  </body>
+</html>

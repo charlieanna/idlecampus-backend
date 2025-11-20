@@ -1,0 +1,59 @@
+slug: electrochemicalseries-practice
+title: electrochemical_series — Practice
+difficulty: easy
+sequence_order: 13
+estimated_minutes: 2
+key_concepts:
+- electrochemical_series
+prerequisites: []
+content_md: '# electrochemical_series — Practice 🚀
+
+
+  Lower (more negative) E° means better reducing agent (easily oxidized). Li has lowest
+  E° = -3.05 V, strongest reducer.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: 'Which of the following is the strongest reducing agent?'
+  options:
+  - Li (E° = -3.05 V)
+  - Na (E° = -2.71 V)
+  - Zn (E° = -0.76 V)
+  - Cu (E° = +0.34 V)
+  require_pass: true
+  correct_answer: Li (E° = -3.05 V)
+  explanation: 'Lithium (Li) is the strongest reducing agent because it has the most negative (lowest) standard reduction potential (E° = -3.05 V). Relationship: Lower (more negative) E° → stronger reducing agent → more easily oxidized. Explanation: The reduction potential measures tendency to gain electrons (be reduced). A very negative E° means the species strongly RESISTS reduction and instead prefers to be OXIDIZED (lose electrons), making it a good reducing agent. Ranking as reducing agents: Li (E° = -3.05 V) > Na (E° = -2.71 V) > Zn (E° = -0.76 V) > Cu (E° = +0.34 V). Cu with positive E° prefers to be reduced (gain electrons), making it a poor reducing agent but good oxidizing agent. Applications: (1) Li is used in high-energy batteries due to strong reducing power, (2) Electrochemical series predicts reaction spontaneity: metal with lower E° reduces ion with higher E° (e.g., Zn + Cu²⁺ → Zn²⁺ + Cu is spontaneous because E°(Zn) < E°(Cu)).'
+- type: mcq
+  sequence_order: 2
+  question: 'According to the electrochemical series, which metal can reduce Fe²⁺ to Fe?'
+  options:
+  - Cu (E° = +0.34 V)
+  - Ag (E° = +0.80 V)
+  - Zn (E° = -0.76 V)
+  - Au (E° = +1.50 V)
+  require_pass: true
+  correct_answer: Zn (E° = -0.76 V)
+  explanation: 'Zinc (Zn) can reduce Fe²⁺ to Fe because Zn has a lower (more negative) reduction potential than Fe. Given: E°(Fe²⁺/Fe) = -0.44 V, E°(Zn²⁺/Zn) = -0.76 V. Principle: A metal with lower E° can reduce ions of metal with higher E°. Since E°(Zn) = -0.76 V < E°(Fe) = -0.44 V, zinc can reduce Fe²⁺: Zn + Fe²⁺ → Zn²⁺ + Fe. Cell potential: E°cell = E°(cathode) - E°(anode) = E°(Fe) - E°(Zn) = -0.44 - (-0.76) = +0.32 V (positive, spontaneous). Analysis of other metals: Cu, Ag, Au all have positive E° values (higher than Fe), meaning they CANNOT reduce Fe²⁺; instead Fe could reduce their ions. Example: Fe cannot reduce Cu²⁺ (E°(Cu) = +0.34 V > E°(Fe)), but Zn can reduce both Fe²⁺ and Cu²⁺. The electrochemical series arranges metals by E° to predict such reactions: metals higher in series (more negative E°) can displace metals lower in series from their salt solutions.'
+- type: mcq
+  sequence_order: 3
+  question: 'Which species is the strongest oxidizing agent among the following?'
+  options:
+  - Li⁺ (E° = -3.05 V)
+  - Zn²⁺ (E° = -0.76 V)
+  - Cu²⁺ (E° = +0.34 V)
+  - F₂ (E° = +2.87 V)
+  require_pass: true
+  correct_answer: F₂ (E° = +2.87 V)
+  explanation: 'F₂ (fluorine) is the strongest oxidizing agent with the highest standard reduction potential (E° = +2.87 V). Relationship: Higher (more positive) E° → stronger oxidizing agent → more easily reduced. Explanation: High positive E° means the species has strong tendency to GAIN electrons (be reduced), making it a powerful oxidizing agent. It oxidizes other species by taking their electrons. Ranking as oxidizing agents: F₂ (E° = +2.87 V) > Cu²⁺ (E° = +0.34 V) > Zn²⁺ (E° = -0.76 V) > Li⁺ (E° = -3.05 V). Li⁺ with very negative E° is extremely poor oxidizing agent; it strongly resists gaining electrons. Common strong oxidizing agents (high E°): F₂ (+2.87 V), MnO₄⁻ in acidic medium (+1.51 V), Cr₂O₇²⁻ in acidic medium (+1.33 V), Cl₂ (+1.36 V). These are used in: disinfection (Cl₂), bleaching (MnO₄⁻), volumetric analysis (Cr₂O₇²⁻). The electrochemical series helps predict which species can oxidize others: species with higher E° can oxidize species with lower E°.'

@@ -1,0 +1,44 @@
+slug: searching-with-grep
+title: Searching with grep
+difficulty: easy
+sequence_order: 13
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Searching with grep \U0001F680\n\n# Searching with grep\n\n    `grep`\
+  \ (Global Regular Expression Print) searches text for patterns.\n\n    ## Basic\
+  \ Usage\n\n    ```bash\n    # Search for pattern in file\n    grep \"error\" logfile.txt\n\
+  \n    # Case-insensitive search\n    grep -i \"error\" logfile.txt\n\n    # Show\
+  \ line numbers\n    grep -n \"error\" logfile.txt\n\n    # Invert match (lines NOT\
+  \ matching)\n    grep -v \"success\" logfile.txt\n\n    # Count matches\n    grep\
+  \ -c \"error\" logfile.txt\n\n    # Recursive search in directory\n    grep -r \"\
+  TODO\" /path/to/code/\n\n    # Search multiple files\n    grep \"error\" *.log\n\
+  \    ```\n\n    ## Useful Options\n\n    | Option | Description |\n    |--------|-------------|\n\
+  \    | -i | Case-insensitive |\n    | -n | Show line numbers |\n    | -v | Invert\
+  \ match |\n    | -c | Count matches |\n    | -r | Recursive |\n    | -l | Show only\
+  \ filenames |\n    | -A 3 | Show 3 lines after match |\n    | -B 3 | Show 3 lines\
+  \ before match |\n    | -C 3 | Show 3 lines before and after |"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: Which command recursively searches for a pattern in all files within a
+    directory?
+  options:
+  - grep "pattern" file.txt
+  - grep -r "pattern" /path/
+  - grep -i "pattern" file.txt
+  - grep -n "pattern" file.txt
+  require_pass: true
+  correct_answer: grep -r "pattern" /path/
+  explanation: 'The `grep -r "pattern" /path/` command performs a recursive search
+    through all files in a directory and its subdirectories. The `-r` (or `--recursive`)
+    flag makes grep descend into directories: (1) **Searches all files**: Examines
+    every file in the directory tree, (2) **Shows matching lines**: Displays lines
+    containing the pattern with filename prefix, (3) **Skips binary files**: By default,
+    grep recognizes and skips binary files. Common use cases: `grep -r "TODO" /home/user/code/`
+    (find all TODOs in codebase), `grep -r "error" /var/log/` (search logs for errors).
+    Useful combinations: `grep -rn "pattern" /path/` (add line numbers with -n), `grep
+    -ri "pattern" /path/` (case-insensitive with -i), `grep -r --include="*.js" "pattern"
+    /path/` (search only .js files), `grep -r --exclude-dir=node_modules "pattern"
+    .` (skip node_modules). The recursive flag is essential for searching codebases
+    and log directories. Alternative: `grep -R` also works (follows symlinks).'

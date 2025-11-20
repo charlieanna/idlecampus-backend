@@ -1,0 +1,93 @@
+slug: docker-ps-listing-running-containers
+title: 'Docker PS: Listing Running Containers'
+difficulty: easy
+sequence_order: 1
+estimated_minutes: 2
+key_concepts:
+- containers
+- cli
+- monitoring
+- docker-ps
+- inspection
+prerequisites: []
+content_md: "# Docker PS: Listing Running Containers \U0001F680\n\n# Understanding\
+  \ docker ps: Your Container Dashboard\n\n    ## What is docker ps?\n    The `docker\
+  \ ps` command is your primary tool for viewing running containers. Think of it as\
+  \ the \"process list\" for Docker containers - similar to how `ps` shows running\
+  \ processes in Linux, `docker ps` shows your active containers.\n\n    ## Why It's\
+  \ Important\n    - **Monitoring**: See which containers are currently running\n\
+  \    - **Troubleshooting**: Check container status, ports, and names\n    - **Resource\
+  \ Management**: Identify containers consuming resources\n    - **Quick Reference**:\
+  \ Get container IDs for other Docker commands\n\n    ## Common Use Cases\n\n   \
+  \ ### 1. Check Running Containers\n    ```bash\n    docker ps\n    ```\n    Shows\
+  \ only currently running containers with essential information.\n\n    ### 2. See\
+  \ All Containers (Including Stopped)\n    ```bash\n    docker ps -a\n    ```\n \
+  \   The `-a` flag shows all containers, regardless of their state.\n\n    ### 3.\
+  \ Filter by Status\n    ```bash\n    docker ps -a --filter \"status=exited\"\n \
+  \   ```\n    Find all stopped containers for cleanup.\n\n    ### 4. Show Only Container\
+  \ IDs\n    ```bash\n    docker ps -q\n    ```\n    Useful for scripting and piping\
+  \ to other commands.\n\n    ## Output Columns Explained\n\n    ```\n    CONTAINER\
+  \ ID   IMAGE         COMMAND                  CREATED        STATUS        PORTS\
+  \                  NAMES\n    abc123def456   nginx:alpine  \"nginx -g 'daemon of…\"\
+  \   2 hours ago    Up 2 hours    0.0.0.0:8080->80/tcp   web-server\n    ```\n\n\
+  \    - **CONTAINER ID**: Unique identifier (short form)\n    - **IMAGE**: Docker\
+  \ image used to create the container\n    - **COMMAND**: Command running inside\
+  \ the container\n    - **CREATED**: When the container was created\n    - **STATUS**:\
+  \ Current state (Up/Exited/Paused)\n    - **PORTS**: Port mappings between host\
+  \ and container\n    - **NAMES**: Human-friendly name (auto-generated or custom)\n\
+  \n    ## Visual Example\n\n    ```\n    Your Terminal\n         │\n         ├─ docker\
+  \ ps\n         │\n         └─> Shows Running Containers\n              ├─ web-server\
+  \ (nginx)\n              ├─ database (mysql)\n              └─ cache (redis)\n \
+  \   ```\n\n    ## Common Mistakes to Avoid\n\n    1. **Forgetting -a**: Running\
+  \ `docker ps` only shows running containers. Use `-a` to see stopped ones.\n   \
+  \ 2. **Confusing Names and IDs**: You can use either the container name or ID in\
+  \ commands.\n    3. **Not Using Filters**: For large environments, use filters to\
+  \ narrow results.\n    4. **Ignoring Status**: Always check the STATUS column -\
+  \ \"Up\" doesn't mean \"healthy\".\n\n    ## Pro Tips\n\n    - Use `--format` for\
+  \ custom output: `docker ps --format \"{{.Names}}: {{.Status}}\"`\n    - Combine\
+  \ with `grep`: `docker ps | grep nginx`\n    - Use `-n 5` to show only the last\
+  \ 5 containers\n    - Set aliases: `alias dps='docker ps --format \"table {{.Names}}\\\
+  \\t{{.Status}}\\\\t{{.Ports}}\"'`\n\n    ## When to Use docker ps\n\n    - Before\
+  \ starting a new container (check for port conflicts)\n    - After deploying services\
+  \ (verify they're running)\n    - During troubleshooting (check container status)\n\
+  \    - Before cleanup operations (identify containers to remove)\n\n## Syntax/Command\n\
+  \n```bash\ndocker ps\n```\n\n## Example\n\n```bash\ndocker ps -a\n```\n\n## Key\
+  \ Points\n\n- Start with basic \"docker ps\" to see running containers\n\n- Add\
+  \ -a flag to see all containers including stopped ones\n\n- Use -q to get just container\
+  \ IDs (useful for scripting)"
+exercises:
+- type: terminal
+  problem_statement: List all currently running Docker containers to see their status, IDs, and port mappings
+  expected_output: Table showing running containers with columns for CONTAINER ID, IMAGE, COMMAND, CREATED, STATUS, PORTS, and NAMES
+  language: bash
+  starter_code: "# List running containers\n"
+  sequence_order: 1
+  command: docker ps
+  validation:
+    must_not_include:
+    - Error
+    - 'panic:'
+  timeout_sec: 60
+  require_pass: true
+- type: sandbox
+  sequence_order: 99
+  hints:
+  - Run under CPU pressure to surface leaks or races
+  - Keep commands idempotent in CI
+  validation:
+    must_not_include:
+    - Error
+    - 'panic:'
+  timeout_sec: 60
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What flag should you add to "docker ps" to see stopped containers?
+  options:
+  - -a or --all
+  - -s or --stopped
+  - -e or --exited
+  - --show-stopped
+  correct_answer: -a or --all
+  explanation: "The -a (or --all) flag shows all containers regardless of their state - running, stopped, or exited. By default, 'docker ps' only displays currently running containers. There is no -s, -e, or --show-stopped flag; -a is the standard way to include stopped containers in the listing."
+  require_pass: true

@@ -1,0 +1,61 @@
+slug: practice-question
+title: Practice Question
+difficulty: medium
+sequence_order: 11
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: '# Practice Question 🚀
+
+
+  ## What is this?
+
+  A concise explanation of the concept.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+  - type: mcq
+    sequence_order: 1
+    question: "Which testing principle best describes why tests should be independent of each other?"
+    options:
+      - "Independent tests use less memory"
+      - "Tests can run in any order or in parallel, and a failure in one test doesn't cause cascading failures in others"
+      - "Independent tests are easier to write"
+      - "Independent tests run faster"
+    correct_answer: "Tests can run in any order or in parallel, and a failure in one test doesn't cause cascading failures in others"
+    explanation: "Test independence is fundamental to reliable testing. Independent tests can execute in any order, run in parallel for speed, and be debugged in isolation. When tests depend on each other (test B requires test A to run first), failures cascade: if test A fails, test B also fails even though its logic might be correct, obscuring the actual problem. This makes debugging difficult - you don't know if test B failed due to its own logic or because test A's setup didn't run. Test frameworks often randomize execution order to catch dependencies. The solution: each test performs its own setup using the AAA pattern (Arrange-Act-Assert) and cleans up afterward. Example: BAD: let cart; test1() { cart = new Cart(); cart.add(item); }; test2() { expect(cart.total()).toBe(10); } // depends on test1. GOOD: test1() { const cart = new Cart(); cart.add(item); expect(cart.items.length).toBe(1); }; test2() { const cart = new Cart(); expect(cart.total()).toBe(0); } // independent."
+    require_pass: true
+
+  - type: mcq
+    sequence_order: 2
+    question: "What is the main benefit of following the Test Pyramid with most tests being unit tests?"
+    options:
+      - "Unit tests look more professional"
+      - "Fast feedback loop with quick execution while maintaining high code coverage"
+      - "Unit tests find all bugs"
+      - "Unit tests don't require any setup"
+    correct_answer: "Fast feedback loop with quick execution while maintaining high code coverage"
+    explanation: "The Test Pyramid's emphasis on unit tests provides a fast feedback loop essential for developer productivity. Unit tests execute in milliseconds, allowing developers to run hundreds or thousands of tests in seconds and get immediate feedback on whether their changes broke anything. This enables rapid iteration and confident refactoring. Compare: 1000 unit tests run in 5 seconds, 100 integration tests take 2 minutes, 10 E2E tests take 5 minutes. If you inverted this (Ice Cream Cone anti-pattern) with mostly E2E tests, you'd wait hours for test results, slowing development and encouraging developers to skip tests. Unit tests also have minimal setup (no database, external services, or UI), are easy to debug (small scope), and cheap to maintain. While they don't catch all bugs (integration issues, UI problems), the pyramid balances this with strategic integration and E2E tests. The result: comprehensive coverage with practical execution time."
+    require_pass: true
+
+  - type: mcq
+    sequence_order: 3
+    question: "In TDD, what is the purpose of seeing a test fail (Red step) before making it pass?"
+    options:
+      - "To waste time"
+      - "To verify the test actually tests something and can detect failures"
+      - "To make development slower"
+      - "Because red is easier to see than green"
+    correct_answer: "To verify the test actually tests something and can detect failures"
+    explanation: "Seeing a test fail first is crucial to validate that your test actually works and tests what you think it tests. If you write a test that immediately passes without any implementation, the test might be broken, testing the wrong thing, or making incorrect assumptions. Common issues caught by the Red step: (1) Test has a typo and doesn't actually run the code, (2) Test's assertion is wrong or too lenient (expect(result).toBeDefined() when you meant expect(result).toBe(42)), (3) Functionality already exists from previous code. Example: you write test('adds numbers', () => expect(add(2,3)).toBe(5)) but forgot to import the add function - the test might pass due to a global add() from elsewhere, giving false confidence. Seeing it fail with 'add is not defined' confirms the test runs. Only then do you implement, making it pass (Green), proving your implementation fixes the specific failure. This Red-Green cycle provides confidence that tests guard against regressions."
+    require_pass: true

@@ -1,0 +1,133 @@
+slug: lesson-12
+title: Lesson 12
+difficulty: easy
+sequence_order: 12
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Scalability Fundamentals\n\n    **Scalability**\
+  \ is the ability of a system to handle increased load by adding resources.\n\n \
+  \   ## Scalability vs Performance\n\n    ### Performance\n    - How fast a system\
+  \ processes a single request\n    - Measured in: response time, latency, throughput\n\
+  \    - Example: Reduce query time from 100ms to 10ms\n\n    ### Scalability\n  \
+  \  - How well a system handles increased load\n    - Measured in: requests/second,\
+  \ concurrent users\n    - Example: Handle 10x more users\n\n    **Key Insight**:\
+  \ A performant system isn't necessarily scalable!\n\n    ```\n    Performant but\
+  \ not scalable:\n    - Serves one user in 10ms\n    - Crashes at 1000 concurrent\
+  \ users\n\n    Scalable but not performant:\n    - Serves one user in 500ms\n  \
+  \  - Handles 100,000 concurrent users\n    ```\n\n    ## Types of Scalability\n\n\
+  \    ### 1. Vertical Scaling (Scale Up)\n\n    **Add more power to existing machines**\n\
+  \n    ```\n    Before: 4 CPU cores, 8GB RAM\n    After:  16 CPU cores, 64GB RAM\n\
+  \    ```\n\n    ✅ **Pros:**\n    - Simple to implement\n    - No code changes needed\n\
+  \    - No distributed system complexity\n    - ACID transactions remain simple\n\
+  \n    ❌ **Cons:**\n    - Hardware limits (max CPU/RAM)\n    - Expensive at high\
+  \ end\n    - Single point of failure\n    - Downtime during upgrades\n\n    **When\
+  \ to use:** Early stage, simple applications, databases requiring ACID\n\n    ###\
+  \ 2. Horizontal Scaling (Scale Out)\n\n    **Add more machines**\n\n    ```\n  \
+  \  Before: 1 server\n    After:  10 servers (with load balancer)\n    ```\n\n  \
+  \  ✅ **Pros:**\n    - Virtually unlimited scaling\n    - More cost-effective\n \
+  \   - Better fault tolerance\n    - No downtime for upgrades\n\n    ❌ **Cons:**\n\
+  \    - Code must support distribution\n    - Data consistency challenges\n    -\
+  \ Network overhead\n    - More complex architecture\n\n    **When to use:** High\
+  \ growth, web applications, stateless services\n\n    ## Measuring Scalability\n\
+  \n    ### Key Metrics\n\n    **1. Throughput**\n    - Requests per second (RPS)\n\
+  \    - Transactions per second (TPS)\n    - Data processed per second\n\n    **2.\
+  \ Latency**\n    - p50: 50% of requests faster than X\n    - p95: 95% of requests\
+  \ faster than X\n    - p99: 99% of requests faster than X\n\n    ```python\n   \
+  \ # Example latency distribution\n    p50 = 100ms  # Median\n    p95 = 250ms  #\
+  \ Most users experience this or better\n    p99 = 500ms  # Outliers\n    p99.9 =\
+  \ 2s   # Worst case (network issues, etc.)\n    ```\n\n    **3. Concurrent Users**\n\
+  \    - Active connections\n    - Active sessions\n    - Simultaneous requests\n\n\
+  \    ### Capacity Planning\n\n    **Calculate required capacity:**\n\n    ```python\n\
+  \    # Example: Social media feed\n    daily_active_users = 10_000_000\n    avg_requests_per_user_per_day\
+  \ = 50\n    total_daily_requests = daily_active_users * avg_requests_per_user_per_day\n\
+  \    # = 500,000,000 requests/day\n\n    peak_multiplier = 3  # Traffic 3x higher\
+  \ at peak\n    requests_per_second = (total_daily_requests * peak_multiplier) /\
+  \ 86400\n    # = ~17,361 RPS at peak\n\n    # If each server handles 1000 RPS:\n\
+  \    servers_needed = 17361 / 1000 = 18 servers\n    # Add 50% buffer: 27 servers\n\
+  \    ```\n\n    ## Bottlenecks\n\n    ### Common Bottlenecks\n\n    **1. Database**\n\
+  \    ```sql\n    -- Slow query on large table\n    SELECT * FROM users WHERE email\
+  \ LIKE '%gmail.com';\n    -- No index = table scan = slow!\n    ```\n\n    **Solution:**\n\
+  \    - Add indexes\n    - Optimize queries\n    - Use caching\n    - Database replication\n\
+  \    - Sharding\n\n    **2. Network**\n    ```\n    Large payloads = slow responses\n\
+  \    100MB image × 1000 users = network saturation\n    ```\n\n    **Solution:**\n\
+  \    - Compress responses (gzip)\n    - Use CDN\n    - Optimize payload size\n \
+  \   - Connection pooling\n\n    **3. CPU**\n    ```python\n    # CPU-intensive operation\n\
+  \    for user in all_users:  # 1 million users\n        calculate_recommendations(user)\
+  \  # 100ms each\n    # Total: 27 hours!\n    ```\n\n    **Solution:**\n    - Async\
+  \ processing\n    - Background jobs\n    - Caching results\n    - Horizontal scaling\n\
+  \n    **4. Memory**\n    ```python\n    # Loading all users in memory\n    all_users\
+  \ = User.all()  # 10M users × 1KB = 10GB RAM\n    # Server only has 8GB = crash!\n\
+  \    ```\n\n    **Solution:**\n    - Pagination\n    - Streaming\n    - Lazy loading\n\
+  \    - Add more RAM (vertical scaling)\n\n    ## Stateless vs Stateful\n\n    ###\
+  \ Stateless Services\n\n    **No session state stored on server**\n\n    ```javascript\n\
+  \    // Stateless API\n    app.get('/user/:id', (req, res) => {\n      const user\
+  \ = db.getUser(req.params.id);\n      res.json(user);\n    });\n    // Each request\
+  \ independent, any server can handle it\n    ```\n\n    ✅ **Benefits:**\n    - Easy\
+  \ to scale horizontally\n    - Any server can handle any request\n    - No session\
+  \ replication needed\n    - Load balancing is simple\n\n    ### Stateful Services\n\
+  \n    **Session state stored on server**\n\n    ```javascript\n    // Stateful (session\
+  \ stored in memory)\n    app.get('/cart', (req, res) => {\n      const cart = req.session.cart;\
+  \  // Stored in this server's memory\n      res.json(cart);\n    });\n    // Must\
+  \ route user to same server!\n    ```\n\n    **Solutions for stateful apps:**\n\n\
+  \    1. **Sticky Sessions** (route user to same server)\n    ```nginx\n    upstream\
+  \ backend {\n        ip_hash;  # Same IP → same server\n        server backend1.example.com;\n\
+  \        server backend2.example.com;\n    }\n    ```\n\n    2. **External Session\
+  \ Store**\n    ```javascript\n    // Store session in Redis\n    app.use(session({\n\
+  \      store: new RedisStore({ client: redisClient }),\n      secret: 'secret'\n\
+  \    }));\n    // Now any server can handle request!\n    ```\n\n    ## Reliability\
+  \ Metrics\n\n    ### Availability\n\n    **Percentage of time system is operational**\n\
+  \n    ```\n    Availability = Uptime / (Uptime + Downtime)\n    ```\n\n    **Industry\
+  \ Standards:**\n\n    | Level | Availability | Downtime/Year | Downtime/Month |\n\
+  \    |-------|-------------|---------------|----------------|\n    | 90% | \"One\
+  \ nine\" | 36.5 days | 3 days |\n    | 99% | \"Two nines\" | 3.65 days | 7.2 hours\
+  \ |\n    | 99.9% | \"Three nines\" | 8.76 hours | 43.8 minutes |\n    | 99.99% |\
+  \ \"Four nines\" | 52.6 minutes | 4.38 minutes |\n    | 99.999% | \"Five nines\"\
+  \ | 5.26 minutes | 26 seconds |\n\n    **Achieving high availability:**\n\n    1.\
+  \ **Redundancy**\n    ```\n    Single server = 99% uptime\n    Two servers (failover)\
+  \ = 99.99% uptime\n    ```\n\n    2. **Health Checks**\n    ```python\n    # Load\
+  \ balancer checks health\n    @app.route('/health')\n    def health():\n       \
+  \ if database.is_connected():\n            return {'status': 'healthy'}, 200\n \
+  \       return {'status': 'unhealthy'}, 503\n    ```\n\n    3. **Graceful Degradation**\n\
+  \    ```python\n    def get_recommendations():\n        try:\n            return\
+  \ recommendation_service.get()\n        except Exception:\n            # Fallback\
+  \ to cached recommendations\n            return cache.get('default_recommendations')\n\
+  \    ```\n\n    ### MTBF and MTTR\n\n    **MTBF (Mean Time Between Failures)**\n\
+  \    - Average time between failures\n    - Higher is better\n\n    **MTTR (Mean\
+  \ Time To Recovery)**\n    - Average time to recover from failure\n    - Lower is\
+  \ better\n\n    ```\n    Availability = MTBF / (MTBF + MTTR)\n\n    Example:\n \
+  \   MTBF = 720 hours (30 days)\n    MTTR = 1 hour\n    Availability = 720 / (720\
+  \ + 1) = 99.86%\n    ```\n\n    ## Real-World Example: Twitter\n\n    **Scaling\
+  \ challenges:**\n\n    ```\n    Users: 330 million\n    Tweets per day: 500 million\n\
+  \    Reads: 10 billion/day (20x more reads than writes)\n    Peak: 143,000 tweets/second\
+  \ (New Year's Eve)\n    ```\n\n    **Solutions applied:**\n\n    1. **Read/Write\
+  \ Separation**\n       - Write to main database\n       - Read from replicas\n\n\
+  \    2. **Caching**\n       - Timeline cache (Redis)\n       - Reduces database\
+  \ load 100x\n\n    3. **Async Processing**\n       - Tweet posting → queue → background\
+  \ processing\n       - Fan-out to followers happens async\n\n    4. **CDN**\n  \
+  \     - Images, videos served from edge locations\n       - Reduces latency globally\n\
+  \n    **Next**: We'll dive into the CAP theorem and distributed systems tradeoffs."
+exercises: []
+exercises:
+  - type: mcq
+    sequence_order: 1
+    question: "When designing a system like Twitter, what are the key scalability considerations?"
+    options:
+      - "Just use the biggest server available"
+      - "Read-heavy workload, fan-out on write, caching timelines, handling celebrity users differently"
+      - "Scalability doesn't matter"
+      - "Only focus on database optimization"
+    correct_answer: "Read-heavy workload, fan-out on write, caching timelines, handling celebrity users differently"
+    explanation: "Twitter-like systems have unique characteristics: extremely read-heavy (timelines viewed far more than tweets posted), need real-time updates, celebrity users with millions of followers create hotspots. Key design decisions: Fan-out approaches—(1) Fan-out on write: pre-compute timelines when tweet posted (faster reads, expensive writes for celebrities), (2) Fan-out on read: build timeline when requested (slower reads, manageable writes), or (3) Hybrid: fan-out for normal users, merge celebrity tweets at read time. Other considerations: caching timelines, sharding users, using message queues for async processing, CDN for media, and handling spikes during major events. No single 'right' answer—design involves trade-offs based on requirements."
+    require_pass: true
+  - type: mcq
+    sequence_order: 2
+    question: "What is the main trade-off when choosing between normalized and denormalized database schemas?"
+    options:
+      - "There is no difference"
+      - "Normalized: less redundancy, more joins; Denormalized: faster reads, more storage/redundancy"
+      - "Normalized is always better"
+      - "Denormalized databases don't work"
+    correct_answer: "Normalized: less redundancy, more joins; Denormalized: faster reads, more storage/redundancy"
+    explanation: "Normalization reduces data redundancy by splitting data into related tables (3NF, BCNF). Denormalization duplicates data for performance. Normalized: Benefits—data integrity, less storage, easier updates. Drawbacks—complex queries with many joins, slower reads. Denormalized: Benefits—faster reads (fewer joins), simpler queries. Drawbacks—data redundancy, harder to maintain consistency, more storage. Real-world: Use normalized for transactional systems (banking, orders) where consistency is critical. Use denormalized for read-heavy analytics, caching layers, or when query performance is paramount. Many systems use both—normalized operational database, denormalized data warehouse for analytics. Choose based on read/write patterns and consistency requirements."
+    require_pass: true

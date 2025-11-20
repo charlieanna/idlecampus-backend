@@ -1,0 +1,60 @@
+slug: introduction-to-go
+title: Introduction to Go
+difficulty: easy
+sequence_order: 1
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Introduction to Go \U0001F680\n\n# Introduction to Go\n\n    Go (or\
+  \ Golang) is a statically typed, compiled programming language designed at Google.\
+  \ It's known for its simplicity, efficiency, and excellent concurrency support.\n\
+  \n    ## Why Learn Go?\n\n    - **Simple and Clean Syntax**: Easy to learn and read\n\
+  \    - **Fast Compilation**: Compiles to native machine code\n    - **Built-in Concurrency**:\
+  \ Goroutines and channels make concurrent programming easy\n    - **Strong Standard\
+  \ Library**: Rich set of packages included\n    - **Used by**: Google, Uber, Netflix,\
+  \ Docker, Kubernetes, and more\n\n    ## Your First Go Program\n\n    ```go\n  \
+  \  package main\n\n    import \"fmt\"\n\n    func main() {\n        fmt.Println(\"\
+  Hello, Go!\")\n    }\n    ```\n\n    ### Key Components:\n    - `package main`:\
+  \ Every Go program starts with a package declaration\n    - `import \"fmt\"`: Import\
+  \ the format package for I/O operations\n    - `func main()`: The entry point of\
+  \ your program\n    - `fmt.Println()`: Prints text to the console\n\n    ## Variables\
+  \ and Types\n\n    Go is statically typed. Here are the basic types:\n\n    ```go\n\
+  \    // Variable declarations\n    var name string = \"John\"\n    var age int =\
+  \ 30\n    var salary float64 = 50000.50\n    var isActive bool = true\n\n    //\
+  \ Short declaration (type inference)\n    city := \"New York\"  // string\n    count\
+  \ := 42         // int\n    ```\n\n    ### Basic Types:\n    - **Strings**: `string`\n\
+  \    - **Integers**: `int`, `int8`, `int16`, `int32`, `int64`\n    - **Unsigned\
+  \ integers**: `uint`, `uint8`, `uint16`, `uint32`, `uint64`\n    - **Floating point**:\
+  \ `float32`, `float64`\n    - **Boolean**: `bool`\n    - **Byte**: `byte` (alias\
+  \ for uint8)\n    - **Rune**: `rune` (alias for int32, represents a Unicode code\
+  \ point)\n\n    ## Control Flow\n\n    ### If Statements\n    ```go\n    if age\
+  \ >= 18 {\n        fmt.Println(\"Adult\")\n    } else {\n        fmt.Println(\"\
+  Minor\")\n    }\n\n    // If with initialization\n    if num := 10; num > 5 {\n\
+  \        fmt.Println(\"Greater than 5\")\n    }\n    ```\n\n    ### For Loops\n\
+  \    Go has only one looping construct: `for`\n\n    ```go\n    // Traditional for\
+  \ loop\n    for i := 0; i < 5; i++ {\n        fmt.Println(i)\n    }\n\n    // While-style\
+  \ loop\n    sum := 0\n    for sum < 100 {\n        sum += 10\n    }\n\n    // Infinite\
+  \ loop\n    for {\n        // Break out with: break\n    }\n\n    // Range over\
+  \ slice\n    numbers := []int{1, 2, 3, 4, 5}\n    for index, value := range numbers\
+  \ {\n        fmt.Printf(\"Index: %d, Value: %d\\\\n\", index, value)\n    }\n  \
+  \  ```\n\n    ## Functions\n\n    ```go\n    // Basic function\n    func greet(name\
+  \ string) {\n        fmt.Println(\"Hello, \" + name)\n    }\n\n    // Function with\
+  \ return value\n    func add(a int, b int) int {\n        return a + b\n    }\n\n\
+  \    // Multiple return values\n    func divide(a, b float64) (float64, error) {\n\
+  \        if b == 0 {\n            return 0, errors.New(\"division by zero\")\n \
+  \       }\n        return a / b, nil\n    }\n\n    // Named return values\n    func\
+  \ calculate(a, b int) (sum int, product int) {\n        sum = a + b\n        product\
+  \ = a * b\n        return  // naked return\n    }\n    ```\n\n    ## Practice Exercise\n\
+  \n    Now try the \"Go Slices and Arrays\" lab to practice these concepts!"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What is the entry point of a Go program?
+  options:
+  - The init() function
+  - The main() function in the main package
+  - The start() function
+  - The begin() function in any package
+  correct_answer: The main() function in the main package
+  explanation: "In Go, every executable program must have a main() function inside a package named 'main'. This is the entry point where program execution begins. The main() function takes no arguments and returns no values. While init() functions exist and run before main(), they are not the entry point - main() is where your program actually starts executing user code. Example: package main\n\nfunc main() {\n    fmt.Println(\"Hello, World!\")\n}"
+  require_pass: true

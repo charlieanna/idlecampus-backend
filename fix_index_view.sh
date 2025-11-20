@@ -1,0 +1,207 @@
+#!/bin/bash
+
+cat > entry-app/SOVisits/app/views/interactive_learning/index.html.erb << 'ENDOFFILE'
+<% content_for :title, "Interactive Learning Units" %>
+
+<div class="container mt-5">
+  <div class="row mb-4">
+    <div class="col-12">
+      <h1 class="display-4 mb-2">Interactive Learning</h1>
+      <p class="lead text-muted">Master Docker commands through hands-on practice</p>
+    </div>
+  </div>
+
+  <!-- Stats Overview -->
+  <div class="row mb-5">
+    <div class="col-md-3">
+      <div class="card">
+        <div class="card-body text-center">
+          <h3 class="text-primary"><%= @units.count %></h3>
+          <p class="text-muted mb-0">Total Units</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card">
+        <div class="card-body text-center">
+          <h3 class="text-success"><%= current_user.learning_unit_progresses.completed.count %></h3>
+          <p class="text-muted mb-0">Completed</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card">
+        <div class="card-body text-center">
+          <h3 class="text-warning"><%= current_user.learning_unit_progresses.in_progress.count %></h3>
+          <p class="text-muted mb-0">In Progress</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card">
+        <div class="card-body text-center">
+          <h3 class="text-info"><%= current_user.learning_unit_progresses.needs_review.count %></h3>
+          <p class="text-muted mb-0">Need Review</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Current Unit Guidance -->
+  <% 
+    # Get the current unit from enrollments
+    current_enrollments = current_user.course_enrollments.active.includes(:current_item)
+    current_unit = current_enrollments.map(&:current_item).compact.find { |item| item.is_a?(InteractiveLearningUnit) }
+    
+    # If no current unit, set it to the first unit
+    if current_unit.nil?
+      first_unit = @units.first
+      if first_unit
+        # Find or create enrollment for the first unit's course
+        course_module = first_unit.course_modules.first
+        if course_module && course_module.course
+          enrollment = course_module.course.enrollment_for(current_user)
+          unless enrollment
+            enrollment = CourseEnrollment.create!(
+              user: current_user,
+              course: course_module.course,
+              status: 'enrolled'
+            )
+          end
+          enrollment.set_initial_current_item!
+          current_unit = enrollment.current_item
+        end
+      end
+    end
+    
+    current_unit_order = current_unit&.sequence_order || 0
+  %>
+  
+  <% if current_unit %>
+    <div class="alert alert-info mb-5">
+      <h5 class="alert-heading">
+        <i class="fas fa-compass mr-2"></i>Your Current Learning Path
+      </h5>
+      <p class="mb-2">
+        You're currently on: <strong><%= current_unit.title %></strong>
+      </p>
+      <%= link_to interactive_learning_path(current_unit.slug), class: "btn btn-primary" do %>
+        <i class="fas fa-play mr-1"></i> Continue Learning
+      <% end %>
+    </div>
+  <% end %>
+
+  <!-- Units by Category -->
+  <% @units.group_by(&:category).each do |category, category_units| %>
+    <div class="mb-5">
+      <h2 class="h3 mb-3 text-capitalize">
+        <i class="fas fa-folder text-primary mr-2"></i>
+        <%= category&.humanize || 'General' %>
+      </h2>
+      
+      <div class="row">
+        <% category_units.each do |unit| %>
+          <% progress = @user_progress[unit.id] %>
+          <% completion = progress&.completion_percentage || 0 %>
+          <% is_completed = progress&.completed? || false %>
+          <% is_current = (unit == current_unit) %>
+          <% unit_order = unit.sequence_order || 999 %>
+          <% is_accessible = is_completed || is_current || (unit_order <= current_unit_order) %>
+          
+          <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card h-100 <%= 'border-success' if is_completed %> <%= 'border-primary border-2' if is_current %> <%= 'opacity-75' unless is_accessible %>">
+              <div class="card-header bg-white">
+                <div class="d-flex justify-content-between align-items-start">
+                  <h5 class="card-title mb-0">
+                    <%= unit.title %>
+                  </h5>
+                  <% if is_completed %>
+                    <i class="fas fa-check-circle text-success"></i>
+                  <% elsif is_current %>
+                    <span class="badge badge-primary">CURRENT</span>
+                  <% elsif !is_accessible %>
+                    <i class="fas fa-lock text-muted"></i>
+                  <% end %>
+                </div>
+              </div>
+              
+              <div class="card-body">
+                <!-- Difficulty Badge -->
+                <div class="mb-2">
+                  <% case unit.difficulty_level
+                     when 'easy' %>
+                    <span class="badge badge-success">Easy</span>
+                  <% when 'medium' %>
+                    <span class="badge badge-warning">Medium</span>
+                  <% when 'hard' %>
+                    <span class="badge badge-danger">Hard</span>
+                  <% end %>
+                  
+                  <span class="badge badge-secondary ml-1">
+                    <i class="far fa-clock"></i> <%= unit.estimated_minutes %> min
+                  </span>
+                </div>
+
+                <!-- Progress Bar -->
+                <% if completion > 0 %>
+                  <div class="mb-3">
+                    <div class="d-flex justify-content-between align-items-center mb-1">
+                      <small class="text-muted">Progress</small>
+                      <small class="text-muted"><%= completion %>%</small>
+                    </div>
+                    <div class="progress" style="height: 8px;">
+                      <div class="progress-bar <%= is_completed ? 'bg-success' : 'bg-primary' %>" 
+                           role="progressbar" 
+                           style="width: <%= completion %>%;" 
+                           aria-valuenow="<%= completion %>" 
+                           aria-valuemin="0" 
+                           aria-valuemax="100">
+                      </div>
+                    </div>
+                  </div>
+                <% end %>
+
+                <!-- Learning Objectives Preview -->
+                <% if unit.learning_objectives.present? && unit.learning_objectives.any? %>
+                  <div class="mb-3">
+                    <small class="text-muted d-block mb-1">You'll learn:</small>
+                    <small class="text-muted">
+                      <i class="fas fa-check text-success mr-1"></i>
+                      <%= unit.learning_objectives.first %>
+                      <% if unit.learning_objectives.length > 1 %>
+                        <span class="text-muted">+ <%= unit.learning_objectives.length - 1 %> more</span>
+                      <% end %>
+                    </small>
+                  </div>
+                <% end %>
+              </div>
+              
+              <div class="card-footer bg-white">
+                <% if is_completed %>
+                  <%= link_to interactive_learning_path(unit.slug), class: "btn btn-outline-success btn-block" do %>
+                    <i class="fas fa-redo mr-1"></i> Review
+                  <% end %>
+                <% elsif is_current %>
+                  <%= link_to interactive_learning_path(unit.slug), class: "btn btn-primary btn-block" do %>
+                    <i class="fas fa-play mr-1"></i> Continue
+                  <% end %>
+                <% elsif is_accessible %>
+                  <%= link_to interactive_learning_path(unit.slug), class: "btn btn-outline-primary btn-block" do %>
+                    <i class="fas fa-book-reader mr-1"></i> Access
+                  <% end %>
+                <% else %>
+                  <button class="btn btn-secondary btn-block" disabled>
+                    <i class="fas fa-lock mr-1"></i> Locked
+                  </button>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</div>
+ENDOFFILE
+
+echo "Fixed interactive learning index view with proper guided learning flow"

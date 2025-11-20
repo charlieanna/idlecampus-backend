@@ -1,0 +1,53 @@
+slug: codesprout-exposing-containers-with-port-mapping
+title: 'CodeSprout: Exposing Containers with Port Mapping'
+sequence_order: 4
+estimated_minutes: 2
+difficulty: easy
+content_md: "# CodeSprout: Exposing Containers with Port Mapping \U0001F680\n\n**Port\
+  \ Mapping Challenge** \U0001F310\n\n    Your team lead Sarah has a problem:\n\n\
+  \    > \"We deployed our marketing site in a container, but no one can access it!\
+  \ The container is running\n    > but when we try to visit the site, nothing loads.\
+  \ Can you figure out why?\"\n\n    ### The Problem\n    Containers are **isolated\
+  \ by default**. Even if nginx is running perfectly inside the container on port\
+  \ 80,\n    your browser on your host machine can't reach it. You need to **map**\
+  \ (publish) the container's port to your host.\n\n    ### Port Mapping Explained\n\
+  \    Port mapping connects a port on your **host machine** to a port inside the\
+  \ **container**:\n\n    ```bash\n    docker run -p HOST_PORT:CONTAINER_PORT image\n\
+  \    ```\n\n    - **HOST_PORT** (e.g., `8080`) → Port on your computer\n    - **CONTAINER_PORT**\
+  \ (e.g., `80`) → Port inside the container where the app listens\n    - **Format**:\
+  \ `-p 8080:80` means \"send traffic from host port 8080 to container port 80\"\n\
+  \n    ### Visual Example\n    ```\n    Your Browser → http://localhost:8080 → Docker\
+  \ NAT → Container Port 80 → nginx\n    ```\n\n    ### The Solution\n    To make\
+  \ the CodeSprout site accessible, we need to:\n    1. Map host port `8080` to container\
+  \ port `80` (where nginx listens)\n    2. Run in detached mode (`-d`) so the terminal\
+  \ isn't blocked\n    3. Name it `codesprout-web` for easy reference\n\n    ```bash\n\
+  \    docker run -d -p 8080:80 --name codesprout-web nginx:alpine\n    ```\n\n  \
+  \  After this, anyone can visit `http://localhost:8080` and see the site!\n\n  \
+  \  ### Common Mistakes\n    - **Swapping ports**: `-p 80:8080` would try to map\
+  \ your host's port 80 to container 8080 (wrong direction!)\n    - **Forgetting `-p`**:\
+  \ Container runs but can't be accessed from outside\n    - **Port conflicts**: If\
+  \ port 8080 is already in use, Docker will error - try a different port like 8081\n\
+  \n## Syntax/Command\n\n```bash\ndocker run -d -p 8080:80 --name codesprout-web nginx:alpine\n\
+  ```\n\n## Example\n\n```bash\ndocker run -d --name codesprout-web -p 8080:80 nginx:alpine\n\
+  ```\n\n## Key Points\n\n- Port mapping format: -p HOST:CONTAINER → -p 8080:80\n\n\
+  - Remember: first number (8080) is your host, second (80) is the container\n\n-\
+  \ Use -d to run in background and free your terminal"
+exercises:
+- type: terminal
+  sequence_order: 1
+  description: Expose the nginx container on port 80 so it can be accessed via http://localhost:8080
+- type: mcq
+  sequence_order: 2
+  question: In "docker run -p 8080:80 nginx", what does 8080 represent?
+  options:
+  - The port on the host machine
+  - The port inside the container
+  - The container ID
+  - The process ID
+  correct_answer_index: 0
+objectives:
+- Understand the fundamental concepts and mechanisms of codesprout exposing containers
+  with port mapping
+- Apply chemical principles to solve related problems
+- Identify key reactions, equations, and chemical behaviors
+next_recommended: []

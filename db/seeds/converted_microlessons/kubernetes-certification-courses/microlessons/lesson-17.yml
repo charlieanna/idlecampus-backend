@@ -1,0 +1,460 @@
+slug: lesson-17
+title: Kubernetes Audit Logging
+difficulty: medium
+sequence_order: 17
+estimated_minutes: 12
+key_concepts:
+  - Audit policies
+  - Audit backends
+  - Log rotation
+  - Security monitoring
+  - Compliance
+prerequisites: []
+content_md: |
+  # Kubernetes Audit Logging
+
+  ## Introduction
+
+  Audit logging in Kubernetes records API server requests for security, compliance, and troubleshooting. Understanding how to configure audit policies and manage log backends is essential for production clusters.
+
+  ## What is Audit Logging?
+
+  **Audit logs record:**
+  - Who made the request (user, service account)
+  - What action was requested (create, update, delete)
+  - When the request occurred
+  - What resource was affected
+  - Request metadata and response status
+
+  ### Audit Stages
+
+  Kubernetes audits requests at different stages:
+
+  1. **RequestReceived** - Request received, before handler
+  2. **ResponseStarted** - Response headers sent (for watch/long-running)
+  3. **ResponseComplete** - Response body complete
+  4. **Panic** - Request panicked
+
+  ## Audit Policy Configuration
+
+  ### Policy Structure
+
+  Audit policies define what to log and at what detail level.
+
+  ```yaml
+  apiVersion: audit.k8s.io/v1
+  kind: Policy
+  rules:
+    # Don't log read requests for events
+    - level: None
+      resources:
+      - group: ""
+        resources: ["events"]
+      verbs: ["get", "list", "watch"]
+
+    # Log pod changes at Request level
+    - level: Request
+      resources:
+      - group: ""
+        resources: ["pods"]
+      verbs: ["create", "update", "patch", "delete"]
+
+    # Log secrets access at Metadata level
+    - level: Metadata
+      resources:
+      - group: ""
+        resources: ["secrets"]
+
+    # Catch-all: log everything else at Metadata level
+    - level: Metadata
+  ```
+
+  ### Audit Levels
+
+  **None** - Don't log
+  - Use for: High-volume, low-value requests (health checks, read-only)
+
+  **Metadata** - Log request metadata only
+  - Use for: Most requests (who, what, when)
+  - Does NOT include request/response bodies
+
+  **Request** - Log metadata + request body
+  - Use for: Important mutations (create, update, delete)
+  - Does NOT include response body
+
+  **RequestResponse** - Log metadata + request + response
+  - Use for: Critical resources requiring full audit trail
+  - WARNING: Can log sensitive data (secrets, passwords)
+
+  ### Example Policy
+
+  **Production-ready audit policy:**
+
+  ```yaml
+  apiVersion: audit.k8s.io/v1
+  kind: Policy
+  omitStages:
+    - "RequestReceived"  # Reduce noise
+  rules:
+    # Don't log health checks
+    - level: None
+      users: ["system:kube-proxy"]
+      verbs: ["watch"]
+      resources:
+      - group: ""
+        resources: ["endpoints", "services"]
+
+    # Don't log read-only requests to system namespaces
+    - level: None
+      namespaces: ["kube-system", "kube-public"]
+      verbs: ["get", "list", "watch"]
+
+    # Log secret access (but not body)
+    - level: Metadata
+      resources:
+      - group: ""
+        resources: ["secrets", "configmaps"]
+
+    # Log pod changes with request body
+    - level: Request
+      resources:
+      - group: ""
+        resources: ["pods", "services"]
+      verbs: ["create", "update", "patch", "delete"]
+
+    # Log RBAC changes with full details
+    - level: RequestResponse
+      resources:
+      - group: "rbac.authorization.k8s.io"
+        resources: ["roles", "rolebindings", "clusterroles", "clusterrolebindings"]
+
+    # Default: log metadata for everything else
+    - level: Metadata
+  ```
+
+  ## Enabling Audit Logging
+
+  ### API Server Configuration
+
+  **Add flags to kube-apiserver:**
+
+  ```bash
+  --audit-policy-file=/etc/kubernetes/audit-policy.yaml
+  --audit-log-path=/var/log/kubernetes/audit.log
+  --audit-log-maxage=30          # Days to retain logs
+  --audit-log-maxbackup=10       # Number of backup files
+  --audit-log-maxsize=100        # MB before rotation
+  ```
+
+  **For kubeadm clusters, edit:**
+  ```bash
+  /etc/kubernetes/manifests/kube-apiserver.yaml
+  ```
+
+  **Add volumes and volumeMounts:**
+
+  ```yaml
+  apiVersion: v1
+  kind: Pod
+  metadata:
+    name: kube-apiserver
+    namespace: kube-system
+  spec:
+    containers:
+    - name: kube-apiserver
+      command:
+      - kube-apiserver
+      - --audit-policy-file=/etc/kubernetes/audit-policy.yaml
+      - --audit-log-path=/var/log/kubernetes/audit.log
+      - --audit-log-maxage=30
+      - --audit-log-maxbackup=10
+      - --audit-log-maxsize=100
+      volumeMounts:
+      - name: audit-policy
+        mountPath: /etc/kubernetes/audit-policy.yaml
+        readOnly: true
+      - name: audit-logs
+        mountPath: /var/log/kubernetes
+    volumes:
+    - name: audit-policy
+      hostPath:
+        path: /etc/kubernetes/audit-policy.yaml
+        type: File
+    - name: audit-logs
+      hostPath:
+        path: /var/log/kubernetes
+        type: DirectoryOrCreate
+  ```
+
+  ## Audit Backends
+
+  Kubernetes supports multiple audit backends:
+
+  ### 1. Log Backend (File)
+
+  **Write to local file:**
+  ```bash
+  --audit-log-path=/var/log/kubernetes/audit.log
+  ```
+
+  **Advantages:**
+  - Simple setup
+  - Built-in rotation
+
+  **Disadvantages:**
+  - Local storage only
+  - Manual log shipping required
+
+  ### 2. Webhook Backend
+
+  **Send to external system:**
+  ```bash
+  --audit-webhook-config-file=/etc/kubernetes/webhook-config.yaml
+  --audit-webhook-mode=batch  # or blocking
+  ```
+
+  **Webhook config:**
+  ```yaml
+  apiVersion: v1
+  kind: Config
+  clusters:
+  - name: audit-webhook
+    cluster:
+      server: https://audit-server.example.com:8080/audit
+      certificate-authority: /path/to/ca.crt
+  contexts:
+  - name: default
+    context:
+      cluster: audit-webhook
+      user: audit-user
+  current-context: default
+  users:
+  - name: audit-user
+    user:
+      client-certificate: /path/to/client.crt
+      client-key: /path/to/client.key
+  ```
+
+  **Webhook modes:**
+  - **batch** - Buffer and send in batches (recommended)
+  - **blocking** - Wait for webhook response (slower, reliable)
+
+  ### 3. Dynamic Backend
+
+  Send to multiple backends simultaneously:
+  ```bash
+  --audit-log-path=/var/log/audit.log
+  --audit-webhook-config-file=/etc/kubernetes/webhook.yaml
+  ```
+
+  ## Log Rotation
+
+  ### Built-in Rotation (Log Backend)
+
+  ```bash
+  --audit-log-maxage=30        # Keep logs for 30 days
+  --audit-log-maxbackup=10     # Keep 10 backup files
+  --audit-log-maxsize=100      # Rotate at 100 MB
+  ```
+
+  **File naming:**
+  ```
+  /var/log/kubernetes/audit.log           # Current
+  /var/log/kubernetes/audit-2025-01-01.log
+  /var/log/kubernetes/audit-2025-01-02.log
+  ```
+
+  ### External Rotation (logrotate)
+
+  **For custom rotation, use logrotate:**
+
+  ```bash
+  # /etc/logrotate.d/kubernetes-audit
+  /var/log/kubernetes/audit.log {
+      daily
+      rotate 30
+      compress
+      delaycompress
+      notifempty
+      create 0640 root root
+      postrotate
+          # Signal API server to reopen log file
+          kill -USR1 $(cat /var/run/kube-apiserver.pid)
+      endscript
+  }
+  ```
+
+  ## Analyzing Audit Logs
+
+  ### Log Format
+
+  **JSON lines:**
+  ```json
+  {
+    "kind": "Event",
+    "apiVersion": "audit.k8s.io/v1",
+    "level": "Metadata",
+    "auditID": "abc123...",
+    "stage": "ResponseComplete",
+    "requestURI": "/api/v1/namespaces/default/pods",
+    "verb": "create",
+    "user": {
+      "username": "admin",
+      "uid": "admin",
+      "groups": ["system:masters"]
+    },
+    "sourceIPs": ["192.168.1.10"],
+    "userAgent": "kubectl/v1.28.0",
+    "objectRef": {
+      "resource": "pods",
+      "namespace": "default",
+      "name": "nginx",
+      "apiVersion": "v1"
+    },
+    "responseStatus": {
+      "code": 201
+    },
+    "requestReceivedTimestamp": "2025-01-08T10:00:00.000Z",
+    "stageTimestamp": "2025-01-08T10:00:00.100Z"
+  }
+  ```
+
+  ### Useful Queries
+
+  **Find failed authentication:**
+  ```bash
+  grep '"code":401' /var/log/kubernetes/audit.log | jq .
+  ```
+
+  **Find secret access:**
+  ```bash
+  grep '"resource":"secrets"' /var/log/kubernetes/audit.log | jq .
+  ```
+
+  **Find who deleted pods:**
+  ```bash
+  grep -E '"verb":"delete".*"resource":"pods"' /var/log/kubernetes/audit.log | \
+    jq -r '[.user.username, .objectRef.namespace, .objectRef.name] | @tsv'
+  ```
+
+  **Count requests by user:**
+  ```bash
+  jq -r '.user.username' /var/log/kubernetes/audit.log | sort | uniq -c | sort -nr
+  ```
+
+  ## Security Use Cases
+
+  ### 1. Detect Unauthorized Access
+
+  ```bash
+  # Failed authorization attempts
+  grep '"code":403' /var/log/kubernetes/audit.log | \
+    jq -r '[.user.username, .verb, .objectRef.resource] | @tsv'
+  ```
+
+  ### 2. Track Privilege Escalation
+
+  ```bash
+  # RBAC changes
+  grep 'rbac.authorization.k8s.io' /var/log/kubernetes/audit.log | \
+    jq 'select(.verb == "create" or .verb == "update")'
+  ```
+
+  ### 3. Monitor Secret Access
+
+  ```bash
+  # Who accessed secrets
+  grep '"resource":"secrets"' /var/log/kubernetes/audit.log | \
+    jq -r '[.user.username, .verb, .objectRef.namespace, .objectRef.name] | @tsv'
+  ```
+
+  ### 4. Compliance Reporting
+
+  ```bash
+  # All pod deletions in last 24h
+  jq 'select(.verb == "delete" and .objectRef.resource == "pods")' \
+    /var/log/kubernetes/audit.log | \
+    jq -r '[.stageTimestamp, .user.username, .objectRef.namespace, .objectRef.name] | @tsv'
+  ```
+
+  ## Best Practices
+
+  1. **Start with Metadata level** - Balance detail with volume
+  2. **Exclude noisy endpoints** - Health checks, metrics
+  3. **Use webhook for centralized logging** - Send to SIEM
+  4. **Enable rotation** - Prevent disk full
+  5. **Monitor audit log delivery** - Alert on webhook failures
+  6. **Secure audit logs** - Read-only for most users
+  7. **Test policy changes** - Validate before production
+
+  ## Troubleshooting
+
+  ### Audit Logs Not Generated
+
+  ```bash
+  # Check API server is using policy
+  ps aux | grep kube-apiserver | grep audit-policy-file
+
+  # Check policy file exists
+  ls -l /etc/kubernetes/audit-policy.yaml
+
+  # Check API server logs
+  kubectl logs -n kube-system kube-apiserver-<node> | grep audit
+  ```
+
+  ### High Log Volume
+
+  ```bash
+  # Find most frequent requests
+  jq -r '.requestURI' /var/log/kubernetes/audit.log | \
+    sort | uniq -c | sort -nr | head -20
+
+  # Add exclusions to policy for high-volume, low-value requests
+  ```
+
+  ### Webhook Failures
+
+  ```bash
+  # Check API server logs
+  kubectl logs -n kube-system kube-apiserver-<node> | grep webhook
+
+  # Test webhook endpoint
+  curl -v https://audit-server.example.com:8080/audit
+  ```
+
+  ## Key Takeaways
+
+  1. **Audit policies** - Define what to log and at what level
+  2. **Multiple backends** - File, webhook, or both
+  3. **Log rotation** - Essential to prevent disk full
+  4. **Security monitoring** - Track unauthorized access and changes
+  5. **Compliance** - Maintain audit trail for regulations
+
+exercises:
+  - type: mcq
+    question: "Which audit level logs request metadata and the request body, but NOT the response body?"
+    options:
+      - "Metadata"
+      - "Request"
+      - "RequestResponse"
+      - "None"
+    correct_answer: "Request"
+    explanation: "The Request level logs metadata and the request body, which is useful for tracking what changes were requested without the overhead of logging responses."
+    sequence_order: 1
+
+  - type: mcq
+    question: "Which flag specifies the maximum number of days to retain audit log files?"
+    options:
+      - "--audit-log-maxage"
+      - "--audit-log-maxbackup"
+      - "--audit-log-maxsize"
+      - "--audit-log-retention"
+    correct_answer: "--audit-log-maxage"
+    explanation: "--audit-log-maxage defines the maximum number of days to retain old audit log files."
+    sequence_order: 2
+
+  - type: short_answer
+    question: "What is the file path typically used to store the audit policy configuration in a kubeadm cluster?"
+    expected_answer: "/etc/kubernetes/audit-policy.yaml"
+    explanation: "By convention, audit policies are stored at /etc/kubernetes/audit-policy.yaml and referenced via the --audit-policy-file flag."
+    sequence_order: 3

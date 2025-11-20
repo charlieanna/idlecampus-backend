@@ -1,0 +1,229 @@
+slug: gravitational-potential-energy
+title: "Gravitational Potential and Potential Energy"
+difficulty: advanced
+sequence_order: 3
+estimated_minutes: 17
+key_concepts:
+- gravitational-potential
+- potential-energy
+- binding-energy
+- escape-velocity
+- orbital-energy
+prerequisites:
+- escape-velocity-derivation
+- keplers-laws-planetary-motion
+content_md: |
+  # Gravitational Potential and Potential Energy
+
+  ## Gravitational Potential (V)
+
+  **Work done to bring unit mass from infinity to a point.**
+
+  ```
+  V = -GM/r
+
+  Unit: J/kg (energy per unit mass)
+  Always negative (attractive force)
+  ```
+
+  ### Properties:
+  - V = 0 at infinity (reference)
+  - Scalar quantity
+  - More negative closer to mass
+  - V increases (becomes less negative) as r increases
+
+  ## Gravitational Potential Energy (U)
+
+  **Energy of mass m at distance r from mass M:**
+
+  ```
+  U = mV = -GMm/r
+
+  Unit: Joules
+  Always negative
+  ```
+
+  ### Important:
+  - U = 0 at infinity
+  - U becomes more negative closer to mass
+  - Work done against gravity = ΔU
+
+  ## Relation Between Field and Potential
+
+  ```
+  g = -dV/dr (negative gradient)
+
+  For point mass: g = GM/r²
+  V = -GM/r
+  dV/dr = GM/r²
+  g = -GM/r² × (-1) = GM/r² ✓
+  ```
+
+  ## Escape Velocity Revisited
+
+  Using energy conservation:
+  ```
+  KE_initial + PE_initial = KE_final + PE_final
+  ½mv_e² - GMm/R = 0 + 0 (at infinity, KE = PE = 0)
+
+  v_e = √(2GM/R) = √(2gR)
+  ```
+
+  For Earth: v_e ≈ 11.2 km/s
+
+  ## Binding Energy
+
+  **Energy required to remove mass from gravitational field:**
+
+  ```
+  BE = -E_total = GMm/r (for bound system)
+
+  For satellite: E = -GMm/(2r)
+  BE = GMm/(2r)
+  ```
+
+  ## Satellite Energies
+
+  ### For circular orbit at radius r:
+  ```
+  Kinetic Energy: KE = GMm/(2r) = ½mv²
+  Potential Energy: PE = -GMm/r
+  Total Energy: E = KE + PE = -GMm/(2r)
+  ```
+
+  ### Important Relations:
+  ```
+  KE = -PE/2 = -E
+  PE = 2E
+  E = -KE
+  ```
+
+  Total energy is negative (bound orbit).
+
+  ## Gravitational Self-Energy
+
+  Energy required to assemble a mass from dispersed particles.
+
+  ### Uniform solid sphere:
+  ```
+  U = -3GM²/(5R)
+  ```
+
+  ### Uniform shell:
+  ```
+  U = -GM²/(2R)
+  ```
+
+  ## Potential Inside Solid Sphere
+
+  ```
+  V_inside = -GM(3R² - r²)/(2R³)
+
+  At center: V = -3GM/(2R)
+  At surface: V = -GM/R
+  ```
+
+  Center has lowest potential (most negative).
+
+  ## Potential Due to Shell
+
+  ```
+  Outside (r > R): V = -GM/r
+  On surface (r = R): V = -GM/R
+  Inside (r < R): V = -GM/R (constant!)
+  ```
+
+  Inside shell, potential is constant (no field).
+
+  ## Work Done in Moving Mass
+
+  ```
+  W = m(V_f - V_i) = ΔU
+
+  W = -GMm(1/r_f - 1/r_i)
+  ```
+
+  If moving away from mass: W > 0 (positive work)
+  If moving toward mass: W < 0 (work done by gravity)
+
+  ## Numerical Examples
+
+  **Example 1:** Satellite orbits at height R above Earth. Find its total energy (M, R for Earth).
+
+  **Solution:**
+  ```
+  Orbital radius r = R + R = 2R
+  E = -GMm/(2r) = -GMm/(4R)
+
+  Compare with surface PE: U_surface = -GMm/R
+  E = U_surface/4
+
+  Satellite has 1/4 the PE magnitude of surface.
+  ```
+
+  **Example 2:** Work done to move 1 kg from Earth's surface to height h = R?
+
+  **Solution:**
+  ```
+  W = -GMm(1/r_f - 1/r_i) = -GMm(1/2R - 1/R)
+  W = -GMm(-1/2R) = GMm/(2R) = mgR/2
+
+  For Earth: W = 1 × 10 × 6.4×10⁶/2 = 3.2×10⁷ J = 32 MJ
+
+  Significant energy!
+  ```
+
+  **Example 3:** Gravitational potential at distance 10 km from 10 kg mass?
+
+  **Solution:**
+  ```
+  V = -GM/r = -(6.67×10⁻¹¹)(10)/(10⁴)
+  V = -6.67×10⁻¹⁴ J/kg
+
+  Very small - gravity is weak force!
+  ```
+
+  ## JEE Key Points
+
+  1. **U = -GMm/r** (potential energy)
+  2. **V = -GM/r** (potential)
+  3. **E_satellite = -GMm/(2r)**
+  4. **KE = -E, PE = 2E** (satellite)
+  5. **BE = -E** (binding energy)
+  6. **W = m(V_f - V_i)** (work done)
+  7. **Inside shell: V = constant**
+
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: "A satellite has total energy E in orbit. Its potential energy is:"
+  options:
+  - "E"
+  - "-E"
+  - "2E"
+  - "-2E"
+  correct_answer: "2E"
+  explanation: "For satellite: KE = GMm/(2r), PE = -GMm/r = -2KE. Total E = KE + PE = KE - 2KE = -KE. So PE = 2E (where E is negative). If E = -100 J, then PE = -200 J, KE = +100 J. The virial theorem states: 2KE + PE = 0 for circular orbits. PE is twice the magnitude of E. To move satellite higher: need to ADD energy (make E less negative). Higher orbit means more PE (less negative) but less KE (slower orbital speed). Total becomes less negative (more energy). This counter-intuitive result is key to orbital mechanics."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: "Gravitational potential inside a uniform spherical shell is:"
+  options:
+  - "Zero"
+  - "Constant"
+  - "Maximum at center"
+  - "Minimum at center"
+  correct_answer: "Constant"
+  explanation: "Inside shell: g = 0 (no gravitational field). Since g = -dV/dr = 0, V must be constant. V_inside = -GM/R (same as surface value). This is remarkable: walk from inner surface to center, potential stays same! No work done moving inside hollow shell. This is because attractive forces from all parts of shell exactly cancel inside. The constant potential means no net force on mass inside. Practical applications: Faraday cage (electrostatic analog), design of gravitational experiments. Outside shell: V varies as -GM/r. The constant V inside doesn't mean zero V, just no gradient."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: "Energy required to move a mass m from surface of Earth (radius R) to infinity is:"
+  options:
+  - "mgR"
+  - "mgR/2"
+  - "2mgR"
+  - "Zero"
+  correct_answer: "mgR"
+  explanation: "This is escape energy = binding energy from surface. W = ΔU = U_∞ - U_surface = 0 - (-GMm/R) = GMm/R. Since g = GM/R², we have GM = gR². So W = gR²m/R = mgR. Alternatively: W = ½mv_e² = ½m(2gR) = mgR ✓. For 1 kg on Earth: W = 1 × 10 × 6.4×10⁶ = 6.4×10⁷ J = 64 MJ. Note: This assumes no atmospheric resistance. Real spacecraft need more due to air drag. Comparing: Moving to height R takes mgR/2, to infinity takes mgR (twice as much). Half the work is done in first Earth-radius of journey!"
+  require_pass: true

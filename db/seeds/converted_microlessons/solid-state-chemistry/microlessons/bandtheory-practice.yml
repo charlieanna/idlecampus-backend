@@ -1,0 +1,59 @@
+slug: bandtheory-practice
+title: band_theory — Practice
+difficulty: easy
+sequence_order: 14
+estimated_minutes: 2
+key_concepts:
+- band_theory
+prerequisites: []
+content_md: '# band_theory — Practice 🚀
+
+
+  TRUE. In conductors (metals), valence and conduction bands overlap, so electrons
+  can move freely. Band gap = 0.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: In conductors, the valence band and conduction band
+  options:
+  - overlap with each other
+  - are separated by a large band gap
+  - are separated by a small band gap
+  - do not exist
+  correct_answer: overlap with each other
+  explanation: "In conductors (metals), the valence band and conduction band overlap, meaning there is no band gap (band gap = 0). This allows electrons to move freely between bands, resulting in high electrical conductivity. In insulators, bands are separated by large gaps, while semiconductors have small gaps."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: Which material has the largest band gap?
+  options:
+  - Conductor
+  - Semiconductor
+  - Insulator
+  - Superconductor
+  correct_answer: Insulator
+  explanation: "Insulators have the largest band gap (typically > 3 eV), making it very difficult for electrons to jump from the valence band to the conduction band. Semiconductors have moderate band gaps (~1 eV), while conductors have essentially zero band gap due to overlapping bands."
+  require_pass: false
+- type: mcq
+  sequence_order: 3
+  question: What happens to the conductivity of a semiconductor when temperature increases?
+  options:
+  - Increases
+  - Decreases
+  - Remains constant
+  - Becomes zero
+  correct_answer: Increases
+  explanation: "The conductivity of semiconductors increases with temperature because more electrons gain enough thermal energy to jump across the band gap from the valence band to the conduction band, creating more charge carriers. This is opposite to conductors, whose conductivity decreases with temperature."
+  require_pass: false

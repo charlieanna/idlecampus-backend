@@ -1,0 +1,79 @@
+slug: hydrogenperoxide-practice
+title: hydrogen_peroxide — Practice
+difficulty: medium
+sequence_order: 11
+estimated_minutes: 2
+key_concepts:
+- hydrogen_peroxide
+prerequisites: []
+content_md: '# hydrogen_peroxide — Practice 🚀
+
+
+  Volume strength = Molarity × 11.2. Therefore, Molarity = Volume strength / 11.2
+  = 22.4 / 11.2 = 2.0 M. This relationship comes from the fact that 1 mole of H₂O₂
+  produces 11.2 L of O₂ at STP.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What is the molarity of 22.4 volume H₂O₂ solution?
+  options:
+  - 1.0 M
+  - 2.0 M
+  - 3.0 M
+  - 4.0 M
+  require_pass: true
+  correct_answer: 2.0 M
+  explanation: 'Volume strength and molarity are related by: Molarity = Volume strength
+    / 11.2. For 22.4 volume H₂O₂: Molarity = 22.4 / 11.2 = 2.0 M. Volume strength
+    indicates the volume of O₂ (in liters at STP) released by 1 liter of H₂O₂ solution.
+    The factor 11.2 comes from: 1 mole H₂O₂ → 0.5 mole O₂ → 0.5 × 22.4 L = 11.2 L
+    O₂ at STP. Common H₂O₂ solutions: 10 volume (0.89 M), 20 volume (1.79 M), 30 volume
+    (2.68 M), 100 volume (8.93 M). Medical/household H₂O₂ is typically 3% (~10 volume).'
+- type: mcq
+  sequence_order: 2
+  question: What is the structure of hydrogen peroxide (H₂O₂)?
+  options:
+  - Linear with O-O-H bond angle 180°
+  - Planar with all atoms in same plane
+  - Non-planar with open book structure
+  - Tetrahedral around each oxygen
+  require_pass: true
+  correct_answer: Non-planar with open book structure
+  explanation: 'H₂O₂ has a non-planar open book structure. Key features: (1) O-O single
+    bond (bond length 148 pm), (2) O-H bonds at angle (H-O-O angle ~100°), (3) Dihedral
+    angle between two O-H bonds ~111.5° in gas phase (like an open book), (4) Each
+    O has 2 lone pairs (sp³ hybridization). The structure is not planar because of
+    lone pair-lone pair repulsion between oxygen atoms. In aqueous solution, H₂O₂
+    forms extensive hydrogen bonding with water, making it completely miscible. The
+    O-O bond is weak (bond energy ~210 kJ/mol), making H₂O₂ unstable and prone to
+    decomposition: 2H₂O₂ → 2H₂O + O₂.'
+- type: mcq
+  sequence_order: 3
+  question: Which method is used for commercial preparation of hydrogen peroxide?
+  options:
+  - Electrolysis of sulfuric acid
+  - Auto-oxidation of 2-ethylanthraquinol
+  - Reaction of BaO₂ with H₂SO₄
+  - Direct combination of H₂ and O₂
+  require_pass: true
+  correct_answer: Auto-oxidation of 2-ethylanthraquinol
+  explanation: 'Commercial H₂O₂ is produced by auto-oxidation of 2-ethylanthraquinol
+    (Riedl-Pfleiderer process or anthraquinone process). Steps: (1) 2-ethylanthraquinone
+    is hydrogenated to 2-ethylanthraquinol using H₂ and Pd/Ni catalyst, (2) Auto-oxidation
+    with air converts it back to quinone, producing H₂O₂: Anthraquinol + O₂ → Anthraquinone
+    + H₂O₂, (3) H₂O₂ is extracted with water, (4) Quinone is recycled. This produces
+    30% H₂O₂ which is concentrated by distillation under reduced pressure (H₂O₂ decomposes
+    at high temp). Laboratory method: BaO₂ + H₂SO₄ → BaSO₄↓ + H₂O₂. Direct H₂ + O₂
+    combination is explosive without careful control.'

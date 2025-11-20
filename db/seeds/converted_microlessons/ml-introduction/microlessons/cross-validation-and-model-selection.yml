@@ -1,0 +1,226 @@
+slug: cross-validation-and-model-selection
+title: Cross-Validation and Model Selection
+difficulty: easy
+sequence_order: 19
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Cross-Validation and Model Selection \U0001F680\n\n# Cross-Validation\
+  \ and Model Selection\n\n    Cross-validation is a crucial technique for evaluating\
+  \ ML models and estimating their performance on unseen data.\n\n    ## The Problem\
+  \ with Train/Test Split\n\n    ### Single Split Issues\n\n    ```python\n    # Single\
+  \ train/test split\n    X_train, X_test, y_train, y_test = train_test_split(X, y,\
+  \ test_size=0.2)\n    model.fit(X_train, y_train)\n    score = model.score(X_test,\
+  \ y_test)\n    ```\n\n    **Problems:**\n    - **High variance:** Performance depends\
+  \ on which data points end up in test set\n    - **Wasted data:** Test set not used\
+  \ for training\n    - **Overfitting risk:** Might tune model to perform well on\
+  \ this specific test set\n\n    ## What is Cross-Validation?\n\n    **Idea:** Split\
+  \ data into K folds, train on K-1 folds, test on 1 fold, repeat K times\n\n    **Benefits:**\n\
+  \    - More reliable performance estimate\n    - Uses all data for both training\
+  \ and testing\n    - Reduces variance in performance estimates\n\n    ## K-Fold\
+  \ Cross-Validation\n\n    ### How It Works\n\n    1. Split data into K equal folds\n\
+  \    2. For each fold:\n       - Train on K-1 folds\n       - Test on remaining\
+  \ fold\n    3. Average the K scores\n\n    ### Python Implementation\n\n    ```python\n\
+  \    from sklearn.model_selection import cross_val_score\n    from sklearn.linear_model\
+  \ import LogisticRegression\n    from sklearn.datasets import load_iris\n\n    #\
+  \ Load data\n    iris = load_iris()\n    X, y = iris.data, iris.target\n\n    #\
+  \ Create model\n    model = LogisticRegression(max_iter=1000)\n\n    # 5-fold cross-validation\n\
+  \    scores = cross_val_score(model, X, y, cv=5, scoring='accuracy')\n\n    print(f\"\
+  Fold scores: {scores}\")\n    print(f\"Mean accuracy: {scores.mean():.4f}\")\n \
+  \   print(f\"Standard deviation: {scores.std():.4f}\")\n    print(f\"95% confidence\
+  \ interval: {scores.mean():.4f} (+/- {scores.std() * 2:.4f})\")\n    ```\n\n   \
+  \ ## Types of Cross-Validation\n\n    ### 1. K-Fold CV (Standard)\n\n    ```python\n\
+  \    from sklearn.model_selection import KFold\n\n    kf = KFold(n_splits=5, shuffle=True,\
+  \ random_state=42)\n\n    for train_index, test_index in kf.split(X):\n        X_train,\
+  \ X_test = X[train_index], X[test_index]\n        y_train, y_test = y[train_index],\
+  \ y[test_index]\n\n        model.fit(X_train, y_train)\n        score = model.score(X_test,\
+  \ y_test)\n        print(f\"Fold score: {score:.4f}\")\n    ```\n\n    **When to\
+  \ use:** Standard choice for most problems\n\n    ### 2. Stratified K-Fold (For\
+  \ Classification)\n\n    Maintains class distribution in each fold\n\n    ```python\n\
+  \    from sklearn.model_selection import StratifiedKFold\n\n    skf = StratifiedKFold(n_splits=5,\
+  \ shuffle=True, random_state=42)\n    scores = cross_val_score(model, X, y, cv=skf,\
+  \ scoring='accuracy')\n\n    print(f\"Stratified CV scores: {scores}\")\n    print(f\"\
+  Mean: {scores.mean():.4f}\")\n    ```\n\n    **When to use:**\n    - Imbalanced\
+  \ classification problems\n    - Small datasets\n    - **Recommended default for\
+  \ classification**\n\n    ### 3. Leave-One-Out CV (LOOCV)\n\n    K = n (number of\
+  \ samples)\n\n    ```python\n    from sklearn.model_selection import LeaveOneOut\n\
+  \n    loo = LeaveOneOut()\n    scores = cross_val_score(model, X, y, cv=loo)\n\n\
+  \    print(f\"LOOCV accuracy: {scores.mean():.4f}\")\n    ```\n\n    **Pros:**\n\
+  \    - Uses maximum data for training\n    - Low bias\n\n    **Cons:**\n    - Computationally\
+  \ expensive\n    - High variance\n\n    **When to use:** Very small datasets only\n\
+  \n    ### 4. Time Series Split\n\n    Respects temporal order\n\n    ```python\n\
+  \    from sklearn.model_selection import TimeSeriesSplit\n\n    tss = TimeSeriesSplit(n_splits=5)\n\
+  \n    for train_index, test_index in tss.split(X):\n        X_train, X_test = X[train_index],\
+  \ X[test_index]\n        y_train, y_test = y[train_index], y[test_index]\n\n   \
+  \     # Train always comes before test (no data leakage)\n        print(f\"Train:\
+  \ {train_index.min()}-{train_index.max()} | \"\n              f\"Test: {test_index.min()}-{test_index.max()}\"\
+  )\n    ```\n\n    **When to use:** Time series data (stock prices, weather, etc.)\n\
+  \n    ## Choosing K\n\n    ### Common Choices\n\n    - **K=5 or K=10:** Most common,\
+  \ good balance\n    - **K=3:** Faster, more variance\n    - **K=20:** More computation,\
+  \ lower variance\n\n    ### Trade-offs\n\n    **Small K (e.g., 3):**\n    - Faster\n\
+  \    - More bias (less training data per fold)\n    - More variance (fewer folds\
+  \ to average)\n\n    **Large K (e.g., 10, 20):**\n    - Slower\n    - Less bias\
+  \ (more training data per fold)\n    - Less variance (more folds to average)\n\n\
+  \    **Rule of thumb:** K=5 or K=10 for most problems\n\n    ## Cross-Validation\
+  \ for Different Tasks\n\n    ### Classification\n\n    ```python\n    from sklearn.model_selection\
+  \ import cross_val_score\n    from sklearn.ensemble import RandomForestClassifier\n\
+  \n    rf = RandomForestClassifier(n_estimators=100, random_state=42)\n\n    # Multiple\
+  \ metrics\n    accuracy = cross_val_score(rf, X, y, cv=5, scoring='accuracy')\n\
+  \    precision = cross_val_score(rf, X, y, cv=5, scoring='precision_weighted')\n\
+  \    recall = cross_val_score(rf, X, y, cv=5, scoring='recall_weighted')\n    f1\
+  \ = cross_val_score(rf, X, y, cv=5, scoring='f1_weighted')\n\n    print(f\"Accuracy:\
+  \ {accuracy.mean():.4f} (+/- {accuracy.std()*2:.4f})\")\n    print(f\"Precision:\
+  \ {precision.mean():.4f} (+/- {precision.std()*2:.4f})\")\n    print(f\"Recall:\
+  \ {recall.mean():.4f} (+/- {recall.std()*2:.4f})\")\n    print(f\"F1: {f1.mean():.4f}\
+  \ (+/- {f1.std()*2:.4f})\")\n    ```\n\n    ### Regression\n\n    ```python\n  \
+  \  from sklearn.linear_model import Ridge\n\n    ridge = Ridge(alpha=1.0)\n\n  \
+  \  # Multiple metrics\n    r2 = cross_val_score(ridge, X, y, cv=5, scoring='r2')\n\
+  \    mse = cross_val_score(ridge, X, y, cv=5, scoring='neg_mean_squared_error')\n\
+  \    mae = cross_val_score(ridge, X, y, cv=5, scoring='neg_mean_absolute_error')\n\
+  \n    print(f\"R²: {r2.mean():.4f}\")\n    print(f\"MSE: {-mse.mean():.4f}\")  #\
+  \ Negative because sklearn returns negative MSE\n    print(f\"MAE: {-mae.mean():.4f}\"\
+  )\n    ```\n\n    ## Model Selection\n\n    ### Comparing Multiple Models\n\n  \
+  \  ```python\n    from sklearn.linear_model import LogisticRegression\n    from\
+  \ sklearn.tree import DecisionTreeClassifier\n    from sklearn.ensemble import RandomForestClassifier\n\
+  \    from sklearn.svm import SVC\n    from sklearn.naive_bayes import GaussianNB\n\
+  \n    models = {\n        'Logistic Regression': LogisticRegression(max_iter=1000),\n\
+  \        'Decision Tree': DecisionTreeClassifier(random_state=42),\n        'Random\
+  \ Forest': RandomForestClassifier(n_estimators=100, random_state=42),\n        'SVM':\
+  \ SVC(random_state=42),\n        'Naive Bayes': GaussianNB()\n    }\n\n    results\
+  \ = {}\n\n    for name, model in models.items():\n        scores = cross_val_score(model,\
+  \ X, y, cv=5, scoring='accuracy')\n        results[name] = {\n            'mean':\
+  \ scores.mean(),\n            'std': scores.std()\n        }\n        print(f\"\
+  {name:20s}: {scores.mean():.4f} (+/- {scores.std()*2:.4f})\")\n\n    # Find best\
+  \ model\n    best_model_name = max(results, key=lambda k: results[k]['mean'])\n\
+  \    print(f\"\\\\nBest model: {best_model_name}\")\n    ```\n\n    ## Cross-Validation\
+  \ with Preprocessing\n\n    ### The Wrong Way (Data Leakage!)\n\n    ```python\n\
+  \    # ❌ WRONG - Scaling before split causes data leakage!\n    from sklearn.preprocessing\
+  \ import StandardScaler\n\n    scaler = StandardScaler()\n    X_scaled = scaler.fit_transform(X)\
+  \  # Uses ALL data including test!\n\n    scores = cross_val_score(model, X_scaled,\
+  \ y, cv=5)\n    # This is cheating! Model has seen test data statistics\n    ```\n\
+  \n    ### The Right Way (Using Pipeline)\n\n    ```python\n    # ✅ CORRECT - Pipeline\
+  \ ensures no data leakage\n    from sklearn.pipeline import Pipeline\n\n    pipeline\
+  \ = Pipeline([\n        ('scaler', StandardScaler()),\n        ('model', LogisticRegression(max_iter=1000))\n\
+  \    ])\n\n    scores = cross_val_score(pipeline, X, y, cv=5, scoring='accuracy')\n\
+  \    print(f\"Accuracy: {scores.mean():.4f} (+/- {scores.std()*2:.4f})\")\n\n  \
+  \  # Scaler is fit only on training folds, not test fold!\n    ```\n\n    ## Nested\
+  \ Cross-Validation\n\n    For hyperparameter tuning AND model evaluation\n\n   \
+  \ ```python\n    from sklearn.model_selection import GridSearchCV, cross_val_score\n\
+  \    from sklearn.ensemble import RandomForestClassifier\n\n    # Inner CV: Hyperparameter\
+  \ tuning\n    param_grid = {\n        'n_estimators': [50, 100, 200],\n        'max_depth':\
+  \ [5, 10, None]\n    }\n\n    rf = RandomForestClassifier(random_state=42)\n   \
+  \ grid_search = GridSearchCV(rf, param_grid, cv=3, scoring='accuracy')\n\n    #\
+  \ Outer CV: Model evaluation\n    outer_scores = cross_val_score(grid_search, X,\
+  \ y, cv=5, scoring='accuracy')\n\n    print(f\"Nested CV accuracy: {outer_scores.mean():.4f}\
+  \ (+/- {outer_scores.std()*2:.4f})\")\n    ```\n\n    **Why nested CV:**\n    -\
+  \ Inner CV: Find best hyperparameters\n    - Outer CV: Evaluate model with best\
+  \ hyperparameters\n    - Prevents overfitting to validation set\n\n    ## Real-World\
+  \ Example\n\n    ```python\n    import pandas as pd\n    import numpy as np\n  \
+  \  from sklearn.model_selection import cross_val_score, StratifiedKFold\n    from\
+  \ sklearn.pipeline import Pipeline\n    from sklearn.preprocessing import StandardScaler\n\
+  \    from sklearn.impute import SimpleImputer\n    from sklearn.ensemble import\
+  \ RandomForestClassifier, GradientBoostingClassifier\n    from sklearn.linear_model\
+  \ import LogisticRegression\n    from sklearn.svm import SVC\n    import matplotlib.pyplot\
+  \ as plt\n\n    # Load data (example)\n    # df = pd.read_csv('data.csv')\n\n  \
+  \  X = df.drop('target', axis=1)\n    y = df['target']\n\n    # Create pipelines\
+  \ for different models\n    models = {\n        'Logistic Regression': Pipeline([\n\
+  \            ('imputer', SimpleImputer(strategy='median')),\n            ('scaler',\
+  \ StandardScaler()),\n            ('model', LogisticRegression(max_iter=1000))\n\
+  \        ]),\n        'Random Forest': Pipeline([\n            ('imputer', SimpleImputer(strategy='median')),\n\
+  \            ('model', RandomForestClassifier(n_estimators=100, random_state=42))\n\
+  \        ]),\n        'Gradient Boosting': Pipeline([\n            ('imputer', SimpleImputer(strategy='median')),\n\
+  \            ('model', GradientBoostingClassifier(random_state=42))\n        ]),\n\
+  \        'SVM': Pipeline([\n            ('imputer', SimpleImputer(strategy='median')),\n\
+  \            ('scaler', StandardScaler()),\n            ('model', SVC(random_state=42))\n\
+  \        ])\n    }\n\n    # Stratified K-Fold for imbalanced data\n    cv = StratifiedKFold(n_splits=5,\
+  \ shuffle=True, random_state=42)\n\n    # Evaluate all models\n    results = []\n\
+  \n    for name, pipeline in models.items():\n        scores = cross_val_score(pipeline,\
+  \ X, y, cv=cv, scoring='roc_auc', n_jobs=-1)\n        results.append({\n       \
+  \     'Model': name,\n            'Mean AUC': scores.mean(),\n            'Std AUC':\
+  \ scores.std(),\n            'Scores': scores\n        })\n        print(f\"{name:20s}:\
+  \ AUC = {scores.mean():.4f} (+/- {scores.std()*2:.4f})\")\n\n    # Visualize results\n\
+  \    results_df = pd.DataFrame(results)\n    results_df = results_df.sort_values('Mean\
+  \ AUC', ascending=False)\n\n    plt.figure(figsize=(10, 6))\n    plt.errorbar(\n\
+  \        range(len(results_df)),\n        results_df['Mean AUC'],\n        yerr=results_df['Std\
+  \ AUC']*2,\n        fmt='o',\n        markersize=10,\n        capsize=5\n    )\n\
+  \    plt.xticks(range(len(results_df)), results_df['Model'], rotation=45)\n    plt.ylabel('AUC\
+  \ Score')\n    plt.title('Model Comparison with 95% Confidence Intervals')\n   \
+  \ plt.grid(True, alpha=0.3)\n    plt.tight_layout()\n    plt.show()\n\n    # Select\
+  \ best model\n    best_model_name = results_df.iloc[0]['Model']\n    print(f\"\\\
+  \\nBest model: {best_model_name}\")\n\n    # Train best model on full data\n   \
+  \ best_pipeline = models[best_model_name]\n    best_pipeline.fit(X, y)\n    ```\n\
+  \n    ## Common Scoring Metrics\n\n    ### Classification\n\n    ```python\n   \
+  \ scoring_options = [\n        'accuracy',\n        'precision',\n        'recall',\n\
+  \        'f1',\n        'roc_auc',\n        'average_precision',\n        'precision_weighted',\n\
+  \        'recall_weighted',\n        'f1_weighted'\n    ]\n    ```\n\n    ### Regression\n\
+  \n    ```python\n    scoring_options = [\n        'r2',\n        'neg_mean_squared_error',\n\
+  \        'neg_mean_absolute_error',\n        'neg_root_mean_squared_error'\n   \
+  \ ]\n    ```\n\n    ## Best Practices\n\n    1. **Use Stratified K-Fold** for classification\
+  \ (maintains class balance)\n    2. **Use Pipeline** to prevent data leakage\n \
+  \   3. **Choose K=5 or K=10** for most problems\n    4. **Report mean AND std**\
+  \ to show variance\n    5. **Use appropriate metric** for your problem\n    6. **Nested\
+  \ CV** when tuning hyperparameters\n    7. **Time Series Split** for temporal data\n\
+  \    8. **Set random_state** for reproducibility\n\n    ## Common Mistakes\n\n \
+  \   ### 1. Data Leakage\n\n    ```python\n    # ❌ WRONG\n    scaler.fit(X)  # Fits\
+  \ on ALL data\n    X_scaled = scaler.transform(X)\n    cross_val_score(model, X_scaled,\
+  \ y, cv=5)\n\n    # ✅ CORRECT\n    pipeline = Pipeline([('scaler', StandardScaler()),\
+  \ ('model', model)])\n    cross_val_score(pipeline, X, y, cv=5)\n    ```\n\n   \
+  \ ### 2. Not Using Stratification\n\n    ```python\n    # ❌ For imbalanced classification\n\
+  \    cross_val_score(model, X, y, cv=5)\n\n    # ✅ Better\n    cv = StratifiedKFold(n_splits=5)\n\
+  \    cross_val_score(model, X, y, cv=cv)\n    ```\n\n    ### 3. Testing on Training\
+  \ Data\n\n    ```python\n    # ❌ WRONG\n    model.fit(X_train, y_train)\n    score\
+  \ = model.score(X_train, y_train)  # Cheating!\n\n    # ✅ CORRECT\n    model.fit(X_train,\
+  \ y_train)\n    score = model.score(X_test, y_test)  # Unseen data\n    ```\n\n\
+  \    ## Advantages\n\n    ✅ More reliable performance estimate\n    ✅ Uses all data\
+  \ for training and testing\n    ✅ Reduces overfitting risk\n    ✅ Detects high variance\
+  \ models\n    ✅ Better than single train/test split\n\n    ## Disadvantages\n\n\
+  \    ❌ More computationally expensive\n    ❌ Not suitable for very large datasets\
+  \ (use holdout instead)\n    ❌ Can be slow with large K or complex models\n\n  \
+  \  ## When to Use\n\n    ### ✅ Use Cross-Validation\n    - Model selection\n   \
+  \ - Hyperparameter tuning\n    - Small to medium datasets\n    - Need reliable performance\
+  \ estimate\n\n    ### ❌ Use Simple Train/Test Split\n    - Very large datasets\n\
+  \    - Time/compute constraints\n    - Production deployment (train on all data)\n\
+  \n    ## Key Takeaways\n\n    1. **Cross-validation** gives more reliable performance\
+  \ estimates\n    2. **K=5 or K=10** is standard choice\n    3. **Stratified K-Fold**\
+  \ for classification\n    4. **Use Pipeline** to prevent data leakage\n    5. **Report\
+  \ mean ± std** for confidence intervals\n    6. **Nested CV** for hyperparameter\
+  \ tuning\n    7. **Time Series Split** for temporal data\n    8. **Always use unseen\
+  \ data** for final evaluation\n\n    ## Next Steps\n\n    - Practice with different\
+  \ CV strategies\n    - Learn hyperparameter tuning with GridSearchCV\n    - Study\
+  \ evaluation metrics in depth\n    - Implement nested cross-validation\n    - Learn\
+  \ about cross-validation for time series"
+exercises: []
+exercises:
+  - type: mcq
+    sequence_order: 1
+    question: "What is the main advantage of k-fold cross-validation over a single train/test split?"
+    options:
+      - "It's faster to compute"
+      - "It provides a more reliable performance estimate by using all data for both training and testing"
+      - "It requires less data"
+      - "It automatically tunes hyperparameters"
+    correct_answer: "It provides a more reliable performance estimate by using all data for both training and testing"
+    explanation: "K-fold cross-validation splits data into K folds, trains on K-1 folds, and tests on 1 fold, repeating K times. This provides a more robust performance estimate than a single split:\n\`\`\`python\nfrom sklearn.model_selection import cross_val_score\nfrom sklearn.ensemble import RandomForestClassifier\n\nmodel = RandomForestClassifier()\nscores = cross_val_score(model, X, y, cv=5)  # 5-fold CV\nprint(f'Scores: {scores}')\nprint(f'Mean: {scores.mean():.3f} (+/- {scores.std()*2:.3f})')\n\`\`\`\n\nBenefits: (1) Every data point is used for both training and testing, (2) Reduces variance in performance estimates, (3) Better detects overfitting, (4) More reliable than single split. With 5-fold CV, you get 5 performance scores instead of 1, giving you both mean performance and confidence interval. Common choices: k=5 for smaller datasets, k=10 for larger datasets."
+    require_pass: true
+  - type: mcq
+    sequence_order: 2
+    question: "Why is it important to use stratified k-fold cross-validation for classification problems?"
+    options:
+      - "It makes training faster"
+      - "It ensures each fold has the same proportion of each class as the original dataset"
+      - "It removes outliers"
+      - "It scales features automatically"
+    correct_answer: "It ensures each fold has the same proportion of each class as the original dataset"
+    explanation: "Stratified k-fold maintains class distribution in each fold, crucial for imbalanced datasets:\n\`\`\`python\nfrom sklearn.model_selection import StratifiedKFold, cross_val_score\n\n# Regular k-fold (might have imbalanced folds)\nscores = cross_val_score(model, X, y, cv=5)\n\n# Stratified k-fold (maintains class balance)\nstratified = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)\nscores = cross_val_score(model, X, y, cv=stratified)\n\`\`\`\n\nExample problem: Dataset with 90% class 0, 10% class 1. Regular k-fold might create a fold with all class 0, giving misleading results. Stratified ensures each fold has ~90% class 0 and ~10% class 1, providing reliable evaluation. Scikit-learn uses stratification by default for classification when you pass an integer to cv parameter."
+    require_pass: true
+  - type: mcq
+    sequence_order: 3
+    question: "What is the purpose of a validation set in model selection?"
+    options:
+      - "To train the model"
+      - "To tune hyperparameters without touching the test set"
+      - "To replace the test set"
+      - "To clean the data"
+    correct_answer: "To tune hyperparameters without touching the test set"
+    explanation: "The validation set allows you to tune hyperparameters while keeping the test set completely unseen for final evaluation:\n\`\`\`python\n# Split into train/validation/test\nfrom sklearn.model_selection import train_test_split\n\nX_temp, X_test, y_temp, y_test = train_test_split(\n    X, y, test_size=0.2, random_state=42\n)\nX_train, X_val, y_train, y_val = train_test_split(\n    X_temp, y_temp, test_size=0.25, random_state=42  # 0.25 * 0.8 = 0.2\n)\n# Now: 60% train, 20% validation, 20% test\n\n# Tune on validation set\nfor lr in [0.001, 0.01, 0.1]:\n    model.fit(X_train, y_train)\n    val_score = model.score(X_val, y_val)\n\n# Final evaluation on test set (only once!)\nfinal_score = best_model.score(X_test, y_test)\n\`\`\`\n\nThe golden rule: Test set should be touched only once for final evaluation. Use validation set (or cross-validation) for all hyperparameter tuning and model selection decisions."
+    require_pass: true

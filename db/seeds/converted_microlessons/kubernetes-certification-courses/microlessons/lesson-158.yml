@@ -1,0 +1,84 @@
+slug: lesson-158
+title: Lesson 158
+difficulty: easy
+sequence_order: 158
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Node Maintenance Procedures\n\n    - cordon/drain/uncordon\n\
+  \    - DaemonSets behavior and PDBs impact"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What is the purpose of the 'kubectl drain' command during node maintenance?
+  options:
+  - To delete the node from the cluster permanently
+  - To safely evict all pods from a node before maintenance, respecting PodDisruptionBudgets
+  - To drain water from server cooling systems
+  - To remove all container images from the node
+  correct_answer: To safely evict all pods from a node before maintenance, respecting
+    PodDisruptionBudgets
+  explanation: '''kubectl drain'' is the primary command for preparing a node for
+    maintenance by safely evicting all pods from it. The command performs several
+    actions: 1) Cordons the node (marks it unschedulable, preventing new pods from
+    being scheduled), 2) Evicts all pods running on the node (respecting PodDisruptionBudgets
+    to avoid disrupting too many replicas), 3) Waits for pods to terminate gracefully
+    (respecting terminationGracePeriodSeconds), 4) Returns success once all pods are
+    evicted. The syntax is ''kubectl drain <node-name>'' with useful flags: ''--ignore-daemonsets''
+    (required, since DaemonSet pods can''t be evicted and would block drain), ''--force''
+    (evicts pods not controlled by ReplicationController/ReplicaSet/Deployment/StatefulSet
+    - use cautiously as these pods won''t be recreated), ''--delete-emptydir-data''
+    (allows evicting pods using emptyDir volumes, acknowledging data loss), ''--grace-period=X''
+    (overrides termination grace period), and ''--timeout=X'' (sets maximum wait time).
+    For example, ''kubectl drain node-1 --ignore-daemonsets --delete-emptydir-data''
+    prepares node-1 for maintenance. The drain operation respects PodDisruptionBudgets
+    (PDBs) - if evicting pods would violate a PDB (e.g., PDB requires minimum 2 replicas
+    but only 2 exist), drain waits or fails. This prevents draining from causing service
+    outages. After maintenance, run ''kubectl uncordon <node-name>'' to mark the node
+    schedulable again, allowing new pods. Drain is essential for: kernel upgrades,
+    hardware replacement, node decommissioning, and graceful cluster scaling down.
+    Without drain, you''d either have abrupt pod termination causing downtime, or
+    risky manual pod management.'
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What happens to DaemonSet pods during a 'kubectl drain' operation?
+  options:
+  - They are evicted like regular pods
+  - They remain running on the node because DaemonSets ensure one pod per node
+  - They are automatically migrated to other nodes
+  - The drain fails unless you use --ignore-daemonsets flag
+  correct_answer: The drain fails unless you use --ignore-daemonsets flag
+  explanation: 'DaemonSet pods present a special challenge during node drain because
+    DaemonSets are designed to run exactly one pod per node (or per matching node).
+    When you run ''kubectl drain'', the command attempts to evict all pods, including
+    DaemonSet pods. However, DaemonSet pods cannot be evicted in the normal way because
+    the DaemonSet controller would immediately recreate them on the same node. Without
+    the ''--ignore-daemonsets'' flag, drain fails with an error listing the DaemonSet
+    pods that prevent draining. The correct approach is using ''kubectl drain node-1
+    --ignore-daemonsets'', which: 1) Cordons the node, 2) Evicts all non-DaemonSet
+    pods, 3) Leaves DaemonSet pods running on the node, 4) Returns success. The DaemonSet
+    pods continue running during maintenance, which is usually acceptable because
+    DaemonSets typically run infrastructure services (logging agents, monitoring agents,
+    network plugins, storage drivers) that need to run on all nodes including during
+    maintenance. If you truly need to stop DaemonSet pods (for example, for node shutdown),
+    you must delete them manually after drain completes, or delete the node object
+    entirely (which removes all pods). When you uncordon the node after maintenance,
+    DaemonSet pods remain running and continue operating normally. Understanding this
+    behavior is crucial to avoid confusion when draining shows DaemonSet pods still
+    running. Common DaemonSets you''ll encounter: kube-proxy (networking), CNI plugins
+    (Calico, Weave, Flannel), log collectors (Fluentd, Filebeat), monitoring agents
+    (node-exporter), and storage drivers (Ceph, Longhorn).'
+  require_pass: true
+- type: mcq
+  sequence_order: 1
+  question: What kubectl command checks if you can perform an action?
+  options:
+  - kubectl auth can-i create pods
+  - kubectl check permissions create pods
+  - kubectl verify action create pods
+  - kubectl test auth create pods
+  correct_answer_index: 0
+  explanation: kubectl auth can-i <action> <resource> checks if the current user has
+    permission to perform the specified action.
+  require_pass: true

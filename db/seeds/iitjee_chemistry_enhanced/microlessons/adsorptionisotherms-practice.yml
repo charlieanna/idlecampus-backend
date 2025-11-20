@@ -1,0 +1,42 @@
+slug: adsorptionisotherms-practice
+title: adsorption_isotherms — Practice
+sequence_order: 13
+estimated_minutes: 2
+difficulty: hard
+content_md: '# adsorption_isotherms — Practice 🚀
+
+
+  log(x/m) = log k + (1/n)log P. Slope = 1/n = 0.5, Intercept = log k = 0.301, so
+  k = 2. At P = 4: log(x/m) = 0.301 + 0.5×log(4) = 0.301 + 0.5×0.602 = 0.602. Therefore
+  x/m = 10^0.602 = 4.0 g/g.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: short_answer
+  sequence_order: 1
+- type: mcq
+  slug: adsorptionisotherms-practice-mcq
+  sequence_order: 2
+  question: Pick the correct statement based on this concept.
+  options:
+  - Statement A
+  - Statement B
+  - Statement C
+  - Statement D
+  correct_answer_index: 0
+  explanation: Review the definition and common exceptions.
+objectives:
+- Define the core idea
+- Identify governing formulae or rules
+- Practice with mixed-difficulty problems
+next_recommended: []

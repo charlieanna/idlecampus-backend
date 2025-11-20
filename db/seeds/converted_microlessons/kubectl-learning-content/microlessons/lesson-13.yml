@@ -1,0 +1,109 @@
+slug: lesson-13
+title: Lesson 13
+difficulty: easy
+sequence_order: 13
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Persistent Volumes & Storage\n\n      Provide\
+  \ persistent storage for stateful applications in Kubernetes.\n\n      ## Persistent\
+  \ Volumes (PV)\n\n      Cluster-wide storage resources provisioned by administrators.\n\
+  \n      ### Viewing Persistent Volumes\n\n      ```bash\n      # List all persistent\
+  \ volumes\n      kubectl get pv\n\n      # List with more details\n      kubectl\
+  \ get pv -o wide\n\n      # Describe PV\n      kubectl describe pv pv-name\n\n \
+  \     # Get PV YAML\n      kubectl get pv pv-name -o yaml\n\n      # Filter by status\n\
+  \      kubectl get pv --field-selector=status.phase=Available\n      ```\n\n   \
+  \   ## Persistent Volume Claims (PVC)\n\n      User requests for storage that bind\
+  \ to available PVs.\n\n      ### Creating PVCs\n\n      ```bash\n      # Create\
+  \ PVC from YAML\n      kubectl apply -f pvc.yaml\n\n      # View PVC definition\
+  \ example\n      cat << EOF | kubectl apply -f -\n      apiVersion: v1\n      kind:\
+  \ PersistentVolumeClaim\n      metadata:\n        name: my-pvc\n      spec:\n  \
+  \      accessModes:\n        - ReadWriteOnce\n        resources:\n          requests:\n\
+  \            storage: 1Gi\n        storageClassName: standard\n      EOF\n     \
+  \ ```\n\n      ### Viewing PVCs\n\n      ```bash\n      # List PVCs\n      kubectl\
+  \ get pvc\n\n      # List PVCs in all namespaces\n      kubectl get pvc -A\n\n \
+  \     # Describe PVC (shows binding status)\n      kubectl describe pvc my-pvc\n\
+  \n      # Get PVC YAML\n      kubectl get pvc my-pvc -o yaml\n\n      # Check PVC\
+  \ status\n      kubectl get pvc my-pvc -o jsonpath='{.status.phase}'\n      ```\n\
+  \n      ### Using PVCs in Pods\n\n      ```bash\n      # Create pod using PVC\n\
+  \      cat << EOF | kubectl apply -f -\n      apiVersion: v1\n      kind: Pod\n\
+  \      metadata:\n        name: app-pod\n      spec:\n        containers:\n    \
+  \    - name: app\n          image: nginx\n          volumeMounts:\n          - name:\
+  \ storage\n            mountPath: /data\n        volumes:\n        - name: storage\n\
+  \          persistentVolumeClaim:\n            claimName: my-pvc\n      EOF\n  \
+  \    ```\n\n      ### Managing PVCs\n\n      ```bash\n      # Delete PVC\n     \
+  \ kubectl delete pvc my-pvc\n\n      # Delete PVC and wait for deletion\n      kubectl\
+  \ delete pvc my-pvc --wait=true\n\n      # Expand PVC (if storage class supports\
+  \ it)\n      kubectl patch pvc my-pvc -p '{\"spec\":{\"resources\":{\"requests\"\
+  :{\"storage\":\"2Gi\"}}}}'\n      ```\n\n      ## Storage Classes\n\n      Define\
+  \ different storage tiers with automatic provisioning.\n\n      ### Viewing Storage\
+  \ Classes\n\n      ```bash\n      # List storage classes\n      kubectl get storageclass\n\
+  \      kubectl get sc\n\n      # Describe storage class\n      kubectl describe\
+  \ storageclass standard\n\n      # Get default storage class\n      kubectl get\
+  \ sc -o jsonpath='{.items[?(@.metadata.annotations.storageclass\\.kubernetes\\.io/is-default-class==\"\
+  true\")].metadata.name}'\n      ```\n\n      ### Setting Default Storage Class\n\
+  \n      ```bash\n      # Set as default\n      kubectl patch storageclass standard\
+  \ -p '{\"metadata\": {\"annotations\":{\"storageclass.kubernetes.io/is-default-class\"\
+  :\"true\"}}}'\n\n      # Remove default designation\n      kubectl patch storageclass\
+  \ standard -p '{\"metadata\": {\"annotations\":{\"storageclass.kubernetes.io/is-default-class\"\
+  :\"false\"}}}'\n      ```\n\n      ## Volume Types\n\n      ### emptyDir (Temporary\
+  \ Storage)\n\n      ```bash\n      # Deleted when pod is removed\n      # volumes:\n\
+  \      # - name: cache\n      #   emptyDir: {}\n      ```\n\n      ### hostPath\
+  \ (Node Filesystem)\n\n      ```bash\n      # Mount directory from node\n      #\
+  \ volumes:\n      # - name: data\n      #   hostPath:\n      #     path: /mnt/data\n\
+  \      #     type: DirectoryOrCreate\n      ```\n\n      ## Debugging Storage Issues\n\
+  \n      ```bash\n      # Check PVC binding status\n      kubectl get pvc my-pvc\
+  \ -o jsonpath='{.status.phase}'\n\n      # View PVC events\n      kubectl describe\
+  \ pvc my-pvc\n\n      # Check which pod uses PVC\n      kubectl get pods -o json\
+  \ | jq '.items[] | select(.spec.volumes[]?.persistentVolumeClaim.claimName==\"my-pvc\"\
+  ) | .metadata.name'\n\n      # Verify volume is mounted in pod\n      kubectl exec\
+  \ app-pod -- df -h /data\n\n      # Check volume contents\n      kubectl exec app-pod\
+  \ -- ls -la /data\n\n      # Write test file\n      kubectl exec app-pod -- sh -c\
+  \ 'echo \"test\" > /data/test.txt'\n\n      # Verify persistence after pod recreation\n\
+  \      kubectl delete pod app-pod\n      # Wait for pod to recreate\n      kubectl\
+  \ exec app-pod -- cat /data/test.txt\n      ```\n\n      ## StatefulSet Storage\n\
+  \n      StatefulSets use volumeClaimTemplates for automatic PVC creation:\n\n  \
+  \    ```bash\n      # View PVCs created by StatefulSet\n      kubectl get pvc -l\
+  \ app=mysql\n\n      # Scale StatefulSet (creates new PVCs)\n      kubectl scale\
+  \ statefulset mysql --replicas=3\n\n      # Delete StatefulSet but keep PVCs\n \
+  \     kubectl delete statefulset mysql --cascade=orphan\n      ```\n\n      ## Cleanup\n\
+  \n      ```bash\n      # Delete PVC (PV reclaim policy determines what happens)\n\
+  \      kubectl delete pvc my-pvc\n\n      # View reclaim policy\n      kubectl get\
+  \ pv pv-name -o jsonpath='{.spec.persistentVolumeReclaimPolicy}'\n\n      # Manually\
+  \ delete PV\n      kubectl delete pv pv-name\n\n      # Remove finalizer if PV is\
+  \ stuck\n      kubectl patch pv pv-name -p '{\"metadata\":{\"finalizers\":null}}'\n\
+  \      ```\n\n      Practice storage management in the labs!"
+exercises:
+  - type: multiple_choice_question
+    sequence_order: 1
+    question: "What is the relationship between Persistent Volumes (PV) and Persistent Volume Claims (PVC) in Kubernetes?"
+    options:
+      - "PVs are created automatically when a PVC is created"
+      - "PVCs are requests for storage that bind to available PVs"
+      - "PVs and PVCs are the same resource with different names"
+      - "PVCs are created by administrators while PVs are created by developers"
+    correct_answer: "PVCs are requests for storage that bind to available PVs"
+    explanation: "Persistent Volume Claims (PVCs) are requests for storage resources that bind to available Persistent Volumes (PVs), following a producer-consumer model. Administrators provision PVs (the supply) with specific capacities, access modes, and storage classes, while developers create PVCs (the demand) specifying their storage requirements. Kubernetes automatically binds PVCs to suitable PVs based on matching criteria like size, access mode, and storage class. For example, if a PVC requests 5Gi with ReadWriteOnce access mode and 'standard' storage class, Kubernetes finds a PV meeting or exceeding these requirements and binds them together. This abstraction separates storage provisioning from consumption, allowing developers to request storage without knowing infrastructure details. The binding is one-to-one and exclusive - once bound, the PV is reserved for that PVC until released. With dynamic provisioning (using StorageClasses), PVs can be created automatically when PVCs are created, but this still maintains the PV/PVC separation. The PV represents the actual storage resource (could be AWS EBS, GCE PD, NFS, etc.), while the PVC is the claim on that resource. This model provides portability, as applications reference PVCs in pod specs without needing to know the underlying storage implementation."
+    require_pass: true
+  - type: multiple_choice_question
+    sequence_order: 2
+    question: "What happens to data in an emptyDir volume when the pod using it is deleted?"
+    options:
+      - "The data persists and can be accessed by new pods"
+      - "The data is automatically backed up to persistent storage"
+      - "The data is deleted along with the pod"
+      - "The data is moved to a PersistentVolume"
+    correct_answer: "The data is deleted along with the pod"
+    explanation: "An emptyDir volume is a temporary storage volume that is created when a pod is assigned to a node and exists only for the lifetime of that pod. When the pod is deleted, the emptyDir volume and all its data are permanently deleted as well. This makes emptyDir suitable for temporary storage needs like scratch space, caching, or sharing data between containers in the same pod, but not for data that needs to persist beyond the pod's lifecycle. EmptyDir volumes are initially empty (hence the name) and are typically stored on the node's disk or in memory (if you specify 'emptyDir: { medium: Memory }'). Common use cases include: temporary processing space for algorithms, cache directories for web servers, sharing files between init containers and main containers, or storing intermediate computation results. If you need data to survive pod deletions, you should use PersistentVolumeClaims instead. The ephemeral nature of emptyDir is both its limitation and its strength - it's fast, simple, requires no setup, and automatically cleaned up, making it perfect for temporary data. Understanding the lifecycle of different volume types is crucial for designing resilient applications - use emptyDir for temporary data, PVCs for persistent data, and ConfigMaps/Secrets for configuration."
+    require_pass: true
+  - type: multiple_choice_question
+    sequence_order: 3
+    question: "What does the 'persistentVolumeReclaimPolicy' determine in a Persistent Volume configuration?"
+    options:
+      - "How quickly the volume can be accessed by pods"
+      - "What happens to the PV after its PVC is deleted"
+      - "The maximum size of data that can be stored in the volume"
+      - "The backup frequency for the volume data"
+    correct_answer: "What happens to the PV after its PVC is deleted"
+    explanation: "The persistentVolumeReclaimPolicy specifies what happens to a Persistent Volume after its bound Persistent Volume Claim is deleted. There are three possible policies: 'Retain' (default for manually created PVs) keeps the PV and its data, requiring manual cleanup and allowing data recovery; 'Delete' automatically deletes the PV and the underlying storage asset (default for dynamically provisioned volumes); and 'Recycle' (deprecated) performs basic scrubbing (rm -rf) and makes the PV available for new claims. Understanding this policy is critical for data management and cost control. With 'Retain', you maintain full control and can recover data if a PVC is accidentally deleted, but you must manually clean up storage resources, which can lead to orphaned storage and costs. With 'Delete', cleanup is automatic and prevents storage waste, but accidental PVC deletion results in permanent data loss. For production databases or critical data, 'Retain' is often preferred despite requiring manual cleanup, as it provides a safety net. For development environments or temporary data, 'Delete' is convenient and cost-effective. When using dynamic provisioning with StorageClasses, the reclaim policy is set in the StorageClass and inherited by dynamically created PVs. You can change the reclaim policy of an existing PV using kubectl patch, which is useful for protecting important volumes before maintenance operations."
+    require_pass: true

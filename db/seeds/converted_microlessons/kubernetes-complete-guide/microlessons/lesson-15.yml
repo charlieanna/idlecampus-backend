@@ -1,0 +1,94 @@
+slug: lesson-15
+title: Lesson 15
+difficulty: easy
+sequence_order: 15
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Advanced Workloads\n\n    Learn specialized\
+  \ workload controllers for stateful applications, background tasks, and system services.\n\
+  \n    ## StatefulSets\n\n    For stateful applications requiring:\n    - Stable\
+  \ network identities\n    - Persistent storage\n    - Ordered deployment and scaling\n\
+  \    - Ordered rolling updates\n\n    **Use Cases:**\n    - Databases (MySQL, PostgreSQL,\
+  \ MongoDB)\n    - Distributed systems (Kafka, Zookeeper)\n    - Any app requiring\
+  \ persistent identity\n\n    **Features:**\n    - Predictable pod names: `<statefulset-name>-<ordinal>`\n\
+  \    - Headless service for stable network identity\n    - Ordered pod creation:\
+  \ 0, 1, 2, ...\n    - Ordered pod deletion: 2, 1, 0, ...\n\n    ## DaemonSets\n\n\
+  \    Ensures all (or specific) nodes run a copy of a pod:\n    - Node monitoring\
+  \ agents\n    - Log collectors\n    - Storage daemons\n    - Network plugins\n\n\
+  \    **Features:**\n    - Automatically schedules pods on new nodes\n    - Removes\
+  \ pods from nodes being decommissioned\n    - Can target specific nodes using selectors\n\
+  \n    ## Jobs\n\n    Run batch tasks to completion:\n    - One-time tasks\n    -\
+  \ Parallel processing\n    - Guaranteed completion\n    - Retry on failure\n\n \
+  \   **Job Patterns:**\n    - **Single completion**: Run task once\n    - **Fixed\
+  \ completions**: Run N times\n    - **Work queue**: Process items from queue\n\n\
+  \    ## CronJobs\n\n    Scheduled recurring tasks:\n    - Backups\n    - Report\
+  \ generation\n    - Data cleanup\n    - Periodic checks\n\n    **Schedule Format:**\n\
+  \    - Cron syntax: `* * * * *` (minute hour day month weekday)\n    - Example:\
+  \ `0 2 * * *` (daily at 2 AM)\n\n    ## Resource Management\n\n    **Requests**:\
+  \ Minimum guaranteed resources\n    ```yaml\n    resources:\n      requests:\n \
+  \       memory: \"64Mi\"\n        cpu: \"250m\"\n    ```\n\n    **Limits**: Maximum\
+  \ allowed resources\n    ```yaml\n    resources:\n      limits:\n        memory:\
+  \ \"128Mi\"\n        cpu: \"500m\"\n    ```\n\n    **Quality of Service (QoS) Classes:**\n\
+  \    - **Guaranteed**: Requests = Limits\n    - **Burstable**: Requests < Limits\n\
+  \    - **BestEffort**: No requests/limits set\n\n    Practice these advanced patterns\
+  \ in the labs!"
+exercises:
+- type: multiple_choice_question
+  sequence_order: 2
+  question: In Kubernetes RBAC, what is the primary purpose of a ServiceAccount?
+  options:
+  - To store application configuration
+  - To provide an identity for processes running in pods to interact with the Kubernetes
+    API
+  - To manage network policies
+  - To create persistent volumes
+  correct_answer: To provide an identity for processes running in pods to interact
+    with the Kubernetes API
+  explanation: ServiceAccounts provide identities for processes running in pods, enabling
+    them to authenticate with the Kubernetes API server and perform authorized operations.
+    Every namespace has a 'default' ServiceAccount automatically assigned to pods
+    that don't specify one. Applications running in pods can use the ServiceAccount's
+    token (automatically mounted at /var/run/secrets/kubernetes.io/serviceaccount/token)
+    to make API calls. Combined with RBAC (Roles and RoleBindings), ServiceAccounts
+    control what API operations pods can perform. For example, a CI/CD tool running
+    in a pod might need a ServiceAccount with permissions to create and update Deployments.
+    ServiceAccounts are different from user accounts (for humans) - they're namespace-scoped
+    and managed declaratively as Kubernetes resources. They don't store configuration
+    (that's ConfigMaps/Secrets), manage network policies (that's NetworkPolicy resources),
+    or create volumes (that's PersistentVolumeClaims). Understanding ServiceAccounts
+    is crucial for implementing the principle of least privilege in Kubernetes applications.
+  require_pass: true
+- type: mcq
+  sequence_order: 1
+  question: Which command creates a deployment with 3 replicas?
+  options:
+  - kubectl create deployment nginx --image=nginx --replicas=3
+  - kubectl make deployment nginx replicas=3
+  - kubectl deploy nginx --count=3
+  - kubectl new deployment nginx x3
+  correct_answer_index: 0
+  explanation: kubectl create deployment creates a deployment. The --replicas flag
+    specifies the number of pod replicas.
+  require_pass: true
+- type: code
+  sequence_order: 2
+  language: yaml
+  question: Create a deployment with 3 replicas of nginx
+  starter_code: '# Write your deployment YAML here
+
+    apiVersion: apps/v1
+
+    kind: Deployment
+
+    '
+  solution_code: "apiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: nginx-deployment\n\
+    spec:\n  replicas: 3\n  selector:\n    matchLabels:\n      app: nginx\n  template:\n\
+    \    metadata:\n      labels:\n        app: nginx\n    spec:\n      containers:\n\
+    \      - name: nginx\n        image: nginx:1.25\n        ports:\n        - containerPort:\
+    \ 80"
+  hints:
+  - 'Use apiVersion: apps/v1 for Deployments'
+  - Set spec.replicas to 3
+  - Define selector.matchLabels to match template.metadata.labels
+  require_pass: true

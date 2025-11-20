@@ -1,0 +1,109 @@
+slug: lesson-6
+title: Lesson 6
+difficulty: easy
+sequence_order: 6
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Dynamic Programming Fundamentals\n\n  \
+  \  **DP = Recursion + Memoization (or Tabulation)**\n\n    ## When to Use DP\n\n\
+  \    1. **Optimal Substructure**: Solution can be built from subproblems\n    2.\
+  \ **Overlapping Subproblems**: Same subproblems solved multiple times\n\n    ##\
+  \ Fibonacci Example\n\n    ### Naive Recursion: O(2ⁿ)\n\n    ```python\n    def\
+  \ fib(n):\n        if n <= 1:\n            return n\n        return fib(n-1) + fib(n-2)\n\
+  \n    # fib(5) calls fib(3) twice, fib(2) three times!\n    # Exponential time!\n\
+  \    ```\n\n    ### Memoization (Top-Down): O(n)\n\n    ```python\n    def fib_memo(n,\
+  \ memo=None):\n        if memo is None:\n            memo = {}\n\n        if n in\
+  \ memo:\n            return memo[n]\n\n        if n <= 1:\n            return n\n\
+  \n        memo[n] = fib_memo(n-1, memo) + fib_memo(n-2, memo)\n        return memo[n]\n\
+  \n    # Time: O(n), Space: O(n)\n    ```\n\n    ### Tabulation (Bottom-Up): O(n)\n\
+  \n    ```python\n    def fib_tab(n):\n        if n <= 1:\n            return n\n\
+  \n        dp = [0] * (n + 1)\n        dp[1] = 1\n\n        for i in range(2, n +\
+  \ 1):\n            dp[i] = dp[i-1] + dp[i-2]\n\n        return dp[n]\n\n    # Time:\
+  \ O(n), Space: O(n)\n    ```\n\n    ### Space-Optimized: O(1)\n\n    ```python\n\
+  \    def fib_optimized(n):\n        if n <= 1:\n            return n\n\n       \
+  \ prev, curr = 0, 1\n        for _ in range(2, n + 1):\n            prev, curr =\
+  \ curr, prev + curr\n\n        return curr\n\n    # Time: O(n), Space: O(1)\n  \
+  \  ```\n\n    ## Classic DP Problems\n\n    ### Climbing Stairs\n\n    ```python\n\
+  \    def climb_stairs(n):\n        if n <= 2:\n            return n\n\n        dp\
+  \ = [0] * (n + 1)\n        dp[1], dp[2] = 1, 2\n\n        for i in range(3, n +\
+  \ 1):\n            dp[i] = dp[i-1] + dp[i-2]\n\n        return dp[n]\n\n    # Can\
+  \ take 1 or 2 steps at a time\n    # How many ways to reach step n?\n    # Time:\
+  \ O(n), Space: O(n)\n    ```\n\n    ### Coin Change\n\n    ```python\n    def coin_change(coins,\
+  \ amount):\n        dp = [float('inf')] * (amount + 1)\n        dp[0] = 0\n\n  \
+  \      for i in range(1, amount + 1):\n            for coin in coins:\n        \
+  \        if i >= coin:\n                    dp[i] = min(dp[i], dp[i - coin] + 1)\n\
+  \n        return dp[amount] if dp[amount] != float('inf') else -1\n\n    # Example:\
+  \ coins = [1,2,5], amount = 11\n    # Output: 3 (5+5+1)\n    # Time: O(amount ×\
+  \ coins), Space: O(amount)\n    ```\n\n    ### Longest Common Subsequence\n\n  \
+  \  ```python\n    def longest_common_subsequence(text1, text2):\n        m, n =\
+  \ len(text1), len(text2)\n        dp = [[0] * (n + 1) for _ in range(m + 1)]\n\n\
+  \        for i in range(1, m + 1):\n            for j in range(1, n + 1):\n    \
+  \            if text1[i-1] == text2[j-1]:\n                    dp[i][j] = dp[i-1][j-1]\
+  \ + 1\n                else:\n                    dp[i][j] = max(dp[i-1][j], dp[i][j-1])\n\
+  \n        return dp[m][n]\n\n    # Example: \"abcde\", \"ace\" → 3\n    # Time:\
+  \ O(m×n), Space: O(m×n)\n    ```\n\n    ### 0/1 Knapsack\n\n    ```python\n    def\
+  \ knapsack(weights, values, capacity):\n        n = len(weights)\n        dp = [[0]\
+  \ * (capacity + 1) for _ in range(n + 1)]\n\n        for i in range(1, n + 1):\n\
+  \            for w in range(1, capacity + 1):\n                if weights[i-1] <=\
+  \ w:\n                    # Max of: take item or don't take item\n             \
+  \       dp[i][w] = max(\n                        values[i-1] + dp[i-1][w - weights[i-1]],\n\
+  \                        dp[i-1][w]\n                    )\n                else:\n\
+  \                    dp[i][w] = dp[i-1][w]\n\n        return dp[n][capacity]\n\n\
+  \    # Time: O(n×capacity), Space: O(n×capacity)\n    ```\n\n    ### House Robber\n\
+  \n    ```python\n    def rob(nums):\n        if not nums:\n            return 0\n\
+  \        if len(nums) == 1:\n            return nums[0]\n\n        dp = [0] * len(nums)\n\
+  \        dp[0] = nums[0]\n        dp[1] = max(nums[0], nums[1])\n\n        for i\
+  \ in range(2, len(nums)):\n            # Max of: rob current + skip adjacent, or\
+  \ skip current\n            dp[i] = max(nums[i] + dp[i-2], dp[i-1])\n\n        return\
+  \ dp[-1]\n\n    # Can't rob adjacent houses\n    # Time: O(n), Space: O(n)\n   \
+  \ ```\n\n    ## DP Pattern Recognition\n\n    ### 1D DP\n    - Fibonacci, Climbing\
+  \ Stairs, House Robber\n    - Usually involves making decision at each step\n\n\
+  \    ### 2D DP\n    - Longest Common Subsequence, Edit Distance, Knapsack\n    -\
+  \ Usually involves two sequences or constraints\n\n    ### DP on Strings\n    -\
+  \ LCS, Edit Distance, Palindrome Partitioning\n    - Build solution character by\
+  \ character\n\n    ### DP on Trees\n    - Maximum Path Sum, Diameter of Binary Tree\n\
+  \    - Solve for subtrees first\n\n    ## DP Approach\n\n    1. **Define dp state**:\
+  \ What does dp[i] represent?\n    2. **Find recurrence relation**: dp[i] = function(dp[i-1],\
+  \ dp[i-2], ...)\n    3. **Initialize base cases**: dp[0], dp[1]\n    4. **Determine\
+  \ iteration order**: Usually bottom-up\n    5. **Return final answer**: Usually\
+  \ dp[n]\n\n    ## Interview Tips\n\n    1. Start with brute force recursion\n  \
+  \  2. Identify overlapping subproblems\n    3. Add memoization (top-down)\n    4.\
+  \ Convert to tabulation if needed (bottom-up)\n    5. Optimize space if possible\n\
+  \n    **Practice makes perfect with DP!**"
+exercises:
+  - type: mcq
+    sequence_order: 1
+    question: "What are the two key characteristics that make a problem suitable for Dynamic Programming?"
+    options:
+      - "Recursion and Iteration"
+      - "Optimal Substructure and Overlapping Subproblems"
+      - "Fast execution and Low memory"
+      - "Sorting and Searching"
+    correct_answer: "Optimal Substructure and Overlapping Subproblems"
+    explanation: "Dynamic Programming is applicable when a problem exhibits two key properties: (1) Optimal Substructure - meaning the optimal solution can be constructed from optimal solutions of its subproblems, and (2) Overlapping Subproblems - meaning the same subproblems are solved multiple times during computation. For example, in the Fibonacci sequence, fib(5) requires computing fib(3) twice and fib(2) three times in naive recursion. DP eliminates this redundancy by storing solutions to subproblems either through memoization (top-down) or tabulation (bottom-up), reducing time complexity from exponential O(2^n) to linear O(n). Without these properties, other algorithmic paradigms like divide-and-conquer or greedy algorithms would be more appropriate."
+    require_pass: true
+
+  - type: mcq
+    sequence_order: 2
+    question: "In the coin change problem with coins = [1,2,5] and amount = 11, what is the minimum number of coins needed and what is the time complexity?"
+    options:
+      - "2 coins (5+6), O(n)"
+      - "3 coins (5+5+1), O(amount × coins)"
+      - "4 coins (2+2+2+5), O(n²)"
+      - "3 coins (5+5+1), O(2^n)"
+    correct_answer: "3 coins (5+5+1), O(amount × coins)"
+    explanation: "The coin change problem requires finding the minimum number of coins to make a given amount. The optimal solution uses 3 coins: 5+5+1 = 11. The DP solution builds up from amount 0 to the target, and for each amount i, it tries each coin and takes the minimum. The implementation uses: dp[i] = min(dp[i], dp[i-coin] + 1) for each coin. The time complexity is O(amount × coins) because we iterate through all amounts from 1 to target (amount iterations), and for each amount, we try all coin denominations (coins iterations). The space complexity is O(amount) for the DP array. This is significantly better than the exponential time complexity of a naive recursive solution that would try all possible combinations."
+    require_pass: true
+
+  - type: mcq
+    sequence_order: 3
+    question: "What is the main advantage of the space-optimized Fibonacci solution over the tabulation approach?"
+    options:
+      - "It runs faster with O(log n) time complexity"
+      - "It reduces space complexity from O(n) to O(1) while maintaining O(n) time"
+      - "It eliminates the need for base cases"
+      - "It works with negative numbers"
+    correct_answer: "It reduces space complexity from O(n) to O(1) while maintaining O(n) time"
+    explanation: "The space-optimized Fibonacci solution improves upon tabulation by observing that we only need the previous two values to compute the next Fibonacci number, not the entire array. The implementation uses just two variables (prev, curr) that are updated in each iteration: prev, curr = curr, prev + curr. This reduces space complexity from O(n) for storing the entire DP array to O(1) for storing only two values. The time complexity remains O(n) as we still need to iterate n times. This optimization is crucial for large values of n where memory is constrained. For example, computing fib(1000000) would require an array of 1 million elements with tabulation, but only 2 variables with space optimization. This pattern of reducing space by keeping only necessary values is common in DP problems like House Robber and Climbing Stairs."
+    require_pass: true

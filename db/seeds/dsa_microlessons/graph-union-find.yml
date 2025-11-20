@@ -1,0 +1,242 @@
+---
+slug: graph-union-find
+title: Union Find (Disjoint Set Union)
+sequence_order: 42
+estimated_minutes: 20
+difficulty: medium
+key_concepts:
+- Union Find (Disjoint Set Union)
+- Basic Union Find
+content_md: |
+  # Union Find (Disjoint Set Union)
+
+  Efficient data structure for tracking disjoint sets and performing union/find operations
+
+  ---
+
+  ## Union Find Data Structure
+
+  Union Find (also called Disjoint Set Union or DSU) is a data structure that tracks elements partitioned into disjoint sets and supports two operations efficiently:
+
+  **Operations:**
+  1. **Find:** Determine which set an element belongs to
+  2. **Union:** Merge two sets into one
+
+  **Key Concepts:**
+
+  ### Parent Array Representation
+  Each element points to its parent. Root of tree represents the set.
+
+  ### Path Compression
+  During find operation, make nodes point directly to root.
+  - Flattens tree structure
+  - Speeds up future operations
+
+  ### Union by Rank/Size
+  When merging, attach smaller tree under root of larger tree.
+  - Keeps trees balanced
+  - Prevents degeneration to linked list
+
+  **Time Complexity:**
+  - Without optimization: O(n) per operation
+  - With path compression + union by rank: O(α(n)) ≈ O(1)
+  - α(n) is inverse Ackermann function (grows extremely slowly)
+
+  **Space Complexity:** O(n)
+
+
+  ---
+
+  ## Common Patterns
+
+  ### Pattern 1: Basic Union Find
+  ```python
+  class UnionFind:
+      def __init__(self, n):
+          self.parent = list(range(n))  # Each node is its own parent
+          self.rank = [0] * n          # Track tree height
+          self.components = n           # Number of disjoint sets
+
+      def find(self, x):
+          """Find root with path compression"""
+          if self.parent[x] != x:
+              self.parent[x] = self.find(self.parent[x])  # Path compression
+          return self.parent[x]
+
+      def union(self, x, y):
+          """Union by rank"""
+          root_x, root_y = self.find(x), self.find(y)
+
+          if root_x == root_y:
+              return False  # Already in same set
+
+          # Union by rank: attach smaller tree under larger
+          if self.rank[root_x] < self.rank[root_y]:
+              self.parent[root_x] = root_y
+          elif self.rank[root_x] > self.rank[root_y]:
+              self.parent[root_y] = root_x
+          else:
+              self.parent[root_y] = root_x
+              self.rank[root_x] += 1
+
+          self.components -= 1
+          return True
+
+      def connected(self, x, y):
+          """Check if two elements are in same set"""
+          return self.find(x) == self.find(y)
+
+      def count_components(self):
+          """Get number of disjoint sets"""
+          return self.components
+  ```
+
+  ### Pattern 2: Union by Size (Alternative)
+  ```python
+  class UnionFindBySize:
+      def __init__(self, n):
+          self.parent = list(range(n))
+          self.size = [1] * n  # Track component size instead of rank
+
+      def find(self, x):
+          if self.parent[x] != x:
+              self.parent[x] = self.find(self.parent[x])
+          return self.parent[x]
+
+      def union(self, x, y):
+          root_x, root_y = self.find(x), self.find(y)
+
+          if root_x == root_y:
+              return False
+
+          # Attach smaller component to larger
+          if self.size[root_x] < self.size[root_y]:
+              self.parent[root_x] = root_y
+              self.size[root_y] += self.size[root_x]
+          else:
+              self.parent[root_y] = root_x
+              self.size[root_x] += self.size[root_y]
+
+          return True
+
+      def get_size(self, x):
+          """Get size of component containing x"""
+          return self.size[self.find(x)]
+  ```
+
+  ### Pattern 3: Detect Cycle in Graph
+  ```python
+  def has_cycle(n, edges):
+      """Detect cycle in undirected graph using Union Find"""
+      uf = UnionFind(n)
+
+      for u, v in edges:
+          if uf.connected(u, v):
+              return True  # Cycle detected
+          uf.union(u, v)
+
+      return False
+  ```
+
+  ### Pattern 4: Count Connected Components
+  ```python
+  def count_components(n, edges):
+      """Count connected components in graph"""
+      uf = UnionFind(n)
+
+      for u, v in edges:
+          uf.union(u, v)
+
+      return uf.count_components()
+  ```
+
+  ### Pattern 5: Kruskal's MST Algorithm
+  ```python
+  def kruskal_mst(n, edges):
+      """Find Minimum Spanning Tree using Union Find"""
+      # Sort edges by weight
+      edges.sort(key=lambda x: x[2])
+
+      uf = UnionFind(n)
+      mst_edges = []
+      mst_weight = 0
+
+      for u, v, weight in edges:
+          if uf.union(u, v):  # If not in same component
+              mst_edges.append((u, v, weight))
+              mst_weight += weight
+
+              if len(mst_edges) == n - 1:
+                  break  # MST complete
+
+      return mst_edges, mst_weight
+  ```
+
+
+  ---
+
+  ## When to Use This Technique
+
+  Use Union Find for: dynamic connectivity problems, detecting cycles in undirected graphs, finding connected components, Kruskal's MST algorithm, or any problem involving merging/grouping elements.
+
+  ---
+
+  ## Common Pitfalls to Avoid
+
+  - Forgetting path compression (makes operations slow)
+  - Not using union by rank/size (creates unbalanced trees)
+  - Using Union Find for directed graphs (use SCC algorithms instead)
+  - Not initializing parent array correctly
+  - Forgetting to check if elements are already connected before union
+  - Trying to use for shortest path (use Dijkstra/BFS instead)
+
+  ---
+
+  ## Practice Problems
+
+  Start with these problems to master this concept:
+
+  ### 1. Union Find 6 [Easy]
+
+  Graph problem: union-find.
+
+  **Complexity:** Time O(O(V+E)), Space O(O(V))
+
+
+  ### 2. Union Find 8 [Easy]
+
+  Graph problem: union-find.
+
+  **Complexity:** Time O(O(V+E)), Space O(O(V))
+
+
+  ### 3. Union Find 12 [Easy]
+
+  Graph problem: union-find.
+
+  **Complexity:** Time O(O(V+E)), Space O(O(V))
+
+
+  ### 4. Union Find 20 [Easy]
+
+  Graph problem: union-find.
+
+  **Complexity:** Time O(O(V+E)), Space O(O(V))
+
+
+  ### 5. Union Find 21 [Easy]
+
+  Graph problem: union-find.
+
+  **Complexity:** Time O(O(V+E)), Space O(O(V))
+
+
+
+  ---
+
+  ## Key Takeaways
+
+  - Union Find (Disjoint Set Union) is essential for efficient data structure for tracking disjoint sets and performing union/find operations
+  - Time complexity improvements can be significant with this technique
+  - Practice problems in order of difficulty to build intuition
+  - Focus on recognizing patterns in problem statements

@@ -1,0 +1,132 @@
+slug: hello-python
+title: Hello, Python!
+sequence_order: 1
+estimated_minutes: 2
+difficulty: easy
+key_concepts: []
+content_md: "# Hello, Python! \U0001F680\n\n# Hello, Python!\n\n    Welcome to Python!\
+  \ Python is one of the most popular programming languages, known for its simplicity\
+  \ and readability.\n\n    ## Your First Program\n\n    Let's start with the traditional\
+  \ \"Hello, World!\" program:\n\n    ```python\n    print(\"Hello, World!\")\n  \
+  \  ```\n\n    That's it! Just one line. The `print()` function displays text on\
+  \ the screen.\n\n    ### Try It Yourself\n    ```python\n    print(\"Welcome to\
+  \ Python!\")\n    print(\"My name is Python\")\n    print(2 + 2)  # Prints: 4\n\
+  \    ```\n\n    ## Variables: Storing Information\n\n    Variables let you store\
+  \ data for later use:\n\n    ```python\n    # Creating variables\n    name = \"\
+  Alice\"\n    age = 25\n    height = 5.6\n    is_student = True\n\n    # Using variables\n\
+  \    print(name)  # Prints: Alice\n    print(age)   # Prints: 25\n    ```\n\n  \
+  \  ### Variable Naming Rules\n    ✅ **Good names:**\n    - `user_name`\n    - `age`\n\
+  \    - `total_price`\n    - `is_active`\n\n    ❌ **Invalid names:**\n    - `2students`\
+  \ (can't start with number)\n    - `user-name` (can't use hyphens)\n    - `class`\
+  \ (reserved keyword)\n\n    ## Data Types\n\n    Python has several built-in data\
+  \ types:\n\n    ### 1. Strings (Text)\n    ```python\n    greeting = \"Hello\"\n\
+  \    name = 'Alice'  # Single or double quotes\n    message = \"\"\"This is a\n\
+  \    multi-line string\"\"\"\n    ```\n\n    **String Operations:**\n    ```python\n\
+  \    # Concatenation\n    first_name = \"John\"\n    last_name = \"Doe\"\n    full_name\
+  \ = first_name + \" \" + last_name  # \"John Doe\"\n\n    # Repetition\n    laugh\
+  \ = \"ha\" * 3  # \"hahaha\"\n\n    # Length\n    len(\"Python\")  # 6\n\n    #\
+  \ Indexing (starts at 0)\n    word = \"Python\"\n    word[0]  # 'P'\n    word[-1]\
+  \  # 'n' (last character)\n\n    # Slicing\n    word[0:3]  # 'Pyt'\n    word[2:]\
+  \   # 'thon'\n    ```\n\n    ### 2. Numbers\n    ```python\n    # Integers (whole\
+  \ numbers)\n    age = 25\n    year = 2024\n    negative = -10\n\n    # Floats (decimal\
+  \ numbers)\n    price = 19.99\n    temperature = -3.5\n    pi = 3.14159\n\n    #\
+  \ Arithmetic operations\n    x = 10\n    y = 3\n\n    print(x + y)   # Addition:\
+  \ 13\n    print(x - y)   # Subtraction: 7\n    print(x * y)   # Multiplication:\
+  \ 30\n    print(x / y)   # Division: 3.333...\n    print(x // y)  # Integer division:\
+  \ 3\n    print(x % y)   # Modulus (remainder): 1\n    print(x ** y)  # Exponentiation:\
+  \ 1000\n    ```\n\n    ### 3. Booleans (True/False)\n    ```python\n    is_raining\
+  \ = True\n    is_sunny = False\n\n    # Comparisons return booleans\n    age = 18\n\
+  \    print(age >= 18)  # True\n    print(age < 18)   # False\n    print(age == 18)\
+  \  # True (equal to)\n    print(age != 18)  # False (not equal to)\n    ```\n\n\
+  \    ## Type Conversion\n\n    Convert between types:\n\n    ```python\n    # String\
+  \ to number\n    age_str = \"25\"\n    age_num = int(age_str)  # 25\n\n    # Number\
+  \ to string\n    score = 100\n    score_str = str(score)  # \"100\"\n\n    # String\
+  \ to float\n    price = float(\"19.99\")  # 19.99\n\n    # Check type\n    type(42)\
+  \         # <class 'int'>\n    type(\"hello\")    # <class 'str'>\n    type(3.14)\
+  \       # <class 'float'>\n    type(True)       # <class 'bool'>\n    ```\n\n  \
+  \  ## Comments\n\n    Comments help explain your code:\n\n    ```python\n    # This\
+  \ is a single-line comment\n\n    \"\"\"\n    This is a multi-line comment.\n  \
+  \  It can span multiple lines.\n    Use it for longer explanations.\n    \"\"\"\n\
+  \n    x = 5  # Inline comment\n    ```\n\n    ## Input from User\n\n    Get user\
+  \ input:\n\n    ```python\n    name = input(\"What is your name? \")\n    print(\"\
+  Hello, \" + name + \"!\")\n\n    # Note: input() always returns a string\n    age_str\
+  \ = input(\"What is your age? \")\n    age = int(age_str)  # Convert to number\n\
+  \    print(\"You are\", age, \"years old\")\n    ```\n\n    ## String Formatting\n\
+  \n    ### f-strings (Modern, Recommended)\n    ```python\n    name = \"Alice\"\n\
+  \    age = 25\n\n    message = f\"My name is {name} and I am {age} years old\"\n\
+  \    print(message)\n    # Output: My name is Alice and I am 25 years old\n\n  \
+  \  # Expressions inside f-strings\n    x = 10\n    y = 5\n    print(f\"The sum of\
+  \ {x} and {y} is {x + y}\")\n    # Output: The sum of 10 and 5 is 15\n    ```\n\n\
+  \    ### .format() Method\n    ```python\n    message = \"My name is {} and I am\
+  \ {} years old\".format(name, age)\n    ```\n\n    ### % Operator (Old Style)\n\
+  \    ```python\n    message = \"My name is %s and I am %d years old\" % (name, age)\n\
+  \    ```\n\n    ## Practice Exercise\n\n    Try this:\n    ```python\n    # 1. Create\
+  \ variables\n    favorite_food = \"pizza\"\n    servings = 3\n    price_per_serving\
+  \ = 2.50\n\n    # 2. Calculate total price\n    total = servings * price_per_serving\n\
+  \n    # 3. Print a message\n    print(f\"I love {favorite_food}!\")\n    print(f\"\
+  {servings} servings cost ${total}\")\n    ```\n\n    ## Common Mistakes to Avoid\n\
+  \n    ❌ **Wrong:**\n    ```python\n    # Undefined variable\n    print(age)  # Error\
+  \ if age not defined\n\n    # Type mismatch\n    \"5\" + 5  # Error: can't add string\
+  \ and number\n\n    # Wrong comparison\n    age = \"25\"\n    age > 18  # Error:\
+  \ comparing string and number\n    ```\n\n    ✅ **Correct:**\n    ```python\n  \
+  \  # Define before use\n    age = 25\n    print(age)\n\n    # Convert types\n  \
+  \  \"5\" + str(5)  # \"55\"\n    int(\"5\") + 5  # 10\n\n    # Compare same types\n\
+  \    age = 25\n    age > 18  # True\n    ```\n\n    ## Next Steps\n\n    Great job!\
+  \ You've learned:\n    - ✅ How to print output\n    - ✅ Variables and data types\n\
+  \    - ✅ Basic operations\n    - ✅ User input\n    - ✅ String formatting\n\n   \
+  \ Next, we'll learn about control flow (if statements and loops)!"
+exercises:
+- type: mcq
+  slug: hello-python-mcq-1
+  sequence_order: 1
+  question: What is the output of print(type(42))?
+  options:
+  - <class 'int'>
+  - <class 'float'>
+  - <class 'str'>
+  - integer
+  correct_answer_index: 0
+  explanation: The type() function returns the type of an object. 42 is an integer, so type(42) returns <class 'int'>. Python uses this format to display class/type information.
+- type: mcq
+  slug: hello-python-mcq-2
+  sequence_order: 2
+  question: 'Which is the correct way to create an f-string in Python?'
+  options:
+  - 'f"Hello, {name}!"'
+  - '"Hello, {name}!"'
+  - 'format("Hello, {name}!")'
+  - 's"Hello, {name}!"'
+  correct_answer_index: 0
+  explanation: F-strings (formatted string literals) use the 'f' prefix before the string and allow embedding expressions inside curly braces {}. For example, f"Hello, {name}!" will substitute the value of the variable 'name' into the string. This is the modern, recommended way to format strings in Python.
+- type: mcq
+  slug: hello-python-mcq-3
+  sequence_order: 3
+  question: What will be the result of "5" + 5 in Python?
+  options:
+  - TypeError - cannot concatenate str and int
+  - "55"
+  - 10
+  - "10"
+  correct_answer_index: 0
+  explanation: Python will raise a TypeError because you cannot use the + operator between a string ("5") and an integer (5). You must convert them to the same type first, either int("5") + 5 to get 10, or "5" + str(5) to get "55".
+- type: mcq
+  slug: hello-python-mcq-4
+  sequence_order: 4
+  question: Which of the following is a valid Python variable name?
+  options:
+  - user_age
+  - 2ndplace
+  - user-name
+  - class
+  correct_answer_index: 0
+  explanation: 'Variable names in Python must start with a letter or underscore, can contain letters, numbers, and underscores, and cannot be reserved keywords. "user_age" is valid. "2ndplace" starts with a number (invalid), "user-name" contains a hyphen (invalid), and "class" is a reserved keyword (invalid).'
+objectives:
+- Understand Python's basic data types (strings, integers, floats, booleans)
+- Create and use variables following proper naming conventions
+- Use the print() function to display output
+- Format strings using f-strings for dynamic text
+- Convert between data types using int(), str(), and float()
+- Get user input with the input() function
+next_recommended:
+- control
+- data-structures

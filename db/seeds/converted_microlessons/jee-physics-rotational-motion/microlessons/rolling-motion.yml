@@ -1,0 +1,246 @@
+slug: rolling-motion
+title: "Rolling Motion Without Slipping"
+difficulty: advanced
+sequence_order: 4
+estimated_minutes: 18
+key_concepts:
+- pure-rolling
+- kinetic-energy-rolling
+- rolling-on-incline
+- instantaneous-axis
+- friction-in-rolling
+prerequisites:
+- moment-of-inertia-concepts
+- angular-momentum-conservation
+- torque-and-equilibrium
+content_md: |
+  # Rolling Motion Without Slipping
+
+  ## Pure Rolling Condition
+
+  **No sliding between rolling object and surface.**
+
+  ```
+  v_CM = Rω
+
+  v_CM = velocity of center of mass
+  R = radius of rolling object
+  ω = angular velocity
+  ```
+
+  ### At contact point:
+  - Velocity = 0 (instantaneously at rest)
+  - No relative motion between surfaces
+  - Static friction, not kinetic
+
+  ## Kinematics of Rolling
+
+  ### Velocity at Different Points:
+  ```
+  Top point: v = v_CM + Rω = 2v_CM
+  Center: v = v_CM
+  Bottom (contact): v = v_CM - Rω = 0
+  ```
+
+  ### Acceleration:
+  ```
+  a_CM = Rα
+
+  α = angular acceleration
+  ```
+
+  ## Instantaneous Axis of Rotation
+
+  For pure rolling, bottom point is instantaneous axis:
+  - All points rotate about this axis
+  - Useful for calculating velocities
+
+  ### Using Instantaneous Axis:
+  ```
+  v_top = (2R)ω = 2Rω = 2v_CM ✓
+  v_center = Rω = v_CM ✓
+  v_bottom = 0 ✓
+  ```
+
+  ## Kinetic Energy of Rolling Body
+
+  ```
+  KE_total = KE_translation + KE_rotation
+  KE = ½Mv²_CM + ½Iω²
+  KE = ½Mv²_CM + ½I(v_CM/R)²
+  KE = ½Mv²_CM(1 + I/(MR²))
+  KE = ½Mv²_CM(1 + k²/R²)
+  ```
+
+  ### For different objects:
+  | Object | I/(MR²) | Total KE |
+  |--------|---------|----------|
+  | Solid sphere | 2/5 | 7/10 Mv² |
+  | Hollow sphere | 2/3 | 5/6 Mv² |
+  | Solid cylinder | 1/2 | 3/4 Mv² |
+  | Hollow cylinder | 1 | Mv² |
+  | Ring | 1 | Mv² |
+  | Disc | 1/2 | 3/4 Mv² |
+
+  ## Rolling Down Incline
+
+  ### Equations of Motion:
+  ```
+  Translation: Mg sin θ - f = Ma_CM
+  Rotation: fR = Iα = I(a_CM/R)
+  ```
+
+  ### Solving:
+  ```
+  f = Ia_CM/R²
+  Mg sin θ - Ia_CM/R² = Ma_CM
+  a_CM = g sin θ/(1 + I/(MR²))
+  ```
+
+  ### Acceleration Comparison:
+  ```
+  Solid sphere: a = 5g sin θ/7 (fastest)
+  Hollow sphere: a = 3g sin θ/5
+  Disc/Solid cylinder: a = 2g sin θ/3
+  Ring/Hollow cylinder: a = g sin θ/2 (slowest)
+  ```
+
+  **Solid sphere reaches bottom first!**
+
+  ## Role of Friction in Rolling
+
+  ### For Pure Rolling Down Incline:
+  ```
+  f = Mg sin θ/(1 + MR²/I)
+
+  For solid sphere: f = 2Mg sin θ/7
+  For ring: f = Mg sin θ/2
+  ```
+
+  ### Minimum Friction Coefficient:
+  ```
+  f ≤ μN = μMg cos θ
+
+  μ_min = tan θ/(1 + MR²/I)
+
+  For solid sphere: μ_min = (2/7) tan θ
+  ```
+
+  If μ < μ_min, slipping occurs.
+
+  ## Types of Motion
+
+  1. **Pure Rolling:** v = Rω, static friction
+  2. **Forward Slipping:** v > Rω, backward friction
+  3. **Backward Slipping:** v < Rω, forward friction
+
+  ## Energy Conservation in Rolling
+
+  ```
+  Mgh = ½Mv²_CM + ½Iω²
+  Mgh = ½Mv²_CM(1 + I/(MR²))
+
+  v_CM = √(2gh/(1 + I/(MR²)))
+  ```
+
+  For solid sphere rolling down height h:
+  ```
+  v = √(10gh/7)
+  ```
+
+  Compare to sliding (no rotation): v = √(2gh)
+
+  ## Rolling with Slipping
+
+  When object starts with ω₀ = 0 (pure translation):
+  - Kinetic friction acts backward
+  - Creates torque, increases ω
+  - Eventually v = Rω (pure rolling begins)
+
+  ```
+  Time to pure rolling: t = v₀/(μg(1 + MR²/I))
+  ```
+
+  ## Numerical Examples
+
+  **Example 1:** Solid sphere rolls down 10 m high incline. Find velocity at bottom.
+
+  **Solution:**
+  ```
+  v = √(10gh/7) = √(10×10×10/7)
+  v = √(1000/7) ≈ 12 m/s
+
+  Compare sliding: v = √(2×10×10) = 14.1 m/s
+  Rolling is slower due to rotational energy!
+  ```
+
+  **Example 2:** Disc and ring of same mass and radius roll down incline. Compare times.
+
+  **Solution:**
+  ```
+  a_disc = 2g sin θ/3
+  a_ring = g sin θ/2
+
+  Ratio: a_disc/a_ring = (2/3)/(1/2) = 4/3
+
+  Disc accelerates faster, reaches bottom first.
+  Time ratio: t_disc/t_ring = √(3/4) ≈ 0.87
+  Disc takes 87% of ring's time.
+  ```
+
+  **Example 3:** Ball rolling at 10 m/s hits wall and bounces back at 8 m/s (still rolling). KE ratio?
+
+  **Solution:**
+  ```
+  For solid sphere: KE = 7/10 Mv²
+  KE_initial = 7/10 M(10)² = 70M
+  KE_final = 7/10 M(8)² = 44.8M
+
+  Ratio = 44.8/70 = 0.64
+
+  36% energy lost in collision.
+  ```
+
+  ## JEE Key Points
+
+  1. **Pure rolling: v = Rω**
+  2. **KE = ½Mv²(1 + I/(MR²))**
+  3. **Solid sphere fastest** down incline
+  4. **Static friction** in pure rolling
+  5. **Bottom point instantaneously at rest**
+  6. **Energy splits** between translation and rotation
+
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: "A solid sphere and hollow sphere of same radius roll down incline. Which reaches bottom first?"
+  options:
+  - "Solid sphere"
+  - "Hollow sphere"
+  - "Both together"
+  - "Depends on mass"
+  correct_answer: "Solid sphere"
+  explanation: "Acceleration a = g sin θ/(1 + I/(MR²)). Solid sphere: I/(MR²) = 2/5, so a = 5g sin θ/7. Hollow sphere: I/(MR²) = 2/3, so a = 3g sin θ/5. Ratio: (5/7)/(3/5) = 25/21 > 1. Solid sphere has greater acceleration! This is because solid sphere has mass concentrated toward center (smaller I), so more energy goes into translation (less into rotation). Result is higher linear acceleration. Remarkably, result is independent of mass and radius - it's purely geometric. Heavy and light solid spheres reach together, both before hollow sphere. This is profound result of rotational mechanics."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: "For a body rolling without slipping, velocity of topmost point is:"
+  options:
+  - "0"
+  - "v_CM"
+  - "2v_CM"
+  - "Rω"
+  correct_answer: "2v_CM"
+  explanation: "Top point velocity = v_CM (translation) + Rω (rotation in same direction). Since v_CM = Rω for pure rolling: v_top = v_CM + v_CM = 2v_CM. Using instantaneous axis (at contact point): v_top = (2R)ω = 2Rω = 2v_CM ✓. Bottom point: v = v_CM - Rω = 0 (instantaneously at rest). This explains why mud from tire flies off top, not bottom. Why road marking gets on tire: at contact, zero relative velocity, marking transfers. Top point moves fastest, bottom is stationary - counterintuitive but fundamental to rolling motion understanding."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: "A ring of mass M rolls on floor with kinetic energy K. Its translational KE is:"
+  options:
+  - "K"
+  - "K/2"
+  - "K/3"
+  - "2K/3"
+  correct_answer: "K/2"
+  explanation: "For ring: I = MR². Total KE = ½Mv² + ½Iω² = ½Mv² + ½MR²(v/R)² = ½Mv² + ½Mv² = Mv² = K. Translational KE = ½Mv² = K/2. Rotational KE = K/2. Equal split for ring! For other objects: Solid sphere: KE_trans/KE_total = (5/7) = 71%. Disc: KE_trans/KE_total = 2/3 = 67%. Ring has maximum rotational energy fraction (50%). This is why ring is slowest down incline - most energy goes into rotation. The ratio KE_trans/KE_total = 1/(1 + I/(MR²)) determines how much goes into translation."
+  require_pass: true

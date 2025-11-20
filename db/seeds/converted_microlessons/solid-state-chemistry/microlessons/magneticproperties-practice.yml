@@ -1,0 +1,59 @@
+slug: magneticproperties-practice
+title: magnetic_properties — Practice
+difficulty: medium
+sequence_order: 15
+estimated_minutes: 2
+key_concepts:
+- magnetic_properties
+prerequisites: []
+content_md: '# magnetic_properties — Practice 🚀
+
+
+  Zn²⁺ has 3d¹⁰ configuration (all paired electrons), hence diamagnetic. Others have
+  unpaired electrons (paramagnetic).
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: Which ion is diamagnetic?
+  options:
+  - Cu²⁺
+  - Fe³⁺
+  - Zn²⁺
+  - Ni²⁺
+  correct_answer: Zn²⁺
+  explanation: "Zn²⁺ is diamagnetic because it has a completely filled 3d¹⁰ configuration with all electrons paired. Diamagnetic substances have no unpaired electrons and are weakly repelled by magnetic fields. Cu²⁺ (3d⁹), Fe³⁺ (3d⁵), and Ni²⁺ (3d⁸) all have unpaired electrons and are therefore paramagnetic."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: A paramagnetic substance is
+  options:
+  - weakly attracted by magnetic field
+  - weakly repelled by magnetic field
+  - strongly attracted and permanently magnetized
+  - not affected by magnetic field
+  correct_answer: weakly attracted by magnetic field
+  explanation: "Paramagnetic substances are weakly attracted by magnetic fields due to the presence of unpaired electrons. They do not retain magnetization when the external field is removed. Examples include Cu²⁺, Fe³⁺, and O₂. This is different from diamagnetic (weakly repelled) and ferromagnetic (strongly attracted and permanently magnetized) substances."
+  require_pass: false
+- type: mcq
+  sequence_order: 3
+  question: Which of the following is diamagnetic?
+  options:
+  - O₂
+  - Cu²⁺
+  - H₂O
+  - Fe³⁺
+  correct_answer: H₂O
+  explanation: "H₂O is diamagnetic because all its electrons are paired. It has no unpaired electrons in its molecular orbitals. O₂ is paramagnetic (has two unpaired electrons in π* orbitals), while Cu²⁺ and Fe³⁺ have unpaired d-electrons making them paramagnetic."
+  require_pass: false

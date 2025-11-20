@@ -1,0 +1,102 @@
+slug: lesson-101
+title: Lesson 101
+sequence_order: 101
+estimated_minutes: 2
+difficulty: easy
+content_md: "# Microlesson \U0001F680\n\n# Blue-Green and Canary Deployments\n\n##\
+  \ Introduction\n\nProgressive delivery strategies minimize risk when deploying new\
+  \ application versions. Blue-Green and Canary deployments are two popular approaches\
+  \ that enable safer releases with quick rollback capabilities.\n\n## Blue-Green\
+  \ Deployment\n\n### Concept\n\nBlue-Green deployment maintains two identical production\
+  \ environments:\n- **Blue**: Currently running version (old)\n- **Green**: New version\
+  \ being deployed\n\nTraffic switches completely from Blue to Green once testing\
+  \ is complete.\n\n### Implementation in Kubernetes\n\n```yaml\n# Blue deployment\
+  \ (current production)\napiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name:\
+  \ app-blue\nspec:\n  replicas: 3\n  selector:\n    matchLabels:\n      app: myapp\n\
+  \      version: blue\n  template:\n    metadata:\n      labels:\n        app: myapp\n\
+  \        version: blue\n    spec:\n      containers:\n      - name: app\n      \
+  \  image: myapp:1.0\n\n---\n# Green deployment (new version)\napiVersion: apps/v1\n\
+  kind: Deployment\nmetadata:\n  name: app-green\nspec:\n  replicas: 3\n  selector:\n\
+  \    matchLabels:\n      app: myapp\n      version: green\n  template:\n    metadata:\n\
+  \      labels:\n        app: myapp\n        version: green\n    spec:\n      containers:\n\
+  \      - name: app\n        image: myapp:2.0\n\n---\n# Service switches between\
+  \ blue and green\napiVersion: v1\nkind: Service\nmetadata:\n  name: myapp-service\n\
+  spec:\n  selector:\n    app: myapp\n    version: blue  # Change to 'green' to switch\
+  \ traffic\n  ports:\n  - port: 80\n    targetPort: 8080\n```\n\n### Switching Traffic\n\
+  \n```bash\n# Deploy green version\nkubectl apply -f green-deployment.yaml\n\n# Test\
+  \ green deployment\nkubectl port-forward deployment/app-green 8080:8080\n\n# Switch\
+  \ traffic to green\nkubectl patch service myapp-service -p '{\"spec\":{\"selector\"\
+  :{\"version\":\"green\"}}}'\n\n# Rollback if needed\nkubectl patch service myapp-service\
+  \ -p '{\"spec\":{\"selector\":{\"version\":\"blue\"}}}'\n```\n\n### Advantages\n\
+  - Instant rollback capability\n- Full testing before switchover\n- Zero downtime\
+  \ deployment\n- Simple to understand and implement\n\n### Disadvantages\n- Requires\
+  \ double infrastructure (costly)\n- Database migrations can be complex\n- Stateful\
+  \ applications need careful handling\n\n## Canary Deployment\n\n### Concept\n\n\
+  Canary deployment gradually shifts traffic from old to new version:\n- Start with\
+  \ small percentage (e.g., 10%) to new version\n- Monitor metrics and errors\n- Gradually\
+  \ increase if healthy (25%, 50%, 75%, 100%)\n- Rollback immediately if issues detected\n\
+  \n### Implementation with Kubernetes + Istio\n\n```yaml\n# Stable version\napiVersion:\
+  \ apps/v1\nkind: Deployment\nmetadata:\n  name: app-stable\nspec:\n  replicas: 9\n\
+  \  selector:\n    matchLabels:\n      app: myapp\n      version: stable\n  template:\n\
+  \    metadata:\n      labels:\n        app: myapp\n        version: stable\n   \
+  \ spec:\n      containers:\n      - name: app\n        image: myapp:1.0\n\n---\n\
+  # Canary version\napiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: app-canary\n\
+  spec:\n  replicas: 1  # 10% of traffic\n  selector:\n    matchLabels:\n      app:\
+  \ myapp\n      version: canary\n  template:\n    metadata:\n      labels:\n    \
+  \    app: myapp\n        version: canary\n    spec:\n      containers:\n      -\
+  \ name: app\n        image: myapp:2.0\n\n---\n# Service selects both versions\n\
+  apiVersion: v1\nkind: Service\nmetadata:\n  name: myapp\nspec:\n  selector:\n  \
+  \  app: myapp  # No version selector - includes both\n  ports:\n  - port: 80\n \
+  \   targetPort: 8080\n```\n\n### Advanced Canary with Istio VirtualService\n\n```yaml\n\
+  apiVersion: networking.istio.io/v1beta1\nkind: VirtualService\nmetadata:\n  name:\
+  \ myapp\nspec:\n  hosts:\n  - myapp\n  http:\n  - match:\n    - headers:\n     \
+  \   x-canary:\n          exact: \"true\"\n    route:\n    - destination:\n     \
+  \   host: myapp\n        subset: canary\n  - route:\n    - destination:\n      \
+  \  host: myapp\n        subset: stable\n      weight: 90\n    - destination:\n \
+  \       host: myapp\n        subset: canary\n      weight: 10\n```\n\n### Gradual\
+  \ Rollout Process\n\n```bash\n# Stage 1: 10% canary\nkubectl scale deployment app-canary\
+  \ --replicas=1\nkubectl scale deployment app-stable --replicas=9\n\n# Monitor metrics\n\
+  kubectl logs -l version=canary -f\n\n# Stage 2: 25% canary\nkubectl scale deployment\
+  \ app-canary --replicas=3\nkubectl scale deployment app-stable --replicas=7\n\n\
+  # Stage 3: 50% canary\nkubectl scale deployment app-canary --replicas=5\nkubectl\
+  \ scale deployment app-stable --replicas=5\n\n# Stage 4: 100% canary\nkubectl scale\
+  \ deployment app-canary --replicas=10\nkubectl scale deployment app-stable --replicas=0\n\
+  ```\n\n### Advantages\n- Reduced risk - limited blast radius\n- Real production\
+  \ testing\n- Gradual confidence building\n- Fine-grained control\n\n### Disadvantages\n\
+  - More complex to implement\n- Requires robust monitoring\n- Longer deployment time\n\
+  - Potential for mixed version bugs\n\n## Choosing Between Strategies\n\n**Use Blue-Green\
+  \ when:**\n- You need instant rollback capability\n- All-or-nothing deployment is\
+  \ acceptable\n- You have infrastructure capacity for doubling resources\n- Testing\
+  \ in production-like environment before switch\n\n**Use Canary when:**\n- You want\
+  \ gradual risk mitigation\n- Real user traffic validation is critical\n- Infrastructure\
+  \ constraints limit duplication\n- You have robust monitoring and metrics\n\n##\
+  \ Best Practices\n\n1. **Automate health checks** - Don't rely on manual verification\n\
+  2. **Define success criteria** - Error rates, latency, business metrics\n3. **Implement\
+  \ monitoring** - Track both versions separately\n4. **Practice rollbacks** - Ensure\
+  \ rollback procedure works\n5. **Database compatibility** - Ensure both versions\
+  \ work with same schema\n6. **Use feature flags** - Complement deployment strategy\
+  \ with runtime toggles\n\n## Key Points\n\n- Blue-Green switches traffic completely\
+  \ between two environments\n- Canary gradually shifts traffic to new version for\
+  \ risk mitigation\n- Both strategies enable safer production deployments with rollback\
+  \ capability\n- Choice depends on infrastructure constraints and risk tolerance\n\
+  - Robust monitoring is essential for both approaches"
+exercises:
+- type: mcq
+  slug: lesson-101-mcq
+  sequence_order: 1
+  question: What is the key difference between Blue-Green and Canary deployments?
+  options:
+  - Blue-Green switches traffic all at once; Canary gradually shifts traffic to the
+    new version
+  - Blue-Green is slower than Canary
+  - Canary requires more servers
+  - Blue-Green only works in Kubernetes
+  correct_answer_index: 0
+  explanation: Blue-Green deployment maintains two identical environments and switches
+    traffic completely. Canary deployment gradually shifts traffic (10%, 25%, 50%,
+    100%), allowing monitoring and rollback.
+objectives:
+- Understand the fundamental concepts and mechanisms of lesson 101
+- Apply chemical principles to solve related problems
+- Identify key reactions, equations, and chemical behaviors
+next_recommended: []

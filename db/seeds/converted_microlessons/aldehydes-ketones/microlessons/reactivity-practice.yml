@@ -1,0 +1,68 @@
+slug: reactivity-practice
+title: reactivity — Practice
+difficulty: medium
+sequence_order: 6
+estimated_minutes: 2
+key_concepts:
+- reactivity
+prerequisites: []
+content_md: '# reactivity — Practice 🚀
+
+
+  Aldehydes are more reactive due to: (1) Less steric hindrance (only 1 R group vs
+  2 in ketone), (2) Less +I effect (1 R group vs 2), making carbonyl carbon more electrophilic.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 2
+  question: Why are aldehydes MORE reactive than ketones in nucleophilic addition?
+  options:
+  - Aldehydes have higher boiling point
+  - Aldehydes have less steric hindrance and less +I effect
+  - Ketones cannot form carbonyl compounds
+  - Aldehydes are more polar
+  require_pass: true
+  correct_answer: Aldehydes have less steric hindrance and less +I effect
+  explanation: 'Aldehydes (R-CHO) are more reactive than ketones (R-CO-R'') toward
+    nucleophilic addition for two main reasons: (1) Steric factor - Aldehydes have
+    only one bulky alkyl group and one small hydrogen atom attached to carbonyl carbon,
+    while ketones have two bulky alkyl groups. This means nucleophiles can approach
+    the carbonyl carbon more easily in aldehydes. (2) Electronic factor - Alkyl groups
+    have +I (positive inductive) effect, donating electron density to the carbonyl
+    carbon. Aldehydes have one +I group while ketones have two, making the ketone
+    carbonyl carbon less electrophilic (less δ+) and therefore less reactive toward
+    nucleophiles. Both factors work together to make aldehydes significantly more
+    reactive.'
+- type: mcq
+  sequence_order: 3
+  question: 'Which factor makes the carbonyl carbon in ketones less electrophilic than in aldehydes?'
+  options:
+  - Presence of two +I effect alkyl groups donating electron density
+  - Ketones have resonance stabilization
+  - Ketones have lower molecular weight
+  - Ketones form hydrogen bonds
+  require_pass: true
+  correct_answer: Presence of two +I effect alkyl groups donating electron density
+  explanation: 'Ketones have two alkyl groups attached to the carbonyl carbon, while aldehydes have only one. Alkyl groups have positive inductive effect (+I), meaning they donate electron density through σ bonds. In ketones, two alkyl groups donate electrons to the carbonyl carbon, increasing its electron density and making it less electrophilic (less δ+ character). In aldehydes, only one alkyl group donates electrons, so the carbonyl carbon retains more positive character and is more electrophilic. Since nucleophilic addition involves attack on the electrophilic carbonyl carbon, aldehydes (more electrophilic) are more reactive than ketones (less electrophilic). This electronic effect works together with steric effects to make aldehydes more reactive.'
+- type: mcq
+  sequence_order: 4
+  question: 'Arrange the following in decreasing order of reactivity toward nucleophilic addition: Formaldehyde, Acetaldehyde, Acetone'
+  options:
+  - Formaldehyde > Acetaldehyde > Acetone
+  - Acetone > Acetaldehyde > Formaldehyde
+  - Acetaldehyde > Formaldehyde > Acetone
+  - All have equal reactivity
+  require_pass: true
+  correct_answer: Formaldehyde > Acetaldehyde > Acetone
+  explanation: 'The correct order is: Formaldehyde (H₂C=O) > Acetaldehyde (CH₃CHO) > Acetone (CH₃COCH₃). Formaldehyde is most reactive because it has NO alkyl groups (zero +I effect) and NO steric hindrance - both hydrogen atoms are very small. Acetaldehyde is next because it has one alkyl group (one +I effect) and one hydrogen. Acetone is least reactive because it has two alkyl groups (two +I effects) and maximum steric hindrance. This order clearly demonstrates both principles: (1) More alkyl groups = less reactivity due to +I effect, and (2) Larger groups = less reactivity due to steric hindrance. Formaldehyde is so reactive it readily undergoes polymerization and is stored as aqueous solution (formalin).'

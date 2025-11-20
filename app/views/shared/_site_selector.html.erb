@@ -1,0 +1,23 @@
+<div class="site-selector">
+  <% current_site = params[:site] || session[:selected_site] || 'networkengineering' %>
+  <% available_sites = [
+    ['Network Engineering', 'networkengineering'],
+    ['Mathematics', 'math']
+  ] %>
+
+  <div class="dropdown">
+    <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="siteDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+      <i class="fas fa-globe"></i> <%= available_sites.find { |s| s[1] == current_site }&.first || 'Select Site' %>
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="siteDropdown">
+      <% available_sites.each do |site_name, site_key| %>
+        <li>
+          <%= link_to site_name,
+              request.params.merge(site: site_key),
+              class: "dropdown-item #{'active' if current_site == site_key}",
+              data: { turbo_action: "replace" } %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+</div>

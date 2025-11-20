@@ -1,0 +1,59 @@
+slug: grignardreactions-practice
+title: grignard_reactions — Practice
+difficulty: easy
+sequence_order: 1
+estimated_minutes: 2
+key_concepts:
+- grignard_reactions
+prerequisites: []
+content_md: '# grignard_reactions — Practice 🚀
+
+
+  R-MgX + H₂C=O → R-CH₂-OH (1° alcohol). With other aldehydes → 2° alcohol. With ketones
+  → 3° alcohol. Grignard acts as R⁻ nucleophile.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: 'What product is formed when a Grignard reagent (R-MgX) reacts with formaldehyde (H₂C=O)?'
+  options:
+  - 1° alcohol (R-CH₂-OH)
+  - 2° alcohol (R₂CH-OH)
+  - 3° alcohol (R₃C-OH)
+  - Carboxylic acid
+  require_pass: true
+  correct_answer: 1° alcohol (R-CH₂-OH)
+  explanation: 'When a Grignard reagent (R-MgX) reacts with formaldehyde (H₂C=O), it produces a primary alcohol (R-CH₂-OH) after hydrolysis. The Grignard reagent acts as a nucleophile (R⁻) and attacks the carbonyl carbon of formaldehyde. The general pattern is: formaldehyde → 1° alcohol, other aldehydes (R-CHO) → 2° alcohol, and ketones (R-CO-R'') → 3° alcohol. This is because the number of R groups in the product depends on: one from the Grignard reagent + those already present in the carbonyl compound. Formaldehyde has no alkyl groups, so the product has only one R group (from Grignard) plus -CH₂-OH, making it a primary alcohol.'
+- type: mcq
+  sequence_order: 2
+  question: 'Which product is obtained when a Grignard reagent reacts with a ketone?'
+  options:
+  - 1° alcohol
+  - 2° alcohol
+  - 3° alcohol
+  - Aldehyde
+  require_pass: true
+  correct_answer: 3° alcohol
+  explanation: 'Grignard reagents react with ketones (R-CO-R'') to give tertiary (3°) alcohols after hydrolysis. The mechanism involves nucleophilic addition where the Grignard reagent (R-MgX) acts as R⁻ and attacks the carbonyl carbon. The ketone already has two alkyl groups attached to the carbonyl carbon, and the Grignard adds a third alkyl group, resulting in R₃C-OH (3° alcohol). For example, CH₃-CO-CH₃ (acetone) + CH₃MgBr gives (CH₃)₃C-OH (tert-butanol). This is different from aldehydes which give 2° alcohols, and formaldehyde which gives 1° alcohols.'
+- type: mcq
+  sequence_order: 3
+  question: 'Why do Grignard reagents act as nucleophiles in carbonyl addition reactions?'
+  options:
+  - Carbon in R-MgX carries partial positive charge (δ+)
+  - Carbon in R-MgX carries partial negative charge (δ-) and acts as R⁻
+  - Magnesium donates electrons to carbonyl
+  - Halogen X acts as nucleophile
+  require_pass: true
+  correct_answer: Carbon in R-MgX carries partial negative charge (δ-) and acts as R⁻
+  explanation: 'Grignard reagents (R-MgX) act as nucleophiles because the carbon-magnesium bond is highly polarized. Magnesium is less electronegative than carbon, so the carbon carries a partial negative charge (δ-) while magnesium carries partial positive charge (δ+). This makes the organic group R behave as a carbanion (R⁻), an excellent nucleophile. When approaching a carbonyl compound, this electron-rich carbon attacks the electron-deficient carbonyl carbon (δ+), leading to nucleophilic addition. This nucleophilic character makes Grignard reagents extremely reactive and useful for carbon-carbon bond formation in organic synthesis.'

@@ -1,0 +1,243 @@
+slug: radioactivity-decay-laws
+title: "Radioactivity and Decay Laws"
+difficulty: advanced
+sequence_order: 6
+estimated_minutes: 18
+key_concepts:
+- radioactive-decay
+- half-life
+- decay-constant
+- alpha-beta-gamma
+- nuclear-reactions
+prerequisites:
+- nuclear-binding-energy
+content_md: |
+  # Radioactivity and Decay Laws
+
+  ## What is Radioactivity?
+
+  **Spontaneous emission** of radiation (α, β, γ) by unstable nuclei to achieve stability.
+
+  ## Types of Radioactive Decay
+
+  ### 1. Alpha Decay (α)
+  ```
+  ᴬzX → ᴬ⁻⁴z₋₂Y + ⁴₂He
+
+  Example: ²³⁸U → ²³⁴Th + ⁴He
+  ```
+  - Emits helium nucleus (2p + 2n)
+  - Mass number decreases by 4
+  - Atomic number decreases by 2
+  - Least penetrating (stopped by paper)
+  - Most ionizing
+
+  ### 2. Beta Decay (β⁻)
+  ```
+  ᴬzX → ᴬz₊₁Y + e⁻ + ν̄ₑ
+
+  n → p + e⁻ + ν̄ₑ (at nuclear level)
+
+  Example: ¹⁴C → ¹⁴N + e⁻ + ν̄ₑ
+  ```
+  - Emits electron and antineutrino
+  - Mass number unchanged
+  - Atomic number increases by 1
+  - Moderate penetration (stopped by aluminum)
+
+  ### 3. Beta Plus Decay (β⁺)
+  ```
+  ᴬzX → ᴬz₋₁Y + e⁺ + νₑ
+
+  p → n + e⁺ + νₑ
+  ```
+  - Emits positron and neutrino
+  - Atomic number decreases by 1
+
+  ### 4. Gamma Decay (γ)
+  ```
+  ᴬzX* → ᴬzX + γ
+  ```
+  - Emits high-energy photon
+  - No change in A or Z
+  - Most penetrating (needs lead/concrete)
+  - Least ionizing
+
+  ## Radioactive Decay Law
+
+  ### Differential Equation:
+  ```
+  dN/dt = -λN
+
+  where λ = decay constant (s⁻¹)
+  ```
+
+  ### Solution:
+  ```
+  N(t) = N₀e⁻λt
+
+  N₀ = initial number of nuclei
+  N(t) = number at time t
+  ```
+
+  ### Activity (Decay Rate):
+  ```
+  A = dN/dt = λN = A₀e⁻λt
+
+  Unit: Becquerel (Bq) = 1 decay/s
+  1 Curie (Ci) = 3.7×10¹⁰ Bq
+  ```
+
+  ## Half-Life (T₁/₂)
+
+  **Time for half the nuclei to decay.**
+
+  ```
+  T₁/₂ = ln(2)/λ = 0.693/λ
+
+  λ = 0.693/T₁/₂
+  ```
+
+  ### Useful Relations:
+  ```
+  After n half-lives:
+  N = N₀/2ⁿ
+  A = A₀/2ⁿ
+
+  After time t:
+  N = N₀(1/2)^(t/T₁/₂)
+  ```
+
+  ## Mean Life (τ)
+
+  **Average lifetime of a radioactive nucleus.**
+
+  ```
+  τ = 1/λ = T₁/₂/0.693 = 1.44T₁/₂
+  ```
+
+  Time for activity to fall to 1/e of initial.
+
+  ## Important Formulas
+
+  ### Number of Atoms Decayed:
+  ```
+  N_decayed = N₀ - N = N₀(1 - e⁻λt)
+
+  After one half-life: N₀/2 atoms decay
+  ```
+
+  ### Fraction Remaining:
+  ```
+  N/N₀ = e⁻λt = (1/2)^(t/T₁/₂)
+  ```
+
+  ### Probability of Decay:
+  ```
+  P = 1 - e⁻λt ≈ λt (for small λt)
+  ```
+
+  ## Successive Radioactive Decay
+
+  ```
+  A → B → C (stable)
+  λ₁   λ₂
+  ```
+
+  - A decays with constant λ₁
+  - B formed from A, decays with λ₂
+  - Secular equilibrium when λ₁ << λ₂:
+    Activity of B ≈ Activity of A
+
+  ## Carbon Dating
+
+  ```
+  ¹⁴C (T₁/₂ = 5730 years)
+
+  Age = T₁/₂/0.693 × ln(A₀/A)
+  ```
+
+  Useful for dating up to ~50,000 years.
+
+  ## Numerical Examples
+
+  **Example 1:** Half-life is 10 days. Find fraction remaining after 30 days.
+
+  **Solution:**
+  ```
+  n = t/T₁/₂ = 30/10 = 3 half-lives
+  N/N₀ = (1/2)³ = 1/8
+
+  12.5% remains, 87.5% decayed
+  ```
+
+  **Example 2:** Decay constant λ = 0.01 s⁻¹. Find half-life and mean life.
+
+  **Solution:**
+  ```
+  T₁/₂ = 0.693/λ = 0.693/0.01 = 69.3 s
+  τ = 1/λ = 1/0.01 = 100 s
+
+  Check: τ = 1.44 × 69.3 ≈ 100 s ✓
+  ```
+
+  **Example 3:** Initial activity 1000 Bq. After 20 min, activity is 250 Bq. Find half-life.
+
+  **Solution:**
+  ```
+  A/A₀ = 250/1000 = 1/4 = (1/2)²
+
+  Two half-lives in 20 min
+  T₁/₂ = 20/2 = 10 min
+  ```
+
+  ## Radioactive Series
+
+  - **Uranium series**: ²³⁸U → ²⁰⁶Pb (4n+2 series)
+  - **Actinium series**: ²³⁵U → ²⁰⁷Pb (4n+3 series)
+  - **Thorium series**: ²³²Th → ²⁰⁸Pb (4n series)
+
+  ## JEE Important Points
+
+  1. **Decay is probabilistic**, not deterministic
+  2. **λ is constant** for given isotope
+  3. **Half-life ≠ mean life** (τ = 1.44T₁/₂)
+  4. **Activity ∝ N** (more atoms = more decays)
+  5. **After infinite time**, all atoms decay (N → 0)
+  6. **In α decay**: A decreases by 4, Z by 2
+  7. **In β⁻ decay**: A constant, Z increases by 1
+
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: "A radioactive sample has half-life of 20 minutes. The time required for activity to decrease to 1/16 of initial is:"
+  options:
+  - "40 min"
+  - "60 min"
+  - "80 min"
+  - "100 min"
+  correct_answer: "80 min"
+  explanation: "1/16 = (1/2)⁴, so 4 half-lives needed. Time = 4 × 20 = 80 minutes. After each half-life: 1 → 1/2 → 1/4 → 1/8 → 1/16. This shows exponential decay - even after 4 half-lives, 1/16 remains. To reach 1/1000 would need about 10 half-lives (1/1024 ≈ 1/1000). The beauty of half-life is its simplicity - just count how many times you need to halve to reach the fraction."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: "If half-life of a radioactive element is 30 days, the decay constant is:"
+  options:
+  - "0.0231 day⁻¹"
+  - "0.693 day⁻¹"
+  - "30 day⁻¹"
+  - "0.0333 day⁻¹"
+  correct_answer: "0.0231 day⁻¹"
+  explanation: "λ = 0.693/T₁/₂ = 0.693/30 = 0.0231 day⁻¹. This means probability of decay per day is about 2.3%. Mean life τ = 1/λ = 1/0.0231 ≈ 43.3 days = 1.44 × 30 days. Note: λ has same dimension as 1/time. If you convert to seconds: λ = 0.0231/(24×3600) = 2.67×10⁻⁷ s⁻¹. Always check units match in calculations. Higher λ means faster decay (shorter half-life)."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: "In the decay ²³⁸U → ²⁰⁶Pb, the number of α and β⁻ particles emitted are:"
+  options:
+  - "8α and 6β"
+  - "6α and 8β"
+  - "4α and 2β"
+  - "10α and 4β"
+  correct_answer: "8α and 6β"
+  explanation: "Mass number change: 238 - 206 = 32. Since each α reduces A by 4: Number of α = 32/4 = 8. Atomic number: Initial Z = 92 (U), Final Z = 82 (Pb). Each α reduces Z by 2: 8α reduces Z by 16. Expected Z after α: 92 - 16 = 76. But actual Z = 82. Difference = 82 - 76 = 6. Each β⁻ increases Z by 1, so 6β⁻ particles. Check: 92 - 16 + 6 = 82 ✓. This is the uranium decay series, involving multiple intermediate elements, ending at stable lead-206."
+  require_pass: true

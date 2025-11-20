@@ -1,0 +1,260 @@
+slug: wave-equation-properties
+title: "Wave Equation and Properties"
+difficulty: intermediate
+sequence_order: 2
+estimated_minutes: 16
+key_concepts:
+- wave-equation
+- wavelength
+- frequency
+- wave-speed
+- progressive-waves
+prerequisites:
+- shm-fundamentals-equations
+content_md: |
+  # Wave Equation and Properties
+
+  ## What is a Wave?
+
+  **Disturbance that transfers energy** without transferring matter.
+
+  ## Types of Waves
+
+  ### 1. Mechanical Waves:
+  - Require medium (solid, liquid, gas)
+  - Examples: Sound, water waves, seismic waves
+
+  ### 2. Electromagnetic Waves:
+  - Don't require medium
+  - Examples: Light, radio, X-rays
+
+  ### 3. Based on Particle Motion:
+  - **Transverse:** Particle motion ⊥ wave propagation (light, string)
+  - **Longitudinal:** Particle motion ∥ wave propagation (sound)
+
+  ## Wave Parameters
+
+  ```
+  Amplitude (A): Maximum displacement from mean position
+  Wavelength (λ): Distance between consecutive crests/troughs
+  Frequency (f): Number of oscillations per second (Hz)
+  Time Period (T): Time for one complete oscillation
+  Wave Speed (v): Distance traveled per unit time
+  ```
+
+  ### Relations:
+  ```
+  f = 1/T
+  v = fλ = λ/T
+  ```
+
+  ## Progressive Wave Equation
+
+  ### Wave traveling in +x direction:
+  ```
+  y(x,t) = A sin(kx - ωt + φ)
+
+  OR equivalently:
+  y(x,t) = A sin(ωt - kx + φ)    [opposite convention]
+  ```
+
+  ### Wave traveling in -x direction:
+  ```
+  y(x,t) = A sin(kx + ωt + φ)
+  ```
+
+  ### Parameters:
+  ```
+  k = wave number = 2π/λ (rad/m)
+  ω = angular frequency = 2πf = 2π/T (rad/s)
+  φ = initial phase
+  ```
+
+  ## Alternative Forms
+
+  ```
+  y = A sin(ωt - kx)           [standard]
+  y = A sin 2π(t/T - x/λ)      [using T, λ]
+  y = A sin(ω(t - x/v))        [using wave speed]
+  y = A cos(kx - ωt)           [cosine form]
+  ```
+
+  ## Phase and Phase Difference
+
+  ### Phase:
+  ```
+  φ_total = kx - ωt + φ₀
+
+  Phase determines position in oscillation cycle
+  ```
+
+  ### Phase Difference:
+  Between two points separated by Δx:
+  ```
+  Δφ = kΔx = (2π/λ)Δx
+
+  Δx = λ → Δφ = 2π (same phase)
+  Δx = λ/2 → Δφ = π (opposite phase)
+  ```
+
+  Between two times separated by Δt:
+  ```
+  Δφ = ωΔt = (2π/T)Δt
+  ```
+
+  ## Particle Velocity vs Wave Velocity
+
+  ### Wave Velocity:
+  ```
+  v_wave = ω/k = λf = constant (for given medium)
+  ```
+
+  ### Particle Velocity:
+  ```
+  v_particle = ∂y/∂t = -Aω cos(kx - ωt)
+
+  Maximum particle velocity: v_max = Aω
+  ```
+
+  ### Important:
+  ```
+  v_particle = -v_wave × (∂y/∂x)
+
+  Particle velocity ≠ wave velocity!
+  ```
+
+  ## Wave Speed in Different Media
+
+  ### String:
+  ```
+  v = √(T/μ)
+
+  T = tension
+  μ = mass per unit length (linear density)
+  ```
+
+  ### Sound in Gas:
+  ```
+  v = √(γP/ρ) = √(γRT/M)
+
+  γ = ratio of specific heats
+  P = pressure, ρ = density
+  T = temperature (Kelvin)
+  ```
+
+  ### Sound in Solid:
+  ```
+  v = √(Y/ρ)
+
+  Y = Young's modulus
+  ```
+
+  ## Energy in Waves
+
+  ### Energy Density:
+  ```
+  u = ½ρω²A²
+
+  ρ = density of medium
+  ```
+
+  ### Power (Energy per unit time):
+  ```
+  P = ½ρω²A²v × Area
+
+  P ∝ A²f² (for given medium)
+  ```
+
+  ### Intensity:
+  ```
+  I = P/A = ½ρω²A²v
+
+  I ∝ A² (intensity proportional to square of amplitude)
+  ```
+
+  ## Superposition Principle
+
+  When two waves overlap:
+  ```
+  y_net = y₁ + y₂
+
+  Results: Interference, standing waves, beats
+  ```
+
+  ## Numerical Examples
+
+  **Example 1:** Wave equation y = 5 sin(4πx - 20πt). Find amplitude, wavelength, frequency, wave speed.
+
+  **Solution:**
+  ```
+  Comparing with y = A sin(kx - ωt):
+  A = 5 cm
+  k = 4π, so λ = 2π/k = 2π/4π = 0.5 m
+  ω = 20π, so f = ω/2π = 20π/2π = 10 Hz
+  T = 1/f = 0.1 s
+  v = ω/k = 20π/4π = 5 m/s
+
+  OR v = fλ = 10 × 0.5 = 5 m/s ✓
+  ```
+
+  **Example 2:** String of length 2 m has mass 10 g under tension 200 N. Find wave speed.
+
+  **Solution:**
+  ```
+  μ = m/L = 10×10⁻³/2 = 5×10⁻³ kg/m
+  v = √(T/μ) = √(200/5×10⁻³)
+  v = √(40000) = 200 m/s
+  ```
+
+  **Example 3:** Two points on wave are separated by λ/3. Phase difference is?
+
+  **Solution:**
+  ```
+  Δφ = (2π/λ) × Δx = (2π/λ) × (λ/3) = 2π/3 rad = 120°
+
+  Points are 1/3 cycle apart in oscillation.
+  ```
+
+  ## JEE Key Points
+
+  1. **v = fλ = ω/k** (fundamental relation)
+  2. **Phase difference** Δφ = (2π/λ)Δx
+  3. **Particle velocity ≠ Wave velocity**
+  4. **I ∝ A²** (intensity square of amplitude)
+  5. **String:** v = √(T/μ)
+  6. **Sound:** v = √(γRT/M)
+
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: "Wave equation y = 0.02 sin(500t - 50x) in SI units. Wave velocity is:"
+  options:
+  - "10 m/s"
+  - "50 m/s"
+  - "500 m/s"
+  - "25000 m/s"
+  correct_answer: "10 m/s"
+  explanation: "From equation: ω = 500 rad/s, k = 50 rad/m. Wave velocity v = ω/k = 500/50 = 10 m/s. Alternative: λ = 2π/k = 2π/50 m, f = ω/2π = 500/2π Hz. v = fλ = (500/2π)(2π/50) = 10 m/s ✓. Common mistake: Using individual values like v = 500 or v = 50. The wave speed is ratio ω/k, not individual parameters. Also note: amplitude A = 0.02 m = 2 cm. Direction: +x (since sign between x and t is negative). Maximum particle velocity = Aω = 0.02 × 500 = 10 m/s (coincidentally equals wave speed here)."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: "If tension in string is increased 4 times keeping other factors same, wave speed:"
+  options:
+  - "Doubles"
+  - "Halves"
+  - "Becomes 4 times"
+  - "Remains same"
+  correct_answer: "Doubles"
+  explanation: "For string: v = √(T/μ). If T' = 4T: v' = √(4T/μ) = 2√(T/μ) = 2v. Speed doubles! Since v ∝ √T, quadrupling tension only doubles speed (square root relationship). This principle is used in musical instruments: tightening guitar string increases tension, increases wave speed, increases frequency (for same wavelength = 2L), raises pitch. Conversely, to halve wave speed, reduce tension to 1/4. For string of same material but double diameter: μ increases 4 times (∝ area), so v decreases by factor 2."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: "Two waves of same amplitude and frequency but phase difference π/2 superpose. Resultant amplitude is:"
+  options:
+  - "0"
+  - "A"
+  - "A√2"
+  - "2A"
+  correct_answer: "A√2"
+  explanation: "For superposition of two waves with phase difference φ: A_resultant = √(A₁² + A₂² + 2A₁A₂cos φ). Here A₁ = A₂ = A, φ = π/2. A_R = √(A² + A² + 2A²cos(π/2)) = √(2A² + 0) = A√2. When φ = 0 (in phase): A_R = 2A (constructive). When φ = π (opposite phase): A_R = 0 (destructive). When φ = π/2 (quadrature): A_R = A√2 (intermediate). This formula is crucial for interference calculations. Intensity ratio: I_R/I = (A_R/A)² = 2. So intensity doubles when two equal waves with 90° phase difference combine."
+  require_pass: true

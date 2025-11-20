@@ -1,0 +1,59 @@
+slug: catalysis-practice
+title: catalysis — Practice
+difficulty: easy
+sequence_order: 16
+estimated_minutes: 2
+key_concepts:
+- catalysis
+prerequisites: []
+content_md: '# catalysis — Practice 🚀
+
+
+  Molybdenum enhances the activity of Fe catalyst in Haber process, making it a promoter
+  or co-catalyst.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: 'In the Haber process (N₂ + 3H₂ → 2NH₃), molybdenum acts as:'
+  options:
+  - A promoter or co-catalyst
+  - The main catalyst
+  - An inhibitor
+  - A reactant
+  correct_answer: A promoter or co-catalyst
+  explanation: "In the Haber process for ammonia synthesis, iron (Fe) is the main catalyst. Molybdenum (Mo) is added as a promoter or co-catalyst - it enhances the activity and selectivity of the iron catalyst without being a catalyst itself. Promoters work by increasing the surface area, preventing sintering, or modifying the electronic properties of the main catalyst. Other promoters in this process include Al₂O₃ and K₂O."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: 'Heterogeneous catalysis differs from homogeneous catalysis because:'
+  options:
+  - Catalyst and reactants are in different phases
+  - Catalyst is not recovered after reaction
+  - Reaction rate is always slower
+  - No activation energy is required
+  correct_answer: Catalyst and reactants are in different phases
+  explanation: "In heterogeneous catalysis, the catalyst is in a different phase from the reactants (usually solid catalyst with liquid/gas reactants), while in homogeneous catalysis, the catalyst and reactants are in the same phase. Heterogeneous catalysis is easier for separation and recovery of catalyst. Examples: Haber process (solid Fe catalyst with gaseous reactants) vs. acid-catalyzed esterification (all in liquid phase)."
+  require_pass: false
+- type: mcq
+  sequence_order: 3
+  question: 'Which statement about catalytic activity is correct?'
+  options:
+  - Transition metals are good catalysts due to variable oxidation states
+  - Catalysts increase the yield of reversible reactions
+  - Catalysts are consumed during the reaction
+  - Catalytic activity is independent of surface area
+  correct_answer: Transition metals are good catalysts due to variable oxidation states
+  explanation: "Transition metals (Fe, Ni, Pt, Pd, V₂O₅) make excellent catalysts because they have: (1) variable oxidation states allowing them to form intermediate compounds, (2) ability to provide large surface area for adsorption, and (3) d-orbitals for bonding with reactants. Catalysts do NOT increase equilibrium yield - they only help reach equilibrium faster. They are not consumed and are recovered unchanged. Surface area is crucial for catalytic activity."
+  require_pass: false

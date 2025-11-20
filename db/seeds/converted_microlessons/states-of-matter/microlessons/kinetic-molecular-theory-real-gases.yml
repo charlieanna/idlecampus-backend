@@ -1,0 +1,87 @@
+slug: kinetic-molecular-theory-real-gases
+title: Kinetic Molecular Theory & Real Gases
+difficulty: easy
+sequence_order: 5
+estimated_minutes: 2
+key_concepts:
+- Kinetic theory
+- RMS velocity
+- Real gases
+- van der Waals equation
+- Compressibility factor
+prerequisites: []
+content_md: "# Kinetic Molecular Theory & Real Gases \U0001F680\n\n# Kinetic Molecular\
+  \ Theory & Real Gases\n\n    ## Kinetic Molecular Theory (KMT)\n\n    ### Postulates:\n\
+  \n    1. Gases consist of tiny particles (atoms/molecules)\n    2. Volume of gas\
+  \ particles is **negligible** compared to container volume\n    3. Particles in\
+  \ **constant random motion**\n    4. **No attractive or repulsive forces** between\
+  \ particles\n    5. Collisions are **perfectly elastic** (KE conserved)\n    6.\
+  \ **Average kinetic energy ∝ absolute temperature**\n\n    ## Kinetic Gas Equation\n\
+  \n    **PV = (1/3)mnc²**\n\n    Where:\n    - m = mass of one molecule\n    - n\
+  \ = number of molecules\n    - c² = mean square velocity\n\n    Combining with PV\
+  \ = nRT:\n\n    **KE = (3/2)kT** (per molecule)\n    **KE = (3/2)RT** (per mole)\n\
+  \n    Where k = Boltzmann constant = R/Nₐ = 1.38 × 10⁻²³ J/K\n\n    ## Types of\
+  \ Molecular Velocities\n\n    ### 1. Most Probable Velocity (ump)\n\n    **Velocity\
+  \ possessed by maximum number of molecules**\n\n    **uₘₚ = √(2RT/M) = √(2kT/m)**\n\
+  \n    ### 2. Average Velocity (uavg)\n\n    **Arithmetic mean of velocities**\n\n\
+  \    **uₐᵥ��� = √(8RT/πM) = √(8kT/πm)**\n\n    ### 3. Root Mean Square Velocity\
+  \ (urms)\n\n    **Square root of mean of squared velocities**\n\n    **uᵣₘₛ = √(3RT/M)\
+  \ = √(3kT/m)**\n\n    ### Relationship:\n\n    **uᵣₘₛ : uₐᵥ�� : uₘₚ = √3 : √(8/π)\
+  \ : √2 ≈ 1.73 : 1.60 : 1.41**\n\n    **uᵣₘₛ > uₐᵥ�� > uₘₚ**\n\n    ### Important\
+  \ Points:\n    - All velocities ∝ √T\n    - All velocities ∝ 1/√M\n    - At same\
+  \ T: lighter gas molecules move faster\n\n    ## Solved Problems on Velocity\n\n\
+  \    ### Problem 1: Calculate RMS velocity\n\n    **Q: Calculate urms of O₂ at 27°C.\
+  \ (R = 8.314 J·mol⁻¹·K⁻¹, M = 32 g/mol)**\n\n    Solution:\n    - M = 32 × 10⁻³\
+  \ kg/mol (convert to SI)\n    - T = 300 K\n    - uᵣₘₛ = √(3RT/M) = √(3 × 8.314 ×\
+  \ 300)/(32 × 10⁻³)\n    - uᵣₘₛ = √(7482.6/0.032) = √233,831\n    - uᵣₘₛ = **484\
+  \ m/s**\n\n    ### Problem 2: Temperature for equal RMS\n\n    **Q: At what temperature\
+  \ will O₂ have same urms as N₂ at 25°C?**\n\n    Solution:\n    - For same urms:\
+  \ √(T₁/M₁) = √(T₂/M₂)\n    - T_O₂/32 = 298/28\n    - T_O₂ = (298 × 32)/28 = **341\
+  \ K = 68°C**\n\n    ### Problem 3: Ratio of velocities\n\n    **Q: Find ratio of\
+  \ urms of H₂ and O₂ at same temperature.**\n\n    Solution:\n    - u₁/u₂ = √(M₂/M₁)\
+  \ = √(32/2) = √16 = **4:1**\n    - H₂ moves 4 times faster than O₂\n\n    ## Real\
+  \ Gases\n\n    **Real gases deviate from ideal behavior because:**\n\n    1. Gas\
+  \ molecules have **finite volume**\n    2. **Intermolecular forces** exist (van\
+  \ der Waals forces)\n\n    ### Deviations:\n\n    - **High pressure:** Molecular\
+  \ volume becomes significant\n    - **Low temperature:** Attractive forces become\
+  \ important\n    - **Polar gases:** Greater intermolecular forces → more deviation\n\
+  \n    ## Compressibility Factor (Z)\n\n    **Z = PV/nRT**\n\n    **Interpretation:**\n\
+  \    - **Z = 1:** Ideal gas behavior\n    - **Z > 1:** Repulsive forces dominant\
+  \ (high P, small V)\n    - **Z < 1:** Attractive forces dominant (low P, large V)\n\
+  \n    ### For Real Gases:\n    - At very high P: Z > 1\n    - At moderate P: Z <\
+  \ 1\n    - At very low P: Z ≈ 1 (approaches ideal)\n\n    ## van der Waals Equation\n\
+  \n    **Corrected equation for real gases:**\n\n    **(P + an²/V²)(V - nb) = nRT**\n\
+  \n    Or for 1 mole:\n\n    **(P + a/V²)(V - b) = RT**\n\n    ### Corrections:\n\
+  \n    **1. Pressure correction:** P + a/V²\n    - 'a' accounts for **attractive\
+  \ forces**\n    - Real pressure is less than ideal\n    - Units of a: atm·L²·mol⁻²\n\
+  \n    **2. Volume correction:** V - b\n    - 'b' accounts for **molecular volume**\n\
+  \    - Available volume is less\n    - Units of b: L·mol⁻¹\n\n    ### van der Waals\
+  \ Constants:\n\n    | Gas | a (atm·L²·mol⁻²) | b (L·mol⁻¹) |\n    |-----|------------------|-------------|\n\
+  \    | He | 0.034 | 0.024 |\n    | H₂ | 0.244 | 0.027 |\n    | O₂ | 1.360 | 0.032\
+  \ |\n    | N₂ | 1.390 | 0.039 |\n    | CO₂ | 3.592 | 0.043 |\n    | NH₃ | 4.170\
+  \ | 0.037 |\n    | H₂O | 5.464 | 0.031 |\n\n    **Higher 'a':** Stronger intermolecular\
+  \ forces\n    **Higher 'b':** Larger molecular size\n\n    ## Boyle Temperature\n\
+  \n    **Temperature at which real gas behaves ideally over wide range of pressures**\n\
+  \n    **Tᵦ = a/(Rb)**\n\n    - Below Tᵦ: Z < 1 (attractive dominant)\n    - Above\
+  \ Tᵦ: Z > 1 (repulsive dominant)\n    - At Tᵦ: Z ≈ 1 (ideal behavior)\n\n    ##\
+  \ Critical Constants\n\n    **Critical temperature (Tc):** Temperature above which\
+  \ gas cannot be liquefied by pressure alone\n\n    **Critical pressure (Pc):** Minimum\
+  \ pressure required to liquefy gas at Tc\n\n    **Critical volume (Vc):** Volume\
+  \ occupied by 1 mole at Tc and Pc\n\n    ### Relationships with van der Waals constants:\n\
+  \n    - **Tc = 8a/(27Rb)**\n    - **Pc = a/(27b²)**\n    - **Vc = 3b**\n\n    ##\
+  \ Liquefaction of Gases\n\n    **Conditions:**\n    1. Temperature must be **below\
+  \ Tc**\n    2. Apply **high pressure**\n    3. **Cool** the gas\n\n    **Easier\
+  \ to liquefy:**\n    - Higher Tc → easier\n    - Stronger intermolecular forces\
+  \ → easier\n    - CO₂ (Tc = 31°C) easier than N₂ (Tc = -147°C)\n\n    ## IIT JEE\
+  \ Key Points\n\n    1. **KE = (3/2)RT** per mole\n    2. **uᵣₘₛ = √(3RT/M)** (most\
+  \ important)\n    3. **uᵣₘₛ > uₐᵥ�� > uₘₚ**\n    4. All velocities **∝ √T** and\
+  \ **∝ 1/√M**\n    5. **Z = PV/nRT** (compressibility factor)\n    6. **Z = 1:**\
+  \ Ideal gas\n    7. **Z < 1:** Attractive forces (low P, high T)\n    8. **Z > 1:**\
+  \ Repulsive forces (high P, low T)\n    9. **van der Waals:** (P + a/V²)(V - b)\
+  \ = RT\n    10. **'a' for attraction, 'b' for volume**\n\n    ## Quick Formulas\n\
+  \n    | Quantity | Formula |\n    |----------|---------|\n    | uᵣₘₛ | √(3RT/M)\
+  \ |\n    | uₐᵥ�� | √(8RT/πM) |\n    | uₘₚ | √(2RT/M) |\n    | KE (per mole) | (3/2)RT\
+  \ |\n    | Z | PV/nRT |\n    | van der Waals | (P+a/V²)(V-b)=RT |\n    | Tc | 8a/(27Rb)\
+  \ |\n    | Pc | a/(27b²) |\n    | Vc | 3b |\n\n## Key Points\n\n- Kinetic theory\n\
+  \n- RMS velocity\n\n- Real gases"
+exercises: []

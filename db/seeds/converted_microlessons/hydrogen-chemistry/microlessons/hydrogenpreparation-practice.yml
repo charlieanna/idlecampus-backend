@@ -1,0 +1,84 @@
+slug: hydrogenpreparation-practice
+title: hydrogen_preparation — Practice
+difficulty: easy
+sequence_order: 14
+estimated_minutes: 2
+key_concepts:
+- hydrogen_preparation
+prerequisites: []
+content_md: '# hydrogen_preparation — Practice 🚀
+
+
+  Steam reforming of methane (CH₄ + H₂O → CO + 3H₂, followed by CO + H₂O → CO₂ + H₂)
+  is the most economical large-scale method. Electrolysis produces very pure H₂ but
+  is expensive.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 2
+  question: 'The most economical industrial method for large-scale hydrogen production
+    is:'
+  options:
+  - Electrolysis of water
+  - Steam reforming of methane
+  - Bosch process
+  require_pass: true
+  correct_answer: Steam reforming of methane
+  explanation: 'Industrial preparation of hydrogen is primarily done by steam reforming
+    of methane (natural gas), which is the most economical large-scale method: CH₄
+    + H₂O ⇌ CO + 3H₂ (at 750-900°C with Ni catalyst), followed by water-gas shift:
+    CO + H₂O ⇌ CO₂ + H₂ (for additional H₂). This produces high-purity H₂ at low cost.
+    Other industrial methods include: (1) Electrolysis of water (expensive, used when
+    high purity needed), (2) Partial oxidation of hydrocarbons, (3) Coke-oven gas.
+    Laboratory methods include: Zn + dilute acid, electrolysis of water, or Ca + 2H₂O
+    → Ca(OH)₂ + H₂. Steam reforming accounts for ~95% of commercial H₂ production
+    worldwide.'
+- type: mcq
+  sequence_order: 3
+  question: Which laboratory method produces the purest hydrogen?
+  options:
+  - Reaction of zinc with dilute HCl
+  - Electrolysis of water
+  - Reaction of sodium with water
+  - Steam reforming of methane
+  require_pass: true
+  correct_answer: Electrolysis of water
+  explanation: 'Electrolysis of water produces the purest hydrogen (>99.9% purity).
+    Process: 2H₂O → 2H₂ + O₂ using DC current with electrodes in dilute H₂SO₄ or
+    NaOH electrolyte. At cathode (−): 2H₂O + 2e⁻ → H₂↑ + 2OH⁻. At anode (+): 4OH⁻
+    → O₂↑ + 2H₂O + 4e⁻. H₂ collects at cathode, O₂ at anode in 2:1 volume ratio.
+    Advantages: Very pure H₂, no impurities. Disadvantages: Expensive due to high
+    electricity cost, only ~4% of commercial H₂ produced this way. Other lab methods:
+    Zn + 2HCl → ZnCl₂ + H₂↑ (contains HCl vapor, Zn impurities), 2Na + 2H₂O → 2NaOH
+    + H₂↑ (dangerous, contains moisture). Industrial: Steam reforming is cheapest
+    but less pure.'
+- type: mcq
+  sequence_order: 4
+  question: What catalyst is used in steam reforming of methane?
+  options:
+  - Platinum
+  - Nickel
+  - Iron
+  - Copper
+  require_pass: true
+  correct_answer: Nickel
+  explanation: 'Nickel (Ni) catalyst is used in steam reforming of methane. Process:
+    Step 1 (steam reforming): CH₄ + H₂O ⇌ CO + 3H₂ at 750-900°C with Ni catalyst,
+    ΔH = +206 kJ/mol (endothermic). Step 2 (water-gas shift): CO + H₂O ⇌ CO₂ + H₂
+    at 400-500°C with Fe-Cr catalyst, ΔH = -41 kJ/mol (exothermic). Overall: CH₄
+    + 2H₂O → CO₂ + 4H₂. The Ni catalyst lowers activation energy for C-H bond breaking.
+    High temperature favors endothermic forward reaction (Le Chatelier). The CO₂ is
+    removed by scrubbing with amine solutions, yielding ~95% pure H₂. This method
+    produces ~95% of commercial H₂ globally, used for: ammonia synthesis, petroleum
+    refining, methanol production, hydrogenation reactions.'

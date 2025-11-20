@@ -1,0 +1,148 @@
+slug: json-requestresponse-handling
+title: JSON Request/Response Handling
+difficulty: easy
+sequence_order: 3
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# JSON Request/Response Handling \U0001F680\n\n# JSON Request/Response\
+  \ Handling\n\n    Modern REST APIs communicate using JSON. Go's `encoding/json`\
+  \ package makes it easy to work with JSON data.\n\n    ## Structs for JSON Data\n\
+  \n    Define structs to represent your API data:\n\n    ```go\n    type User struct\
+  \ {\n        ID        int       `json:\"id\"`\n        Name      string    `json:\"\
+  name\"`\n        Email     string    `json:\"email\"`\n        CreatedAt time.Time\
+  \ `json:\"created_at\"`\n    }\n\n    type Task struct {\n        ID          int\
+  \    `json:\"id\"`\n        Title       string `json:\"title\"`\n        Description\
+  \ string `json:\"description\"`\n        Completed   bool   `json:\"completed\"\
+  `\n    }\n    ```\n\n    **Struct tags:**\n    - `json:\"field_name\"` - Specify\
+  \ JSON field name (snake_case)\n    - `json:\"field,omitempty\"` - Omit field if\
+  \ empty/zero value\n    - `json:\"-\"` - Never include this field in JSON\n\n  \
+  \  ## Sending JSON Responses\n\n    ### Method 1: Using json.Marshal\n\n    ```go\n\
+  \    func getUserHandler(w http.ResponseWriter, r *http.Request) {\n        user\
+  \ := User{\n            ID:    1,\n            Name:  \"John Doe\",\n          \
+  \  Email: \"john@example.com\",\n            CreatedAt: time.Now(),\n        }\n\
+  \n        // Set content type\n        w.Header().Set(\"Content-Type\", \"application/json\"\
+  )\n\n        // Marshal to JSON\n        jsonData, err := json.Marshal(user)\n \
+  \       if err != nil {\n            w.WriteHeader(http.StatusInternalServerError)\n\
+  \            fmt.Fprintf(w, `{\"error\": \"Failed to marshal JSON\"}`)\n       \
+  \     return\n        }\n\n        w.WriteHeader(http.StatusOK)\n        w.Write(jsonData)\n\
+  \    }\n    ```\n\n    ### Method 2: Using json.NewEncoder (Recommended)\n\n   \
+  \ ```go\n    func getUserHandler(w http.ResponseWriter, r *http.Request) {\n   \
+  \     user := User{\n            ID:    1,\n            Name:  \"John Doe\",\n \
+  \           Email: \"john@example.com\",\n            CreatedAt: time.Now(),\n \
+  \       }\n\n        w.Header().Set(\"Content-Type\", \"application/json\")\n  \
+  \      w.WriteHeader(http.StatusOK)\n\n        // Encode directly to response writer\n\
+  \        json.NewEncoder(w).Encode(user)\n    }\n    ```\n\n    ## Sending JSON\
+  \ Arrays\n\n    ```go\n    func listUsersHandler(w http.ResponseWriter, r *http.Request)\
+  \ {\n        users := []User{\n            {ID: 1, Name: \"Alice\", Email: \"alice@example.com\"\
+  },\n            {ID: 2, Name: \"Bob\", Email: \"bob@example.com\"},\n          \
+  \  {ID: 3, Name: \"Carol\", Email: \"carol@example.com\"},\n        }\n\n      \
+  \  w.Header().Set(\"Content-Type\", \"application/json\")\n        json.NewEncoder(w).Encode(users)\n\
+  \    }\n    ```\n\n    ## Reading JSON Request Bodies\n\n    ```go\n    type CreateUserRequest\
+  \ struct {\n        Name  string `json:\"name\"`\n        Email string `json:\"\
+  email\"`\n    }\n\n    func createUserHandler(w http.ResponseWriter, r *http.Request)\
+  \ {\n        // Only accept POST\n        if r.Method != http.MethodPost {\n   \
+  \         w.WriteHeader(http.StatusMethodNotAllowed)\n            return\n     \
+  \   }\n\n        var req CreateUserRequest\n\n        // Decode JSON body\n    \
+  \    err := json.NewDecoder(r.Body).Decode(&req)\n        if err != nil {\n    \
+  \        w.WriteHeader(http.StatusBadRequest)\n            json.NewEncoder(w).Encode(map[string]string{\n\
+  \                \"error\": \"Invalid JSON\",\n            })\n            return\n\
+  \        }\n        defer r.Body.Close()\n\n        // Validate input\n        if\
+  \ req.Name == \"\" || req.Email == \"\" {\n            w.WriteHeader(http.StatusBadRequest)\n\
+  \            json.NewEncoder(w).Encode(map[string]string{\n                \"error\"\
+  : \"Name and email are required\",\n            })\n            return\n       \
+  \ }\n\n        // Create user (simplified)\n        user := User{\n            ID:\
+  \    123,\n            Name:  req.Name,\n            Email: req.Email,\n       \
+  \     CreatedAt: time.Now(),\n        }\n\n        w.Header().Set(\"Content-Type\"\
+  , \"application/json\")\n        w.WriteHeader(http.StatusCreated)\n        json.NewEncoder(w).Encode(user)\n\
+  \    }\n    ```\n\n    ## Parsing URL Path Parameters\n\n    Extract IDs from URLs\
+  \ like `/api/users/123`:\n\n    ```go\n    func getUserByIDHandler(w http.ResponseWriter,\
+  \ r *http.Request) {\n        // Extract ID from path\n        // For path: /api/users/123\n\
+  \        path := r.URL.Path\n        parts := strings.Split(path, \"/\")\n\n   \
+  \     if len(parts) < 4 {\n            w.WriteHeader(http.StatusBadRequest)\n  \
+  \          return\n        }\n\n        idStr := parts[3] // \"123\"\n        id,\
+  \ err := strconv.Atoi(idStr)\n        if err != nil {\n            w.WriteHeader(http.StatusBadRequest)\n\
+  \            json.NewEncoder(w).Encode(map[string]string{\n                \"error\"\
+  : \"Invalid user ID\",\n            })\n            return\n        }\n\n      \
+  \  // Fetch user by ID (simplified)\n        user := User{ID: id, Name: \"John\"\
+  , Email: \"john@example.com\"}\n\n        w.Header().Set(\"Content-Type\", \"application/json\"\
+  )\n        json.NewEncoder(w).Encode(user)\n    }\n    ```\n\n    ## Parsing Query\
+  \ Parameters\n\n    Handle URLs like `/api/users?role=admin&page=2`:\n\n    ```go\n\
+  \    func searchUsersHandler(w http.ResponseWriter, r *http.Request) {\n       \
+  \ // Get query parameters\n        query := r.URL.Query()\n\n        role := query.Get(\"\
+  role\")      // \"admin\"\n        pageStr := query.Get(\"page\")   // \"2\"\n\n\
+  \        page := 1\n        if pageStr != \"\" {\n            p, err := strconv.Atoi(pageStr)\n\
+  \            if err == nil {\n                page = p\n            }\n        }\n\
+  \n        // Use parameters in logic\n        fmt.Printf(\"Searching users: role=%s,\
+  \ page=%d\\\\n\", role, page)\n\n        // Return filtered results\n        users\
+  \ := []User{\n            {ID: 1, Name: \"Admin User\", Email: \"admin@example.com\"\
+  },\n        }\n\n        w.Header().Set(\"Content-Type\", \"application/json\")\n\
+  \        json.NewEncoder(w).Encode(users)\n    }\n    ```\n\n    ## Error Response\
+  \ Format\n\n    Consistent error responses improve API usability:\n\n    ```go\n\
+  \    type ErrorResponse struct {\n        Error   string `json:\"error\"`\n    \
+  \    Message string `json:\"message,omitempty\"`\n        Code    int    `json:\"\
+  code\"`\n    }\n\n    func sendError(w http.ResponseWriter, statusCode int, message\
+  \ string) {\n        w.Header().Set(\"Content-Type\", \"application/json\")\n  \
+  \      w.WriteHeader(statusCode)\n\n        errorResp := ErrorResponse{\n      \
+  \      Error:   http.StatusText(statusCode),\n            Message: message,\n  \
+  \          Code:    statusCode,\n        }\n\n        json.NewEncoder(w).Encode(errorResp)\n\
+  \    }\n\n    // Usage\n    func handler(w http.ResponseWriter, r *http.Request)\
+  \ {\n        if someError {\n            sendError(w, http.StatusBadRequest, \"\
+  Invalid input data\")\n            return\n        }\n    }\n    ```\n\n    ## Complete\
+  \ REST Endpoint Example\n\n    ```go\n    type Book struct {\n        ID     int\
+  \    `json:\"id\"`\n        Title  string `json:\"title\"`\n        Author string\
+  \ `json:\"author\"`\n        ISBN   string `json:\"isbn\"`\n    }\n\n    var books\
+  \ = []Book{\n        {ID: 1, Title: \"Learning Go\", Author: \"Jon Bodner\", ISBN:\
+  \ \"978-1492077213\"},\n    }\n    var nextID = 2\n\n    func booksHandler(w http.ResponseWriter,\
+  \ r *http.Request) {\n        switch r.Method {\n        case http.MethodGet:\n\
+  \            // List all books\n            w.Header().Set(\"Content-Type\", \"\
+  application/json\")\n            json.NewEncoder(w).Encode(books)\n\n        case\
+  \ http.MethodPost:\n            // Create new book\n            var book Book\n\
+  \            if err := json.NewDecoder(r.Body).Decode(&book); err != nil {\n   \
+  \             sendError(w, http.StatusBadRequest, \"Invalid JSON\")\n          \
+  \      return\n            }\n\n            book.ID = nextID\n            nextID++\n\
+  \            books = append(books, book)\n\n            w.Header().Set(\"Content-Type\"\
+  , \"application/json\")\n            w.WriteHeader(http.StatusCreated)\n       \
+  \     json.NewEncoder(w).Encode(book)\n\n        default:\n            sendError(w,\
+  \ http.StatusMethodNotAllowed, \"Method not allowed\")\n        }\n    }\n    ```\n\
+  \n    ## Best Practices\n\n    1. **Always set Content-Type** - `application/json`\
+  \ for JSON responses\n    2. **Use struct tags** - Control JSON field names and\
+  \ behavior\n    3. **Validate input** - Check for required fields and valid data\n\
+  \    4. **Consistent error format** - Standard error response structure\n    5.\
+  \ **Use json.NewEncoder** - More efficient than Marshal for responses\n    6. **Close\
+  \ request body** - `defer r.Body.Close()`\n    7. **Handle edge cases** - Empty\
+  \ arrays, null values, missing fields"
+exercises:
+  - type: multiple_choice
+    sequence_order: 1
+    question: "What is the advantage of using json.NewEncoder(w).Encode() over json.Marshal() when sending JSON responses?"
+    options:
+      - "NewEncoder is required by the HTTP specification"
+      - "NewEncoder writes directly to the ResponseWriter, avoiding an intermediate byte slice allocation"
+      - "Marshal cannot handle complex data structures"
+      - "NewEncoder automatically sets the Content-Type header"
+    correct_answer: "NewEncoder writes directly to the ResponseWriter, avoiding an intermediate byte slice allocation"
+    explanation: "When sending JSON responses in HTTP handlers, json.NewEncoder(w).Encode() is more efficient than json.Marshal() because it streams the encoded JSON directly to the http.ResponseWriter without creating an intermediate byte slice. With Marshal(), you first encode to a byte slice in memory, then write that slice to the response writer - two separate steps that allocate memory twice. NewEncoder(), on the other hand, implements the io.Writer interface and writes directly to the destination as it encodes, using only one memory allocation. For small responses the difference is negligible, but for large JSON payloads or high-throughput services, this can significantly reduce memory allocations and GC pressure. Additionally, the encoder-based approach is more idiomatic and cleaner code - you set the Content-Type header, set the status code, then encode directly to the response writer in one call. This pattern is recommended in the Go community for web services. However, note that neither method automatically sets the Content-Type header - you must explicitly set it to 'application/json' before writing the response. The encoder approach also handles error reporting more naturally since any encoding error occurs during the Encode() call."
+    require_pass: true
+  - type: multiple_choice
+    sequence_order: 2
+    question: "What do struct tags like `json:\"field_name\"` do in Go?"
+    options:
+      - "They define validation rules for the field"
+      - "They control how struct fields are encoded/decoded to/from JSON, specifying the JSON field name and behavior"
+      - "They create database indexes on the field"
+      - "They make fields exportable"
+    correct_answer: "They control how struct fields are encoded/decoded to/from JSON, specifying the JSON field name and behavior"
+    explanation: "Struct tags in Go are string metadata attached to struct fields that provide instructions to packages like encoding/json about how to process those fields. The tag `json:\"field_name\"` tells the JSON encoder/decoder to use 'field_name' as the key in the JSON object instead of the struct's field name. This is essential for following JSON naming conventions (like snake_case) while keeping Go naming conventions (PascalCase for exported fields). Beyond just renaming, tags support special directives: `json:\"field,omitempty\"` omits the field from JSON if it's zero value (empty string, 0, nil, etc.), useful for optional fields; `json:\"-\"` completely excludes the field from JSON encoding/decoding; and you can combine these like `json:\"email,omitempty\"`. Only exported (capitalized) struct fields are included in JSON encoding - unexported fields are automatically ignored. Struct tags are parsed using reflection at runtime by the encoding/json package. This mechanism provides a declarative way to control serialization behavior without writing custom marshaling code. Understanding struct tags is crucial for building REST APIs that need to map between Go's strongly-typed structures and JSON's more flexible format while maintaining clean, idiomatic code on both sides."
+    require_pass: true
+  - type: multiple_choice
+    sequence_order: 3
+    question: "When handling JSON request bodies, why is it important to call defer r.Body.Close()?"
+    options:
+      - "It's not necessary; the HTTP server automatically closes the request body"
+      - "To prevent resource leaks and ensure the request body is properly cleaned up after reading"
+      - "To send a response back to the client"
+      - "To validate the JSON structure"
+    correct_answer: "To prevent resource leaks and ensure the request body is properly cleaned up after reading"
+    explanation: "The HTTP request body (r.Body) is an io.ReadCloser, which means it's a resource that must be explicitly closed when you're done with it. While the Go HTTP server does eventually close unclosed bodies, relying on this can lead to resource exhaustion in high-traffic applications. Each open request body consumes file descriptors and memory buffers. If handlers don't close bodies properly, these resources accumulate until the handler returns, and in long-running handlers or when handling many concurrent requests, you can run out of file descriptors or memory. Calling defer r.Body.Close() immediately after checking for errors ensures the body is closed when the function exits, regardless of which return path is taken. This is a best practice for all resources in Go - acquire the resource, immediately defer its cleanup. Even though json.NewDecoder(r.Body).Decode() reads the body, it doesn't close it. The defer statement is particularly important because it guarantees cleanup even if your handler panics or returns early due to an error. Proper resource management like this is essential for writing production-ready web services that can handle sustained load without leaking resources. This pattern appears throughout Go programming: open file, defer close; lock mutex, defer unlock; start transaction, defer commit/rollback."
+    require_pass: true

@@ -1,0 +1,87 @@
+slug: lesson-4
+title: Lesson 4
+difficulty: easy
+sequence_order: 4
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Pandas DataFrame Basics\n\n    Pandas provides\
+  \ high-performance data structures for data analysis, built on top of NumPy.\n\n\
+  \    ## DataFrame Structure\n\n    **2D labeled data structure with columns of potentially\
+  \ different types**\n\n    ```python\n    import pandas as pd\n\n    # Create from\
+  \ dictionary\n    data = {\n        'name': ['Alice', 'Bob', 'Charlie', 'David'],\n\
+  \        'age': [25, 30, 35, 28],\n        'city': ['NY', 'LA', 'Chicago', 'Houston'],\n\
+  \        'salary': [70000, 80000, 90000, 75000]\n    }\n\n    df = pd.DataFrame(data)\n\
+  \    print(df)\n    #       name  age     city  salary\n    # 0    Alice   25  \
+  \     NY   70000\n    # 1      Bob   30       LA   80000\n    # 2  Charlie   35\
+  \  Chicago   90000\n    # 3    David   28  Houston   75000\n    ```\n\n    ### Creating\
+  \ DataFrames\n\n    ```python\n    # From CSV\n    df = pd.read_csv('data.csv')\n\
+  \n    # From Excel\n    df = pd.read_excel('data.xlsx', sheet_name='Sheet1')\n\n\
+  \    # From dictionary of arrays\n    df = pd.DataFrame({\n        'A': np.arange(4),\n\
+  \        'B': np.random.randn(4)\n    })\n\n    # From list of dictionaries\n  \
+  \  data = [\n        {'a': 1, 'b': 2},\n        {'a': 5, 'b': 10}\n    ]\n    df\
+  \ = pd.DataFrame(data)\n\n    # From NumPy array\n    arr = np.array([[1, 2], [3,\
+  \ 4]])\n    df = pd.DataFrame(arr, columns=['A', 'B'])\n    ```\n\n    ## Exploring\
+  \ Data\n\n    ```python\n    # First/last rows\n    df.head()          # First 5\
+  \ rows\n    df.head(10)        # First 10 rows\n    df.tail(3)         # Last 3\
+  \ rows\n\n    # Basic info\n    df.info()          # Column types, non-null counts\n\
+  \    df.describe()      # Statistical summary\n    df.shape           # (rows, cols)\n\
+  \    df.columns         # Column names\n    df.index           # Row indices\n \
+  \   df.dtypes          # Data types\n\n    # Quick stats\n    df.mean()        \
+  \  # Mean of numeric columns\n    df.median()\n    df.std()           # Standard\
+  \ deviation\n    df.count()         # Non-null count\n    df.min()\n    df.max()\n\
+  \    ```\n\n    ## Selecting Data\n\n    ### Columns\n\n    ```python\n    # Single\
+  \ column (returns Series)\n    ages = df['age']\n\n    # Multiple columns (returns\
+  \ DataFrame)\n    subset = df[['name', 'salary']]\n\n    # New column\n    df['bonus']\
+  \ = df['salary'] * 0.1\n    ```\n\n    ### Rows\n\n    ```python\n    # By position\
+  \ (iloc)\n    first_row = df.iloc[0]           # First row\n    first_3 = df.iloc[0:3]\
+  \           # First 3 rows\n    specific = df.iloc[[0, 2, 4]]    # Rows 0, 2, 4\n\
+  \n    # By label (loc)\n    row = df.loc[0]                  # Row with index 0\n\
+  \    rows = df.loc[0:2]               # Inclusive!\n\n    # Boolean indexing\n \
+  \   high_salary = df[df['salary'] > 75000]\n    young = df[df['age'] < 30]\n\n \
+  \   # Multiple conditions\n    result = df[(df['age'] > 25) & (df['salary'] > 70000)]\n\
+  \    ```\n\n    ### Cell Access\n\n    ```python\n    # At specific position\n \
+  \   value = df.iloc[0, 1]           # Row 0, column 1\n\n    # By label\n    value\
+  \ = df.loc[0, 'age']        # Row 0, 'age' column\n\n    # Fast access\n    value\
+  \ = df.at[0, 'age']         # Faster for single value\n    ```\n\n    ## Filtering\
+  \ Data\n\n    ```python\n    # Simple filter\n    df_filtered = df[df['age'] > 30]\n\
+  \n    # Multiple conditions\n    df_filtered = df[\n        (df['age'] > 25) &\n\
+  \        (df['city'] == 'NY') |\n        (df['salary'] > 80000)\n    ]\n\n    #\
+  \ String methods\n    df_filtered = df[df['name'].str.contains('A')]\n    df_filtered\
+  \ = df[df['name'].str.startswith('B')]\n\n    # isin() for multiple values\n   \
+  \ cities = ['NY', 'LA']\n    df_filtered = df[df['city'].isin(cities)]\n\n    #\
+  \ NOT operator\n    df_filtered = df[~df['city'].isin(cities)]\n    ```\n\n    ##\
+  \ Sorting\n\n    ```python\n    # By single column\n    df_sorted = df.sort_values('age')\n\
+  \n    # Descending\n    df_sorted = df.sort_values('salary', ascending=False)\n\n\
+  \    # Multiple columns\n    df_sorted = df.sort_values(['city', 'age'])\n\n   \
+  \ # Sort index\n    df_sorted = df.sort_index()\n    ```\n\n    ## Handling Missing\
+  \ Data\n\n    ```python\n    # Check for missing data\n    df.isnull()         \
+  \ # Boolean DataFrame\n    df.isnull().sum()    # Count per column\n    df.notnull()\
+  \         # Inverse\n\n    # Drop missing\n    df.dropna()          # Drop rows\
+  \ with any NaN\n    df.dropna(subset=['age'])  # Drop if 'age' is NaN\n    df.dropna(axis=1)\
+  \    # Drop columns with NaN\n\n    # Fill missing\n    df.fillna(0)         # Fill\
+  \ with 0\n    df.fillna(method='ffill')  # Forward fill\n    df.fillna(method='bfill')\
+  \  # Backward fill\n    df['age'].fillna(df['age'].mean())  # Fill with mean\n \
+  \   ```\n\n    ## Grouping and Aggregation\n\n    ```python\n    # Group by single\
+  \ column\n    grouped = df.groupby('city')\n\n    # Aggregate functions\n    grouped.mean()\
+  \       # Mean per group\n    grouped.sum()\n    grouped.count()\n    grouped.max()\n\
+  \    grouped.min()\n\n    # Multiple aggregations\n    grouped.agg({\n        'salary':\
+  \ ['mean', 'max', 'min'],\n        'age': 'mean'\n    })\n\n    # Group by multiple\
+  \ columns\n    grouped = df.groupby(['city', 'department'])\n    ```\n\n    ## Applying\
+  \ Functions\n\n    ```python\n    # Apply to column\n    df['age_doubled'] = df['age'].apply(lambda\
+  \ x: x * 2)\n\n    # Apply to row\n    df.apply(lambda row: row['salary'] / row['age'],\
+  \ axis=1)\n\n    # Apply to DataFrame\n    df.applymap(lambda x: x * 2)  # To every\
+  \ element\n    ```\n\n    ## Merging DataFrames\n\n    ```python\n    # Sample data\n\
+  \    df1 = pd.DataFrame({'id': [1, 2, 3], 'value': [10, 20, 30]})\n    df2 = pd.DataFrame({'id':\
+  \ [1, 2, 4], 'score': [100, 200, 400]})\n\n    # Merge (SQL-like join)\n    merged\
+  \ = pd.merge(df1, df2, on='id', how='inner')\n    # id  value  score\n    #  1 \
+  \    10    100\n    #  2     20    200\n\n    # Join types: 'inner', 'outer', 'left',\
+  \ 'right'\n    merged = pd.merge(df1, df2, on='id', how='outer')\n\n    # Concatenate\n\
+  \    pd.concat([df1, df2])        # Vertically (rows)\n    pd.concat([df1, df2],\
+  \ axis=1) # Horizontally (columns)\n    ```\n\n    ## Pivot Tables\n\n    ```python\n\
+  \    # Create pivot table\n    pivot = df.pivot_table(\n        values='salary',\n\
+  \        index='city',\n        columns='department',\n        aggfunc='mean'\n\
+  \    )\n\n    # Multiple aggregations\n    pivot = df.pivot_table(\n        values='salary',\n\
+  \        index='city',\n        aggfunc=['mean', 'sum', 'count']\n    )\n    ```\n\
+  \n    **Next**: We'll cover data cleaning and preparation techniques."
+exercises: []

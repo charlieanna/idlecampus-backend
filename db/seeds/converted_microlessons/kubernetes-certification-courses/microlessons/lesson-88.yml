@@ -1,0 +1,43 @@
+slug: lesson-88
+title: Lesson 88
+difficulty: easy
+sequence_order: 88
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Ingress Controllers Deep Dive\n\n    -\
+  \ Controller deployment and class annotations\n    - TLS, path/host routing, rewrites"
+exercises:
+  - type: mcq
+    sequence_order: 1
+    question: "What is the purpose of IngressClass in Kubernetes ingress configuration?"
+    options:
+      - "To define network security policies for ingress traffic"
+      - "To specify which ingress controller should handle a particular Ingress resource"
+      - "To configure SSL/TLS certificates for ingress"
+      - "To set resource limits for ingress controllers"
+    correct_answer: "To specify which ingress controller should handle a particular Ingress resource"
+    explanation: "IngressClass is a Kubernetes resource that allows you to specify which ingress controller should process a particular Ingress resource, especially important in clusters with multiple ingress controllers installed (e.g., NGINX, Traefik, HAProxy). Each IngressClass has a controller field that identifies the ingress controller implementation, and Ingress resources reference an IngressClass using the ingressClassName field. This mechanism replaced the deprecated kubernetes.io/ingress.class annotation. IngressClass provides better multi-tenancy support and clearer controller selection semantics. For example, you might have one IngressClass for external-facing traffic using an internet-facing load balancer, and another for internal traffic using an internal controller. This separation is crucial in production environments where different ingress controllers may have different capabilities, performance characteristics, or security requirements. IngressClass is not related to network policies, SSL certificates, or resource limits - those are configured separately in the Ingress resource or controller deployment."
+    require_pass: true
+  - type: mcq
+    sequence_order: 2
+    question: "How does path-based routing work in Kubernetes Ingress resources?"
+    options:
+      - "It routes traffic based on the client's IP address path"
+      - "It directs requests to different backend services based on the URL path in the HTTP request"
+      - "It creates separate network paths for each service"
+      - "It controls the physical routing of network packets"
+    correct_answer: "It directs requests to different backend services based on the URL path in the HTTP request"
+    explanation: "Path-based routing in Kubernetes Ingress allows you to route HTTP/HTTPS traffic to different backend services based on the URL path in the incoming request. For example, you can configure an Ingress to route requests to example.com/api to an API service, example.com/web to a web frontend service, and example.com/admin to an admin service, all through a single ingress endpoint. The ingress controller examines the path component of the HTTP request URL and matches it against the configured path rules to determine the appropriate backend service. Ingress supports different path types including Exact (exact string match), Prefix (matching based on URL path prefix), and ImplementationSpecific (controller-dependent matching). This pattern is extremely useful for consolidating multiple services behind a single domain and IP address, reducing infrastructure complexity and costs. Path-based routing can be combined with host-based routing (routing based on the Host header) to create sophisticated traffic routing rules. This is distinct from network-level routing or IP-based routing - it's application-layer (Layer 7) routing based on HTTP request attributes."
+    require_pass: true
+  - type: mcq
+    sequence_order: 3
+    question: "What is a common use case for the rewrite-target annotation in NGINX Ingress Controller?"
+    options:
+      - "To rewrite the destination service name"
+      - "To modify the request path before forwarding to the backend service"
+      - "To change the response status code"
+      - "To rewrite DNS records for services"
+    correct_answer: "To modify the request path before forwarding to the backend service"
+    explanation: "The rewrite-target annotation in NGINX Ingress Controller is used to modify the URL path before the request is forwarded to the backend service. This is particularly useful when the path structure expected by your backend service differs from the path exposed externally through the ingress. For example, you might expose your application at /myapp/service but the application expects requests at the root path /. Using nginx.ingress.kubernetes.io/rewrite-target: /$2 with a path like /myapp(/|$)(.*), you can strip the /myapp prefix before sending the request to the backend. This allows you to present a unified URL structure to external clients while maintaining different internal path structures for different services. URL rewriting is essential for scenarios like API versioning, legacy application migration, or multi-tenant deployments where different applications need to coexist under a single domain but weren't designed for path-based routing. The rewrite capability is a controller-specific feature, and different ingress controllers may implement it differently or use different annotations."
+    require_pass: true

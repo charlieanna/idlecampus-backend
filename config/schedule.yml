@@ -1,0 +1,32 @@
+# Sidekiq-cron schedule configuration
+
+cleanup_lab_sessions:
+  cron: "*/15 * * * *"  # Every 15 minutes
+  class: "CleanupExpiredLabSessionsJob"
+  queue: default
+  description: "Cleanup expired lab sessions and containers"
+
+daily_snapshots:
+  cron: "0 2 * * *"  # 2 AM daily
+  class: "DailySnapshotJob"
+  queue: default
+  description: "Create daily performance snapshots"
+
+review_reminders:
+  cron: "0 9 * * *"  # 9 AM daily
+  class: "ReviewReminderJob"
+  queue: default
+  description: "Send review reminders to users"
+
+cache_warmup:
+  cron: "0 * * * *"  # Every hour
+  class: "CacheWarmupJob"
+  queue: default
+  description: "Warm up caches for active users"
+
+irt_calibration:
+  cron: "0 3 * * 0"  # 3 AM every Sunday
+  class: "IRTCalibrationJob"
+  queue: default
+  description: "Calibrate IRT parameters from response data"
+

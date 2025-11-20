@@ -1,0 +1,204 @@
+---
+slug: tree-trie
+title: Trie (Prefix Tree)
+sequence_order: 32
+estimated_minutes: 15
+difficulty: medium
+key_concepts:
+- Trie (Prefix Tree)
+- Basic Trie Implementation
+content_md: |
+  # Trie (Prefix Tree)
+
+  Tree-based data structure for efficient string operations and prefix searches
+
+  ---
+
+  ## Trie Data Structure
+
+  A Trie (prefix tree) is a tree where each node represents a character, and paths represent strings.
+
+  **Properties:**
+  - Root represents empty string
+  - Each path from root represents a prefix
+  - Nodes can mark end of word
+
+  **Operations:**
+  - Insert: O(m) where m = string length
+  - Search: O(m)
+  - Prefix Search: O(p) where p = prefix length
+  - Space: O(ALPHABET_SIZE * N * M) worst case
+
+  **Use Cases:**
+  - Autocomplete
+  - Spell checker
+  - IP routing
+  - Dictionary implementation
+
+
+  ---
+
+  ## Common Patterns
+
+  ### Pattern 1: Basic Trie Implementation
+  ```python
+  class TrieNode:
+      def __init__(self):
+          self.children = {}  # char -> TrieNode
+          self.is_end_of_word = False
+
+  class Trie:
+      def __init__(self):
+          self.root = TrieNode()
+
+      def insert(self, word):
+          node = self.root
+          for char in word:
+              if char not in node.children:
+                  node.children[char] = TrieNode()
+              node = node.children[char]
+          node.is_end_of_word = True
+
+      def search(self, word):
+          node = self.root
+          for char in word:
+              if char not in node.children:
+                  return False
+              node = node.children[char]
+          return node.is_end_of_word
+
+      def starts_with(self, prefix):
+          node = self.root
+          for char in prefix:
+              if char not in node.children:
+                  return False
+              node = node.children[char]
+          return True
+  ```
+
+  ### Pattern 2: Word Search with Trie
+  ```python
+  def find_words(board, words):
+      # Build trie from words
+      trie = Trie()
+      for word in words:
+          trie.insert(word)
+
+      result = set()
+
+      def dfs(i, j, node, path):
+          if node.is_end_of_word:
+              result.add(path)
+
+          if (i < 0 or i >= len(board) or j < 0 or j >= len(board[0]) or
+              board[i][j] == '#'):
+              return
+
+          char = board[i][j]
+          if char not in node.children:
+              return
+
+          board[i][j] = '#'  # Mark visited
+
+          for di, dj in [(0,1), (1,0), (0,-1), (-1,0)]:
+              dfs(i+di, j+dj, node.children[char], path+char)
+
+          board[i][j] = char  # Restore
+
+      for i in range(len(board)):
+          for j in range(len(board[0])):
+              dfs(i, j, trie.root, "")
+
+      return list(result)
+  ```
+
+  ### Pattern 3: Autocomplete with Trie
+  ```python
+  class TrieWithSuggestions(Trie):
+      def get_suggestions(self, prefix):
+          node = self.root
+          for char in prefix:
+              if char not in node.children:
+                  return []
+              node = node.children[char]
+
+          # DFS to collect all words with this prefix
+          suggestions = []
+          self._collect_words(node, prefix, suggestions)
+          return suggestions
+
+      def _collect_words(self, node, current, suggestions):
+          if node.is_end_of_word:
+              suggestions.append(current)
+
+          for char, child_node in node.children.items():
+              self._collect_words(child_node, current + char, suggestions)
+  ```
+
+
+  ---
+
+  ## When to Use This Technique
+
+  Use Trie for: prefix matching, autocomplete, spell checking, storing dictionary, IP routing, or when you need fast prefix-based operations.
+
+  ---
+
+  ## Common Pitfalls to Avoid
+
+  - High memory usage with large alphabets
+  - Not handling case sensitivity correctly
+  - Forgetting to mark end of words
+  - Not cleaning up unused nodes (memory leaks)
+  - Confusing search() with startsWith()
+
+  ---
+
+  ## Practice Problems
+
+  Start with these problems to master this concept:
+
+  ### 1. Trie 4 [Easy]
+
+  Tree problem: trie.
+
+  **Complexity:** Time O(O(n)), Space O(O(h))
+
+
+  ### 2. Trie 6 [Easy]
+
+  Tree problem: trie.
+
+  **Complexity:** Time O(O(n)), Space O(O(h))
+
+
+  ### 3. Trie 7 [Easy]
+
+  Tree problem: trie.
+
+  **Complexity:** Time O(O(n)), Space O(O(h))
+
+
+  ### 4. Trie 8 [Easy]
+
+  Tree problem: trie.
+
+  **Complexity:** Time O(O(n)), Space O(O(h))
+
+
+  ### 5. Trie 17 [Easy]
+
+  Tree problem: trie.
+
+  **Complexity:** Time O(O(n)), Space O(O(h))
+
+
+
+  ---
+
+  ## Key Takeaways
+
+  - Trie (Prefix Tree) is essential for tree-based data structure for efficient string operations and prefix searches
+  - Time complexity improvements can be significant with this technique
+  - Practice problems in order of difficulty to build intuition
+  - Focus on recognizing patterns in problem statements

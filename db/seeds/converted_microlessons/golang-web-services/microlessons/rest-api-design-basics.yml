@@ -1,0 +1,93 @@
+slug: rest-api-design-basics
+title: REST API Design Basics
+difficulty: easy
+sequence_order: 1
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# REST API Design Basics \U0001F680\n\n# REST API Design Basics\n\n \
+  \   REST (Representational State Transfer) is an architectural style for designing\
+  \ networked applications. RESTful APIs are the backbone of modern web services.\n\
+  \n    ## What is REST?\n\n    REST is built around resources and HTTP methods. A\
+  \ resource is any data or object that can be accessed via a URI.\n\n    **Key Principles:**\n\
+  \    - **Client-Server Architecture** - Separation of concerns\n    - **Stateless**\
+  \ - Each request contains all needed information\n    - **Cacheable** - Responses\
+  \ can be cached for performance\n    - **Uniform Interface** - Standard HTTP methods\
+  \ and status codes\n\n    ## HTTP Methods (Verbs)\n\n    RESTful APIs use HTTP methods\
+  \ to indicate the desired action:\n\n    | Method | Purpose | Example |\n    |--------|---------|---------|\n\
+  \    | GET | Retrieve resource(s) | `GET /api/users` - List users |\n    | POST\
+  \ | Create new resource | `POST /api/users` - Create user |\n    | PUT | Update\
+  \ entire resource | `PUT /api/users/123` - Update user 123 |\n    | PATCH | Partially\
+  \ update resource | `PATCH /api/users/123` - Update name only |\n    | DELETE |\
+  \ Remove resource | `DELETE /api/users/123` - Delete user 123 |\n\n    ## Resource\
+  \ Naming Conventions\n\n    **Good practices:**\n    ```\n    GET    /api/v1/books\
+  \          # List all books\n    GET    /api/v1/books/42       # Get book with ID\
+  \ 42\n    POST   /api/v1/books          # Create a new book\n    PUT    /api/v1/books/42\
+  \       # Update book 42\n    DELETE /api/v1/books/42       # Delete book 42\n \
+  \   GET    /api/v1/books/42/reviews  # Get reviews for book 42\n    ```\n\n    **Best\
+  \ practices:**\n    - Use nouns, not verbs (✅ `/books` not ❌ `/getBooks`)\n    -\
+  \ Use plural nouns (✅ `/books` not ❌ `/book`)\n    - Use lowercase and hyphens (✅\
+  \ `/user-profiles` not ❌ `/UserProfiles`)\n    - Include API version (✅ `/api/v1/books`)\n\
+  \    - Keep URLs shallow (avoid deep nesting)\n\n    ## HTTP Status Codes\n\n  \
+  \  Use appropriate status codes to indicate the result:\n\n    **Success (2xx):**\n\
+  \    - `200 OK` - Successful GET, PUT, PATCH\n    - `201 Created` - Successful POST\
+  \ (resource created)\n    - `204 No Content` - Successful DELETE (no response body)\n\
+  \n    **Client Errors (4xx):**\n    - `400 Bad Request` - Invalid request data\n\
+  \    - `401 Unauthorized` - Authentication required\n    - `403 Forbidden` - Authenticated\
+  \ but not authorized\n    - `404 Not Found` - Resource doesn't exist\n    - `422\
+  \ Unprocessable Entity` - Validation failed\n\n    **Server Errors (5xx):**\n  \
+  \  - `500 Internal Server Error` - Server-side error\n    - `503 Service Unavailable`\
+  \ - Server is down\n\n    ## JSON Request/Response Format\n\n    Modern REST APIs\
+  \ use JSON for data exchange:\n\n    **Request (POST /api/v1/books):**\n    ```json\n\
+  \    {\n      \"title\": \"Learning Go\",\n      \"author\": \"Jon Bodner\",\n \
+  \     \"isbn\": \"978-1492077213\",\n      \"year\": 2021\n    }\n    ```\n\n  \
+  \  **Response (201 Created):**\n    ```json\n    {\n      \"id\": 123,\n      \"\
+  title\": \"Learning Go\",\n      \"author\": \"Jon Bodner\",\n      \"isbn\": \"\
+  978-1492077213\",\n      \"year\": 2021,\n      \"created_at\": \"2025-11-07T10:30:00Z\"\
+  \n    }\n    ```\n\n    ## Example API Design\n\n    Let's design a simple **Task\
+  \ Management API**:\n\n    ```\n    # Tasks\n    GET    /api/v1/tasks          \
+  \ # List all tasks\n    POST   /api/v1/tasks           # Create new task\n    GET\
+  \    /api/v1/tasks/:id       # Get specific task\n    PUT    /api/v1/tasks/:id \
+  \      # Update task\n    DELETE /api/v1/tasks/:id       # Delete task\n    PATCH\
+  \  /api/v1/tasks/:id/complete  # Mark task complete\n\n    # Query parameters for\
+  \ filtering/pagination\n    GET /api/v1/tasks?status=completed&page=2&limit=10\n\
+  \    ```\n\n    ## Best Practices Summary\n\n    1. **Use HTTP methods correctly**\
+  \ - GET for reading, POST for creating, etc.\n    2. **Return appropriate status\
+  \ codes** - Don't use 200 for everything\n    3. **Version your API** - `/api/v1/`\
+  \ allows future changes\n    4. **Use JSON** - Industry standard for REST APIs\n\
+  \    5. **Be consistent** - Same patterns across all endpoints\n    6. **Document\
+  \ your API** - Make it easy for others to use"
+exercises:
+  - type: multiple_choice
+    sequence_order: 1
+    question: "Which HTTP method should be used to create a new resource in a RESTful API?"
+    options:
+      - "GET"
+      - "POST"
+      - "PUT"
+      - "PATCH"
+    correct_answer: "POST"
+    explanation: "In RESTful API design, POST is the standard HTTP method for creating new resources. When a client sends a POST request to a collection endpoint like /api/v1/users, the server creates a new resource and typically returns it with a 201 Created status code along with the newly created resource's data, including its generated ID. POST is semantically correct for creation because it indicates 'submit this data to create a new entity' rather than 'replace' (PUT) or 'modify' (PATCH). After a successful POST, the response should include the Location header pointing to the newly created resource, for example Location: /api/v1/users/123. While PUT can technically create resources if the client specifies the ID, this is less common - PUT is typically used for full updates of existing resources where the client knows the resource's URI. POST requests are not idempotent, meaning sending the same POST twice creates two resources, which is correct behavior for creation. Understanding the semantic meaning of HTTP methods is crucial for designing intuitive, standards-compliant REST APIs that other developers can easily understand and use."
+    require_pass: true
+  - type: multiple_choice
+    sequence_order: 2
+    question: "What is the primary difference between PUT and PATCH HTTP methods?"
+    options:
+      - "PUT is for creating resources, PATCH is for deleting them"
+      - "PUT replaces the entire resource, while PATCH applies partial modifications"
+      - "PATCH is faster than PUT"
+      - "PUT requires authentication, PATCH does not"
+    correct_answer: "PUT replaces the entire resource, while PATCH applies partial modifications"
+    explanation: "PUT and PATCH have distinct semantic meanings for updating resources. PUT is designed for complete replacement - when you send a PUT request, you're saying 'replace this entire resource with this new representation.' The client must send all fields, even those that haven't changed. If you omit a field in a PUT request, it should be set to null or its default value. This makes PUT idempotent - sending the same PUT request multiple times produces the same result. In contrast, PATCH is for partial updates - you only send the fields you want to change. For example, to update just a user's email, you'd send PATCH /api/users/123 with {\"email\": \"new@example.com\"} rather than sending the entire user object. This is more efficient for large resources and more intuitive when you only want to modify specific fields. However, PATCH is more complex to implement correctly because you need to handle partial data and decide what an empty field means. In practice, many APIs use PATCH for all updates because it's more flexible and bandwidth-efficient, but technically, use PUT when you're replacing the entire resource and PATCH when you're selectively modifying fields."
+    require_pass: true
+  - type: multiple_choice
+    sequence_order: 3
+    question: "What status code should a RESTful API return after successfully creating a new resource?"
+    options:
+      - "200 OK"
+      - "201 Created"
+      - "204 No Content"
+      - "202 Accepted"
+    correct_answer: "201 Created"
+    explanation: "The 201 Created status code is the correct and semantically meaningful response for successful resource creation. It specifically indicates that a new resource has been created as a result of the request, distinguishing creation from other successful operations. When returning 201 Created, the response should include the newly created resource in the body (with its generated ID and any server-set fields like timestamps) and a Location header pointing to the new resource's URI, such as 'Location: /api/v1/books/123'. This allows clients to immediately access the new resource without guessing its URL structure. Using 200 OK for creation, while technically a success code, loses this semantic information - 200 is generic success used for GET, PUT, and PATCH operations. The 204 No Content status is appropriate for DELETE operations where there's no response body, and 202 Accepted indicates the request has been accepted for processing but hasn't completed yet, useful for asynchronous operations. Following these HTTP status code conventions makes your API more predictable and intuitive because developers familiar with REST standards will immediately understand what happened without reading documentation. It's part of the 'uniform interface' constraint that makes REST APIs self-descriptive."
+    require_pass: true

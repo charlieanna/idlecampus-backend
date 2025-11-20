@@ -1,0 +1,128 @@
+---
+slug: dp-lcs
+title: Lcs
+sequence_order: 68
+estimated_minutes: 10
+difficulty: medium
+key_concepts:
+- Lcs
+- Longest Common Subsequence
+- Dynamic Programming
+content_md: |
+  # Lcs
+
+  Master Lcs - a key concept in Dynamic Programming.
+
+  ---
+
+  ## Overview
+
+  **Topic:** Dynamic Programming
+  **Subtopic:** Longest Common Subsequence
+  **Problems Available:** 48
+  **Difficulty Range:** medium, hard, easy, expert
+
+  ---
+
+  ## What You'll Learn
+
+  Lcs is fundamental to solving dynamic programming problems efficiently.
+  This microlesson covers:
+
+  - Core concepts and theory
+  - Common patterns and templates
+  - Time and space complexity analysis
+  - Practical problem-solving techniques
+
+  ---
+
+  ## Key Concepts
+
+  ### Time Complexity
+  Most problems in this family: **O(mn)**
+
+  ### Space Complexity
+  Typical space requirement: **O(mn)**
+
+  ### Common Tags
+  `dp`, `string`
+
+  ---
+
+  ## Starter Template
+
+  ```python
+  def longestCommonSubsequence(text1: str, text2: str) -> int:
+      pass
+  ```
+
+  ---
+
+  ## Practice Problems
+
+  Work through these problems in order to build mastery:
+
+  ### 1. LCS Problem 5 [Easy]
+
+  DP problem: lcs.
+
+  **Time:** O(O(n^2)), **Space:** O(O(n))
+
+  **Companies:** Various
+
+
+  ### 2. LCS Problem 6 [Easy]
+
+  DP problem: lcs.
+
+  **Time:** O(O(n^2)), **Space:** O(O(n))
+
+  **Companies:** Various
+
+
+  ### 3. LCS Problem 15 [Easy]
+
+  DP problem: lcs.
+
+  **Time:** O(O(n^2)), **Space:** O(O(n))
+
+  **Companies:** Various
+
+
+  ### 4. LCS Problem 17 [Easy]
+
+  DP problem: lcs.
+
+  **Time:** O(O(n^2)), **Space:** O(O(n))
+
+  **Companies:** Various
+
+
+  ### 5. LCS Problem 18 [Easy]
+
+  DP problem: lcs.
+
+  **Time:** O(O(n^2)), **Space:** O(O(n))
+
+  **Companies:** Various
+
+
+
+  ---
+
+  ## Success Metrics
+
+  - **Average Success Rate:** 35%
+  - **Average Time:** 37 minutes per problem
+  - **Total Points:** 1330 points available
+
+  ---
+
+  ## Next Steps
+
+  After mastering Lcs:
+
+  1. Complete all 48 problems in this family
+  2. Focus on optimizing your solutions
+  3. Move to related concepts
+  4. Practice timed problem-solving

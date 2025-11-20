@@ -1,0 +1,58 @@
+slug: fpdepression-practice
+title: fp_depression — Practice
+difficulty: medium
+sequence_order: 15
+estimated_minutes: 2
+key_concepts:
+- fp_depression
+prerequisites: []
+content_md: '# fp_depression — Practice 🚀
+
+
+  ΔTf = Kf × m = 1.86 × 0.5 = 0.93 K. Tf = 0 - 0.93 = -0.93°C
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: 'Calculate the freezing point of a 0.5 molal aqueous solution of a non-electrolyte. (Kf for water = 1.86 K kg/mol, freezing point of water = 0°C)'
+  options:
+  - '-0.93°C'
+  - '0.93°C'
+  - '-1.86°C'
+  - '0°C'
+  correct_answer: '-0.93°C'
+  explanation: "Using ΔTf = Kf × m. Given: m = 0.5 mol/kg, Kf = 1.86 K kg/mol. ΔTf = 1.86 × 0.5 = 0.93 K. The freezing point is depressed (lowered), so new freezing point = 0 - 0.93 = -0.93°C. The freezing point depression is always positive (ΔTf > 0), but the actual freezing point decreases. This is why salt is used to melt ice on roads - it lowers the freezing point of water."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: 'Freezing point depression occurs because:'
+  options:
+  - Solute particles lower the vapor pressure of solvent
+  - Solute increases density of solution
+  - Solute makes solution more viscous
+  - Temperature decreases
+  correct_answer: Solute particles lower the vapor pressure of solvent
+  explanation: "When a non-volatile solute is added to a solvent, it lowers the vapor pressure of the solvent (Raoult's law). At the normal freezing point of pure solvent, the vapor pressure of solution is lower than that of solid solvent (ice), so freezing doesn't occur. The temperature must be lowered further until the vapor pressure of solution equals that of solid. This is why the freezing point is depressed. The relationship is ΔTf = Kf × m."
+  require_pass: false
+- type: mcq
+  sequence_order: 3
+  question: 'The molal depression constant (Kf) for water is 1.86 K kg/mol. What does this mean?'
+  options:
+  - A 1 molal solution will freeze at -1.86°C
+  - Water always freezes at -1.86°C
+  - Ice melts at 1.86°C
+  - Boiling point rises by 1.86°C
+  correct_answer: A 1 molal solution will freeze at -1.86°C
+  explanation: "The molal depression constant (cryoscopic constant) Kf = 1.86 K kg/mol for water means that a 1 molal solution of any non-electrolyte in water will show a freezing point depression of 1.86 K, freezing at -1.86°C instead of 0°C. Kf is a solvent property calculated from: Kf = (R × Tf²)/(1000 × ΔHfusion). Different solvents have different Kf values: benzene = 5.12, camphor = 40 K kg/mol."
+  require_pass: false

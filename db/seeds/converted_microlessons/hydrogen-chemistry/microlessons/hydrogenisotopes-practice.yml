@@ -1,0 +1,82 @@
+slug: hydrogenisotopes-practice
+title: hydrogen_isotopes — Practice
+difficulty: easy
+sequence_order: 7
+estimated_minutes: 2
+key_concepts:
+- hydrogen_isotopes
+prerequisites: []
+content_md: '# hydrogen_isotopes — Practice 🚀
+
+
+  Tritium (³H or T) is the radioactive isotope of hydrogen with a half-life of 12.3
+  years. It is a beta emitter: ³H → ³He + β⁻. Protium and deuterium are stable.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 2
+  question: Which isotope of hydrogen is radioactive?
+  options:
+  - Protium
+  - Deuterium
+  - Tritium
+  - All isotopes are radioactive
+  require_pass: true
+  correct_answer: Tritium
+  explanation: 'Tritium (³H or T) is the radioactive isotope of hydrogen. It has 1
+    proton and 2 neutrons (mass number = 3) and undergoes beta decay with a half-life
+    of 12.3 years: ³H → ³He + β⁻ + ν̄ₑ. In contrast, protium (¹H, ~99.98% natural
+    abundance) and deuterium (²H or D, ~0.015% abundance) are stable isotopes. Tritium
+    occurs naturally in trace amounts from cosmic ray interactions but is primarily
+    produced artificially in nuclear reactors: ⁶Li + n → ³H + ⁴He. Uses of tritium
+    include: nuclear fusion research, self-luminous devices (exit signs), radioactive
+    tracers, and thermonuclear weapons. Due to radioactivity, tritiated water (HTO
+    or T₂O) poses health risks if ingested.'
+- type: mcq
+  sequence_order: 3
+  question: What is the natural abundance of deuterium in hydrogen?
+  options:
+  - 99.98%
+  - 0.015%
+  - 0.0001%
+  - 10%
+  require_pass: true
+  correct_answer: 0.015%
+  explanation: 'Deuterium (²H or D) has a natural abundance of approximately 0.015%
+    (1 in 6,700 hydrogen atoms). Protium (¹H) is the most abundant at ~99.985%, while
+    tritium (³H) exists only in trace amounts (~10⁻¹⁸%). Isotope properties: Protium:
+    1 proton, 0 neutrons, mass = 1 amu, Deuterium: 1 proton, 1 neutron, mass = 2
+    amu, Tritium: 1 proton, 2 neutrons, mass = 3 amu. Despite low abundance, deuterium
+    is concentrated from water to produce heavy water (D₂O) used in nuclear reactors.
+    Ocean water contains ~0.015% D, meaning 1 liter contains ~0.15 mL D₂O. Commercial
+    D₂O production requires processing thousands of liters of water.'
+- type: mcq
+  sequence_order: 4
+  question: How is tritium (³H) primarily produced for commercial use?
+  options:
+  - Natural cosmic ray interactions
+  - Nuclear fission of uranium
+  - Neutron bombardment of lithium-6
+  - Electrolysis of heavy water
+  require_pass: true
+  correct_answer: Neutron bombardment of lithium-6
+  explanation: 'Tritium (³H) is primarily produced artificially by neutron bombardment
+    of lithium-6 in nuclear reactors: ⁶Li + n → ³H + ⁴He. This is the main commercial
+    production method. Natural tritium production occurs from cosmic ray interactions
+    with nitrogen in upper atmosphere: ¹⁴N + n → ³H + ¹²C, but this produces only
+    trace amounts (~4 kg globally per year). Tritium has short half-life (12.3 years),
+    so natural abundance is very low (~10⁻¹⁸%). Uses: Nuclear fusion fuel (deuterium-tritium
+    reactions), Radioactive tracers in hydrology/biochemistry, Self-luminous devices
+    (beta emission excites phosphor), Boosted fission weapons. Tritium decays by beta
+    emission: ³H → ³He + β⁻.'

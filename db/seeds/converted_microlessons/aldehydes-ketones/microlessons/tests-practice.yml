@@ -1,0 +1,68 @@
+slug: tests-practice
+title: tests — Practice
+difficulty: medium
+sequence_order: 7
+estimated_minutes: 2
+key_concepts:
+- tests
+prerequisites: []
+content_md: '# tests — Practice 🚀
+
+
+  Aldehyde-specific tests: (1) Tollen''s test (silver mirror) ✓, (2) Fehling''s test
+  (brick-red Cu₂O ppt) ✓. Both oxidize aldehydes to acids. Ketones do not give these
+  tests.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 2
+  question: Which tests are positive for aldehydes but negative for ketones?
+  options:
+  - Tollen's test and Fehling's test
+  - Sodium bisulfite test
+  - Iodoform test
+  - Brady's test (2,4-DNP test)
+  require_pass: true
+  correct_answer: Tollen's test and Fehling's test
+  explanation: Aldehydes give positive results with both Tollen's test (silver mirror
+    test) and Fehling's test (brick-red precipitate), while ketones do not. In Tollen's
+    test, aldehydes are oxidized by ammoniacal silver nitrate (Ag(NH₃)₂⁺) to carboxylic
+    acids, reducing Ag⁺ to metallic silver (mirror). In Fehling's test, aldehydes
+    reduce Cu²⁺ (blue) to Cu₂O (brick-red precipitate). These are oxidation tests
+    - aldehydes are easily oxidized because they have a hydrogen attached to the carbonyl
+    carbon, while ketones have two alkyl groups and resist oxidation. The sodium bisulfite
+    test is positive for both aldehydes AND methyl ketones, so it doesn't distinguish
+    them.
+- type: mcq
+  sequence_order: 3
+  question: 'What is the visible observation in Tollen''s test when an aldehyde is present?'
+  options:
+  - Silver mirror formation on the test tube walls
+  - Brick-red precipitate
+  - Yellow precipitate
+  - Blue color
+  require_pass: true
+  correct_answer: Silver mirror formation on the test tube walls
+  explanation: 'In Tollen''s test (also called silver mirror test), when an aldehyde is present, a shiny silver mirror forms on the inner walls of the test tube. The reagent is Tollen''s reagent: ammoniacal silver nitrate [Ag(NH₃)₂⁺NO₃⁻]. The aldehyde reduces Ag⁺ ions to metallic silver (Ag), which deposits as a mirror: R-CHO + 2[Ag(NH₃)₂]⁺ + 3OH⁻ → R-COO⁻ + 2Ag↓(mirror) + 4NH₃ + 2H₂O. The aldehyde itself gets oxidized to carboxylic acid. Ketones do not give this test because they resist oxidation. The silver mirror is a distinctive and beautiful indication of aldehyde presence, making this test very specific and visually striking.'
+- type: mcq
+  sequence_order: 4
+  question: 'What is the color change observed in Fehling''s test with aldehydes?'
+  options:
+  - Blue solution to brick-red precipitate
+  - Colorless to yellow
+  - Green to brown
+  - Red to blue
+  require_pass: true
+  correct_answer: Blue solution to brick-red precipitate
+  explanation: 'In Fehling''s test, aldehydes reduce the blue Cu²⁺ ions (from copper sulfate in Fehling''s solution) to brick-red Cu₂O (cuprous oxide) precipitate. The color change is from blue solution to brick-red precipitate. Fehling''s reagent consists of two solutions: Fehling''s A (CuSO₄) and Fehling''s B (sodium potassium tartrate in NaOH). When heated with aldehyde: R-CHO + 2Cu²⁺ (blue) + 5OH⁻ → R-COO⁻ + Cu₂O↓(brick-red) + 3H₂O. The aldehyde is oxidized to carboxylate while Cu²⁺ is reduced to Cu⁺. Ketones do not reduce Fehling''s solution, so no color change occurs. This test is similar to Benedict''s test and is positive for aliphatic aldehydes, though aromatic aldehydes may not react.'

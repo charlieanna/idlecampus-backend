@@ -1,0 +1,59 @@
+slug: groupreagents-practice
+title: group_reagents — Practice
+difficulty: medium
+sequence_order: 12
+estimated_minutes: 2
+key_concepts:
+- group_reagents
+prerequisites: []
+content_md: '# group_reagents — Practice 🚀
+
+
+  FALSE. Group IV cations (Zn²⁺, Ni²⁺, Co²⁺, Mn²⁺) are precipitated by H₂S in BASIC
+  medium (NH₄OH + NH₄Cl). Acidic medium is used for Group II.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: In which medium does H₂S precipitate Group IV cations?
+  options:
+  - Basic medium (NH₄OH + NH₄Cl)
+  - Acidic medium (HCl)
+  - Neutral medium
+  - Strong alkaline medium
+  correct_answer: Basic medium (NH₄OH + NH₄Cl)
+  explanation: "Group IV cations (Zn²⁺, Ni²⁺, Co²⁺, Mn²⁺) are precipitated by H₂S in BASIC medium (NH₄OH + NH₄Cl), not acidic medium. In basic medium, [S²⁻] is high enough to precipitate Group IV sulfides. Acidic medium is used for Group II cations."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What is the group reagent for Group V cations?
+  options:
+  - (NH₄)₂CO₃
+  - H₂S in acidic medium
+  - Dilute HCl
+  - NH₄OH
+  correct_answer: (NH₄)₂CO₃
+  explanation: "Group V cations (Ba²⁺, Sr²⁺, Ca²⁺) are precipitated as carbonates by (NH₄)₂CO₃ in the presence of NH₄Cl and NH₄OH. The precipitates are: BaCO₃ (white), SrCO₃ (white), CaCO₃ (white). Mg²⁺ does not precipitate and remains in Group VI."
+  require_pass: false
+- type: mcq
+  sequence_order: 3
+  question: Which group reagent is used for Group II analysis?
+  options:
+  - H₂S in acidic medium (HCl)
+  - H₂S in basic medium
+  - Dilute HCl
+  - (NH₄)₂CO₃
+  correct_answer: H₂S in acidic medium (HCl)
+  explanation: "H₂S in acidic medium (dilute HCl) is the group reagent for Group II. It precipitates sulfides of Hg²⁺, Cu²⁺, Cd²⁺, Bi³⁺, As³⁺, Sb³⁺, Sn²⁺ due to their very low Ksp values. The acidic medium keeps [S²⁻] low, ensuring selective precipitation of only Group II."
+  require_pass: false

@@ -1,0 +1,121 @@
+slug: close-packing-packing-efficiency-and-crystal-defects
+title: Close Packing, Packing Efficiency and Crystal Defects
+difficulty: easy
+sequence_order: 5
+estimated_minutes: 2
+key_concepts:
+- Close packing
+- HCP
+- CCP
+- Packing efficiency
+- Schottky defect
+- Frenkel defect
+- Non-stoichiometric defects
+prerequisites: []
+content_md: "# Close Packing, Packing Efficiency and Crystal Defects \U0001F680\n\n\
+  # Close Packing, Packing Efficiency and Crystal Defects\n\n    ## Close Packing\
+  \ of Spheres\n\n    **Goal:** Arrange spheres to occupy maximum space (minimum void)\n\
+  \n    ### Close Packing in 2D:\n\n    **Square packing:** Efficiency = 52.4%\n \
+  \   **Hexagonal packing:** Efficiency = 60.4% (better)\n\n    ### Close Packing\
+  \ in 3D:\n\n    Two types: **HCP** and **CCP (FCC)**\n\n    ## Hexagonal Close Packing\
+  \ (HCP)\n\n    **Structure:**\n    - Layer A: Hexagonal arrangement\n    - Layer\
+  \ B: Spheres in depressions of A\n    - Layer C: Same as A (directly above A)\n\
+  \    - **Stacking: ABABAB...**\n\n    **Coordination number:** 12\n    **Packing\
+  \ efficiency:** 74%\n    **Examples:** Mg, Zn, Cd, Be\n\n    ## Cubic Close Packing\
+  \ (CCP) = FCC\n\n    **Structure:**\n    - Layer A: Hexagonal arrangement\n    -\
+  \ Layer B: Spheres in depressions of A\n    - Layer C: Different positions (not\
+  \ above A or B)\n    - **Stacking: ABCABCABC...**\n\n    **Coordination number:**\
+  \ 12\n    **Packing efficiency:** 74%\n    **Examples:** Cu, Ag, Au, Al\n\n    **Note:**\
+  \ CCP is same as FCC!\n\n    ## Packing Efficiency\n\n    **Definition:** Percentage\
+  \ of space occupied by constituent particles\n\n    **Packing Efficiency = (Volume\
+  \ occupied by atoms / Total volume of unit cell) × 100**\n\n    ### 1. Simple Cubic\
+  \ (SC):\n\n    - Atoms per cell: Z = 1\n    - Edge: a = 2r\n    - Volume of atoms:\
+  \ Z × (4/3)πr³ = (4/3)πr³\n    - Volume of cell: a³ = (2r)³ = 8r³\n\n    **PE =\
+  \ [(4/3)πr³ / 8r³] × 100 = (π/6) × 100 = 52.4%**\n\n    ### 2. Body-Centered Cubic\
+  \ (BCC):\n\n    - Z = 2\n    - a = 4r/√3\n    - Volume of atoms: 2 × (4/3)πr³ =\
+  \ (8/3)πr³\n    - Volume of cell: a³ = (4r/√3)³ = 64r³/(3√3)\n\n    **PE = [(8πr³/3)\
+  \ / (64r³/3√3)] × 100 = (√3π/8) × 100 = 68%**\n\n    ### 3. Face-Centered Cubic\
+  \ (FCC) / CCP:\n\n    - Z = 4\n    - a = 2√2 r\n    - Volume of atoms: 4 × (4/3)πr³\
+  \ = (16/3)πr³\n    - Volume of cell: a³ = (2√2 r)³ = 16√2 r³\n\n    **PE = [(16πr³/3)\
+  \ / (16√2 r³)] × 100 = (π/3√2) × 100 = 74%**\n\n    ### 4. HCP:\n\n    - Coordination:\
+  \ 12\n    - **PE = 74%** (same as CCP/FCC)\n\n    ## Summary: Packing Efficiency\n\
+  \n    | Structure | Packing Efficiency |\n    |-----------|--------------------|\n\
+  \    | Simple Cubic | 52.4% |\n    | BCC | 68% |\n    | FCC / CCP | 74% |\n    |\
+  \ HCP | 74% |\n\n    **Note:** FCC and HCP have **maximum packing efficiency** (74%)\n\
+  \n    ## Voids in Close Packing\n\n    ### In Close-Packed Structures (FCC/HCP):\n\
+  \n    **Number of voids per n atoms:**\n    - **Octahedral voids:** n\n    - **Tetrahedral\
+  \ voids:** 2n\n\n    ### Example:\n\n    If FCC has 4 atoms per unit cell:\n   \
+  \ - Octahedral voids: 4\n    - Tetrahedral voids: 8\n\n    ## Crystal Defects (Imperfections)\n\
+  \n    **Definition:** Irregularities in arrangement of particles\n\n    ### Types:\n\
+  \n    **1. Point Defects:** Irregular arrangement at a point\n    **2. Line Defects:**\
+  \ Irregularities along a line (dislocations)\n    **3. Plane Defects:** Grain boundaries\n\
+  \n    ## Point Defects\n\n    ### A. Stoichiometric Defects:\n\n    **Do not change\
+  \ stoichiometry**\n\n    #### 1. Schottky Defect:\n\n    **Definition:** Equal number\
+  \ of cations and anions missing from lattice\n\n    **Characteristics:**\n    -\
+  \ Maintains electrical neutrality\n    - **Decreases density** (missing ions)\n\
+  \    - Found in ionic crystals with **high coordination number**\n    - r⁺/r⁻ ≈\
+  \ 1 (similar sized ions)\n\n    **Examples:** NaCl, KCl, CsCl, AgBr\n\n    **Result:**\
+  \ Creates vacancies, lowers density\n\n    #### 2. Frenkel Defect:\n\n    **Definition:**\
+  \ Smaller ion (usually cation) displaced to interstitial site\n\n    **Characteristics:**\n\
+  \    - **No change in density** (ion just displaced)\n    - Found when **large difference\
+  \ in ion size**\n    - r⁺/r⁻ << 1 (small cation)\n    - Creates vacancy + interstitial\n\
+  \n    **Examples:** ZnS, AgCl, AgBr, AgI\n\n    **AgBr:** Shows **both** Schottky\
+  \ and Frenkel defects!\n\n    ### Comparison: Schottky vs Frenkel\n\n    | Property\
+  \ | Schottky | Frenkel |\n    |----------|----------|---------|\n    | Missing ions\
+  \ | Equal cations and anions | None (displaced) |\n    | Density | Decreases | No\
+  \ change |\n    | Ion size | Similar | Different (small cation) |\n    | Coordination\
+  \ | High (6:6, 8:8) | Low (4:4) |\n    | Example | NaCl | ZnS |\n\n    ### B. Non-Stoichiometric\
+  \ Defects:\n\n    **Change in stoichiometry**\n\n    #### 1. Metal Excess Defect:\n\
+  \n    **Type (a): Due to anion vacancy**\n\n    **Example:** NaCl heated in Na vapor\n\
+  \    - Cl⁻ leaves lattice\n    - Na atoms deposit, release e⁻\n    - Electron trapped\
+  \ in vacancy (F-center)\n    - Formula: Na₁₊ₓCl\n\n    **Result:** Yellow color\
+  \ (F-centers absorb light)\n\n    **Type (b): Due to extra cation in interstitial**\n\
+  \n    **Example:** Zn₁₊ₓO\n    - Extra Zn²⁺ in interstitial\n    - Extra electrons\n\
+  \n    **Result:** Electrical conductivity increases\n\n    #### 2. Metal Deficiency\
+  \ Defect:\n\n    **Example:** FeO, FeS\n    - Fe²⁺ missing from lattice\n    - Some\
+  \ Fe²⁺ oxidized to Fe³⁺ (to maintain charge)\n    - Formula: Fe₀.₉₅O or Fe₀.₉₈S\n\
+  \n    **Found in:** Transition metal compounds\n\n    ## F-Centers (Color Centers)\n\
+  \n    **Definition:** Anionic sites occupied by unpaired electrons\n\n    **Cause:**\
+  \ Metal excess defect (anion vacancies)\n\n    **Effect:** Impart color to crystals\n\
+  \    - NaCl + Na vapor → Yellow\n    - KCl + K vapor → Violet\n\n    **Application:**\
+  \ Photographic process\n\n    ## Solved Problems\n\n    ### Problem 1: Packing efficiency\
+  \ of BCC\n\n    **Q: Calculate packing efficiency of BCC.**\n\n    Solution:\n \
+  \   - Z = 2, a = 4r/√3\n    - Volume of atoms = 2 × (4/3)πr³\n    - Volume of cell\
+  \ = (4r/√3)³ = 64r³/(3√3)\n\n    PE = [2 × (4/3)πr³] / [64r³/(3√3)] × 100\n    =\
+  \ [(8πr³/3) × (3√3)/(64r³)] × 100\n    = (√3π/8) × 100\n    **= 68%**\n\n    ###\
+  \ Problem 2: Number of voids\n\n    **Q: FCC unit cell has 4 atoms. How many octahedral\
+  \ and tetrahedral voids?**\n\n    Solution:\n    - Octahedral voids = n = **4**\n\
+  \    - Tetrahedral voids = 2n = **8**\n\n    ### Problem 3: Density change\n\n \
+  \   **Q: Which defect decreases density of crystal?**\n\n    Solution:\n    **Schottky\
+  \ defect** (ions missing from lattice, reduces mass while volume same)\n\n    Frenkel\
+  \ defect does NOT change density (ion just displaced)\n\n    ### Problem 4: Identify\
+  \ defect\n\n    **Q: AgBr shows both types of point defects. Name them.**\n\n  \
+  \  Solution:\n    - **Schottky defect** (both Ag⁺ and Br⁻ missing)\n    - **Frenkel\
+  \ defect** (Ag⁺ displaced to interstitial)\n\n    AgBr is unique in showing both!\n\
+  \n    ### Problem 5: F-centers\n\n    **Q: NaCl heated in Na vapor turns yellow.\
+  \ Explain.**\n\n    Solution:\n    - Na atoms deposit on surface\n    - Cl⁻ diffuses\
+  \ out, creating vacancies\n    - Na atoms release electrons\n    - Electrons trapped\
+  \ in Cl⁻ vacancies (F-centers)\n    - F-centers absorb light, impart yellow color\n\
+  \n    ### Problem 6: Packing efficiency calculation\n\n    **Q: Copper (FCC) has\
+  \ atomic radius 128 pm. Calculate percentage of unoccupied space.**\n\n    Solution:\n\
+  \    - FCC packing efficiency = 74%\n    - Unoccupied space = 100 - 74\n    **=\
+  \ 26%**\n\n    ## Applications of Defects\n\n    1. **Electrical conductivity:**\
+  \ Metal excess defects (Zn₁₊ₓO)\n    2. **Photography:** AgBr with Frenkel defect\n\
+  \    3. **Color:** F-centers in alkali halides\n    4. **Diffusion:** Vacancy defects\
+  \ allow diffusion\n    5. **Mechanical properties:** Dislocations affect strength\n\
+  \n    ## IIT JEE Key Points\n\n    1. **HCP:** ABAB stacking, PE = 74%\n    2. **CCP\
+  \ (FCC):** ABCABC stacking, PE = 74%\n    3. **PE (SC):** 52.4%\n    4. **PE (BCC):**\
+  \ 68%\n    5. **PE (FCC/HCP):** 74% (maximum)\n    6. **Voids:** n octahedral, 2n\
+  \ tetrahedral\n    7. **Schottky:** Missing ions, density ↓, NaCl\n    8. **Frenkel:**\
+  \ Displaced ion, density same, ZnS\n    9. **F-centers:** Electrons in anion vacancies,\
+  \ color\n    10. **Metal deficiency:** Transition metal oxides (FeO)\n\n    ## Quick\
+  \ Reference\n\n    | Defect | Type | Density | Example |\n    |--------|------|---------|---------|\n\
+  \    | Schottky | Missing ions | Decreases | NaCl |\n    | Frenkel | Displaced ion\
+  \ | No change | ZnS |\n    | Metal excess (a) | Anion vacancy | Increases | NaCl+Na\
+  \ |\n    | Metal excess (b) | Cation interstitial | Increases | Zn₁₊ₓO |\n    |\
+  \ Metal deficiency | Cation missing | Decreases | FeO |\n\n    ## Important Formulas\n\
+  \n    | Concept | Formula |\n    |---------|---------|\n    | PE (SC) | 52.4% |\n\
+  \    | PE (BCC) | 68% |\n    | PE (FCC/HCP) | 74% |\n    | Octahedral voids | n\
+  \ |\n    | Tetrahedral voids | 2n |\n\n## Key Points\n\n- Close packing\n\n- HCP\n\
+  \n- CCP"
+exercises: []

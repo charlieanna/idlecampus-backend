@@ -1,0 +1,114 @@
+slug: lesson-4
+title: Lesson 4
+difficulty: easy
+sequence_order: 4
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Configuration Management\n\n    Learn to\
+  \ externalize configuration from application code using ConfigMaps and Secrets.\n\
+  \n    ## ConfigMaps\n\n    Store non-confidential configuration data as key-value\
+  \ pairs:\n    - Application settings\n    - Configuration files\n    - Environment\
+  \ variables\n    - Command-line arguments\n\n    **Creation Methods:**\n    - From\
+  \ literal values: `kubectl create configmap app-config --from-literal=KEY=VALUE`\n\
+  \    - From files: `kubectl create configmap app-config --from-file=config.properties`\n\
+  \    - From directories: `kubectl create configmap app-config --from-file=./config/`\n\
+  \n    ## Secrets\n\n    Store sensitive information securely:\n    - Passwords and\
+  \ API keys\n    - TLS certificates\n    - Docker registry credentials\n    - OAuth\
+  \ tokens\n\n    **Secret Types:**\n    - **Opaque**: Generic secret (default)\n\
+  \    - **kubernetes.io/tls**: TLS certificate\n    - **kubernetes.io/dockerconfigjson**:\
+  \ Docker registry auth\n    - **kubernetes.io/service-account-token**: Service account\
+  \ token\n\n    ## Using Configuration\n\n    **Environment Variables:**\n    ```yaml\n\
+  \    env:\n    - name: DATABASE_URL\n      valueFrom:\n        configMapKeyRef:\n\
+  \          name: app-config\n          key: db_url\n    ```\n\n    **Volume Mounts:**\n\
+  \    ```yaml\n    volumes:\n    - name: config\n      configMap:\n        name:\
+  \ app-config\n    volumeMounts:\n    - name: config\n      mountPath: /etc/config\n\
+  \    ```\n\n    ## Best Practices\n\n    - Never hardcode sensitive data\n    -\
+  \ Use Secrets for credentials\n    - Use ConfigMaps for non-sensitive config\n \
+  \   - Enable encryption at rest for Secrets\n    - Limit Secret access with RBAC\n\
+  \n    Practice configuration management in the labs!"
+exercises:
+- type: multiple_choice_question
+  sequence_order: 1
+  question: What is the fundamental difference between ConfigMaps and Secrets in Kubernetes?
+  options:
+  - ConfigMaps are larger than Secrets
+  - Secrets are base64-encoded and designed for sensitive data while ConfigMaps store
+    plain text configuration
+  - ConfigMaps are encrypted while Secrets are not
+  - Secrets can only be used as environment variables while ConfigMaps can only be
+    volume mounts
+  correct_answer: Secrets are base64-encoded and designed for sensitive data while
+    ConfigMaps store plain text configuration
+  explanation: Secrets are specifically designed for sensitive data (passwords, API
+    keys, certificates) and store values in base64-encoded format with additional
+    security features like hidden values in kubectl describe output, while ConfigMaps
+    are designed for non-sensitive configuration data and store values in plain text.
+    Both have the same size limit (1MB) and both can be consumed as environment variables
+    or volume mounts. The base64 encoding in Secrets isn't encryption - it's mainly
+    for handling binary data and preventing accidental exposure in logs. For real
+    encryption, you need to enable encryption at rest in etcd configuration. Kubernetes
+    RBAC can control access to both ConfigMaps and Secrets separately, allowing you
+    to restrict who can view sensitive data. Best practices dictate using Secrets
+    for any sensitive information (even if base64 encoding isn't true security) and
+    ConfigMaps for application configuration. The distinction helps with organization,
+    access control, and signals to operators which data requires special handling.
+    For production systems requiring stronger security, consider external secret management
+    solutions like HashiCorp Vault or cloud provider secret managers.
+  require_pass: true
+- type: multiple_choice_question
+  sequence_order: 2
+  question: When a ConfigMap is mounted as a volume in a pod, what happens when you
+    update the ConfigMap?
+  options:
+  - The pod must be restarted to see changes
+  - The mounted files are automatically updated after a short delay
+  - Updates are rejected because ConfigMaps cannot be changed once used
+  - The pod is automatically restarted with new configuration
+  correct_answer: The mounted files are automatically updated after a short delay
+  explanation: When ConfigMaps are mounted as volumes, Kubernetes automatically updates
+    the mounted files when the ConfigMap is modified, typically within a minute (controlled
+    by kubelet sync period). The updates are atomic - files are updated all at once
+    using symbolic links to prevent reading partially-written data. However, this
+    automatic update only applies to volume mounts, NOT to environment variables,
+    which are set at pod creation and never change. Applications must be designed
+    to detect and reload configuration changes if they want to use updated ConfigMaps
+    without restart. Some applications watch for file changes (using inotify), others
+    periodically re-read config files, and some reload configuration on receiving
+    signals like SIGHUP. If your application doesn't support dynamic reloading, you'll
+    need to restart pods manually or use tools like Reloader that automatically restart
+    pods when their ConfigMaps change. Understanding this behavior is important for
+    designing applications that can be reconfigured without downtime and for choosing
+    between environment variables (static) and volume mounts (dynamic) for configuration
+    injection.
+  require_pass: true
+- type: terminal
+  sequence_order: 1
+  command: kubectl create configmap app-config --from-literal=KEY=VALUE`
+  description: 'Practice the command: kubectl create configmap app-config --from-literal=KEY=VALUE`'
+  hints:
+  - 'Try: kubectl create configmap app-config --from-literal=KEY=VALUE`'
+  - Use kubectl --help if you need help
+  timeout_sec: 60
+  require_pass: true
+- type: terminal
+  sequence_order: 2
+  command: kubectl create configmap app-config --from-file=config.properties`
+  description: 'Practice the command: kubectl create configmap app-config --from-file=config.properties`'
+  hints:
+  - 'Try: kubectl create configmap app-config --from-file=config.properties`'
+  - Use kubectl --help if you need help
+  timeout_sec: 60
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: What is the default service type in Kubernetes?
+  options:
+  - ClusterIP
+  - NodePort
+  - LoadBalancer
+  - ExternalName
+  correct_answer_index: 0
+  explanation: ClusterIP is the default service type. It exposes the service on an
+    internal cluster IP, making it only reachable within the cluster.
+  require_pass: true

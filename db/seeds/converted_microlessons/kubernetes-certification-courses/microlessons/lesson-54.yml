@@ -1,0 +1,66 @@
+slug: lesson-54
+title: Lesson 54
+difficulty: easy
+sequence_order: 54
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Network Policies for Microservices\n\n\
+  \    - policyTypes, podSelector, namespaceSelector\n    - common allow/deny patterns\n\
+  \    - testing connectivity"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What is the default behavior when no NetworkPolicy exists in a namespace?
+  options:
+  - All traffic is denied
+  - All traffic is allowed
+  - Only ingress traffic is allowed
+  - Only egress traffic is allowed
+  correct_answer: All traffic is allowed
+  explanation: By default, when no NetworkPolicy exists in a namespace, all ingress
+    and egress traffic is allowed for all pods. Pods are non-isolated and can communicate
+    freely with any other pod, service, or external endpoint. Once you create a NetworkPolicy
+    that selects a pod, that pod becomes isolated and only the traffic explicitly
+    allowed by NetworkPolicies will be permitted. This default-allow behavior makes
+    it easy to start but requires careful NetworkPolicy design for security. A common
+    pattern is to create a default-deny policy first (selecting all pods but allowing
+    nothing), then create specific allow policies for required traffic. NetworkPolicies
+    are additive - if multiple policies select a pod, the union of all allowed traffic
+    is permitted. Not all CNI plugins support NetworkPolicies - you need a network
+    plugin like Calico, Cilium, or Weave that implements the NetworkPolicy specification.
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: 'In a NetworkPolicy, what does policyTypes: [''Ingress''] mean?'
+  options:
+  - The policy allows all ingress traffic
+  - The policy applies only to incoming traffic; egress traffic remains unrestricted
+  - The policy denies all traffic
+  - The policy only affects ingress controllers
+  correct_answer: The policy applies only to incoming traffic; egress traffic remains
+    unrestricted
+  explanation: The policyTypes field determines which traffic directions the NetworkPolicy
+    governs. When policyTypes contains only 'Ingress', the policy controls incoming
+    traffic to selected pods, while outgoing (egress) traffic remains unrestricted.
+    If policyTypes contains only 'Egress', the policy controls outbound traffic and
+    ingress is unrestricted. If policyTypes contains both ['Ingress', 'Egress'], the
+    policy governs both directions. If policyTypes is not specified but ingress rules
+    are defined, it defaults to ['Ingress']. This allows fine-grained control - for
+    example, you might strictly control what can connect to a database (Ingress) but
+    allow the database to reach any external service for updates (unrestricted Egress).
+    Understanding policyTypes is crucial for avoiding unintended traffic blocking,
+    especially for egress traffic which is often overlooked.
+  require_pass: true
+- type: mcq
+  sequence_order: 1
+  question: What command lists all pods in all namespaces?
+  options:
+  - kubectl get pods -A
+  - kubectl list pods --all
+  - kubectl get pods --everywhere
+  - kubectl pods list -A
+  correct_answer_index: 0
+  explanation: kubectl get pods -A (or --all-namespaces) lists pods across all namespaces.
+    The -A flag is shorthand for --all-namespaces.
+  require_pass: true

@@ -1,0 +1,59 @@
+slug: hybridization-practice
+title: hybridization — Practice
+difficulty: medium
+sequence_order: 9
+estimated_minutes: 2
+key_concepts:
+- hybridization
+prerequisites: []
+content_md: '# hybridization — Practice 🚀
+
+
+  In ethene, each carbon forms 3 σ bonds (2 with H, 1 with C) and 1 π bond. This requires
+  sp² hybridization.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What is the hybridization of carbon atoms in ethene (C₂H₄)?
+  options:
+  - sp
+  - sp²
+  - sp³
+  - sp³d
+  require_pass: true
+  correct_answer: sp²
+  explanation: 'In ethene (C₂H₄), each carbon atom has sp² hybridization. Each carbon forms 3 sigma (σ) bonds: 2 C-H single bonds and 1 C-C sigma bond from the C=C double bond. To form 3 σ bonds, carbon uses sp² hybrid orbitals (mixing one 2s and two 2p orbitals to create three sp² orbitals at 120° angles in a trigonal planar arrangement). The remaining unhybridized 2p orbital on each carbon overlaps sideways to form the pi (π) bond of the C=C double bond. Structure: H₂C=CH₂ with all atoms in the same plane. Bond angles around each carbon are approximately 120°. This sp² hybridization is characteristic of carbon atoms in alkenes (compounds with C=C double bonds) and explains their planar geometry and restricted rotation around the double bond.'
+- type: mcq
+  sequence_order: 2
+  question: Which molecule has sp hybridized carbon atoms?
+  options:
+  - CH₄ (methane)
+  - C₂H₄ (ethene)
+  - C₂H₂ (ethyne)
+  - C₂H₆ (ethane)
+  require_pass: true
+  correct_answer: C₂H₂ (ethyne)
+  explanation: 'C₂H₂ (ethyne/acetylene) has sp hybridized carbon atoms. Structure: H-C≡C-H with a carbon-carbon triple bond. Each carbon forms 2 sigma (σ) bonds: 1 C-H bond and 1 C-C sigma bond. To form 2 σ bonds, carbon uses sp hybrid orbitals (mixing one 2s and one 2p orbital to create two sp orbitals at 180° in a linear arrangement). The two remaining unhybridized 2p orbitals on each carbon overlap sideways to form two pi (π) bonds. The molecule is completely linear with H-C-C bond angles of 180°. Comparison: CH₄ (sp³, tetrahedral), C₂H₄ (sp², trigonal planar), C₂H₆ (sp³, tetrahedral). sp hybridization occurs in alkynes (compounds with C≡C triple bonds) and explains their linear geometry.'
+- type: mcq
+  sequence_order: 3
+  question: What is the relationship between the number of sigma bonds formed by an atom and its hybridization?
+  options:
+  - Number of sigma bonds = number of hybrid orbitals used
+  - Number of sigma bonds is always less than hybrid orbitals
+  - Number of sigma bonds determines the type of pi bonds only
+  - Sigma bonds do not depend on hybridization
+  require_pass: true
+  correct_answer: Number of sigma bonds = number of hybrid orbitals used
+  explanation: 'The number of sigma (σ) bonds formed by an atom equals the number of hybrid orbitals used. Each sigma bond requires one hybrid orbital from the atom. Examples: (1) sp hybridization uses 2 hybrid orbitals → forms 2 σ bonds (linear, 180°), as in C₂H₂ or CO₂, (2) sp² hybridization uses 3 hybrid orbitals → forms 3 σ bonds (trigonal planar, 120°), as in C₂H₄ or BF₃, (3) sp³ hybridization uses 4 hybrid orbitals → forms 4 σ bonds (tetrahedral, 109.5°), as in CH₄, or 3 σ bonds + 1 lone pair as in NH₃. Unhybridized p orbitals form pi (π) bonds through sideways overlap. To determine hybridization: count sigma bonds + lone pairs on the central atom. This principle applies to carbon, nitrogen, oxygen, and other main-group elements.'

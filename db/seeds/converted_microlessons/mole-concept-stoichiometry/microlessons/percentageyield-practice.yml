@@ -1,0 +1,75 @@
+slug: percentageyield-practice
+title: percentage_yield — Practice
+difficulty: hard
+sequence_order: 15
+estimated_minutes: 2
+key_concepts:
+- percentage_yield
+prerequisites: []
+content_md: '# percentage_yield — Practice 🚀
+
+
+  CaCO₃ → CaO + CO₂. Moles CaCO₃ = 100/100 = 1 mol. Theoretical CaO = 1 × 56 = 56
+  g. % Yield = (50/56) × 100 = 89.3%
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: short_answer
+  sequence_order: 2
+  question: When 100 g of calcium carbonate is heated, 50 g of calcium oxide is obtained.
+    Calculate the percentage yield. (Reaction - CaCO₃ → CaO + CO₂, Atomic masses
+    - Ca=40, C=12, O=16)
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: 'In a reaction, the theoretical yield is 80 g but the actual yield is
+    60 g. What is the percentage yield?'
+  options:
+  - 60%
+  - 75%
+  - 80%
+  - 133%
+  require_pass: true
+  correct_answer: 75%
+  explanation: 'Calculating percentage yield: **% Yield = (Actual yield / Theoretical
+    yield) × 100**. Given: Actual yield = 60 g, Theoretical yield = 80 g. (1) % Yield
+    = (60/80) × 100 = **75%**. Theoretical yield is the maximum amount of product
+    that can be formed from given reactants (calculated using stoichiometry). Actual
+    yield is what we actually obtain in the lab (always less than theoretical). Reasons
+    for yield < 100%: (1) Incomplete reactions (equilibrium), (2) Side reactions producing
+    other products, (3) Loss during transfer/purification, (4) Reversible reactions.
+    Note: % yield can NEVER exceed 100% (violates law of conservation of mass). If
+    you calculate >100%, check for: impure product, experimental errors, or calculation
+    mistakes. Industrial processes aim for high yields to maximize profit and minimize
+    waste.'
+- type: mcq
+  sequence_order: 4
+  question: 'A reaction has a theoretical yield of 25 g. If the percentage yield
+    is 80%, what is the actual yield?'
+  options:
+  - 20 g
+  - 25 g
+  - 30 g
+  - 31.25 g
+  require_pass: true
+  correct_answer: 20 g
+  explanation: 'Finding actual yield from percentage yield: Rearranging the formula
+    **% Yield = (Actual yield / Theoretical yield) × 100**, we get: **Actual yield
+    = (% Yield × Theoretical yield) / 100**. Given: Theoretical yield = 25 g, % Yield
+    = 80%. (1) Actual yield = (80 × 25) / 100 = 2000 / 100 = **20 g**. This means
+    out of maximum possible 25 g, we obtained 20 g (80% efficiency). Example: In
+    pharmaceutical industry, if a drug synthesis has theoretical yield of 100 kg but
+    actual yield is 85 kg, then % yield = 85%. Companies optimize reaction conditions
+    (temperature, pressure, catalysts, time) to maximize yield. Economic impact: Higher
+    yields reduce costs, waste, and environmental impact. Even 1% improvement in a
+    large-scale industrial process can save millions of dollars annually!'

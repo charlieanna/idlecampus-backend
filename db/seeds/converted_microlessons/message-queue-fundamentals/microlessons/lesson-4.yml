@@ -1,0 +1,367 @@
+slug: lesson-4
+title: Lesson 4
+difficulty: easy
+sequence_order: 4
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Message Queues and Async Processing\n\n\
+  \    **Message queues** enable asynchronous communication between services, decoupling\
+  \ producers from consumers.\n\n    ## Why Message Queues?\n\n    ### Problem: Synchronous\
+  \ Processing\n\n    ```python\n    # Traditional synchronous approach\n    def create_order(order_data):\n\
+  \        # All operations block the request\n        order = db.save_order(order_data)\
+  \          # 50ms\n        send_confirmation_email(order)             # 2000ms -\
+  \ SLOW!\n        update_inventory(order)                    # 100ms\n        notify_shipping(order)\
+  \                     # 500ms\n        update_analytics(order)                 \
+  \   # 200ms\n\n        return order  # User waits 2850ms!\n    ```\n\n    **Problems:**\n\
+  \    - High latency (user waits for everything)\n    - Single point of failure (email\
+  \ service down = order fails)\n    - No retry mechanism\n    - Resource waste (holding\
+  \ connection for 3 seconds)\n\n    ### Solution: Asynchronous with Message Queue\n\
+  \n    ```python\n    # Async approach with message queue\n    def create_order(order_data):\n\
+  \        # Save order (critical operation)\n        order = db.save_order(order_data)\
+  \          # 50ms\n\n        # Publish to queue (non-critical operations)\n    \
+  \    queue.publish('orders.created', order)     # 1ms\n\n        return order  #\
+  \ User waits only 51ms!\n\n    # Background worker handles the rest\n    def handle_order_created(order):\n\
+  \        send_confirmation_email(order)\n        update_inventory(order)\n     \
+  \   notify_shipping(order)\n        update_analytics(order)\n    ```\n\n    **Benefits:**\n\
+  \    - Fast response (50ms vs 2850ms)\n    - Fault tolerance (failures handled independently)\n\
+  \    - Automatic retries\n    - Better resource utilization\n\n    ## Three Core\
+  \ Benefits\n\n    ### 1. Decoupling\n\n    **Services don't need to know about each\
+  \ other**\n\n    ```python\n    # Without queue: Tight coupling\n    class OrderService:\n\
+  \        def __init__(self, email_service, inventory_service):\n            self.email\
+  \ = email_service      # Direct dependency\n            self.inventory = inventory_service\n\
+  \n        def create_order(self, order):\n            self.email.send(order)   \
+  \       # Must know email service\n            self.inventory.update(order)    #\
+  \ Must know inventory service\n\n    # With queue: Loose coupling\n    class OrderService:\n\
+  \        def __init__(self, queue):\n            self.queue = queue  # Only knows\
+  \ about queue\n\n        def create_order(self, order):\n            db.save(order)\n\
+  \            self.queue.publish('orders.created', order)\n            # Done! Don't\
+  \ care who consumes it\n    ```\n\n    **Real-world example: E-commerce**\n\n  \
+  \  ```\n    Order Service publishes: \"order.created\"\n\n    Consumers (all independent):\n\
+  \    ├─ Email Service → Sends confirmation\n    ├─ Inventory Service → Updates stock\n\
+  \    ├─ Shipping Service → Creates shipment\n    ├─ Analytics Service → Tracks metrics\n\
+  \    └─ Fraud Service → Checks for fraud\n\n    Add new service? Just subscribe\
+  \ to the queue!\n    Remove service? Just unsubscribe!\n    ```\n\n    ### 2. Scalability\n\
+  \n    **Handle traffic spikes and scale consumers independently**\n\n    ```python\n\
+  \    # Black Friday scenario\n    Orders:           10,000/second\n    Email workers:\
+  \    100 instances (10s delay OK)\n    Inventory workers: 500 instances (must be\
+  \ fast)\n    Analytics workers: 20 instances (1hr delay OK)\n\n    # Each consumer\
+  \ scales independently!\n    ```\n\n    **Example: Image Processing**\n\n    ```python\n\
+  \    # Producer: Upload service\n    def upload_image(file):\n        # Save original\n\
+  \        path = storage.save(file)\n\n        # Queue processing tasks\n       \
+  \ queue.publish('images.uploaded', {\n            'path': path,\n            'sizes':\
+  \ ['thumbnail', 'medium', 'large']\n        })\n\n        return {'status': 'processing'}\n\
+  \n    # Consumers: Image workers (can scale to 100s)\n    def process_image(message):\n\
+  \        original = storage.get(message['path'])\n\n        for size in message['sizes']:\n\
+  \            resized = resize_image(original, size)\n            storage.save(resized,\
+  \ f\"{path}_{size}\")\n\n        # Update database: processing complete\n      \
+  \  db.update_image_status(message['path'], 'complete')\n    ```\n\n    **Scaling\
+  \ strategy:**\n    ```\n    Normal load:  10 workers\n    Peak load:    100 workers\
+  \ (auto-scale based on queue depth)\n    Off-peak:     2 workers (save costs)\n\
+  \    ```\n\n    ### 3. Reliability\n\n    **Messages persist until successfully\
+  \ processed**\n\n    ```python\n    # Message lifecycle\n    1. Producer publishes\
+  \ message → Queue stores it\n    2. Consumer receives message → Processing...\n\
+  \    3a. Success → Consumer ACKs → Queue deletes message ✓\n    3b. Failure → No\
+  \ ACK → Queue redelivers message ↻\n    ```\n\n    **Guaranteed delivery:**\n\n\
+  \    ```python\n    # Without queue: Lost messages\n    try:\n        send_email(order)\n\
+  \    except NetworkError:\n        # Email lost forever! ❌\n        pass\n\n   \
+  \ # With queue: Guaranteed delivery\n    queue.publish('emails.send', order)\n \
+  \   # ✓ Persisted to disk\n    # ✓ Will retry on failure\n    # ✓ Won't lose messages\n\
+  \    ```\n\n    ## Queue vs Pub/Sub vs Event Stream\n\n    ### 1. Queue (Point-to-Point)\n\
+  \n    **Each message consumed by ONE consumer**\n\n    ```python\n    # Example:\
+  \ Job processing\n\n    Producer:\n    queue.send('tasks', {'job': 'process_video',\
+  \ 'id': 123})\n\n    Consumer Pool (3 workers):\n    Worker 1: Gets message A\n\
+  \    Worker 2: Gets message B\n    Worker 3: Gets message C\n\n    # Each message\
+  \ to exactly one worker\n    # Load balancing across workers\n    ```\n\n    **When\
+  \ to use:**\n    - Task queues (background jobs)\n    - Work distribution\n    -\
+  \ Load balancing\n    - One consumer should handle each task\n\n    ### 2. Pub/Sub\
+  \ (Publish-Subscribe)\n\n    **Each message consumed by ALL subscribers**\n\n  \
+  \  ```python\n    # Example: Order notifications\n\n    Publisher:\n    pubsub.publish('orders.created',\
+  \ order_data)\n\n    Subscribers (all receive same message):\n    ├─ Email Service:\
+  \     sends confirmation\n    ├─ Inventory Service: updates stock\n    ├─ Analytics\
+  \ Service: tracks metrics\n    └─ Webhook Service:   notifies external APIs\n\n\
+  \    # All subscribers get the message\n    # Broadcast pattern\n    ```\n\n   \
+  \ **When to use:**\n    - Broadcasting events\n    - Multiple services need same\
+  \ data\n    - Notification systems\n    - Event-driven microservices\n\n    ###\
+  \ 3. Event Stream (Log-based)\n\n    **Ordered, append-only log of events**\n\n\
+  \    ```python\n    # Example: Event sourcing\n\n    Stream: user_actions\n    Event\
+  \ 1: {\"type\": \"user.created\", \"id\": 123}\n    Event 2: {\"type\": \"user.login\"\
+  , \"id\": 123}\n    Event 3: {\"type\": \"user.updated\", \"id\": 123}\n    Event\
+  \ 4: {\"type\": \"user.logout\", \"id\": 123}\n\n    Consumer A: Reads from offset\
+  \ 0 (all history)\n    Consumer B: Reads from offset 3 (recent only)\n\n    # Events\
+  \ never deleted\n    # Consumers track their own position\n    # Can replay entire\
+  \ history\n    ```\n\n    **When to use:**\n    - Event sourcing\n    - Audit logs\n\
+  \    - Analytics (replay historical data)\n    - CQRS patterns\n\n    ## Comparison\
+  \ Table\n\n    | Feature | Queue | Pub/Sub | Event Stream |\n    |---------|-------|---------|--------------|\n\
+  \    | Consumers | One | Many | Many |\n    | Message lifetime | Until consumed\
+  \ | Until TTL | Retained (days/forever) |\n    | Ordering | Per queue | No guarantee\
+  \ | Strict (per partition) |\n    | Replay | No | No | Yes |\n    | Use case | Task\
+  \ processing | Broadcasting | Event sourcing |\n    | Examples | RabbitMQ, SQS |\
+  \ Redis Pub/Sub, SNS | Kafka, Kinesis |\n\n    ## RabbitMQ Architecture\n\n    **RabbitMQ**\
+  \ is a popular message broker implementing AMQP protocol.\n\n    ### Core Components\n\
+  \n    ```\n    Producer → Exchange → Queue → Consumer\n                  ↓\n   \
+  \            Binding\n                  ↓\n                Queue\n    ```\n\n  \
+  \  **Components:**\n\n    1. **Producer**: Sends messages\n    2. **Exchange**:\
+  \ Routes messages to queues\n    3. **Binding**: Rules connecting exchanges to queues\n\
+  \    4. **Queue**: Stores messages\n    5. **Consumer**: Receives messages\n\n \
+  \   ### Exchange Types\n\n    #### 1. Direct Exchange\n\n    **Routes by exact routing\
+  \ key match**\n\n    ```python\n    # Setup\n    exchange = channel.declare_exchange('logs',\
+  \ type='direct')\n    queue_error = channel.declare_queue('errors')\n    queue_info\
+  \ = channel.declare_queue('info')\n\n    # Bindings\n    channel.bind(queue='errors',\
+  \ exchange='logs', routing_key='error')\n    channel.bind(queue='info', exchange='logs',\
+  \ routing_key='info')\n\n    # Producer\n    channel.publish(\n        exchange='logs',\n\
+  \        routing_key='error',  # Goes to 'errors' queue\n        message='Database\
+  \ connection failed'\n    )\n\n    channel.publish(\n        exchange='logs',\n\
+  \        routing_key='info',   # Goes to 'info' queue\n        message='Server started'\n\
+  \    )\n    ```\n\n    **When to use:** Simple routing based on exact match\n\n\
+  \    #### 2. Fanout Exchange\n\n    **Broadcasts to ALL queues (pub/sub pattern)**\n\
+  \n    ```python\n    # Setup\n    exchange = channel.declare_exchange('orders',\
+  \ type='fanout')\n\n    # Multiple services subscribe\n    email_queue = channel.declare_queue('email_service')\n\
+  \    inventory_queue = channel.declare_queue('inventory_service')\n    analytics_queue\
+  \ = channel.declare_queue('analytics_service')\n\n    # All queues bound to exchange\n\
+  \    channel.bind(queue='email_service', exchange='orders')\n    channel.bind(queue='inventory_service',\
+  \ exchange='orders')\n    channel.bind(queue='analytics_service', exchange='orders')\n\
+  \n    # Producer\n    channel.publish(\n        exchange='orders',\n        routing_key='',\
+  \  # Ignored for fanout\n        message={'order_id': 123, 'amount': 99.99}\n  \
+  \  )\n    # All three queues receive the message!\n    ```\n\n    **When to use:**\
+  \ Broadcasting to multiple consumers\n\n    #### 3. Topic Exchange\n\n    **Routes\
+  \ by pattern matching**\n\n    ```python\n    # Setup\n    exchange = channel.declare_exchange('logs',\
+  \ type='topic')\n\n    # Queues with pattern bindings\n    channel.bind(queue='critical_logs',\
+  \ exchange='logs',\n                 routing_key='*.critical.*')\n    channel.bind(queue='user_logs',\
+  \ exchange='logs',\n                 routing_key='user.*')\n    channel.bind(queue='all_logs',\
+  \ exchange='logs',\n                 routing_key='#')\n\n    # Producer\n    channel.publish(exchange='logs',\n\
+  \                   routing_key='user.critical.login',\n                   message='Failed\
+  \ login attempts')\n\n    # Matches:\n    # ✓ critical_logs (*.critical.*)\n   \
+  \ # ✓ user_logs (user.*)\n    # ✓ all_logs (#)\n    ```\n\n    **Wildcards:**\n\
+  \    - `*` matches exactly one word\n    - `#` matches zero or more words\n\n  \
+  \  **When to use:** Complex routing logic, hierarchical topics\n\n    #### 4. Headers\
+  \ Exchange\n\n    **Routes by message headers**\n\n    ```python\n    # Bind by\
+  \ headers\n    channel.bind(\n        queue='priority_queue',\n        exchange='tasks',\n\
+  \        arguments={'x-match': 'all', 'priority': 'high', 'urgent': True}\n    )\n\
+  \n    # Message with matching headers goes to priority_queue\n    channel.publish(\n\
+  \        exchange='tasks',\n        headers={'priority': 'high', 'urgent': True},\n\
+  \        message='Critical task'\n    )\n    ```\n\n    **When to use:** Routing\
+  \ based on multiple attributes\n\n    ## Complete Producer/Consumer Example\n\n\
+  \    ### Producer (Python + Pika)\n\n    ```python\n    import pika\n    import\
+  \ json\n\n    class OrderProducer:\n        def __init__(self):\n            # Connect\
+  \ to RabbitMQ\n            self.connection = pika.BlockingConnection(\n        \
+  \        pika.ConnectionParameters('localhost')\n            )\n            self.channel\
+  \ = self.connection.channel()\n\n            # Declare exchange\n            self.channel.exchange_declare(\n\
+  \                exchange='orders',\n                exchange_type='topic',\n  \
+  \              durable=True  # Survives broker restart\n            )\n\n      \
+  \  def publish_order(self, order):\n            routing_key = f\"orders.{order['status']}.{order['country']}\"\
+  \n\n            message = json.dumps(order)\n\n            self.channel.basic_publish(\n\
+  \                exchange='orders',\n                routing_key=routing_key,\n\
+  \                body=message,\n                properties=pika.BasicProperties(\n\
+  \                    delivery_mode=2,  # Persistent message\n                  \
+  \  content_type='application/json',\n                    timestamp=int(time.time())\n\
+  \                )\n            )\n\n            print(f\"Published order {order['id']}\
+  \ with routing key {routing_key}\")\n\n        def close(self):\n            self.connection.close()\n\
+  \n    # Usage\n    producer = OrderProducer()\n    producer.publish_order({\n  \
+  \      'id': 123,\n        'status': 'created',\n        'country': 'US',\n    \
+  \    'amount': 99.99\n    })\n    producer.close()\n    ```\n\n    ### Consumer\
+  \ (Python + Pika)\n\n    ```python\n    import pika\n    import json\n    import\
+  \ time\n\n    class OrderConsumer:\n        def __init__(self, queue_name, routing_keys):\n\
+  \            self.queue_name = queue_name\n            self.routing_keys = routing_keys\n\
+  \n            # Connect\n            self.connection = pika.BlockingConnection(\n\
+  \                pika.ConnectionParameters('localhost')\n            )\n       \
+  \     self.channel = self.connection.channel()\n\n            # Declare exchange\
+  \ (idempotent)\n            self.channel.exchange_declare(\n                exchange='orders',\n\
+  \                exchange_type='topic',\n                durable=True\n        \
+  \    )\n\n            # Declare queue\n            self.channel.queue_declare(\n\
+  \                queue=self.queue_name,\n                durable=True  # Survives\
+  \ broker restart\n            )\n\n            # Bind queue to exchange with routing\
+  \ keys\n            for routing_key in self.routing_keys:\n                self.channel.queue_bind(\n\
+  \                    queue=self.queue_name,\n                    exchange='orders',\n\
+  \                    routing_key=routing_key\n                )\n\n            #\
+  \ QoS: Prefetch only 1 message (fair dispatch)\n            self.channel.basic_qos(prefetch_count=1)\n\
+  \n        def callback(self, ch, method, properties, body):\n            try:\n\
+  \                order = json.loads(body)\n                print(f\"Processing order\
+  \ {order['id']}\")\n\n                # Simulate processing\n                time.sleep(2)\n\
+  \n                # Process order (your business logic)\n                self.process_order(order)\n\
+  \n                # Acknowledge successful processing\n                ch.basic_ack(delivery_tag=method.delivery_tag)\n\
+  \                print(f\"Order {order['id']} processed successfully\")\n\n    \
+  \        except Exception as e:\n                print(f\"Error processing order:\
+  \ {e}\")\n                # Reject and requeue\n                ch.basic_nack(\n\
+  \                    delivery_tag=method.delivery_tag,\n                    requeue=True\n\
+  \                )\n\n        def process_order(self, order):\n            # Your\
+  \ business logic here\n            print(f\"Sending confirmation email for order\
+  \ {order['id']}\")\n\n        def start(self):\n            print(f\"Waiting for\
+  \ messages in {self.queue_name}\")\n\n            self.channel.basic_consume(\n\
+  \                queue=self.queue_name,\n                on_message_callback=self.callback,\n\
+  \                auto_ack=False  # Manual acknowledgment\n            )\n\n    \
+  \        self.channel.start_consuming()\n\n        def close(self):\n          \
+  \  self.connection.close()\n\n    # Usage\n    consumer = OrderConsumer(\n     \
+  \   queue_name='email_service',\n        routing_keys=['orders.created.#', 'orders.updated.#']\n\
+  \    )\n    consumer.start()\n    ```\n\n    ## Dead Letter Queues (DLQ)\n\n   \
+  \ **Handle messages that fail repeatedly**\n\n    ```python\n    # Main queue with\
+  \ DLQ\n    channel.queue_declare(\n        queue='orders',\n        durable=True,\n\
+  \        arguments={\n            'x-dead-letter-exchange': 'orders_dlx',\n    \
+  \        'x-dead-letter-routing-key': 'failed',\n            'x-message-ttl': 60000\
+  \  # 60s timeout\n        }\n    )\n\n    # Dead letter queue\n    channel.exchange_declare(exchange='orders_dlx',\
+  \ type='direct')\n    channel.queue_declare(queue='orders_failed', durable=True)\n\
+  \    channel.queue_bind(\n        queue='orders_failed',\n        exchange='orders_dlx',\n\
+  \        routing_key='failed'\n    )\n\n    # Messages go to DLQ when:\n    # 1.\
+  \ Consumer rejects with requeue=False\n    # 2. Message TTL expires\n    # 3. Queue\
+  \ length limit exceeded\n    ```\n\n    **DLQ Consumer:**\n\n    ```python\n   \
+  \ def handle_failed_message(ch, method, properties, body):\n        order = json.loads(body)\n\
+  \n        # Log failure\n        logger.error(f\"Order {order['id']} failed after\
+  \ retries\",\n                    extra={'order': order})\n\n        # Send alert\n\
+  \        send_alert(f\"Order processing failed: {order['id']}\")\n\n        # Store\
+  \ in failure database for manual review\n        db.save_failed_order(order)\n\n\
+  \        ch.basic_ack(delivery_tag=method.delivery_tag)\n    ```\n\n    ## Retry\
+  \ Strategies\n\n    ### 1. Exponential Backoff\n\n    ```python\n    def process_with_retry(order):\n\
+  \        max_retries = 5\n        retry_count = 0\n\n        while retry_count <\
+  \ max_retries:\n            try:\n                process_order(order)\n       \
+  \         return  # Success!\n            except Exception as e:\n             \
+  \   retry_count += 1\n\n                if retry_count >= max_retries:\n       \
+  \             # Give up, send to DLQ\n                    ch.basic_nack(method.delivery_tag,\
+  \ requeue=False)\n                    raise\n\n                # Exponential backoff:\
+  \ 1s, 2s, 4s, 8s, 16s\n                wait_time = 2 ** retry_count\n          \
+  \      print(f\"Retry {retry_count}/{max_retries} after {wait_time}s\")\n      \
+  \          time.sleep(wait_time)\n    ```\n\n    ### 2. Delayed Retry Queue\n\n\
+  \    ```python\n    # Setup delayed retry queue\n    channel.queue_declare(\n  \
+  \      queue='orders_retry',\n        arguments={\n            'x-dead-letter-exchange':\
+  \ 'orders',\n            'x-dead-letter-routing-key': 'retry',\n            'x-message-ttl':\
+  \ 5000  # 5 second delay\n        }\n    )\n\n    # Consumer with retry\n    def\
+  \ callback(ch, method, properties, body):\n        try:\n            process_order(json.loads(body))\n\
+  \            ch.basic_ack(delivery_tag=method.delivery_tag)\n        except RetryableError:\n\
+  \            # Send to retry queue\n            ch.basic_publish(\n            \
+  \    exchange='',\n                routing_key='orders_retry',\n               \
+  \ body=body\n            )\n            ch.basic_ack(delivery_tag=method.delivery_tag)\n\
+  \        except FatalError:\n            # Don't retry, send to DLQ\n          \
+  \  ch.basic_nack(delivery_tag=method.delivery_tag, requeue=False)\n    ```\n\n \
+  \   ### 3. Retry with Attempt Tracking\n\n    ```python\n    def callback(ch, method,\
+  \ properties, body):\n        # Get retry count from headers\n        headers =\
+  \ properties.headers or {}\n        retry_count = headers.get('x-retry-count', 0)\n\
+  \n        try:\n            order = json.loads(body)\n            process_order(order)\n\
+  \            ch.basic_ack(delivery_tag=method.delivery_tag)\n\n        except Exception\
+  \ as e:\n            if retry_count >= 3:\n                # Max retries exceeded\n\
+  \                ch.basic_nack(delivery_tag=method.delivery_tag, requeue=False)\n\
+  \                return\n\n            # Increment retry count\n            new_headers\
+  \ = headers.copy()\n            new_headers['x-retry-count'] = retry_count + 1\n\
+  \n            # Republish with updated headers\n            ch.basic_publish(\n\
+  \                exchange='orders',\n                routing_key=method.routing_key,\n\
+  \                body=body,\n                properties=pika.BasicProperties(headers=new_headers)\n\
+  \            )\n\n            ch.basic_ack(delivery_tag=method.delivery_tag)\n \
+  \   ```\n\n    ## Real-World Example: E-commerce Order Processing\n\n    ```python\n\
+  \    # Order creation flow\n\n    # 1. API receives order\n    @app.post('/orders')\n\
+  \    def create_order(order_data):\n        # Save to database\n        order =\
+  \ db.save_order(order_data)\n\n        # Publish to message queue\n        producer.publish('orders.created',\
+  \ order)\n\n        return {'order_id': order.id, 'status': 'processing'}\n\n  \
+  \  # 2. Multiple consumers process async\n\n    # Email Service\n    def email_consumer():\n\
+  \        while True:\n            order = queue.consume('orders.created')\n    \
+  \        send_confirmation_email(order)\n\n    # Inventory Service\n    def inventory_consumer():\n\
+  \        while True:\n            order = queue.consume('orders.created')\n    \
+  \        reserve_inventory(order)\n\n    # Payment Service\n    def payment_consumer():\n\
+  \        while True:\n            order = queue.consume('orders.created')\n    \
+  \        charge_payment(order)\n\n            if payment_successful:\n         \
+  \       queue.publish('orders.paid', order)\n\n    # Shipping Service\n    def shipping_consumer():\n\
+  \        while True:\n            order = queue.consume('orders.paid')  # Wait for\
+  \ payment\n            create_shipment(order)\n    ```\n\n    **Benefits achieved:**\n\
+  \    - Fast API response (50ms vs 3000ms)\n    - Each service scales independently\n\
+  \    - Failures don't block other services\n    - Easy to add new services (just\
+  \ subscribe)\n\n    **Next**: We'll explore event-driven architectures with Kafka\
+  \ and event sourcing."
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What is the key difference between a Queue (point-to-point) and Pub/Sub
+    (publish-subscribe)?
+  options:
+  - Queues are faster than Pub/Sub
+  - Queue delivers each message to ONE consumer, Pub/Sub delivers each message to
+    ALL subscribers
+  - Pub/Sub requires more infrastructure than Queue
+  - Queue is for synchronous communication, Pub/Sub is asynchronous
+  correct_answer: Queue delivers each message to ONE consumer, Pub/Sub delivers each
+    message to ALL subscribers
+  explanation: 'Queues and Pub/Sub have fundamentally different message delivery semantics
+    that determine their use cases. Queue (Point-to-Point): Each message consumed
+    by exactly ONE consumer (work distribution). Producer sends task to queue, multiple
+    workers compete for messages. Worker 1 gets message A, Worker 2 gets message B
+    - load balancing. Once consumed and acknowledged, message deleted from queue.
+    Use cases: Task processing (video encoding, email sending), Work distribution
+    (background jobs), Load balancing across workers. Example: Job queue with 3 workers
+    processing 100 tasks - each worker gets ~33 tasks. Pub/Sub (Publish-Subscribe):
+    Each message delivered to ALL subscribers (broadcasting). Publisher publishes
+    event, all subscribers receive copy of message. Publisher sends order.created,
+    Email service receives it, Inventory service receives it, Analytics receives it
+    - all independently. Messages not deleted when one subscriber consumes - all must
+    process. Use cases: Event broadcasting (order notifications), Multiple services
+    need same data, Fan-out patterns, Event-driven microservices. Example: Order created
+    triggers email confirmation, inventory update, shipping notification, analytics
+    tracking - all services notified. Real-world analogy: Queue is like task assignment
+    (manager assigns each task to one employee), Pub/Sub is like company announcement
+    (everyone receives the announcement). Key distinction: Queue: ONE consumer per
+    message (competitive consumers), Pub/Sub: ALL subscribers per message (copy to
+    each). Choose Queue for: Work that should be done once by any available worker.
+    Choose Pub/Sub for: Events that multiple services need to react to independently.'
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: Why is asynchronous processing with message queues faster than synchronous
+    processing?
+  options:
+  - Message queues use faster hardware
+  - Asynchronous processing returns immediately after queuing, deferring slow operations
+    to background workers
+  - Message queues compress the data
+  - Asynchronous processing uses parallel threads automatically
+  correct_answer: Asynchronous processing returns immediately after queuing, deferring
+    slow operations to background workers
+  explanation: 'Asynchronous processing with message queues dramatically reduces response
+    time by deferring non-critical operations to background workers, enabling immediate
+    response to users. Synchronous example (slow): create_order(): save_order() -
+    50ms, send_email() - 2000ms (BLOCKING!), update_inventory() - 100ms, notify_shipping()
+    - 500ms, update_analytics() - 200ms. Total: 2850ms - User waits for everything
+    including slow email service. Asynchronous example (fast): create_order(): save_order()
+    - 50ms, queue.publish("order.created") - 1ms, return order - 51ms total. Background
+    workers handle email, inventory, shipping, analytics independently. Why it''s
+    faster: (1) Immediate response - User only waits for critical operation (save
+    to database), (2) Deferred processing - Slow operations (email, external APIs)
+    happen in background, (3) Parallel processing - Multiple workers process tasks
+    concurrently, (4) Failure isolation - Email service down doesn''t block order
+    creation. Additional benefits: (1) Better user experience - 51ms vs 2850ms response
+    time (56x faster!), (2) Resource efficiency - Web server thread freed immediately,
+    handles more requests, (3) Fault tolerance - Failures in non-critical tasks don''t
+    affect core functionality, (4) Retry mechanism - Failed background tasks can retry
+    automatically. Real-world impact: High-traffic site with 10,000 req/sec, synchronous
+    would need 10,000 * 2.85s = 28,500 concurrent connections. Asynchronous needs
+    10,000 * 0.05s = 500 concurrent connections (57x fewer resources).'
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: What is an Event Stream (like Kafka) and how does it differ from traditional
+    message queues?
+  options:
+  - Event Streams are just faster versions of message queues
+  - Event Streams are append-only logs that retain messages permanently for replay,
+    while queues delete messages after consumption
+  - Event Streams only work with one consumer, queues support multiple
+  - Event Streams and queues are identical
+  correct_answer: Event Streams are append-only logs that retain messages permanently
+    for replay, while queues delete messages after consumption
+  explanation: 'Event Streams (like Kafka) are distributed, immutable append-only
+    logs that retain events for replay, fundamentally different from traditional message
+    queues. Event Stream characteristics: (1) Append-only log - Events written sequentially,
+    never modified or deleted, (2) Retention - Events kept for days/weeks/forever
+    (configurable), (3) Multiple consumers - Each consumer tracks own offset (position)
+    in log, (4) Replay capability - Can rewind to any point and re-process, (5) Ordered
+    - Strict ordering within partition. Traditional Queue: Messages deleted after
+    consumption, No replay (message gone once consumed), One consumer per message
+    (competitive consumption), No inherent ordering guarantee (across messages). Use
+    cases for Event Streams: (1) Event sourcing - Store all state changes as events,
+    rebuild state by replaying, (2) Audit logs - Immutable record of all events, (3)
+    Analytics - New analytics service can process all historical events, (4) CQRS
+    - Separate read/write models synced via event log, (5) Time travel debugging -
+    Replay events to reproduce bugs. Example scenario: E-commerce events. Queue approach:
+    Order created → processed → deleted (lost forever). Event stream approach: Event
+    1: order.created, Event 2: order.paid, Event 3: order.shipped stored permanently.
+    New fraud detection service deployed → can analyze ALL historical orders from
+    beginning. Benefits: (1) Replayability - Process historical data anytime, (2)
+    Multiple consumers - Each reads at own pace, (3) Audit trail - Complete history
+    preserved. Trade-offs: More complex, higher storage costs, eventual consistency.
+    When to use: Event sourcing systems, analytics requiring history, audit requirements,
+    CQRS patterns.'
+  require_pass: true

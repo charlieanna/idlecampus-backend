@@ -1,0 +1,89 @@
+slug: lesson-15
+title: Lesson 15
+sequence_order: 15
+estimated_minutes: 2
+difficulty: easy
+key_concepts: []
+content_md: "# Microlesson \U0001F680\n\n# Dictionaries & Key-Value Pairs\n\n    **Dictionaries**\
+  \ store data as key-value pairs. They're fast for lookups!\n\n    ## Creating Dictionaries\n\
+  \n    ```python\n    # Empty dictionary\n    person = {}\n\n    # With initial data\n\
+  \    person = {\n        \"name\": \"Alice\",\n        \"age\": 25,\n        \"\
+  city\": \"New York\"\n    }\n\n    # Using dict()\n    person = dict(name=\"Alice\"\
+  , age=25)\n    ```\n\n    ## Accessing Values\n\n    ```python\n    person = {\"\
+  name\": \"Alice\", \"age\": 25}\n\n    # By key\n    print(person[\"name\"])  #\
+  \ \"Alice\"\n\n    # Using get() (safer, returns None if not found)\n    print(person.get(\"\
+  name\"))  # \"Alice\"\n    print(person.get(\"email\"))  # None\n    print(person.get(\"\
+  email\", \"N/A\"))  # \"N/A\" (default)\n    ```\n\n    ## Modifying Dictionaries\n\
+  \n    ```python\n    person = {\"name\": \"Alice\"}\n\n    # Add/update\n    person[\"\
+  age\"] = 25\n    person[\"name\"] = \"Bob\"  # Updates existing\n\n    # Remove\n\
+  \    del person[\"age\"]\n    age = person.pop(\"age\", 0)  # Remove and return\n\
+  \    ```\n\n    ## Dictionary Methods\n\n    ```python\n    person = {\"name\":\
+  \ \"Alice\", \"age\": 25, \"city\": \"NYC\"}\n\n    # Get all keys\n    keys = person.keys()\
+  \  # dict_keys(['name', 'age', 'city'])\n\n    # Get all values\n    values = person.values()\
+  \  # dict_values(['Alice', 25, 'NYC'])\n\n    # Get key-value pairs\n    items =\
+  \ person.items()  # dict_items([('name', 'Alice'), ...])\n\n    # Check if key exists\n\
+  \    if \"name\" in person:\n        print(\"Name exists!\")\n\n    # Clear all\
+  \ items\n    person.clear()\n    ```\n\n    ## Looping Through Dictionaries\n\n\
+  \    ```python\n    person = {\"name\": \"Alice\", \"age\": 25, \"city\": \"NYC\"\
+  }\n\n    # Loop through keys\n    for key in person:\n        print(key)\n\n   \
+  \ # Loop through values\n    for value in person.values():\n        print(value)\n\
+  \n    # Loop through key-value pairs\n    for key, value in person.items():\n  \
+  \      print(f\"{key}: {value}\")\n    ```\n\n    ## Nested Dictionaries\n\n   \
+  \ ```python\n    users = {\n        \"user1\": {\"name\": \"Alice\", \"age\": 25},\n\
+  \        \"user2\": {\"name\": \"Bob\", \"age\": 30}\n    }\n\n    print(users[\"\
+  user1\"][\"name\"])  # \"Alice\"\n    ```\n\n    ## Dictionary Comprehension\n\n\
+  \    ```python\n    # Create dictionary from lists\n    keys = ['a', 'b', 'c']\n\
+  \    values = [1, 2, 3]\n    d = {k: v for k, v in zip(keys, values)}\n    # {'a':\
+  \ 1, 'b': 2, 'c': 3}\n\n    # Filter dictionary\n    scores = {\"Alice\": 90, \"\
+  Bob\": 75, \"Charlie\": 85}\n    passing = {k: v for k, v in scores.items() if v\
+  \ >= 80}\n    # {'Alice': 90, 'Charlie': 85}\n    ```\n\n    ## Common Use Cases\n\
+  \n    ### Counting occurrences\n    ```python\n    text = \"hello world\"\n    counts\
+  \ = {}\n    for char in text:\n        counts[char] = counts.get(char, 0) + 1\n\
+  \    ```\n\n    ### Grouping data\n    ```python\n    students = [\n        {\"\
+  name\": \"Alice\", \"grade\": \"A\"},\n        {\"name\": \"Bob\", \"grade\": \"\
+  B\"},\n        {\"name\": \"Charlie\", \"grade\": \"A\"}\n    ]\n\n    by_grade\
+  \ = {}\n    for student in students:\n        grade = student[\"grade\"]\n     \
+  \   if grade not in by_grade:\n            by_grade[grade] = []\n        by_grade[grade].append(student[\"\
+  name\"])\n    ```\n\n    **Practice:** Try the Dictionaries lab!"
+exercises:
+- type: mcq
+  slug: lesson-15-mcq-1
+  sequence_order: 1
+  question: What is the difference between a list and a tuple in Python?
+  options:
+  - Lists are mutable (can be modified), tuples are immutable (cannot be changed)
+  - Lists are faster than tuples
+  - Tuples can only store strings
+  - Lists use less memory
+  correct_answer_index: 0
+  explanation: Lists are mutable - you can add, remove, or modify elements after creation using methods like append(), remove(), etc. Tuples are immutable - once created, they cannot be modified. Tuples are slightly faster and use less memory, making them ideal for fixed collections of data.
+- type: mcq
+  slug: lesson-15-mcq-2
+  sequence_order: 2
+  question: What is a list comprehension in Python?
+  options:
+  - A concise way to create lists using a single line of code with optional filtering
+  - A method to compress lists
+  - A way to compare two lists
+  - A list sorting algorithm
+  correct_answer_index: 0
+  explanation: List comprehensions provide a concise syntax to create lists: [expression for item in iterable if condition]. For example, [x**2 for x in range(10) if x % 2 == 0] creates a list of squares of even numbers. This is more readable and often faster than traditional loops.
+- type: mcq
+  slug: lesson-15-mcq-3
+  sequence_order: 3
+  question: What does the try-except block do in Python?
+  options:
+  - Handles exceptions (errors) gracefully without crashing the program
+  - Tries to optimize code performance
+  - Tests if code syntax is correct
+  - Executes code multiple times until it succeeds
+  correct_answer_index: 0
+  explanation: try-except blocks catch and handle exceptions, preventing program crashes. Code in the try block is executed, and if an exception occurs, the except block handles it. For example, catching ValueError when converting user input to int prevents crashes from invalid input.
+objectives:
+- Understand core concepts of Dictionaries & Key-Value Pairs
+- Apply learned concepts in practical scenarios
+- Identify best practices and common patterns
+- Recognize trade-offs in different approaches
+next_recommended:
+- control
+- data-structures

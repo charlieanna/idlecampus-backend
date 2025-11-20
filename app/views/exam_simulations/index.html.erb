@@ -1,0 +1,153 @@
+<div class="container py-5">
+  <div class="text-center mb-5">
+    <h1 class="display-4">Certification Exam Practice</h1>
+    <p class="lead text-muted">Simulate real certification exams with time pressure and no hints</p>
+  </div>
+  
+  <!-- Certification Options -->
+  <div class="row mb-5">
+    <% @certifications.each do |cert_type, info| %>
+      <div class="col-md-4 mb-4">
+        <div class="card h-100 shadow-sm certification-card">
+          <div class="card-body text-center">
+            <div class="cert-icon mb-3">
+              <% if cert_type == 'dca' %>
+                <i class="fab fa-docker fa-3x text-primary"></i>
+              <% else %>
+                <i class="fas fa-dharmachakra fa-3x text-info"></i>
+              <% end %>
+            </div>
+            
+            <h5 class="card-title"><%= info[:title] %></h5>
+            <p class="text-muted small"><%= info[:description] %></p>
+            
+            <div class="exam-details mb-3">
+              <span class="badge badge-secondary">
+                <i class="fas fa-clock"></i> <%= info[:duration] %> minutes
+              </span>
+              <span class="badge badge-secondary">
+                <i class="fas fa-question-circle"></i> <%= info[:questions] %> questions
+              </span>
+              <span class="badge badge-success">
+                <i class="fas fa-percentage"></i> <%= info[:passing_score] %>% to pass
+              </span>
+            </div>
+            
+            <%= link_to start_exam_simulations_path(cert_type), 
+                class: "btn btn-primary" do %>
+              <i class="fas fa-play"></i> Start Practice Exam
+            <% end %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+  
+  <!-- Past Simulations -->
+  <% if @past_simulations.any? %>
+    <div class="card shadow">
+      <div class="card-header">
+        <h4 class="mb-0"><i class="fas fa-history"></i> Recent Practice Exams</h4>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Certification</th>
+                <th>Date</th>
+                <th>Score</th>
+                <th>Result</th>
+                <th>Time Used</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @past_simulations.each do |sim| %>
+                <tr>
+                  <td>
+                    <span class="badge badge-primary"><%= sim.certification_type.upcase %></span>
+                  </td>
+                  <td><%= sim.created_at.strftime('%b %d, %Y') %></td>
+                  <td>
+                    <strong><%= sim.score %>%</strong>
+                    <small class="text-muted">
+                      (<%= sim.correct_count %>/<%= sim.total_questions %>)
+                    </small>
+                  </td>
+                  <td>
+                    <% if sim.passed? %>
+                      <span class="badge badge-success">PASS</span>
+                    <% else %>
+                      <span class="badge badge-danger">FAIL</span>
+                    <% end %>
+                  </td>
+                  <td><%= (sim.time_taken.to_i / 60) rescue sim.time_limit %> min</td>
+                  <td>
+                    <%= link_to "View Results", result_exam_simulation_path(sim), 
+                        class: "btn btn-sm btn-outline-primary" %>
+                    <%= link_to "Review", review_exam_simulation_path(sim), 
+                        class: "btn btn-sm btn-outline-secondary" %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  <% end %>
+  
+  <!-- Information Section -->
+  <div class="row mt-5">
+    <div class="col-md-6">
+      <div class="card bg-light">
+        <div class="card-body">
+          <h5><i class="fas fa-info-circle"></i> About Exam Simulations</h5>
+          <ul class="mb-0">
+            <li>Real exam conditions - timed with no hints</li>
+            <li>Questions selected based on official exam blueprints</li>
+            <li>Detailed performance analysis after completion</li>
+            <li>Track your progress over multiple attempts</li>
+            <li>Get readiness score based on your performance</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card bg-warning text-dark">
+        <div class="card-body">
+          <h5><i class="fas fa-exclamation-triangle"></i> Important Notes</h5>
+          <ul class="mb-0">
+            <li>Once started, you cannot pause the exam</li>
+            <li>All questions must be answered in one session</li>
+            <li>Timer will auto-submit when time expires</li>
+            <li>Review your answers only after submission</li>
+            <li>Practice regularly to improve your score</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .certification-card:hover {
+    transform: translateY(-5px);
+    transition: transform 0.3s ease;
+  }
+  
+  .cert-icon {
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .exam-details {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+</style>

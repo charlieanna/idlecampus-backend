@@ -1,0 +1,90 @@
+slug: docker-stats-live-resource-usage-statistics
+title: 'Docker Stats: Live Resource Usage Statistics'
+difficulty: easy
+sequence_order: 7
+estimated_minutes: 2
+key_concepts:
+- containers
+- docker-stats
+- monitoring
+- performance
+- resources
+prerequisites: []
+content_md: '# Docker Stats: Live Resource Usage Statistics 🚀
+
+
+  Display live resource usage statistics including CPU, memory, network I/O, and disk
+  I/O for running containers.
+
+
+  ## Syntax/Command
+
+
+  ```bash
+
+  docker stats
+
+  ```
+
+
+  ## Example
+
+
+  ```bash
+
+  docker stats --no-stream
+
+  ```
+
+
+  ## Key Points
+
+
+  - Live stats: docker stats
+
+
+  - One-shot: docker stats --no-stream
+
+
+  - Specific containers: docker stats web db'
+exercises:
+- type: terminal
+  problem_statement: Display live resource usage statistics for all running containers
+  expected_output: Real-time table showing CPU%, MEM USAGE, NET I/O, BLOCK I/O for each container
+  language: bash
+  starter_code: "# Monitor container resource usage\n"
+  sequence_order: 1
+  command: docker stats
+  description: Monitor container resource usage to identify performance bottlenecks
+  hints:
+  - 'Live stats: docker stats'
+  - 'One-shot: docker stats --no-stream'
+  - 'Specific containers: docker stats web db'
+  validation:
+    must_not_include:
+    - Error
+    - 'panic:'
+  timeout_sec: 60
+  require_pass: true
+- type: sandbox
+  sequence_order: 99
+  hints:
+  - Run under CPU pressure to surface leaks or races
+  - Keep commands idempotent in CI
+  validation:
+    must_not_include:
+    - Error
+    - 'panic:'
+  timeout_sec: 60
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What does a CPU percentage of 200% mean in docker stats?
+  options:
+  - Container is using 2 full CPU cores worth of processing power
+  - Container is overloaded by 100% and needs more resources
+  - There is an error in the measurement system
+  - CPU limit has been exceeded and container will be throttled
+  correct_answer: Container is using 2 full CPU cores worth of processing power
+  explanation: "CPU percentage in docker stats can exceed 100% because it represents total CPU usage across all cores. 200% means the container is using the equivalent of 2 full CPU cores. On a 4-core system, 400% would be the maximum."
+  require_pass: true

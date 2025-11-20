@@ -1,0 +1,88 @@
+slug: ssh-keys-and-authentication
+title: SSH Keys and Authentication
+sequence_order: 5
+estimated_minutes: 2
+difficulty: easy
+content_md: "# SSH Keys and Authentication \U0001F680\n\n# SSH Keys and Authentication\n\
+  \n    SSH (Secure Shell) provides secure remote access using cryptographic keys.\n\
+  \n    ## SSH Key Pairs\n\n    ### Public Key\n    - Can be shared freely\n    -\
+  \ Stored on servers you want to access\n    - Located in `~/.ssh/authorized_keys`\
+  \ on server\n\n    ### Private Key\n    - **NEVER share this**\n    - Stays on your\
+  \ local machine only\n    - Located in `~/.ssh/id_rsa` or `~/.ssh/id_ed25519`\n\
+  \    - Permissions must be 600 (read/write for owner only)\n\n    ## Generating\
+  \ SSH Keys\n\n    ### RSA Keys (Traditional)\n    ```bash\n    # Generate 4096-bit\
+  \ RSA key\n    ssh-keygen -t rsa -b 4096 -C \"your_email@example.com\"\n\n    #\
+  \ Specify custom filename\n    ssh-keygen -t rsa -b 4096 -f ~/.ssh/id_rsa_work\n\
+  \    ```\n\n    ### Ed25519 Keys (Modern, Recommended)\n    ```bash\n    # Generate\
+  \ Ed25519 key (faster, more secure)\n    ssh-keygen -t ed25519 -C \"your_email@example.com\"\
+  \n\n    # With passphrase for extra security\n    ssh-keygen -t ed25519 -C \"your_email@example.com\"\
+  \ -f ~/.ssh/id_ed25519_secure\n    ```\n\n    ### Key Fingerprints\n    ```bash\n\
+  \    # View key fingerprint\n    ssh-keygen -lf ~/.ssh/id_ed25519.pub\n\n    # View\
+  \ in different format\n    ssh-keygen -lf ~/.ssh/id_ed25519.pub -E sha256\n    ssh-keygen\
+  \ -lf ~/.ssh/id_ed25519.pub -E md5\n    ```\n\n    ## Setting Up Key-Based Authentication\n\
+  \n    ### 1. Copy Public Key to Server\n    ```bash\n    # Using ssh-copy-id (easiest)\n\
+  \    ssh-copy-id user@server.com\n\n    # Using specific key\n    ssh-copy-id -i\
+  \ ~/.ssh/id_ed25519.pub user@server.com\n\n    # Manual method\n    cat ~/.ssh/id_ed25519.pub\
+  \ | ssh user@server.com \"mkdir -p ~/.ssh && cat >> ~/.ssh/authorized_keys\"\n \
+  \   ```\n\n    ### 2. Connect Using Key\n    ```bash\n    # Connect (uses default\
+  \ key)\n    ssh user@server.com\n\n    # Use specific key\n    ssh -i ~/.ssh/id_ed25519_work\
+  \ user@server.com\n    ```\n\n    ## SSH Configuration\n\n    ### ~/.ssh/config\
+  \ File\n    ```\n    # Personal server\n    Host myserver\n        HostName server.example.com\n\
+  \        User john\n        IdentityFile ~/.ssh/id_ed25519\n        Port 22\n\n\
+  \    # Work server\n    Host work\n        HostName gitlab.company.com\n       \
+  \ User john.doe\n        IdentityFile ~/.ssh/id_ed25519_work\n        Port 2222\n\
+  \n    # GitHub\n    Host github.com\n        HostName github.com\n        User git\n\
+  \        IdentityFile ~/.ssh/id_ed25519_github\n    ```\n\n    Now you can use shortcuts:\n\
+  \    ```bash\n    ssh myserver\n    ssh work\n    git clone git@github.com:user/repo.git\n\
+  \    ```\n\n    ## SSH Agent\n\n    Holds decrypted private keys in memory.\n\n\
+  \    ```bash\n    # Start SSH agent\n    eval \"$(ssh-agent -s)\"\n\n    # Add key\
+  \ to agent\n    ssh-add ~/.ssh/id_ed25519\n\n    # Add with timeout (1 hour)\n \
+  \   ssh-add -t 3600 ~/.ssh/id_ed25519\n\n    # List keys in agent\n    ssh-add -l\n\
+  \n    # Remove all keys from agent\n    ssh-add -D\n    ```\n\n    ## File Permissions\n\
+  \n    **Critical for security!**\n\n    ```bash\n    # SSH directory\n    chmod\
+  \ 700 ~/.ssh\n\n    # Private keys\n    chmod 600 ~/.ssh/id_ed25519\n    chmod 600\
+  \ ~/.ssh/id_rsa\n\n    # Public keys\n    chmod 644 ~/.ssh/id_ed25519.pub\n\n  \
+  \  # authorized_keys (on server)\n    chmod 600 ~/.ssh/authorized_keys\n\n    #\
+  \ config file\n    chmod 600 ~/.ssh/config\n    ```\n\n    ## SSH Security Best\
+  \ Practices\n\n    ### 1. Disable Password Authentication\n    Edit `/etc/ssh/sshd_config`\
+  \ on server:\n    ```\n    PasswordAuthentication no\n    PubkeyAuthentication yes\n\
+  \    ```\n\n    ### 2. Disable Root Login\n    ```\n    PermitRootLogin no\n   \
+  \ ```\n\n    ### 3. Use Custom Port\n    ```\n    Port 2222\n    ```\n\n    ###\
+  \ 4. Use Strong Keys\n    - Prefer Ed25519\n    - Minimum RSA 4096-bit\n    - Use\
+  \ passphrases on private keys\n\n    ### 5. Limit User Access\n    ```\n    AllowUsers\
+  \ john jane\n    DenyUsers baduser\n    ```\n\n    ### 6. Enable Two-Factor Authentication\n\
+  \    ```\n    AuthenticationMethods publickey,keyboard-interactive\n    ```\n\n\
+  \    ## Advanced SSH\n\n    ### Port Forwarding (Tunneling)\n    ```bash\n    #\
+  \ Local port forwarding\n    ssh -L 8080:localhost:80 user@server.com\n\n    # Remote\
+  \ port forwarding\n    ssh -R 9090:localhost:3000 user@server.com\n\n    # Dynamic\
+  \ port forwarding (SOCKS proxy)\n    ssh -D 1080 user@server.com\n    ```\n\n  \
+  \  ### Jump Hosts (ProxyJump)\n    ```bash\n    # Connect through bastion\n    ssh\
+  \ -J bastion.example.com target.internal\n\n    # In config:\n    Host target\n\
+  \        HostName target.internal\n        ProxyJump bastion.example.com\n    ```\n\
+  \n    ### Keep Alive\n    ```bash\n    # In ~/.ssh/config\n    Host *\n        ServerAliveInterval\
+  \ 60\n        ServerAliveCountMax 3\n    ```\n\n    ### Execute Commands\n    ```bash\n\
+  \    # Run single command\n    ssh user@server.com \"ls -la /var/log\"\n\n    #\
+  \ Run multiple commands\n    ssh user@server.com \"cd /app && ./deploy.sh && systemctl\
+  \ restart app\"\n    ```"
+exercises:
+- type: mcq
+  slug: ssh-keys-and-authentication-mcq
+  sequence_order: 1
+  question: Why is Ed25519 recommended over RSA for SSH keys?
+  options:
+  - Ed25519 provides equivalent security with much smaller keys, faster operations,
+    and better resistance to timing attacks
+  - Ed25519 keys work on more servers than RSA keys
+  - Ed25519 doesn't require file permissions to be set
+  - Ed25519 keys don't need passphrases for security
+  correct_answer_index: 0
+  explanation: Ed25519 is a modern elliptic curve algorithm that provides strong security
+    with 256-bit keys (equivalent to 3072-bit RSA), generates and verifies signatures
+    faster, has simpler implementation with fewer attack vectors, and is resistant
+    to timing attacks. It's the recommended choice for new SSH key pairs over traditional
+    4096-bit RSA keys.
+objectives:
+- Define the control
+- Choose tooling
+- Integrate checks in CI/CD
+next_recommended: []

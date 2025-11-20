@@ -1,0 +1,149 @@
+slug: distance-displacement-fundamentals
+title: "Distance and Displacement: Fundamental Concepts"
+difficulty: intermediate
+sequence_order: 1
+estimated_minutes: 15
+key_concepts:
+- distance
+- displacement
+- scalar-vector
+- path-length
+- position-vector
+prerequisites: []
+content_md: |
+  # Distance and Displacement: Fundamental Concepts
+
+  ## Introduction
+
+  Understanding the difference between **distance** and **displacement** is crucial for mastering kinematics in JEE Physics.
+
+  ## Definitions
+
+  ### Distance (Scalar)
+  - **Total path length** traveled by an object
+  - Always **positive** or zero
+  - **Scalar quantity** (magnitude only)
+  - Denoted as **s** or **d**
+  - SI unit: **meter (m)**
+
+  ### Displacement (Vector)
+  - **Shortest distance** from initial to final position
+  - **Vector quantity** (magnitude + direction)
+  - Can be **positive, negative, or zero**
+  - Denoted as **Δr** or **s⃗**
+  - SI unit: **meter (m)**
+
+  ## Mathematical Representation
+
+  ### In 1D Motion:
+  ```
+  Displacement = Final position - Initial position
+  Δx = x₂ - x₁
+  ```
+
+  ### In 2D/3D Motion:
+  ```
+  Δr⃗ = r⃗₂ - r⃗₁
+  |Δr⃗| = √[(x₂-x₁)² + (y₂-y₁)² + (z₂-z₁)²]
+  ```
+
+  ## Key Differences
+
+  | Property | Distance | Displacement |
+  |----------|----------|--------------|
+  | Type | Scalar | Vector |
+  | Sign | Always ≥ 0 | Can be ±ve or 0 |
+  | Path dependent | Yes | No |
+  | Magnitude | ≥ |Displacement| | ≤ Distance |
+
+  ## Important Relations
+
+  1. **Distance ≥ |Displacement|** (Always)
+  2. **Distance = |Displacement|** only for unidirectional motion without return
+  3. For **circular path**: Distance = πr, Displacement = 2r (semicircle)
+  4. For **complete circle**: Distance = 2πr, Displacement = 0
+
+  ## JEE Important Formulas
+
+  ### Average Speed vs Average Velocity:
+  ```
+  Average Speed = Total Distance / Total Time
+  v_avg = s/t
+
+  Average Velocity = Total Displacement / Total Time
+  v⃗_avg = Δr⃗/Δt
+  ```
+
+  ### For Round Trip:
+  - Average speed ≠ 0
+  - Average velocity = 0
+
+  ## Numerical Example
+
+  **Problem:** A particle moves along x-axis: 0 → 5m → -3m → 7m
+
+  **Solution:**
+  - Distance = 5 + 8 + 10 = **23 m**
+  - Displacement = 7 - 0 = **7 m** (positive x-direction)
+  - Ratio = Distance/Displacement = 23/7 ≈ 3.3
+
+  ## Common JEE Mistakes to Avoid
+
+  1. ❌ Confusing distance with displacement in projectile problems
+  2. ❌ Forgetting displacement can be zero when distance is not
+  3. ❌ Not considering direction in displacement calculations
+  4. ❌ Using distance formula for velocity calculations
+
+  ## JEE Pattern Questions
+
+  **Type 1:** Find ratio of distance to displacement
+  **Type 2:** Average speed vs average velocity comparison
+  **Type 3:** Displacement in terms of position vectors
+  **Type 4:** Maximum displacement problems
+
+  ## Practice Problems
+
+  **Q1:** A car travels 40 km North, then 30 km East. Find:
+  (a) Distance traveled
+  (b) Magnitude of displacement
+  (c) Direction of displacement
+
+  **Solution:**
+  (a) Distance = 40 + 30 = **70 km**
+  (b) |Δr| = √(40² + 30²) = √(1600 + 900) = √2500 = **50 km**
+  (c) tan θ = 30/40 = 0.75, θ = **36.87° East of North**
+
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: "A particle moves from A(2,3) to B(5,7) in a straight line. What is the magnitude of displacement?"
+  options:
+  - "5 units"
+  - "7 units"
+  - "12 units"
+  - "25 units"
+  correct_answer: "5 units"
+  explanation: "Using the displacement formula: |Δr| = √[(x₂-x₁)² + (y₂-y₁)²] = √[(5-2)² + (7-3)²] = √[9 + 16] = √25 = 5 units. This is the straight-line distance between two points, which represents displacement magnitude. Note that the actual path might be longer (distance ≥ displacement), but displacement only considers initial and final positions."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: "A person walks 4 km East, then 3 km North, and finally 4 km West. What is the ratio of distance to displacement?"
+  options:
+  - "11/3"
+  - "3/11"
+  - "11/7"
+  - "7/11"
+  correct_answer: "11/3"
+  explanation: "Distance = 4 + 3 + 4 = 11 km (total path length). For displacement: After walking 4 km East and 4 km West, the net horizontal displacement is 0. The vertical displacement is 3 km North. So, |Displacement| = 3 km. Ratio = Distance/Displacement = 11/3. This is a classic JEE problem showing that when horizontal movements cancel, only vertical displacement remains."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: "An athlete runs around a circular track of radius 50 m. After completing 1.5 revolutions, what is the ratio of distance covered to the magnitude of displacement?"
+  options:
+  - "3π/2"
+  - "π/2"
+  - "3π"
+  - "π"
+  correct_answer: "3π/2"
+  explanation: "For 1.5 revolutions: Distance = 1.5 × 2πr = 3πr = 3π(50) = 150π m. After 1.5 revolutions, the athlete is at the diametrically opposite point from start (0.5 revolution extra after 1 complete). Displacement = diameter = 2r = 100 m. Ratio = 150π/100 = 3π/2. This demonstrates that in circular motion, distance keeps accumulating while displacement depends only on the angular position."
+  require_pass: true

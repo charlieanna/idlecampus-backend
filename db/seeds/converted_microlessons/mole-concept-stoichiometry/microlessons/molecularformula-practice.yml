@@ -1,0 +1,72 @@
+slug: molecularformula-practice
+title: molecular_formula — Practice
+difficulty: medium
+sequence_order: 12
+estimated_minutes: 2
+key_concepts:
+- molecular_formula
+prerequisites: []
+content_md: '# molecular_formula — Practice 🚀
+
+
+  Empirical mass = 12 + 2 + 16 = 30. n = 180/30 = 6. Molecular formula = 6 × CH₂O
+  = C₆H₁₂O₆ (glucose)
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: short_answer
+  sequence_order: 2
+  question: The empirical formula of a compound is CH₂O and its molar mass is 180
+    g/mol. What is its molecular formula?
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: A compound has empirical formula CH and a molar mass of 78 g/mol. What
+    is its molecular formula?
+  options:
+  - CH
+  - C₂H₂
+  - C₆H₆
+  - C₈H₈
+  require_pass: true
+  correct_answer: C₆H₆
+  explanation: 'To find molecular formula from empirical formula: **Molecular formula
+    = n × Empirical formula**, where **n = (Molar mass) / (Empirical formula mass)**.
+    For this compound: (1) Empirical formula = CH, empirical mass = 12 + 1 = 13 g/mol.
+    (2) n = 78/13 = 6. (3) Molecular formula = 6 × CH = **C₆H₆** (benzene). Benzene
+    is an aromatic hydrocarbon with a ring structure. Note: Different compounds can
+    have the same empirical formula but different molecular formulas. Examples with
+    empirical formula CH: C₂H₂ (ethyne/acetylene, molar mass 26), C₄H₄ (vinylacetylene,
+    molar mass 52), C₆H₆ (benzene, molar mass 78), C₈H₈ (styrene, molar mass 104).
+    The molecular formula always contains the empirical formula as a whole number
+    multiple.'
+- type: mcq
+  sequence_order: 4
+  question: 'The empirical formula of a hydrocarbon is CH₃ and its vapor density is
+    15. What is its molecular formula? (Molar mass = 2 × Vapor density)'
+  options:
+  - CH₃
+  - C₂H₆
+  - C₃H₉
+  - C₄H₁₂
+  require_pass: true
+  correct_answer: C₂H₆
+  explanation: 'Finding molecular formula using vapor density: **Step 1: Calculate
+    molar mass** - Molar mass = 2 × Vapor density = 2 × 15 = 30 g/mol. **Step 2:
+    Find empirical formula mass** - CH₃ = 12 + 3(1) = 15 g/mol. **Step 3: Calculate
+    n** - n = (Molar mass)/(Empirical mass) = 30/15 = 2. **Step 4: Molecular formula**
+    - 2 × CH₃ = **C₂H₆** (ethane). Note: Vapor density = (Molar mass)/2, or Molar
+    mass = 2 × Vapor density (only for ideal gases). This relationship comes from
+    the definition: vapor density = (density of gas)/(density of H₂), and since density
+    ∝ molar mass, vapor density = (M_gas)/(M_H₂) = M/2. Ethane (C₂H₆) is a component
+    of natural gas and used as fuel.'

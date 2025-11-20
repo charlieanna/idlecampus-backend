@@ -1,0 +1,59 @@
+slug: phenolacidity-practice
+title: phenol_acidity — Practice
+difficulty: hard
+sequence_order: 14
+estimated_minutes: 2
+key_concepts:
+- phenol_acidity
+prerequisites: []
+content_md: '# phenol_acidity — Practice 🚀
+
+
+  EWG increases acidity (stabilize anion), EDG decreases. -NO₂ (strong EWG) > H >
+  -CH₃ (EDG) > -OCH₃ (strong EDG). Order: p-OCH₃ < p-CH₃ < phenol < p-NO₂.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: 'Arrange the following phenols in order of increasing acidity: phenol, p-nitrophenol, p-cresol (p-methylphenol), p-methoxyphenol'
+  options:
+  - Phenol < p-cresol < p-methoxyphenol < p-nitrophenol
+  - p-methoxyphenol < p-cresol < phenol < p-nitrophenol
+  - p-nitrophenol < phenol < p-cresol < p-methoxyphenol
+  - p-cresol < phenol < p-nitrophenol < p-methoxyphenol
+  require_pass: true
+  correct_answer: p-methoxyphenol < p-cresol < phenol < p-nitrophenol
+  explanation: 'The acidity of substituted phenols depends on the stability of the phenoxide anion formed after losing H⁺. Electron-withdrawing groups (EWG) like -NO₂ stabilize the negative charge on the phenoxide ion through resonance and inductive effects, increasing acidity. Electron-donating groups (EDG) like -CH₃ and -OCH₃ destabilize the anion by increasing electron density, decreasing acidity. The order of substituent effects: -NO₂ (strong EWG) > H (reference) > -CH₃ (weak EDG) > -OCH₃ (strong EDG). Therefore, the order of increasing acidity is: p-methoxyphenol < p-cresol < phenol < p-nitrophenol. Para-nitrophenol is much more acidic than phenol (pKa ~7 vs ~10), while para-methoxyphenol is much less acidic (pKa ~10.2).'
+- type: mcq
+  sequence_order: 2
+  question: 'Why does p-nitrophenol have higher acidity than phenol?'
+  options:
+  - The -NO₂ group donates electrons to stabilize the molecule
+  - The -NO₂ group withdraws electrons, stabilizing the phenoxide anion
+  - The -NO₂ group increases the molecular weight
+  - The -NO₂ group prevents hydrogen bonding
+  require_pass: true
+  correct_answer: The -NO₂ group withdraws electrons, stabilizing the phenoxide anion
+  explanation: 'Para-nitrophenol is significantly more acidic than phenol because the -NO₂ group is a strong electron-withdrawing group (EWG). When phenol loses a proton to form the phenoxide ion (ArO⁻), the negative charge on oxygen needs to be stabilized. The -NO₂ group withdraws electron density from the ring through both resonance (-R effect) and inductive (-I effect). Through resonance, the negative charge can be delocalized onto the oxygen atoms of the nitro group. This stabilization of the conjugate base (phenoxide ion) shifts the equilibrium toward ionization, making p-nitrophenol more acidic. The pKa of p-nitrophenol is ~7.1, compared to ~10.0 for phenol, making it about 1000 times more acidic. Ortho- and meta-nitrophenol also show increased acidity, but para-nitrophenol benefits most from resonance stabilization.'
+- type: mcq
+  sequence_order: 3
+  question: 'Which substituent decreases the acidity of phenol the most?'
+  options:
+  - p-NO₂ (nitro)
+  - p-Cl (chloro)
+  - p-CH₃ (methyl)
+  - p-OCH₃ (methoxy)
+  require_pass: true
+  correct_answer: p-OCH₃ (methoxy)
+  explanation: 'The p-methoxy group (-OCH₃) is the strongest electron-donating group (EDG) among the options listed, and therefore decreases phenol acidity the most. Although the -OCH₃ group has a -I (electron-withdrawing) inductive effect due to the electronegative oxygen, it has a much stronger +R (electron-donating) resonance effect. The lone pairs on the oxygen can conjugate with the benzene ring, increasing electron density on the ring and on the phenoxide oxygen. This destabilizes the phenoxide anion, making the phenol less willing to lose its proton. In contrast, -NO₂ is a strong EWG that increases acidity. -Cl has both -I and -R effects but the -I effect dominates in the para position, slightly increasing acidity. -CH₃ is a weak EDG (+I effect only) that slightly decreases acidity, but not as much as -OCH₃. Order of decreasing acidity: p-NO₂-phenol > p-Cl-phenol > phenol > p-CH₃-phenol > p-OCH₃-phenol.'

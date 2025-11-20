@@ -1,0 +1,59 @@
+slug: ammonia-practice
+title: ammonia — Practice
+difficulty: easy
+sequence_order: 11
+estimated_minutes: 2
+key_concepts:
+- ammonia
+prerequisites: []
+content_md: '# ammonia — Practice 🚀
+
+
+  NH₃ is pyramidal (sp³) with bond angle ~107°, less than tetrahedral 109.5° due to
+  lone pair repulsion.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 2
+  question: What is the bond angle in ammonia (NH₃)?
+  options:
+  - 109.5°
+  - 107°
+  - 120°
+  - 90°
+  correct_answer: 107°
+  explanation: "Ammonia (NH₃) has a pyramidal geometry with sp³ hybridization. The ideal tetrahedral bond angle is 109.5°, but ammonia's bond angle is approximately 107° due to lone pair-bond pair repulsion. The nitrogen atom has one lone pair of electrons which repels the bonding pairs more strongly than bonding pairs repel each other, compressing the H-N-H bond angle to less than the tetrahedral angle. This makes ammonia a classic example of VSEPR theory in action."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: Which process is used for industrial production of ammonia?
+  options:
+  - Ostwald process
+  - Haber process
+  - Contact process
+  - Solvay process
+  correct_answer: Haber process
+  explanation: "The Haber process is used for industrial production of ammonia. The reaction is N₂(g) + 3H₂(g) ⇌ 2NH₃(g), carried out at approximately 450°C and 200 atm pressure using an iron (Fe) catalyst. This is a reversible exothermic reaction, and the conditions are optimized to maximize ammonia yield while maintaining reasonable reaction rates. The Ostwald process is used for nitric acid production, the Contact process for sulfuric acid, and the Solvay process for sodium carbonate."
+  require_pass: true
+- type: mcq
+  sequence_order: 4
+  question: Why is ammonia more basic than phosphine (PH₃)?
+  options:
+  - Ammonia has higher molecular mass
+  - Nitrogen is more electronegative, making the lone pair more available
+  - Nitrogen has smaller size and higher electron density on lone pair
+  - Ammonia has stronger N-H bonds
+  correct_answer: Nitrogen has smaller size and higher electron density on lone pair
+  explanation: "Ammonia is more basic than phosphine because nitrogen is smaller than phosphorus, resulting in higher electron density on the nitrogen lone pair, which makes it more readily available for donation to a proton or Lewis acid. Additionally, nitrogen is more electronegative than phosphorus, which paradoxically makes the lone pair more localized and available. Ammonia readily forms NH₄⁺ ions and complexes like [Cu(NH₃)₄]²⁺, while phosphine is only weakly basic. Ammonia is also highly soluble in water due to hydrogen bonding, unlike PH₃."
+  require_pass: true

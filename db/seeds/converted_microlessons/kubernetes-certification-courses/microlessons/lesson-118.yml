@@ -1,0 +1,44 @@
+slug: lesson-118
+title: Lesson 118
+difficulty: easy
+sequence_order: 118
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# ConfigMaps: Application Configuration\n\
+  \n    - Key/value pairs and file-based configs\n    - Mount via envFrom, env, and\
+  \ volumes\n    - Updates and rollout behavior"
+exercises:
+  - type: mcq
+    sequence_order: 1
+    question: "What is the primary purpose of a ConfigMap in Kubernetes?"
+    options:
+      - "To store encrypted sensitive data like passwords"
+      - "To store non-sensitive configuration data as key-value pairs or files"
+      - "To map network ports between containers"
+      - "To configure the Kubernetes cluster itself"
+    correct_answer: "To store non-sensitive configuration data as key-value pairs or files"
+    explanation: "ConfigMaps are Kubernetes objects designed to store non-sensitive configuration data separately from container images, enabling configuration portability across environments. They decouple configuration from application code, allowing the same container image to run in development, staging, and production with different configs. ConfigMaps can store data as: 1) Simple key-value pairs like 'database_host: mysql.prod.svc.cluster.local', 2) Multi-line values like entire configuration files (nginx.conf, application.properties), or 3) Binary data (though Secrets are better for this). You can consume ConfigMaps in pods three ways: as environment variables ('envFrom: configMapRef'), as individual environment variables ('valueFrom: configMapKeyRef'), or as mounted volumes where each key becomes a file. For example, creating a ConfigMap with 'kubectl create configmap app-config --from-file=config.json --from-literal=LOG_LEVEL=info' and mounting it in a pod exposes config.json as a file and LOG_LEVEL as an environment variable. ConfigMaps support the 12-factor app methodology of config via environment. They're limited to 1MB per ConfigMap and should only contain non-sensitive data - use Secrets for passwords, tokens, and keys. Common use cases include: application settings, feature flags, database connection strings (non-sensitive parts), and configuration files for applications like web servers or databases. ConfigMaps can be updated independently of pods, though pods must be restarted to pick up changes (unless mounted as volumes, where files update automatically after a sync period)."
+    require_pass: true
+  - type: mcq
+    sequence_order: 2
+    question: "What happens to a pod when you update a ConfigMap that is mounted as a volume?"
+    options:
+      - "The pod is automatically restarted to pick up changes"
+      - "The files in the volume are updated automatically after a sync period, but the pod continues running"
+      - "The ConfigMap changes are ignored until the pod is deleted"
+      - "An error occurs and the pod crashes"
+    correct_answer: "The files in the volume are updated automatically after a sync period, but the pod continues running"
+    explanation: "When a ConfigMap is mounted as a volume in a pod, Kubernetes automatically updates the files in the volume when the ConfigMap changes, typically within the kubelet sync period (default 60 seconds, plus the cache propagation delay which defaults to 1 minute). The pod continues running without restart, and the updated configuration files appear in the mounted directory. However, this doesn't automatically make the application reload the configuration - that depends on whether your application watches for file changes and reloads config. For example, if you mount a ConfigMap containing nginx.conf and update it, the file in the pod updates automatically, but you must signal nginx to reload (via 'nginx -s reload') to apply the changes. This behavior differs significantly from environment variables, which are set at pod creation and never change - updating a ConfigMap used for environment variables has no effect until the pod is recreated. This creates different strategies: use volume mounts for configurations that can be reloaded without restart (web server configs, feature flags read periodically), and use environment variables for configs read once at startup. Some important caveats: updates are not atomic (keys may appear at different times), subPath volume mounts don't receive updates (they're static snapshots), and applications must be designed to handle config reloading. Tools like Reloader or Stakater Reloader can watch ConfigMaps and automatically restart pods when changes occur, providing automatic config reload without application code changes. For critical configuration, consider using a rolling restart strategy triggered by ConfigMap version changes."
+    require_pass: true
+  - type: mcq
+    sequence_order: 3
+    question: "What is the difference between 'env' and 'envFrom' when using ConfigMaps in pods?"
+    options:
+      - "env is for environment variables, envFrom is for file mounts"
+      - "env maps individual keys to variables; envFrom imports all ConfigMap keys as environment variables"
+      - "envFrom is faster than env"
+      - "env is deprecated, envFrom should always be used"
+    correct_answer: "env maps individual keys to variables; envFrom imports all ConfigMap keys as environment variables"
+    explanation: "The 'env' and 'envFrom' fields provide different approaches for injecting ConfigMap data as environment variables. The 'env' field gives granular control, allowing you to map specific ConfigMap keys to specific environment variable names. For example, 'env: - name: DATABASE_HOST, valueFrom: configMapKeyRef: name: app-config, key: db_host' creates one environment variable DATABASE_HOST from the db_host key. This is useful when you need to: rename variables, combine values from multiple ConfigMaps/Secrets, or select only specific keys. In contrast, 'envFrom' bulk-imports all keys from a ConfigMap as environment variables using the key names as variable names: 'envFrom: - configMapRef: name: app-config'. This is convenient for loading entire configuration sets with less YAML verbosity. For example, if app-config contains keys 'LOG_LEVEL', 'API_TIMEOUT', and 'MAX_CONNECTIONS', all three become environment variables automatically. However, 'envFrom' has limitations: key names must be valid environment variable names (alphanumeric and underscores, starting with letter), invalid keys are skipped and recorded as events, and you can't rename variables. You can use both together in the same pod, with 'env' taking precedence for duplicate names. Best practices: use 'envFrom' for clean, simple configs where key names match desired variable names, use 'env' when you need transformation, renaming, or mixing multiple sources, and consider adding a 'prefix' to envFrom to avoid variable name collisions when loading multiple ConfigMaps."
+    require_pass: true

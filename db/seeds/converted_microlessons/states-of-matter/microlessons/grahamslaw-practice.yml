@@ -1,0 +1,58 @@
+slug: grahamslaw-practice
+title: grahams_law — Practice
+difficulty: medium
+sequence_order: 10
+estimated_minutes: 2
+key_concepts:
+- grahams_law
+prerequisites: []
+content_md: '# grahams_law — Practice 🚀
+
+
+  Graham\
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: 'If gas A has molar mass 16 g/mol and gas B has molar mass 64 g/mol, what is the ratio of their rates of diffusion (r_A/r_B) according to Graham''s Law?'
+  options:
+  - 1:4
+  - 1:2
+  - 2:1
+  - 4:1
+  require_pass: true
+  correct_answer: 2:1
+  explanation: 'Graham''s Law states that the rate of diffusion is inversely proportional to the square root of molar mass: r₁/r₂ = √(M₂/M₁). For gases A and B: r_A/r_B = √(M_B/M_A) = √(64/16) = √4 = 2. Therefore, gas A diffuses twice as fast as gas B (ratio 2:1). This relationship shows that lighter molecules move faster than heavier ones at the same temperature. Physical basis: All gases at the same temperature have the same average kinetic energy (½mv² = constant), so lighter molecules (smaller m) must move faster (larger v) to maintain the same energy. Applications: (1) Separation of isotopes (e.g., ²³⁵UF₆ from ²³⁸UF₆), (2) Gas leak detection, (3) Predicting smell dispersion rates. Example: Hydrogen (M = 2) diffuses 4 times faster than oxygen (M = 32) since √(32/2) = 4.'
+- type: mcq
+  sequence_order: 2
+  question: 'The time taken for a certain volume of O₂ (M = 32) to effuse is 10 minutes. How long will the same volume of He (M = 4) take to effuse under identical conditions?'
+  options:
+  - 2.5 minutes
+  - 3.54 minutes
+  - 5.0 minutes
+  - 7.07 minutes
+  require_pass: true
+  correct_answer: 3.54 minutes
+  explanation: 'Graham''s Law for effusion: r₁/r₂ = √(M₂/M₁), where rate is inversely proportional to time (r ∝ 1/t). Therefore: t₁/t₂ = √(M₁/M₂). For O₂ and He: t_He/t_O₂ = √(M_He/M_O₂) = √(4/32) = √(1/8) = 1/2√2 = 1/2.828 ≈ 0.354. Thus: t_He = 10 × 0.354 = 3.54 minutes. Helium, being much lighter, effuses faster (takes less time) than oxygen. The relationship shows: (1) Lighter gases effuse/diffuse faster, (2) Time is inversely related to rate, (3) The effect depends on the square root of mass ratio, not the direct ratio. Practical applications: Helium balloons deflate faster than air-filled balloons because helium effuses through tiny pores more rapidly. This principle is also used in vacuum systems and mass spectrometry.'
+- type: mcq
+  sequence_order: 3
+  question: 'Which gas will diffuse fastest at the same temperature: CH₄ (M=16), NH₃ (M=17), H₂O (M=18), or Ne (M=20)?'
+  options:
+  - CH₄
+  - NH₃
+  - H₂O
+  - Ne
+  require_pass: true
+  correct_answer: CH₄
+  explanation: 'According to Graham''s Law, the rate of diffusion is inversely proportional to the square root of molar mass: r ∝ 1/√M. The gas with the smallest molar mass will diffuse fastest. Comparing: CH₄ (M=16), NH₃ (M=17), H₂O (M=18), Ne (M=20). Methane (CH₄) has the smallest molar mass (16 g/mol), so it diffuses fastest. Relative rates: If we set Ne = 1, then: r_CH₄/r_Ne = √(20/16) = √1.25 ≈ 1.12 (12% faster), r_NH₃/r_Ne = √(20/17) ≈ 1.09 (9% faster), r_H₂O/r_Ne = √(20/18) ≈ 1.05 (5% faster). Though the differences are small because the molar masses are close, the order is definite: CH₄ > NH₃ > H₂O > Ne. This principle explains why natural gas leaks (mainly CH₄) spread quickly and why proper ventilation is critical.'

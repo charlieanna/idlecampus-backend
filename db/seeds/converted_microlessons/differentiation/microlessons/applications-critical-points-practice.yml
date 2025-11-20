@@ -1,0 +1,86 @@
+slug: applications-critical-points-practice
+title: applications-critical-points — Practice
+difficulty: medium
+sequence_order: 4
+estimated_minutes: 2
+key_concepts:
+- applications-critical-points
+prerequisites: []
+content_md: '# applications-critical-points — Practice 🚀
+
+
+  Use first and second derivative tests
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: 'For f(x) = x³ - 3x² + 4, find the critical points.'
+  options:
+  - x = 0 and x = 2
+  - x = 1 and x = 3
+  - x = -1 and x = 1
+  - x = 2 only
+  require_pass: true
+  correct_answer: x = 0 and x = 2
+  explanation: 'Critical points occur where f''(x) = 0 or f''(x) is undefined. For
+    f(x) = x³ - 3x² + 4: f''(x) = 3x² - 6x = 3x(x - 2). Setting f''(x) = 0: 3x(x
+    - 2) = 0, giving x = 0 or x = 2. To classify these critical points, use the second
+    derivative test: f''''(x) = 6x - 6. At x = 0: f''''(0) = -6 < 0, so x = 0 is
+    a local maximum. At x = 2: f''''(2) = 6 > 0, so x = 2 is a local minimum. The
+    function values are: f(0) = 0³ - 3(0)² + 4 = 4 (local max), f(2) = 2³ - 3(2)²
+    + 4 = 8 - 12 + 4 = 0 (local min). Critical points are essential for sketching
+    curves, optimization problems, and understanding function behavior.'
+- type: mcq
+  sequence_order: 2
+  question: 'If f''(c) = 0 and f''''(c) > 0, what can we conclude about x = c?'
+  options:
+  - x = c is a local maximum
+  - x = c is a local minimum
+  - x = c is an inflection point
+  - Cannot determine without more information
+  require_pass: true
+  correct_answer: x = c is a local minimum
+  explanation: 'The **second derivative test** states: If f''(c) = 0 and f''''(c)
+    > 0, then x = c is a **local minimum**. If f''(c) = 0 and f''''(c) < 0, then
+    x = c is a **local maximum**. If f''(c) = 0 and f''''(c) = 0, the test is inconclusive
+    (need higher derivatives or first derivative test). **Intuition**: f''''(c) >
+    0 means the function is concave up at x = c (curves upward like ∪), so it''s
+    a valley (minimum). f''''(c) < 0 means concave down (curves downward like ∩),
+    so it''s a peak (maximum). **First derivative test** (alternative): If f''(x)
+    changes from negative to positive at x = c, then c is a local min. If f''(x)
+    changes from positive to negative at x = c, then c is a local max. **Example**:
+    f(x) = x², f''(x) = 2x, f''''(x) = 2. At x = 0: f''(0) = 0 and f''''(0) = 2 >
+    0, so x = 0 is a local minimum.'
+- type: mcq
+  sequence_order: 3
+  question: What is an inflection point?
+  options:
+  - A point where f''(x) = 0
+  - A point where the concavity of the function changes
+  - A point where f(x) = 0
+  - A point where the function has a local extremum
+  require_pass: true
+  correct_answer: A point where the concavity of the function changes
+  explanation: 'An **inflection point** is a point where the **concavity changes**
+    - where the function changes from concave up to concave down, or vice versa.
+    **Finding inflection points**: (1) Find f''''(x), (2) Solve f''''(x) = 0 or find
+    where f''''(x) is undefined, (3) Check if concavity actually changes at these
+    points. **Note**: f''''(c) = 0 is necessary but not sufficient for an inflection
+    point. Must verify concavity change. **Example**: f(x) = x³, f''(x) = 3x², f''''(x)
+    = 6x. f''''(0) = 0, and concavity changes from down (x < 0, f'''' < 0) to up
+    (x > 0, f'''' > 0), so x = 0 is an inflection point. **Concavity**: f''''(x)
+    > 0 → concave up (∪-shaped), f''''(x) < 0 → concave down (∩-shaped). Inflection
+    points are important for curve sketching and understanding function behavior.
+    Note: An inflection point is NOT necessarily where f''(x) = 0 (that''s a critical
+    point), and NOT necessarily an extremum.'

@@ -1,0 +1,44 @@
+slug: lesson-122
+title: Lesson 122
+difficulty: easy
+sequence_order: 122
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Security Contexts and Pod Security\n\n\
+  \    - runAsUser, fsGroup, readOnlyRootFilesystem\n    - Capabilities and privilege\
+  \ escalation\n    - Overview of Pod Security standards"
+exercises:
+  - type: mcq
+    sequence_order: 1
+    question: "What does the 'fsGroup' field in securityContext control?"
+    options:
+      - "The filesystem type used by volumes"
+      - "The group ownership of volume files, ensuring containers can access them"
+      - "The maximum file size allowed in volumes"
+      - "The number of filesystems a pod can mount"
+    correct_answer: "The group ownership of volume files, ensuring containers can access them"
+    explanation: "The fsGroup field in a pod's securityContext specifies a group ID that will own all volume files, enabling containers running as non-root users to access those volumes. When fsGroup is set (e.g., 'fsGroup: 2000'), Kubernetes changes the group ownership and permissions of all files in the volume to match that GID during volume mount. This solves a common problem: if a container runs as user 1000 but volume files are owned by root, the container can't read/write them. With fsGroup, files become accessible to the specified group. For example, if you set 'runAsUser: 1000' and 'fsGroup: 2000', the user 1000 is added to group 2000, and all volume files are owned by group 2000, allowing access. This applies to volumes like emptyDir, PersistentVolumeClaims, ConfigMaps, and Secrets mounted as volumes. The fsGroup field also controls the setgid bit on new files, ensuring files created by the container inherit the group ownership. This is crucial when multiple containers in a pod share volumes - they all run with the same fsGroup, enabling file sharing. Note that fsGroup doesn't affect the process UID (controlled by runAsUser), only file group ownership. Some volume types (like hostPath or certain CSI drivers) may not support fsGroup. Best practices: always set fsGroup when running as non-root and using volumes, use a consistent group ID across pods that share PVs, and test volume permissions in non-root containers to catch issues early. Combine with runAsNonRoot and readOnlyRootFilesystem for comprehensive security."
+    require_pass: true
+  - type: mcq
+    sequence_order: 2
+    question: "What are Linux capabilities in the context of container security?"
+    options:
+      - "The CPU and memory resources a container can use"
+      - "Fine-grained permissions that can be added or removed from containers, like NET_ADMIN or SYS_TIME"
+      - "The programming languages supported by the container"
+      - "Network bandwidth limits for containers"
+    correct_answer: "Fine-grained permissions that can be added or removed from containers, like NET_ADMIN or SYS_TIME"
+    explanation: "Linux capabilities are a security feature that breaks down the all-or-nothing root privileges into fine-grained permissions. Instead of running as root (which grants all privileges) or non-root (which grants almost none), capabilities allow you to grant specific privileges. For example, CAP_NET_ADMIN allows network configuration (binding to privileged ports, modifying routes), CAP_SYS_TIME allows setting the system clock, and CAP_CHOWN allows changing file ownership. In Kubernetes, you can add or drop capabilities using securityContext. By default, containers run with a limited set of capabilities. To reduce attack surface, drop all capabilities and add only what's needed: 'securityContext: capabilities: drop: [ALL], add: [NET_BIND_SERVICE]'. This allows binding to ports below 1024 (like port 80) without running as root. Common scenarios: drop ALL capabilities for maximum security (most apps don't need any), add NET_BIND_SERVICE for web servers that need privileged ports, add SYS_ADMIN for systemd in containers (though this is risky), or add NET_ADMIN for network tools or VPNs. Dropping ALL capabilities is a best practice - start with 'drop: [ALL]' and add specific capabilities only when the application fails and you've confirmed the requirement. This principle of least privilege significantly reduces the impact of container compromises. Note that some capabilities (like SYS_ADMIN) are very powerful and should be avoided. Combine capability management with runAsNonRoot, readOnlyRootFilesystem, and restrictive AppArmor/SELinux profiles for defense in depth. The Kubernetes Pod Security Standards restrict capabilities in the Restricted profile."
+    require_pass: true
+  - type: mcq
+    sequence_order: 3
+    question: "What are the three Pod Security Standards levels in Kubernetes?"
+    options:
+      - "Low, Medium, High"
+      - "Privileged, Baseline, Restricted"
+      - "Public, Private, Secret"
+      - "Development, Staging, Production"
+    correct_answer: "Privileged, Baseline, Restricted"
+    explanation: "Kubernetes defines three Pod Security Standards levels that establish security requirements for pods: 1) Privileged - unrestricted, allows anything including known privilege escalations. Use only for trusted infrastructure pods like CNI plugins or node-level services. 2) Baseline - minimally restrictive, prevents known privilege escalations while allowing common application patterns. Prohibits hostNetwork, hostPID, hostIPC, privileged containers, and dangerous capabilities, but allows root users and volume types. Suitable for most applications. 3) Restricted - heavily restricted, follows current pod hardening best practices. Requires running as non-root, dropping all capabilities, read-only root filesystem, and restricts volume types. Provides defense-in-depth for security-critical applications. These standards are enforced at the namespace level using Pod Security Admission (PSA), which replaced PodSecurityPolicy. You apply standards using namespace labels: 'pod-security.kubernetes.io/enforce: restricted' blocks non-compliant pods, 'pod-security.kubernetes.io/warn: baseline' allows but warns about violations, 'pod-security.kubernetes.io/audit: privileged' logs violations without blocking. For example, a namespace with 'enforce: baseline' would reject a pod trying to use hostNetwork. Implementation strategy: start with privileged to understand current state, apply baseline in audit mode to see violations, fix violating workloads, enforce baseline, then progressively move toward restricted for critical namespaces. These standards provide consistent, built-in security policy without external admission controllers, making it easier to implement security best practices cluster-wide."
+    require_pass: true

@@ -1,0 +1,56 @@
+slug: halflife-practice
+title: half_life — Practice
+difficulty: easy
+sequence_order: 10
+estimated_minutes: 2
+key_concepts:
+- half_life
+prerequisites: []
+content_md: '# half_life — Practice 🚀
+
+
+  t₁/₂ = 0.693/k = 0.693/0.0693 = 10 minutes
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: 'For a first-order reaction, the half-life is:'
+  options:
+  - Dependent on initial concentration
+  - Independent of initial concentration
+  - Directly proportional to initial concentration
+  - Inversely proportional to rate constant squared
+  correct_answer: Independent of initial concentration
+  explanation: 'For a first-order reaction, the half-life (t₁/₂) is given by the formula t₁/₂ = 0.693/k = ln(2)/k, where k is the rate constant. This formula shows that t₁/₂ depends ONLY on the rate constant k and is completely independent of the initial concentration [A]₀. This is a unique and characteristic property of first-order kinetics. Physical interpretation: (1) No matter what concentration you start with, it always takes the same time to reduce to half. (2) If you start with 1.0 M, it takes t₁/₂ to reach 0.5 M. Starting from 0.5 M, it takes another t₁/₂ to reach 0.25 M, and so on. (3) Each successive half-life is the same duration. This constant half-life property is why first-order kinetics is used for radioactive decay dating (carbon-14 dating). The 0.693 constant comes from ln(2) ≈ 0.693. Example: If k = 0.1 s⁻¹, then t₁/₂ = 0.693/0.1 = 6.93 seconds, regardless of whether you start with 0.1 M or 10 M. Contrast with second-order reactions where t₁/₂ = 1/(k[A]₀), which does depend on initial concentration.'
+  require_pass: true
+- type: short_answer
+  sequence_order: 2
+  hints:
+  - Re-read the question carefully.
+  - Recall the relevant formula or rule.
+  - Review the explanation once you answer.
+  question: For first order reaction with k = 0.0693 min⁻¹, calculate half-life in
+    minutes.
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: 'After three half-lives of a first-order reaction, what fraction of the original reactant remains?'
+  options:
+  - 1/2
+  - 1/4
+  - 1/8
+  - 1/16
+  correct_answer: 1/8
+  explanation: 'For a first-order reaction, after each half-life, the concentration is reduced to half of its previous value. After n half-lives, the remaining fraction is (1/2)ⁿ. Calculation for 3 half-lives: Start: [A]₀ (100%); After 1st half-life: [A]₀/2 (50%); After 2nd half-life: [A]₀/4 (25%); After 3rd half-life: [A]₀/8 (12.5%). Using the formula: Fraction remaining = (1/2)³ = 1/8 = 0.125 or 12.5%. This can also be calculated using [A] = [A]₀ × e^(-kt), where t = 3t₁/₂ = 3 × (0.693/k) = 2.079/k. Then [A]/[A]₀ = e^(-k × 2.079/k) = e^(-2.079) = e^(-3ln2) = (e^ln2)^(-3) = 2^(-3) = 1/8. General pattern: After n half-lives, fraction remaining = (1/2)ⁿ. So after 1: 1/2, after 2: 1/4, after 3: 1/8, after 4: 1/16, after 5: 1/32, after 10: 1/1024 ≈ 0.1%. This exponential decay pattern is characteristic of first-order processes and applies to radioactive decay, drug metabolism, and many chemical reactions.'
+  require_pass: true

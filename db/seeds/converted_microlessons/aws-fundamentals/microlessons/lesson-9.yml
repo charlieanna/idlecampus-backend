@@ -1,0 +1,123 @@
+slug: lesson-9
+title: Lesson 9
+difficulty: easy
+sequence_order: 9
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# EC2: Elastic Compute Cloud\n\n    Virtual\
+  \ servers in the AWS cloud.\n\n    ## EC2 Instance Types\n\n    ### General Purpose\
+  \ (T, M series)\n    - Balanced CPU, memory, networking\n    - **t3.micro**: 2 vCPU,\
+  \ 1 GB RAM (free tier)\n    - **m5.large**: 2 vCPU, 8 GB RAM\n    - Use for: Web\
+  \ servers, small databases\n\n    ### Compute Optimized (C series)\n    - High-performance\
+  \ processors\n    - **c5.large**: 2 vCPU, 4 GB RAM\n    - Use for: Batch processing,\
+  \ gaming servers\n\n    ### Memory Optimized (R, X series)\n    - Fast processing\
+  \ of large datasets in memory\n    - **r5.large**: 2 vCPU, 16 GB RAM\n    - Use\
+  \ for: In-memory databases, caching\n\n    ### Storage Optimized (I, D series)\n\
+  \    - High sequential read/write to local storage\n    - **i3.large**: 2 vCPU,\
+  \ 15 GB RAM, NVMe SSD\n    - Use for: Data warehouses, NoSQL databases\n\n    ##\
+  \ Launching an EC2 Instance\n\n    ### 1. Choose AMI (Amazon Machine Image)\n  \
+  \  Pre-configured OS template.\n\n    ```bash\n    # List Amazon Linux AMIs\n  \
+  \  aws ec2 describe-images --owners amazon \\\\\n      --filters \"Name=name,Values=amzn2-ami-hvm-*\"\
+  \n    ```\n\n    Types:\n    - Amazon Linux 2\n    - Ubuntu\n    - Red Hat\n   \
+  \ - Windows Server\n    - Custom AMIs\n\n    ### 2. Select Instance Type\n    ```bash\n\
+  \    aws ec2 run-instances \\\\\n      --image-id ami-0c55b159cbfafe1f0 \\\\\n \
+  \     --instance-type t3.micro \\\\\n      --key-name MyKeyPair \\\\\n      --security-group-ids\
+  \ sg-0123456789abcdef0\n    ```\n\n    ### 3. Configure Instance\n    - Number of\
+  \ instances\n    - Network (VPC, subnet)\n    - IAM role\n    - User data (bootstrap\
+  \ script)\n\n    ### 4. Add Storage\n    - Root volume (OS)\n    - Additional EBS\
+  \ volumes\n    - Instance store (ephemeral)\n\n    ### 5. Configure Security Group\n\
+  \    Firewall rules.\n\n    ```bash\n    # Allow SSH from anywhere\n    aws ec2\
+  \ authorize-security-group-ingress \\\\\n      --group-id sg-0123456789abcdef0 \\\
+  \\\n      --protocol tcp --port 22 --cidr 0.0.0.0/0\n    ```\n\n    ### 6. Review\
+  \ and Launch\n    Select or create key pair for SSH access.\n\n    ## EC2 User Data\n\
+  \n    Bootstrap script that runs on first launch.\n\n    ```bash\n    #!/bin/bash\n\
+  \    yum update -y\n    yum install -y httpd\n    systemctl start httpd\n    systemctl\
+  \ enable httpd\n    echo \"<h1>Hello from $(hostname)</h1>\" > /var/www/html/index.html\n\
+  \    ```\n\n    ## EC2 Instance States\n\n    ```\n    pending → running → stopping\
+  \ → stopped → terminating → terminated\n                  ↓\n              rebooting\n\
+  \    ```\n\n    - **Stopped**: No compute charges, storage charges apply\n    -\
+  \ **Terminated**: All data lost, cannot restart\n\n    ## EC2 Pricing Models\n\n\
+  \    ### 1. On-Demand\n    - Pay by the hour/second\n    - No upfront cost\n   \
+  \ - No commitment\n    - **Use for**: Short-term, unpredictable workloads\n\n  \
+  \  ### 2. Reserved Instances\n    - 1 or 3 year commitment\n    - Up to 75% discount\n\
+  \    - **Use for**: Steady-state workloads\n\n    ### 3. Spot Instances\n    - Bid\
+  \ on spare capacity\n    - Up to 90% discount\n    - Can be interrupted\n    - **Use\
+  \ for**: Fault-tolerant, flexible workloads\n\n    ### 4. Savings Plans\n    - Commit\
+  \ to $/hour for 1 or 3 years\n    - Up to 72% discount\n    - Flexibility across\
+  \ instance types\n    - **Use for**: Long-term workloads\n\n    ## Elastic Load\
+  \ Balancing\n\n    Distribute traffic across multiple EC2 instances.\n\n    ###\
+  \ Application Load Balancer (ALB)\n    - Layer 7 (HTTP/HTTPS)\n    - Path-based\
+  \ routing\n    - Host-based routing\n    - WebSocket support\n\n    ```bash\n  \
+  \  aws elbv2 create-load-balancer \\\\\n      --name my-alb \\\\\n      --subnets\
+  \ subnet-12345 subnet-67890 \\\\\n      --security-groups sg-12345\n    ```\n\n\
+  \    ### Network Load Balancer (NLB)\n    - Layer 4 (TCP/UDP)\n    - Ultra-high\
+  \ performance\n    - Static IP addresses\n\n    ### Classic Load Balancer\n    -\
+  \ Legacy (Layer 4 & 7)\n    - Use ALB or NLB for new applications\n\n    ## Auto\
+  \ Scaling\n\n    Automatically adjust capacity.\n\n    ### Components\n\n    **1.\
+  \ Launch Template**:\n    ```bash\n    aws ec2 create-launch-template \\\\\n   \
+  \   --launch-template-name my-template \\\\\n      --version-description \"Web server\
+  \ template\" \\\\\n      --launch-template-data file://template.json\n    ```\n\n\
+  \    **2. Auto Scaling Group**:\n    ```bash\n    aws autoscaling create-auto-scaling-group\
+  \ \\\\\n      --auto-scaling-group-name my-asg \\\\\n      --launch-template LaunchTemplateName=my-template\
+  \ \\\\\n      --min-size 2 --max-size 10 --desired-capacity 4 \\\\\n      --vpc-zone-identifier\
+  \ \"subnet-12345,subnet-67890\"\n    ```\n\n    **3. Scaling Policies**:\n    -\
+  \ **Target Tracking**: Maintain average CPU at 70%\n    - **Step Scaling**: Add\
+  \ 2 instances when CPU > 80%\n    - **Scheduled**: Scale up at 9 AM, down at 6 PM\n\
+  \n    ## EC2 Best Practices\n\n    1. **Use IAM Roles**: Never hardcode credentials\n\
+  \    2. **Security Groups**: Restrict inbound traffic\n    3. **EBS Snapshots**:\
+  \ Regular backups\n    4. **Monitoring**: Enable CloudWatch metrics\n    5. **Tagging**:\
+  \ Organize and track costs\n    6. **Right-sizing**: Choose appropriate instance\
+  \ type\n\n    **Practice**: Try the EC2 lab!"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What is the key difference between EC2 On-Demand and Spot Instances?
+  options:
+  - On-Demand offers guaranteed capacity while Spot Instances can be interrupted and
+    offer up to 90% discount
+  - Spot Instances are faster than On-Demand instances
+  - On-Demand requires a 3-year commitment while Spot Instances don't
+  - There is no difference, they are the same pricing model
+  correct_answer: On-Demand offers guaranteed capacity while Spot Instances can be
+    interrupted and offer up to 90% discount
+  explanation: 'On-Demand and Spot Instances serve different use cases with distinct
+    pricing models. On-Demand Instances: Pay by hour/second with no upfront cost or
+    commitment, providing guaranteed capacity that you control when to start/stop.
+    Best for short-term, unpredictable workloads where interruption is unacceptable.
+    Spot Instances: Bid on spare AWS capacity at up to 90% discount, but AWS can reclaim
+    them with 2-minute warning when capacity is needed elsewhere. Best for fault-tolerant,
+    flexible workloads like batch processing, data analysis, or testing. Example:
+    Run a web server on On-Demand (needs 24/7 availability), but run nightly data
+    processing on Spot (can retry if interrupted, save 90% cost). Other models: Reserved
+    Instances (1-3 year commitment, 75% discount) for steady workloads, Savings Plans
+    ($/hour commitment, 72% discount) with flexibility. Choosing wrong model wastes
+    money: Running batch jobs on On-Demand costs 10x more than Spot, while using Spot
+    for production web servers causes downtime.'
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: In an Auto Scaling Group with Target Tracking policy set to maintain 70%
+    CPU utilization, what happens when average CPU reaches 85%?
+  options:
+  - Auto Scaling launches additional EC2 instances to bring average CPU back to 70%
+  - Auto Scaling terminates instances to reduce load
+  - Auto Scaling does nothing until CPU reaches 100%
+  - Auto Scaling sends an alert but doesn't change capacity
+  correct_answer: Auto Scaling launches additional EC2 instances to bring average CPU
+    back to 70%
+  explanation: 'Auto Scaling with Target Tracking automatically adjusts EC2 capacity
+    to maintain the specified metric at target value. How it works: (1) CloudWatch
+    monitors average CPU across all instances in the Auto Scaling Group, (2) When
+    CPU exceeds target (70%), Auto Scaling calculates needed capacity: if 4 instances
+    at 85% CPU, need 4.86 instances to reach 70%, rounds up to 5, (3) Launches 1 additional
+    instance, (4) Load distributes across 5 instances, bringing average to ~68% CPU,
+    (5) Conversely, if CPU drops to 50%, terminates instances to maintain efficiency.
+    Configuration: Set min/max size limits (e.g., min=2, max=10), choose target metric
+    (CPU, network, custom), set target value (70%). Scaling policies: Target Tracking
+    (recommended - automatic), Step Scaling (add N instances when CPU > 80%), Scheduled
+    (scale at specific times like 9 AM). Best practices: Allow 5-minute cooldown between
+    scaling actions, use Application Load Balancer health checks, test scaling policies
+    under load. Real example: E-commerce site scales from 4 to 20 instances during
+    Black Friday traffic spike, then back to 4 overnight.'
+  require_pass: true

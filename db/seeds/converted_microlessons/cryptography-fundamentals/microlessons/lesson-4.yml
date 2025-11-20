@@ -1,0 +1,118 @@
+slug: lesson-4
+title: Lesson 4
+difficulty: easy
+sequence_order: 4
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Introduction to Cryptography\n\n    Cryptography\
+  \ is the foundation of secure communications. Understanding these concepts is essential\
+  \ for implementing TLS/SSL correctly.\n\n    ## Types of Cryptography\n\n    ###\
+  \ 1. Symmetric Encryption\n    **Same key for encryption and decryption**\n\n  \
+  \  ```python\n    # Example: AES (Advanced Encryption Standard)\n    from cryptography.fernet\
+  \ import Fernet\n\n    # Generate key\n    key = Fernet.generate_key()\n    cipher\
+  \ = Fernet(key)\n\n    # Encrypt\n    plaintext = b\"Secret message\"\n    ciphertext\
+  \ = cipher.encrypt(plaintext)\n\n    # Decrypt (with same key)\n    decrypted =\
+  \ cipher.decrypt(ciphertext)\n    ```\n\n    **Pros:**\n    - Fast and efficient\n\
+  \    - Good for large amounts of data\n\n    **Cons:**\n    - Key distribution problem\
+  \ (how to share key securely?)\n    - N users need N(N-1)/2 keys\n\n    **Common\
+  \ algorithms:**\n    - AES-128, AES-256 (recommended)\n    - ChaCha20 (modern alternative)\n\
+  \    - ~~DES, 3DES~~ (deprecated, insecure)\n\n    ### 2. Asymmetric Encryption\
+  \ (Public Key Cryptography)\n    **Two keys: public key (encrypt) and private key\
+  \ (decrypt)**\n\n    ```python\n    # Example: RSA\n    from cryptography.hazmat.primitives.asymmetric\
+  \ import rsa, padding\n    from cryptography.hazmat.primitives import hashes\n\n\
+  \    # Generate key pair\n    private_key = rsa.generate_private_key(\n        public_exponent=65537,\n\
+  \        key_size=2048\n    )\n    public_key = private_key.public_key()\n\n   \
+  \ # Encrypt with public key\n    message = b\"Secret message\"\n    ciphertext =\
+  \ public_key.encrypt(\n        message,\n        padding.OAEP(\n            mgf=padding.MGF1(algorithm=hashes.SHA256()),\n\
+  \            algorithm=hashes.SHA256(),\n            label=None\n        )\n   \
+  \ )\n\n    # Decrypt with private key\n    plaintext = private_key.decrypt(\n  \
+  \      ciphertext,\n        padding.OAEP(\n            mgf=padding.MGF1(algorithm=hashes.SHA256()),\n\
+  \            algorithm=hashes.SHA256(),\n            label=None\n        )\n   \
+  \ )\n    ```\n\n    **Pros:**\n    - Solves key distribution (public key can be\
+  \ shared openly)\n    - Enables digital signatures\n\n    **Cons:**\n    - Much\
+  \ slower than symmetric\n    - Limited message size\n\n    **Common algorithms:**\n\
+  \    - RSA (2048-bit minimum, 4096-bit recommended)\n    - ECC (Elliptic Curve Cryptography)\
+  \ - faster, smaller keys\n    - ~~RSA-1024~~ (deprecated, insecure)\n\n    ## Hash\
+  \ Functions\n\n    **One-way functions that produce fixed-size output**\n\n    ```python\n\
+  \    import hashlib\n\n    # SHA-256\n    message = b\"Hello, World!\"\n    hash_value\
+  \ = hashlib.sha256(message).hexdigest()\n    print(hash_value)  # Always the same\
+  \ for same input\n\n    # SHA-3 (modern alternative)\n    hash_value = hashlib.sha3_256(message).hexdigest()\n\
+  \    ```\n\n    **Properties:**\n    1. **Deterministic**: Same input → same output\n\
+  \    2. **One-way**: Can't reverse to get input\n    3. **Collision-resistant**:\
+  \ Hard to find two inputs with same hash\n    4. **Avalanche effect**: Small input\
+  \ change → completely different hash\n\n    **Use cases:**\n    - Password storage\
+  \ (with salt!)\n    - Data integrity verification\n    - Digital signatures\n\n\
+  \    **Common algorithms:**\n    - SHA-256, SHA-384, SHA-512 (recommended)\n   \
+  \ - SHA-3 (latest standard)\n    - BLAKE2, BLAKE3 (fast alternatives)\n    - ~~MD5,\
+  \ SHA-1~~ (broken, do not use)\n\n    ## Digital Signatures\n\n    **Prove authenticity\
+  \ and integrity using asymmetric cryptography**\n\n    ### How it works:\n    1.\
+  \ Hash the message\n    2. Encrypt hash with private key → signature\n    3. Recipient\
+  \ decrypts signature with public key\n    4. Compares with hash of received message\n\
+  \n    ```python\n    from cryptography.hazmat.primitives import hashes\n    from\
+  \ cryptography.hazmat.primitives.asymmetric import padding\n\n    # Sign with private\
+  \ key\n    message = b\"I approve this transaction\"\n    signature = private_key.sign(\n\
+  \        message,\n        padding.PSS(\n            mgf=padding.MGF1(hashes.SHA256()),\n\
+  \            salt_length=padding.PSS.MAX_LENGTH\n        ),\n        hashes.SHA256()\n\
+  \    )\n\n    # Verify with public key\n    try:\n        public_key.verify(\n \
+  \           signature,\n            message,\n            padding.PSS(\n       \
+  \         mgf=padding.MGF1(hashes.SHA256()),\n                salt_length=padding.PSS.MAX_LENGTH\n\
+  \            ),\n            hashes.SHA256()\n        )\n        print(\"Signature\
+  \ valid!\")\n    except:\n        print(\"Signature invalid!\")\n    ```\n\n   \
+  \ **Use cases:**\n    - Email signing (S/MIME)\n    - Code signing\n    - TLS certificate\
+  \ chains\n    - Blockchain transactions\n\n    ## Key Exchange\n\n    **How to establish\
+  \ shared secret over insecure channel?**\n\n    ### Diffie-Hellman Key Exchange\n\
+  \n    ```python\n    from cryptography.hazmat.primitives.asymmetric import dh\n\n\
+  \    # Generate parameters (shared publicly)\n    parameters = dh.generate_parameters(generator=2,\
+  \ key_size=2048)\n\n    # Alice generates private key and derives public key\n \
+  \   alice_private = parameters.generate_private_key()\n    alice_public = alice_private.public_key()\n\
+  \n    # Bob generates private key and derives public key\n    bob_private = parameters.generate_private_key()\n\
+  \    bob_public = bob_private.public_key()\n\n    # Both derive same shared secret!\n\
+  \    alice_shared = alice_private.exchange(bob_public)\n    bob_shared = bob_private.exchange(alice_public)\n\
+  \n    # alice_shared == bob_shared (without ever transmitting it!)\n    ```\n\n\
+  \    **Modern variant**: ECDH (Elliptic Curve Diffie-Hellman)\n    - Faster, smaller\
+  \ keys\n    - Curves: P-256, P-384, Curve25519 (recommended)\n\n    ## Random Number\
+  \ Generation\n\n    **Critical for security!**\n\n    ```python\n    import secrets\
+  \  # Cryptographically secure\n\n    # Generate random bytes\n    key = secrets.token_bytes(32)\
+  \  # 256 bits\n\n    # Generate random URL-safe string\n    token = secrets.token_urlsafe(32)\n\
+  \n    # DON'T use random.random() for security!\n    ```\n\n    ## Common Cryptographic\
+  \ Mistakes\n\n    ### 1. Using Weak Algorithms\n    ```python\n    # BAD\n    hashlib.md5(password)\
+  \  # Broken!\n\n    # GOOD\n    hashlib.sha256(password + salt)  # Better\n    hashlib.pbkdf2_hmac('sha256',\
+  \ password, salt, 100000)  # Best for passwords\n    ```\n\n    ### 2. Predictable\
+  \ Random Numbers\n    ```python\n    # BAD\n    import random\n    key = random.randint(0,\
+  \ 1000000)  # Predictable!\n\n    # GOOD\n    import secrets\n    key = secrets.token_bytes(32)\
+  \  # Cryptographically secure\n    ```\n\n    ### 3. Not Using Salt\n    ```python\n\
+  \    # BAD: Same password → same hash\n    hash = hashlib.sha256(password.encode()).hexdigest()\n\
+  \n    # GOOD: Salt makes each hash unique\n    import os\n    salt = os.urandom(32)\n\
+  \    hash = hashlib.pbkdf2_hmac('sha256', password.encode(), salt, 100000)\n   \
+  \ ```\n\n    ### 4. Homemade Cryptography\n    **Never roll your own crypto!**\n\
+  \    - Use established libraries\n    - Use proven algorithms\n    - Use recommended\
+  \ parameters\n\n    ## Key Length Recommendations (2024)\n\n    | Algorithm | Minimum\
+  \ | Recommended | Purpose |\n    |-----------|---------|-------------|---------|\n\
+  \    | RSA | 2048 bits | 4096 bits | Long-term security |\n    | ECC | 256 bits\
+  \ | 384 bits | Equivalent to RSA-3072 |\n    | AES | 128 bits | 256 bits | Symmetric\
+  \ encryption |\n    | SHA | SHA-256 | SHA-384 | Hashing |\n\n    **Next**: We'll\
+  \ explore how these concepts come together in TLS/SSL."
+exercises:
+  - type: multiple_choice_question
+    sequence_order: 1
+    question: "What is Diffie-Hellman key exchange used for?"
+    options:
+      - "Encrypting files on disk"
+      - "Establishing a shared secret over an insecure channel without transmitting the secret"
+      - "Hashing passwords"
+      - "Signing digital certificates"
+    correct_answer: "Establishing a shared secret over an insecure channel without transmitting the secret"
+    explanation: "Diffie-Hellman key exchange is a cryptographic protocol that allows two parties to establish a shared secret key over an insecure public channel without actually transmitting the key itself. This solves a fundamental problem in cryptography: how can two parties who have never met agree on a secret key when all their communication might be intercepted? The protocol works through clever mathematics involving modular exponentiation. Each party generates a private key and derives a public key from it using agreed-upon parameters. They exchange public keys over the insecure channel. Then each party combines their own private key with the other's public key to compute the same shared secret, which was never transmitted. An eavesdropper who intercepts both public keys cannot compute the shared secret without solving the discrete logarithm problem, which is computationally infeasible for properly-sized keys. Modern variants like ECDH (Elliptic Curve Diffie-Hellman) use elliptic curve cryptography for better performance. TLS uses ECDHE (ephemeral) for forward secrecy, generating new keys for each session. This elegant solution to secure key exchange is fundamental to modern internet security."
+    require_pass: true
+  - type: multiple_choice_question
+    sequence_order: 2
+    question: "Why should you use secrets module instead of random module for cryptographic operations in Python?"
+    options:
+      - "secrets is faster than random"
+      - "secrets produces cryptographically secure unpredictable values while random is predictable"
+      - "secrets uses less memory"
+      - "random is deprecated"
+    correct_answer: "secrets produces cryptographically secure unpredictable values while random is predictable"
+    explanation: "The Python secrets module provides cryptographically secure random number generation suitable for security purposes, while the random module is designed for modeling and simulation, not security. The random module uses the Mersenne Twister algorithm, a pseudo-random number generator that produces statistically random-looking output but is completely deterministic - if you know or can guess the seed, you can predict all future values. An attacker who observes even partial output from random can potentially reconstruct the internal state and predict future values. This makes random completely unsuitable for generating cryptographic keys, authentication tokens, passwords, or any security-sensitive random values. The secrets module, in contrast, uses the operating system's cryptographically secure random source (like /dev/urandom on Unix or CryptGenRandom on Windows), which derives randomness from unpredictable sources like hardware noise, interrupt timing, and environmental entropy. This makes secrets.token_bytes(), secrets.token_hex(), and secrets.token_urlsafe() suitable for security applications. Using weak randomness in cryptography is one of the most dangerous mistakes - it's led to real-world security breaches where attackers predicted session tokens or encryption keys. Always use secrets for security, reserving random for games and simulations."
+    require_pass: true

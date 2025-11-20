@@ -1,0 +1,58 @@
+slug: conductance-practice
+title: conductance — Practice
+difficulty: easy
+sequence_order: 17
+estimated_minutes: 2
+key_concepts:
+- conductance
+prerequisites: []
+content_md: '# conductance — Practice 🚀
+
+
+  α = Λm/Λm° = 20/400 = 0.05 or 5%
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: 'If molar conductivity Λm = 20 S cm² mol⁻¹ and limiting molar conductivity Λm° = 400 S cm² mol⁻¹, what is the degree of dissociation (α)?'
+  options:
+  - '0.05 or 5%'
+  - '0.10 or 10%'
+  - '0.20 or 20%'
+  - '0.50 or 50%'
+  correct_answer: '0.05 or 5%'
+  explanation: "The degree of dissociation (α) is calculated using: α = Λm/Λm°, where Λm is the molar conductivity at given concentration and Λm° is the limiting molar conductivity (at infinite dilution). Here: α = 20/400 = 0.05 = 5%. This means only 5% of the electrolyte molecules are dissociated into ions at this concentration. Weak electrolytes have low α values, while strong electrolytes approach α = 1 (100%) even at moderate concentrations."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What is the relationship between molar conductivity (Λm) and concentration (C) for a weak electrolyte?
+  options:
+  - Λm increases as concentration decreases
+  - Λm decreases as concentration decreases
+  - Λm remains constant
+  - Λm is independent of concentration
+  correct_answer: Λm increases as concentration decreases
+  explanation: "For weak electrolytes, molar conductivity (Λm) increases significantly as concentration decreases (dilution increases) because the degree of dissociation (α) increases with dilution. At infinite dilution, Λm reaches its maximum value Λm° when dissociation is complete. For strong electrolytes, Λm also increases with dilution but less dramatically, following Kohlrausch's law: Λm = Λm° - A√C."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: 'Conductivity (κ) and molar conductivity (Λm) are related by which equation?'
+  options:
+  - Λm = κ × 1000/C
+  - Λm = κ × C
+  - Λm = κ/C
+  - Λm = C/κ
+  correct_answer: Λm = κ × 1000/C
+  explanation: "Molar conductivity (Λm) is defined as: Λm = (κ × 1000)/C, where κ is conductivity in S/cm, C is concentration in mol/L, and the factor 1000 converts L to cm³. Units: if κ is in S cm⁻¹ and C in mol L⁻¹, then Λm is in S cm² mol⁻¹. Conductivity (κ) increases with concentration (more ions), but molar conductivity (Λm) generally decreases with concentration due to inter-ionic effects and decreased dissociation (for weak electrolytes)."
+  require_pass: true

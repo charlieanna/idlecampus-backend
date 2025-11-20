@@ -1,0 +1,217 @@
+slug: refraction-snells-law
+title: "Refraction and Snell's Law"
+difficulty: intermediate
+sequence_order: 2
+estimated_minutes: 18
+key_concepts:
+- refraction
+- snells-law
+- refractive-index
+- critical-angle
+- apparent-depth
+prerequisites:
+- reflection-plane-spherical-mirrors
+content_md: |
+  # Refraction and Snell's Law
+
+  ## What is Refraction?
+
+  **Refraction** is the bending of light when it passes from one medium to another due to change in speed.
+
+  ## Laws of Refraction
+
+  ### First Law:
+  Incident ray, refracted ray, and normal lie in the same plane.
+
+  ### Second Law (Snell's Law):
+  ```
+  n₁ sin θ₁ = n₂ sin θ₂
+
+  or
+
+  sin i / sin r = n₂/n₁ = constant
+  ```
+
+  ## Refractive Index
+
+  ### Absolute Refractive Index:
+  ```
+  n = c/v = Speed in vacuum / Speed in medium
+
+  For air: n ≈ 1.0003 ≈ 1
+  For water: n ≈ 1.33
+  For glass: n ≈ 1.5
+  For diamond: n ≈ 2.42
+  ```
+
+  ### Relative Refractive Index:
+  ```
+  ₁n₂ = n₂/n₁ = v₁/v₂ = λ₁/λ₂
+  ```
+
+  ## Key Relationships
+
+  ```
+  n = c/v = λ₀/λ_medium
+
+  Frequency remains constant during refraction!
+  v₁/v₂ = λ₁/λ₂ = n₂/n₁
+  ```
+
+  ## Bending Towards/Away from Normal
+
+  ### Denser to Rarer (n₁ > n₂):
+  - Light bends **away** from normal
+  - r > i
+  - Speed increases
+
+  ### Rarer to Denser (n₁ < n₂):
+  - Light bends **towards** normal
+  - r < i
+  - Speed decreases
+
+  ## Important Applications
+
+  ### 1. Apparent Depth
+  ```
+  Apparent depth = Real depth / n
+
+  Shift = Real depth × (1 - 1/n)
+  ```
+
+  Object appears closer when viewed through denser medium.
+
+  ### 2. Lateral Shift Through Glass Slab
+  ```
+  d = t sin(i-r) / cos r
+
+  where t = thickness of slab
+  ```
+
+  Emergent ray parallel to incident ray but displaced.
+
+  ### 3. Real and Apparent Thickness of Multiple Layers
+  ```
+  Apparent thickness = Σ(tᵢ/nᵢ)
+  ```
+
+  ## Refraction Through Prism
+
+  ### Prism Formula:
+  ```
+  A = r₁ + r₂ (angles of refraction at two surfaces)
+  δ = (i₁ + i₂) - A (deviation)
+  ```
+
+  ### Minimum Deviation:
+  When i₁ = i₂ and r₁ = r₂:
+  ```
+  δₘᵢₙ = 2i - A
+
+  n = sin((A + δₘᵢₙ)/2) / sin(A/2)
+  ```
+
+  ### Thin Prism (A < 10°):
+  ```
+  δ = (n - 1)A
+  ```
+
+  ## Dispersion
+
+  Different wavelengths have different refractive indices:
+  ```
+  n_violet > n_red
+  λ_red > λ_violet
+
+  White light splits into VIBGYOR
+  ```
+
+  ### Angular Dispersion:
+  ```
+  θ = (n_v - n_r)A
+  ```
+
+  ### Dispersive Power:
+  ```
+  ω = (n_v - n_r)/(n_y - 1) = Angular dispersion / Mean deviation
+  ```
+
+  ## Numerical Examples
+
+  **Example 1:** Light travels from air to glass (n = 1.5). If angle of incidence is 30°, find angle of refraction.
+
+  **Solution:**
+  ```
+  sin i / sin r = n
+  sin 30° / sin r = 1.5
+  0.5 / sin r = 1.5
+  sin r = 0.5/1.5 = 1/3
+  r = sin⁻¹(1/3) ≈ 19.47°
+  ```
+
+  **Example 2:** A coin at bottom of 4m deep pool. What is apparent depth? (n_water = 4/3)
+
+  **Solution:**
+  ```
+  Apparent depth = Real depth / n
+  = 4 / (4/3) = 4 × 3/4 = 3 m
+
+  Coin appears 1 m closer to surface.
+  ```
+
+  **Example 3:** Prism with A = 60° and n = 1.5. Find minimum deviation.
+
+  **Solution:**
+  ```
+  n = sin((A + δₘ)/2) / sin(A/2)
+  1.5 = sin((60° + δₘ)/2) / sin(30°)
+  1.5 = sin((60° + δₘ)/2) / 0.5
+  sin((60° + δₘ)/2) = 0.75
+  (60° + δₘ)/2 = 48.59°
+  60° + δₘ = 97.18°
+  δₘ ≈ 37.2°
+  ```
+
+  ## JEE Important Points
+
+  1. **Frequency constant**, wavelength and velocity change
+  2. **n ∝ 1/λ** (violet bends most)
+  3. **Apparent depth < Real depth** (denser medium)
+  4. **Glass slab causes lateral shift**, not angular deviation
+  5. **At minimum deviation**, ray inside prism is parallel to base
+  6. **Critical angle exists only** when going from denser to rarer
+
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: "Light travels from medium A to medium B. If speed increases, which is true?"
+  options:
+  - "Light bends towards normal, A is rarer"
+  - "Light bends away from normal, A is denser"
+  - "Light bends towards normal, A is denser"
+  - "No bending occurs"
+  correct_answer: "Light bends away from normal, A is denser"
+  explanation: "If speed increases (v₂ > v₁), then n₂ < n₁ (since n ∝ 1/v). Medium A is denser (higher n). When light goes from denser to rarer medium, it bends away from normal. Using Snell's law: n₁ sin θ₁ = n₂ sin θ₂. Since n₁ > n₂, sin θ₂ > sin θ₁, so θ₂ > θ₁. The refracted ray makes larger angle with normal (bends away). This is opposite to what happens going into denser medium (like air to water) where light bends towards normal."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: "A mark at bottom of a beaker filled with liquid appears to rise by 2 cm. If real depth is 8 cm, refractive index is:"
+  options:
+  - "1.25"
+  - "1.33"
+  - "1.5"
+  - "4"
+  correct_answer: "1.33"
+  explanation: "Apparent depth = Real depth - Shift = 8 - 2 = 6 cm. Using formula: Apparent depth = Real depth / n. So 6 = 8/n, giving n = 8/6 = 4/3 ≈ 1.33. This is refractive index of water. The shift formula: Shift = Real depth(1 - 1/n) = 8(1 - 3/4) = 8 × 1/4 = 2 cm ✓. This explains why pools look shallower than they are, and fish appear closer to surface than actual position. Important safety consideration when diving!"
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: "A thin prism of angle 4° and refractive index 1.5 produces deviation of:"
+  options:
+  - "2°"
+  - "4°"
+  - "6°"
+  - "8°"
+  correct_answer: "2°"
+  explanation: "For thin prism (A < 10°): δ = (n - 1)A = (1.5 - 1) × 4° = 0.5 × 4° = 2°. This approximation works because for small angles, sin θ ≈ θ (in radians). The deviation is independent of angle of incidence for thin prisms (no minimum deviation condition needed). This formula is derived from full prism equation when angles are small. Note: Deviation is less than prism angle when n < 2, equals it when n = 2, exceeds it when n > 2. For n = 1.5, δ = A/2."
+  require_pass: true

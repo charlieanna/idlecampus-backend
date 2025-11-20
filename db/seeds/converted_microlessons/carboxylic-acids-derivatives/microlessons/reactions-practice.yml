@@ -1,0 +1,58 @@
+slug: reactions-practice
+title: reactions — Practice
+difficulty: easy
+sequence_order: 9
+estimated_minutes: 2
+key_concepts:
+- reactions
+prerequisites: []
+content_md: '# reactions — Practice 🚀
+
+
+  R-COOH → [LiAlH₄] → R-CH₂-OH (1° alcohol). LiAlH₄ is strong reducing agent.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 2
+  question: 'Reduction of carboxylic acid with LiAlH₄ gives:'
+  options:
+  - Primary alcohol
+  - Secondary alcohol
+  - Aldehyde
+  - Ketone
+  correct_answer: Primary alcohol
+  explanation: "Lithium aluminum hydride (LiAlH₄) is a strong reducing agent that reduces carboxylic acids (R-COOH) all the way to primary alcohols (R-CH₂OH). The reaction proceeds through an intermediate aldehyde, but LiAlH₄ is strong enough to reduce that further to the alcohol. For example: CH₃COOH + LiAlH₄ → CH₃CH₂OH. Weaker reducing agents like DIBAL-H can stop at the aldehyde stage, but LiAlH₄ gives the primary alcohol. Secondary alcohols come from reduction of ketones, not carboxylic acids."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: What product is formed when a carboxylic acid reacts with an alcohol in the presence of acid catalyst?
+  options:
+  - Ester (reversible reaction)
+  - Ether (irreversible reaction)
+  - Anhydride (reversible reaction)
+  - Amide (irreversible reaction)
+  correct_answer: Ester (reversible reaction)
+  explanation: "Carboxylic acids react with alcohols in the presence of acid catalyst (H₂SO₄ or HCl) to form esters in a reversible reaction called Fischer esterification: R-COOH + R'-OH ⇌ R-COOR' + H₂O. The reaction is an equilibrium, so excess alcohol or removal of water (using a Dean-Stark apparatus) is used to drive it toward ester formation. For example: CH₃COOH + CH₃OH ⇌ CH₃COOCH₃ + H₂O. This is one of the most important methods for preparing esters. The reverse reaction is acid-catalyzed ester hydrolysis."
+  require_pass: true
+- type: mcq
+  sequence_order: 4
+  question: Which reagent converts a carboxylic acid to an acid chloride?
+  options:
+  - LiAlH₄
+  - SOCl₂ or PCl₅
+  - NaOH
+  - CH₃OH/H⁺
+  correct_answer: SOCl₂ or PCl₅
+  explanation: "Carboxylic acids are converted to acid chlorides using reagents like SOCl₂ (thionyl chloride) or PCl₅ (phosphorus pentachloride). For example: R-COOH + SOCl₂ → R-COCl + SO₂ + HCl. SOCl₂ is preferred because the byproducts are gases that escape, making purification easy. Alternatively, PCl₃ or oxalyl chloride can be used. Acid chlorides are important intermediates for preparing other acyl derivatives (esters, amides, anhydrides) because they're highly reactive. LiAlH₄ reduces to alcohol, NaOH forms carboxylate salt, and CH₃OH/H⁺ forms ester."
+  require_pass: true

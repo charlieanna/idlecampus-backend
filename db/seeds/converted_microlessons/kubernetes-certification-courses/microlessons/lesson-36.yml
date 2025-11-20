@@ -1,0 +1,45 @@
+slug: lesson-36
+title: Lesson 36
+difficulty: easy
+sequence_order: 36
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# StatefulSets for Stateful Applications\n\
+  \n    Provide stable network IDs and storage for stateful workloads.\n    - Ordered,\
+  \ graceful deployment and scaling\n    - Persistent volume claims per replica\n\
+  \    - Headless services for DNS"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What is a key characteristic of StatefulSets compared to Deployments?
+  options:
+  - StatefulSets provide random pod names
+  - StatefulSets provide stable network identities with ordered pod naming
+  - StatefulSets cannot use persistent storage
+  - StatefulSets do not support rolling updates
+  correct_answer: StatefulSets provide stable network identities with ordered pod naming
+  explanation: "StatefulSets are designed for stateful applications that require stable, persistent identities. Each pod in a StatefulSet gets an ordinal index (0, 1, 2, etc.) appended to the StatefulSet name, creating predictable pod names like 'mysql-0', 'mysql-1', 'mysql-2'. These names remain consistent across pod restarts and rescheduling, which is crucial for stateful applications like databases that need to maintain cluster membership or replication relationships. In contrast, Deployment pods get random hash suffixes. StatefulSets also provide stable network identities through headless services, where each pod gets a DNS entry like 'mysql-0.mysql-service.default.svc.cluster.local'. This predictability is essential for distributed systems where pods need to discover and communicate with specific instances."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: How does StatefulSet handle persistent storage for each replica?
+  options:
+  - All replicas share a single PersistentVolumeClaim
+  - Each replica gets its own PersistentVolumeClaim that persists across pod restarts
+  - Storage is ephemeral and deleted when pods are removed
+  - StatefulSets do not support persistent storage
+  correct_answer: Each replica gets its own PersistentVolumeClaim that persists across pod restarts
+  explanation: "StatefulSets use volumeClaimTemplates to automatically create a unique PersistentVolumeClaim (PVC) for each replica. When a StatefulSet creates pod 'mysql-0', it also creates a PVC named something like 'data-mysql-0'. If the pod is deleted or rescheduled, the StatefulSet controller ensures the replacement pod is reattached to the same PVC, preserving data across pod lifecycle events. This is fundamentally different from Deployments, where all replicas typically share the same volume or use ephemeral storage. The PVCs are not automatically deleted when the StatefulSet is scaled down or deleted, preventing accidental data loss. This behavior is critical for databases and other stateful applications where data persistence and identity are tightly coupled."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: What is the purpose of a headless service in a StatefulSet?
+  options:
+  - To load balance traffic across all pods
+  - To provide direct DNS entries for each individual pod
+  - To prevent external access to the StatefulSet
+  - To automatically scale the StatefulSet
+  correct_answer: To provide direct DNS entries for each individual pod
+  explanation: "A headless service (created by setting clusterIP: None) is used with StatefulSets to provide stable DNS entries for each individual pod rather than load-balancing traffic across all pods. When you create a headless service named 'mysql' for a StatefulSet, each pod gets a DNS entry like 'mysql-0.mysql.default.svc.cluster.local', 'mysql-1.mysql.default.svc.cluster.local', etc. This allows clients to directly address specific pods, which is essential for stateful applications. For example, in a MySQL cluster, you might want to send writes to the primary (mysql-0) and reads to replicas (mysql-1, mysql-2). Regular services load balance and hide individual pod identities, which works well for stateless applications but not for stateful ones where pod identity matters."
+  require_pass: true

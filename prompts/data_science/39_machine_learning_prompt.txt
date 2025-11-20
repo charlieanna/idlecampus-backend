@@ -1,0 +1,217 @@
+=======================================
+MICROLESSON GENERATOR - MACHINE LEARNING FUNDAMENTALS
+=======================================
+
+[READY TO USE: Copy this entire prompt + attach all files listed below to GPT-5 Pro]
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+STEP 1: ATTACH THESE FILES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+From: idlecampus/backend/db/seeds/
+
+□ machine_learning_fundamentals_course.rb
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+STEP 2: PASTE THIS PROMPT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+You are an expert educational content designer and Ruby on Rails developer.
+
+I've attached seed files for the Machine Learning Fundamentals course. Convert them into microlesson format.
+
+# TASK
+
+Split each attached seed file into very small microlessons with exercises.
+
+# MICROLESSON RULES
+
+**Size:** 1 concept per microlesson, 2-3 minutes each
+
+**Content Structure:**
+```markdown
+# [Title] 🚀
+
+## What is [concept]?
+[2-3 sentence explanation]
+
+## Syntax/Command
+```python
+[code or command]
+```
+
+## Example
+```python
+[specific example with output]
+```
+
+## Key Points
+- Point 1
+- Point 2
+- Point 3
+```
+
+# EXERCISE RULES
+
+**Count based on difficulty:**
+- Easy: 1-2 exercises
+- Medium: 2-3 exercises
+- Hard: 3-4 exercises
+
+**Types:**
+1. **terminal**: CLI commands (for terminal/CLI courses)
+2. **mcq**: Multiple choice with 4 options
+3. **code**: Programming challenges (for coding courses)
+
+**Progressive Hints (3 per exercise):**
+- Hint 1: Gentle nudge
+- Hint 2: More specific
+- Hint 3: Nearly the answer
+
+# PREREQUISITES
+
+Analyze content to infer dependencies:
+- First lesson: `prerequisite_ids: []`
+- Sequential lessons: Previous lesson as prerequisite
+- Advanced topics: Multiple prerequisites
+
+# OUTPUT FORMAT
+
+Generate complete Ruby seed files:
+
+```ruby
+# db/seeds/microlessons/[module_name]_microlessons.rb
+# AUTO-GENERATED from [original_file].rb
+
+puts "Creating Microlessons for [Module Name]..."
+
+module_var = CourseModule.find_by(slug: '[module-slug]')
+
+# === MICROLESSON 1: [Title] ===
+lesson_1 = MicroLesson.create!(
+  course_module: module_var,
+  title: '[Short, clear title]',
+  content: <<~MARKDOWN,
+    # [Title] 🚀
+
+    ## What is [concept]?
+
+    [Explanation]
+
+    ## Syntax/Command
+
+    ```python
+    [code or command]
+    ```
+
+    ## Example
+
+    ```python
+    [example]
+    ```
+
+    [Expected output or result]
+
+    ## Key Points
+
+    - Point 1
+    - Point 2
+    - Point 3
+  MARKDOWN
+  sequence_order: 1,
+  estimated_minutes: 2,
+  difficulty: 'easy',
+  key_concepts: ['concept1', 'concept2'],
+  prerequisite_ids: []
+)
+
+# Exercise 1: [Type]
+Exercise.create!(
+  micro_lesson: lesson_1,
+  exercise_type: '[terminal|mcq|code]',
+  sequence_order: 1,
+  exercise_data: {
+    # For terminal:
+    command: '[exact command]',
+    description: '[what to do]',
+
+    # For MCQ:
+    question: '[question]',
+    options: ['[correct]', '[wrong]', '[wrong]', '[wrong]'],
+    correct_answer: 0,
+    explanation: '[why]',
+
+    # For code:
+    starter_code: '[starter]',
+    solution: '[solution]',
+    test_cases: [{input: '...', expected: '...'}],
+
+    # All types:
+    difficulty: 'easy',
+    hints: [
+      '[Hint 1: gentle]',
+      '[Hint 2: specific]',
+      '[Hint 3: nearly answer]'
+    ]
+  }
+)
+
+# [More microlessons...]
+
+puts "✓ Created [N] microlessons for [Module Name]"
+```
+
+# QUALITY CHECKLIST
+
+For EACH microlesson:
+- [ ] Covers exactly 1 concept
+- [ ] 2-3 minutes estimated time
+- [ ] Clear, practical examples
+- [ ] Exercises test understanding
+- [ ] MCQ options are plausible
+- [ ] Hints progress logically
+- [ ] Prerequisites make sense
+- [ ] Ruby syntax is valid
+
+# OUTPUT INSTRUCTIONS
+
+For each seed file, generate output with clear labels:
+
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FILE: [module_name]_microlessons.rb
+FROM: [original_file].rb
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+[Complete Ruby code here]
+```
+
+After all files, provide summary:
+
+```
+=== GENERATION SUMMARY ===
+
+Course: Machine Learning Fundamentals
+
+Files Generated:
+1. [file1]_microlessons.rb
+   - Original units: X
+   - Microlessons created: Y
+   - Total exercises: Z
+   - Prerequisites linked: N
+
+[... for each file ...]
+
+Grand Total:
+- Microlessons: XX
+- Exercises: YY
+- Terminal: ZZ
+- MCQ: AA
+- Code: BB
+```
+
+# NOW GENERATE
+
+Process all attached seed files and generate microlesson files following all rules above.
+
+START GENERATION NOW.

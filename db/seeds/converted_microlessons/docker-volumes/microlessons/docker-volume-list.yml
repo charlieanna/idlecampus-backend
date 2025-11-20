@@ -1,0 +1,88 @@
+slug: docker-volume-list
+title: Docker Volume List
+difficulty: easy
+sequence_order: 2
+estimated_minutes: 2
+key_concepts:
+- volumes
+- docker-volume
+- listing
+- inspection
+prerequisites: []
+content_md: '# Docker Volume List 🚀
+
+
+  List all Docker volumes on the system
+
+
+  ## Syntax/Command
+
+
+  ```bash
+
+  docker volume ls
+
+  ```
+
+
+  ## Example
+
+
+  ```bash
+
+  docker volume list
+
+  ```
+
+
+  ## Key Points
+
+
+  - List volumes: docker volume ls
+
+
+  - Find dangling: --filter dangling=true
+
+
+  - Filter by label: --filter label=<key>=<value>'
+exercises:
+- type: terminal
+  problem_statement: List all Docker volumes on the system showing their drivers and mount points
+  expected_output: Table displaying DRIVER, VOLUME NAME for all volumes
+  language: bash
+  starter_code: "# List all volumes\n"
+  sequence_order: 1
+  command: docker volume ls
+  description: Display all Docker volumes on the system
+  hints:
+  - 'List volumes: docker volume ls'
+  - 'Find dangling: --filter dangling=true'
+  - 'Filter by label: --filter label=<key>=<value>'
+  validation:
+    must_not_include:
+    - Error
+    - 'panic:'
+  timeout_sec: 60
+  require_pass: true
+- type: sandbox
+  sequence_order: 99
+  hints:
+  - Run under CPU pressure to surface leaks or races
+  - Keep commands idempotent in CI
+  validation:
+    must_not_include:
+    - Error
+    - 'panic:'
+  timeout_sec: 60
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What is a dangling volume?
+  options:
+  - A volume that exists but is not currently mounted/used by any containers
+  - A volume that has corrupted data
+  - A volume that has reached its storage limit
+  - A volume that was created without a name (anonymous volume)
+  correct_answer: A volume that exists but is not currently mounted/used by any containers
+  explanation: "A dangling volume is one that exists on the system but is not referenced by any containers (stopped or running). These often result from containers being removed without the --rm flag or without explicitly removing their volumes. You can list them with 'docker volume ls --filter dangling=true' and clean them up with 'docker volume prune'."
+  require_pass: true

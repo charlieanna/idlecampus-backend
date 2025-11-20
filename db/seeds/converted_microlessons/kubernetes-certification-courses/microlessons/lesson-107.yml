@@ -1,0 +1,44 @@
+slug: lesson-107
+title: Lesson 107
+difficulty: easy
+sequence_order: 107
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Container Security Best Practices\n\n \
+  \   - Use non-root user\n    - Read-only root filesystem\n    - Pin image versions\n\
+  \    - Scan images for vulnerabilities\n    - Limit capabilities"
+exercises:
+  - type: mcq
+    sequence_order: 1
+    question: "Why is it a security best practice to run containers as a non-root user?"
+    options:
+      - "Non-root users have better performance"
+      - "It limits the potential damage if the container is compromised"
+      - "Root users cannot access network resources"
+      - "Kubernetes requires all containers to run as non-root"
+    correct_answer: "It limits the potential damage if the container is compromised"
+    explanation: "Running containers as non-root users follows the principle of least privilege, significantly reducing the attack surface if a container is compromised. If an attacker exploits a vulnerability in an application running as root (UID 0), they have full control within the container and potentially could escape to the host system. By running as non-root, you limit what an attacker can do - they can't install packages, modify system files, or bind to privileged ports (< 1024) without additional capabilities. In Dockerfile, specify 'USER 1000' or create a dedicated user: 'RUN useradd -m appuser' then 'USER appuser'. In Kubernetes, enforce this with SecurityContext: 'securityContext: runAsNonRoot: true, runAsUser: 1000, fsGroup: 1000'. The fsGroup ensures files created in volumes have the correct group ownership. PodSecurityAdmission or PodSecurityPolicies can enforce cluster-wide that all containers run as non-root. Note that your application might need adjustments - listen on port 8080 instead of 80, ensure file permissions allow the non-root user to read/write necessary files. This practice is critical for defense-in-depth and is required by many security standards and compliance frameworks."
+    require_pass: true
+  - type: mcq
+    sequence_order: 2
+    question: "What is the purpose of using a read-only root filesystem in container security?"
+    options:
+      - "To improve container performance"
+      - "To prevent attackers from modifying binaries or writing malicious files within the container"
+      - "To reduce the container image size"
+      - "To enable faster container startup times"
+    correct_answer: "To prevent attackers from modifying binaries or writing malicious files within the container"
+    explanation: "A read-only root filesystem prevents any writes to the container's filesystem layer, making it impossible for attackers to modify system binaries, inject malicious scripts, or create backdoors even if they compromise the application. This significantly limits post-exploitation capabilities. In Kubernetes, enable this with 'securityContext: readOnlyRootFilesystem: true'. However, many applications need to write temporary data, so you must mount writable volumes for specific directories. For example, if your app writes logs to /var/log and cache to /tmp, add emptyDir volumes: 'volumeMounts: - name: tmp, mountPath: /tmp - name: logs, mountPath: /var/log'. This approach gives you the security benefits of immutability while allowing necessary writes to ephemeral locations. Benefits include: preventing container tampering, reducing malware persistence, easier auditing (any running processes must come from the original image), and improved reproducibility. The read-only filesystem forces you to design stateless containers properly, storing persistent data in volumes rather than the container layer. Combine this with other practices like running as non-root, dropping capabilities, and using minimal base images for a strong security posture. Tools like docker diff can verify no unexpected writes occur during testing."
+    require_pass: true
+  - type: mcq
+    sequence_order: 3
+    question: "What does 'pinning image versions' mean in container security?"
+    options:
+      - "Pushing images to a registry"
+      - "Using specific image tags like 'nginx:1.21.0' instead of 'nginx:latest'"
+      - "Compressing images to reduce size"
+      - "Caching images locally on nodes"
+    correct_answer: "Using specific image tags like 'nginx:1.21.0' instead of 'nginx:latest'"
+    explanation: "Pinning image versions means using explicit, immutable version tags (like 'nginx:1.21.0' or digest references like 'nginx@sha256:abc123...') instead of mutable tags like 'latest' or 'stable'. This is critical for security and reproducibility because mutable tags can point to different images over time, leading to inconsistent deployments and potential security vulnerabilities. If you use 'nginx:latest', a pod recreated tomorrow might pull a different version with new bugs or vulnerabilities. With 'nginx:1.21.0', you get consistent, predictable deployments. Even better is using digest references: 'nginx@sha256:a1b2c3...', which guarantees the exact image content byte-for-byte. This prevents supply chain attacks where an attacker might replace a tagged image in the registry. In production, establish a process: 1) Pull and test specific versions in development, 2) Scan images for vulnerabilities with tools like Trivy or Snyk, 3) Pin approved versions in manifests, 4) Use admission controllers like Kyverno or OPA to enforce version pinning policies, 5) Regularly update pinned versions after testing. While this requires more maintenance than 'latest', it provides essential control over what runs in your cluster and enables reliable rollbacks to known-good versions."
+    require_pass: true

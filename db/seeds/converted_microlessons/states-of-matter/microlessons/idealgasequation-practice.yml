@@ -1,0 +1,58 @@
+slug: idealgasequation-practice
+title: ideal_gas_equation — Practice
+difficulty: medium
+sequence_order: 9
+estimated_minutes: 2
+key_concepts:
+- ideal_gas_equation
+prerequisites: []
+content_md: '# ideal_gas_equation — Practice 🚀
+
+
+  Using PV = nRT: n = PV/RT = (2×5)/(0.0821×300) = 10/24.63 = 0.406 mol
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: 'Calculate the number of moles in a gas at 2 atm pressure, 5 L volume, and 300 K temperature (using PV = nRT, R = 0.0821 L·atm/mol·K).'
+  options:
+  - 0.203 mol
+  - 0.406 mol
+  - 0.812 mol
+  - 1.22 mol
+  require_pass: true
+  correct_answer: 0.406 mol
+  explanation: 'Using the ideal gas equation PV = nRT, we solve for n: n = PV/(RT). Substituting values: n = (2 atm × 5 L)/(0.0821 L·atm/mol·K × 300 K) = 10/24.63 = 0.406 mol. The ideal gas equation combines Boyle''s Law (P ∝ 1/V), Charles'' Law (V ∝ T), and Avogadro''s Law (V ∝ n) into one comprehensive relationship. Key points: (1) R = 0.0821 L·atm/mol·K is the universal gas constant, (2) Temperature must be in Kelvin, (3) All units must be consistent. This equation applies well to gases at low pressure and high temperature where intermolecular forces and molecular volume are negligible. Common applications include calculating gas densities, molecular weights, and stoichiometry in gas-phase reactions.'
+- type: mcq
+  sequence_order: 2
+  question: 'What volume will 2 moles of an ideal gas occupy at STP (Standard Temperature and Pressure: 273 K, 1 atm)?'
+  options:
+  - 11.2 L
+  - 22.4 L
+  - 44.8 L
+  - 67.2 L
+  require_pass: true
+  correct_answer: 44.8 L
+  explanation: 'At STP, one mole of any ideal gas occupies 22.4 L (molar volume). Therefore, 2 moles occupy: V = n × 22.4 L/mol = 2 × 22.4 = 44.8 L. We can verify using PV = nRT: V = nRT/P = (2 × 0.0821 × 273)/1 = 44.8 L. The molar volume of 22.4 L/mol at STP is a fundamental constant in chemistry. Important notes: (1) STP is defined as 273 K (0°C) and 1 atm pressure, (2) This volume is the same for all ideal gases regardless of their identity, (3) Heavier gases (like CO₂) occupy the same volume as lighter gases (like H₂) when measured in moles at STP. This concept is essential for gas stoichiometry calculations, converting between mass and volume of gases, and understanding Avogadro''s hypothesis.'
+- type: mcq
+  sequence_order: 3
+  question: 'If the pressure of an ideal gas is tripled and its volume is halved, by what factor does the temperature change (assuming moles remain constant)?'
+  options:
+  - 1/6
+  - 2/3
+  - 3/2
+  - 6
+  require_pass: true
+  correct_answer: 3/2
+  explanation: 'From PV = nRT, we can write: P₁V₁/T₁ = P₂V₂/T₂ (when n is constant). Let P₂ = 3P₁ and V₂ = V₁/2. Then: T₂/T₁ = (P₂V₂)/(P₁V₁) = (3P₁ × V₁/2)/(P₁ × V₁) = 3/2 = 1.5. The temperature increases by a factor of 1.5 (or increases by 50%). This problem demonstrates the combined gas law: when multiple variables change simultaneously, we can use the relationship P₁V₁/T₁ = P₂V₂/T₂. Physical interpretation: Increasing pressure (3×) tends to increase temperature, while decreasing volume (×1/2) also tends to increase temperature (molecules compressed into smaller space). The net effect is a temperature increase of 1.5 times. Such calculations are important in engineering applications like compressors, engines, and industrial gas processes.'

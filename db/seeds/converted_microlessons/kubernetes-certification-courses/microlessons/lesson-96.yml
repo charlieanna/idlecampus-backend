@@ -1,0 +1,73 @@
+slug: lesson-96
+title: Lesson 96
+difficulty: easy
+sequence_order: 96
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Container Images and Registries\n\n   \
+  \ ## Building Container Images\n\n    ### Dockerfile Best Practices\n\n    ```dockerfile\n\
+  \    # Use specific base image versions\n    FROM node:18-alpine\n\n    # Set working\
+  \ directory\n    WORKDIR /app\n\n    # Copy dependency files first (better caching)\n\
+  \    COPY package*.json ./\n    RUN npm ci --only=production\n\n    # Copy application\
+  \ code\n    COPY . .\n\n    # Use non-root user\n    USER node\n\n    # Expose port\n\
+  \    EXPOSE 3000\n\n    # Define command\n    CMD [\"node\", \"server.js\"]\n  \
+  \  ```\n\n    ### Multi-stage Builds\n\n    ```dockerfile\n    # Build stage\n \
+  \   FROM golang:1.20 AS builder\n    WORKDIR /app\n    COPY . .\n    RUN CGO_ENABLED=0\
+  \ go build -o myapp\n\n    # Runtime stage\n    FROM alpine:latest\n    COPY --from=builder\
+  \ /app/myapp /\n    CMD [\"/myapp\"]\n    ```\n\n    ## Image Registries\n\n   \
+  \ ### Docker Hub\n    ```bash\n    # Tag image\n    docker tag myapp:latest username/myapp:v1.0\n\
+  \n    # Push to Docker Hub\n    docker push username/myapp:v1.0\n    ```\n\n   \
+  \ ### Private Registries\n    ```bash\n    # Tag for private registry\n    docker\
+  \ tag myapp:latest registry.example.com/myapp:v1.0\n\n    # Push to private registry\n\
+  \    docker push registry.example.com/myapp:v1.0\n    ```\n\n    ## Kubernetes Image\
+  \ Pull\n\n    ### Using Public Images\n    ```yaml\n    apiVersion: v1\n    kind:\
+  \ Pod\n    metadata:\n      name: nginx-pod\n    spec:\n      containers:\n    \
+  \  - name: nginx\n        image: nginx:1.21\n        imagePullPolicy: IfNotPresent\n\
+  \    ```\n\n    ### Using Private Registries\n    ```yaml\n    apiVersion: v1\n\
+  \    kind: Pod\n    metadata:\n      name: private-app\n    spec:\n      containers:\n\
+  \      - name: app\n        image: registry.example.com/myapp:v1.0\n      imagePullSecrets:\n\
+  \      - name: regcred\n    ```\n\n    ### Creating Image Pull Secret\n    ```bash\n\
+  \    kubectl create secret docker-registry regcred \\\n      --docker-server=registry.example.com\
+  \ \\\n      --docker-username=myuser \\\n      --docker-password=mypass \\\n   \
+  \   --docker-email=myemail@example.com\n    ```\n\n    ## Image Pull Policies\n\n\
+  \    - **Always**: Always pull the image\n    - **IfNotPresent**: Pull if not cached\
+  \ locally\n    - **Never**: Never pull, use local image only\n\n    ## Security\
+  \ Best Practices\n\n    1. Use specific image tags (not `latest`)\n    2. Scan images\
+  \ for vulnerabilities\n    3. Use minimal base images (alpine, distroless)\n   \
+  \ 4. Don't run as root\n    5. Remove unnecessary packages\n    6. Use multi-stage\
+  \ builds"
+exercises:
+  - type: mcq
+    sequence_order: 1
+    question: "Why is using specific image tags (instead of 'latest') considered a best practice in Kubernetes deployments?"
+    options:
+      - "Specific tags are faster to download"
+      - "Specific tags provide reproducibility and prevent unexpected changes from automatic updates"
+      - "The 'latest' tag is deprecated in Docker"
+      - "Specific tags use less storage space"
+    correct_answer: "Specific tags provide reproducibility and prevent unexpected changes from automatic updates"
+    explanation: "Using specific image tags (like myapp:v1.2.3) instead of 'latest' is a critical best practice for production deployments. When you use 'latest', you lose reproducibility - the actual image version can change between deployments without your explicit knowledge, as the 'latest' tag moves to point to newer builds. This can lead to inconsistent environments where different nodes run different versions, unexpected behavior from untested updates, difficult rollbacks, and challenging debugging. With specific tags, you ensure every pod runs the exact same image version, deployments are deterministic and repeatable, and you maintain full control over when updates occur. You can also easily identify which version is running and roll back to previous versions with confidence. The 'latest' tag is not deprecated, but its use in production is strongly discouraged. For development and testing, 'latest' might be acceptable for convenience, but production deployments should always use semantic versioning or commit SHAs as tags. This practice aligns with infrastructure-as-code principles and ensures your deployment manifests accurately represent what's running."
+    require_pass: true
+  - type: mcq
+    sequence_order: 2
+    question: "What is the advantage of multi-stage Docker builds for Kubernetes container images?"
+    options:
+      - "They allow running multiple applications in one container"
+      - "They reduce final image size by separating build dependencies from runtime requirements"
+      - "They enable faster network transfers"
+      - "They automatically scale applications"
+    correct_answer: "They reduce final image size by separating build dependencies from runtime requirements"
+    explanation: "Multi-stage Docker builds allow you to use multiple FROM statements in a Dockerfile, creating separate build stages where you can compile/build your application in one stage with all necessary build tools, then copy only the final artifacts to a minimal runtime stage. This dramatically reduces final image size by excluding build-time dependencies (compilers, build tools, development libraries) from the production image. For example, a Go application build stage might use golang:1.20 (hundreds of MBs) to compile the binary, then the runtime stage uses alpine:latest (a few MBs) with just the compiled binary. Smaller images mean faster pod startup times (less to pull), reduced storage costs, smaller attack surface (fewer packages that could have vulnerabilities), and better resource utilization. This is especially important in Kubernetes where images are pulled to potentially many nodes, and pod scheduling speed matters. Multi-stage builds also improve security by ensuring production containers don't contain development tools that could be exploited. They don't enable running multiple applications (anti-pattern), affect network transfers directly, or provide autoscaling - they purely optimize image composition."
+    require_pass: true
+  - type: mcq
+    sequence_order: 3
+    question: "How do imagePullSecrets work in Kubernetes for accessing private container registries?"
+    options:
+      - "They encrypt the container images"
+      - "They store registry credentials that Kubernetes uses to authenticate when pulling private images"
+      - "They prevent unauthorized pods from running"
+      - "They compress images during transfer"
+    correct_answer: "They store registry credentials that Kubernetes uses to authenticate when pulling private images"
+    explanation: "imagePullSecrets are Kubernetes Secret resources that store authentication credentials for private container registries. When you need to pull images from private registries (like private Docker Hub repos, AWS ECR, Google GCR, Azure ACR, or self-hosted registries), the kubelet needs credentials to authenticate. You create a docker-registry type Secret containing the registry URL, username, password, and email using 'kubectl create secret docker-registry'. Then, you reference this secret in your pod specification using imagePullSecrets field. When the kubelet needs to pull the image, it uses these credentials to authenticate with the registry. This mechanism enables secure access to proprietary images without embedding credentials in pod specs or Dockerfiles. You can reference multiple imagePullSecrets if pulling from different registries. Service accounts can also have imagePullSecrets attached, automatically providing the credentials to all pods using that service account, which is more convenient than specifying them per pod. imagePullSecrets don't encrypt images (images are pulled over HTTPS), prevent unauthorized pods (that's RBAC/PodSecurityPolicies), or compress images (that's transport layer compression) - they solely provide registry authentication."
+    require_pass: true

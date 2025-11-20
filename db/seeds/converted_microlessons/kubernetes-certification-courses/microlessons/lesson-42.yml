@@ -1,0 +1,47 @@
+slug: lesson-42
+title: Lesson 42
+difficulty: easy
+sequence_order: 42
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Multi-Container Pod Patterns\n\n    Learn\
+  \ common multi-container patterns:\n    - Sidecar: helper handles logs/metrics/proxy\n\
+  \    - Ambassador: proxy pattern for external services\n    - Adapter: transforms\
+  \ output for consumption\n\n    ## Shared Volumes\n    Use emptyDir or other volumes\
+  \ to share data between containers.\n\n    ## Example\n    Sidecar tailing nginx\
+  \ access logs stored in a shared volume."
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: In the Sidecar pattern, what is the typical relationship between the main container and the sidecar container?
+  options:
+  - The sidecar runs before the main container and then exits
+  - The sidecar runs alongside the main container throughout the pod's lifetime, enhancing or extending its functionality
+  - The sidecar replaces the main container when it fails
+  - The sidecar monitors the main container from a separate pod
+  correct_answer: The sidecar runs alongside the main container throughout the pod's lifetime, enhancing or extending its functionality
+  explanation: "In the Sidecar pattern, a helper container runs alongside the main application container in the same pod, sharing the same lifecycle, network namespace, and storage volumes. The sidecar enhances or extends the main container's functionality without modifying it. Common examples include: log forwarding (Fluentd sidecar collecting logs from a shared volume), service mesh proxies (Envoy/Istio proxy handling networking), monitoring agents (collecting metrics), or security scanners. The sidecar shares resources with the main container - they can communicate via localhost, share volumes for data exchange, and are scheduled together on the same node. This is different from initContainers (which run before the main container and exit) or separate pods (which don't share resources as tightly)."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What is the purpose of the Ambassador pattern in multi-container pods?
+  options:
+  - To transform log output into a standard format
+  - To act as a proxy that simplifies connections to external services
+  - To monitor the health of the main container
+  - To provide persistent storage
+  correct_answer: To act as a proxy that simplifies connections to external services
+  explanation: "The Ambassador pattern uses a sidecar container as a proxy to handle connections to external services, abstracting away complexity from the main application container. The main container connects to the ambassador via localhost, and the ambassador handles the actual external communication. Use cases include: connecting to sharded databases (ambassador handles shard routing), service discovery (ambassador translates service names to IPs/ports), protocol translation, rate limiting, or circuit breaking. For example, an application might connect to 'localhost:5432' for PostgreSQL, while the ambassador container routes to the correct database shard based on logic. This decouples the application from infrastructure concerns. The Adapter pattern is different - it transforms output format (like converting app logs to a standard format), while Ambassador handles proxying and connectivity."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: Which volume type is most commonly used to share data between containers in a multi-container pod?
+  options:
+  - PersistentVolumeClaim
+  - hostPath
+  - emptyDir
+  - configMap
+  correct_answer: emptyDir
+  explanation: "The emptyDir volume is the most common choice for sharing data between containers in a multi-container pod. It's created when the pod is assigned to a node and exists as long as the pod runs on that node. All containers in the pod can read and write files in the emptyDir volume. It starts empty (hence the name) and is typically stored on the node's disk or in memory (if emptyDir.medium is set to 'Memory'). Common use cases include: sharing logs between a main container and a log-shipping sidecar, sharing a git repository cloned by an initContainer, or temporary caching. The data is deleted when the pod is removed from the node. While PersistentVolumeClaims provide durable storage, they're overkill for temporary inter-container communication within a pod. ConfigMaps and Secrets are read-only and used for configuration, not bi-directional data sharing."
+  require_pass: true

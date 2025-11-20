@@ -1,0 +1,82 @@
+slug: lesson-2
+title: Lesson 2
+difficulty: easy
+sequence_order: 2
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# etcd Backup and Restore\n\n    - etcdctl\
+  \ v3 snapshot save/restore\n    - Certificates and endpoints"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What is etcd's role in a Kubernetes cluster?
+  options:
+  - It manages container networking
+  - It is the distributed key-value store that holds the entire cluster state
+  - It handles pod scheduling
+  - It monitors cluster health
+  correct_answer: It is the distributed key-value store that holds the entire cluster
+    state
+  explanation: 'etcd is a distributed, reliable key-value store that serves as Kubernetes''
+    database, storing all cluster state and configuration data. Everything in Kubernetes
+    - pod definitions, services, secrets, config maps, RBAC policies, cluster configuration
+    - is stored in etcd. The API server is the only component that directly communicates
+    with etcd, reading and writing cluster state. When you run ''kubectl get pods'',
+    the API server queries etcd for pod data. When you create a deployment, the API
+    server writes it to etcd. etcd uses the Raft consensus algorithm to maintain consistency
+    across multiple etcd instances (typically 3 or 5 for high availability). This
+    ensures that even if one etcd member fails, the cluster continues operating. The
+    distributed nature provides fault tolerance - if an etcd member crashes, the cluster
+    elects a new leader and continues. For disaster recovery, backing up etcd is critical
+    because it contains the entire cluster state. Losing etcd without backups means
+    losing all cluster configuration. Common etcd operations: taking snapshots for
+    backup (''etcdctl snapshot save''), restoring from snapshots (''etcdctl snapshot
+    restore''), checking cluster health (''etcdctl endpoint health''), and viewing
+    data (''etcdctl get --prefix /''). In managed Kubernetes services like GKE/EKS/AKS,
+    etcd backup/restore is handled automatically, but in self-managed clusters, implementing
+    regular etcd backups is essential for disaster recovery. Understanding etcd is
+    crucial for Kubernetes administration, troubleshooting cluster state issues, and
+    disaster recovery planning.'
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: Which command is used to create an etcd backup in Kubernetes?
+  options:
+  - kubectl backup etcd
+  - etcdctl snapshot save <filename>
+  - etcd-backup create
+  - kubeadm backup etcd
+  correct_answer: etcdctl snapshot save <filename>
+  explanation: 'The command ''etcdctl snapshot save <filename>'' creates a point-in-time
+    snapshot of the etcd database, backing up all cluster state. This is the standard
+    method for backing up Kubernetes cluster data. The complete command requires several
+    parameters for authentication: ''etcdctl snapshot save /backup/etcd-snapshot.db
+    --endpoints=https://127.0.0.1:2379 --cacert=/etc/kubernetes/pki/etcd/ca.crt --cert=/etc/kubernetes/pki/etcd/server.crt
+    --key=/etc/kubernetes/pki/etcd/server.key''. The certificates ensure secure communication
+    with etcd. After creating a snapshot, verify it with ''etcdctl snapshot status
+    <filename>'' to confirm it''s valid. To restore from a backup: 1) Stop the API
+    server and etcd, 2) Run ''etcdctl snapshot restore <filename> --data-dir=/var/lib/etcd-restore'',
+    3) Update etcd configuration to use the new data directory, 4) Restart etcd and
+    the API server. The restore process creates a new etcd cluster from the snapshot.
+    Best practices for etcd backup: automate regular snapshots (hourly or daily),
+    store backups offsite or in different availability zones, test restore procedures
+    regularly (snapshots are useless if restore fails), encrypt backup files (they
+    contain secrets and sensitive data), and retain backups based on your retention
+    policy. For production clusters, implement automated backup solutions like Velero
+    (which backs up both etcd and cluster resources) or cloud-provider backup services.
+    Regular etcd backups are your insurance policy against data loss, cluster corruption,
+    or catastrophic failures.'
+  require_pass: true
+- type: mcq
+  sequence_order: 1
+  question: What kubectl command checks if you can perform an action?
+  options:
+  - kubectl auth can-i create pods
+  - kubectl check permissions create pods
+  - kubectl verify action create pods
+  - kubectl test auth create pods
+  correct_answer_index: 0
+  explanation: kubectl auth can-i <action> <resource> checks if the current user has
+    permission to perform the specified action.
+  require_pass: true

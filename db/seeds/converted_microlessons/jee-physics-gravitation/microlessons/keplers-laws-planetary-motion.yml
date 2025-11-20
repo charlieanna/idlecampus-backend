@@ -1,0 +1,245 @@
+slug: keplers-laws-planetary-motion
+title: "Kepler's Laws of Planetary Motion"
+difficulty: intermediate
+sequence_order: 1
+estimated_minutes: 17
+key_concepts:
+- keplers-laws
+- elliptical-orbits
+- orbital-period
+- areal-velocity
+- gravitational-mechanics
+prerequisites: []
+content_md: |
+  # Kepler's Laws of Planetary Motion
+
+  ## Historical Background
+
+  Johannes Kepler (1609-1619) discovered three empirical laws describing planetary motion using Tycho Brahe's observational data.
+
+  ## First Law (Law of Elliptical Orbits)
+
+  **Statement:** Every planet moves in an elliptical orbit with the Sun at one focus.
+
+  ```
+  Ellipse equation: r = a(1-e²)/(1 + e cos θ)
+
+  a = semi-major axis
+  b = semi-minor axis
+  e = eccentricity = c/a = √(1-b²/a²)
+  c = distance from center to focus
+  ```
+
+  ### Special Points:
+  - **Perihelion (closest):** r_min = a(1-e)
+  - **Aphelion (farthest):** r_max = a(1+e)
+  - **Circle:** e = 0 (special case of ellipse)
+
+  For Earth: e ≈ 0.017 (nearly circular)
+
+  ## Second Law (Law of Equal Areas)
+
+  **Statement:** Line joining planet to Sun sweeps equal areas in equal time intervals.
+
+  ```
+  dA/dt = constant = L/(2m)
+
+  L = angular momentum
+  m = planet mass
+  ```
+
+  ### Consequences:
+  - Planet moves **faster at perihelion**
+  - Planet moves **slower at aphelion**
+  - Angular momentum is conserved (no torque from central force)
+
+  ```
+  v_perihelion × r_perihelion = v_aphelion × r_aphelion
+
+  (for small eccentricity: mvr = constant)
+  ```
+
+  ### Areal Velocity:
+  ```
+  dA/dt = ½r²(dθ/dt) = ½rv = L/(2m) = constant
+  ```
+
+  ## Third Law (Law of Periods)
+
+  **Statement:** Square of orbital period is proportional to cube of semi-major axis.
+
+  ```
+  T² ∝ a³
+
+  T²/a³ = constant (for all planets around same star)
+
+  T² = (4π²/GM)a³
+  ```
+
+  ### For Circular Orbits:
+  ```
+  T² = (4π²/GM)r³
+
+  Period: T = 2π√(r³/GM)
+  Orbital velocity: v = √(GM/r)
+  ```
+
+  ### Important Relations:
+  ```
+  T₁²/T₂² = a₁³/a₂³ (comparing two planets)
+
+  T ∝ r^(3/2) (for circular orbits)
+  v ∝ 1/√r (orbital velocity)
+  ```
+
+  ## Derivation of Third Law (Circular Orbit)
+
+  Gravitational force provides centripetal force:
+  ```
+  GMm/r² = mv²/r = mrω²
+
+  v² = GM/r
+  ω² = GM/r³
+
+  Since T = 2π/ω:
+  T² = 4π²/ω² = 4π²r³/GM
+  ```
+
+  This shows **T² ∝ r³**.
+
+  ## Energy in Elliptical Orbits
+
+  ### Total Energy:
+  ```
+  E = -GMm/(2a)
+
+  Constant throughout orbit, depends only on semi-major axis
+  ```
+
+  ### At any point:
+  ```
+  E = ½mv² - GMm/r = -GMm/(2a)
+
+  This gives: v² = GM(2/r - 1/a)
+  ```
+
+  ### Vis-viva Equation:
+  ```
+  v² = GM(2/r - 1/a)
+
+  At perihelion: v_p² = GM(2/r_p - 1/a)
+  At aphelion: v_a² = GM(2/r_a - 1/a)
+  ```
+
+  ## Satellite Motion Applications
+
+  ### Geostationary Orbit:
+  ```
+  T = 24 hours = 86400 s
+  r³ = GMT²/(4π²)
+  r ≈ 42,300 km (from Earth center)
+  Height ≈ 36,000 km (above surface)
+  ```
+
+  ### For any satellite:
+  ```
+  v = √(GM/r) = √(gR²/r)
+  T = 2πr/v = 2π√(r³/GM)
+  ```
+
+  ## Numerical Examples
+
+  **Example 1:** Earth's orbital radius is 1 AU. Mars is at 1.52 AU. Find Mars's orbital period (Earth's period = 1 year).
+
+  **Solution:**
+  ```
+  T²/a³ = constant for both planets
+  T_E²/a_E³ = T_M²/a_M³
+
+  T_M² = T_E² × (a_M/a_E)³
+  T_M² = 1² × (1.52)³ = 3.51
+  T_M = 1.87 years ≈ 687 days
+
+  Mars takes almost 2 years to orbit Sun!
+  ```
+
+  **Example 2:** Satellite has orbital period T and radius r. If orbital radius is increased to 4r, new period?
+
+  **Solution:**
+  ```
+  T² ∝ r³
+  T₁²/T₂² = r₁³/r₂³
+  T₂² = T₁²(r₂/r₁)³ = T²(4)³ = 64T²
+  T₂ = 8T
+
+  Period increases 8 times (not 4 times!)
+  ```
+
+  **Example 3:** Planet at perihelion has speed 30 km/s at distance 1.5×10⁸ km. At aphelion, distance is 1.5×10⁸ km. Find speed.
+
+  **Solution:**
+  ```
+  Using conservation of angular momentum:
+  v_p × r_p = v_a × r_a
+
+  Given same distances means circular orbit (typo in problem).
+  For elliptical: if r_a = 2r_p:
+  v_a = v_p(r_p/r_a) = 30 × (1/2) = 15 km/s
+
+  Slower at aphelion!
+  ```
+
+  ## Important Quantities
+
+  | Quantity | Formula | Proportionality |
+  |----------|---------|-----------------|
+  | Orbital velocity | v = √(GM/r) | v ∝ 1/√r |
+  | Angular velocity | ω = √(GM/r³) | ω ∝ 1/r^(3/2) |
+  | Period | T = 2π√(r³/GM) | T ∝ r^(3/2) |
+  | Kinetic Energy | KE = GMm/(2r) | KE ∝ 1/r |
+  | Potential Energy | PE = -GMm/r | PE ∝ -1/r |
+  | Total Energy | E = -GMm/(2r) | E ∝ -1/r |
+
+  ## JEE Key Points
+
+  1. **Kepler's laws are empirical**, Newton's laws explain them
+  2. **Elliptical orbits** with Sun at one focus
+  3. **Equal areas in equal times** → conservation of L
+  4. **T² ∝ a³** (third law)
+  5. **Faster at perihelion**, slower at aphelion
+  6. **E = -GMm/(2a)** for elliptical orbits
+
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: "Two satellites P and Q have orbital radii r and 4r respectively. Ratio of their orbital periods T_P : T_Q is:"
+  options:
+  - "1:4"
+  - "1:8"
+  - "4:1"
+  - "8:1"
+  correct_answer: "1:8"
+  explanation: "By Kepler's third law: T² ∝ r³. So T_P²/T_Q² = r³/(4r)³ = 1/64. Therefore T_P/T_Q = 1/8. The satellite at 4r takes 8 times longer to complete one orbit! This is because: (1) it travels longer path (circumference ∝ r), and (2) it moves slower (v ∝ 1/√r). Combined effect: T ∝ r^(3/2). This explains why outer planets (Jupiter, Saturn) have much longer years. Jupiter at 5.2 AU has period ≈ 12 years."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: "A planet is at aphelion. As it moves towards perihelion, its:"
+  options:
+  - "Speed increases, angular momentum increases"
+  - "Speed decreases, angular momentum constant"
+  - "Speed increases, angular momentum constant"
+  - "Speed constant, angular momentum increases"
+  correct_answer: "Speed increases, angular momentum constant"
+  explanation: "By Kepler's second law (conservation of angular momentum): L = mvr = constant. As planet moves to perihelion, r decreases, so v must increase to keep L constant. Specifically: v_perihelion/v_aphelion = r_aphelion/r_perihelion. Total energy also remains constant (E = KE + PE). As PE becomes more negative (closer to Sun), KE must increase (more speed). Angular momentum is conserved because gravitational force is central (passes through Sun, creating no torque). This is why Earth moves fastest in January (perihelion) and slowest in July (aphelion)."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: "If Earth's orbital radius doubles (everything else same), the new year length would be:"
+  options:
+  - "2 years"
+  - "2√2 years"
+  - "4 years"
+  - "8 years"
+  correct_answer: "2√2 years"
+  explanation: "Using T² ∝ r³: T_new²/T_old² = (2r)³/r³ = 8. So T_new² = 8T_old² = 8 years². T_new = √8 = 2√2 ≈ 2.83 years. Not intuitive at first! The period increases by factor of √8, not 2 or 8. This is because orbital speed also changes: v ∝ 1/√r, so v_new = v_old/√2. Longer path at slower speed: T = circumference/speed ∝ r/(1/√r) = r^(3/2). The 3/2 power law is fundamental to all orbital mechanics. Interestingly, Mars at 1.52 AU has year ≈ 1.87 Earth years, following same law."
+  require_pass: true

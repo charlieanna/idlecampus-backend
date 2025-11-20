@@ -1,0 +1,54 @@
+slug: lesson-83
+title: Lesson 83
+difficulty: easy
+sequence_order: 83
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Volume Snapshots and Cloning\n\n    - Snapshot\
+  \ CRDs and classes\n    - Clone from PVC"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What Kubernetes resource is used to create a point-in-time copy of a PersistentVolumeClaim?
+  options:
+  - PersistentVolume
+  - VolumeSnapshot
+  - StorageClass
+  - VolumeClone
+  correct_answer: VolumeSnapshot
+  explanation: "VolumeSnapshot is the Kubernetes resource used to create point-in-time copies of PersistentVolumeClaims. It requires a VolumeSnapshotClass (similar to StorageClass) that defines the snapshot provisioner and parameters. Snapshots are useful for backups, disaster recovery, or creating test environments from production data. The CSI driver must support snapshot functionality. To restore from a snapshot, create a new PVC with a dataSource field referencing the VolumeSnapshot. Snapshots are typically stored by the underlying storage system (e.g., AWS EBS snapshots, GCE PD snapshots). Understanding snapshots is important for data protection strategies and creating reproducible environments."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: How do you clone an existing PVC to create a new volume with the same data?
+  options:
+  - Copy the data manually
+  - Create a new PVC with dataSource pointing to the source PVC
+  - Use kubectl copy
+  - Clone is not supported
+  correct_answer: Create a new PVC with dataSource pointing to the source PVC
+  explanation: "To clone a PVC, create a new PVC specification with a dataSource field that references the source PVC. The CSI driver creates a new volume with the same data as the source. This is useful for creating development copies of production data, testing, or rapid provisioning of pre-populated volumes. Cloning is faster than snapshots for same-cluster copies as it's typically a storage-level operation. The source and destination must be in the same namespace and use a StorageClass that supports cloning. Not all CSI drivers support cloning - check your driver's capabilities. Cloning is instantaneous for some storage types using COW (Copy-On-Write) technology, making it very efficient for creating multiple copies."
+  require_pass: true
+- type: mcq
+  sequence_order: 1
+  question: What Kubernetes resource is used to create a point-in-time copy of a PersistentVolumeClaim?
+  options:
+  - PersistentVolume
+  - VolumeSnapshot
+  - StorageClass
+  - VolumeClone
+  correct_answer: VolumeSnapshot
+  explanation: "VolumeSnapshot is the Kubernetes resource used to create point-in-time copies of PersistentVolumeClaims. It requires a VolumeSnapshotClass (similar to StorageClass) that defines the snapshot provisioner and parameters. Snapshots are useful for backups, disaster recovery, or creating test environments from production data. The CSI driver must support snapshot functionality. To restore from a snapshot, create a new PVC with a dataSource field referencing the VolumeSnapshot. Snapshots are typically stored by the underlying storage system (e.g., AWS EBS snapshots, GCE PD snapshots). Understanding snapshots is important for data protection strategies and creating reproducible environments."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: How do you clone an existing PVC to create a new volume with the same data?
+  options:
+  - Copy the data manually
+  - Create a new PVC with dataSource pointing to the source PVC
+  - Use kubectl copy
+  - Clone is not supported
+  correct_answer: Create a new PVC with dataSource pointing to the source PVC
+  explanation: "To clone a PVC, create a new PVC specification with a dataSource field that references the source PVC. The CSI driver creates a new volume with the same data as the source. This is useful for creating development copies of production data, testing, or rapid provisioning of pre-populated volumes. Cloning is faster than snapshots for same-cluster copies as it's typically a storage-level operation. The source and destination must be in the same namespace and use a StorageClass that supports cloning. Not all CSI drivers support cloning - check your driver's capabilities. Cloning is instantaneous for some storage types using COW (Copy-On-Write) technology, making it very efficient for creating multiple copies."
+  require_pass: true

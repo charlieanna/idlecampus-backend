@@ -1,0 +1,168 @@
+slug: network-commands
+title: Network Commands
+sequence_order: 1
+estimated_minutes: 2
+difficulty: easy
+content_md: "# Network Commands \U0001F680\n\n# Essential Network Commands\n\n   \
+  \ ## Testing Connectivity\n\n    ```bash\n    # Ping host\n    ping google.com\n\
+  \    ping -c 4 8.8.8.8  # Send 4 packets\n\n    # Test HTTP connectivity\n    curl\
+  \ https://example.com\n\n    # Show response headers\n    curl -I https://example.com\n\
+  \n    # Download file\n    curl -O https://example.com/file.zip\n    wget https://example.com/file.zip\n\
+  \n    # DNS lookup\n    nslookup example.com\n    dig example.com\n    host example.com\n\
+  \    ```\n\n    ## Network Configuration\n\n    ```bash\n    # Show network interfaces\
+  \ (modern)\n    ip addr show\n    ip a\n\n    # Show specific interface\n    ip\
+  \ addr show eth0\n\n    # Show routing table\n    ip route show\n\n    # Show network\
+  \ statistics\n    netstat -i\n    ```\n\n    ## Checking Ports\n\n    ```bash\n\
+  \    # Show listening ports\n    netstat -tuln\n    ss -tuln  # Modern alternative\n\
+  \n    # Show which process is using a port\n    sudo lsof -i :80\n    sudo netstat\
+  \ -tulpn | grep :80\n\n    # Test specific port\n    telnet example.com 80\n   \
+  \ nc -zv example.com 80\n    ```\n\n    ## File Transfer\n\n    ```bash\n    # Copy\
+  \ file to remote server\n    scp file.txt user@server:/path/\n\n    # Copy from\
+  \ remote to local\n    scp user@server:/path/file.txt .\n\n    # Copy directory\
+  \ recursively\n    scp -r directory/ user@server:/path/\n\n    # Sync directories\
+  \ (more efficient)\n    rsync -avz source/ user@server:/destination/\n\n    # Sync\
+  \ with progress\n    rsync -avz --progress source/ dest/\n    ```\n\n    ## Common\
+  \ Ports\n\n    | Port | Service |\n    |------|---------|\n    | 22 | SSH |\n  \
+  \  | 80 | HTTP |\n    | 443 | HTTPS |\n    | 3306 | MySQL |\n    | 5432 | PostgreSQL\
+  \ |\n    | 6379 | Redis |\n    | 27017 | MongoDB |"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: Which command is used to test network connectivity to a remote host?
+  options:
+  - ping
+  - curl
+  - nslookup
+  - netstat
+  correct_answer_index: 0
+  explanation: The ping command sends ICMP echo request packets to a remote host to test network connectivity and measure round-trip time.
+- type: mcq
+  sequence_order: 2
+  question: Which command would you use to perform a DNS lookup for a domain name?
+  options:
+  - netstat
+  - nslookup
+  - ping
+  - curl
+  correct_answer_index: 1
+  explanation: nslookup is used to query DNS servers to resolve domain names to IP addresses. dig and host are also DNS lookup tools.
+- type: mcq
+  sequence_order: 3
+  question: What does the command 'netstat -tuln' show?
+  options:
+  - All listening TCP and UDP ports in numeric format
+  - Active network connections only
+  - Routing table information
+  - Network interface statistics
+  correct_answer_index: 0
+  explanation: The -t flag shows TCP connections, -u shows UDP, -l shows listening ports, and -n shows numeric addresses instead of resolving hostnames.
+- type: mcq
+  sequence_order: 4
+  question: Which command downloads a file from a URL?
+  options:
+  - ping
+  - nslookup
+  - curl or wget
+  - netstat
+  correct_answer_index: 2
+  explanation: Both curl and wget can download files from URLs. curl with -O flag or wget will download and save files.
+- type: mcq
+  sequence_order: 5
+  question: What is the purpose of the 'ss' command?
+  options:
+  - It's a modern alternative to netstat for displaying socket statistics
+  - It's used to send emails
+  - It's used to schedule tasks
+  - It's used to search files
+  correct_answer_index: 0
+  explanation: ss (socket statistics) is the modern replacement for netstat, providing faster and more detailed socket information.
+- type: mcq
+  sequence_order: 6
+  question: Which port does HTTPS typically use?
+  options:
+  - 80
+  - 443
+  - 22
+  - 3306
+  correct_answer_index: 1
+  explanation: HTTPS uses port 443 by default. HTTP uses port 80, SSH uses port 22, and MySQL uses port 3306.
+- type: mcq
+  sequence_order: 7
+  question: What does 'curl -I https://example.com' do?
+  options:
+  - Downloads the full page content
+  - Shows only the HTTP response headers
+  - Sends a POST request
+  - Tests DNS resolution
+  correct_answer_index: 1
+  explanation: The -I flag (or --head) makes curl fetch headers only, using the HEAD HTTP method. This is useful for checking server responses without downloading content.
+- type: terminal
+  sequence_order: 8
+  description: Test connectivity to google.com by sending 4 ICMP packets
+  command: ping -c 4 google.com
+  timeout_sec: 30
+  validation:
+    exit_code: 0
+    output_contains:
+    - "4 packets transmitted"
+    - "bytes from"
+  hints:
+  - Use the -c flag to specify the count of packets
+  - The command format is 'ping -c COUNT hostname'
+- type: terminal
+  sequence_order: 9
+  description: Look up the IP address of example.com using nslookup
+  command: nslookup example.com
+  timeout_sec: 10
+  validation:
+    exit_code: 0
+    output_contains:
+    - "Name:"
+    - "Address:"
+  hints:
+  - nslookup queries DNS servers
+  - The format is 'nslookup domain.com'
+- type: terminal
+  sequence_order: 10
+  description: Show all listening TCP and UDP ports in numeric format
+  command: netstat -tuln
+  timeout_sec: 5
+  validation:
+    exit_code: 0
+    output_contains:
+    - "Proto"
+    - "Local Address"
+  hints:
+  - Use -t for TCP, -u for UDP, -l for listening, -n for numeric
+  - Modern alternative is 'ss -tuln'
+- type: terminal
+  sequence_order: 11
+  description: Fetch only the HTTP headers from https://example.com
+  command: curl -I https://example.com
+  timeout_sec: 15
+  validation:
+    exit_code: 0
+    output_contains:
+    - "HTTP/"
+    - "200"
+  hints:
+  - Use the -I flag to fetch headers only
+  - This performs a HEAD request
+- type: terminal
+  sequence_order: 12
+  description: Use dig to query DNS for example.com
+  command: dig example.com
+  timeout_sec: 10
+  validation:
+    exit_code: 0
+    output_contains:
+    - "ANSWER SECTION"
+    - "example.com"
+  hints:
+  - dig is a powerful DNS lookup tool
+  - The format is 'dig domain.com'
+objectives:
+- Understand the fundamental concepts and mechanisms of network commands
+- Apply networking principles to solve connectivity problems
+- Identify key commands, protocols, and network behaviors
+next_recommended: []

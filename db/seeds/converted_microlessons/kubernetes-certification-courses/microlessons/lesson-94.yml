@@ -1,0 +1,43 @@
+slug: lesson-94
+title: Lesson 94
+difficulty: easy
+sequence_order: 94
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Resource Management and QoS\n\n    - requests/limits\
+  \ and QoS classes\n    - eviction thresholds and scheduling implications"
+exercises:
+  - type: mcq
+    sequence_order: 1
+    question: "What is the difference between resource requests and resource limits in Kubernetes?"
+    options:
+      - "Requests specify maximum usage while limits specify minimum guarantees"
+      - "Requests specify minimum guaranteed resources while limits specify maximum allowed usage"
+      - "Requests and limits are the same and can be used interchangeably"
+      - "Requests are for CPU only while limits are for memory only"
+    correct_answer: "Requests specify minimum guaranteed resources while limits specify maximum allowed usage"
+    explanation: "Resource requests and limits serve distinct purposes in Kubernetes resource management. Requests define the minimum amount of CPU and memory that the scheduler guarantees will be available to a container. When scheduling a pod, Kubernetes ensures the node has at least the requested resources available. Requests also determine the pod's QoS class and influence scheduling decisions. Limits, on the other hand, define the maximum amount of resources a container can consume. If a container attempts to use more CPU than its limit, it will be throttled. If it uses more memory than its limit, it may be terminated (OOMKilled). A container can use more than its requested resources (up to the limit) if the node has spare capacity. This distinction allows for efficient resource utilization while preventing resource starvation. For example, you might request 100m CPU (guaranteed) but set a limit of 500m CPU (maximum), allowing the container to burst when possible. Understanding this difference is critical for proper resource management and avoiding both over-provisioning and resource contention."
+    require_pass: true
+  - type: mcq
+    sequence_order: 2
+    question: "What are the three QoS (Quality of Service) classes in Kubernetes, and how are they determined?"
+    options:
+      - "High, Medium, Low - determined by pod priority"
+      - "Guaranteed, Burstable, BestEffort - determined by resource requests and limits configuration"
+      - "Critical, Normal, Low - determined by namespace configuration"
+      - "Premium, Standard, Basic - determined by the service type"
+    correct_answer: "Guaranteed, Burstable, BestEffort - determined by resource requests and limits configuration"
+    explanation: "Kubernetes assigns one of three QoS classes to each pod based on its resource requests and limits configuration, which determines eviction order during resource pressure. Guaranteed QoS is the highest class, assigned when every container in the pod has both CPU and memory requests and limits set to the same values. These pods are least likely to be evicted. Burstable QoS is assigned when at least one container has memory or CPU requests or limits set, but doesn't meet Guaranteed criteria. These pods can use more resources than requested (up to limits) but are evicted before Guaranteed pods. BestEffort QoS is the lowest class, assigned when no containers have any requests or limits set. These pods can use any available resources but are first to be evicted during node pressure. When the kubelet needs to reclaim resources, it evicts pods in this order: BestEffort first, then Burstable (prioritizing those using the most resources relative to requests), and finally Guaranteed (only in extreme cases). QoS classes are automatically assigned - you cannot set them directly, only influence them through requests/limits configuration."
+    require_pass: true
+  - type: mcq
+    sequence_order: 3
+    question: "What happens when a node's available resources fall below eviction thresholds in Kubernetes?"
+    options:
+      - "The node is immediately removed from the cluster"
+      - "The kubelet begins evicting pods based on QoS class and resource usage to reclaim resources"
+      - "All pods on the node are restarted"
+      - "New pods continue to be scheduled normally"
+    correct_answer: "The kubelet begins evicting pods based on QoS class and resource usage to reclaim resources"
+    explanation: "Eviction thresholds are kubelet settings that define when node resources (memory, disk, inodes, process IDs) are critically low. When available resources fall below these thresholds, the kubelet enters eviction mode to reclaim resources and prevent node failure. The kubelet uses a sophisticated eviction strategy based on multiple factors: first, it considers QoS class (BestEffort pods are evicted first, then Burstable, then Guaranteed); within the same QoS class, it prioritizes pods using the most resources relative to their requests; it also considers pod priority. The kubelet implements both hard eviction thresholds (immediate eviction when crossed) and soft eviction thresholds (eviction after a grace period). Common default thresholds include memory.available < 100Mi and nodefs.available < 10%. During eviction, the kubelet terminates pods gracefully (respecting terminationGracePeriodSeconds) and marks the node as under resource pressure. The scheduler stops placing new pods on the node until conditions improve. This mechanism prevents cascading failures and protects node stability, though it can impact application availability if not properly planned for with appropriate resource requests and PodDisruptionBudgets."
+    require_pass: true

@@ -1,0 +1,191 @@
+slug: file-operations
+title: File Operations
+difficulty: easy
+sequence_order: 11
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# File Operations \U0001F680\n\n# File Operations\n\n    ## Creating\
+  \ Directories\n\n    ```bash\n    # Create a single directory\n    mkdir projects\n\
+  \n    # Create nested directories\n    mkdir -p projects/docker/configs\n\n    #\
+  \ Create multiple directories\n    mkdir dir1 dir2 dir3\n    ```\n\n    ## Copying\
+  \ Files and Directories\n\n    ```bash\n    # Copy file\n    cp source.txt destination.txt\n\
+  \n    # Copy to directory\n    cp file.txt /home/user/backup/\n\n    # Copy directory\
+  \ recursively\n    cp -r source_dir/ destination_dir/\n\n    # Copy with verbose\
+  \ output\n    cp -v file.txt backup/\n\n    # Preserve attributes (permissions,\
+  \ timestamps)\n    cp -p file.txt backup/\n    ```\n\n    ## Moving and Renaming\n\
+  \n    ```bash\n    # Rename file\n    mv oldname.txt newname.txt\n\n    # Move file\
+  \ to directory\n    mv file.txt /home/user/documents/\n\n    # Move multiple files\n\
+  \    mv file1.txt file2.txt file3.txt /destination/\n\n    # Move directory\n  \
+  \  mv old_dir/ new_location/\n    ```\n\n    ## Removing Files and Directories\n\
+  \n    ```bash\n    # Remove file\n    rm file.txt\n\n    # Remove multiple files\n\
+  \    rm file1.txt file2.txt\n\n    # Remove directory and contents\n    rm -r directory/\n\
+  \n    # Force remove without prompts\n    rm -f file.txt\n\n    # Interactive mode\
+  \ (confirm each deletion)\n    rm -i *.txt\n\n    # Remove empty directory\n   \
+  \ rmdir empty_directory/\n    ```\n\n    ## Viewing File Contents\n\n    ```bash\n\
+  \    # Display entire file\n    cat file.txt\n\n    # Display with line numbers\n\
+  \    cat -n file.txt\n\n    # View first 10 lines\n    head file.txt\n\n    # View\
+  \ first 20 lines\n    head -n 20 file.txt\n\n    # View last 10 lines\n    tail\
+  \ file.txt\n\n    # Follow file updates (useful for logs)\n    tail -f /var/log/app.log\n\
+  \n    # Page through file\n    less file.txt\n    # (Press 'q' to quit, Space for\
+  \ next page)\n    ```\n\n    ## Creating Empty Files\n\n    ```bash\n    # Create\
+  \ or update timestamp\n    touch newfile.txt\n\n    # Create multiple files\n  \
+  \  touch file1.txt file2.txt file3.txt\n    ```"
+exercises:
+- type: terminal
+  slug: file-ops-mkdir
+  sequence_order: 1
+  description: Create directory structures with mkdir
+  command: mkdir -p projects/src projects/docs projects/tests && ls -R projects
+  validation:
+    must_include:
+      - projects
+      - src
+      - docs
+      - tests
+    must_not_include:
+      - Error
+      - "No such file"
+  hints:
+    - mkdir -p creates parent directories as needed
+    - ls -R shows recursive directory listing
+    - mkdir without -p fails if parent doesn't exist
+  timeout_sec: 60
+  require_pass: true
+
+- type: terminal
+  slug: file-ops-touch-cp
+  sequence_order: 2
+  description: Create and copy files
+  command: touch original.txt && echo "test content" > original.txt && cp original.txt backup.txt && cp -v original.txt archive.txt && ls -l *.txt
+  validation:
+    must_include:
+      - original.txt
+      - backup.txt
+      - archive.txt
+    must_not_include:
+      - Error
+  hints:
+    - touch creates empty files
+    - cp copies files
+    - cp -v shows verbose output (what was copied)
+    - ">" redirects output to a file
+  timeout_sec: 60
+  require_pass: true
+
+- type: terminal
+  slug: file-ops-mv
+  sequence_order: 3
+  description: Move and rename files
+  command: mkdir archive && touch oldname.txt && mv oldname.txt newname.txt && mv newname.txt archive/ && ls archive/
+  validation:
+    must_include:
+      - newname.txt
+    must_not_include:
+      - oldname.txt
+      - Error
+  hints:
+    - mv renames files when used in same directory
+    - mv moves files when target is a different directory
+    - The original file is removed (not copied)
+  timeout_sec: 60
+  require_pass: true
+
+- type: terminal
+  slug: file-ops-view
+  sequence_order: 4
+  description: View file contents with different commands
+  command: echo -e "line1\nline2\nline3\nline4\nline5" > test.txt && echo "Full file:" && cat test.txt && echo "First 2 lines:" && head -n 2 test.txt && echo "Last 2 lines:" && tail -n 2 test.txt
+  validation:
+    must_include:
+      - "Full file:"
+      - "First 2 lines:"
+      - "Last 2 lines:"
+      - line1
+      - line5
+    must_not_include:
+      - Error
+  hints:
+    - cat displays entire file
+    - head -n N shows first N lines
+    - tail -n N shows last N lines
+    - echo -e enables escape sequences like \n for newlines
+  timeout_sec: 60
+  require_pass: true
+
+- type: terminal
+  slug: file-ops-rm-safe
+  sequence_order: 5
+  description: Safely remove files and directories
+  command: mkdir testdir && touch testdir/file1.txt && rm testdir/file1.txt && rmdir testdir && echo "Cleanup complete" || echo "Cleanup had issues"
+  validation:
+    must_include:
+      - "Cleanup complete"
+    must_not_include:
+      - Error
+      - "had issues"
+  hints:
+    - rm removes files
+    - rmdir removes ONLY empty directories
+    - Use rm -r for directories with contents (carefully!)
+    - "|| provides a fallback if the previous command fails"
+  timeout_sec: 60
+  require_pass: true
+
+- type: mcq
+  slug: file-ops-mcq-1
+  sequence_order: 6
+  question: Which command removes a directory and all its contents?
+  options:
+  - cp -r source/ dest/
+  - mv file.txt /path/
+  - rm -rf directory/
+  - mkdir -p path/to/dir
+  require_pass: true
+  correct_answer: rm -rf directory/
+  explanation: 'The `rm -rf directory/` command removes a directory and all its contents
+    recursively and forcefully. Breaking down the flags: (1) **-r (recursive)**: Required
+    to delete directories; removes directory and all subdirectories/files within,
+    (2) **-f (force)**: Skips confirmation prompts, ignores non-existent files, removes
+    write-protected files without asking. This command is EXTREMELY DANGEROUS: it
+    permanently deletes files without sending them to trash/recycle bin, works silently
+    without confirmation (due to -f), cannot be undone (no recovery unless backups
+    exist). Horror stories: `rm -rf /` (deletes entire system), `rm -rf / home/user`
+    (typo with space before /home), `rm -rf *` in wrong directory. **Safer alternatives**:
+    Use `rm -r directory/` (without -f, prompts for confirmation), Use `rm -ri directory/`
+    (interactive mode, confirms each file), Use trash utilities like `trash-cli` or
+    `gvfs-trash`, Always double-check the path before running. For empty directories
+    only: use `rmdir empty_dir/` (fails if not empty, safer).'
+
+- type: mcq
+  slug: file-ops-mcq-2
+  sequence_order: 7
+  question: What's the difference between cp file.txt backup/ and cp -p file.txt backup/?
+  options:
+  - No difference, they do the same thing
+  - -p preserves permissions, ownership, and timestamps
+  - -p makes a partial copy
+  - -p compresses the file during copy
+  correct_answer_index: 1
+  explanation: The -p flag preserves file attributes including permissions (chmod), ownership (chown), and timestamps (modification/access times). Without -p, the copy gets default permissions and current timestamp.
+  require_pass: true
+
+- type: reflection
+  slug: file-ops-reflect
+  sequence_order: 8
+  prompt: |
+    You're working on a server with limited disk space and need to reorganize 100GB of log files into dated subdirectories.
+    Would you use 'cp' or 'mv'? Why? What safety precautions would you take before running the operation?
+
+- type: checkpoint
+  slug: file-ops-checkpoint
+  sequence_order: 9
+  prompt: |
+    Write a complete command sequence to:
+    1. Create a proper directory structure (src/, docs/, tests/, backups/)
+    2. Create sample files in src/ directory
+    3. Copy files to backups/ with timestamps
+    4. Move old files to an archive directory
+    5. List everything to verify
+
+    Explain each command and why you're using specific flags.

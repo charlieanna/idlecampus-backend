@@ -1,0 +1,131 @@
+slug: docker-stop-gracefully-stopping-containers
+title: 'Docker Stop: Gracefully Stopping Containers'
+sequence_order: 3
+estimated_minutes: 2
+difficulty: easy
+key_concepts: []
+content_md: "# Docker Stop: Gracefully Stopping Containers \U0001F680\n\n# Understanding\
+  \ docker stop: Graceful Container Shutdown\n\n    ## What is docker stop?\n    `docker\
+  \ stop` gracefully stops one or more running containers by sending signals to the\
+  \ main process. This is the proper way to stop containers, allowing them to clean\
+  \ up resources before shutting down.\n\n    ## Why Graceful Shutdown Matters\n \
+  \   - **Data Integrity**: Allows databases to flush buffers to disk\n    - **Connection\
+  \ Cleanup**: Lets web servers close client connections properly\n    - **State Preservation**:\
+  \ Enables applications to save state before exit\n    - **Resource Release**: Properly\
+  \ releases locks, file handles, and network ports\n\n    ## Basic Syntax\n    ```bash\n\
+  \    docker stop [OPTIONS] CONTAINER [CONTAINER...]\n    ```\n\n    ## How It Works:\
+  \ The Signal Dance\n\n    ```\n    docker stop container_name\n         │\n    \
+  \     ├─ Sends SIGTERM signal\n         │  (polite request to shut down)\n     \
+  \    │\n         ├─ Waits up to 10 seconds\n         │  (default grace period)\n\
+  \         │\n         └─ If still running: sends SIGKILL\n            (forceful\
+  \ termination)\n    ```\n\n    ## Common Use Cases\n\n    ### 1. Stop a Single Container\n\
+  \    ```bash\n    docker stop web-server\n    ```\n    Gracefully stops the container\
+  \ named \"web-server\".\n\n    ### 2. Stop Multiple Containers\n    ```bash\n  \
+  \  docker stop web-server database cache\n    ```\n    Stops all three containers\
+  \ in sequence.\n\n    ### 3. Custom Timeout\n    ```bash\n    docker stop -t 30\
+  \ database\n    ```\n    Waits 30 seconds before force-killing (useful for databases).\n\
+  \n    ### 4. Stop All Running Containers\n    ```bash\n    docker stop $(docker\
+  \ ps -q)\n    ```\n    Stops every running container on the system.\n\n    ## SIGTERM\
+  \ vs SIGKILL\n\n    **SIGTERM (Signal 15)**\n    - Polite request to terminate\n\
+  \    - Application can catch and handle it\n    - Allows cleanup operations\n  \
+  \  - Default first signal sent\n\n    **SIGKILL (Signal 9)**\n    - Immediate, forceful\
+  \ termination\n    - Cannot be caught or ignored\n    - No cleanup possible\n  \
+  \  - Used as last resort\n\n    ## Timing Considerations\n\n    ```\n    Start:\
+  \ docker stop database\n         │\n         ├─ 0s: SIGTERM sent → app starts shutdown\n\
+  \         ├─ 2s: closing connections...\n         ├─ 5s: flushing data to disk...\n\
+  \         ├─ 8s: cleanup complete, exits gracefully ✓\n         │\n         └─ If\
+  \ took > 10s: SIGKILL sent ✗\n    ```\n\n    ## Stop vs Kill\n\n    | Command |\
+  \ Signal | Graceful | Use Case |\n    |---------|--------|----------|----------|\n\
+  \    | `docker stop` | SIGTERM → SIGKILL | Yes | Normal operations |\n    | `docker\
+  \ kill` | SIGKILL immediately | No | Hung containers |\n\n    ## Common Patterns\n\
+  \n    ### Stop and Remove\n    ```bash\n    docker stop my-app && docker rm my-app\n\
+  \    ```\n    Stops container then removes it.\n\n    ### Stop with Specific Timeout\n\
+  \    ```bash\n    docker stop -t 60 production-db\n    ```\n    Gives database 60\
+  \ seconds to shut down cleanly.\n\n    ### Emergency Stop All\n    ```bash\n   \
+  \ docker stop $(docker ps -q) -t 1\n    ```\n    Quickly stops all containers (1\
+  \ second timeout).\n\n    ## Common Mistakes to Avoid\n\n    1. **Using docker kill\
+  \ first**: Always try `docker stop` before `docker kill`\n    2. **Too short timeout**:\
+  \ Some apps need more than 10 seconds to shut down\n    3. **Not checking status**:\
+  \ Verify container actually stopped with `docker ps`\n    4. **Force-stopping databases**:\
+  \ Always use longer timeout for data services\n    5. **Stopping without checking\
+  \ dependencies**: Stop dependent services first\n\n    ## Container States After\
+  \ Stop\n\n    ```\n    Running → Stopping → Stopped (Exited)\n                │\n\
+  \                ├─ Container remains on disk\n                ├─ Can be restarted\
+  \ with docker start\n                └─ Remove with docker rm\n    ```\n\n    ##\
+  \ Pro Tips\n\n    1. **Check logs before stopping**: `docker logs container_name`\n\
+  \    2. **Use health checks**: Ensure graceful shutdown is working\n    3. **Set\
+  \ appropriate timeouts**: Match to application needs\n    4. **Script cleanup**:\
+  \ Create stop scripts for dependent services\n    5. **Monitor shutdown**: Watch\
+  \ logs during stop to catch issues\n\n    ## Restart vs Stop/Start\n\n    ```bash\n\
+  \    # These are different:\n    docker stop web && docker start web  # Keeps same\
+  \ container\n    docker restart web                   # Equivalent to above\n  \
+  \  docker stop web && docker run web    # Creates NEW container\n    ```\n\n   \
+  \ ## When to Use docker stop\n\n    - Deploying new version (stop old, start new)\n\
+  \    - Maintenance windows (controlled shutdown)\n    - Resource cleanup (free ports/memory)\n\
+  \    - Before system reboot (clean shutdown)\n    - Troubleshooting (restart services)\n\
+  \n## Syntax/Command\n\n```bash\ndocker stop my-container\n```\n\n## Example\n\n\
+  ```bash\ndocker stop container_name\n```\n\n## Key Points\n\n- Basic stop: docker\
+  \ stop <container-name>\n\n- Stop by ID: docker stop abc123\n\n- Custom timeout:\
+  \ docker stop -t 30 database"
+exercises:
+- type: terminal
+  sequence_order: 1
+  command: docker stop my-container
+  description: Stop the api-server container gracefully with a 30-second timeout to
+    allow proper connection cleanup
+  hints:
+  - 'Basic stop: docker stop <container-name>'
+  - 'Stop by ID: docker stop abc123'
+  - 'Custom timeout: docker stop -t 30 database'
+  timeout_sec: 60
+  require_pass: true
+  validation:
+    must_not_include:
+    - Error
+    - 'panic:'
+- type: sandbox
+  sequence_order: 2
+  run: docker stop my-container
+  hints:
+  - Run under CPU pressure to surface leaks or races
+  - Keep commands idempotent in CI
+  timeout_sec: 60
+  require_pass: true
+  validation:
+    must_not_include:
+    - Error
+    - 'panic:'
+- type: mcq
+  slug: docker-stop-gracefully-stopping-containers-mcq
+  sequence_order: 3
+  question: What signal does 'docker stop' send first to allow graceful shutdown?
+  options:
+  - SIGTERM
+  - SIGKILL
+  - SIGHUP
+  - SIGINT
+  correct_answer_index: 0
+  explanation: docker stop first sends SIGTERM to allow the container to shut down
+    gracefully. If it doesn't stop within the timeout, it sends SIGKILL
+  require_pass: true
+- type: mcq
+  slug: docker-stop-gracefully-stopping-containers-mcq-2
+  sequence_order: 4
+  question: When should you use 'docker kill' instead of 'docker stop'?
+  options:
+  - Only as a last resort when docker stop fails or for immediate termination
+  - Always, it's faster than docker stop
+  - For production containers only
+  - When the container is already stopped
+  correct_answer_index: 0
+  explanation: docker kill sends SIGKILL immediately without graceful shutdown, which
+    can cause data corruption. Use it only when docker stop fails or immediate termination
+    is required
+  require_pass: true
+objectives:
+- Stop containers gracefully with docker stop
+- Understand SIGTERM vs SIGKILL signals
+- Use custom timeout values for proper cleanup
+next_recommended:
+- docker-rm-removing-containers
+- docker-ps-listing-running-containers

@@ -1,0 +1,59 @@
+slug: coagulation-practice
+title: coagulation — Practice
+difficulty: medium
+sequence_order: 22
+estimated_minutes: 2
+key_concepts:
+- coagulation
+prerequisites: []
+content_md: '# coagulation — Practice 🚀
+
+
+  According to Hardy-Schulze rule, higher the valence of coagulating ion, greater
+  its coagulating power. For negative sol: Al³⁺ (3+) > Ba²⁺ (2+) > Na⁺ (1+).
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: 'For coagulation of a negative sol, arrange the following in order of increasing coagulating power: Na⁺, Ba²⁺, Al³⁺'
+  options:
+  - Na⁺ < Ba²⁺ < Al³⁺
+  - Al³⁺ < Ba²⁺ < Na⁺
+  - Ba²⁺ < Na⁺ < Al³⁺
+  - Na⁺ < Al³⁺ < Ba²⁺
+  correct_answer: Na⁺ < Ba²⁺ < Al³⁺
+  explanation: "According to the Hardy-Schulze rule, the coagulating power of an ion is directly proportional to its valence (charge). For a negatively charged sol, the coagulating power of cations increases with charge: univalent (Na⁺, 1+) < divalent (Ba²⁺, 2+) < trivalent (Al³⁺, 3+). This is because higher charged ions more effectively neutralize the charge on colloidal particles. The coagulation value (minimum concentration needed) is inversely proportional to coagulating power."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: 'Coagulation can be achieved by:'
+  options:
+  - Adding electrolytes
+  - Heating
+  - Both adding electrolytes and heating
+  - Diluting the sol
+  correct_answer: Both adding electrolytes and heating
+  explanation: "Coagulation (precipitation of colloidal particles) can be achieved by multiple methods: (1) Adding electrolytes - ions neutralize the charge on colloidal particles, reducing repulsion, (2) Heating - increases kinetic energy, causing particles to collide and aggregate, (3) Electrophoresis - applying electric field causes particles to move and discharge at electrodes, (4) Mixing oppositely charged sols. Diluting actually stabilizes the sol rather than causing coagulation."
+  require_pass: false
+- type: mcq
+  sequence_order: 3
+  question: 'The minimum concentration of electrolyte required to cause coagulation is called:'
+  options:
+  - Coagulation value or flocculation value
+  - Critical micelle concentration
+  - Gold number
+  - Zeta potential
+  correct_answer: Coagulation value or flocculation value
+  explanation: "The coagulation value (or flocculation value) is the minimum concentration of an electrolyte (in millimoles per liter) required to cause coagulation of a sol. Lower coagulation value indicates higher coagulating power. For example, for As₂S₃ sol (negative), Al³⁺ has much lower coagulation value than Na⁺, making it a more effective coagulating agent. CMC relates to micelles, gold number to protective colloids, and zeta potential to surface charge."
+  require_pass: false

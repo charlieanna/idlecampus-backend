@@ -1,0 +1,425 @@
+================================================================================
+                    IDLECAMPUS CODEBASE - QUICK VISUAL GUIDE
+================================================================================
+
+DIRECTORY STRUCTURE:
+================================================================================
+
+/home/user/idlecampus-backend/
+├── app/
+│   ├── models/                          ← Data models (Course, Lesson, Exercise, etc.)
+│   ├── controllers/api/v1/              ← REST API endpoints
+│   └── services/                        ← Business logic
+├── db/
+│   ├── migrate/                         ← Database schema changes
+│   ├── seeds/
+│   │   ├── *.rb                         ← Traditional seed files (Ruby)
+│   │   └── consolidated_courses/        ← YAML-based course definitions
+│   │       ├── docker-fundamentals/
+│   │       ├── kubernetes-complete/
+│   │       └── linux-shell-fundamentals/
+│   └── schema.rb                        ← Current database schema
+├── config/
+│   └── routes.rb                        ← API route definitions
+└── docs/                                ← Documentation
+
+================================================================================
+
+DATABASE RELATIONSHIPS - SIMPLIFIED:
+================================================================================
+
+┌─────────────────────────────────────────────────────────────────────┐
+│                          COURSE HIERARCHY                            │
+└─────────────────────────────────────────────────────────────────────┘
+
+                              COURSE
+                              (id, title, slug)
+                                  │
+                                  ├─── 1:N ──┐
+                                  │          ▼
+                              COURSE_MODULE
+                          (id, course_id, title)
+                                  │
+                        ┌─────────┼─────────┐
+                        │         │         │
+                        ▼         ▼         ▼
+                    MODULE    MICRO      TOPIC
+                    ITEM      LESSON     GROUP
+                   (poly)      │
+                    ├──┼──┐    │
+                    │  │  │    └─── 1:N ──┐
+                    ▼  ▼  ▼              ▼
+                Lesson Quiz Lab      EXERCISE
+                                    (exercise_data: JSONB)
+
+
+PROGRESS TRACKING RELATIONSHIPS:
+================================================================================
+
+                              USER
+                              │
+                    ┌─────────┼─────────┐
+                    ▼         ▼         ▼
+            COURSE        MODULE      LEARNING
+            ENROLLMENT    PROGRESS    EVENT
+            │             │
+            ├─────────────┼──────────────┐
+            │             │              │
+            ▼             ▼              ▼
+        QUIZ         LESSON          LAB
+        ATTEMPT      COMPLETION      SESSION
+
+================================================================================
+
+KEY DATA TABLES:
+================================================================================
+
+TABLE              MAIN FIELDS                          NOTES
+────────────────────────────────────────────────────────────────────
+courses            id, title, slug, description,        Course container
+                   difficulty_level, published
+
+course_modules     id, course_id, title, slug,          Chapters/sections
+                   sequence_order, published
+
+course_lessons     id, title, content, reading_time,    Lesson content
+                   key_concepts, video_url
+
+micro_lessons      id, course_module_id, title,         Short focused
+                   content, exercises (1:N)             lessons
+
+exercises          id, micro_lesson_id,                 JSONB field for
+                   exercise_type, exercise_data         flexible data
+
+quiz_questions     id, quiz_id, question_type,          7 question types
+                   question_text, options, difficulty
+
+problems           id, title, description,              ⚠️ MINIMAL - needs
+                   sample_input, sample_output          expansion
+
+solutions          id, user_id, problem_id,             ⚠️ MINIMAL - needs
+                   code, status                         enhancement
+
+================================================================================
+
+EXERCISE TYPES:
+================================================================================
+
+TYPE              USE CASE                          DATA STRUCTURE
+──────────────────────────────────────────────────────────────────
+mcq               Multiple choice questions         {question, options, correct_answer}
+terminal          Command line practice             {command, expected_output}
+code              Programming problems              {language, starter_code, test_cases}
+short_answer      Text-based answers                {question, answer (variants)}
+sandbox           Interactive environment           {description, scenario, success_criteria}
+reflection        Learning reflection               {prompt}
+checkpoint        Knowledge verification            {prompt}
+
+================================================================================
+
+QUESTION TYPES (QUIZ):
+================================================================================
+
+TYPE                USE CASE                        SPECIAL FIELDS
+────────────────────────────────────────────────────────────────────
+mcq                 Single/multi-choice              multiple_correct boolean
+fill_blank          Text matching (case-insensitive) correct_answer (pipe-separated)
+numerical           Math with tolerance              tolerance decimal
+equation_balance    Chemistry equations              chemical validation
+sequence            Order items correctly            sequence_items JSON
+true_false          Binary questions
+command             Docker/Linux commands            pattern matching
+
+================================================================================
+
+CURRENT ORGANIZATION OF CONTENT:
+================================================================================
+
+✓ ACTIVE IMPLEMENTATIONS:
+  • Chemistry Courses (Inorganic, Organic, Physical)
+  • Docker Fundamentals + Advanced
+  • Kubernetes Complete
+  • Linux Shell Fundamentals
+  • AWS Cloud
+  • Interview Prep (Coding, System Design)
+
+LOCATION: /db/seeds/consolidated_courses/ (YAML-based)
+          /db/seeds/*.rb (Ruby-based)
+
+═══════════════════════════════════════════════════════════════════════════════
+
+📍 WHERE TO CREATE ALGORITHM PROBLEMS DATABASE:
+═══════════════════════════════════════════════════════════════════════════════
+
+RECOMMENDED STRUCTURE:
+
+/db/seeds/consolidated_courses/algorithms-data-structures/
+├── manifest.yml                           ← Course metadata + modules
+├── microlessons/
+│   ├── 01-big-o-notation.yml
+│   ├── 02-arrays-and-lists.yml
+│   ├── 03-trees-and-graphs.yml
+│   ├── 04-sorting-algorithms.yml
+│   ├── 05-dynamic-programming.yml
+│   ├── 06-backtracking.yml
+│   └── ...
+└── loader.rb (optional)
+
+PLUS: /db/seeds/algorithms_problem_database.rb
+      ↓
+      Defines 100+ problems with:
+      • Problem metadata (title, difficulty, category)
+      • Test cases
+      • Solution code (multiple languages)
+      • Links to lessons
+
+═══════════════════════════════════════════════════════════════════════════════
+
+MANIFEST.YML TEMPLATE:
+═══════════════════════════════════════════════════════════════════════════════
+
+course:
+  slug: algorithms-data-structures
+  title: Algorithms & Data Structures
+  description: Complete guide to DSA for interviews
+  estimated_hours: 60
+  level: intermediate
+  learning_outcomes:
+    - Master Big O notation
+    - Implement core data structures
+    - Solve common algorithm problems
+  tags: [algorithms, data-structures, interview-prep, coding]
+
+modules:
+  - slug: complexity-analysis
+    title: Complexity Analysis
+    order: 1
+    estimated_hours: 4
+    lessons:
+      - big-o-notation
+      - time-complexity
+      - space-complexity
+      
+  - slug: linear-structures
+    title: Linear Data Structures
+    order: 2
+    estimated_hours: 8
+    lessons:
+      - arrays-and-lists
+      - stacks-and-queues
+      
+  - slug: tree-structures
+    title: Trees & Graphs
+    order: 3
+    estimated_hours: 12
+    lessons:
+      - binary-trees
+      - tree-traversal
+      - graph-basics
+
+[... more modules ...]
+
+═══════════════════════════════════════════════════════════════════════════════
+
+MICROLESSON.YML TEMPLATE:
+═══════════════════════════════════════════════════════════════════════════════
+
+slug: big-o-notation
+title: Understanding Big O Notation
+sequence_order: 1
+estimated_minutes: 20
+difficulty: easy
+
+content_md: |
+  # Big O Notation
+  
+  Big O describes worst-case time/space complexity...
+  
+  ## Common Complexities
+  - O(1) - Constant time
+  - O(n) - Linear time
+  - O(n²) - Quadratic time
+  ...
+
+key_concepts:
+  - Time complexity
+  - Space complexity
+  - Worst case analysis
+
+exercises:
+  - type: mcq
+    slug: big-o-mcq-1
+    sequence_order: 1
+    question: Which is O(1) complexity?
+    options:
+      - Array access by index
+      - Linear search
+      - Nested loops
+    correct_answer_index: 0
+    explanation: Direct array access is constant time
+    
+  - type: reflection
+    slug: big-o-reflect
+    sequence_order: 2
+    prompt: How would you analyze the complexity of a recursive function?
+    
+  - type: checkpoint
+    slug: big-o-checkpoint
+    sequence_order: 3
+    prompt: |
+      Write the Big O complexity for:
+      1. Binary search
+      2. Bubble sort
+      3. Hash table lookup
+
+objectives:
+  - Understand time complexity notation
+  - Analyze algorithm efficiency
+  - Identify bottlenecks in code
+
+next_recommended: [time-complexity]
+
+═══════════════════════════════════════════════════════════════════════════════
+
+API STRUCTURE:
+═══════════════════════════════════════════════════════════════════════════════
+
+Base URL: /api/v1/
+
+GENERIC ENDPOINTS:
+  GET    /courses                           ← All courses
+  GET    /courses/:slug                     ← Course details
+  GET    /courses/:slug/modules             ← Course modules
+  
+ALGORITHM ENDPOINTS (once created):
+  GET    /courses/algorithms-data-structures      ← Course
+  GET    /courses/algorithms-data-structures/modules
+  GET    /microlessons/:id                        ← Lesson details
+  POST   /exercise_attempts                       ← Submit exercise
+  
+FUTURE PROBLEM ENDPOINTS:
+  GET    /problems                          ← Problem listing
+  GET    /problems/:id                      ← Problem details
+  GET    /problems/:id/test                 ← Run tests
+
+═══════════════════════════════════════════════════════════════════════════════
+
+LOADING CONTENT INTO DATABASE:
+═══════════════════════════════════════════════════════════════════════════════
+
+1. Create seed files in /db/seeds/
+
+2. Run migration (if schema changes):
+   rails db:migrate
+
+3. Load seeds:
+   rails db:seed
+   
+   or specific seed:
+   rails db:seed:consolidate_courses
+
+4. Verify in database:
+   rails console
+   > Course.find_by(slug: 'algorithms-data-structures')
+
+5. Test API:
+   curl http://localhost:3000/api/v1/courses/algorithms-data-structures
+
+═══════════════════════════════════════════════════════════════════════════════
+
+WORKFLOW FOR ADDING ALGORITHM PROBLEMS:
+═══════════════════════════════════════════════════════════════════════════════
+
+STEP 1: Create Course Structure
+  └─ /db/seeds/consolidated_courses/algorithms-data-structures/manifest.yml
+  └─ /db/seeds/consolidated_courses/algorithms-data-structures/microlessons/*.yml
+
+STEP 2: Expand Problem Model
+  └─ Add fields: slug, category, difficulty, topics, constraints, etc.
+  └─ Create migration for new fields
+
+STEP 3: Create Problem Database
+  └─ /db/seeds/algorithms_problem_database.rb
+  └─ Define 50-100 problems
+
+STEP 4: Link Problems to Lessons
+  └─ Reference problems from exercise data
+  └─ Create exercise exercises that point to problems
+
+STEP 5: Create API Endpoints (optional)
+  └─ /api/v1/problems
+  └─ /api/v1/problems/:id
+  └─ /api/v1/problems/:id/test
+
+STEP 6: Test Everything
+  └─ rails db:seed
+  └─ rails console (verify data)
+  └─ API tests
+
+═══════════════════════════════════════════════════════════════════════════════
+
+FILE LOCATIONS - QUICK REFERENCE:
+═══════════════════════════════════════════════════════════════════════════════
+
+WHAT                              WHERE
+─────────────────────────────────────────────────────────────────────────
+Course model                      /app/models/course.rb
+Module model                      /app/models/course_module.rb
+Lesson model                      /app/models/course_lesson.rb
+Microlesson model                 /app/models/micro_lesson.rb
+Exercise model                    /app/models/exercise.rb
+Quiz model                        /app/models/quiz.rb
+Quiz question model               /app/models/quiz_question.rb
+Problem model                     /app/models/problem.rb (NEEDS EXPANSION)
+Solution model                    /app/models/solution.rb (NEEDS EXPANSION)
+
+API routes                        /config/routes.rb
+API base controller               /app/controllers/api/v1/generic_courses_controller.rb
+API v1 controllers                /app/controllers/api/v1/ (subdirectories by subject)
+
+Seed files (Ruby)                 /db/seeds/*.rb
+Seed files (YAML)                 /db/seeds/consolidated_courses/*/
+Migrations                        /db/migrate/
+Database schema                   /db/schema.rb
+
+Validation logic                  /app/services/
+Docs                              /CODEBASE_STRUCTURE.md, /ARCHITECTURE_DIAGRAM.md
+
+═══════════════════════════════════════════════════════════════════════════════
+
+KEY TAKEAWAYS FOR ALGORITHM PROBLEMS:
+═══════════════════════════════════════════════════════════════════════════════
+
+1. LOCATION: Use /db/seeds/consolidated_courses/algorithms-data-structures/
+   - Follows existing patterns
+   - Easy to organize and maintain
+   - Scalable structure
+
+2. FORMAT: Mix of YAML + Ruby
+   - manifest.yml for course structure
+   - Microlesson .yml files for lessons
+   - algorithms_problem_database.rb for problems
+
+3. STRUCTURE: Each lesson should include
+   - Markdown theory/explanation
+   - 2-3 practice exercises (MCQ, short-answer)
+   - References to 1-2 problems
+   - Reflection/checkpoint
+
+4. PROBLEMS: Create enhanced Problem model with
+   - Category, difficulty, tags
+   - Test cases
+   - Solution code
+   - Constraints and limits
+
+5. DATA: Store in JSONB fields
+   - exercise_data for lessons
+   - problem metadata as JSON
+   - Test cases as JSON arrays
+
+6. API: Automatically available via existing patterns
+   - /api/v1/courses/algorithms-data-structures
+   - /api/v1/microlessons/:id
+   - Extend with /api/v1/problems/* if needed
+
+═══════════════════════════════════════════════════════════════════════════════

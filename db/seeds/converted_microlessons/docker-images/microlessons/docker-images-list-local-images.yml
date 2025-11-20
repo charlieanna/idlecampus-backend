@@ -1,0 +1,91 @@
+slug: docker-images-list-local-images
+title: 'Docker Images: List Local Images'
+difficulty: easy
+sequence_order: 2
+estimated_minutes: 2
+key_concepts:
+- images
+- docker-images
+- listing
+- inventory
+- management
+prerequisites: []
+content_md: "# Docker Images: List Local Images \U0001F680\n\n# Understanding docker\
+  \ images: Your Local Image Repository\n\n    ## What is docker images?\n    `docker\
+  \ images` displays all Docker images stored locally on your system. It's your inventory\
+  \ management tool for tracking downloaded and built images, their sizes, and when\
+  \ they were created.\n\n    ## Why Image Management Matters\n    - **Disk Space**:\
+  \ Images can consume significant storage\n    - **Version Tracking**: See which\
+  \ versions you have locally\n    - **Cleanup Planning**: Identify old or unused\
+  \ images\n    - **Build Verification**: Confirm images were created successfully\n\
+  \n    ## Common Use Cases\n\n    ### 1. List All Images\n    ```bash\n    docker\
+  \ images\n    ```\n    Shows all locally available images.\n\n    ### 2. List Images\
+  \ for Specific Repository\n    ```bash\n    docker images nginx\n    ```\n    Shows\
+  \ only nginx images with different tags.\n\n    ### 3. Show Image IDs Only\n   \
+  \ ```bash\n    docker images -q\n    ```\n    Returns just image IDs for scripting.\n\
+  \n    ### 4. Show All Including Intermediates\n    ```bash\n    docker images -a\n\
+  \    ```\n    Includes intermediate layers used during builds.\n\n    ## Output\
+  \ Columns Explained\n\n    ```\n    REPOSITORY    TAG       IMAGE ID       CREATED\
+  \        SIZE\n    nginx         alpine    ae2feff98a0c   2 weeks ago    23.4MB\n\
+  \    myapp         1.0       f6d82d3d3a1b   1 hour ago     156MB\n    ```\n\n  \
+  \  - **REPOSITORY**: Image name (e.g., nginx, myapp)\n    - **TAG**: Version/variant\
+  \ (e.g., latest, 1.0, alpine)\n    - **IMAGE ID**: Unique identifier (first 12 chars\
+  \ of SHA256)\n    - **CREATED**: When image was built or pulled\n    - **SIZE**:\
+  \ Disk space consumed\n\n    ## Understanding Image Tags\n\n    Same image can have\
+  \ multiple tags:\n    ```bash\n    myapp    1.0      abc123...   1 hour ago   156MB\n\
+  \    myapp    latest   abc123...   1 hour ago   156MB\n    ```\n    Both tags point\
+  \ to the same image ID!\n\n    ## Dangling Images\n\n    Untagged images from failed\
+  \ builds or replaced tags:\n    ```bash\n    <none>   <none>   def456...   3 days\
+  \ ago   200MB\n    ```\n\n    View only dangling images:\n    ```bash\n    docker\
+  \ images -f dangling=true\n    ```\n\n    ## Common Patterns\n\n    ### Find Large\
+  \ Images\n    ```bash\n    docker images --format \"{{.Size}}\\t{{.Repository}}:{{.Tag}}\"\
+  \ | sort -h\n    ```\n\n    ### List Images by Date\n    ```bash\n    docker images\
+  \ --format \"{{.CreatedAt}}\\t{{.Repository}}:{{.Tag}}\"\n    ```\n\n    ### Count\
+  \ Total Images\n    ```bash\n    docker images | wc -l\n    ```\n\n    ## Pro Tips\n\
+  \n    1. Use `-q` flag for piping to other commands\n    2. Filter by repository\
+  \ name to find specific images\n    3. Check dangling images regularly for cleanup\n\
+  \    4. Use `--format` for custom output in scripts\n    5. Sort by size to find\
+  \ storage hogs\n\n## Syntax/Command\n\n```bash\ndocker images\n```\n\n## Example\n\
+  \n```bash\ndocker images -a\n```\n\n## Key Points\n\n- List all images: docker images\n\
+  \n- Only IDs: docker images -q\n\n- Specific repo: docker images <name>"
+exercises:
+- type: terminal
+  problem_statement: List all Docker images stored locally on your system showing their repository, tag, ID, creation date, and size
+  expected_output: Table showing all local images with REPOSITORY, TAG, IMAGE ID, CREATED, and SIZE columns
+  language: bash
+  starter_code: "# List all local images\n"
+  sequence_order: 1
+  command: docker images
+  description: Display all locally stored Docker images and their sizes
+  hints:
+  - 'List all images: docker images'
+  - 'Only IDs: docker images -q'
+  - 'Specific repo: docker images <name>'
+  validation:
+    must_not_include:
+    - Error
+    - 'panic:'
+  timeout_sec: 60
+  require_pass: true
+- type: sandbox
+  sequence_order: 99
+  hints:
+  - Run under CPU pressure to surface leaks or races
+  - Keep commands idempotent in CI
+  validation:
+    must_not_include:
+    - Error
+    - 'panic:'
+  timeout_sec: 60
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What does it mean when two images have the same IMAGE ID?
+  options:
+  - They are the same image with different tags pointing to the same content
+  - It is an error condition that should be fixed
+  - They are duplicates wasting disk space
+  - They just happen to have the same size
+  correct_answer: They are the same image with different tags pointing to the same content
+  explanation: "When multiple images share the same IMAGE ID, they are actually the same image with different tags. For example, myapp:1.0 and myapp:latest might both point to the same image ID. This doesn't waste space - Docker stores the image layers only once."
+  require_pass: true

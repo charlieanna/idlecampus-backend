@@ -1,0 +1,58 @@
+slug: motbondorder-practice
+title: mot_bond_order — Practice
+difficulty: medium
+sequence_order: 11
+estimated_minutes: 2
+key_concepts:
+- mot_bond_order
+prerequisites: []
+content_md: '# mot_bond_order — Practice 🚀
+
+
+  Bond order = (Nb - Na)/2 = (10 - 6)/2 = 2. O₂ has a double bond.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What is the bond order of O₂ according to Molecular Orbital Theory?
+  options:
+  - '1'
+  - '1.5'
+  - '2'
+  - '3'
+  require_pass: true
+  correct_answer: '2'
+  explanation: 'The bond order of O₂ is 2 (double bond). Using Molecular Orbital Theory, the electron configuration of O₂ (16 electrons total) is: σ1s² σ*1s² σ2s² σ*2s² σ2p² π2p⁴ π*2p². Bond order = (Nb - Na)/2, where Nb = bonding electrons and Na = antibonding electrons. For O₂: Nb = 2 + 2 + 2 + 4 = 10 electrons in bonding orbitals (σ1s, σ2s, σ2p, π2p), Na = 2 + 2 + 2 = 6 electrons in antibonding orbitals (σ*1s, σ*2s, π*2p). Bond order = (10 - 6)/2 = 4/2 = 2. This double bond makes O₂ stable with moderate bond strength (498 kJ/mol). The two unpaired electrons in π*2p orbitals explain O₂''s paramagnetism, which Lewis structures cannot predict.'
+- type: mcq
+  sequence_order: 2
+  question: Which species has the highest bond order?
+  options:
+  - O₂
+  - O₂⁺
+  - O₂⁻
+  - O₂²⁻
+  require_pass: true
+  correct_answer: O₂⁺
+  explanation: 'O₂⁺ has the highest bond order at 2.5. For oxygen species, bond order = (Nb - Na)/2. Calculations: (1) O₂ (16e⁻): (10-6)/2 = 2, (2) O₂⁺ (15e⁻, removes one electron from π*2p): (10-5)/2 = 2.5, (3) O₂⁻ (17e⁻, adds one electron to π*2p): (10-7)/2 = 1.5, (4) O₂²⁻ (18e⁻, adds two electrons to π*2p): (10-8)/2 = 1. Removing an electron from an antibonding orbital increases bond order and bond strength. Order of bond strength and bond length: O₂⁺ (2.5, strongest, shortest) > O₂ (2.0) > O₂⁻ (1.5) > O₂²⁻ (1.0, weakest, longest). O₂⁺ is paramagnetic with 1 unpaired electron, while O₂²⁻ (peroxide ion) is diamagnetic with all electrons paired.'
+- type: mcq
+  sequence_order: 3
+  question: What does a bond order of 0 indicate according to Molecular Orbital Theory?
+  options:
+  - A single bond exists between atoms
+  - A very weak bond exists between atoms
+  - No stable molecule forms; the bond does not exist
+  - A triple bond exists between atoms
+  require_pass: true
+  correct_answer: No stable molecule forms; the bond does not exist
+  explanation: 'A bond order of 0 means no stable molecule forms - the bond does not exist. Bond order = (Nb - Na)/2, so when bonding and antibonding electrons are equal (Nb = Na), bond order = 0. Example: He₂ (hypothetical helium molecule) has 4 electrons: σ1s² σ*1s². Nb = 2, Na = 2, so bond order = (2-2)/2 = 0. This explains why helium exists as individual He atoms, not He₂ molecules. The antibonding electrons exactly cancel the stabilization from bonding electrons, providing no net attraction between atoms. Bond order interpretation: (1) Bond order = 0: no bond, molecule does not exist, (2) Bond order = 1: single bond, (3) Bond order = 2: double bond, (4) Bond order = 3: triple bond. Higher bond order = shorter, stronger bonds. Fractional bond orders (like 1.5 in O₂⁻) indicate resonance or partial bonding character.'

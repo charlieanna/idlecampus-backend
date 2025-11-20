@@ -1,0 +1,49 @@
+slug: practice-question
+title: Practice Question
+difficulty: medium
+sequence_order: 9
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: '# Practice Question 🚀
+
+
+  ## What is this?
+
+  A concise explanation of the concept.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises: []
+exercises:
+  - type: mcq
+    sequence_order: 1
+    question: "When reviewing code for SOLID principles, what is a common sign that the Single Responsibility Principle is being violated?"
+    options:
+      - "The class has one method"
+      - "The class handles multiple unrelated concerns (e.g., business logic AND database access AND logging)"
+      - "The class is abstract"
+      - "The class uses dependency injection"
+    correct_answer: "The class handles multiple unrelated concerns (e.g., business logic AND database access AND logging)"
+    explanation: "A class violating SRP typically has multiple unrelated responsibilities, making it do too much. Warning signs include: methods that don't relate to each other, many reasons to change the class, difficulty naming the class without using 'and' or 'or', and large classes with diverse imports. Example: A User class that validates input, saves to database, sends emails, and generates reports violates SRP—each of these should be separate classes. To fix: extract each responsibility into its own class (UserValidator, UserRepository, EmailService, ReportGenerator). This makes each class focused, testable, and easier to maintain. Ask yourself: 'What is this class's job?' If you answer with more than one thing, consider refactoring."
+    require_pass: true
+  - type: mcq
+    sequence_order: 2
+    question: "How do design patterns relate to SOLID principles?"
+    options:
+      - "They are unrelated concepts"
+      - "Design patterns are concrete implementations that often help achieve SOLID principles"
+      - "Design patterns replace SOLID principles"
+      - "SOLID principles are outdated, use patterns instead"
+    correct_answer: "Design patterns are concrete implementations that often help achieve SOLID principles"
+    explanation: "Design patterns and SOLID principles are complementary. SOLID principles define high-level guidelines for good design, while design patterns provide proven solutions that often embody these principles. Examples: Strategy pattern helps achieve Open/Closed Principle (extend behavior without modification), Dependency Injection enables Dependency Inversion Principle (depend on abstractions), and Adapter pattern can help follow Interface Segregation (adapt fat interfaces to client needs). Using patterns without understanding principles can lead to over-engineering, while understanding principles helps you recognize when and how to apply patterns effectively. Together, they form a powerful toolkit for creating maintainable, flexible software."
+    require_pass: true

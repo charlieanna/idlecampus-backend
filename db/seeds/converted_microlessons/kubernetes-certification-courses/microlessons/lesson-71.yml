@@ -1,0 +1,74 @@
+slug: lesson-71
+title: Lesson 71
+difficulty: easy
+sequence_order: 71
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Pod and Container Debugging\n\n    - CrashLoopBackOff\
+  \ and ImagePullBackOff\n    - kubectl describe/logs/exec, ephemeral containers"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: What does CrashLoopBackOff indicate about a pod?
+  options:
+  - The image cannot be pulled
+  - The container repeatedly crashes and Kubernetes is backing off on restart attempts
+  - The pod is waiting to be scheduled
+  - The node is NotReady
+  correct_answer: The container repeatedly crashes and Kubernetes is backing off on
+    restart attempts
+  explanation: 'CrashLoopBackOff means a container is starting, crashing, and being
+    restarted repeatedly. Kubernetes implements exponential backoff between restart
+    attempts (10s, 20s, 40s, up to 5 minutes) to avoid overwhelming the system. Common
+    causes include application bugs, missing dependencies, incorrect configuration,
+    failed health checks, or resource issues. To troubleshoot: use ''kubectl describe
+    pod'' to see events and exit codes, ''kubectl logs <pod>'' for application output,
+    and ''kubectl logs <pod> --previous'' for logs from the crashed container. The
+    exit code in pod status provides clues - exit code 137 suggests OOMKilled, 1 indicates
+    application error. Understanding why containers crash requires examining both
+    Kubernetes events and application logs to identify the root cause.'
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What does ImagePullBackOff status mean?
+  options:
+  - The image is too large
+  - Kubernetes failed to pull the container image and is retrying with backoff
+  - The container runtime is not working
+  - The image is corrupted
+  correct_answer: Kubernetes failed to pull the container image and is retrying with
+    backoff
+  explanation: 'ImagePullBackOff indicates Kubernetes repeatedly failed to pull the
+    container image from the registry and is using exponential backoff between retry
+    attempts. Common causes include: incorrect image name or tag, authentication issues
+    (missing or invalid imagePullSecrets for private registries), network problems
+    reaching the registry, registry being unavailable or rate-limited, or the image
+    not existing. Use ''kubectl describe pod'' to see detailed error messages. Verify
+    the image name and tag are correct, ensure imagePullSecrets are properly configured
+    for private registries, and test network connectivity to the registry. You can
+    manually test image pulls on the node using crictl or docker to isolate whether
+    it''s a Kubernetes configuration issue or a registry/network problem. Always use
+    specific image tags rather than ''latest'' to avoid unpredictable behavior.'
+  require_pass: true
+- type: terminal
+  sequence_order: 1
+  command: kubectl describe/logs/exec, ephemeral containers
+  description: 'Practice the command: kubectl describe/logs/exec, ephemeral containers'
+  hints:
+  - 'Try: kubectl describe/logs/exec, ephemeral containers'
+  - Use kubectl --help if you need help
+  timeout_sec: 60
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What command lists all pods in all namespaces?
+  options:
+  - kubectl get pods -A
+  - kubectl list pods --all
+  - kubectl get pods --everywhere
+  - kubectl pods list -A
+  correct_answer_index: 0
+  explanation: kubectl get pods -A (or --all-namespaces) lists pods across all namespaces.
+    The -A flag is shorthand for --all-namespaces.
+  require_pass: true

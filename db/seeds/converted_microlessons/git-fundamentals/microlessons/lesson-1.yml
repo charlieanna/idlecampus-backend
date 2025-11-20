@@ -1,0 +1,142 @@
+slug: lesson-1
+title: Lesson 1
+difficulty: easy
+sequence_order: 1
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Git Basics and Core Concepts\n\n    Git\
+  \ is the most popular distributed version control system, essential for modern software\
+  \ development.\n\n    ## Why Git?\n\n    ✓ **Distributed**: Every developer has\
+  \ full repository history\n    ✓ **Fast**: Most operations are local\n    ✓ **Branching**:\
+  \ Lightweight and powerful\n    ✓ **Data Integrity**: Everything is checksummed\
+  \ (SHA-1)\n    ✓ **Staging Area**: Review changes before committing\n\n    ## Git's\
+  \ Three States\n\n    Files can be in three states:\n\n    ### 1. Modified\n   \
+  \ - Changed but not committed\n    - In working directory\n\n    ### 2. Staged\n\
+  \    - Marked for next commit\n    - In staging area (index)\n\n    ### 3. Committed\n\
+  \    - Safely stored in repository\n    - In .git directory\n\n    ```\n    Working\
+  \ Directory  →  Staging Area  →  Repository\n         (modify)      (git add)  \
+  \    (git commit)\n    ```\n\n    ## Initial Setup\n\n    ```bash\n    # Set your\
+  \ identity (required)\n    git config --global user.name \"Your Name\"\n    git\
+  \ config --global user.email \"your.email@example.com\"\n\n    # Set default editor\n\
+  \    git config --global core.editor \"code --wait\"  # VS Code\n    git config\
+  \ --global core.editor \"vim\"          # Vim\n\n    # Set default branch name\n\
+  \    git config --global init.defaultBranch main\n\n    # Check configuration\n\
+  \    git config --list\n    git config user.name\n    ```\n\n    ## Creating a Repository\n\
+  \n    ### Initialize New Repo\n\n    ```bash\n    # Create new repository\n    mkdir\
+  \ myproject\n    cd myproject\n    git init\n\n    # Output: Initialized empty Git\
+  \ repository in /path/to/myproject/.git/\n    ```\n\n    ### Clone Existing Repo\n\
+  \n    ```bash\n    # Clone repository\n    git clone https://github.com/user/repo.git\n\
+  \n    # Clone to specific directory\n    git clone https://github.com/user/repo.git\
+  \ my-folder\n\n    # Clone specific branch\n    git clone -b develop https://github.com/user/repo.git\n\
+  \    ```\n\n    ## Basic Workflow\n\n    ### 1. Check Status\n\n    ```bash\n  \
+  \  git status\n\n    # Output shows:\n    # - Current branch\n    # - Untracked\
+  \ files\n    # - Modified files\n    # - Staged files\n    ```\n\n    ### 2. Stage\
+  \ Changes\n\n    ```bash\n    # Stage specific file\n    git add filename.txt\n\n\
+  \    # Stage all changes in directory\n    git add .\n\n    # Stage all changes\
+  \ (including deletions)\n    git add -A\n\n    # Stage interactively\n    git add\
+  \ -p  # Review each change\n    ```\n\n    ### 3. Commit Changes\n\n    ```bash\n\
+  \    # Commit with message\n    git commit -m \"Add user authentication feature\"\
+  \n\n    # Commit with detailed message (opens editor)\n    git commit\n\n    # Stage\
+  \ and commit in one step\n    git commit -am \"Fix bug in login form\"\n\n    #\
+  \ Amend last commit\n    git commit --amend -m \"New commit message\"\n    ```\n\
+  \n    ## Viewing History\n\n    ```bash\n    # Show commit history\n    git log\n\
+  \n    # One line per commit\n    git log --oneline\n\n    # With graph\n    git\
+  \ log --oneline --graph --all\n\n    # Show changes in each commit\n    git log\
+  \ -p\n\n    # Last N commits\n    git log -3\n\n    # Specific file history\n  \
+  \  git log filename.txt\n\n    # Search commits\n    git log --grep=\"bug fix\"\n\
+  \    git log --author=\"John\"\n\n    # Show file at specific commit\n    git show\
+  \ abc123:path/to/file.txt\n    ```\n\n    ## Viewing Changes\n\n    ```bash\n  \
+  \  # Unstaged changes\n    git diff\n\n    # Staged changes\n    git diff --staged\n\
+  \    git diff --cached\n\n    # Changes between commits\n    git diff abc123 def456\n\
+  \n    # Changes in specific file\n    git diff filename.txt\n\n    # Statistics\n\
+  \    git diff --stat\n    ```\n\n    ## Undoing Changes\n\n    ### Discard Working\
+  \ Directory Changes\n\n    ```bash\n    # Discard changes in file\n    git restore\
+  \ filename.txt\n    # Old syntax: git checkout -- filename.txt\n\n    # Discard\
+  \ all changes\n    git restore .\n    ```\n\n    ### Unstage Files\n\n    ```bash\n\
+  \    # Unstage file\n    git restore --staged filename.txt\n    # Old syntax: git\
+  \ reset HEAD filename.txt\n\n    # Unstage all\n    git restore --staged .\n   \
+  \ ```\n\n    ### Undo Commits\n\n    ```bash\n    # Undo last commit, keep changes\
+  \ staged\n    git reset --soft HEAD~1\n\n    # Undo last commit, unstage changes\n\
+  \    git reset HEAD~1\n    git reset --mixed HEAD~1  # same\n\n    # Undo last commit,\
+  \ discard changes (DANGEROUS!)\n    git reset --hard HEAD~1\n\n    # Create new\
+  \ commit that undoes changes (safe)\n    git revert abc123\n    ```\n\n    ## Ignoring\
+  \ Files\n\n    Create `.gitignore` file:\n\n    ```gitignore\n    # Node.js\n  \
+  \  node_modules/\n    npm-debug.log\n\n    # Python\n    __pycache__/\n    *.pyc\n\
+  \    .env\n\n    # IDEs\n    .vscode/\n    .idea/\n    *.swp\n\n    # OS\n    .DS_Store\n\
+  \    Thumbs.db\n\n    # Build outputs\n    dist/\n    build/\n    *.log\n\n    #\
+  \ Secrets\n    .env\n    config/secrets.yml\n    *.key\n    *.pem\n    ```\n\n \
+  \   ## Tagging\n\n    ```bash\n    # Lightweight tag\n    git tag v1.0.0\n\n   \
+  \ # Annotated tag (recommended)\n    git tag -a v1.0.0 -m \"Release version 1.0.0\"\
+  \n\n    # Tag specific commit\n    git tag -a v0.9.0 abc123 -m \"Version 0.9.0\"\
+  \n\n    # List tags\n    git tag\n    git tag -l \"v1.*\"\n\n    # Show tag details\n\
+  \    git show v1.0.0\n\n    # Push tags\n    git push origin v1.0.0\n    git push\
+  \ origin --tags  # all tags\n\n    # Delete tag\n    git tag -d v1.0.0\n    git\
+  \ push origin --delete v1.0.0\n    ```\n\n    ## Stashing\n\n    **Save work-in-progress\
+  \ without committing**\n\n    ```bash\n    # Stash changes\n    git stash\n    git\
+  \ stash save \"Work in progress on feature X\"\n\n    # List stashes\n    git stash\
+  \ list\n\n    # Apply most recent stash\n    git stash apply\n\n    # Apply and\
+  \ remove from stash list\n    git stash pop\n\n    # Apply specific stash\n    git\
+  \ stash apply stash@{2}\n\n    # Show stash contents\n    git stash show\n    git\
+  \ stash show -p  # with diff\n\n    # Drop stash\n    git stash drop stash@{0}\n\
+  \n    # Clear all stashes\n    git stash clear\n    ```\n\n    ## Working with Remotes\n\
+  \n    ```bash\n    # List remotes\n    git remote -v\n\n    # Add remote\n    git\
+  \ remote add origin https://github.com/user/repo.git\n\n    # Rename remote\n  \
+  \  git remote rename origin upstream\n\n    # Remove remote\n    git remote remove\
+  \ origin\n\n    # Fetch from remote\n    git fetch origin\n\n    # Pull (fetch +\
+  \ merge)\n    git pull origin main\n\n    # Pull with rebase\n    git pull --rebase\
+  \ origin main\n\n    # Push to remote\n    git push origin main\n\n    # Push and\
+  \ set upstream\n    git push -u origin feature-branch\n\n    # Force push (DANGEROUS!)\n\
+  \    git push --force origin main\n    git push --force-with-lease origin main \
+  \ # safer\n    ```\n\n    ## Useful Aliases\n\n    ```bash\n    # Set up aliases\n\
+  \    git config --global alias.st status\n    git config --global alias.co checkout\n\
+  \    git config --global alias.br branch\n    git config --global alias.ci commit\n\
+  \    git config --global alias.unstage 'reset HEAD --'\n    git config --global\
+  \ alias.last 'log -1 HEAD'\n    git config --global alias.visual 'log --oneline\
+  \ --graph --all'\n\n    # Use aliases\n    git st\n    git co main\n    git unstage\
+  \ file.txt\n    ```\n\n    ## Best Practices\n\n    1. **Commit Often**: Small,\
+  \ focused commits\n    2. **Write Good Messages**: Clear, descriptive commit messages\n\
+  \    3. **Pull Before Push**: Stay up-to-date\n    4. **Use Branches**: Never work\
+  \ directly on main\n    5. **Review Before Commit**: Use `git diff` and `git status`\n\
+  \    6. **Don't Commit Secrets**: Use `.gitignore`\n\n    ## Common Scenarios\n\n\
+  \    ### Oops, I committed to the wrong branch!\n\n    ```bash\n    # Move commit\
+  \ to new branch\n    git branch new-branch\n    git reset --hard HEAD~1\n    git\
+  \ checkout new-branch\n    ```\n\n    ### I need to fix the last commit message\n\
+  \n    ```bash\n    git commit --amend -m \"Correct message\"\n    ```\n\n    ###\
+  \ I want to undo a public commit\n\n    ```bash\n    # Use revert (creates new commit)\n\
+  \    git revert abc123\n    ```\n\n    **Next**: We'll explore branching strategies\
+  \ and workflows!"
+exercises:
+  - type: mcq
+    sequence_order: 1
+    question: "What are Git's three states that files can be in, and what do they represent?"
+    options:
+      - "Created, Modified, Deleted"
+      - "Modified (changed but not staged), Staged (marked for commit), Committed (safely stored in repository)"
+      - "Local, Remote, Synced"
+      - "Draft, Review, Published"
+    correct_answer: "Modified (changed but not staged), Staged (marked for commit), Committed (safely stored in repository)"
+    explanation: "Git's three-state architecture is fundamental to understanding its workflow. (1) Modified (Working Directory): files you've changed but not yet staged. They exist only on your local disk. Example: edit app.js, changes are 'modified' but not tracked for commit yet. Command to see: git status shows 'Changes not staged for commit'. (2) Staged (Staging Area/Index): files marked for inclusion in the next commit. This is Git's unique feature that lets you selectively commit changes. Example: git add app.js moves changes to staging. Command to see: git status shows 'Changes to be committed'. Why useful: stage bug fix from app.js but not your experimental changes in the same file (use git add -p for interactive staging). (3) Committed (.git directory): data safely stored in your local repository with a SHA-1 hash. Example: git commit -m 'Fix login bug' permanently records staged changes. Workflow: Working Directory (edit files) → git add → Staging Area (review) → git commit → Repository (permanent history). This three-state model enables: selective commits, reviewing changes before commit, easy undo at each stage (git restore for modified, git restore --staged for staged, git reset for committed)."
+    require_pass: true
+  - type: mcq
+    sequence_order: 2
+    question: "What is the difference between 'git reset --soft', 'git reset --mixed', and 'git reset --hard'?"
+    options:
+      - "They all do the same thing"
+      - "soft keeps changes staged, mixed unstages changes, hard discards changes completely"
+      - "They only differ in speed"
+      - "soft is for files, hard is for directories"
+    correct_answer: "soft keeps changes staged, mixed unstages changes, hard discards changes completely"
+    explanation: "The three git reset modes control how commits are undone and where changes end up. Understanding these is critical for safe undoing. git reset --soft HEAD~1: (1) Moves branch pointer back one commit; (2) Keeps changes in staging area; (3) Working directory unchanged. Use case: rewrite commit message or combine commits. Example: committed too early, want to add more changes to same commit. Safe: ✓ no data loss. git reset --mixed HEAD~1 (or git reset HEAD~1, default): (1) Moves branch pointer back; (2) Unstages changes (moves to working directory); (3) Working directory keeps modifications. Use case: undo commit but keep changes for re-editing. Example: committed wrong files, need to reorganize. Safe: ✓ no data loss. git reset --hard HEAD~1: (1) Moves branch pointer back; (2) Unstages everything; (3) Discards all changes in working directory. Use case: completely undo commit and all changes. Example: experimental feature didn't work, discard everything. Dangerous: ✗ PERMANENT data loss! Can't recover uncommitted changes. Visual example: Committed change to file.txt (commit abc123) → git reset --soft: file.txt staged; --mixed: file.txt modified; --hard: file.txt gone. Pro tip: use git stash or create backup branch before hard reset."
+    require_pass: true
+  - type: mcq
+    sequence_order: 3
+    question: "Why should you use 'git revert' instead of 'git reset' for undoing commits that have already been pushed to a shared repository?"
+    options:
+      - "git revert is faster"
+      - "git revert creates a new commit that undoes changes, preserving history; git reset rewrites history which breaks collaborators' repos"
+      - "git revert works on all file types"
+      - "git reset only works locally"
+    correct_answer: "git revert creates a new commit that undoes changes, preserving history; git reset rewrites history which breaks collaborators' repos"
+    explanation: "Understanding git revert vs reset is crucial for team collaboration and avoiding disasters. git reset: rewrites history by moving branch pointer backward, removes commits from history (they 'disappear'). Problem with pushed commits: other developers have commits abc123, def456, ghi789. You reset to abc123 (removing def456, ghi789). When they pull, Git is confused—commits they have don't exist in your history. Result: 'diverged branches', merge conflicts, potential data loss for team. Use case: ONLY for local commits not yet pushed. git revert: creates NEW commit that undoes changes from specified commit, preserves complete history. Example: commits abc123 (add feature) → def456 (add tests) → ghi789 (fix bug). Run git revert ghi789 → creates new commit xyz123 'Revert fix bug', undoing ghi789's changes but keeping ghi789 in history. When pushed, teammates simply pull xyz123. Safe for shared repos: ✓. Real-world analogy: reset is erasing history (can't do after publishing); revert is writing 'correction: previous statement was wrong' (keeps both). When to use each: Local commits only → reset; Pushed commits → revert. Emergency escape: if you accidentally pushed reset, git push --force-with-lease (but warn team first!). Best practice: never force-push to main/master branches."
+    require_pass: true

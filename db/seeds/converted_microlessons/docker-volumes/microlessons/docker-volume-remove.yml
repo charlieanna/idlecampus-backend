@@ -1,0 +1,88 @@
+slug: docker-volume-remove
+title: Docker Volume Remove
+difficulty: easy
+sequence_order: 4
+estimated_minutes: 2
+key_concepts:
+- volumes
+- docker-volume
+- cleanup
+- removal
+prerequisites: []
+content_md: '# Docker Volume Remove 🚀
+
+
+  Delete one or more Docker volumes
+
+
+  ## Syntax/Command
+
+
+  ```bash
+
+  docker volume rm my-volume
+
+  ```
+
+
+  ## Example
+
+
+  ```bash
+
+  docker volume rm volume1 volume2 volume3
+
+  ```
+
+
+  ## Key Points
+
+
+  - Remove volume: docker volume rm <name>
+
+
+  - Remove multiple: docker volume rm <name1> <name2>
+
+
+  - Cannot remove if in use'
+exercises:
+- type: terminal
+  problem_statement: Remove the Docker volume named 'my-volume' that is no longer needed
+  expected_output: Volume name confirming successful removal
+  language: bash
+  starter_code: "# Remove Docker volume\n"
+  sequence_order: 1
+  command: docker volume rm my-volume
+  description: Remove unused Docker volumes
+  hints:
+  - 'Remove volume: docker volume rm <name>'
+  - 'Remove multiple: docker volume rm <name1> <name2>'
+  - Cannot remove if in use
+  validation:
+    must_not_include:
+    - Error
+    - 'panic:'
+  timeout_sec: 60
+  require_pass: true
+- type: sandbox
+  sequence_order: 99
+  hints:
+  - Run under CPU pressure to surface leaks or races
+  - Keep commands idempotent in CI
+  validation:
+    must_not_include:
+    - Error
+    - 'panic:'
+  timeout_sec: 60
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: Can you remove a volume that is currently mounted to a running or stopped container?
+  options:
+  - No, you must remove or stop all containers using the volume first
+  - Yes, the container will automatically recreate it when needed
+  - Yes, but only if you use the -f (force) flag
+  - Only if the container is stopped (not running)
+  correct_answer: No, you must remove or stop all containers using the volume first
+  explanation: "Docker will refuse to remove a volume that is being used by any container (running or stopped), showing an error like 'volume is in use'. You must first remove the containers using that volume, or at minimum stop them and ensure they're not configured to restart. There is no force flag to override this safety check."
+  require_pass: true

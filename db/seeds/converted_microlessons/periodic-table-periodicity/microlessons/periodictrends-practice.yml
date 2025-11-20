@@ -1,0 +1,59 @@
+slug: periodictrends-practice
+title: periodic_trends — Practice
+difficulty: medium
+sequence_order: 10
+estimated_minutes: 2
+key_concepts:
+- periodic_trends
+prerequisites: []
+content_md: '# periodic_trends — Practice 🚀
+
+
+  Metallic character increases down a group. Li < Na < K < Rb. Larger atoms lose electrons
+  more easily.
+
+
+  ## Key Points
+
+
+  - Re-read the question carefully.
+
+
+  - Recall the relevant formula or rule.
+
+
+  - Review the explanation once you answer.'
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: Which element has the highest metallic character among alkali metals?
+  options:
+  - Li
+  - Na
+  - K
+  - Rb
+  correct_answer: Rb
+  explanation: "Metallic character increases down a group because atomic size increases, making it easier to lose electrons. Order: Li < Na < K < Rb < Cs. Larger atoms have lower ionization energy and lose electrons more easily, showing greater metallic character."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: Metallic character across a period (left to right)
+  options:
+  - increases
+  - decreases
+  - remains constant
+  - first increases then decreases
+  correct_answer: decreases
+  explanation: "Metallic character decreases across a period from left to right because atomic size decreases and ionization energy increases. Elements on the left (Na, Mg, Al) are metals, while those on the right (P, S, Cl) are non-metals. It becomes harder to lose electrons across the period."
+  require_pass: false
+- type: mcq
+  sequence_order: 3
+  question: Which of the following has the least metallic character?
+  options:
+  - Na
+  - Al
+  - Si
+  - Cl
+  correct_answer: Cl
+  explanation: "In Period 3, metallic character decreases from left to right: Na > Mg > Al > Si > P > S > Cl. Chlorine is a non-metal with the least metallic character. It has high electronegativity and tends to gain electrons rather than lose them."
+  require_pass: false

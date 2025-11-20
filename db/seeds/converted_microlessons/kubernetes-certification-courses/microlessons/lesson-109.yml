@@ -1,0 +1,81 @@
+slug: lesson-109
+title: Lesson 109
+difficulty: easy
+sequence_order: 109
+estimated_minutes: 2
+key_concepts: []
+prerequisites: []
+content_md: "# Microlesson \U0001F680\n\n# Application Logging Strategies\n\n    -\
+  \ Write logs to stdout/stderr\n    - Use sidecar for log shipping\n    - Structured\
+  \ logs and correlation IDs"
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: Why is it considered a best practice for containerized applications to
+    write logs to stdout/stderr?
+  options:
+  - It makes logs appear in color in the terminal
+  - It allows Kubernetes to capture logs without requiring log files or agents in
+    the container
+  - Stdout/stderr logs are automatically encrypted
+  - It reduces the application's memory usage
+  correct_answer: It allows Kubernetes to capture logs without requiring log files
+    or agents in the container
+  explanation: 'Writing logs to stdout (standard output) and stderr (standard error)
+    follows the 12-factor app principle of treating logs as event streams. In Kubernetes,
+    the container runtime automatically captures stdout/stderr and stores them, making
+    logs accessible via ''kubectl logs <pod-name>''. This approach decouples log generation
+    from log routing and storage - the application simply writes to stdout, and the
+    platform handles collection, aggregation, and retention. This eliminates the need
+    for applications to manage log files, rotate them, or worry about disk space.
+    For example, instead of writing to /var/log/app.log, your app uses print(), console.log(),
+    or logger.info() which writes to stdout. Container runtimes like containerd or
+    Docker store these logs in JSON format on the node, and logging agents like Fluentd,
+    Fluent Bit, or Promtail can collect them for centralized systems like Elasticsearch,
+    Loki, or CloudWatch. Benefits include: simplified application code (no file handling),
+    consistent logging across all containers, easier debugging with kubectl logs,
+    and better support for ephemeral containers. For structured logging, write JSON
+    to stdout for easier parsing: ''{"timestamp":"2024-01-15T10:30:00Z","level":"ERROR","message":"Database
+    connection failed","trace_id":"abc123"}''.'
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: What is the purpose of using correlation IDs in application logging?
+  options:
+  - To compress log messages and save storage space
+  - To track a request across multiple services and components for distributed tracing
+  - To encrypt sensitive information in logs
+  - To automatically rotate log files when they reach a size limit
+  correct_answer: To track a request across multiple services and components for distributed
+    tracing
+  explanation: 'Correlation IDs (also called trace IDs or request IDs) are unique
+    identifiers propagated through all components of a distributed system that handle
+    a request. They enable tracking a single user request as it flows through multiple
+    microservices, making debugging and troubleshooting vastly easier. For example,
+    when a user places an order, a correlation ID like ''req-abc123-xyz'' is generated
+    at the API gateway and passed to the order service, inventory service, payment
+    service, and shipping service. Each service includes this ID in its logs, so you
+    can grep all logs for ''req-abc123-xyz'' to see the complete request flow. Implementation
+    typically involves: generating a UUID at entry point (or using an existing header
+    like X-Request-ID), including it in all log statements, passing it in HTTP headers
+    or message metadata to downstream services, and configuring log aggregation to
+    index by correlation ID. In a structured logging format: ''{"correlation_id":"req-abc123-xyz","service":"inventory","message":"Stock
+    checked","item_id":"12345"}''. Modern observability platforms like Jaeger, Zipkin,
+    or Datadog APM automate this with distributed tracing. Benefits include: faster
+    debugging (see entire request path), identifying bottlenecks (which service is
+    slow), understanding failure cascades, and improved customer support (lookup specific
+    user interactions). This is essential for microservices architectures where a
+    single user action involves multiple services.'
+  require_pass: true
+- type: mcq
+  sequence_order: 1
+  question: What kubectl command checks if you can perform an action?
+  options:
+  - kubectl auth can-i create pods
+  - kubectl check permissions create pods
+  - kubectl verify action create pods
+  - kubectl test auth create pods
+  correct_answer_index: 0
+  explanation: kubectl auth can-i <action> <resource> checks if the current user has
+    permission to perform the specified action.
+  require_pass: true

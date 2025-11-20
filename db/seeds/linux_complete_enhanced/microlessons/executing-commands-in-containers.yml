@@ -1,0 +1,100 @@
+slug: executing-commands-in-containers
+title: Executing Commands in Containers
+sequence_order: 7
+estimated_minutes: 2
+difficulty: easy
+key_concepts:
+- docker-exec
+- interactive-shell
+- debugging
+- troubleshooting
+content_md: "# Executing Commands in Containers \U0001F680\n\n**Debugging Containers\
+  \ Challenge** \U0001F50D\n\n    Your colleague Mike has a problem:\n\n    > \"Our\
+  \ nginx container is running, but I need to check the configuration file inside\
+  \ it.\n    > How can I run commands inside a running container without stopping\
+  \ it?\"\n\n    ### The Problem\n    Containers are isolated environments. Even when\
+  \ running, you can't simply open a file browser or SSH into them\n    like a traditional\
+  \ server. You need a way to **execute commands inside a running container**.\n\n\
+  \    ### docker exec Explained\n    The `docker exec` command lets you run commands\
+  \ inside a **running** container:\n\n    ```bash\n    docker exec [OPTIONS] CONTAINER\
+  \ COMMAND\n    ```\n\n    - **CONTAINER** → Container name or ID\n    - **COMMAND**\
+  \ → What to run inside the container (e.g., `ls`, `sh`, `cat /etc/nginx/nginx.conf`)\n\
+  \    - **OPTIONS** → Common flags like `-it` for interactive sessions\n\n    ###\
+  \ Interactive vs Non-Interactive\n\n    **Non-interactive** (one-off commands):\n\
+  \    ```bash\n    docker exec codesprout-web ls /etc/nginx\n    docker exec codesprout-web\
+  \ cat /etc/nginx/nginx.conf\n    docker exec codesprout-web whoami\n    ```\n\n\
+  \    **Interactive** (start a shell session):\n    ```bash\n    docker exec -it\
+  \ codesprout-web sh\n    ```\n\n    - **-i** (interactive) → Keep STDIN open even\
+  \ if not attached\n    - **-t** (tty) → Allocate a pseudo-terminal for a shell prompt\n\
+  \    - **sh** → The shell to run (use `bash` if available, `sh` for alpine-based\
+  \ images)\n\n    ### Visual Example\n    ```\n    Your Terminal → docker exec -it\
+  \ codesprout-web sh → Opens shell INSIDE container\n                           \
+  \                              ↓\n                                             \
+  \      You can now run: ls, cat, vi, etc.\n    ```\n\n    ### Common Use Cases\n\
+  \n    **1. Debugging configuration:**\n    ```bash\n    docker exec codesprout-web\
+  \ cat /etc/nginx/nginx.conf\n    ```\n\n    **2. Checking logs:**\n    ```bash\n\
+  \    docker exec codesprout-web cat /var/log/nginx/error.log\n    ```\n\n    **3.\
+  \ Testing connectivity:**\n    ```bash\n    docker exec codesprout-web wget -O-\
+  \ http://localhost\n    ```\n\n    **4. Interactive troubleshooting:**\n    ```bash\n\
+  \    docker exec -it codesprout-web sh\n    # Now inside container:\n    ls /usr/share/nginx/html\n\
+  \    ps aux\n    netstat -tuln\n    exit  # Leave the container shell\n    ```\n\
+  \n    ### Common Mistakes\n    - **Using exec on stopped containers**: Only works\
+  \ on running containers. Use `docker run` or `docker start` first.\n    - **Forgetting\
+  \ -it for interactive shells**: Without `-it`, you won't get a proper shell prompt.\n\
+  \    - **Using bash in alpine images**: Alpine uses `sh`, not `bash`. Use `docker\
+  \ exec -it container sh`.\n    - **Confusing exec with run**: `run` creates new\
+  \ containers, `exec` runs commands in existing ones.\n\n    ### Key Difference:\
+  \ run vs exec\n\n    | Command | Purpose | Container State |\n    |---------|---------|----------------|\n\
+  \    | `docker run` | Create and start a NEW container | Creates new |\n    | `docker\
+  \ exec` | Run command in EXISTING container | Must be running |\n\n## Syntax/Command\n\
+  \n```bash\ndocker exec -it codesprout-web sh\n```\n\n## Example\n\n```bash\n# Start\
+  \ an interactive shell\ndocker exec -it codesprout-web sh\n\n# Run a single command\n\
+  docker exec codesprout-web ls /etc/nginx\n```\n\n## Key Points\n\n- Use docker exec\
+  \ to run commands in running containers\n\n- Add -it flags for interactive shell\
+  \ sessions\n\n- Use sh for alpine-based images, bash for others"
+exercises:
+- type: terminal
+  sequence_order: 1
+  command: docker exec -it codesprout-web sh
+  description: Open an interactive shell in the codesprout-web container to explore
+    its filesystem
+  hints:
+  - Use -it for interactive terminals
+  - Press Ctrl+D or type 'exit' to leave the container shell
+  timeout_sec: 60
+  require_pass: true
+  validation:
+    must_not_include:
+    - Error
+    - 'panic:'
+- type: mcq
+  sequence_order: 2
+  question: What does -it stand for in docker exec?
+  options:
+  - Interactive + TTY
+  - Internal + Test
+  - Init + Terminal
+  - Immediate + TTY
+  correct_answer_index: 0
+  explanation: The -i flag keeps STDIN open for interaction, and -t allocates a pseudo-TTY
+    for a proper shell prompt
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: What's the difference between 'docker run' and 'docker exec'?
+  options:
+  - exec runs commands in existing containers, run creates new ones
+  - run runs commands in existing containers, exec creates new ones
+  - They are the same command with different names
+  - exec is faster than run
+  correct_answer_index: 0
+  explanation: docker exec only works on running containers, while docker run creates
+    and starts new containers
+  require_pass: true
+objectives:
+- Execute commands in running containers with docker exec
+- Use interactive mode (-it) for shell access
+- Debug and troubleshoot containerized applications
+next_recommended:
+- viewing-container-logs
+- docker-stop-gracefully-stopping-containers
