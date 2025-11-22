@@ -1,3 +1,21 @@
+# ==================================================================================
+# ⚠️  DEPRECATED MODEL - DO NOT USE FOR COURSE CONTENT!
+# ==================================================================================
+#
+# IMPORTANT: This model should NOT be used to store or fetch course content!
+#
+# Course content (titles, descriptions, modules, lessons) is stored in YAML files
+# and should be accessed using CourseFileReaderService.
+#
+# This model MAY be used for user-specific data only:
+# - Tracking enrollments (via course_enrollments)
+# - Tracking progress (via module_progresses)
+# - Referencing courses by slug for user data
+#
+# However, the actual course content should ALWAYS come from YAML files.
+#
+# See: app/services/course_file_reader_service.rb for correct course fetching.
+# ==================================================================================
 class Course < ApplicationRecord
   # Associations
   has_many :course_modules, dependent: :destroy

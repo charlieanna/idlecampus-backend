@@ -1,3 +1,13 @@
+# frozen_string_literal: true
+#
+# ⚠️  DEPRECATED: This controller uses database queries for courses!
+#
+# IMPORTANT: Courses should ONLY be fetched from YAML files using CourseFileReaderService.
+# This controller currently queries the Course database model, which is INCORRECT.
+#
+# TODO: Refactor to use CourseFileReaderService instead of database queries.
+# See app/controllers/api/v1/courses_controller.rb for correct implementation.
+#
 module Api
   module V1
     module Golang

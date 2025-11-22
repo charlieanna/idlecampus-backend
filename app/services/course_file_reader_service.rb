@@ -1,5 +1,29 @@
-# Simple service to read courses directly from YAML/JSON files
-# No database required - perfect for MVP
+# ==================================================================================
+# CourseFileReaderService - PRIMARY SERVICE FOR FETCHING COURSE CONTENT
+# ==================================================================================
+#
+# IMPORTANT: This is the ONLY service that should be used to fetch course content.
+# All course data (titles, descriptions, modules, lessons) comes from YAML files,
+# NOT from the database.
+#
+# Why YAML-only?
+# - Single source of truth: No database sync issues
+# - Version control: Course changes tracked in git
+# - Easy editing: No database migrations needed
+# - Portability: Courses can be easily shared
+#
+# Database is ONLY used for user-specific data:
+# - CourseEnrollment: User enrollments
+# - ModuleProgress: User progress tracking
+# - QuizAttempt: User quiz attempts
+# - UserCourseAchievement: User badges/achievements
+#
+# Usage:
+#   CourseFileReaderService.all_courses              # Get all courses
+#   CourseFileReaderService.find_course('slug')      # Get specific course
+#   CourseFileReaderService.course_with_modules()    # Get course with modules
+#
+# ==================================================================================
 class CourseFileReaderService
   CONSOLIDATED_DIR = Rails.root.join('db', 'seeds', 'consolidated_courses')
   CACHE_KEY = 'course_file_reader:all_courses'

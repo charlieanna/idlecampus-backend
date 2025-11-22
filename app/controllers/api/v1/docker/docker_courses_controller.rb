@@ -1,5 +1,21 @@
 # frozen_string_literal: true
-
+#
+# ⚠️  WARNING: This controller has complex database fallback logic that is CONFUSING!
+#
+# IMPORTANT: Courses should ONLY be fetched from YAML files using CourseFileReaderService.
+#
+# Current implementation issues:
+# - Some methods use load_docker_courses_from_yaml (CORRECT)
+# - Other methods try Course.find_by first, then fall back to session API (CONFUSING)
+# - Progressive module method has multi-level fallbacks (DB → session API → fallback)
+#
+# Docker course content is available at:
+# - /db/seeds/consolidated_courses/docker-fundamentals/
+# - /db/seeds/consolidated_courses/docker-advanced/
+#
+# TODO: Refactor to use CourseFileReaderService consistently throughout.
+# See app/controllers/api/v1/courses_controller.rb for correct implementation.
+#
 module Api
   module V1
     module Docker
@@ -57,6 +73,8 @@ module Api
 
         # GET /api/v1/docker/courses/:course_slug/modules/:module_slug
         def module_show
+          # ⚠️  DEPRECATED: This database query should be removed!
+          # Use CourseFileReaderService.find_course instead
           course = Course.find_by!(slug: params[:course_id])
           module_slug = params[:id]
 
@@ -107,7 +125,8 @@ module Api
         def progressive
           module_slug = params[:id]
 
-          # Try DB-backed module first
+          # ⚠️  DEPRECATED: This database fallback logic should be removed!
+          # Use CourseFileReaderService.find_course instead
           course = Course.find_by(slug: params[:course_id])
           if course
             course_module = course.course_modules.find_by(slug: module_slug)

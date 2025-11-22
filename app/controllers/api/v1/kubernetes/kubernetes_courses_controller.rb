@@ -1,5 +1,16 @@
 # frozen_string_literal: true
-
+#
+# ⚠️  DEPRECATED: This controller uses database queries for courses!
+#
+# IMPORTANT: Courses should ONLY be fetched from YAML files using CourseFileReaderService.
+# This controller currently queries the Course database model with certification_track filter,
+# which is INCORRECT.
+#
+# Kubernetes course content is available at: /db/seeds/consolidated_courses/kubernetes-complete/
+#
+# TODO: Refactor to use CourseFileReaderService instead of database queries.
+# See app/controllers/api/v1/courses_controller.rb for correct implementation.
+#
 module Api
   module V1
     module Kubernetes

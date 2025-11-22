@@ -1,5 +1,22 @@
 # frozen_string_literal: true
-
+#
+# ⚠️  WARNING: This controller contains DEPRECATED database-based course fetching methods!
+#
+# IMPORTANT: Courses should ONLY be fetched from YAML files using CourseFileReaderService.
+# Many methods in this controller assume courses are database ActiveRecord models, which is
+# incorrect. These methods are marked as DEPRECATED and should NOT be used.
+#
+# The database should ONLY be used for:
+# - User enrollments (CourseEnrollment)
+# - User progress (ModuleProgress)
+# - Quiz attempts (QuizAttempt)
+# - User achievements (UserCourseAchievement)
+# - Hands-on labs (HandsOnLab) - if labs are separate from courses
+#
+# For correct course fetching, see:
+# - app/controllers/api/v1/courses_controller.rb (uses CourseFileReaderService)
+# - app/controllers/api/v1/linux/linux_courses_controller.rb (uses CourseFileReaderService)
+#
 module Api
   module V1
     class GenericCoursesController < ApplicationController
@@ -28,6 +45,9 @@ module Api
         head :ok
       end
 
+      # DEPRECATED: This method assumes 'course' is a database ActiveRecord model.
+      # Courses should be fetched from YAML files (as Hash), not from the database.
+      # For YAML-based courses, use the course hash directly from CourseFileReaderService.
       def course_summary(course)
         {
           id: course.id,
@@ -40,6 +60,9 @@ module Api
         }
       end
 
+      # DEPRECATED: This method assumes 'course' is a database ActiveRecord model.
+      # Courses should be fetched from YAML files (as Hash), not from the database.
+      # For YAML-based courses, use the course hash directly from CourseFileReaderService.
       def course_detail(course)
         {
           id: course.id,
@@ -509,10 +532,17 @@ module Api
         end
       end
 
+      # DEPRECATED: Do NOT use this method for fetching courses!
+      # This method queries the database for courses, but courses should ONLY be
+      # fetched from YAML files using CourseFileReaderService.
+      #
+      # Use CourseFileReaderService.all_courses instead and filter in Ruby:
+      #   CourseFileReaderService.all_courses.select { |c| c[:slug].include?(pattern) }
+      #
+      # This method is kept temporarily for backwards compatibility but will be removed.
       def get_courses_by_pattern(pattern)
-        Course.where("slug LIKE ? OR title LIKE ?", "%#{pattern}%", "%#{pattern}%")
-              .includes(course_modules: [:module_items])
-              .ordered
+        raise "DEPRECATED: Use CourseFileReaderService instead of querying the database for courses. " \
+              "Courses are stored in YAML files, not in the database."
       end
 
       def get_labs_by_type(lab_type)

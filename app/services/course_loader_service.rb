@@ -1,4 +1,34 @@
-# Service to load courses from YAML manifests into the database
+# ==================================================================================
+# ⚠️  DEPRECATED SERVICE - DO NOT USE!
+# ==================================================================================
+#
+# This service loads courses from YAML files INTO THE DATABASE, which is INCORRECT!
+#
+# IMPORTANT: Courses should ONLY be fetched from YAML files using CourseFileReaderService.
+# The database should NEVER be used as the source of truth for course content.
+#
+# Why this service should NOT be used:
+# - Creates database records from YAML (unnecessary duplication)
+# - Can cause sync issues between YAML source and database
+# - Makes it unclear whether YAML or DB is the source of truth
+# - Requires migrations when course structure changes
+#
+# Instead, use CourseFileReaderService which:
+# - Reads course data directly from YAML files
+# - No database sync issues (single source of truth)
+# - No migrations needed for course content changes
+# - Version controlled in git
+#
+# Database should ONLY be used for user-specific data:
+# - CourseEnrollment: User enrollments
+# - ModuleProgress: User progress tracking
+# - QuizAttempt: User quiz attempts
+# - UserCourseAchievement: User badges/achievements
+#
+# TODO: Remove this service and all code that uses it.
+# ==================================================================================
+#
+# LEGACY: Service to load courses from YAML manifests into the database (DEPRECATED)
 class CourseLoaderService
   def initialize(manifest_path)
     @manifest_path = manifest_path
