@@ -84,12 +84,39 @@ export const courseAnalytics = pgTable('course_analytics_v2', {
   timestamp: timestamp('timestamp').defaultNow(),
 });
 
+// AI Tutor messages table
+export const tutorMessages = pgTable('tutor_messages_v2', {
+  id: varchar('id', { length: 255 }).primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar('user_id', { length: 255 }).notNull(),
+  courseId: varchar('course_id', { length: 255 }),
+  messageType: varchar('message_type', { length: 50 }).notNull(), // welcome, motivation, celebration, hint, nudge
+  trigger: varchar('trigger', { length: 100 }).notNull(), // what caused this message
+  message: text('message').notNull(),
+  metadata: jsonb('metadata'), // Additional context
+  isDismissed: boolean('is_dismissed').default(false),
+  isRead: boolean('is_read').default(false),
+  createdAt: timestamp('created_at').defaultNow(),
+});
+
+// User tutor preferences table
+export const userTutorPreferences = pgTable('user_tutor_preferences_v2', {
+  userId: varchar('user_id', { length: 255 }).primaryKey(),
+  enabled: boolean('enabled').default(true),
+  tone: varchar('tone', { length: 50 }).default('friendly'), // friendly, professional, enthusiastic
+  frequency: varchar('frequency', { length: 50 }).default('normal'), // minimal, normal, frequent
+  mutedUntil: timestamp('muted_until'),
+  preferences: jsonb('preferences'), // Additional settings
+  updatedAt: timestamp('updated_at').defaultNow(),
+});
+
 // Types for TypeScript
 export type CourseDefinition = typeof courseDefinitions.$inferSelect;
 export type UserCourseProgress = typeof userCourseProgress.$inferSelect;
 export type ExerciseCompletion = typeof exerciseCompletions.$inferSelect;
 export type UserLayoutPreference = typeof userLayoutPreferences.$inferSelect;
 export type CourseAnalytic = typeof courseAnalytics.$inferSelect;
+export type TutorMessage = typeof tutorMessages.$inferSelect;
+export type UserTutorPreference = typeof userTutorPreferences.$inferSelect;
 
 // Helper types
 export type CourseModule = {
