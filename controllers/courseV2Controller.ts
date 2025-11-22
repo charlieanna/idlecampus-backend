@@ -11,6 +11,8 @@ import {
   CourseItem
 } from '../db/courseV2Schema';
 import * as aiTutorService from '../services/aiTutorService';
+import * as skillAggService from '../services/skillAggregationService';
+import * as recommendationEngine from '../services/recommendationEngine';
 
 // ==========================================
 // COURSE V2 CONTROLLERS
@@ -261,6 +263,12 @@ export const updateProgress = async (req: Request, res: Response) => {
           'progress_update',
           { moduleCompleted: true, moduleIndex: currentModuleIndex }
         );
+
+        // Update global skill profile when module completed
+        await skillAggService.updateUserSkillProfile(userId);
+
+        // Generate new recommendations based on updated skills
+        await recommendationEngine.generateRecommendations(userId);
       }
     } else {
       // Create new progress

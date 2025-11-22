@@ -109,6 +109,48 @@ export const userTutorPreferences = pgTable('user_tutor_preferences_v2', {
   updatedAt: timestamp('updated_at').defaultNow(),
 });
 
+// ==========================================
+// CROSS-COURSE KNOWLEDGE TRACKING
+// ==========================================
+
+// Global skill profile table (tracks knowledge across ALL courses)
+export const userSkillProfile = pgTable('user_skill_profile_v2', {
+  userId: varchar('user_id', { length: 255 }).primaryKey(),
+  skills: jsonb('skills').$type<Record<string, number>>().default({}), // { "docker": 85, "kubernetes": 30, ... }
+  weakAreas: jsonb('weak_areas').$type<string[]>().default([]),
+  strongAreas: jsonb('strong_areas').$type<string[]>().default([]),
+  learningGoals: jsonb('learning_goals').$type<string[]>().default([]), // ["DevOps Engineer", "Backend Developer"]
+  totalCoursesStarted: integer('total_courses_started').default(0),
+  totalCoursesCompleted: integer('total_courses_completed').default(0),
+  overallLevel: integer('overall_level').default(1),
+  totalPoints: integer('total_points').default(0),
+  lastUpdated: timestamp('last_updated').defaultNow(),
+});
+
+// Course prerequisites mapping (defines course relationships)
+export const coursePrerequisites = pgTable('course_prerequisites_v2', {
+  courseId: varchar('course_id', { length: 255 }).notNull(),
+  prerequisiteCourseId: varchar('prerequisite_course_id', { length: 255 }).notNull(),
+  isRequired: boolean('is_required').default(true), // true = required, false = recommended
+  skillsRequired: jsonb('skills_required').$type<Record<string, number>>().default({}), // { "docker": 70 }
+}, (table) => ({
+  pk: primaryKey({ columns: [table.courseId, table.prerequisiteCourseId] }),
+}));
+
+// Learning path recommendations (AI-suggested next courses)
+export const learningRecommendations = pgTable('learning_recommendations_v2', {
+  id: varchar('id', { length: 255 }).primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar('user_id', { length: 255 }).notNull(),
+  recommendedCourseId: varchar('recommended_course_id', { length: 255 }).notNull(),
+  reason: text('reason').notNull(), // AI-generated explanation
+  priority: integer('priority').default(0), // Higher = more urgent
+  confidence: integer('confidence').default(0), // 0-100 how confident the recommendation is
+  metadata: jsonb('metadata'), // Additional context
+  isAccepted: boolean('is_accepted'),
+  isDismissed: boolean('is_dismissed').default(false),
+  createdAt: timestamp('created_at').defaultNow(),
+});
+
 // Types for TypeScript
 export type CourseDefinition = typeof courseDefinitions.$inferSelect;
 export type UserCourseProgress = typeof userCourseProgress.$inferSelect;
@@ -117,6 +159,9 @@ export type UserLayoutPreference = typeof userLayoutPreferences.$inferSelect;
 export type CourseAnalytic = typeof courseAnalytics.$inferSelect;
 export type TutorMessage = typeof tutorMessages.$inferSelect;
 export type UserTutorPreference = typeof userTutorPreferences.$inferSelect;
+export type UserSkillProfile = typeof userSkillProfile.$inferSelect;
+export type CoursePrerequisite = typeof coursePrerequisites.$inferSelect;
+export type LearningRecommendation = typeof learningRecommendations.$inferSelect;
 
 // Helper types
 export type CourseModule = {
