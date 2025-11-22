@@ -277,11 +277,6 @@ Rails.application.routes.draw do
   end
 
   # ----------------------------------------
-  # Chemistry Courses (Frontend)
-  # ----------------------------------------
-  resources :chemistry_courses, path: 'chemistry', param: :slug, only: [:index, :show]
-
-  # ----------------------------------------
   # Course Shortcuts (Frontend)
   # ----------------------------------------
   get '/docker', to: 'courses#show', defaults: { slug: 'docker-fundamentals' }
@@ -351,27 +346,6 @@ Rails.application.routes.draw do
         match  '*all',                       to: 'linux_courses#cors_preflight', via: :options
       end
 
-      # Security Courses API
-      namespace :security do
-        get    'courses',                    to: 'security_courses#index'
-        get    'courses/:id',                to: 'security_courses#show'
-        get    'courses/:course_id/modules', to: 'security_courses#modules'
-        get    'courses/:course_id/modules/:id', to: 'security_courses#module_show'
-        get    'labs',                       to: 'security_courses#labs'
-        get    'labs/:id',                   to: 'security_courses#lab_show'
-        match  '*all',                       to: 'security_courses#cors_preflight', via: :options
-      end
-
-      # Kubernetes Courses API
-      namespace :kubernetes do
-        get    'courses',                    to: 'kubernetes_courses#index'
-        get    'courses/:id',                to: 'kubernetes_courses#show'
-        get    'courses/:course_id/modules', to: 'kubernetes_courses#modules'
-        get    'courses/:course_id/modules/:id', to: 'kubernetes_courses#module_show'
-        get    'labs',                       to: 'kubernetes_courses#labs'
-        get    'labs/:id',                   to: 'kubernetes_courses#lab_show'
-        match  '*all',                       to: 'kubernetes_courses#cors_preflight', via: :options
-      end
 
       # Docker Courses API
       namespace :docker do
@@ -407,90 +381,6 @@ Rails.application.routes.draw do
         match  '*all',                       to: 'coding_courses#cors_preflight', via: :options
       end
 
-      # AWS Courses API
-      namespace :aws do
-        get    'courses',                    to: 'aws_courses#index'
-        get    'courses/:id',                to: 'aws_courses#show'
-        get    'courses/:course_id/modules', to: 'aws_courses#modules'
-        get    'courses/:course_id/modules/:id', to: 'aws_courses#module_show'
-        get    'labs',                       to: 'aws_courses#labs'
-        get    'labs/:id',                   to: 'aws_courses#lab_show'
-        match  '*all',                       to: 'aws_courses#cors_preflight', via: :options
-      end
-
-      # Envoy Courses API
-      namespace :envoy do
-        get    'courses',                    to: 'envoy_courses#index'
-        get    'courses/:id',                to: 'envoy_courses#show'
-        get    'courses/:course_id/modules', to: 'envoy_courses#modules'
-        get    'courses/:course_id/modules/:id', to: 'envoy_courses#module_show'
-        get    'labs',                       to: 'envoy_courses#labs'
-        get    'labs/:id',                   to: 'envoy_courses#lab_show'
-        match  '*all',                       to: 'envoy_courses#cors_preflight', via: :options
-      end
-
-      # PostgreSQL Courses API
-      namespace :postgresql do
-        get    'courses',                    to: 'postgresql_courses#index'
-        get    'courses/:id',                to: 'postgresql_courses#show'
-        get    'courses/:course_id/modules', to: 'postgresql_courses#modules'
-        get    'courses/:course_id/modules/:id', to: 'postgresql_courses#module_show'
-        get    'labs',                       to: 'postgresql_courses#labs'
-        get    'labs/:id',                   to: 'postgresql_courses#lab_show'
-        match  '*all',                       to: 'postgresql_courses#cors_preflight', via: :options
-      end
-
-      # Chemistry Courses API
-      namespace :chemistry do
-        get    'courses',                    to: 'chemistry_courses#index'
-        get    'courses/:slug',              to: 'chemistry_courses#show'
-        get    'courses/:slug/modules',      to: 'chemistry_courses#modules'
-        get    'courses/:course_slug/modules/:module_slug', to: 'chemistry_courses#show_module'
-        get    'labs',                       to: 'chemistry_courses#labs'
-        get    'labs/:id',                   to: 'chemistry_courses#lab_show'
-        get    'quizzes/:quiz_id',           to: 'chemistry_courses#show_quiz'
-        get    'quizzes/:quiz_id/questions', to: 'chemistry_courses#quiz_questions'
-        post   'quizzes/:quiz_id/questions/:question_id/submit', to: 'chemistry_courses#submit_answer'
-        get    'lessons/:lesson_id',         to: 'chemistry_courses#show_lesson'
-        match  '*all',                       to: 'chemistry_courses#cors_preflight', via: :options
-      end
-
-      # Mathematics Courses API
-      namespace :mathematics do
-        get    'courses',                    to: 'mathematics_courses#index'
-        get    'courses/:slug',              to: 'mathematics_courses#show'
-        get    'courses/:slug/modules',      to: 'mathematics_courses#modules'
-        get    'courses/:course_slug/modules/:module_slug', to: 'mathematics_courses#show_module'
-        get    'labs',                       to: 'mathematics_courses#labs'
-        get    'labs/:id',                   to: 'mathematics_courses#lab_show'
-        get    'quizzes/:quiz_id',           to: 'mathematics_courses#show_quiz'
-        get    'quizzes/:quiz_id/questions', to: 'mathematics_courses#quiz_questions'
-        post   'quizzes/:quiz_id/questions/:question_id/submit', to: 'mathematics_courses#submit_answer'
-        get    'lessons/:lesson_id',         to: 'mathematics_courses#show_lesson'
-        match  '*all',                       to: 'mathematics_courses#cors_preflight', via: :options
-      end
-
-      # Networking Courses API
-      namespace :networking do
-        get    'courses',                    to: 'networking_courses#index'
-        get    'courses/:id',                to: 'networking_courses#show'
-        get    'courses/:course_id/modules', to: 'networking_courses#modules'
-        get    'courses/:course_id/modules/:id', to: 'networking_courses#module_show'
-        get    'labs',                       to: 'networking_courses#labs'
-        get    'labs/:id',                   to: 'networking_courses#lab_show'
-        match  '*all',                       to: 'networking_courses#cors_preflight', via: :options
-      end
-
-      # Golang Courses API
-      namespace :golang do
-        get    'courses',                    to: 'golang_courses#index'
-        get    'courses/:slug',              to: 'golang_courses#show'
-        get    'courses/:slug/modules',      to: 'golang_courses#modules'
-        get    'courses/:course_slug/modules/:module_slug', to: 'golang_courses#show_module'
-        get    'labs',                       to: 'golang_courses#labs'
-        get    'labs/:id',                   to: 'golang_courses#lab_show'
-        match  '*all',                       to: 'golang_courses#cors_preflight', via: :options
-      end
 
       # Docker Learning endpoints
       get    'docker_learning/next_command',     to: 'docker_learning#next_command'
