@@ -10,6 +10,9 @@ import {
   CourseModule,
   CourseItem
 } from '../db/courseV2Schema';
+import * as aiTutorService from '../services/aiTutorService';
+import * as skillAggService from '../services/skillAggregationService';
+import * as recommendationEngine from '../services/recommendationEngine';
 
 // ==========================================
 // COURSE V2 CONTROLLERS
@@ -88,6 +91,30 @@ export const getCourseById = async (req: Request, res: Response) => {
 
       if (progress.length > 0) {
         userProgress = progress[0];
+
+        // Check for return after break
+        const lastActive = userProgress.lastActiveAt ? new Date(userProgress.lastActiveAt) : new Date();
+        const daysSinceLastActive = Math.floor(
+          (new Date().getTime() - lastActive.getTime()) / (1000 * 60 * 60 * 24)
+        );
+
+        if (daysSinceLastActive >= 7) {
+          // Returning after a break - trigger tutor message
+          await aiTutorService.checkForTutorMessage(
+            userId,
+            id,
+            'resume_course',
+            { daysSinceLastActive }
+          );
+        }
+      } else {
+        // First visit to this course - trigger welcome message
+        await aiTutorService.checkForTutorMessage(
+          userId,
+          id,
+          'start_course',
+          {}
+        );
       }
 
       // Track analytics
@@ -185,6 +212,7 @@ export const updateProgress = async (req: Request, res: Response) => {
       // Update existing progress
       const current = existing[0];
       const completedItems = current.completedItems as string[] || [];
+      const previousLevel = current.level || 1;
 
       if (completedItemId && !completedItems.includes(completedItemId)) {
         completedItems.push(completedItemId);
@@ -193,6 +221,13 @@ export const updateProgress = async (req: Request, res: Response) => {
       // Calculate points (10 points per completed item)
       const points = completedItems.length * 10;
       const level = Math.floor(points / 100) + 1;
+
+      // Detect level up
+      const leveledUp = level > previousLevel;
+
+      // Detect module completion (check if moving to next module)
+      const moduleCompleted = currentModuleIndex !== undefined &&
+                             currentModuleIndex > (current.currentModuleIndex || 0);
 
       updatedProgress = await db
         .update(userCourseProgress)
@@ -212,6 +247,29 @@ export const updateProgress = async (req: Request, res: Response) => {
           )
         )
         .returning();
+
+      // Check for tutor messages
+      if (leveledUp) {
+        await aiTutorService.checkForTutorMessage(
+          userId,
+          courseId,
+          'progress_update',
+          { leveledUp: true, previousLevel, currentLevel: level }
+        );
+      } else if (moduleCompleted) {
+        await aiTutorService.checkForTutorMessage(
+          userId,
+          courseId,
+          'progress_update',
+          { moduleCompleted: true, moduleIndex: currentModuleIndex }
+        );
+
+        // Update global skill profile when module completed
+        await skillAggService.updateUserSkillProfile(userId);
+
+        // Generate new recommendations based on updated skills
+        await recommendationEngine.generateRecommendations(userId);
+      }
     } else {
       // Create new progress
       const completedItems = completedItemId ? [completedItemId] : [];
@@ -333,8 +391,12 @@ export const validateExercise = async (req: Request, res: Response) => {
       )
       .limit(1);
 
+    let attempts = 1;
+
     if (existing.length > 0) {
       // Update attempts
+      attempts = (existing[0].attempts || 0) + 1;
+
       await db
         .update(exerciseCompletions)
         .set({
@@ -361,6 +423,21 @@ export const validateExercise = async (req: Request, res: Response) => {
         isCorrect,
         score: isCorrect ? 100 : 0
       });
+    }
+
+    // Check if student is struggling (3+ attempts and still incorrect)
+    if (!isCorrect && attempts >= 3) {
+      await aiTutorService.checkForTutorMessage(
+        userId,
+        courseId,
+        'complete_exercise',
+        {
+          struggling: true,
+          attempts,
+          exerciseId: itemId,
+          exerciseTitle: (item as any).title || 'exercise'
+        }
+      );
     }
 
     res.json({
