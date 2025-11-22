@@ -1,3 +1,6 @@
+# NOTE: Course content comes from YAML files (see CourseFileReaderService).
+# This model is only for foreign key relationships (enrollments, progress tracking).
+# DO NOT query this model for course content - use CourseFileReaderService instead.
 class Course < ApplicationRecord
   # Associations
   has_many :course_modules, dependent: :destroy
