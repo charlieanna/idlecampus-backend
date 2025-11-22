@@ -381,6 +381,83 @@ Rails.application.routes.draw do
         match  '*all',                       to: 'coding_courses#cors_preflight', via: :options
       end
 
+      # ----------------------------------------
+      # Progressive Flow System API Routes
+      # ----------------------------------------
+      # Learning Tracks
+      resources :progressive_tracks, only: [:index, :show], controller: 'progressive_challenges', path: 'progressive/tracks' do
+        member do
+          get :challenges
+        end
+      end
+
+      # Challenges
+      resources :progressive_challenges, only: [:index, :show], path: 'progressive/challenges' do
+        member do
+          get :unlock_status, action: :check_unlock
+          post 'levels/:level_number/complete', action: :complete_level
+          get :progress
+        end
+      end
+
+      # User Progress & Stats
+      scope 'progressive/user', controller: 'progressive_users' do
+        get :progress
+        get :stats
+        get :level
+        get :streak
+        post :award_xp
+        get :rank
+        
+        # Achievements
+        get 'achievements', action: :achievements
+        get 'achievements/unlocked', action: :achievements_unlocked
+        
+        # Skills
+        get 'skills', action: :skills
+        get 'skills/tree', action: :skill_tree
+        get 'skills/top', action: :top_skills
+        
+        # Assessment
+        post 'assessment/save', action: :save_assessment
+      end
+
+      # Leaderboards
+      scope 'progressive/leaderboard', controller: 'progressive_leaderboards' do
+        get 'global', action: :global
+        get 'friends', action: :friends
+        get 'challenge/:challenge_id', action: :challenge
+      end
+
+      # Achievements (separate from user achievements)
+      resources :progressive_achievements, only: [:index], path: 'progressive/achievements' do
+        collection do
+          get :unlocked
+          post :check
+        end
+      end
+
+      # Daily Challenges
+      resources :progressive_daily_challenges, only: [:index], path: 'progressive/daily-challenges' do
+        collection do
+          get :history
+        end
+        member do
+          post :complete
+        end
+      end
+
+      # Notifications
+      resources :progressive_notifications, only: [:index], path: 'progressive/notifications' do
+        collection do
+          get :unread
+          post :mark_all_read
+        end
+        member do
+          post :mark_read
+        end
+      end
+
 
       # Docker Learning endpoints
       get    'docker_learning/next_command',     to: 'docker_learning#next_command'

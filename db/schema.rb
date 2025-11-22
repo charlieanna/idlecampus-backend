@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2025_11_10_120001) do
+ActiveRecord::Schema.define(version: 2025_11_10_120002) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -665,6 +665,323 @@ ActiveRecord::Schema.define(version: 2025_11_10_120001) do
     t.string "email"
     t.string "name"
     t.index ["user_id"], name: "index_profiles_on_user_id"
+  end
+
+  create_table "progressive_achievements", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "slug", null: false
+    t.string "name", null: false
+    t.text "description"
+    t.string "icon_url"
+    t.string "category"
+    t.string "rarity", default: "common"
+    t.integer "xp_reward", default: 0
+    t.jsonb "criteria", null: false
+    t.boolean "is_active", default: true
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["slug"], name: "index_progressive_achievements_on_slug", unique: true
+  end
+
+  create_table "progressive_assessment_results", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.bigint "user_id"
+    t.string "assessment_type", null: false
+    t.jsonb "questions", null: false
+    t.jsonb "responses", null: false
+    t.decimal "score", precision: 5, scale: 2, null: false
+    t.string "skill_level_recommendation"
+    t.jsonb "track_recommendations", default: []
+    t.jsonb "challenge_recommendations", default: []
+    t.jsonb "strengths", default: []
+    t.jsonb "weaknesses", default: []
+    t.datetime "completed_at", default: -> { "CURRENT_TIMESTAMP" }
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["completed_at"], name: "index_progressive_assessment_results_on_completed_at"
+    t.index ["user_id"], name: "index_progressive_assessment_results_on_user_id"
+  end
+
+  create_table "progressive_challenge_levels", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "progressive_challenge_id"
+    t.integer "level_number", null: false
+    t.string "level_name", null: false
+    t.text "description"
+    t.jsonb "requirements", null: false
+    t.jsonb "test_cases", null: false
+    t.jsonb "passing_criteria", null: false
+    t.integer "xp_reward", null: false
+    t.jsonb "hints", default: []
+    t.text "solution_approach"
+    t.integer "estimated_minutes", default: 15
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["level_number"], name: "index_progressive_challenge_levels_on_level_number"
+    t.index ["progressive_challenge_id", "level_number"], name: "idx_prog_challenge_level_unique", unique: true
+    t.index ["progressive_challenge_id"], name: "idx_prog_levels_on_challenge"
+    t.index ["requirements"], name: "index_progressive_challenge_levels_on_requirements", using: :gin
+  end
+
+  create_table "progressive_challenges", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "slug", null: false
+    t.string "title", null: false
+    t.text "description"
+    t.string "category"
+    t.uuid "progressive_learning_track_id"
+    t.integer "order_in_track"
+    t.string "difficulty_base", null: false
+    t.integer "xp_base", default: 100
+    t.integer "estimated_minutes", default: 30
+    t.jsonb "prerequisites", default: []
+    t.jsonb "ddia_concepts", default: []
+    t.jsonb "tags", default: []
+    t.jsonb "metadata", default: {}
+    t.boolean "is_active", default: true
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["category"], name: "index_progressive_challenges_on_category"
+    t.index ["ddia_concepts"], name: "index_progressive_challenges_on_ddia_concepts", using: :gin
+    t.index ["prerequisites"], name: "index_progressive_challenges_on_prerequisites", using: :gin
+    t.index ["progressive_learning_track_id"], name: "idx_prog_challenges_on_track"
+    t.index ["slug"], name: "index_progressive_challenges_on_slug", unique: true
+    t.index ["tags"], name: "index_progressive_challenges_on_tags", using: :gin
+  end
+
+  create_table "progressive_daily_challenge_attempts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.bigint "user_id"
+    t.uuid "progressive_daily_challenge_id"
+    t.decimal "score", precision: 5, scale: 2, null: false
+    t.integer "xp_earned", default: 0
+    t.integer "rank"
+    t.datetime "completed_at", default: -> { "CURRENT_TIMESTAMP" }
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["progressive_daily_challenge_id"], name: "idx_prog_daily_attempt"
+    t.index ["user_id", "progressive_daily_challenge_id"], name: "idx_prog_daily_attempt_unique", unique: true
+    t.index ["user_id"], name: "index_progressive_daily_challenge_attempts_on_user_id"
+  end
+
+  create_table "progressive_daily_challenges", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "progressive_challenge_id"
+    t.date "date", null: false
+    t.decimal "difficulty_modifier", precision: 3, scale: 2, default: "1.0"
+    t.decimal "xp_multiplier", precision: 3, scale: 2, default: "2.0"
+    t.jsonb "special_requirements", default: {}
+    t.integer "participants_count", default: 0
+    t.decimal "average_score", precision: 5, scale: 2
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["date"], name: "index_progressive_daily_challenges_on_date", unique: true
+    t.index ["progressive_challenge_id"], name: "idx_prog_daily_challenge"
+  end
+
+  create_table "progressive_hint_usage", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.bigint "user_id"
+    t.uuid "progressive_challenge_id"
+    t.integer "level_number", null: false
+    t.integer "hint_number", null: false
+    t.integer "xp_penalty", default: 0
+    t.datetime "used_at", default: -> { "CURRENT_TIMESTAMP" }
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["progressive_challenge_id", "level_number"], name: "idx_prog_hint_challenge_level"
+    t.index ["progressive_challenge_id"], name: "idx_prog_hint_challenge"
+    t.index ["user_id"], name: "index_progressive_hint_usage_on_user_id"
+  end
+
+  create_table "progressive_leaderboard_entries", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "period_type", null: false
+    t.date "period_date"
+    t.bigint "user_id"
+    t.string "metric_type", null: false
+    t.integer "metric_value", null: false
+    t.integer "rank", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["period_type", "period_date", "user_id", "metric_type"], name: "idx_prog_leaderboard_unique", unique: true
+    t.index ["period_type", "period_date"], name: "idx_prog_leaderboard_period"
+    t.index ["rank"], name: "index_progressive_leaderboard_entries_on_rank"
+    t.index ["user_id"], name: "index_progressive_leaderboard_entries_on_user_id"
+  end
+
+  create_table "progressive_learning_sessions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.bigint "user_id"
+    t.string "session_type", null: false
+    t.string "resource_id"
+    t.datetime "start_time", default: -> { "CURRENT_TIMESTAMP" }
+    t.datetime "end_time"
+    t.integer "duration_minutes"
+    t.integer "xp_earned", default: 0
+    t.boolean "completed", default: false
+    t.jsonb "metadata", default: {}
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["start_time"], name: "index_progressive_learning_sessions_on_start_time"
+    t.index ["user_id"], name: "index_progressive_learning_sessions_on_user_id"
+  end
+
+  create_table "progressive_learning_tracks", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "slug", null: false
+    t.string "title", null: false
+    t.text "description"
+    t.string "difficulty_level", null: false
+    t.integer "estimated_hours"
+    t.jsonb "prerequisites", default: []
+    t.integer "order_index", null: false
+    t.boolean "is_active", default: true
+    t.jsonb "metadata", default: {}
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["difficulty_level"], name: "index_progressive_learning_tracks_on_difficulty_level"
+    t.index ["order_index"], name: "index_progressive_learning_tracks_on_order_index"
+    t.index ["slug"], name: "index_progressive_learning_tracks_on_slug", unique: true
+  end
+
+  create_table "progressive_level_attempts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.bigint "user_id"
+    t.uuid "progressive_challenge_id"
+    t.integer "level_number", null: false
+    t.integer "attempt_number", null: false
+    t.jsonb "design_snapshot", null: false
+    t.jsonb "test_results", null: false
+    t.decimal "score", precision: 5, scale: 2, null: false
+    t.boolean "passed", null: false
+    t.integer "xp_earned", default: 0
+    t.integer "hints_used", default: 0
+    t.integer "time_spent_minutes"
+    t.jsonb "feedback", default: {}
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["created_at"], name: "index_progressive_level_attempts_on_created_at"
+    t.index ["progressive_challenge_id", "level_number"], name: "idx_prog_attempts_challenge_level"
+    t.index ["progressive_challenge_id"], name: "idx_prog_attempts_on_challenge"
+    t.index ["user_id"], name: "index_progressive_level_attempts_on_user_id"
+  end
+
+  create_table "progressive_notifications", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.bigint "user_id"
+    t.string "notification_type", null: false
+    t.string "title", null: false
+    t.text "message"
+    t.string "action_url"
+    t.boolean "is_read", default: false
+    t.datetime "read_at"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["created_at"], name: "index_progressive_notifications_on_created_at"
+    t.index ["user_id", "is_read"], name: "idx_prog_notifications_unread", where: "(is_read = false)"
+    t.index ["user_id"], name: "index_progressive_notifications_on_user_id"
+  end
+
+  create_table "progressive_skills", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "slug", null: false
+    t.string "name", null: false
+    t.text "description"
+    t.string "category"
+    t.uuid "parent_skill_id"
+    t.jsonb "prerequisites", default: []
+    t.integer "max_level", default: 5
+    t.integer "xp_per_level", default: 100
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["parent_skill_id"], name: "index_progressive_skills_on_parent_skill_id"
+    t.index ["slug"], name: "index_progressive_skills_on_slug", unique: true
+  end
+
+  create_table "progressive_user_achievements", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.bigint "user_id"
+    t.uuid "progressive_achievement_id"
+    t.datetime "unlocked_at", default: -> { "CURRENT_TIMESTAMP" }
+    t.decimal "progress", precision: 5, scale: 2, default: "100.0"
+    t.jsonb "metadata", default: {}
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["progressive_achievement_id"], name: "idx_prog_user_achievement"
+    t.index ["unlocked_at"], name: "index_progressive_user_achievements_on_unlocked_at"
+    t.index ["user_id", "progressive_achievement_id"], name: "idx_prog_user_achievement_unique", unique: true
+    t.index ["user_id"], name: "index_progressive_user_achievements_on_user_id"
+  end
+
+  create_table "progressive_user_challenge_progress", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.bigint "user_id"
+    t.uuid "progressive_challenge_id"
+    t.string "status", default: "not_started"
+    t.integer "current_level", default: 0
+    t.integer "levels_completed", default: [], array: true
+    t.datetime "unlock_date"
+    t.datetime "start_date"
+    t.datetime "completion_date"
+    t.integer "total_attempts", default: 0
+    t.integer "total_time_spent_minutes", default: 0
+    t.decimal "best_score", precision: 5, scale: 2
+    t.integer "xp_earned", default: 0
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["progressive_challenge_id"], name: "idx_prog_user_challenge_on_challenge"
+    t.index ["status"], name: "index_progressive_user_challenge_progress_on_status"
+    t.index ["user_id", "progressive_challenge_id"], name: "idx_prog_user_challenge_unique", unique: true
+    t.index ["user_id"], name: "idx_prog_user_challenge_on_user"
+  end
+
+  create_table "progressive_user_skills", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.bigint "user_id"
+    t.uuid "progressive_skill_id"
+    t.integer "current_level", default: 0
+    t.integer "points_allocated", default: 0
+    t.datetime "unlocked_at"
+    t.datetime "mastered_at"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["progressive_skill_id"], name: "index_progressive_user_skills_on_progressive_skill_id"
+    t.index ["user_id", "progressive_skill_id"], name: "idx_prog_user_skill_unique", unique: true
+    t.index ["user_id"], name: "index_progressive_user_skills_on_user_id"
+  end
+
+  create_table "progressive_user_stats", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.bigint "user_id"
+    t.integer "total_xp", default: 0
+    t.integer "current_level", default: 1
+    t.integer "total_challenges_started", default: 0
+    t.integer "total_challenges_completed", default: 0
+    t.integer "total_levels_completed", default: 0
+    t.integer "total_time_spent_minutes", default: 0
+    t.integer "current_streak_days", default: 0
+    t.integer "longest_streak_days", default: 0
+    t.date "last_activity_date"
+    t.decimal "rank_percentile", precision: 5, scale: 2
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["current_level"], name: "index_progressive_user_stats_on_current_level"
+    t.index ["current_streak_days"], name: "index_progressive_user_stats_on_current_streak_days"
+    t.index ["total_xp"], name: "index_progressive_user_stats_on_total_xp"
+    t.index ["user_id"], name: "index_progressive_user_stats_on_user_id"
+  end
+
+  create_table "progressive_user_track_progress", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.bigint "user_id"
+    t.uuid "progressive_learning_track_id"
+    t.string "status", default: "not_started"
+    t.decimal "progress_percentage", precision: 5, scale: 2, default: "0.0"
+    t.integer "challenges_completed", default: 0
+    t.integer "total_challenges", null: false
+    t.datetime "unlock_date"
+    t.datetime "start_date"
+    t.datetime "completion_date"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["progressive_learning_track_id"], name: "idx_prog_track_progress_on_track"
+    t.index ["user_id", "progressive_learning_track_id"], name: "idx_prog_user_track_unique", unique: true
+    t.index ["user_id"], name: "index_progressive_user_track_progress_on_user_id"
+  end
+
+  create_table "progressive_xp_transactions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.bigint "user_id"
+    t.integer "amount", null: false
+    t.string "source_type", null: false
+    t.string "source_id"
+    t.text "description"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["created_at"], name: "index_progressive_xp_transactions_on_created_at"
+    t.index ["user_id"], name: "index_progressive_xp_transactions_on_user_id"
   end
 
   create_table "questions", force: :cascade do |t|
@@ -1514,6 +1831,30 @@ ActiveRecord::Schema.define(version: 2025_11_10_120001) do
   add_foreign_key "module_progresses", "users"
   add_foreign_key "problem_attempts", "problems"
   add_foreign_key "problem_attempts", "users"
+  add_foreign_key "progressive_assessment_results", "users"
+  add_foreign_key "progressive_challenge_levels", "progressive_challenges"
+  add_foreign_key "progressive_challenges", "progressive_learning_tracks"
+  add_foreign_key "progressive_daily_challenge_attempts", "progressive_daily_challenges"
+  add_foreign_key "progressive_daily_challenge_attempts", "users"
+  add_foreign_key "progressive_daily_challenges", "progressive_challenges"
+  add_foreign_key "progressive_hint_usage", "progressive_challenges"
+  add_foreign_key "progressive_hint_usage", "users"
+  add_foreign_key "progressive_leaderboard_entries", "users"
+  add_foreign_key "progressive_learning_sessions", "users"
+  add_foreign_key "progressive_level_attempts", "progressive_challenges"
+  add_foreign_key "progressive_level_attempts", "users"
+  add_foreign_key "progressive_notifications", "users"
+  add_foreign_key "progressive_skills", "progressive_skills", column: "parent_skill_id"
+  add_foreign_key "progressive_user_achievements", "progressive_achievements"
+  add_foreign_key "progressive_user_achievements", "users"
+  add_foreign_key "progressive_user_challenge_progress", "progressive_challenges"
+  add_foreign_key "progressive_user_challenge_progress", "users"
+  add_foreign_key "progressive_user_skills", "progressive_skills"
+  add_foreign_key "progressive_user_skills", "users"
+  add_foreign_key "progressive_user_stats", "users"
+  add_foreign_key "progressive_user_track_progress", "progressive_learning_tracks"
+  add_foreign_key "progressive_user_track_progress", "users"
+  add_foreign_key "progressive_xp_transactions", "users"
   add_foreign_key "questions", "lessons"
   add_foreign_key "quiz_attempts", "course_enrollments"
   add_foreign_key "quiz_attempts", "quizzes"
