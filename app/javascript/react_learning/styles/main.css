@@ -121,3 +121,250 @@ code {
 ::-webkit-scrollbar-thumb:hover {
   background: #94a3b8;
 }
+
+/* ========================================
+   DSA SIDEBAR SPECIFIC STYLES
+   ======================================== */
+
+/* DSA Sidebar root */
+#dsa-learning-root {
+  height: 100%;
+  width: 100%;
+}
+
+/* Custom scrollbar for DSA sidebar */
+.dsa-sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.dsa-sidebar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.dsa-sidebar::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+
+.dsa-sidebar::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Difficulty badges */
+.difficulty-easy {
+  background-color: #dcfce7;
+  color: #16a34a;
+}
+
+.difficulty-medium {
+  background-color: #fef9c3;
+  color: #ca8a04;
+}
+
+.difficulty-hard {
+  background-color: #fee2e2;
+  color: #dc2626;
+}
+
+/* Progress bar animations */
+@keyframes progress-fill {
+  from {
+    width: 0%;
+  }
+}
+
+.progress-bar-animated {
+  animation: progress-fill 0.5s ease-out forwards;
+}
+
+/* Streak flame animation */
+@keyframes flame-flicker {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.8;
+  }
+}
+
+.flame-icon {
+  animation: flame-flicker 1.5s ease-in-out infinite;
+}
+
+/* Module expansion animation */
+.module-content-enter {
+  opacity: 0;
+  max-height: 0;
+}
+
+.module-content-enter-active {
+  opacity: 1;
+  max-height: 1000px;
+  transition: opacity 200ms ease-out, max-height 200ms ease-out;
+}
+
+.module-content-exit {
+  opacity: 1;
+  max-height: 1000px;
+}
+
+.module-content-exit-active {
+  opacity: 0;
+  max-height: 0;
+  transition: opacity 200ms ease-in, max-height 200ms ease-in;
+}
+
+/* Hover effects for lesson items */
+.lesson-item {
+  transition: all 0.15s ease-out;
+}
+
+.lesson-item:hover {
+  transform: translateX(4px);
+}
+
+.lesson-item.active {
+  background: linear-gradient(to right, #e0e7ff, transparent);
+  border-left: 3px solid #6366f1;
+}
+
+/* Pattern icon backgrounds */
+.pattern-icon {
+  background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%);
+  transition: all 0.2s ease-out;
+}
+
+.pattern-icon:hover {
+  background: linear-gradient(135deg, #c7d2fe 0%, #a5b4fc 100%);
+  transform: scale(1.05);
+}
+
+/* Daily challenge card */
+.daily-challenge-card {
+  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+  border: 1px solid #fcd34d;
+  transition: all 0.2s ease-out;
+}
+
+.daily-challenge-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(251, 191, 36, 0.3);
+}
+
+/* Search input focus state */
+.search-input:focus {
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+}
+
+/* Filter dropdown styling */
+.filter-select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  padding-right: 28px;
+}
+
+/* Status indicators */
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.status-not-started {
+  background-color: #d1d5db;
+}
+
+.status-in-progress {
+  background-color: #3b82f6;
+  animation: pulse 2s infinite;
+}
+
+.status-completed {
+  background-color: #22c55e;
+}
+
+/* Mastery score gradient */
+.mastery-gradient {
+  background: linear-gradient(90deg,
+    #ef4444 0%,
+    #f97316 25%,
+    #eab308 50%,
+    #84cc16 75%,
+    #22c55e 100%
+  );
+}
+
+/* Streak counter */
+.streak-counter {
+  background: linear-gradient(135deg, #fb923c 0%, #ea580c 100%);
+  box-shadow: 0 4px 14px rgba(234, 88, 12, 0.4);
+}
+
+/* Weekly goal dots */
+.goal-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  transition: all 0.2s ease-out;
+}
+
+.goal-dot.completed {
+  background-color: #22c55e;
+  box-shadow: 0 0 8px rgba(34, 197, 94, 0.5);
+}
+
+.goal-dot.pending {
+  background-color: #e2e8f0;
+}
+
+/* Module header gradient */
+.module-header {
+  background: linear-gradient(to right, transparent, #f8fafc);
+}
+
+/* Tooltip styles */
+.tooltip {
+  position: relative;
+}
+
+.tooltip::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 4px 8px;
+  background: #1e293b;
+  color: white;
+  font-size: 12px;
+  border-radius: 4px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease-out;
+}
+
+.tooltip:hover::after {
+  opacity: 1;
+}
+
+/* Empty state illustration */
+.empty-state {
+  opacity: 0.6;
+}
+
+.empty-state svg {
+  stroke-dasharray: 100;
+  animation: dash 2s linear infinite;
+}
+
+@keyframes dash {
+  to {
+    stroke-dashoffset: 200;
+  }
+}
