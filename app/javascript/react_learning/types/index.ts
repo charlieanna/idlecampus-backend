@@ -241,3 +241,77 @@ export type ContentType = 'lesson' | 'lab' | 'quiz';
 export type LessonStatus = 'completed' | 'current' | 'locked' | 'in-progress' | 'next';
 
 export type IconName = 'box' | 'layers' | 'network' | 'file-key' | 'book-open' | 'flask' | 'clipboard-check';
+
+// ============================================
+// DSA-SPECIFIC TYPES
+// ============================================
+
+export type DSADifficulty = 'easy' | 'medium' | 'hard';
+
+export type DSAPattern =
+  | 'two-pointers'
+  | 'sliding-window'
+  | 'binary-search'
+  | 'hash-map'
+  | 'tree-traversal'
+  | 'bfs-dfs'
+  | 'dynamic-programming'
+  | 'backtracking'
+  | 'greedy'
+  | 'heap'
+  | 'stack-queue'
+  | 'linked-list'
+  | 'graph'
+  | 'bit-manipulation'
+  | 'math'
+  | 'recursion';
+
+export type LessonProgress = 'not-started' | 'in-progress' | 'completed';
+
+export interface DSALesson extends Lesson {
+  difficulty?: DSADifficulty;
+  pattern?: DSAPattern;
+  estimatedMinutes?: number;
+  companies?: string[];
+  progress?: LessonProgress;
+  masteryScore?: number;
+  lastAttemptedAt?: string;
+  timesReviewed?: number;
+}
+
+export interface DSAModule extends Module {
+  pattern?: DSAPattern;
+  lessons: DSALesson[];
+  overallProgress?: number;
+  totalProblems?: number;
+  completedProblems?: number;
+}
+
+export interface DailyChallenge {
+  id: string;
+  title: string;
+  difficulty: DSADifficulty;
+  pattern: DSAPattern;
+  estimatedMinutes: number;
+  isCompleted: boolean;
+}
+
+export interface UserStreak {
+  currentStreak: number;
+  longestStreak: number;
+  lastActiveDate: string;
+  weeklyGoal: number;
+  weeklyProgress: number;
+}
+
+export interface DSASidebarProps {
+  modules: DSAModule[];
+  currentLessonId: string | null;
+  completedLessons: Set<string>;
+  masteryScores: Record<string, number>;
+  onLessonSelect: (lessonId: string) => void;
+  dailyChallenge?: DailyChallenge;
+  userStreak?: UserStreak;
+  totalProblems?: number;
+  completedProblems?: number;
+}
