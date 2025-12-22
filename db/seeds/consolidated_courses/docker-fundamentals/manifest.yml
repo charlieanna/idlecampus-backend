@@ -26,11 +26,15 @@ course:
 modules:
   - slug: introduction-to-docker
     title: Introduction to Docker
-    description: Get started with Docker - understand containers and learn basic commands to run, stop, and manage your first containers.
+    description: Understand what Docker is, why containers exist, and the fundamental concepts that power modern software deployment.
     order: 1
     estimated_hours: 2
     lessons:
-      # From docker-basics (4 lessons)
+      # Introduction lessons with storytelling and explanations
+      - what-is-docker
+      - understanding-containers
+      - understanding-images
+      # From docker-basics (4 lessons) - now comes after intro
       - docker-ps-listing-running-containers
       - docker-run-creating-and-starting-containers
       - docker-stop-gracefully-stopping-containers

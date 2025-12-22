@@ -1,0 +1,111 @@
+slug: what-is-docker
+title: 'What is Docker?'
+difficulty: easy
+sequence_order: 0
+estimated_minutes: 5
+key_concepts:
+- containers
+- docker
+- virtualization
+- devops
+- introduction
+prerequisites: []
+content_md: |
+  # Welcome to Docker!
+
+  Imagine you're a chef who has perfected a recipe. You want to share it with other chefs around the world, but there's a problem: every kitchen is different. Different stoves, different utensils, different ingredients available. Your recipe might work perfectly in your kitchen but fail in others.
+
+  **This is exactly the problem developers faced for decades.**
+
+  "But it works on my machine!" became the most frustrating phrase in software development. An application that runs perfectly on a developer's laptop would mysteriously crash when deployed to a server.
+
+  ## Enter Docker
+
+  Docker solves this by packaging your application along with everything it needs to run - the operating system, libraries, dependencies, and configuration - into a single portable unit called a **container**.
+
+  Think of it like shipping a complete, self-contained kitchen (with your recipe, ingredients, and exact oven settings) instead of just the recipe itself.
+
+  ## Why Does This Matter?
+
+  - **Consistency**: Your app runs the same way everywhere - on your laptop, your colleague's machine, test servers, and production.
+  - **Isolation**: Each container is like a separate apartment. Problems in one don't affect others.
+  - **Speed**: Containers start in seconds, not minutes like virtual machines.
+  - **Efficiency**: Containers share the host's operating system, using far less resources than VMs.
+
+  ## The Docker Ecosystem
+
+  Docker consists of three main concepts:
+
+  1. **Images**: Read-only templates containing your application and its dependencies. Think of them as the "recipe" or "blueprint".
+
+  2. **Containers**: Running instances of images. If an image is a recipe, a container is the actual dish you cooked from it.
+
+  3. **Registry**: A place to store and share images (like Docker Hub). Think of it as a cookbook library.
+
+  ## Real-World Impact
+
+  Companies like Google run **billions** of containers every week. Netflix uses containers to deploy code hundreds of times per day without downtime. Spotify, Uber, and countless startups rely on containers.
+
+  Let's see Docker in action! First, let's check if Docker is running on your system.
+
+  ## Syntax/Command
+
+  ```bash
+  docker --version
+  ```
+
+  ## Example
+
+  ```bash
+  docker info
+  ```
+
+  ## Key Points
+
+  - Docker packages applications with all dependencies into portable containers
+  - Containers solve the "works on my machine" problem
+  - Images are blueprints, containers are running instances
+  - Docker Hub is the default registry for sharing images
+
+exercises:
+- type: terminal
+  problem_statement: Check if Docker is installed by viewing its version
+  expected_output: Docker version information showing the installed version
+  language: bash
+  starter_code: "# Check Docker version\n"
+  sequence_order: 1
+  command: docker --version
+  validation:
+    must_include:
+    - Docker version
+    must_not_include:
+    - Error
+    - 'not found'
+  timeout_sec: 30
+  require_pass: true
+- type: terminal
+  problem_statement: View detailed information about your Docker installation
+  expected_output: System-wide Docker information including containers, images, and system details
+  language: bash
+  starter_code: "# View Docker system info\n"
+  sequence_order: 2
+  command: docker info
+  validation:
+    must_include:
+    - Containers
+    - Images
+    must_not_include:
+    - Error
+  timeout_sec: 30
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: What problem does Docker primarily solve?
+  options:
+  - Making websites load faster
+  - Ensuring applications run the same way in different environments
+  - Replacing the need for programming languages
+  - Creating faster internet connections
+  correct_answer: Ensuring applications run the same way in different environments
+  explanation: "Docker's primary purpose is to solve the 'works on my machine' problem by packaging applications with all their dependencies into containers that run identically anywhere."
+  require_pass: true

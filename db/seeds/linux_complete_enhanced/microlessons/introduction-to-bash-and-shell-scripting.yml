@@ -191,10 +191,10 @@ exercises:
   sequence_order: 4
   question: In bash, what symbol is used to access the value of a variable?
   options:
-  - $variablename
-  - variablename
-  - @variablename
-  - &variablename
+  - "$variablename"
+  - "variablename"
+  - "@variablename"
+  - "&variablename"
   correct_answer_index: 0
   explanation: The $ symbol is used to reference/expand variables in bash (e.g., $HOME, $USER, $myvar)
   require_pass: true

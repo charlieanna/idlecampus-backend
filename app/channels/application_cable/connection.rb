@@ -1,3 +1,5 @@
+require 'ostruct'
+
 module ApplicationCable
   class Connection < ActionCable::Connection::Base
     identified_by :current_user
@@ -11,7 +13,7 @@ module ApplicationCable
     def find_verified_user
       # Try to find user from session
       user_id = request.session['user_id'] || request.session[:user_id]
-      
+
       if user_id && (verified_user = User.find_by(id: user_id))
         verified_user
       else
@@ -20,13 +22,13 @@ module ApplicationCable
           verified_user = User.find_by(id: request.cookies['user_id'])
           return verified_user if verified_user
         end
-        
+
         # For development, allow anonymous connections
         if Rails.env.development?
           logger.add_tags 'ActionCable', 'Anonymous'
-          return OpenStruct.new(id: 'anonymous', email: 'anonymous@example.com')
+          return ::OpenStruct.new(id: 'anonymous', email: 'anonymous@example.com')
         end
-        
+
         reject_unauthorized_connection
       end
     end

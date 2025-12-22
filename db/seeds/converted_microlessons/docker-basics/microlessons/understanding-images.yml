@@ -1,0 +1,128 @@
+slug: understanding-images
+title: 'Understanding Docker Images'
+difficulty: easy
+sequence_order: 2
+estimated_minutes: 5
+key_concepts:
+- images
+- layers
+- docker-hub
+- docker-pull
+- docker-images
+prerequisites:
+- understanding-containers
+content_md: |
+  # Docker Images: The Building Blocks
+
+  If containers are running applications, images are their blueprints.
+
+  ## What's Inside an Image?
+
+  A Docker image contains:
+  - **Base Operating System** - Usually a minimal Linux distribution
+  - **Application Code** - Your actual program
+  - **Dependencies** - Libraries, packages, runtime environments
+  - **Configuration** - Environment variables, settings
+  - **Instructions** - Commands that run when the container starts
+
+  ## The Layer System
+
+  Here's something clever about Docker images: they're built in **layers**.
+
+  Imagine building a cake:
+  1. Bottom layer: Base (flour, eggs, sugar)
+  2. Middle layer: Filling (cream, fruit)
+  3. Top layer: Frosting (chocolate, decorations)
+
+  Docker images work similarly:
+  1. Base layer: Operating system (Ubuntu, Alpine)
+  2. Middle layers: Dependencies (Python, Node.js, libraries)
+  3. Top layer: Your application code
+
+  ### Why Layers Matter
+  - Layers are **cached** and **reused**
+  - If you change only your code, Docker doesn't rebuild the base layers
+  - Sharing common layers between images saves disk space
+  - Updates are fast because only changed layers need downloading
+
+  ## Where Do Images Come From?
+
+  1. **Docker Hub**: The default public registry with millions of images
+  2. **Private Registries**: Company-specific image storage
+  3. **Build Your Own**: Create custom images with Dockerfiles
+
+  ## Image Tags
+
+  Tags are like version numbers for images:
+  - `nginx:latest` - The most recent version
+  - `python:3.11` - Python version 3.11
+  - `ubuntu:22.04` - Ubuntu LTS release
+  - `node:18-alpine` - Node.js 18 on lightweight Alpine Linux
+
+  **Pro tip**: Always use specific tags in production! `latest` can change unexpectedly.
+
+  ## Viewing and Downloading Images
+
+  Use `docker images` to see what images you have locally, and `docker pull` to download new ones from a registry.
+
+  ## Syntax/Command
+
+  ```bash
+  docker images
+  ```
+
+  ## Example
+
+  ```bash
+  docker pull alpine
+  ```
+
+  ## Key Points
+
+  - Images are read-only templates used to create containers
+  - Images are built in layers, which are cached and reused
+  - Docker Hub is the default public registry for images
+  - Use specific tags like `python:3.11` instead of `latest` in production
+
+exercises:
+- type: terminal
+  problem_statement: List all Docker images currently on your system
+  expected_output: Table showing local images with repository, tag, image ID, creation date, and size
+  language: bash
+  starter_code: "# List local Docker images\n"
+  sequence_order: 1
+  command: docker images
+  validation:
+    must_include:
+    - REPOSITORY
+    - TAG
+    must_not_include:
+    - Error
+  timeout_sec: 30
+  require_pass: true
+- type: terminal
+  problem_statement: Download the lightweight Alpine Linux image from Docker Hub
+  expected_output: Docker pulling the alpine image, showing layer downloads
+  language: bash
+  starter_code: "# Pull Alpine Linux image\n"
+  sequence_order: 2
+  command: docker pull alpine
+  validation:
+    must_include:
+    - alpine
+    must_not_include:
+    - Error
+    - 'not found'
+  timeout_sec: 120
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: Why are Docker images built in layers?
+  options:
+  - To make images look more organized
+  - To allow caching, reuse, and faster updates
+  - Because containers require layers to run
+  - Layers are required by Docker Hub
+  correct_answer: To allow caching, reuse, and faster updates
+  explanation: "Docker's layer system allows caching unchanged layers, reusing common base layers between images, and only downloading changed layers during updates - making builds and deployments much faster and more efficient."
+  require_pass: true

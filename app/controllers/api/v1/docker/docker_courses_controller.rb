@@ -34,33 +34,64 @@ module Api
 
         # GET /api/v1/docker/courses
         def index
-          courses = load_docker_courses_from_yaml
-          
-          render json: {
-            courses: courses.map { |course| course_summary_from_yaml(course) }
-          }
+          # Try CourseFileReaderService first (like Linux controller)
+          all_courses = CourseFileReaderService.all_courses
+          docker_courses = all_courses.select { |c| c[:slug].include?('docker') }
+
+          if docker_courses.any?
+            render json: {
+              courses: docker_courses.map { |course| course_summary_from_yaml(course) }
+            }
+          else
+            # Fallback to hardcoded
+            courses = load_docker_courses_from_yaml
+            render json: {
+              courses: courses.map { |course| course_summary_from_yaml(course) }
+            }
+          end
         end
 
         # GET /api/v1/docker/courses/:slug
         def show
-          courses = load_docker_courses_from_yaml
-          course = courses.find { |c| c[:slug] == params[:id] }
-          
-          if course.nil?
-            render json: { error: 'Course not found' }, status: :not_found
-            return
-          end
+          # Try CourseFileReaderService first (like Linux controller)
+          course = CourseFileReaderService.find_course(params[:id])
 
-          render json: {
-            course: course_detail_from_yaml(course)
-          }
+          if course
+            render json: {
+              course: course_detail_from_yaml(course)
+            }
+          else
+            # Fallback to hardcoded
+            courses = load_docker_courses_from_yaml
+            course = courses.find { |c| c[:slug] == params[:id] }
+
+            if course.nil?
+              render json: { error: 'Course not found' }, status: :not_found
+              return
+            end
+
+            render json: {
+              course: course_detail_from_yaml(course)
+            }
+          end
         end
 
         # GET /api/v1/docker/courses/:course_slug/modules
         def modules
+          # Try CourseFileReaderService first (like Linux controller)
+          course = CourseFileReaderService.course_with_modules(params[:course_id])
+
+          if course && course[:modules]&.any?
+            render json: {
+              modules: course[:modules]
+            }
+            return
+          end
+
+          # Fallback to hardcoded
           courses = load_docker_courses_from_yaml
           course = courses.find { |c| c[:slug] == params[:course_id] }
-          
+
           if course.nil?
             render json: { error: 'Course not found' }, status: :not_found
             return

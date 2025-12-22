@@ -72,4 +72,13 @@ Rails.application.configure do
   # Use an evented file watcher to asynchronously detect changes in source code,
   # routes, locales, etc. This feature depends on the listen gem.
   # config.file_watcher = ActiveSupport::EventedFileUpdateChecker
+
+  # ActionCable configuration - allow WebSocket connections from frontend
+  config.action_cable.disable_request_forgery_protection = true
+  config.action_cable.allowed_request_origins = [
+    'http://localhost:5173',
+    'http://127.0.0.1:5173',
+    /http:\/\/localhost.*/,
+    /http:\/\/127\.0\.0\.1.*/
+  ]
 end

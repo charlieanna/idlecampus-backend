@@ -54,11 +54,23 @@ module Api
 
         # GET /api/v1/linux/courses/:course_slug/modules/:module_slug
         def module_show
-          course = Course.find_by!(slug: params[:course_id])
-          course_module = course.course_modules.find_by!(slug: params[:id])
+          # Load from YAML (consistent with other endpoints)
+          course = CourseFileReaderService.course_with_modules(params[:course_id])
+
+          if course.nil?
+            render json: { error: 'Course not found' }, status: :not_found
+            return
+          end
+
+          course_module = course[:modules].find { |m| m[:slug] == params[:id] }
+
+          if course_module.nil?
+            render json: { error: 'Module not found' }, status: :not_found
+            return
+          end
 
           render json: {
-            module: module_detail(course_module)
+            module: module_detail_from_yaml(course_module)
           }
         end
 
@@ -136,6 +148,21 @@ module Api
             prerequisites: course[:prerequisites] || [],
             modules: course[:modules] || []
           })
+        end
+
+        def module_detail_from_yaml(course_module)
+          {
+            id: course_module[:slug],
+            slug: course_module[:slug],
+            title: course_module[:title],
+            description: course_module[:description],
+            sequence_order: course_module[:sequence_order],
+            estimated_minutes: course_module[:estimated_minutes],
+            learning_outcomes: course_module[:learning_outcomes] || [],
+            lessons: course_module[:lessons] || [],
+            labs: [],
+            quizzes: []
+          }
         end
 
         def course_detail(course)
