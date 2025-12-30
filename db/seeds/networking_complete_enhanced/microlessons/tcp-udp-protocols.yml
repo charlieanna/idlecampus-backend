@@ -1,0 +1,206 @@
+slug: tcp-udp-protocols
+title: TCP vs UDP Protocols
+sequence_order: 3
+estimated_minutes: 5
+difficulty: easy
+content_md: |
+  # TCP vs UDP Protocols
+
+  TCP and UDP are the two main transport layer protocols. They determine how data is sent between applications.
+
+  ## TCP (Transmission Control Protocol)
+
+  **Reliable, ordered delivery** - like certified mail with tracking.
+
+  ### TCP Features
+
+  - **Connection-oriented**: Must establish connection first (3-way handshake)
+  - **Reliable**: Guarantees delivery, retransmits lost packets
+  - **Ordered**: Data arrives in the same order it was sent
+  - **Flow control**: Prevents overwhelming the receiver
+  - **Error checking**: Verifies data integrity
+
+  ### TCP 3-Way Handshake
+
+  ```
+  Client                   Server
+     |                        |
+     |------- SYN ----------->|  "Can we connect?"
+     |                        |
+     |<------ SYN-ACK --------|  "Yes, I acknowledge"
+     |                        |
+     |------- ACK ----------->|  "Connection established"
+     |                        |
+     |<===== Data Transfer ===>|
+  ```
+
+  ### Common TCP Ports
+
+  | Port | Service |
+  |------|---------|
+  | 22 | SSH |
+  | 80 | HTTP |
+  | 443 | HTTPS |
+  | 3306 | MySQL |
+  | 5432 | PostgreSQL |
+
+  ## UDP (User Datagram Protocol)
+
+  **Fast, no guarantees** - like regular mail, might get lost.
+
+  ### UDP Features
+
+  - **Connectionless**: No handshake required
+  - **Unreliable**: No guarantee of delivery
+  - **Unordered**: Packets may arrive out of order
+  - **Faster**: Less overhead than TCP
+  - **No flow control**: Sender can overwhelm receiver
+
+  ### Common UDP Ports
+
+  | Port | Service |
+  |------|---------|
+  | 53 | DNS |
+  | 67/68 | DHCP |
+  | 123 | NTP |
+  | 161 | SNMP |
+
+  ## When to Use Each
+
+  ### Use TCP When:
+  - **Web browsing** (HTTP/HTTPS)
+  - **Email** (SMTP, IMAP)
+  - **File transfers** (FTP, SFTP)
+  - **Database connections**
+  - Data must arrive complete and in order
+
+  ### Use UDP When:
+  - **Video streaming** (Netflix, YouTube)
+  - **Voice/Video calls** (VoIP, Zoom)
+  - **Online gaming**
+  - **DNS queries**
+  - Speed matters more than perfect delivery
+
+  ## Comparison Table
+
+  | Feature | TCP | UDP |
+  |---------|-----|-----|
+  | Connection | Required | None |
+  | Reliability | Guaranteed | Best effort |
+  | Ordering | Maintained | Not guaranteed |
+  | Speed | Slower | Faster |
+  | Overhead | Higher | Lower |
+  | Use case | Web, email, files | Streaming, gaming, DNS |
+
+  ## Port Numbers
+
+  Ports identify specific applications on a host:
+
+  ```
+  IP Address    : Port
+  192.168.1.10  : 80     (Web server)
+  192.168.1.10  : 22     (SSH server)
+  192.168.1.10  : 3000   (Node.js app)
+  ```
+
+  ### Port Ranges
+
+  - **0-1023**: Well-known ports (privileged)
+  - **1024-49151**: Registered ports
+  - **49152-65535**: Dynamic/private ports
+
+  ## Checking Connections
+
+  ```bash
+  # Show all TCP connections
+  netstat -t
+  ss -t
+
+  # Show listening TCP ports
+  netstat -tln
+  ss -tln
+
+  # Show TCP and UDP connections
+  netstat -tuln
+  ss -tuln
+
+  # Show which process uses a port
+  sudo lsof -i :80
+  sudo ss -tlnp | grep :80
+  ```
+
+exercises:
+  - type: mcq
+    sequence_order: 1
+    question: Which protocol guarantees reliable, ordered delivery of data?
+    options:
+      - UDP
+      - TCP
+      - ICMP
+      - IP
+    correct_answer_index: 1
+    explanation: TCP (Transmission Control Protocol) guarantees reliable delivery through acknowledgments, retransmissions, and sequencing.
+
+  - type: mcq
+    sequence_order: 2
+    question: What is the TCP 3-way handshake sequence?
+    options:
+      - ACK, SYN, SYN-ACK
+      - SYN, SYN-ACK, ACK
+      - SYN, ACK, SYN-ACK
+      - ACK, ACK, ACK
+    correct_answer_index: 1
+    explanation: The TCP handshake is SYN (client initiates), SYN-ACK (server acknowledges and responds), ACK (client confirms).
+
+  - type: mcq
+    sequence_order: 3
+    question: Which protocol would be best for live video streaming?
+    options:
+      - TCP - because reliability is important
+      - UDP - because speed matters more than perfect delivery
+      - Both work equally well
+      - Neither - streaming uses a different protocol
+    correct_answer_index: 1
+    explanation: UDP is preferred for live streaming because low latency is more important than perfect delivery. A few dropped frames are acceptable, but delay is not.
+
+  - type: mcq
+    sequence_order: 4
+    question: What is the default port for HTTPS?
+    options:
+      - 80
+      - 443
+      - 22
+      - 8080
+    correct_answer_index: 1
+    explanation: HTTPS uses port 443 by default. HTTP uses port 80, SSH uses port 22.
+
+  - type: mcq
+    sequence_order: 5
+    question: Why is UDP faster than TCP?
+    options:
+      - UDP uses better compression
+      - UDP has no connection setup, acknowledgments, or retransmissions
+      - UDP uses more bandwidth
+      - UDP encrypts data faster
+    correct_answer_index: 1
+    explanation: UDP is faster because it skips the handshake, doesn't wait for acknowledgments, and doesn't retransmit lost packets. This reduces overhead and latency.
+
+  - type: terminal
+    sequence_order: 6
+    description: Show all listening TCP and UDP ports in numeric format
+    command: ss -tuln
+    timeout_sec: 5
+    validation:
+      exit_code: 0
+      output_contains:
+        - "Netid"
+    hints:
+      - Use 'ss -tuln' or 'netstat -tuln'
+      - The -t flag shows TCP, -u shows UDP, -l shows listening, -n shows numeric
+
+objectives:
+  - Understand the differences between TCP and UDP
+  - Know when to use each protocol
+  - Identify common port numbers and their services
+next_recommended:
+  - dns-fundamentals

@@ -1,0 +1,213 @@
+slug: routing-and-nat
+title: Routing and NAT
+sequence_order: 6
+estimated_minutes: 5
+difficulty: medium
+content_md: |
+  # Routing and NAT
+
+  Routing determines how data packets travel between networks. NAT allows private networks to access the internet.
+
+  ## What is Routing?
+
+  Routers forward packets between networks based on IP addresses.
+
+  ### Routing Table
+  Every device has a routing table that says "to reach network X, go through gateway Y":
+
+  ```bash
+  # View routing table
+  ip route show
+
+  # Example output:
+  default via 192.168.1.1 dev eth0
+  192.168.1.0/24 dev eth0 proto kernel scope link src 192.168.1.100
+  10.0.0.0/8 via 192.168.1.254 dev eth0
+  ```
+
+  ### Reading the Routing Table
+  - **default**: Where to send traffic if no specific route matches
+  - **via**: The gateway (next hop) to use
+  - **dev**: Which network interface to use
+
+  ## Default Gateway
+
+  The router that connects your local network to other networks (usually the internet).
+
+  ```
+  Your Computer                Router              Internet
+  192.168.1.100  ------>  192.168.1.1  ------>  8.8.8.8
+                         (default gateway)
+  ```
+
+  ## NAT (Network Address Translation)
+
+  NAT allows multiple devices to share one public IP address.
+
+  ### How NAT Works
+
+  ```
+  Private Network                 Router (NAT)              Internet
+                                  Public IP: 203.0.113.5
+  192.168.1.10 ----+
+                   |
+  192.168.1.20 ----+----> NAT Translation --------> google.com
+                   |
+  192.168.1.30 ----+
+
+  NAT Table:
+  Private IP:Port    <-->    Public IP:Port
+  192.168.1.10:5000  <-->    203.0.113.5:40001
+  192.168.1.20:5000  <-->    203.0.113.5:40002
+  ```
+
+  ### Types of NAT
+
+  1. **SNAT (Source NAT)**: Changes source IP (outbound traffic)
+  2. **DNAT (Destination NAT)**: Changes destination IP (inbound/port forwarding)
+  3. **PAT (Port Address Translation)**: Multiple private IPs share one public IP using different ports
+
+  ## Port Forwarding
+
+  Allows external access to services on your private network:
+
+  ```
+  Internet -----> Router (Public IP) -----> Internal Server
+                  Port 80 forwards to      192.168.1.50:80
+  ```
+
+  ```bash
+  # Linux iptables example
+  iptables -t nat -A PREROUTING -p tcp --dport 80 \
+    -j DNAT --to-destination 192.168.1.50:80
+  ```
+
+  ## Static vs Dynamic Routing
+
+  ### Static Routing
+  - Manually configured routes
+  - Simple, predictable
+  - Good for small networks
+
+  ```bash
+  # Add static route
+  sudo ip route add 10.0.0.0/8 via 192.168.1.254
+  ```
+
+  ### Dynamic Routing
+  - Routes learned automatically
+  - Protocols: OSPF, BGP, RIP
+  - Adapts to network changes
+  - Used in large networks
+
+  ## Common Commands
+
+  ```bash
+  # View routing table
+  ip route show
+  route -n  # Legacy
+
+  # Add a route
+  sudo ip route add 10.0.0.0/8 via 192.168.1.254
+
+  # Delete a route
+  sudo ip route del 10.0.0.0/8
+
+  # Change default gateway
+  sudo ip route replace default via 192.168.1.1
+
+  # Trace route to destination
+  traceroute google.com
+  tracepath google.com
+  mtr google.com  # Continuous monitoring
+  ```
+
+  ## Traceroute
+
+  Shows the path packets take to reach a destination:
+
+  ```bash
+  $ traceroute google.com
+   1  192.168.1.1 (192.168.1.1)      1.234 ms
+   2  10.0.0.1 (10.0.0.1)            5.678 ms
+   3  isp-router.net (203.0.113.1)   10.123 ms
+   4  google-edge.net (142.250.0.1)  15.456 ms
+  ```
+
+  Each line is a "hop" - a router the packet passes through.
+
+exercises:
+  - type: mcq
+    sequence_order: 1
+    question: What is the purpose of a default gateway?
+    options:
+      - To assign IP addresses to devices
+      - To route traffic to networks outside the local network
+      - To encrypt network traffic
+      - To store DNS records
+    correct_answer_index: 1
+    explanation: The default gateway is the router that forwards traffic destined for networks outside your local network, typically to the internet.
+
+  - type: mcq
+    sequence_order: 2
+    question: What does NAT (Network Address Translation) do?
+    options:
+      - Assigns domain names to IP addresses
+      - Allows multiple private IPs to share a public IP address
+      - Encrypts network traffic
+      - Speeds up internet connections
+    correct_answer_index: 1
+    explanation: NAT translates private IP addresses to a public IP address, allowing multiple devices on a private network to access the internet through a single public IP.
+
+  - type: mcq
+    sequence_order: 3
+    question: What command shows the routing table on Linux?
+    options:
+      - ifconfig
+      - ip route show
+      - netstat -a
+      - ping
+    correct_answer_index: 1
+    explanation: 'ip route show' (or 'ip r') displays the routing table. The legacy command 'route -n' also works.
+
+  - type: mcq
+    sequence_order: 4
+    question: What is port forwarding used for?
+    options:
+      - To speed up network connections
+      - To allow external access to services on a private network
+      - To encrypt traffic
+      - To block unwanted traffic
+    correct_answer_index: 1
+    explanation: Port forwarding (DNAT) redirects incoming traffic on a specific port to an internal server, allowing external access to services behind NAT.
+
+  - type: mcq
+    sequence_order: 5
+    question: What does traceroute show?
+    options:
+      - The DNS records for a domain
+      - The path packets take through routers to reach a destination
+      - The open ports on a server
+      - The MAC addresses on the network
+    correct_answer_index: 1
+    explanation: Traceroute shows each router (hop) that packets pass through on their way to the destination, including latency at each hop.
+
+  - type: terminal
+    sequence_order: 6
+    description: Display the routing table using ip route
+    command: ip route show
+    timeout_sec: 5
+    validation:
+      exit_code: 0
+      output_contains:
+        - "default"
+    hints:
+      - Use 'ip route show' or just 'ip r'
+      - Look for the 'default' route which is your gateway
+
+objectives:
+  - Understand how routing tables work
+  - Explain how NAT allows private networks to access the internet
+  - Use routing commands to view and modify routes
+next_recommended:
+  - network-troubleshooting

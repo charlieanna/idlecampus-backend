@@ -1,0 +1,218 @@
+slug: dns-fundamentals
+title: DNS Fundamentals
+sequence_order: 4
+estimated_minutes: 5
+difficulty: easy
+content_md: |
+  # DNS Fundamentals
+
+  DNS (Domain Name System) is the internet's phone book - it translates domain names to IP addresses.
+
+  ## How DNS Works
+
+  When you type `google.com`:
+
+  ```
+  1. Browser: "What's the IP for google.com?"
+  2. DNS Resolver: Checks cache, then asks...
+  3. Root Server: "Ask .com servers"
+  4. TLD Server (.com): "Ask Google's nameservers"
+  5. Authoritative Server: "google.com is 142.250.80.46"
+  6. Browser: Connects to 142.250.80.46
+  ```
+
+  ## DNS Hierarchy
+
+  ```
+  . (Root)
+  |
+  +-- .com (TLD)
+  |   +-- google.com
+  |   +-- example.com
+  |
+  +-- .org (TLD)
+  |   +-- wikipedia.org
+  |
+  +-- .io (TLD)
+      +-- github.io
+  ```
+
+  ## DNS Record Types
+
+  ### A Record (Address)
+  Maps domain to IPv4 address:
+  ```
+  example.com    A    93.184.216.34
+  ```
+
+  ### AAAA Record
+  Maps domain to IPv6 address:
+  ```
+  example.com    AAAA    2606:2800:220:1:248:1893:25c8:1946
+  ```
+
+  ### CNAME Record (Alias)
+  Points one domain to another:
+  ```
+  www.example.com    CNAME    example.com
+  blog.example.com   CNAME    mysite.wordpress.com
+  ```
+
+  ### MX Record (Mail Exchange)
+  Specifies mail servers:
+  ```
+  example.com    MX    10 mail1.example.com
+  example.com    MX    20 mail2.example.com
+  ```
+  (Lower number = higher priority)
+
+  ### TXT Record
+  Stores text data (used for verification, SPF, DKIM):
+  ```
+  example.com    TXT    "v=spf1 include:_spf.google.com ~all"
+  ```
+
+  ### NS Record (Name Server)
+  Specifies authoritative name servers:
+  ```
+  example.com    NS    ns1.example.com
+  example.com    NS    ns2.example.com
+  ```
+
+  ## DNS Lookup Commands
+
+  ```bash
+  # Basic lookup
+  nslookup example.com
+  dig example.com
+  host example.com
+
+  # Query specific record type
+  dig example.com A
+  dig example.com MX
+  dig example.com TXT
+
+  # Query specific DNS server
+  dig @8.8.8.8 example.com
+  nslookup example.com 8.8.8.8
+
+  # Detailed query (shows full response)
+  dig +trace example.com
+  ```
+
+  ## Common Public DNS Servers
+
+  | Provider | Primary | Secondary |
+  |----------|---------|-----------|
+  | Google | 8.8.8.8 | 8.8.4.4 |
+  | Cloudflare | 1.1.1.1 | 1.0.0.1 |
+  | OpenDNS | 208.67.222.222 | 208.67.220.220 |
+
+  ## DNS Caching
+
+  DNS responses are cached at multiple levels:
+
+  1. **Browser cache** (seconds to minutes)
+  2. **OS cache** (minutes)
+  3. **Router cache** (minutes to hours)
+  4. **ISP DNS cache** (hours)
+
+  ### TTL (Time To Live)
+  How long a record can be cached:
+  ```
+  example.com    300    A    93.184.216.34
+                 ^
+                 TTL in seconds (5 minutes)
+  ```
+
+  ## DNS Troubleshooting
+
+  ```bash
+  # Clear local DNS cache (Linux)
+  sudo systemd-resolve --flush-caches
+
+  # Clear DNS cache (macOS)
+  sudo dscacheutil -flushcache
+
+  # Check DNS resolution path
+  dig +trace example.com
+
+  # See cached DNS entries
+  cat /etc/resolv.conf
+  ```
+
+exercises:
+  - type: mcq
+    sequence_order: 1
+    question: What does DNS stand for?
+    options:
+      - Direct Network Service
+      - Domain Name System
+      - Data Network Security
+      - Digital Naming Service
+    correct_answer_index: 1
+    explanation: DNS stands for Domain Name System. It translates human-readable domain names (like google.com) into IP addresses that computers use to identify each other.
+
+  - type: mcq
+    sequence_order: 2
+    question: Which DNS record type maps a domain to an IPv4 address?
+    options:
+      - MX
+      - CNAME
+      - A
+      - TXT
+    correct_answer_index: 2
+    explanation: The A (Address) record maps a domain name to its IPv4 address. AAAA is for IPv6, MX is for mail servers, and CNAME creates aliases.
+
+  - type: mcq
+    sequence_order: 3
+    question: What is a CNAME record used for?
+    options:
+      - To specify mail servers
+      - To create an alias pointing to another domain
+      - To store text data
+      - To set the IP address
+    correct_answer_index: 1
+    explanation: CNAME (Canonical Name) creates an alias that points one domain to another. For example, www.example.com might be a CNAME pointing to example.com.
+
+  - type: mcq
+    sequence_order: 4
+    question: Which command can you use to perform a DNS lookup?
+    options:
+      - ping
+      - nslookup or dig
+      - netstat
+      - ifconfig
+    correct_answer_index: 1
+    explanation: nslookup and dig are DNS lookup tools. They query DNS servers to resolve domain names to IP addresses and show DNS record information.
+
+  - type: mcq
+    sequence_order: 5
+    question: What does TTL mean in DNS?
+    options:
+      - Time To Load
+      - Time To Live - how long a record can be cached
+      - Transfer To Local
+      - Total Time Limit
+    correct_answer_index: 1
+    explanation: TTL (Time To Live) specifies how long a DNS record can be cached before a new lookup is required. Lower TTL means more frequent lookups.
+
+  - type: terminal
+    sequence_order: 6
+    description: Look up the A record for example.com using dig
+    command: dig example.com A
+    timeout_sec: 10
+    validation:
+      exit_code: 0
+      output_contains:
+        - "ANSWER SECTION"
+    hints:
+      - Use 'dig example.com A' to query the A record
+      - The ANSWER SECTION shows the IP address
+
+objectives:
+  - Understand how DNS translates domains to IP addresses
+  - Know the common DNS record types and their purposes
+  - Use DNS lookup tools to troubleshoot
+next_recommended:
+  - http-https-basics

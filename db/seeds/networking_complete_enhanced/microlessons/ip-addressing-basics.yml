@@ -1,0 +1,204 @@
+slug: ip-addressing-basics
+title: IP Addressing Basics
+sequence_order: 2
+estimated_minutes: 5
+difficulty: easy
+content_md: |
+  # IP Addressing Basics
+
+  IP addresses are unique identifiers for devices on a network, like street addresses for computers.
+
+  ## IPv4 Addresses
+
+  IPv4 addresses are 32-bit numbers written as four octets:
+
+  ```
+  192.168.1.100
+   |   |   | |
+   |   |   | +-- Host portion
+   |   |   +---- Host portion
+   |   +-------- Network portion
+   +------------ Network portion
+  ```
+
+  Each octet is 0-255 (8 bits = 256 values)
+
+  ### IPv4 Address Classes
+
+  | Class | Range | Default Mask | Purpose |
+  |-------|-------|--------------|---------|
+  | A | 1.0.0.0 - 126.255.255.255 | 255.0.0.0 | Large networks |
+  | B | 128.0.0.0 - 191.255.255.255 | 255.255.0.0 | Medium networks |
+  | C | 192.0.0.0 - 223.255.255.255 | 255.255.255.0 | Small networks |
+
+  ## Private vs Public IP Addresses
+
+  ### Private IPs (Internal/LAN)
+
+  Used inside your network, not routable on the internet:
+
+  ```
+  Class A: 10.0.0.0 - 10.255.255.255
+  Class B: 172.16.0.0 - 172.31.255.255
+  Class C: 192.168.0.0 - 192.168.255.255
+  ```
+
+  ### Public IPs (Internet)
+
+  Unique addresses assigned by ISPs, routable on the internet.
+  Example: `8.8.8.8` (Google DNS)
+
+  ## Subnet Masks
+
+  Subnet masks define which part of an IP is the network and which is the host:
+
+  ```bash
+  IP Address:    192.168.1.100
+  Subnet Mask:   255.255.255.0
+
+  Network:       192.168.1.0
+  Host:          .100
+  Broadcast:     192.168.1.255
+  ```
+
+  ### CIDR Notation
+
+  A shorthand for subnet masks:
+
+  ```
+  /24 = 255.255.255.0    (256 addresses, 254 usable hosts)
+  /16 = 255.255.0.0      (65,536 addresses)
+  /8  = 255.0.0.0        (16 million addresses)
+
+  Example: 192.168.1.0/24
+  ```
+
+  ### Common Subnets
+
+  | CIDR | Subnet Mask | Usable Hosts |
+  |------|-------------|--------------|
+  | /24 | 255.255.255.0 | 254 |
+  | /25 | 255.255.255.128 | 126 |
+  | /26 | 255.255.255.192 | 62 |
+  | /27 | 255.255.255.224 | 30 |
+  | /28 | 255.255.255.240 | 14 |
+  | /30 | 255.255.255.252 | 2 |
+
+  ## Special IP Addresses
+
+  ```
+  127.0.0.1     - Localhost (loopback)
+  0.0.0.0       - All interfaces / default route
+  255.255.255.255 - Broadcast to all
+  169.254.x.x   - Link-local (APIPA) when DHCP fails
+  ```
+
+  ## IPv6 Addresses
+
+  128-bit addresses written in hexadecimal:
+
+  ```
+  2001:0db8:85a3:0000:0000:8a2e:0370:7334
+
+  Can be shortened:
+  2001:db8:85a3::8a2e:370:7334
+  ```
+
+  ### IPv6 Special Addresses
+
+  ```
+  ::1           - Localhost
+  fe80::/10     - Link-local
+  2000::/3      - Global unicast (public)
+  ```
+
+  ## Checking Your IP
+
+  ```bash
+  # Linux/Mac - Show IP configuration
+  ip addr show
+  ifconfig
+
+  # Windows
+  ipconfig
+
+  # Get public IP
+  curl ifconfig.me
+  curl ipinfo.io/ip
+  ```
+
+exercises:
+  - type: mcq
+    sequence_order: 1
+    question: Which of the following is a private IP address range?
+    options:
+      - 8.8.8.0 - 8.8.8.255
+      - 192.168.0.0 - 192.168.255.255
+      - 1.0.0.0 - 126.255.255.255
+      - 200.0.0.0 - 200.255.255.255
+    correct_answer_index: 1
+    explanation: 192.168.0.0 - 192.168.255.255 is the Class C private IP range. Private IPs are used internally and are not routable on the public internet.
+
+  - type: mcq
+    sequence_order: 2
+    question: What does a /24 subnet mask mean?
+    options:
+      - 24 computers can connect
+      - The first 24 bits are the network portion (255.255.255.0)
+      - The network has 24 hosts
+      - The IP has 24 octets
+    correct_answer_index: 1
+    explanation: /24 means the first 24 bits identify the network, equivalent to 255.255.255.0. This leaves 8 bits for hosts, allowing 254 usable IP addresses.
+
+  - type: mcq
+    sequence_order: 3
+    question: What is the localhost IP address in IPv4?
+    options:
+      - 192.168.1.1
+      - 0.0.0.0
+      - 127.0.0.1
+      - 255.255.255.255
+    correct_answer_index: 2
+    explanation: 127.0.0.1 is the loopback address (localhost). Traffic to this address stays on the local machine and is used for testing.
+
+  - type: mcq
+    sequence_order: 4
+    question: How many usable host addresses are in a /24 network?
+    options:
+      - 256
+      - 254
+      - 255
+      - 252
+    correct_answer_index: 1
+    explanation: A /24 network has 256 total addresses, but 2 are reserved (network address .0 and broadcast .255), leaving 254 usable host addresses.
+
+  - type: mcq
+    sequence_order: 5
+    question: What happens when a device gets an IP address starting with 169.254?
+    options:
+      - It connected to the internet successfully
+      - DHCP failed and it assigned itself a link-local address
+      - It's using a private IP address
+      - The network is using IPv6
+    correct_answer_index: 1
+    explanation: 169.254.x.x addresses are APIPA (Automatic Private IP Addressing) addresses assigned when a device cannot reach a DHCP server.
+
+  - type: terminal
+    sequence_order: 6
+    description: Display your IP address configuration using the 'ip addr' command
+    command: ip addr show
+    timeout_sec: 5
+    validation:
+      exit_code: 0
+      output_contains:
+        - "inet"
+    hints:
+      - Use 'ip addr show' or just 'ip a'
+      - Look for lines starting with 'inet' to find IPv4 addresses
+
+objectives:
+  - Understand IPv4 address structure and classes
+  - Differentiate between private and public IP addresses
+  - Read and interpret subnet masks and CIDR notation
+next_recommended:
+  - tcp-udp-protocols

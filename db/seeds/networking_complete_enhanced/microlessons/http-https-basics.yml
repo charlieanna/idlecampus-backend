@@ -1,0 +1,221 @@
+slug: http-https-basics
+title: HTTP and HTTPS Basics
+sequence_order: 5
+estimated_minutes: 5
+difficulty: easy
+content_md: |
+  # HTTP and HTTPS Basics
+
+  HTTP (Hypertext Transfer Protocol) is how web browsers and servers communicate.
+
+  ## HTTP Request/Response
+
+  ### Request Structure
+  ```
+  GET /api/users HTTP/1.1
+  Host: example.com
+  Accept: application/json
+  Authorization: Bearer token123
+  ```
+
+  ### Response Structure
+  ```
+  HTTP/1.1 200 OK
+  Content-Type: application/json
+  Content-Length: 128
+
+  {"users": [...]}
+  ```
+
+  ## HTTP Methods
+
+  | Method | Purpose | Idempotent |
+  |--------|---------|------------|
+  | GET | Retrieve data | Yes |
+  | POST | Create new resource | No |
+  | PUT | Replace resource | Yes |
+  | PATCH | Partial update | No |
+  | DELETE | Remove resource | Yes |
+  | HEAD | Get headers only | Yes |
+  | OPTIONS | Get allowed methods | Yes |
+
+  ## HTTP Status Codes
+
+  ### 2xx - Success
+  - **200 OK** - Request succeeded
+  - **201 Created** - Resource created
+  - **204 No Content** - Success with no body
+
+  ### 3xx - Redirection
+  - **301 Moved Permanently** - URL changed
+  - **302 Found** - Temporary redirect
+  - **304 Not Modified** - Use cached version
+
+  ### 4xx - Client Errors
+  - **400 Bad Request** - Invalid syntax
+  - **401 Unauthorized** - Authentication required
+  - **403 Forbidden** - Access denied
+  - **404 Not Found** - Resource doesn't exist
+  - **429 Too Many Requests** - Rate limited
+
+  ### 5xx - Server Errors
+  - **500 Internal Server Error** - Server crashed
+  - **502 Bad Gateway** - Invalid upstream response
+  - **503 Service Unavailable** - Server overloaded
+  - **504 Gateway Timeout** - Upstream timeout
+
+  ## HTTP Headers
+
+  ### Common Request Headers
+  ```
+  Host: example.com
+  User-Agent: Mozilla/5.0...
+  Accept: text/html, application/json
+  Accept-Language: en-US
+  Authorization: Bearer xyz
+  Content-Type: application/json
+  Cookie: session=abc123
+  ```
+
+  ### Common Response Headers
+  ```
+  Content-Type: application/json
+  Content-Length: 1234
+  Cache-Control: max-age=3600
+  Set-Cookie: session=abc123
+  Location: /new-url (for redirects)
+  ```
+
+  ## HTTP vs HTTPS
+
+  | Feature | HTTP | HTTPS |
+  |---------|------|-------|
+  | Port | 80 | 443 |
+  | Encryption | None | TLS/SSL |
+  | Security | Not secure | Encrypted |
+  | URL | http:// | https:// |
+
+  ### Why HTTPS Matters
+  - **Encryption**: Data can't be read in transit
+  - **Authentication**: Verify server identity
+  - **Integrity**: Detect tampering
+  - **SEO**: Google ranks HTTPS higher
+  - **Browser Trust**: No "Not Secure" warning
+
+  ## Using cURL
+
+  ```bash
+  # GET request
+  curl https://api.example.com/users
+
+  # POST with JSON data
+  curl -X POST https://api.example.com/users \
+    -H "Content-Type: application/json" \
+    -d '{"name": "John"}'
+
+  # Include headers
+  curl -H "Authorization: Bearer token" \
+    https://api.example.com/protected
+
+  # Show response headers
+  curl -I https://example.com
+
+  # Verbose output (see full request/response)
+  curl -v https://example.com
+
+  # Follow redirects
+  curl -L https://example.com
+
+  # Save response to file
+  curl -o output.html https://example.com
+  ```
+
+  ## HTTP/2 and HTTP/3
+
+  ### HTTP/2 Improvements
+  - **Multiplexing**: Multiple requests over one connection
+  - **Header compression**: Smaller headers
+  - **Server push**: Server sends resources proactively
+  - **Binary protocol**: More efficient than text
+
+  ### HTTP/3
+  - Uses **QUIC** instead of TCP
+  - Even faster connection setup
+  - Better handling of packet loss
+
+exercises:
+  - type: mcq
+    sequence_order: 1
+    question: Which HTTP status code indicates a resource was not found?
+    options:
+      - 200
+      - 401
+      - 404
+      - 500
+    correct_answer_index: 2
+    explanation: 404 Not Found indicates the requested resource doesn't exist on the server. 200 is success, 401 is unauthorized, 500 is server error.
+
+  - type: mcq
+    sequence_order: 2
+    question: What HTTP method should be used to create a new resource?
+    options:
+      - GET
+      - POST
+      - PUT
+      - DELETE
+    correct_answer_index: 1
+    explanation: POST is used to create new resources. GET retrieves data, PUT replaces existing resources, DELETE removes them.
+
+  - type: mcq
+    sequence_order: 3
+    question: What is the main difference between HTTP and HTTPS?
+    options:
+      - HTTPS is faster
+      - HTTPS encrypts data using TLS/SSL
+      - HTTP uses port 443
+      - There is no difference
+    correct_answer_index: 1
+    explanation: HTTPS encrypts all data between client and server using TLS/SSL, preventing eavesdropping and tampering. HTTP sends data in plain text.
+
+  - type: mcq
+    sequence_order: 4
+    question: What does a 500 status code indicate?
+    options:
+      - The request was successful
+      - The client made a bad request
+      - The server encountered an internal error
+      - The resource was moved
+    correct_answer_index: 2
+    explanation: 500 Internal Server Error means something went wrong on the server side. The 5xx range always indicates server errors.
+
+  - type: mcq
+    sequence_order: 5
+    question: Which HTTP header specifies the format of the request body?
+    options:
+      - Accept
+      - Content-Type
+      - User-Agent
+      - Host
+    correct_answer_index: 1
+    explanation: Content-Type tells the server what format the request body is in (e.g., application/json). Accept tells the server what formats the client can handle in the response.
+
+  - type: terminal
+    sequence_order: 6
+    description: Fetch the HTTP headers from https://example.com using curl
+    command: curl -I https://example.com
+    timeout_sec: 15
+    validation:
+      exit_code: 0
+      output_contains:
+        - "HTTP/"
+        - "200"
+    hints:
+      - Use curl with the -I flag to fetch headers only
+      - This performs a HEAD request
+
+objectives:
+  - Understand HTTP request/response structure
+  - Know common HTTP methods and status codes
+  - Explain the security benefits of HTTPS
+next_recommended:
+  - routing-and-nat

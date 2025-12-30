@@ -1,0 +1,260 @@
+slug: network-troubleshooting
+title: Network Troubleshooting
+sequence_order: 7
+estimated_minutes: 5
+difficulty: medium
+content_md: |
+  # Network Troubleshooting
+
+  A systematic approach to diagnosing and fixing network issues.
+
+  ## The Troubleshooting Process
+
+  Work from the bottom of the OSI model up:
+
+  ```
+  1. Physical Layer: Is the cable connected? Is the NIC working?
+  2. Data Link: Can you reach devices on the same network?
+  3. Network: Can you ping the gateway? Can you reach external IPs?
+  4. Transport: Are the right ports open? Is the service running?
+  5. Application: Does the application work? Check logs.
+  ```
+
+  ## Essential Troubleshooting Commands
+
+  ### 1. Check Network Interface
+  ```bash
+  # Is the interface up?
+  ip link show
+  ip addr show
+
+  # Check interface statistics
+  ip -s link show eth0
+
+  # Bring interface up/down
+  sudo ip link set eth0 up
+  sudo ip link set eth0 down
+  ```
+
+  ### 2. Test Connectivity with Ping
+  ```bash
+  # Ping local gateway
+  ping 192.168.1.1
+
+  # Ping external IP (Google DNS)
+  ping 8.8.8.8
+
+  # Ping with count
+  ping -c 4 google.com
+
+  # Ping with flood (quick test, needs sudo)
+  sudo ping -f google.com
+  ```
+
+  ### 3. Test DNS Resolution
+  ```bash
+  # Basic DNS lookup
+  nslookup google.com
+  dig google.com
+
+  # Use specific DNS server
+  nslookup google.com 8.8.8.8
+  dig @8.8.8.8 google.com
+
+  # Check DNS configuration
+  cat /etc/resolv.conf
+  ```
+
+  ### 4. Trace the Route
+  ```bash
+  # Trace path to destination
+  traceroute google.com
+
+  # With more details
+  traceroute -n google.com
+
+  # Continuous monitoring
+  mtr google.com
+  ```
+
+  ### 5. Check Ports and Connections
+  ```bash
+  # Show listening ports
+  ss -tuln
+  netstat -tuln
+
+  # Check if specific port is open
+  nc -zv host.com 80
+  telnet host.com 80
+
+  # Show established connections
+  ss -tun
+  netstat -tun
+
+  # Find what's using a port
+  sudo lsof -i :80
+  sudo ss -tlnp | grep :80
+  ```
+
+  ### 6. Check Firewall
+  ```bash
+  # List iptables rules
+  sudo iptables -L -n
+
+  # Check firewalld (RHEL/CentOS)
+  sudo firewall-cmd --list-all
+
+  # Check ufw (Ubuntu)
+  sudo ufw status
+  ```
+
+  ## Common Issues and Solutions
+
+  ### Cannot Reach Internet
+
+  ```bash
+  # 1. Check if interface has IP
+  ip addr show
+
+  # 2. Ping gateway
+  ping $(ip route | grep default | awk '{print $3}')
+
+  # 3. Ping external IP (bypasses DNS)
+  ping 8.8.8.8
+
+  # 4. If ping works but web doesn't, check DNS
+  nslookup google.com
+  ```
+
+  **Diagnosis:**
+  - No IP? → Check DHCP or set static IP
+  - Can't ping gateway? → Check cable, switch, gateway
+  - Can ping IP but not domain? → DNS problem
+  - DNS works but still fails? → Check firewall, proxy
+
+  ### DNS Not Resolving
+
+  ```bash
+  # Check DNS servers
+  cat /etc/resolv.conf
+
+  # Test with different DNS
+  nslookup google.com 8.8.8.8
+
+  # Flush DNS cache
+  sudo systemd-resolve --flush-caches
+  ```
+
+  ### Port Connection Refused
+
+  ```bash
+  # Is the service running?
+  systemctl status nginx
+  ps aux | grep nginx
+
+  # Is it listening on the port?
+  ss -tlnp | grep :80
+
+  # Is firewall blocking?
+  sudo iptables -L -n | grep 80
+  ```
+
+  ### Slow Network
+
+  ```bash
+  # Test bandwidth
+  speedtest-cli
+
+  # Check for packet loss
+  ping -c 100 google.com | grep loss
+
+  # Monitor connections
+  mtr google.com
+
+  # Check interface errors
+  ip -s link show eth0
+  ```
+
+  ## Quick Reference
+
+  | Issue | First Command |
+  |-------|---------------|
+  | No network | `ip addr show` |
+  | Can't ping gateway | `ip route show` |
+  | Can't resolve DNS | `nslookup google.com` |
+  | Port not accessible | `ss -tlnp` |
+  | Slow connection | `mtr target.com` |
+  | Connection drops | `ping -c 100 target` |
+
+exercises:
+  - type: mcq
+    sequence_order: 1
+    question: What should be your first step when troubleshooting network issues?
+    options:
+      - Check the application logs
+      - Restart the computer
+      - Check physical connectivity and interface status
+      - Reinstall the operating system
+    correct_answer_index: 2
+    explanation: Start at the physical layer - check cables, verify the interface is up, and has an IP address. Work your way up the OSI model from there.
+
+  - type: mcq
+    sequence_order: 2
+    question: If you can ping 8.8.8.8 but cannot access google.com, what is likely the issue?
+    options:
+      - The internet is down
+      - There's a DNS resolution problem
+      - The physical cable is disconnected
+      - The firewall is blocking all traffic
+    correct_answer_index: 1
+    explanation: If you can ping an IP address but not a domain name, DNS resolution is failing. Try using a different DNS server like 8.8.8.8.
+
+  - type: mcq
+    sequence_order: 3
+    question: Which command shows listening network ports?
+    options:
+      - ping -l
+      - ip route
+      - ss -tuln or netstat -tuln
+      - traceroute
+    correct_answer_index: 2
+    explanation: 'ss -tuln' (or 'netstat -tuln') shows TCP/UDP listening ports in numeric format. This helps verify if services are running on expected ports.
+
+  - type: mcq
+    sequence_order: 4
+    question: What does the mtr command do?
+    options:
+      - Measures Transfer Rate
+      - Combines ping and traceroute for continuous monitoring
+      - Modifies The Routing table
+      - Manages TLS Requests
+    correct_answer_index: 1
+    explanation: mtr (My TraceRoute) combines ping and traceroute, continuously showing latency and packet loss at each hop. It's excellent for diagnosing intermittent issues.
+
+  - type: mcq
+    sequence_order: 5
+    question: Connection to a web server on port 80 is refused. What should you check first?
+    options:
+      - Check if the web server process is running and listening on port 80
+      - Replace the network cable
+      - Update DNS records
+      - Increase bandwidth
+    correct_answer_index: 0
+    explanation: "Connection refused" means something is responding but rejecting the connection. Check if the service is running and listening on that port with 'ss -tlnp | grep :80'.
+
+  - type: terminal
+    sequence_order: 6
+    description: Check if any service is listening on port 22 (SSH)
+    command: ss -tlnp | grep :22
+    timeout_sec: 5
+    validation:
+      exit_code: 0
+    hints:
+      - Use 'ss -tlnp' to show listening ports with process info
+      - Pipe to grep to filter for port 22
+
+objectives:
+  - Apply a systematic troubleshooting approach
+  - Use essential network diagnostic commands
+  - Diagnose common network problems
+next_recommended: []

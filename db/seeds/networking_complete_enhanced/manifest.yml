@@ -1,112 +1,33 @@
 course:
   slug: networking-fundamentals
   title: Networking Fundamentals
-  description: OSI, IP subnetting, TCP/UDP, DNS, HTTP/HTTPS, TLS, routing, NAT, proxies,
-    troubleshooting.
-  estimated_hours: 6
+  description: Master essential networking concepts including OSI model, IP addressing, TCP/UDP, DNS, HTTP/HTTPS, TLS, routing, NAT, and troubleshooting.
+  estimated_hours: 4
   level: beginner
+
 modules:
-- slug: networking-fundamentals-core
-  title: Networking Fundamentals Core
-  lessons:
-  - database-integration-with-databasesql
-  - docker-build-building-images-from-dockerfile
-  - docker-compose-up-start-multi-container-applications
-  - docker-network-create
-  - docker-ps-listing-running-containers
-  - fan-outfan-in-pipeline
-  - infrastructure-as-code-with-terraform
-  - introduction-to-bash-and-shell-scripting
-  - introduction-to-regular-expressions
-  - lesson-1
-  - network-commands
-  - pointers-in-go
-  - rest-api-design-basics
-  - security-principles-best-practices
-  - advanced-terraform-patterns
-  - building-http-servers-with-nethttp
-  - close-packing-packing-efficiency-and-crystal-defects
-  - concurrency-vs-parallelism
-  - docker-run-creating-and-starting-containers
-  - electrolysis-faraday
-  - group-14-carbon-family-c-si-ge-sn-pb
-  - group-16-elements-oxygen-and-sulfur
-  - group-2-alkaline-earth-metals-be-mg-ca-sr-ba-ra
-  - lesson-2
-  - middleware-and-logging
-  - python-setup-and-essential-libraries
-  - qualitative-analysis-detection-tests-for-elements-and-functional-groups
-  - basic-laboratory-techniques-purification-and-separation-methods
-  - conductance-kohlrausch
-  - configuration-management
-  - docker-compose-build-build-or-rebuild-service-images
-  - docker-pull-download-images-from-registry
-  - introduction-to-goroutines
-  - json-requestresponse-handling
-  - lesson-3
-  - liquid-state-solid-state
-  - mastering-quantifiers
-  - understanding-tlsssl
-  - air-pollution-tropospheric-and-stratospheric
-  - cation-and-anion-analysis-group-reagents-and-tests
-  - codesprout-exposing-containers-with-port-mapping
-  - docker-network-connect
-  - docker-push-upload-images-to-registry
-  - docker-rm-removing-containers
-  - emulsions-and-micelles
-  - introduction-to-channels
-  - lesson-4
-  - working-with-certificates
-  - adsorption-types-and-mechanisms
-  - lesson-5
-  - physical-features-of-india
-  - ssh-keys-and-authentication
-  - lesson-6
-  - managing-secrets-securely
-  - practice-question
-  - lesson-7
-  - introduction-to-cryptography
-  - lesson-8
-  - lesson-9
-  - biodiversity-conservation-and-climate-change
-  - docker-port-list-port-mappings
-  - lesson-10
-  - which-reagent-can-be-used-to-distinguish-between-benzoic-acid-and-phenol-using-extraction
-  - lesson-11
-  - ozonedepletion-practice
-  - information-technology-and-digital-india
-  - lesson-12
-  - lesson-13
-  - lesson-14
-  - lesson-15
-  - anomalousbehavior-practice
-  - lesson-16
-  - lesson-17
-  - lesson-18
-  - lesson-19
-  - lesson-20
-  - lesson-21
-  - lesson-22
-  - lesson-23
-  - lesson-24
-  - lesson-26
-  - lesson-27
-  - lesson-28
-  - lesson-34
-  - lesson-36
-  - lesson-39
-  - lesson-42
-  - lesson-52
-  - lesson-53
-  - lesson-62
-  - lesson-68
-  - lesson-72
-  - lesson-88
-  - lesson-90
-  - lesson-96
-  - lesson-98
-  - lesson-101
-  - lesson-104
-  - lesson-114
-  - lesson-115
-  - lesson-124
+  - slug: networking-basics
+    title: Networking Basics
+    lessons:
+      - osi-model-fundamentals
+      - ip-addressing-basics
+      - tcp-udp-protocols
+
+  - slug: application-protocols
+    title: Application Layer Protocols
+    lessons:
+      - dns-fundamentals
+      - http-https-basics
+      - understanding-tlsssl
+
+  - slug: network-infrastructure
+    title: Network Infrastructure
+    lessons:
+      - routing-and-nat
+      - network-commands
+      - ssh-keys-and-authentication
+
+  - slug: practical-skills
+    title: Practical Networking Skills
+    lessons:
+      - network-troubleshooting

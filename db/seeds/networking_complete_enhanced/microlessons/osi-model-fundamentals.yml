@@ -1,0 +1,165 @@
+slug: osi-model-fundamentals
+title: OSI Model Fundamentals
+sequence_order: 1
+estimated_minutes: 5
+difficulty: easy
+content_md: |
+  # OSI Model Fundamentals
+
+  The OSI (Open Systems Interconnection) model is a conceptual framework that describes how data travels through a network.
+
+  ## The 7 Layers
+
+  Think of OSI as layers of an onion - each layer wraps around the previous one:
+
+  ```
+  Layer 7: Application    (HTTP, FTP, DNS, SMTP)
+  Layer 6: Presentation   (Encryption, Compression)
+  Layer 5: Session        (Session Management)
+  Layer 4: Transport      (TCP, UDP - Ports)
+  Layer 3: Network        (IP Addresses, Routing)
+  Layer 2: Data Link      (MAC Addresses, Switches)
+  Layer 1: Physical       (Cables, Signals, Bits)
+  ```
+
+  ## Memory Trick
+
+  **"Please Do Not Throw Sausage Pizza Away"**
+  - **P**hysical (Layer 1)
+  - **D**ata Link (Layer 2)
+  - **N**etwork (Layer 3)
+  - **T**ransport (Layer 4)
+  - **S**ession (Layer 5)
+  - **P**resentation (Layer 6)
+  - **A**pplication (Layer 7)
+
+  ## What Happens at Each Layer
+
+  ### Layer 1 - Physical
+  - Actual hardware: cables, hubs, network cards
+  - Deals with raw bits (0s and 1s)
+  - Examples: Ethernet cables, fiber optics, Wi-Fi radio waves
+
+  ### Layer 2 - Data Link
+  - Uses **MAC addresses** (hardware addresses)
+  - Switches operate here
+  - Creates frames from raw bits
+  - Example: Your network card's address like `00:1A:2B:3C:4D:5E`
+
+  ### Layer 3 - Network
+  - Uses **IP addresses**
+  - Routers operate here
+  - Handles routing between different networks
+  - Examples: `192.168.1.1`, `10.0.0.1`
+
+  ### Layer 4 - Transport
+  - **TCP**: Reliable, ordered delivery (like certified mail)
+  - **UDP**: Fast, no guarantee (like regular mail)
+  - Uses **ports** to identify applications
+  - Examples: Port 80 (HTTP), Port 443 (HTTPS), Port 22 (SSH)
+
+  ### Layer 5 - Session
+  - Manages connections between applications
+  - Handles authentication and reconnection
+
+  ### Layer 6 - Presentation
+  - Data formatting and encryption
+  - Converts data between formats
+  - Examples: SSL/TLS encryption, JPEG encoding
+
+  ### Layer 7 - Application
+  - What users interact with
+  - Protocols: HTTP, FTP, SMTP, DNS
+
+  ## Real-World Example
+
+  When you visit a website:
+
+  ```
+  1. Application (7):  Browser requests webpage via HTTP
+  2. Presentation (6): Data is encrypted with TLS
+  3. Session (5):      Connection session established
+  4. Transport (4):    Data split into TCP segments (port 443)
+  5. Network (3):      IP address routing (destination IP)
+  6. Data Link (2):    Framing with MAC addresses
+  7. Physical (1):     Bits sent over cable/Wi-Fi
+  ```
+
+  ## TCP/IP Model Comparison
+
+  In practice, the simpler **TCP/IP model** is more commonly used:
+
+  ```
+  OSI Model          TCP/IP Model
+  -----------        ------------
+  Application  }
+  Presentation }---> Application
+  Session      }
+  Transport    ----> Transport
+  Network      ----> Internet
+  Data Link    }---> Network Access
+  Physical     }
+  ```
+
+exercises:
+  - type: mcq
+    sequence_order: 1
+    question: How many layers does the OSI model have?
+    options:
+      - 4 layers
+      - 5 layers
+      - 7 layers
+      - 10 layers
+    correct_answer_index: 2
+    explanation: The OSI model has 7 layers, from Physical (Layer 1) to Application (Layer 7).
+
+  - type: mcq
+    sequence_order: 2
+    question: Which layer is responsible for IP addressing and routing?
+    options:
+      - Layer 2 - Data Link
+      - Layer 3 - Network
+      - Layer 4 - Transport
+      - Layer 7 - Application
+    correct_answer_index: 1
+    explanation: Layer 3 (Network) handles IP addresses and routing between networks. Routers operate at this layer.
+
+  - type: mcq
+    sequence_order: 3
+    question: At which layer do switches primarily operate?
+    options:
+      - Layer 1 - Physical
+      - Layer 2 - Data Link
+      - Layer 3 - Network
+      - Layer 4 - Transport
+    correct_answer_index: 1
+    explanation: Switches operate at Layer 2 (Data Link) and use MAC addresses to forward frames between devices on the same network.
+
+  - type: mcq
+    sequence_order: 4
+    question: Which layer handles port numbers for TCP and UDP?
+    options:
+      - Layer 3 - Network
+      - Layer 4 - Transport
+      - Layer 5 - Session
+      - Layer 7 - Application
+    correct_answer_index: 1
+    explanation: Layer 4 (Transport) uses port numbers to identify specific applications. TCP and UDP are transport layer protocols.
+
+  - type: mcq
+    sequence_order: 5
+    question: What is the correct order of OSI layers from bottom to top?
+    options:
+      - Application, Physical, Network, Transport
+      - Physical, Data Link, Network, Transport, Session, Presentation, Application
+      - Network, Transport, Application, Physical
+      - Application, Presentation, Session, Transport, Network, Data Link, Physical
+    correct_answer_index: 1
+    explanation: The layers from bottom (1) to top (7) are Physical, Data Link, Network, Transport, Session, Presentation, Application.
+
+objectives:
+  - Understand the 7 layers of the OSI model
+  - Identify which protocols and devices operate at each layer
+  - Compare OSI to the TCP/IP model
+next_recommended:
+  - ip-addressing-basics
