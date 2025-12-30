@@ -1,22 +1,28 @@
 course:
   slug: networking-fundamentals
   title: Networking Fundamentals
-  description: Master essential networking concepts including OSI model, IP addressing, TCP/UDP, DNS, HTTP/HTTPS, TLS, routing, NAT, and troubleshooting.
-  estimated_hours: 4
+  description: Master essential networking concepts including OSI model, IP addressing, subnetting, TCP/UDP, DNS, HTTP/HTTPS, TLS, routing, NAT, firewalls, VPNs, wireless networking, and troubleshooting.
+  estimated_hours: 8
   level: beginner
 
 modules:
-  - slug: networking-basics
-    title: Networking Basics
+  - slug: networking-foundations
+    title: Networking Foundations
     lessons:
       - osi-model-fundamentals
       - ip-addressing-basics
-      - tcp-udp-protocols
+      - subnetting-and-cidr
+      - dhcp-fundamentals
 
-  - slug: application-protocols
+  - slug: transport-layer
+    title: Transport Layer Protocols
+    lessons:
+      - tcp-udp-protocols
+      - dns-fundamentals
+
+  - slug: application-layer
     title: Application Layer Protocols
     lessons:
-      - dns-fundamentals
       - http-https-basics
       - understanding-tlsssl
 
@@ -24,10 +30,20 @@ modules:
     title: Network Infrastructure
     lessons:
       - routing-and-nat
-      - network-commands
+      - load-balancing-basics
+      - vpn-and-proxies
+
+  - slug: network-security
+    title: Network Security
+    lessons:
+      - firewalls-basics
+      - wireless-networking
+      - network-security-basics
       - ssh-keys-and-authentication
 
   - slug: practical-skills
     title: Practical Networking Skills
     lessons:
+      - network-commands
       - network-troubleshooting
+      - network-monitoring

@@ -1,0 +1,197 @@
+slug: vpn-and-proxies
+title: VPNs and Proxies
+sequence_order: 11
+estimated_minutes: 5
+difficulty: medium
+content_md: |
+  # VPNs and Proxies
+
+  Both VPNs and proxies route your traffic through another server, but they work differently.
+
+  ## VPN (Virtual Private Network)
+
+  Creates an encrypted tunnel for ALL your internet traffic.
+
+  ```
+  Your Device ===encrypted tunnel===> VPN Server ---> Internet
+                                           |
+                                      Your traffic appears
+                                      to come from VPN server
+  ```
+
+  ### How VPN Works
+
+  1. VPN client encrypts all traffic
+  2. Traffic sent through encrypted tunnel
+  3. VPN server decrypts and forwards to destination
+  4. Response returns through the tunnel
+
+  ### VPN Protocols
+
+  | Protocol | Security | Speed | Use Case |
+  |----------|----------|-------|----------|
+  | **WireGuard** | Excellent | Fast | Modern, recommended |
+  | **OpenVPN** | Excellent | Good | Widely supported |
+  | **IKEv2** | Excellent | Fast | Mobile devices |
+  | **L2TP/IPsec** | Good | Medium | Legacy support |
+  | **PPTP** | Poor | Fast | Avoid - insecure |
+
+  ### VPN Use Cases
+
+  - **Remote work**: Access company network securely
+  - **Privacy**: Hide browsing from ISP
+  - **Security**: Protect data on public Wi-Fi
+  - **Bypass geo-restrictions**: Access region-locked content
+
+  ## Proxy Servers
+
+  Routes specific application traffic through another server (usually unencrypted).
+
+  ```
+  Your Browser ---> Proxy Server ---> Website
+                         |
+                    Only browser traffic
+                    (not encrypted by default)
+  ```
+
+  ### Types of Proxies
+
+  **HTTP Proxy**
+  - Works with web traffic only
+  - Can cache content
+  - Often used for content filtering
+
+  **SOCKS Proxy**
+  - Works with any TCP traffic
+  - More flexible than HTTP proxy
+  - SOCKS5 supports UDP and authentication
+
+  **Transparent Proxy**
+  - User doesn't configure it
+  - Network automatically routes traffic
+  - Often used for caching or filtering
+
+  **Reverse Proxy**
+  - Sits in front of servers
+  - Load balancing, caching, SSL termination
+  - Examples: Nginx, HAProxy
+
+  ## VPN vs Proxy
+
+  | Feature | VPN | Proxy |
+  |---------|-----|-------|
+  | Encryption | Yes (all traffic) | Usually no |
+  | Coverage | All applications | Single application |
+  | Speed | Slower (encryption overhead) | Faster |
+  | Privacy | Better | Limited |
+  | Setup | Install client | Configure per-app |
+
+  ## Setting Up
+
+  ### SSH Tunnel (Quick SOCKS Proxy)
+  ```bash
+  # Create SOCKS proxy on localhost:1080
+  ssh -D 1080 user@server.com
+
+  # Configure browser to use SOCKS5 proxy
+  # Host: 127.0.0.1, Port: 1080
+  ```
+
+  ### WireGuard VPN
+  ```bash
+  # Install WireGuard
+  sudo apt install wireguard
+
+  # Generate keys
+  wg genkey | tee privatekey | wg pubkey > publickey
+
+  # Configuration (/etc/wireguard/wg0.conf)
+  [Interface]
+  PrivateKey = <your-private-key>
+  Address = 10.0.0.2/24
+  DNS = 1.1.1.1
+
+  [Peer]
+  PublicKey = <server-public-key>
+  Endpoint = vpn.example.com:51820
+  AllowedIPs = 0.0.0.0/0
+
+  # Start VPN
+  sudo wg-quick up wg0
+  ```
+
+  ### Using Proxy with curl
+  ```bash
+  # HTTP proxy
+  curl -x http://proxy:8080 https://example.com
+
+  # SOCKS5 proxy
+  curl --socks5 127.0.0.1:1080 https://example.com
+
+  # Environment variable
+  export https_proxy=http://proxy:8080
+  curl https://example.com
+  ```
+
+exercises:
+  - type: mcq
+    sequence_order: 1
+    question: What is the main difference between a VPN and a proxy?
+    options:
+      - Proxies are faster
+      - VPNs encrypt all traffic, proxies typically don't
+      - Proxies work with more applications
+      - There is no difference
+    correct_answer_index: 1
+    explanation: VPNs encrypt all traffic from your device through a tunnel, while proxies typically just forward traffic for specific applications without encryption.
+
+  - type: mcq
+    sequence_order: 2
+    question: Which VPN protocol is modern, fast, and recommended?
+    options:
+      - PPTP
+      - L2TP
+      - WireGuard
+      - SSTP
+    correct_answer_index: 2
+    explanation: WireGuard is a modern VPN protocol that's faster, simpler, and more secure than older protocols like OpenVPN or IPsec.
+
+  - type: mcq
+    sequence_order: 3
+    question: What type of proxy sits in front of web servers for load balancing?
+    options:
+      - Forward proxy
+      - SOCKS proxy
+      - Reverse proxy
+      - Transparent proxy
+    correct_answer_index: 2
+    explanation: A reverse proxy sits in front of servers to handle load balancing, caching, and SSL termination. Examples include Nginx and HAProxy.
+
+  - type: mcq
+    sequence_order: 4
+    question: Which command creates a SOCKS proxy using SSH?
+    options:
+      - ssh -L 1080 user@server
+      - ssh -D 1080 user@server
+      - ssh -R 1080 user@server
+      - ssh -p 1080 user@server
+    correct_answer_index: 1
+    explanation: The -D flag creates a dynamic SOCKS proxy. Traffic sent to localhost:1080 is forwarded through the SSH connection.
+
+  - type: mcq
+    sequence_order: 5
+    question: Why should you avoid PPTP for VPN?
+    options:
+      - It's too slow
+      - It's not widely supported
+      - It has known security vulnerabilities
+      - It doesn't support mobile devices
+    correct_answer_index: 2
+    explanation: PPTP has known security vulnerabilities and its encryption can be broken. Use WireGuard, OpenVPN, or IKEv2 instead.
+
+objectives:
+  - Understand the difference between VPNs and proxies
+  - Know when to use each technology
+  - Set up basic VPN and proxy connections
+next_recommended:
+  - firewalls-basics

@@ -1,0 +1,224 @@
+slug: firewalls-basics
+title: Firewall Basics
+sequence_order: 12
+estimated_minutes: 5
+difficulty: medium
+content_md: |
+  # Firewall Basics
+
+  Firewalls control network traffic based on security rules, blocking unauthorized access while permitting legitimate communication.
+
+  ## What Firewalls Do
+
+  - **Filter traffic** based on IP, port, protocol
+  - **Block attacks** from malicious sources
+  - **Enforce policies** on what can communicate
+  - **Log activity** for security monitoring
+
+  ## Types of Firewalls
+
+  ### Packet Filter (Stateless)
+  - Examines each packet independently
+  - Checks source/destination IP, port, protocol
+  - Fast but can't track connections
+
+  ### Stateful Firewall
+  - Tracks connection state
+  - Understands TCP handshakes
+  - More secure than packet filter
+
+  ### Application Layer (WAF)
+  - Inspects application data (HTTP, SQL)
+  - Blocks attacks like SQL injection, XSS
+  - Used for web applications
+
+  ## Firewall Rules
+
+  Rules are processed top to bottom, first match wins:
+
+  ```
+  Rule 1: ALLOW TCP port 22 from 10.0.0.0/8    (SSH from internal)
+  Rule 2: ALLOW TCP port 80,443 from any       (Web traffic)
+  Rule 3: ALLOW TCP port 3306 from 10.0.0.5    (MySQL from app server)
+  Rule 4: DENY all                              (Block everything else)
+  ```
+
+  ### Rule Components
+
+  - **Action**: ALLOW, DENY, DROP, REJECT
+  - **Protocol**: TCP, UDP, ICMP, ALL
+  - **Source**: IP address or range
+  - **Destination**: IP address or range
+  - **Port**: Service port number
+
+  ## Linux iptables
+
+  ```bash
+  # View current rules
+  sudo iptables -L -n -v
+
+  # Allow SSH (port 22)
+  sudo iptables -A INPUT -p tcp --dport 22 -j ACCEPT
+
+  # Allow HTTP/HTTPS
+  sudo iptables -A INPUT -p tcp --dport 80 -j ACCEPT
+  sudo iptables -A INPUT -p tcp --dport 443 -j ACCEPT
+
+  # Allow established connections
+  sudo iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+
+  # Allow loopback
+  sudo iptables -A INPUT -i lo -j ACCEPT
+
+  # Drop all other incoming
+  sudo iptables -A INPUT -j DROP
+
+  # Save rules
+  sudo iptables-save > /etc/iptables/rules.v4
+  ```
+
+  ## UFW (Uncomplicated Firewall)
+
+  Simpler interface for iptables (Ubuntu/Debian):
+
+  ```bash
+  # Enable UFW
+  sudo ufw enable
+
+  # Check status
+  sudo ufw status verbose
+
+  # Allow SSH
+  sudo ufw allow ssh
+  sudo ufw allow 22/tcp
+
+  # Allow HTTP/HTTPS
+  sudo ufw allow 80/tcp
+  sudo ufw allow 443/tcp
+
+  # Allow from specific IP
+  sudo ufw allow from 10.0.0.5 to any port 3306
+
+  # Deny a port
+  sudo ufw deny 23/tcp
+
+  # Delete a rule
+  sudo ufw delete allow 80/tcp
+
+  # Reset all rules
+  sudo ufw reset
+  ```
+
+  ## firewalld (RHEL/CentOS)
+
+  ```bash
+  # Check status
+  sudo firewall-cmd --state
+
+  # List all rules
+  sudo firewall-cmd --list-all
+
+  # Allow a service
+  sudo firewall-cmd --add-service=http --permanent
+  sudo firewall-cmd --add-service=https --permanent
+
+  # Allow a port
+  sudo firewall-cmd --add-port=8080/tcp --permanent
+
+  # Reload rules
+  sudo firewall-cmd --reload
+  ```
+
+  ## Common Ports to Protect
+
+  | Port | Service | Recommendation |
+  |------|---------|----------------|
+  | 22 | SSH | Limit to specific IPs |
+  | 23 | Telnet | Block (use SSH instead) |
+  | 3306 | MySQL | Block from internet |
+  | 5432 | PostgreSQL | Block from internet |
+  | 6379 | Redis | Block from internet |
+  | 27017 | MongoDB | Block from internet |
+
+  ## Best Practices
+
+  1. **Default deny** - Block all, allow specific
+  2. **Least privilege** - Only open needed ports
+  3. **Limit SSH access** - Specific IPs or VPN only
+  4. **No databases on internet** - Keep behind firewall
+  5. **Log denied traffic** - Monitor for attacks
+  6. **Regular audits** - Review rules periodically
+
+exercises:
+  - type: mcq
+    sequence_order: 1
+    question: What is the recommended default firewall policy?
+    options:
+      - Allow all traffic by default
+      - Deny all traffic by default, allow specific
+      - Only block known bad IPs
+      - No default policy needed
+    correct_answer_index: 1
+    explanation: Default deny (block all, allow specific) is more secure. You explicitly allow only the traffic you need.
+
+  - type: mcq
+    sequence_order: 2
+    question: What command enables UFW on Ubuntu?
+    options:
+      - sudo ufw start
+      - sudo ufw enable
+      - sudo systemctl start ufw
+      - sudo ufw activate
+    correct_answer_index: 1
+    explanation: 'sudo ufw enable' activates the UFW firewall and sets it to start on boot.
+
+  - type: mcq
+    sequence_order: 3
+    question: Why should database ports (3306, 5432) be blocked from the internet?
+    options:
+      - Databases don't use those ports
+      - To prevent unauthorized access to sensitive data
+      - Databases are too slow for internet traffic
+      - It's not necessary to block them
+    correct_answer_index: 1
+    explanation: Database ports should only be accessible from application servers, not the internet. Direct database access exposes sensitive data to attacks.
+
+  - type: mcq
+    sequence_order: 4
+    question: What's the difference between DROP and REJECT in firewall rules?
+    options:
+      - No difference
+      - DROP silently discards, REJECT sends an error response
+      - REJECT is faster
+      - DROP is for TCP, REJECT is for UDP
+    correct_answer_index: 1
+    explanation: DROP silently discards the packet (attacker doesn't know if port exists). REJECT sends an ICMP error back (more polite but reveals information).
+
+  - type: mcq
+    sequence_order: 5
+    question: In iptables, what does the -A flag do?
+    options:
+      - Add rule to beginning of chain
+      - Add rule to end of chain (Append)
+      - Allow the traffic
+      - Apply changes immediately
+    correct_answer_index: 1
+    explanation: The -A flag appends a rule to the end of the specified chain. Use -I to insert at the beginning.
+
+  - type: terminal
+    sequence_order: 6
+    description: Check the status of UFW firewall
+    command: sudo ufw status
+    timeout_sec: 5
+    validation:
+      exit_code: 0
+    hints:
+      - Use 'sudo ufw status' to see if UFW is active and view rules
+      - Add 'verbose' for more details
+
+objectives:
+  - Understand firewall concepts and rule processing
+  - Configure basic firewall rules with UFW or iptables
+  - Apply security best practices
+next_recommended:
+  - wireless-networking

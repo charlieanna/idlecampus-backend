@@ -1,0 +1,212 @@
+slug: wireless-networking
+title: Wireless Networking
+sequence_order: 13
+estimated_minutes: 5
+difficulty: medium
+content_md: |
+  # Wireless Networking
+
+  Understanding Wi-Fi standards, security, and troubleshooting.
+
+  ## Wi-Fi Standards (802.11)
+
+  | Standard | Name | Frequency | Max Speed | Range |
+  |----------|------|-----------|-----------|-------|
+  | 802.11b | Wi-Fi 1 | 2.4 GHz | 11 Mbps | Long |
+  | 802.11a | Wi-Fi 2 | 5 GHz | 54 Mbps | Short |
+  | 802.11g | Wi-Fi 3 | 2.4 GHz | 54 Mbps | Long |
+  | 802.11n | Wi-Fi 4 | 2.4/5 GHz | 600 Mbps | Medium |
+  | 802.11ac | Wi-Fi 5 | 5 GHz | 6.9 Gbps | Medium |
+  | 802.11ax | Wi-Fi 6 | 2.4/5/6 GHz | 9.6 Gbps | Medium |
+
+  ## 2.4 GHz vs 5 GHz
+
+  | Feature | 2.4 GHz | 5 GHz |
+  |---------|---------|-------|
+  | Range | Longer | Shorter |
+  | Speed | Slower | Faster |
+  | Interference | More (crowded) | Less |
+  | Wall penetration | Better | Worse |
+  | Channels | 3 non-overlapping | 23+ non-overlapping |
+
+  **Use 2.4 GHz for**: Range, IoT devices, older devices
+  **Use 5 GHz for**: Speed, streaming, gaming
+
+  ## Wi-Fi Security
+
+  ### Security Protocols (Best to Worst)
+
+  | Protocol | Security | Notes |
+  |----------|----------|-------|
+  | **WPA3** | Excellent | Latest, use if available |
+  | **WPA2** | Good | Current standard |
+  | **WPA** | Weak | Outdated, avoid |
+  | **WEP** | Broken | Never use |
+  | **Open** | None | Public hotspots only |
+
+  ### WPA2 vs WPA3
+
+  **WPA2**:
+  - AES encryption
+  - Vulnerable to KRACK attack
+  - Dictionary attacks possible
+
+  **WPA3**:
+  - Stronger encryption (SAE)
+  - Forward secrecy
+  - Protected against dictionary attacks
+  - Easier IoT setup
+
+  ## Wireless Commands
+
+  ```bash
+  # List wireless interfaces
+  iwconfig
+  ip link show
+
+  # Scan for networks
+  sudo iwlist wlan0 scan
+  nmcli device wifi list
+
+  # Connect to network
+  nmcli device wifi connect "NetworkName" password "password"
+
+  # Show current connection
+  iwconfig wlan0
+  nmcli connection show
+
+  # Show signal strength
+  watch -n 1 "iwconfig wlan0 | grep -i quality"
+
+  # Disconnect
+  nmcli device disconnect wlan0
+  ```
+
+  ## Troubleshooting Wi-Fi
+
+  ### Weak Signal
+  ```bash
+  # Check signal strength
+  iwconfig wlan0 | grep -i signal
+  # -30 dBm = Excellent
+  # -50 dBm = Good
+  # -70 dBm = Fair
+  # -80 dBm = Poor
+  # -90 dBm = Unusable
+  ```
+
+  **Solutions**:
+  - Move closer to router
+  - Reduce interference (microwaves, Bluetooth)
+  - Use 5 GHz band
+  - Add access points/mesh
+
+  ### Can't Connect
+  ```bash
+  # Check if interface is up
+  ip link show wlan0
+
+  # Bring interface up
+  sudo ip link set wlan0 up
+
+  # Restart NetworkManager
+  sudo systemctl restart NetworkManager
+
+  # Check for driver issues
+  dmesg | grep -i wifi
+  lspci -k | grep -A 3 -i wireless
+  ```
+
+  ### Slow Speed
+  - Check for channel congestion
+  - Switch to 5 GHz
+  - Update router firmware
+  - Check for bandwidth hogs
+
+  ## Channel Selection
+
+  ```
+  2.4 GHz Non-overlapping channels: 1, 6, 11
+
+  Channel 1:  [====]
+  Channel 6:        [====]
+  Channel 11:             [====]
+  ```
+
+  Best practice: Use channels 1, 6, or 11 for 2.4 GHz.
+
+  ## Access Point vs Router
+
+  **Router**: Connects networks, NAT, DHCP, firewall
+  **Access Point**: Extends wireless coverage only
+
+  ## Mesh Networks
+
+  Multiple access points work together:
+  - Seamless roaming
+  - Self-healing (if one fails)
+  - Single SSID throughout
+  - Examples: Google Wifi, Eero, Ubiquiti
+
+exercises:
+  - type: mcq
+    sequence_order: 1
+    question: Which Wi-Fi security protocol should you use?
+    options:
+      - WEP (fastest)
+      - WPA (most compatible)
+      - WPA2 or WPA3 (most secure)
+      - Open (easiest)
+    correct_answer_index: 2
+    explanation: WPA2 or WPA3 provide strong encryption. WEP is broken, WPA is weak, and open networks have no encryption.
+
+  - type: mcq
+    sequence_order: 2
+    question: What is the advantage of 5 GHz over 2.4 GHz?
+    options:
+      - Better range
+      - Less interference and faster speeds
+      - Works with all devices
+      - Penetrates walls better
+    correct_answer_index: 1
+    explanation: 5 GHz has more channels (less interference) and supports faster speeds, but has shorter range and worse wall penetration.
+
+  - type: mcq
+    sequence_order: 3
+    question: What are the recommended channels for 2.4 GHz to avoid overlap?
+    options:
+      - 1, 2, 3
+      - 1, 6, 11
+      - 5, 10, 15
+      - Any channel works
+    correct_answer_index: 1
+    explanation: Channels 1, 6, and 11 don't overlap in the 2.4 GHz band. Using other channels causes interference.
+
+  - type: mcq
+    sequence_order: 4
+    question: What does a signal strength of -75 dBm indicate?
+    options:
+      - Excellent signal
+      - Good signal
+      - Fair/weak signal
+      - No signal
+    correct_answer_index: 2
+    explanation: -75 dBm is a fair/weak signal. -30 to -50 is excellent/good, -60 to -70 is fair, below -80 is poor.
+
+  - type: mcq
+    sequence_order: 5
+    question: Which Wi-Fi standard is also known as Wi-Fi 6?
+    options:
+      - 802.11n
+      - 802.11ac
+      - 802.11ax
+      - 802.11be
+    correct_answer_index: 2
+    explanation: 802.11ax is Wi-Fi 6, offering speeds up to 9.6 Gbps and better performance in crowded environments.
+
+objectives:
+  - Understand Wi-Fi standards and frequencies
+  - Choose appropriate security protocols
+  - Troubleshoot common wireless issues
+next_recommended:
+  - network-security-basics

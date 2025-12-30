@@ -1,0 +1,213 @@
+slug: load-balancing-basics
+title: Load Balancing Basics
+sequence_order: 15
+estimated_minutes: 5
+difficulty: medium
+content_md: |
+  # Load Balancing Basics
+
+  Load balancers distribute traffic across multiple servers for reliability and performance.
+
+  ## Why Load Balance?
+
+  - **High Availability**: If one server fails, others handle traffic
+  - **Scalability**: Add more servers to handle more traffic
+  - **Performance**: Distribute load to prevent bottlenecks
+  - **Maintenance**: Update servers without downtime
+
+  ## How It Works
+
+  ```
+  Clients
+     |
+     v
+  [Load Balancer]  <-- Single entry point
+     /    |    \
+    v     v     v
+  [S1]  [S2]  [S3]  <-- Backend servers
+  ```
+
+  ## Load Balancing Algorithms
+
+  ### Round Robin
+  Requests distributed evenly in rotation:
+  ```
+  Request 1 -> Server 1
+  Request 2 -> Server 2
+  Request 3 -> Server 3
+  Request 4 -> Server 1 (repeat)
+  ```
+  **Use when**: Servers have equal capacity
+
+  ### Least Connections
+  Send to server with fewest active connections:
+  ```
+  Server 1: 10 connections
+  Server 2: 5 connections  <-- Next request goes here
+  Server 3: 8 connections
+  ```
+  **Use when**: Requests have varying processing times
+
+  ### IP Hash
+  Same client IP always goes to same server:
+  ```
+  hash(client_ip) % num_servers = server
+  ```
+  **Use when**: Session persistence needed without cookies
+
+  ### Weighted
+  Servers get traffic proportional to their capacity:
+  ```
+  Server 1 (weight 5): Gets 50% of traffic
+  Server 2 (weight 3): Gets 30% of traffic
+  Server 3 (weight 2): Gets 20% of traffic
+  ```
+  **Use when**: Servers have different capacities
+
+  ## Layer 4 vs Layer 7
+
+  ### Layer 4 (Transport)
+  - Balances based on IP and port
+  - Fast, low overhead
+  - Can't inspect content
+  - Examples: HAProxy (TCP mode), AWS NLB
+
+  ### Layer 7 (Application)
+  - Inspects HTTP content
+  - Route by URL, headers, cookies
+  - SSL termination
+  - Examples: Nginx, HAProxy (HTTP mode), AWS ALB
+
+  ```
+  Layer 7 routing example:
+  /api/*     -> API servers
+  /static/*  -> CDN
+  /admin/*   -> Admin servers
+  ```
+
+  ## Health Checks
+
+  Load balancer checks if servers are healthy:
+
+  ```
+  Health Check Config:
+  - Path: /health
+  - Interval: 10 seconds
+  - Timeout: 5 seconds
+  - Unhealthy threshold: 3 failures
+  - Healthy threshold: 2 successes
+  ```
+
+  Server removed from pool if unhealthy.
+
+  ## Session Persistence (Sticky Sessions)
+
+  Keep user on same server for session:
+
+  ```
+  Methods:
+  1. Cookie-based: LB sets cookie with server ID
+  2. IP-based: Same IP -> same server
+  3. Application: Store session in shared cache (Redis)
+  ```
+
+  **Best practice**: Use shared session store instead of sticky sessions
+
+  ## Nginx Load Balancer Example
+
+  ```nginx
+  upstream backend {
+      least_conn;  # Algorithm
+
+      server 10.0.0.1:8080 weight=3;
+      server 10.0.0.2:8080 weight=2;
+      server 10.0.0.3:8080 backup;  # Only if others fail
+  }
+
+  server {
+      listen 80;
+
+      location / {
+          proxy_pass http://backend;
+          proxy_set_header Host $host;
+          proxy_set_header X-Real-IP $remote_addr;
+      }
+
+      location /health {
+          return 200 'OK';
+      }
+  }
+  ```
+
+  ## Common Load Balancers
+
+  | Name | Type | Use Case |
+  |------|------|----------|
+  | **Nginx** | L7 | Web apps, reverse proxy |
+  | **HAProxy** | L4/L7 | High performance |
+  | **AWS ALB** | L7 | AWS cloud apps |
+  | **AWS NLB** | L4 | AWS, high throughput |
+  | **Traefik** | L7 | Docker/Kubernetes |
+
+exercises:
+  - type: mcq
+    sequence_order: 1
+    question: What is the main benefit of using a load balancer?
+    options:
+      - Encrypts all traffic
+      - Distributes traffic across multiple servers for reliability and performance
+      - Stores session data
+      - Compresses responses
+    correct_answer_index: 1
+    explanation: Load balancers distribute traffic across servers, providing high availability (if one fails, others continue) and scalability.
+
+  - type: mcq
+    sequence_order: 2
+    question: Which algorithm sends requests to the server with the fewest active connections?
+    options:
+      - Round Robin
+      - Least Connections
+      - IP Hash
+      - Random
+    correct_answer_index: 1
+    explanation: Least Connections algorithm directs traffic to the server handling the fewest connections, good for requests with varying processing times.
+
+  - type: mcq
+    sequence_order: 3
+    question: What is the difference between Layer 4 and Layer 7 load balancing?
+    options:
+      - Layer 4 is slower
+      - Layer 7 can inspect HTTP content and route by URL/headers
+      - Layer 4 is more secure
+      - There is no difference
+    correct_answer_index: 1
+    explanation: Layer 7 (Application) can inspect HTTP content, route by URL paths, headers, or cookies. Layer 4 (Transport) only sees IP/port.
+
+  - type: mcq
+    sequence_order: 4
+    question: What happens when a health check fails?
+    options:
+      - The load balancer shuts down
+      - The unhealthy server is removed from the pool
+      - All traffic stops
+      - Nothing, health checks are optional
+    correct_answer_index: 1
+    explanation: When a server fails health checks, it's removed from the pool. Traffic is routed to healthy servers until the failed server recovers.
+
+  - type: mcq
+    sequence_order: 5
+    question: What is the best practice for handling user sessions with load balancers?
+    options:
+      - Use sticky sessions
+      - Store sessions in a shared cache like Redis
+      - Store sessions on each server separately
+      - Don't use sessions
+    correct_answer_index: 1
+    explanation: Using a shared session store (Redis, Memcached) allows any server to handle any request, providing better fault tolerance than sticky sessions.
+
+objectives:
+  - Understand load balancing concepts and benefits
+  - Choose appropriate load balancing algorithms
+  - Configure basic load balancer settings
+next_recommended:
+  - network-monitoring

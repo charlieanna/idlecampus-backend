@@ -1,0 +1,199 @@
+slug: dhcp-fundamentals
+title: DHCP Fundamentals
+sequence_order: 4
+estimated_minutes: 5
+difficulty: easy
+content_md: |
+  # DHCP Fundamentals
+
+  DHCP (Dynamic Host Configuration Protocol) automatically assigns IP addresses to devices on a network.
+
+  ## What DHCP Provides
+
+  - **IP Address**: Unique address for the device
+  - **Subnet Mask**: Network size information
+  - **Default Gateway**: Router address
+  - **DNS Servers**: Name resolution servers
+  - **Lease Time**: How long the IP is valid
+
+  ## DHCP Process (DORA)
+
+  ```
+  Client                                    DHCP Server
+     |                                           |
+     |------ DISCOVER (broadcast) ------------->|
+     |        "I need an IP address!"           |
+     |                                           |
+     |<------ OFFER ----------------------------|
+     |        "Here's 192.168.1.100"            |
+     |                                           |
+     |------ REQUEST -------------------------->|
+     |        "I'll take 192.168.1.100"         |
+     |                                           |
+     |<------ ACKNOWLEDGE ---------------------|
+     |        "It's yours for 24 hours"         |
+     |                                           |
+  ```
+
+  ### DORA Steps
+
+  1. **D**iscover - Client broadcasts looking for DHCP servers
+  2. **O**ffer - Server offers an available IP address
+  3. **R**equest - Client requests the offered address
+  4. **A**cknowledge - Server confirms the lease
+
+  ## DHCP Lease
+
+  IP addresses are "leased" for a period of time:
+
+  ```
+  Lease Time: 24 hours (typical)
+
+  At 50% (12 hours): Client tries to renew
+  At 87.5% (21 hours): Client broadcasts for any DHCP server
+  At 100%: Lease expires, must get new IP
+  ```
+
+  ## Static vs Dynamic IP
+
+  | Type | Pros | Cons |
+  |------|------|------|
+  | **Dynamic (DHCP)** | Automatic, no conflicts | IP may change |
+  | **Static** | Always same IP | Manual config, possible conflicts |
+
+  ### When to Use Static IPs
+
+  - Servers (web, database, file)
+  - Printers
+  - Network equipment (routers, switches)
+  - Devices that others need to find
+
+  ## DHCP Reservation
+
+  Assign a specific IP to a device's MAC address:
+
+  ```
+  MAC Address: 00:1A:2B:3C:4D:5E
+  Reserved IP: 192.168.1.50
+
+  Device always gets 192.168.1.50 from DHCP
+  ```
+
+  Best of both worlds: automatic configuration with consistent IP.
+
+  ## DHCP Configuration Example
+
+  Typical DHCP server settings:
+
+  ```
+  Network: 192.168.1.0/24
+  DHCP Range: 192.168.1.100 - 192.168.1.200
+  Gateway: 192.168.1.1
+  DNS: 8.8.8.8, 8.8.4.4
+  Lease Time: 86400 seconds (24 hours)
+
+  Reserved:
+    192.168.1.10 - File Server
+    192.168.1.20 - Printer
+  ```
+
+  ## DHCP Commands
+
+  ```bash
+  # View current DHCP lease (Linux)
+  cat /var/lib/dhcp/dhclient.leases
+
+  # Release current IP
+  sudo dhclient -r
+
+  # Request new IP
+  sudo dhclient
+
+  # View DHCP info (NetworkManager)
+  nmcli device show
+
+  # Windows - Release and renew
+  ipconfig /release
+  ipconfig /renew
+
+  # View DHCP lease info
+  ipconfig /all
+  ```
+
+  ## Troubleshooting DHCP
+
+  ### No IP Address (169.254.x.x)
+  - DHCP server not reachable
+  - Network cable/Wi-Fi issue
+  - DHCP server out of addresses
+
+  ```bash
+  # Check if DHCP server responds
+  sudo tcpdump -i eth0 port 67 or port 68
+
+  # Try to get new lease
+  sudo dhclient -v eth0
+  ```
+
+exercises:
+  - type: mcq
+    sequence_order: 1
+    question: What does DORA stand for in DHCP?
+    options:
+      - Deliver, Obtain, Register, Accept
+      - Discover, Offer, Request, Acknowledge
+      - Download, Open, Read, Apply
+      - Direct, Organize, Route, Assign
+    correct_answer_index: 1
+    explanation: DORA represents the four steps of DHCP - Discover (client broadcasts), Offer (server responds), Request (client accepts), Acknowledge (server confirms).
+
+  - type: mcq
+    sequence_order: 2
+    question: What happens when a device gets an IP starting with 169.254?
+    options:
+      - DHCP worked correctly
+      - The device is using a static IP
+      - DHCP failed and device assigned itself a link-local address
+      - The network is using IPv6
+    correct_answer_index: 2
+    explanation: 169.254.x.x is an APIPA (Automatic Private IP Addressing) address, assigned when a device cannot reach a DHCP server.
+
+  - type: mcq
+    sequence_order: 3
+    question: What is a DHCP reservation?
+    options:
+      - Reserving bandwidth for a device
+      - Assigning a specific IP to a device's MAC address
+      - Blocking a device from the network
+      - Limiting the lease time
+    correct_answer_index: 1
+    explanation: A DHCP reservation binds a specific IP address to a device's MAC address, ensuring that device always receives the same IP.
+
+  - type: mcq
+    sequence_order: 4
+    question: At what percentage of lease time does a client first try to renew?
+    options:
+      - 25%
+      - 50%
+      - 75%
+      - 100%
+    correct_answer_index: 1
+    explanation: At 50% of the lease time, the client attempts to renew with the original DHCP server. At 87.5%, it broadcasts for any DHCP server.
+
+  - type: mcq
+    sequence_order: 5
+    question: Which port does DHCP use?
+    options:
+      - Port 53
+      - Port 67 (server) and 68 (client)
+      - Port 80
+      - Port 443
+    correct_answer_index: 1
+    explanation: DHCP servers listen on UDP port 67, and clients listen on UDP port 68.
+
+objectives:
+  - Understand the DHCP process (DORA)
+  - Know when to use static IPs vs DHCP
+  - Configure DHCP reservations
+next_recommended:
+  - vpn-and-proxies
