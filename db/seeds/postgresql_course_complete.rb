@@ -1,7 +1,7 @@
 # PostgreSQL Database Mastery - Complete Course
 puts "Creating Complete PostgreSQL Database Mastery Course..."
 
-postgresql_course = Course.find_or_create_by!(slug: 'postgresql-mastery') do |course|
+postgresql_course = Course.find_or_create_by!(slug: 'postgresql') do |course|
   course.title = "PostgreSQL Database Mastery"
   course.description = "Master PostgreSQL from fundamentals to advanced optimization. Learn SQL, indexing, transactions, and query tuning."
   course.difficulty_level = "intermediate"
@@ -37,10 +37,11 @@ module1 = CourseModule.find_or_create_by!(slug: 'postgresql-fundamentals', cours
   mod.published = true
 end
 
-lesson1_1 = CourseLesson.find_or_create_by!(title: "Introduction to PostgreSQL") do |lesson|
-  lesson.reading_time_minutes = 25
+# Lesson 1.1: What is PostgreSQL?
+lesson1_1 = CourseLesson.find_or_create_by!(title: "What is PostgreSQL?") do |lesson|
+  lesson.reading_time_minutes = 15
   lesson.content = <<~MARKDOWN
-    # Introduction to PostgreSQL
+    # What is PostgreSQL?
 
     PostgreSQL is a powerful, open-source object-relational database system.
 
@@ -53,72 +54,60 @@ lesson1_1 = CourseLesson.find_or_create_by!(title: "Introduction to PostgreSQL")
     - **Standards Compliant**: Follows SQL standards
     - **Used By**: Instagram, Spotify, Uber, Apple
 
-    ## Installation
+    ## What is a Database?
 
-    ### macOS
-    ```bash
-    brew install postgresql@15
-    brew services start postgresql@15
-    ```
+    A **database** is an organized collection of data stored electronically. Think of it like a digital filing cabinet where you can:
+    - Store data in **tables** (like spreadsheets)
+    - Each table has **rows** (records) and **columns** (fields)
+    - Query data to find what you need
+    - Ensure data integrity with rules and relationships
 
-    ### Ubuntu/Debian
-    ```bash
-    sudo apt update
-    sudo apt install postgresql postgresql-contrib
-    sudo systemctl start postgresql
-    ```
+    ## What is SQL?
 
-    ### Docker
-    ```bash
-    docker run --name postgres \\
-      -e POSTGRES_PASSWORD=mypassword \\
-      -p 5432:5432 \\
-      -d postgres:15
-    ```
+    **SQL (Structured Query Language)** is the language you use to talk to PostgreSQL:
+    - **CREATE** tables and databases
+    - **INSERT** data into tables
+    - **SELECT** data from tables
+    - **UPDATE** existing data
+    - **DELETE** data
 
-    ## Connecting to PostgreSQL
+    We'll learn each of these commands step by step!
 
-    ### psql (CLI)
-    ```bash
-    # Connect as superuser
-    psql -U postgres
+    ## PostgreSQL vs Other Databases
 
-    # Connect to specific database
-    psql -h localhost -p 5432 -U myuser -d mydatabase
-    ```
+    | Feature | PostgreSQL | MySQL | SQLite |
+    |---------|-----------|-------|--------|
+    | Type | Full-featured RDBMS | RDBMS | File-based |
+    | Best For | Production apps | Web apps | Small apps |
+    | Advanced Features | ✅ Excellent | ⚠️ Limited | ❌ Basic |
+    | JSON Support | ✅ JSONB (fast) | ⚠️ JSON | ❌ No |
 
-    ### Common psql Commands
-    ```sql
-    \\l                 -- List databases
-    \\c dbname          -- Connect to database
-    \\dt                -- List tables
-    \\d tablename       -- Describe table
-    \\du                -- List users/roles
-    \\q                 -- Quit
-    \\?                 -- Help
-    ```
+    **Next**: Learn how to create tables and work with data!
 
-    ## Creating Databases
+    > **Note**: If you need to install PostgreSQL, see the "Installation and Setup" lesson at the end of this module.
+  MARKDOWN
+  lesson.key_concepts = ['PostgreSQL', 'database', 'SQL', 'ACID']
+end
 
-    ```sql
-    -- Create database
-    CREATE DATABASE myapp;
+# Lesson 1.2: Tables and Data Types
+lesson1_2 = CourseLesson.find_or_create_by!(title: "Tables and Data Types") do |lesson|
+  lesson.reading_time_minutes = 20
+  lesson.content = <<~MARKDOWN
+    # Tables and Data Types
 
-    -- Create with specific encoding
-    CREATE DATABASE myapp
-      ENCODING 'UTF8'
-      LC_COLLATE 'en_US.UTF-8'
-      LC_CTYPE 'en_US.UTF-8';
+    Before you can store data, you need to create a **table** - think of it as a spreadsheet with columns and rows.
 
-    -- Drop database
-    DROP DATABASE myapp;
+    ## What is a Table?
 
-    -- List databases
-    \\l
-    SELECT datname FROM pg_database;
-    ```
+    A table is a collection of related data organized into **rows** (records) and **columns** (fields).
+
+    **Example**: A `users` table might have:
+    - Columns: `id`, `email`, `name`, `age`
+    - Rows: Each user is one row
 
     ## PostgreSQL Data Types
+
+    Each column must have a **data type** - this tells PostgreSQL what kind of data to expect.
 
     ### Numeric Types
     ```sql
@@ -134,15 +123,15 @@ lesson1_1 = CourseLesson.find_or_create_by!(title: "Introduction to PostgreSQL")
     DOUBLE PRECISION    -- 8 bytes, 15 decimal digits precision
 
     -- Serial (auto-increment)
-    SERIAL              -- Auto-incrementing integer
+    SERIAL              -- Auto-incrementing integer (perfect for IDs)
     BIGSERIAL           -- Auto-incrementing bigint
     ```
 
     ### String Types
     ```sql
-    CHAR(10)            -- Fixed length, padded with spaces
+    CHAR(10)            -- Fixed length, padded with spaces (rarely used)
     VARCHAR(100)        -- Variable length with limit
-    TEXT                -- Unlimited length string
+    TEXT                -- Unlimited length string (most common)
     ```
 
     ### Date/Time Types
@@ -150,7 +139,7 @@ lesson1_1 = CourseLesson.find_or_create_by!(title: "Introduction to PostgreSQL")
     DATE                -- Date only (2024-01-15)
     TIME                -- Time only (14:30:00)
     TIMESTAMP           -- Date and time
-    TIMESTAMPTZ         -- Timestamp with timezone
+    TIMESTAMPTZ         -- Timestamp with timezone (recommended)
     INTERVAL            -- Time interval (5 days, 2 hours)
     ```
 
@@ -162,7 +151,7 @@ lesson1_1 = CourseLesson.find_or_create_by!(title: "Introduction to PostgreSQL")
     ### JSON Types
     ```sql
     JSON                -- JSON text, validates syntax
-    JSONB               -- Binary JSON, faster, supports indexing
+    JSONB               -- Binary JSON, faster, supports indexing (preferred)
     ```
 
     ### Other Types
@@ -173,6 +162,10 @@ lesson1_1 = CourseLesson.find_or_create_by!(title: "Introduction to PostgreSQL")
     ```
 
     ## Creating Tables
+
+    **What is CREATE TABLE?**
+
+    `CREATE TABLE` defines the structure of your table - what columns it has and what types of data each column can store.
 
     ```sql
     CREATE TABLE users (
@@ -187,9 +180,45 @@ lesson1_1 = CourseLesson.find_or_create_by!(title: "Introduction to PostgreSQL")
     );
     ```
 
-    ## CRUD Operations
+    **Breaking down the syntax:**
 
-    ### CREATE (INSERT): Adding Data
+    1. **`id SERIAL PRIMARY KEY`**
+       - `SERIAL` = Auto-incrementing integer (1, 2, 3...)
+       - `PRIMARY KEY` = Unique identifier for each row
+
+    2. **`email VARCHAR(255) UNIQUE NOT NULL`**
+       - `VARCHAR(255)` = Text up to 255 characters
+       - `UNIQUE` = No two rows can have the same email
+       - `NOT NULL` = Every row must have an email
+
+    3. **`age INTEGER CHECK (age >= 18)`**
+       - `INTEGER` = Whole number
+       - `CHECK` = Only allow ages 18 or older
+
+    4. **`is_active BOOLEAN DEFAULT TRUE`**
+       - `BOOLEAN` = TRUE or FALSE
+       - `DEFAULT TRUE` = If not specified, defaults to TRUE
+
+    5. **`created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP`**
+       - Automatically sets to current time when row is created
+
+    **Key concepts:**
+    - **PRIMARY KEY**: Unique identifier (like a social security number)
+    - **NOT NULL**: Column must have a value
+    - **UNIQUE**: No duplicates allowed
+    - **DEFAULT**: Value used if not specified
+    - **CHECK**: Validates data before inserting
+
+    **Next**: Learn how to INSERT data into this table!
+  MARKDOWN
+  lesson.key_concepts = ['tables', 'data types', 'CREATE TABLE', 'PRIMARY KEY', 'constraints']
+end
+
+# Lesson 1.3: INSERT - Adding Data
+lesson1_3 = CourseLesson.find_or_create_by!(title: "INSERT - Adding Data") do |lesson|
+  lesson.reading_time_minutes = 25
+  lesson.content = <<~MARKDOWN
+    # INSERT - Adding Data
 
     **What is INSERT?**
 
@@ -202,7 +231,7 @@ lesson1_1 = CourseLesson.find_or_create_by!(title: "Introduction to PostgreSQL")
 
     Without INSERT, your database would be read-only!
 
-    #### Basic INSERT: Single Row
+    ## Basic INSERT: Single Row
 
     ```sql
     INSERT INTO users (email, username, full_name, age)
@@ -217,14 +246,14 @@ lesson1_1 = CourseLesson.find_or_create_by!(title: "Introduction to PostgreSQL")
     **What happens internally:**
     ```
     1. PostgreSQL validates data types (email is TEXT, age is INTEGER)
-    2. Checks constraints (email unique? age >= 0?)
+    2. Checks constraints (email unique? age >= 18?)
     3. Generates auto-increment ID (if SERIAL column exists)
     4. Writes row to table
     5. Updates indexes
     6. Returns success (or error if constraints violated)
     ```
 
-    #### Inserting Without Specifying All Columns
+    ## Inserting Without Specifying All Columns
 
     ```sql
     -- Only provide some columns
@@ -258,7 +287,7 @@ lesson1_1 = CourseLesson.find_or_create_by!(title: "Introduction to PostgreSQL")
     -- created_at: 2025-11-05 12:34:56 (default CURRENT_TIMESTAMP)
     ```
 
-    #### Bulk INSERT: Multiple Rows
+    ## Bulk INSERT: Multiple Rows
 
     **Why bulk inserts?**
     Inserting 1000 rows one-by-one requires 1000 separate database roundtrips. Bulk insert does it in ONE trip - **100x faster**!
@@ -279,7 +308,7 @@ lesson1_1 = CourseLesson.find_or_create_by!(title: "Introduction to PostgreSQL")
 
     **Best practice:** Always batch inserts when possible.
 
-    #### RETURNING: Get Data Back
+    ## RETURNING: Get Data Back
 
     **The Problem:**
     After INSERT, how do you know the generated ID?
@@ -310,165 +339,23 @@ lesson1_1 = CourseLesson.find_or_create_by!(title: "Introduction to PostgreSQL")
     - Confirm what was actually inserted (after defaults/triggers)
     - Return data to application immediately
 
-    **Works with bulk inserts too:**
-    ```sql
-    INSERT INTO users (email, username)
-    VALUES
-      ('user1@example.com', 'user1'),
-      ('user2@example.com', 'user2')
-    RETURNING id, email;
-
-    -- Returns:
-    -- id | email
-    -- ---+-----------------
-    -- 5  | user1@example.com
-    -- 6  | user2@example.com
-    ```
-
-    #### INSERT ... ON CONFLICT (Upsert)
-
-    **The Problem:**
-    What if you try to insert a duplicate email (unique constraint)?
-
-    ```sql
-    INSERT INTO users (email, username)
-    VALUES ('alice@example.com', 'alice');
-    -- ERROR: duplicate key value violates unique constraint
-    ```
-
-    **Solution: ON CONFLICT DO NOTHING**
-    ```sql
-    INSERT INTO users (email, username)
-    VALUES ('alice@example.com', 'alice_new')
-    ON CONFLICT (email) DO NOTHING;
-    -- No error, just silently skips insert
-    ```
-
-    **Solution: ON CONFLICT DO UPDATE (Upsert)**
-    ```sql
-    INSERT INTO users (email, username, last_login)
-    VALUES ('alice@example.com', 'alice', CURRENT_TIMESTAMP)
-    ON CONFLICT (email) DO UPDATE
-    SET last_login = EXCLUDED.last_login;
-    ```
-
-    **What happens:**
-    - If email doesn't exist → INSERT new row
-    - If email exists → UPDATE the last_login column
-    - `EXCLUDED` refers to the values you tried to insert
-
-    **Real-world use case: Session tracking**
-    ```sql
-    -- Update session timestamp or create new session
-    INSERT INTO user_sessions (user_id, last_seen)
-    VALUES (123, CURRENT_TIMESTAMP)
-    ON CONFLICT (user_id) DO UPDATE
-    SET last_seen = EXCLUDED.last_seen;
-    ```
-
-    #### INSERT from SELECT
-
-    **Copy data from one table to another:**
-    ```sql
-    -- Archive old orders
-    INSERT INTO orders_archive (order_id, customer_id, total, created_at)
-    SELECT id, customer_id, total, created_at
-    FROM orders
-    WHERE created_at < '2020-01-01';
-    ```
-
-    **Combine with VALUES:**
-    ```sql
-    INSERT INTO products (name, price)
-    SELECT CONCAT('Upgraded ', name), price * 1.2
-    FROM old_products
-    WHERE active = true;
-    ```
-
-    #### Common INSERT Errors
-
-    **1. NOT NULL violation:**
-    ```sql
-    INSERT INTO users (email) VALUES ('test@example.com');
-    -- ERROR: null value in column "username" violates not-null constraint
-    ```
-    **Fix:** Provide all required columns.
-
-    **2. Unique constraint violation:**
-    ```sql
-    INSERT INTO users (email, username) VALUES ('alice@example.com', 'alice');
-    -- ERROR: duplicate key value violates unique constraint "users_email_key"
-    ```
-    **Fix:** Use ON CONFLICT or check existence first.
-
-    **3. Type mismatch:**
-    ```sql
-    INSERT INTO users (age) VALUES ('twenty-five');
-    -- ERROR: invalid input syntax for type integer
-    ```
-    **Fix:** Use correct data type (25, not 'twenty-five').
-
-    **4. Foreign key violation:**
-    ```sql
-    INSERT INTO posts (user_id, title) VALUES (999, 'My Post');
-    -- ERROR: insert or update violates foreign key constraint
-    ```
-    **Fix:** Ensure user_id=999 exists in users table.
-
-    #### Best Practices
-
-    **1. Always specify column names:**
-    ```sql
-    -- ❌ Bad: Breaks if table structure changes
-    INSERT INTO users VALUES ('alice@example.com', 'alice', 'Alice', 25);
-
-    -- ✅ Good: Explicit and maintainable
-    INSERT INTO users (email, username, full_name, age)
-    VALUES ('alice@example.com', 'alice', 'Alice', 25);
-    ```
-
-    **2. Use parameterized queries (prevent SQL injection):**
-    ```python
-    # ❌ DANGEROUS: SQL injection vulnerability
-    query = f"INSERT INTO users (username) VALUES ('{user_input}')"
-
-    # ✅ SAFE: Parameterized query
-    cursor.execute(
-        "INSERT INTO users (username, email) VALUES (%s, %s)",
-        (username, email)
-    )
-    ```
-
-    **3. Use transactions for multiple inserts:**
-    ```sql
-    BEGIN;
-        INSERT INTO orders (customer_id, total) VALUES (123, 99.99) RETURNING id;
-        INSERT INTO order_items (order_id, product_id, quantity) VALUES (456, 789, 2);
-    COMMIT;
-    -- Both succeed or both fail (atomic)
-    ```
-
-    **4. Batch inserts for performance:**
-    ```sql
-    -- ❌ Slow: 1000 separate queries
-    INSERT INTO logs (message) VALUES ('log1');
-    INSERT INTO logs (message) VALUES ('log2');
-    ... (998 more) ...
-
-    -- ✅ Fast: 1 query
-    INSERT INTO logs (message) VALUES
-      ('log1'), ('log2'), ('log3'), ... ('log1000');
-    ```
-
     **Key takeaways:**
     1. INSERT adds new rows to tables
     2. Always specify column names for clarity
     3. Use RETURNING to get generated IDs without extra queries
-    4. ON CONFLICT handles duplicates gracefully (upsert pattern)
-    5. Batch inserts for massive performance gains
-    6. Use parameterized queries to prevent SQL injection
+    4. Batch inserts for massive performance gains
+    5. Use parameterized queries to prevent SQL injection
 
-    ### READ (SELECT)
+    **Next**: Learn how to SELECT (read) data from tables!
+  MARKDOWN
+  lesson.key_concepts = ['INSERT', 'adding data', 'RETURNING', 'bulk insert']
+end
+
+# Lesson 1.4: SELECT - Reading Data
+lesson1_4 = CourseLesson.find_or_create_by!(title: "SELECT - Reading Data") do |lesson|
+  lesson.reading_time_minutes = 30
+  lesson.content = <<~MARKDOWN
+    # SELECT - Reading Data
 
     **What is SELECT?**
 
@@ -493,7 +380,7 @@ lesson1_1 = CourseLesson.find_or_create_by!(title: "Introduction to PostgreSQL")
     4. ORDER BY: It sorts the results
     5. LIMIT: It restricts how many rows to return
 
-    #### Basic SELECT: Getting All Data
+    ## Basic SELECT: Getting All Data
 
     ```sql
     SELECT * FROM users;
@@ -512,7 +399,7 @@ lesson1_1 = CourseLesson.find_or_create_by!(title: "Introduction to PostgreSQL")
     - Production code - always specify exact columns you need
     - Network applications - transferring all columns wastes bandwidth
 
-    #### Selecting Specific Columns
+    ## Selecting Specific Columns
 
     ```sql
     SELECT id, email, username FROM users;
@@ -524,10 +411,7 @@ lesson1_1 = CourseLesson.find_or_create_by!(title: "Introduction to PostgreSQL")
     - **Clarity**: Makes code easier to understand and maintain
     - **Network efficiency**: Transfers less data over the network
 
-    **Example scenario:**
-    You're building a user list page. You don't need their password, address, or preferences - just name and email. Selecting only those columns makes your query 10x faster!
-
-    #### Filtering with WHERE
+    ## Filtering with WHERE
 
     ```sql
     SELECT * FROM users WHERE age > 25;
@@ -548,7 +432,7 @@ lesson1_1 = CourseLesson.find_or_create_by!(title: "Introduction to PostgreSQL")
     - `<=` : Less than or equal
     - `!=` or `<>` : Not equal
 
-    #### Combining Conditions with AND/OR
+    ## Combining Conditions with AND/OR
 
     ```sql
     SELECT * FROM users
@@ -569,75 +453,7 @@ lesson1_1 = CourseLesson.find_or_create_by!(title: "Introduction to PostgreSQL")
     - Think: "I want users who are EITHER older than 25 OR admins (or both)"
     - Less restrictive - returns more rows
 
-    **Combining AND/OR (use parentheses!):**
-    ```sql
-    SELECT * FROM users
-    WHERE (age > 25 OR is_admin = TRUE) AND is_active = TRUE;
-    ```
-    This finds active users who are EITHER over 25 OR admins.
-
-    #### Pattern Matching with LIKE
-
-    ```sql
-    SELECT * FROM users WHERE email LIKE '%@example.com';
-    ```
-
-    **What is LIKE?**
-
-    LIKE finds text patterns using wildcards:
-    - `%` : Matches any characters (zero or more)
-    - `_` : Matches exactly one character
-
-    **Examples:**
-    ```sql
-    -- Emails ending with @example.com
-    WHERE email LIKE '%@example.com'
-
-    -- Names starting with 'John'
-    WHERE name LIKE 'John%'
-
-    -- Names containing 'smith' anywhere
-    WHERE name LIKE '%smith%'
-
-    -- Exactly 5 characters, ending in 'son'
-    WHERE name LIKE '___son'  -- Three underscores + 'son'
-    ```
-
-    **Performance warning:**
-    - `LIKE 'prefix%'` : Fast (can use index)
-    - `LIKE '%suffix'` : Slow (can't use index, scans entire table)
-    - `LIKE '%middle%'` : Slow (can't use index)
-
-    #### Matching Multiple Values with IN
-
-    ```sql
-    SELECT * FROM users
-    WHERE username IN ('alice', 'bob', 'charlie');
-    ```
-
-    **Why use IN?**
-
-    IN is a shorthand for multiple OR conditions:
-    ```sql
-    -- Instead of this:
-    WHERE username = 'alice' OR username = 'bob' OR username = 'charlie'
-
-    -- Write this:
-    WHERE username IN ('alice', 'bob', 'charlie')
-    ```
-
-    **When to use:**
-    - Checking membership in a list
-    - Looking up multiple IDs
-    - Filtering by several categories
-
-    **With NOT:**
-    ```sql
-    WHERE username NOT IN ('admin', 'root', 'system')
-    ```
-    Returns users whose username is NOT in the list.
-
-    #### Sorting with ORDER BY
+    ## Sorting with ORDER BY
 
     ```sql
     SELECT * FROM users ORDER BY age DESC;
@@ -657,33 +473,16 @@ lesson1_1 = CourseLesson.find_or_create_by!(title: "Introduction to PostgreSQL")
     ```
     First sorts by age (oldest first), then within same age, sorts by username (A-Z).
 
-    **Real-world examples:**
-    ```sql
-    -- Newest users first
-    ORDER BY created_at DESC
-
-    -- Alphabetical by name
-    ORDER BY last_name ASC, first_name ASC
-
-    -- Products by price (cheapest first)
-    ORDER BY price ASC
-    ```
-
-    #### Pagination with LIMIT and OFFSET
+    ## Pagination with LIMIT
 
     ```sql
     SELECT * FROM users LIMIT 10 OFFSET 20;
     ```
 
     **What is LIMIT?**
-
-    LIMIT restricts the number of rows returned. Essential for:
-    - Pagination (showing page 1, page 2, etc.)
-    - Previewing data
-    - Preventing massive result sets
+    LIMIT restricts the number of rows returned. Essential for pagination.
 
     **What is OFFSET?**
-
     OFFSET skips a certain number of rows before starting to return results.
 
     **How pagination works:**
@@ -693,53 +492,6 @@ lesson1_1 = CourseLesson.find_or_create_by!(title: "Introduction to PostgreSQL")
 
     -- Page 2: Next 10 users (skip first 10)
     SELECT * FROM users LIMIT 10 OFFSET 10;
-
-    -- Page 3: Next 10 users (skip first 20)
-    SELECT * FROM users LIMIT 10 OFFSET 20;
-
-    -- Formula: OFFSET = (page_number - 1) * page_size
-    ```
-
-    **Performance note:**
-    Large OFFSETs are slow (e.g., OFFSET 100000) because PostgreSQL still has to read and skip those rows. For large datasets, use cursor-based pagination instead.
-
-    #### Complete Example: Building a User Search
-
-    Let's build a search feature step by step:
-
-    ```sql
-    -- Step 1: Find active users
-    SELECT * FROM users WHERE is_active = TRUE;
-
-    -- Step 2: Who are older than 25
-    SELECT * FROM users WHERE is_active = TRUE AND age > 25;
-
-    -- Step 3: With Gmail addresses
-    SELECT * FROM users
-    WHERE is_active = TRUE
-      AND age > 25
-      AND email LIKE '%@gmail.com';
-
-    -- Step 4: Only need id, email, and username
-    SELECT id, email, username FROM users
-    WHERE is_active = TRUE
-      AND age > 25
-      AND email LIKE '%@gmail.com';
-
-    -- Step 5: Sort alphabetically
-    SELECT id, email, username FROM users
-    WHERE is_active = TRUE
-      AND age > 25
-      AND email LIKE '%@gmail.com'
-    ORDER BY username ASC;
-
-    -- Step 6: Show first page (10 results)
-    SELECT id, email, username FROM users
-    WHERE is_active = TRUE
-      AND age > 25
-      AND email LIKE '%@gmail.com'
-    ORDER BY username ASC
-    LIMIT 10 OFFSET 0;
     ```
 
     **Key takeaways:**
@@ -747,24 +499,31 @@ lesson1_1 = CourseLesson.find_or_create_by!(title: "Introduction to PostgreSQL")
     2. Specify exact columns instead of SELECT *
     3. Use ORDER BY to make results predictable
     4. Use LIMIT for performance and pagination
-    5. Combine conditions with AND/OR to match complex criteria
 
-    ### UPDATE: Modifying Existing Data
+    **Next**: Learn how to UPDATE and DELETE data!
+  MARKDOWN
+  lesson.key_concepts = ['SELECT', 'WHERE', 'ORDER BY', 'LIMIT', 'filtering']
+end
+
+# Lesson 1.5: UPDATE and DELETE - Modifying Data
+lesson1_5 = CourseLesson.find_or_create_by!(title: "UPDATE and DELETE - Modifying Data") do |lesson|
+  lesson.reading_time_minutes = 25
+  lesson.content = <<~MARKDOWN
+    # UPDATE and DELETE - Modifying Data
+
+    Now that you know how to INSERT and SELECT, let's learn how to modify and remove data.
+
+    ## UPDATE: Modifying Existing Data
 
     **What is UPDATE?**
 
     UPDATE modifies existing rows in your database. Any time data changes - user updates profile, order status changes, inventory decreases - you use UPDATE.
 
-    **Why UPDATE matters:**
-    - User changes email → UPDATE users
-    - Product price changes → UPDATE products
-    - Order ships → UPDATE orders SET status = 'shipped'
-
     **⚠️ CRITICAL: Always use WHERE with UPDATE!**
 
     Without WHERE, you update EVERY row in the table (usually a disaster).
 
-    #### Basic UPDATE: Single Column
+    ### Basic UPDATE: Single Column
 
     ```sql
     UPDATE users
@@ -777,18 +536,7 @@ lesson1_1 = CourseLesson.find_or_create_by!(title: "Introduction to PostgreSQL")
     2. `SET full_name = 'Alice Johnson'` - What to change
     3. `WHERE id = 1` - Which rows to update (CRITICAL!)
 
-    **What happens internally:**
-    ```
-    1. PostgreSQL finds all rows matching WHERE condition
-    2. For each matched row:
-       - Validates new value (type check, constraints)
-       - Creates new row version (MVCC)
-       - Marks old version as outdated
-    3. Updates indexes
-    4. Returns count of rows modified
-    ```
-
-    #### Updating Multiple Columns
+    ### Updating Multiple Columns
 
     ```sql
     UPDATE users
@@ -799,53 +547,7 @@ lesson1_1 = CourseLesson.find_or_create_by!(title: "Introduction to PostgreSQL")
     WHERE id = 2;
     ```
 
-    **Comma-separated columns** - all updated atomically (all succeed or all fail).
-
-    #### UPDATE Based on Current Values
-
-    **Increment/decrement:**
-    ```sql
-    -- Increase age by 1
-    UPDATE users
-    SET age = age + 1
-    WHERE id = 1;
-
-    -- Decrease inventory
-    UPDATE products
-    SET stock = stock - 1
-    WHERE id = 100;
-    ```
-
-    **String manipulation:**
-    ```sql
-    -- Uppercase all usernames
-    UPDATE users
-    SET username = UPPER(username);
-
-    -- Add prefix
-    UPDATE products
-    SET sku = CONCAT('PROD-', sku)
-    WHERE sku NOT LIKE 'PROD-%';
-    ```
-
-    #### Conditional Updates
-
-    **Deactivate inactive users:**
-    ```sql
-    UPDATE users
-    SET is_active = FALSE
-    WHERE last_login < (CURRENT_DATE - INTERVAL '90 days');
-    ```
-
-    **Bulk price increase:**
-    ```sql
-    -- Increase prices by 10% for category 5
-    UPDATE products
-    SET price = price * 1.10
-    WHERE category_id = 5 AND price > 0;
-    ```
-
-    #### UPDATE with RETURNING
+    ### UPDATE with RETURNING
 
     **Get updated values back:**
     ```sql
@@ -855,83 +557,12 @@ lesson1_1 = CourseLesson.find_or_create_by!(title: "Introduction to PostgreSQL")
     RETURNING id, username, age, updated_at;
     ```
 
-    **Returns:**
-    ```
-    id | username | age | updated_at
-    ---+----------+-----+-------------------------
-    1  | alice    | 26  | 2025-11-05 10:45:23
-    ```
-
     **Why use RETURNING:**
     - Confirm what was actually updated
     - Get timestamp values (updated_at)
     - Avoid extra SELECT query
-    - Return data to application immediately
 
-    #### UPDATE with FROM (Joins)
-
-    **Update based on another table:**
-    ```sql
-    -- Update user's total_orders count
-    UPDATE users
-    SET total_orders = order_counts.count
-    FROM (
-        SELECT user_id, COUNT(*) as count
-        FROM orders
-        GROUP BY user_id
-    ) AS order_counts
-    WHERE users.id = order_counts.user_id;
-    ```
-
-    **Update prices from pricing table:**
-    ```sql
-    UPDATE products p
-    SET price = new_prices.price
-    FROM new_pricing_table new_prices
-    WHERE p.sku = new_prices.sku;
-    ```
-
-    #### UPDATE... WHERE EXISTS
-
-    **Update only if related data exists:**
-    ```sql
-    -- Mark users as "has orders" if they have any orders
-    UPDATE users
-    SET has_orders = TRUE
-    WHERE EXISTS (
-        SELECT 1 FROM orders WHERE orders.user_id = users.id
-    );
-    ```
-
-    #### Common UPDATE Patterns
-
-    **1. Toggle boolean:**
-    ```sql
-    UPDATE users
-    SET is_active = NOT is_active
-    WHERE id = 5;
-    ```
-
-    **2. Update timestamp:**
-    ```sql
-    UPDATE posts
-    SET updated_at = CURRENT_TIMESTAMP
-    WHERE id = 100;
-    ```
-
-    **3. Conditional value update:**
-    ```sql
-    UPDATE products
-    SET
-        status = CASE
-            WHEN stock = 0 THEN 'out_of_stock'
-            WHEN stock < 10 THEN 'low_stock'
-            ELSE 'in_stock'
-        END
-    WHERE category = 'electronics';
-    ```
-
-    #### The Danger of Missing WHERE
+    ### The Danger of Missing WHERE
 
     ⚠️ **DISASTER SCENARIO:**
     ```sql
@@ -939,8 +570,6 @@ lesson1_1 = CourseLesson.find_or_create_by!(title: "Introduction to PostgreSQL")
     UPDATE users SET email = 'newemail@example.com';
     -- OOPS: Forgot WHERE - now EVERY user has same email!
     ```
-
-    **Result:** All 10,000 users now have email = 'newemail@example.com' 💀
 
     **Prevention strategies:**
     1. **Always write WHERE first** (before SET)
@@ -954,54 +583,15 @@ lesson1_1 = CourseLesson.find_or_create_by!(title: "Introduction to PostgreSQL")
        UPDATE users SET email = '...' WHERE id = 1;
        ```
 
-    #### UPDATE Best Practices
-
-    **1. Always use WHERE (unless you really mean to update all rows):**
-    ```sql
-    -- ✅ Good: Specific update
-    UPDATE users SET email = '...' WHERE id = 1;
-
-    -- ⚠️ Dangerous: Updates ALL rows
-    UPDATE users SET is_active = FALSE;  -- Are you SURE?
-    ```
-
-    **2. Use RETURNING to verify:**
-    ```sql
-    UPDATE users
-    SET email = 'newemail@example.com'
-    WHERE id = 1
-    RETURNING id, username, email;  -- Confirm what changed
-    ```
-
-    **3. Use transactions for safety:**
-    ```sql
-    BEGIN;
-        UPDATE products SET price = price * 1.1 WHERE category_id = 5;
-        -- Review results...
-    COMMIT;  -- Or ROLLBACK if something wrong
-    ```
-
-    **4. Check rows affected:**
-    ```sql
-    UPDATE users SET is_active = TRUE WHERE id = 999;
-    -- Returns: UPDATE 0
-    -- Hmm, no rows updated - does user 999 exist?
-    ```
-
-    ### DELETE: Removing Data
+    ## DELETE: Removing Data
 
     **What is DELETE?**
 
     DELETE permanently removes rows from your database. Use with extreme caution!
 
-    **Why DELETE matters:**
-    - User account deletion
-    - Removing expired sessions
-    - Cleaning up test data
-
     **⚠️ CRITICAL: DELETE is PERMANENT. Always use WHERE!**
 
-    #### Basic DELETE
+    ### Basic DELETE
 
     ```sql
     DELETE FROM users WHERE id = 10;
@@ -1011,225 +601,144 @@ lesson1_1 = CourseLesson.find_or_create_by!(title: "Introduction to PostgreSQL")
     1. `DELETE FROM users` - Which table
     2. `WHERE id = 10` - Which rows to delete (CRITICAL!)
 
-    #### DELETE with Conditions
+    ### DELETE with Conditions
 
-    **Delete inactive users:**
     ```sql
+    -- Delete inactive users
     DELETE FROM users
     WHERE is_active = FALSE AND created_at < '2020-01-01';
     ```
 
-    **Delete expired sessions:**
-    ```sql
-    DELETE FROM sessions
-    WHERE expires_at < CURRENT_TIMESTAMP;
-    ```
-
-    #### DELETE with RETURNING
+    ### DELETE with RETURNING
 
     **Keep record of what was deleted:**
     ```sql
     DELETE FROM users
     WHERE id = 10
-    RETURNING id, email, username, deleted_at;
+    RETURNING id, email, username;
     ```
 
-    **Archive before deleting:**
-    ```sql
-    -- Insert into archive, then delete
-    WITH deleted AS (
-        DELETE FROM orders
-        WHERE created_at < '2020-01-01'
-        RETURNING *
-    )
-    INSERT INTO orders_archive
-    SELECT * FROM deleted;
-    ```
-
-    #### DELETE with Subquery
-
-    **Delete based on related data:**
-    ```sql
-    -- Delete users with no orders
-    DELETE FROM users
-    WHERE id NOT IN (SELECT DISTINCT user_id FROM orders);
-
-    -- Or with NOT EXISTS:
-    DELETE FROM users u
-    WHERE NOT EXISTS (
-        SELECT 1 FROM orders o WHERE o.user_id = u.id
-    );
-    ```
-
-    #### The Nuclear Option: DELETE ALL
+    ### The Nuclear Option: DELETE ALL
 
     ```sql
     -- ⚠️ DANGER: Deletes EVERY row!
     DELETE FROM users;
     ```
 
-    This deletes ALL rows but:
-    - Keeps table structure
-    - Triggers fire for each row (slow)
-    - Auto-increment continues (not reset)
-
-    #### TRUNCATE: Faster DELETE ALL
-
+    **Better alternative: TRUNCATE**
     ```sql
     TRUNCATE TABLE users;
     ```
+    Faster for deleting all rows, but still permanent!
 
-    **TRUNCATE vs DELETE:**
-    | Feature | DELETE | TRUNCATE |
-    |---------|--------|----------|
-    | Speed | Slower | Much faster |
-    | WHERE clause | Yes | No (all rows only) |
-    | Triggers | Fire | Don't fire |
-    | Rollback | Yes (in transaction) | Yes (in transaction) |
-    | Reset auto-increment | No | Yes |
+    ### DELETE Best Practices
 
-    **When to use TRUNCATE:**
-    - Clearing test data
-    - Resetting staging database
-    - Deleting ALL rows quickly
-
-    **When to use DELETE:**
-    - Deleting specific rows (WITH WHERE)
-    - Need triggers to fire
-    - Want to log deletions
-
-    #### CASCADE DELETE
-
-    **Foreign key with ON DELETE CASCADE:**
-    ```sql
-    CREATE TABLE orders (
-        id SERIAL PRIMARY KEY,
-        user_id INTEGER REFERENCES users(id) ON DELETE CASCADE
-    );
-
-    -- When you delete a user:
-    DELETE FROM users WHERE id = 5;
-    -- All their orders are automatically deleted too!
-    ```
-
-    **CASCADE options:**
-    - `ON DELETE CASCADE` - Delete related rows
-    - `ON DELETE SET NULL` - Set foreign key to NULL
-    - `ON DELETE RESTRICT` - Prevent deletion if related rows exist
-    - `ON DELETE NO ACTION` - Same as RESTRICT (default)
-
-    #### Soft Delete Pattern
-
-    **Instead of DELETE, mark as deleted:**
-    ```sql
-    ALTER TABLE users ADD COLUMN deleted_at TIMESTAMP;
-
-    -- "Delete" user (actually just mark)
-    UPDATE users
-    SET deleted_at = CURRENT_TIMESTAMP
-    WHERE id = 10;
-
-    -- Query only active users
-    SELECT * FROM users WHERE deleted_at IS NULL;
-    ```
-
-    **Why soft delete?**
-    - ✅ Can undo (restore deleted data)
-    - ✅ Maintain data integrity (foreign keys work)
-    - ✅ Audit trail (when was it deleted?)
-    - ❌ More complex queries (always filter deleted_at)
-    - ❌ Database bloat (deleted data still stored)
-
-    #### DELETE Best Practices
-
-    **1. ALWAYS use WHERE (unless deleting all rows intentionally):**
-    ```sql
-    -- ⚠️ CATASTROPHIC: Deletes EVERYTHING
-    DELETE FROM users;
-
-    -- ✅ Safe: Deletes specific rows
-    DELETE FROM users WHERE is_active = FALSE;
-    ```
-
-    **2. Test with SELECT first:**
-    ```sql
-    -- Step 1: See what would be deleted
-    SELECT * FROM users WHERE is_active = FALSE;
-
-    -- Step 2: If looks good, delete
-    DELETE FROM users WHERE is_active = FALSE;
-    ```
-
-    **3. Use transactions for safety:**
-    ```sql
-    BEGIN;
-        DELETE FROM old_logs WHERE created_at < '2020-01-01';
-        -- Check count: DELETE 5432
-        -- Seems right
-    COMMIT;  -- Or ROLLBACK if something wrong
-    ```
-
-    **4. Consider soft delete for critical data:**
-    ```sql
-    -- Instead of DELETE, mark as deleted
-    UPDATE users SET deleted_at = NOW() WHERE id = 10;
-    ```
-
-    **5. Backup before mass deletes:**
-    ```bash
-    # Backup first!
-    pg_dump -t users mydb > users_backup.sql
-
-    # Then delete
-    DELETE FROM users WHERE created_at < '2020-01-01';
-    ```
-
-    #### Common DELETE Errors
-
-    **1. Foreign key constraint:**
-    ```sql
-    DELETE FROM users WHERE id = 1;
-    -- ERROR: update or delete violates foreign key constraint
-    -- User has orders that reference them!
-    ```
-    **Fix:** Delete orders first, or use ON DELETE CASCADE.
-
-    **2. Deleting more than intended:**
-    ```sql
-    DELETE FROM users WHERE id = 10 OR username = 'test';
-    -- Oops: OR deletes more rows than expected
-    ```
-    **Fix:** Test with SELECT, use explicit conditions.
+    1. **ALWAYS use WHERE** (unless deleting all rows intentionally)
+    2. **Test with SELECT first** to see what would be deleted
+    3. **Use transactions** for safety - can ROLLBACK mistakes
+    4. **Consider soft delete** for critical data (UPDATE deleted_at instead)
 
     **Key takeaways:**
     1. UPDATE modifies existing rows - ALWAYS use WHERE
     2. Test UPDATE with SELECT first to see what will change
-    3. Use RETURNING to confirm what was updated
-    4. DELETE permanently removes data - ALWAYS use WHERE
-    5. TRUNCATE is faster for deleting all rows
-    6. Consider soft delete (UPDATE deleted_at) for critical data
-    7. Use transactions for safety - can ROLLBACK mistakes
+    3. DELETE permanently removes data - ALWAYS use WHERE
+    4. Use transactions for safety - can ROLLBACK mistakes
 
-    ## Constraints
-
-    ```sql
-    CREATE TABLE products (
-        id SERIAL PRIMARY KEY,                    -- Primary key
-        name VARCHAR(100) NOT NULL,               -- Not null
-        sku VARCHAR(50) UNIQUE NOT NULL,          -- Unique
-        price DECIMAL(10, 2) CHECK (price > 0),   -- Check constraint
-        category_id INTEGER REFERENCES categories(id),  -- Foreign key
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    );
-    ```
-
-    ## Practice
-
-    Try the PostgreSQL Fundamentals lab!
+    **Next**: Learn about database relationships and joins!
   MARKDOWN
-  lesson.key_concepts = ['PostgreSQL basics', 'data types', 'CRUD operations', 'tables', 'constraints']
+  lesson.key_concepts = ['UPDATE', 'DELETE', 'modifying data', 'WHERE clause']
 end
 
+# Lesson 1.6: Appendix - Installation and Setup
+lesson1_6 = CourseLesson.find_or_create_by!(title: "Appendix - Installation and Setup") do |lesson|
+  lesson.reading_time_minutes = 15
+  lesson.content = <<~MARKDOWN
+    # Appendix - Installation and Setup
+
+    This lesson covers how to install and set up PostgreSQL on your system. If you already have PostgreSQL installed, you can skip this lesson.
+
+    ## Installation
+
+    ### macOS
+
+    ```bash
+    brew install postgresql@15
+    brew services start postgresql@15
+    ```
+
+    ### Ubuntu/Debian
+
+    ```bash
+    sudo apt update
+    sudo apt install postgresql postgresql-contrib
+    sudo systemctl start postgresql
+    ```
+
+    ### Docker
+
+    ```bash
+    docker run --name postgres \\
+      -e POSTGRES_PASSWORD=mypassword \\
+      -p 5432:5432 \\
+      -d postgres:15
+    ```
+
+    ## Connecting to PostgreSQL
+
+    ### psql (CLI)
+
+    ```bash
+    # Connect as superuser
+    psql -U postgres
+
+    # Connect to specific database
+    psql -h localhost -p 5432 -U myuser -d mydatabase
+    ```
+
+    ### Common psql Commands
+
+    ```sql
+    \\l                 -- List databases
+    \\c dbname          -- Connect to database
+    \\dt                -- List tables
+    \\d tablename       -- Describe table
+    \\du                -- List users/roles
+    \\q                 -- Quit
+    \\?                 -- Help
+    ```
+
+    ## Creating Databases
+
+    ```sql
+    -- Create database
+    CREATE DATABASE myapp;
+
+    -- Create with specific encoding
+    CREATE DATABASE myapp
+      ENCODING 'UTF8'
+      LC_COLLATE 'en_US.UTF-8'
+      LC_CTYPE 'en_US.UTF-8';
+
+    -- Drop database
+    DROP DATABASE myapp;
+
+    -- List databases
+    \\l
+    SELECT datname FROM pg_database;
+    ```
+
+    ## Default Port
+
+    PostgreSQL listens on port **5432** by default.
+
+    **Next**: Continue to Module 2 to learn about relationships and joins!
+  MARKDOWN
+  lesson.key_concepts = ['installation', 'psql', 'database setup']
+end
+
+# ==========================================
+# QUIZZES FOR MODULE 1
+# ==========================================
 # Adding more PostgreSQL lessons and a comprehensive quiz...
 # Quiz 1.1: PostgreSQL Fundamentals
 quiz1_1 = Quiz.find_or_create_by!(title: "PostgreSQL Fundamentals Quiz") do |quiz|
@@ -1380,18 +889,28 @@ module2 = CourseModule.find_or_create_by!(slug: 'schema-design', course: postgre
   mod.published = true
 end
 
-lesson2_1 = CourseLesson.find_or_create_by!(title: "Database Relationships") do |lesson|
-  lesson.reading_time_minutes = 35
+# Lesson 2.1: Foreign Keys and Relationships
+lesson2_1 = CourseLesson.find_or_create_by!(title: "Foreign Keys and Relationships") do |lesson|
+  lesson.reading_time_minutes = 20
   lesson.content = <<~MARKDOWN
-    # Database Relationships
+    # Foreign Keys and Relationships
 
-    Learn to design relationships between tables.
+    **What is a Foreign Key?**
+
+    A **foreign key** is a column that references another table's primary key. It creates a relationship between two tables.
+
+    **Why use foreign keys?**
+    - Enforce data integrity (can't reference non-existent rows)
+    - Create relationships between tables
+    - Enable JOINs to combine data from multiple tables
 
     ## One-to-Many Relationships
 
-    Most common relationship: one parent, many children.
+    **Most common relationship**: One parent row can have many child rows.
 
-    ### Example: Users and Posts
+    **Example: Users and Posts**
+    - One user can have many posts
+    - Each post belongs to one user
 
     ```sql
     CREATE TABLE users (
@@ -1409,34 +928,19 @@ lesson2_1 = CourseLesson.find_or_create_by!(title: "Database Relationships") do 
     );
     ```
 
-    **Foreign Key Options**:
+    **Foreign Key Options:**
     - `ON DELETE CASCADE`: Delete posts when user deleted
-    - `ON DELETE SET NULL`: Set user_id to NULL
+    - `ON DELETE SET NULL`: Set user_id to NULL (if nullable)
     - `ON DELETE RESTRICT`: Prevent deletion if posts exist
     - `ON UPDATE CASCADE`: Update posts if user id changes
 
-    ### Querying One-to-Many
-
-    ```sql
-    -- Get user with their posts
-    SELECT u.username, p.title, p.created_at
-    FROM users u
-    LEFT JOIN posts p ON u.id = p.user_id
-    WHERE u.username = 'alice';
-
-    -- Count posts per user
-    SELECT u.username, COUNT(p.id) as post_count
-    FROM users u
-    LEFT JOIN posts p ON u.id = p.user_id
-    GROUP BY u.id, u.username
-    ORDER BY post_count DESC;
-    ```
-
     ## Many-to-Many Relationships
 
-    Requires a junction table.
+    **Requires a junction table** (also called bridge table or join table).
 
-    ### Example: Students and Courses
+    **Example: Students and Courses**
+    - One student can take many courses
+    - One course can have many students
 
     ```sql
     CREATE TABLE students (
@@ -1451,46 +955,28 @@ lesson2_1 = CourseLesson.find_or_create_by!(title: "Database Relationships") do 
         code VARCHAR(20) UNIQUE NOT NULL
     );
 
-    -- Junction table
+    -- Junction table (connects students and courses)
     CREATE TABLE enrollments (
         student_id INTEGER REFERENCES students(id) ON DELETE CASCADE,
         course_id INTEGER REFERENCES courses(id) ON DELETE CASCADE,
         enrolled_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         grade VARCHAR(2),
-        PRIMARY KEY (student_id, course_id)
+        PRIMARY KEY (student_id, course_id)  -- Composite primary key
     );
     ```
 
-    ### Querying Many-to-Many
-
-    ```sql
-    -- Get all courses for a student
-    SELECT c.name, c.code, e.grade
-    FROM students s
-    JOIN enrollments e ON s.id = e.student_id
-    JOIN courses c ON e.course_id = c.id
-    WHERE s.name = 'Alice';
-
-    -- Get all students in a course
-    SELECT s.name, s.email, e.grade
-    FROM courses c
-    JOIN enrollments e ON c.id = e.course_id
-    JOIN students s ON e.student_id = s.id
-    WHERE c.code = 'CS101';
-
-    -- Find students taking multiple courses
-    SELECT s.name, COUNT(e.course_id) as course_count
-    FROM students s
-    JOIN enrollments e ON s.id = e.student_id
-    GROUP BY s.id, s.name
-    HAVING COUNT(e.course_id) > 2;
-    ```
+    **Key points:**
+    - Junction table has foreign keys to BOTH tables
+    - Often includes additional data (like `enrolled_at`, `grade`)
+    - Composite primary key prevents duplicate enrollments
 
     ## One-to-One Relationships
 
-    Rare, often used for optional data or partitioning.
+    **Rare**, often used for optional data or partitioning.
 
-    ### Example: Users and Profiles
+    **Example: Users and Profiles**
+    - One user has one profile
+    - Profile is optional (user might not have filled it out)
 
     ```sql
     CREATE TABLE users (
@@ -1507,11 +993,15 @@ lesson2_1 = CourseLesson.find_or_create_by!(title: "Database Relationships") do 
     );
     ```
 
+    **Note:** `user_id` is both PRIMARY KEY and FOREIGN KEY - ensures one-to-one.
+
     ## Self-Referencing Relationships
 
-    Table references itself.
+    **Table references itself** - useful for hierarchies.
 
-    ### Example: Employee Hierarchy
+    **Example: Employee Hierarchy**
+    - Employees have managers (who are also employees)
+    - Creates a tree structure
 
     ```sql
     CREATE TABLE employees (
@@ -1520,54 +1010,228 @@ lesson2_1 = CourseLesson.find_or_create_by!(title: "Database Relationships") do 
         manager_id INTEGER REFERENCES employees(id),
         department VARCHAR(50)
     );
-
-    -- Query employee and manager
-    SELECT
-        e.name as employee,
-        m.name as manager
-    FROM employees e
-    LEFT JOIN employees m ON e.manager_id = m.id;
-
-    -- Recursive query for hierarchy
-    WITH RECURSIVE org_chart AS (
-        -- Base case: top-level managers
-        SELECT id, name, manager_id, 1 as level
-        FROM employees
-        WHERE manager_id IS NULL
-
-        UNION ALL
-
-        -- Recursive case: employees
-        SELECT e.id, e.name, e.manager_id, oc.level + 1
-        FROM employees e
-        JOIN org_chart oc ON e.manager_id = oc.id
-    )
-    SELECT * FROM org_chart ORDER BY level, name;
     ```
 
-    ## JOIN Types
+    **Key takeaways:**
+    1. Foreign keys create relationships between tables
+    2. One-to-many is most common (use foreign key in child table)
+    3. Many-to-many requires junction table
+    4. One-to-one uses foreign key as primary key
+    5. Self-referencing allows tables to reference themselves
 
-    ### INNER JOIN
-    Only matching rows from both tables.
+    **Next**: Learn how to use JOINs to query related data!
+  MARKDOWN
+  lesson.key_concepts = ['foreign keys', 'relationships', 'one-to-many', 'many-to-many', 'one-to-one']
+end
 
+# Lesson 2.2: INNER JOIN Explained
+lesson2_2 = CourseLesson.find_or_create_by!(title: "INNER JOIN Explained") do |lesson|
+  lesson.reading_time_minutes = 15
+  lesson.content = <<~MARKDOWN
+    # INNER JOIN Explained
+
+    **What is a JOIN?**
+
+    JOIN combines rows from two or more tables based on a related column. It's how you query related data across multiple tables.
+
+    **Why use JOINs?**
+    - Combine data from multiple tables
+    - Query related records together
+    - Avoid data duplication (normalized database design)
+
+    ## What is INNER JOIN?
+
+    **INNER JOIN** returns only rows where there's a match in BOTH tables.
+
+    **Think of it as:** "Show me users AND their posts, but only if the user actually has posts."
+
+    ```sql
+    SELECT u.username, p.title, p.created_at
+    FROM users u
+    INNER JOIN posts p ON u.id = p.user_id;
+    ```
+
+    **What this does:**
+    1. Starts with `users` table
+    2. For each user, looks for matching posts (`u.id = p.user_id`)
+    3. Returns only users who have posts
+    4. Users without posts are **excluded**
+
+    **Visual representation:**
+    ```
+    Users table:          Posts table:          INNER JOIN result:
+    id | username         id | user_id | title  username | title
+    ---+----------        ---+---------+------- ---------+----------
+    1  | alice            1  | 1       | Post1  alice    | Post1
+    2  | bob              2  | 1       | Post2  alice    | Post2
+    3  | charlie          3  | 2       | Post3  bob      | Post3
+    (charlie has no posts, so excluded)
+    ```
+
+    ## INNER JOIN Syntax
+
+    ```sql
+    SELECT columns
+    FROM table1
+    INNER JOIN table2 ON table1.id = table2.foreign_key;
+    ```
+
+    **Breaking it down:**
+    - `FROM table1` - Start with this table (left table)
+    - `INNER JOIN table2` - Join with this table (right table)
+    - `ON table1.id = table2.foreign_key` - Match condition
+
+    ## Common INNER JOIN Examples
+
+    ### Example 1: Users and Posts
+
+    ```sql
+    -- Get all posts with their author's username
+    SELECT u.username, p.title, p.created_at
+    FROM users u
+    INNER JOIN posts p ON u.id = p.user_id
+    ORDER BY p.created_at DESC;
+    ```
+
+    ### Example 2: Many-to-Many (Students and Courses)
+
+    ```sql
+    -- Get all courses for a student
+    SELECT c.name, c.code, e.grade
+    FROM students s
+    INNER JOIN enrollments e ON s.id = e.student_id
+    INNER JOIN courses c ON e.course_id = c.id
+    WHERE s.name = 'Alice';
+    ```
+
+    **Note:** For many-to-many, you need TWO joins (through the junction table).
+
+    ### Example 3: Multiple Conditions
+
+    ```sql
+    -- Get active users with their recent posts
+    SELECT u.username, p.title
+    FROM users u
+    INNER JOIN posts p ON u.id = p.user_id
+    WHERE u.is_active = TRUE
+      AND p.created_at > CURRENT_DATE - INTERVAL '7 days';
+    ```
+
+    ## INNER JOIN vs WHERE (Old Syntax)
+
+    **Modern way (recommended):**
     ```sql
     SELECT u.username, p.title
     FROM users u
     INNER JOIN posts p ON u.id = p.user_id;
     ```
 
-    ### LEFT JOIN (LEFT OUTER JOIN)
-    All rows from left table, matching from right.
+    **Old way (still works, but less clear):**
+    ```sql
+    SELECT u.username, p.title
+    FROM users u, posts p
+    WHERE u.id = p.user_id;
+    ```
+
+    **Why use INNER JOIN syntax?**
+    - More explicit and readable
+    - Separates join conditions from filter conditions
+    - Easier to convert to LEFT JOIN later
+
+    ## When to Use INNER JOIN
+
+    ✅ **Use INNER JOIN when:**
+    - You only want rows that exist in BOTH tables
+    - You want to exclude rows without matches
+    - You're querying required relationships
+
+    ❌ **Don't use INNER JOIN when:**
+    - You want to include rows without matches (use LEFT JOIN)
+    - You're not sure if relationships exist
+
+    **Key takeaways:**
+    1. INNER JOIN returns only matching rows from both tables
+    2. Users without posts are excluded
+    3. Most common JOIN type
+    4. Use explicit JOIN syntax for clarity
+
+    **Next**: Learn about OUTER JOINs (LEFT, RIGHT, FULL) to include rows without matches!
+  MARKDOWN
+  lesson.key_concepts = ['INNER JOIN', 'JOIN', 'combining tables', 'relationships']
+end
+
+# Lesson 2.3: LEFT/RIGHT/FULL OUTER JOINs
+lesson2_3 = CourseLesson.find_or_create_by!(title: "LEFT/RIGHT/FULL OUTER JOINs") do |lesson|
+  lesson.reading_time_minutes = 20
+  lesson.content = <<~MARKDOWN
+    # LEFT/RIGHT/FULL OUTER JOINs
+
+    **What's the difference from INNER JOIN?**
+
+    OUTER JOINs include rows even when there's NO match in the other table. INNER JOIN excludes them.
+
+    ## LEFT JOIN (LEFT OUTER JOIN)
+
+    **LEFT JOIN** returns ALL rows from the left table, plus matching rows from the right table.
+
+    **If no match:** Right table columns are NULL.
+
+    **Think of it as:** "Show me ALL users, and their posts if they have any."
 
     ```sql
-    -- Include users even without posts
     SELECT u.username, p.title
     FROM users u
     LEFT JOIN posts p ON u.id = p.user_id;
     ```
 
-    ### RIGHT JOIN
-    All rows from right table, matching from left.
+    **Visual representation:**
+    ```
+    Users table:          Posts table:          LEFT JOIN result:
+    id | username         id | user_id | title  username | title
+    ---+----------        ---+---------+------- ---------+----------
+    1  | alice            1  | 1       | Post1  alice    | Post1
+    2  | bob              2  | 1       | Post2  alice    | Post2
+    3  | charlie          3  | 2       | Post3  bob      | Post3
+    (no posts)                                charlie    | NULL
+    ```
+
+    **Key difference:** Charlie (who has no posts) is INCLUDED with NULL for post columns.
+
+    ### Common Use Case: Count Posts Per User
+
+    ```sql
+    -- Count posts per user (including users with 0 posts)
+    SELECT u.username, COUNT(p.id) as post_count
+    FROM users u
+    LEFT JOIN posts p ON u.id = p.user_id
+    GROUP BY u.id, u.username
+    ORDER BY post_count DESC;
+    ```
+
+    **Result:**
+    ```
+    username | post_count
+    ---------+-----------
+    alice    | 2
+    bob      | 1
+    charlie  | 0  ← Would be excluded with INNER JOIN!
+    ```
+
+    ### Filtering NULLs
+
+    ```sql
+    -- Find users with NO posts
+    SELECT u.username
+    FROM users u
+    LEFT JOIN posts p ON u.id = p.user_id
+    WHERE p.id IS NULL;
+    ```
+
+    ## RIGHT JOIN (RIGHT OUTER JOIN)
+
+    **RIGHT JOIN** returns ALL rows from the right table, plus matching rows from the left table.
+
+    **If no match:** Left table columns are NULL.
 
     ```sql
     SELECT u.username, p.title
@@ -1575,8 +1239,39 @@ lesson2_1 = CourseLesson.find_or_create_by!(title: "Database Relationships") do 
     RIGHT JOIN posts p ON u.id = p.user_id;
     ```
 
-    ### FULL OUTER JOIN
-    All rows from both tables.
+    **Visual representation:**
+    ```
+    Users table:          Posts table:          RIGHT JOIN result:
+    id | username         id | user_id | title  username | title
+    ---+----------        ---+---------+------- ---------+----------
+    1  | alice            1  | 1       | Post1  alice    | Post1
+    2  | bob              2  | 1       | Post2  alice    | Post2
+    3  | (deleted)        3  | 999     | Post3  NULL     | Post3
+    (user 999 deleted)                    (post with no user)
+    ```
+
+    **Note:** RIGHT JOIN is rarely used. You can achieve the same result by swapping tables and using LEFT JOIN.
+
+    **Better approach:**
+    ```sql
+    -- Instead of RIGHT JOIN
+    SELECT u.username, p.title
+    FROM users u
+    RIGHT JOIN posts p ON u.id = p.user_id;
+
+    -- Use LEFT JOIN (more readable)
+    SELECT u.username, p.title
+    FROM posts p
+    LEFT JOIN users u ON u.id = p.user_id;
+    ```
+
+    ## FULL OUTER JOIN
+
+    **FULL OUTER JOIN** returns ALL rows from BOTH tables.
+
+    **If no match:** Missing columns are NULL.
+
+    **Think of it as:** "Show me ALL users AND ALL posts, matched where possible."
 
     ```sql
     SELECT u.username, p.title
@@ -1584,26 +1279,223 @@ lesson2_1 = CourseLesson.find_or_create_by!(title: "Database Relationships") do 
     FULL OUTER JOIN posts p ON u.id = p.user_id;
     ```
 
-    ### CROSS JOIN
-    Cartesian product (all combinations).
+    **Visual representation:**
+    ```
+    Users table:          Posts table:          FULL OUTER JOIN result:
+    id | username         id | user_id | title  username | title
+    ---+----------        ---+---------+------- ---------+----------
+    1  | alice            1  | 1       | Post1  alice    | Post1
+    2  | bob              2  | 1       | Post2  alice    | Post2
+    3  | charlie          3  | 999     | Post3  bob      | Post3
+    (no posts)            (no user)            charlie    | NULL
+                                                          NULL     | Post3
+    ```
+
+    **Use cases:**
+    - Finding orphaned records (posts without users, users without posts)
+    - Data reconciliation
+    - Full data audit
+
+    ## Comparison Table
+
+    | JOIN Type | Left Table | Right Table | When to Use |
+    |-----------|------------|-------------|-------------|
+    | INNER | Matching only | Matching only | Default choice |
+    | LEFT | ALL rows | Matching only | Include all left rows |
+    | RIGHT | Matching only | ALL rows | Rarely used |
+    | FULL | ALL rows | ALL rows | Data reconciliation |
+
+    ## Real-World Examples
+
+    ### Example 1: User Dashboard (Show All Users)
 
     ```sql
-    SELECT u.username, c.name
+    -- Show all users with their latest post (if any)
+    SELECT u.username, p.title as latest_post, p.created_at
+    FROM users u
+    LEFT JOIN posts p ON u.id = p.user_id
+    WHERE p.id = (
+        SELECT id FROM posts 
+        WHERE user_id = u.id 
+        ORDER BY created_at DESC 
+        LIMIT 1
+    ) OR p.id IS NULL
+    ORDER BY u.username;
+    ```
+
+    ### Example 2: Find Orphaned Records
+
+    ```sql
+    -- Find posts with deleted users
+    SELECT p.id, p.title, p.user_id
+    FROM posts p
+    LEFT JOIN users u ON u.id = p.user_id
+    WHERE u.id IS NULL;
+    ```
+
+    **Key takeaways:**
+    1. LEFT JOIN includes all left rows (even without matches)
+    2. RIGHT JOIN is rarely used (use LEFT JOIN instead)
+    3. FULL OUTER JOIN includes all rows from both tables
+    4. NULL values indicate missing matches
+    5. Use LEFT JOIN when you want to include rows without matches
+
+    **Next**: Learn about advanced joins (self-joins, CROSS JOIN)!
+  MARKDOWN
+  lesson.key_concepts = ['LEFT JOIN', 'RIGHT JOIN', 'FULL OUTER JOIN', 'OUTER JOIN', 'NULL handling']
+end
+
+# Lesson 2.4: Self-Joins and Advanced Joins
+lesson2_4 = CourseLesson.find_or_create_by!(title: "Self-Joins and Advanced Joins") do |lesson|
+  lesson.reading_time_minutes = 20
+  lesson.content = <<~MARKDOWN
+    # Self-Joins and Advanced Joins
+
+    ## Self-Join: Joining a Table to Itself
+
+    **What is a Self-Join?**
+
+    A self-join joins a table to itself. Useful for hierarchical data or comparing rows within the same table.
+
+    **Example: Employee Hierarchy**
+
+    ```sql
+    CREATE TABLE employees (
+        id SERIAL PRIMARY KEY,
+        name VARCHAR(100) NOT NULL,
+        manager_id INTEGER REFERENCES employees(id),
+        department VARCHAR(50)
+    );
+    ```
+
+    **Query: Get employee and their manager**
+
+    ```sql
+    SELECT
+        e.name as employee,
+        m.name as manager
+    FROM employees e
+    LEFT JOIN employees m ON e.manager_id = m.id;
+    ```
+
+    **How it works:**
+    - `employees e` - Alias "e" for employee rows
+    - `employees m` - Alias "m" for manager rows
+    - `ON e.manager_id = m.id` - Match employee's manager_id to manager's id
+
+    **Result:**
+    ```
+    employee | manager
+    ---------+---------
+    Alice    | Bob
+    Charlie  | Bob
+    Bob      | NULL (CEO, no manager)
+    ```
+
+    ### Recursive Query: Full Hierarchy
+
+    **WITH RECURSIVE** allows querying hierarchical data:
+
+    ```sql
+    WITH RECURSIVE org_chart AS (
+        -- Base case: top-level managers (no manager)
+        SELECT id, name, manager_id, 1 as level
+        FROM employees
+        WHERE manager_id IS NULL
+
+        UNION ALL
+
+        -- Recursive case: employees reporting to managers
+        SELECT e.id, e.name, e.manager_id, oc.level + 1
+        FROM employees e
+        INNER JOIN org_chart oc ON e.manager_id = oc.id
+    )
+    SELECT * FROM org_chart ORDER BY level, name;
+    ```
+
+    **What this does:**
+    1. Starts with top-level (manager_id IS NULL)
+    2. Recursively finds employees reporting to each level
+    3. Tracks hierarchy level (1 = CEO, 2 = VP, 3 = Manager, etc.)
+
+    ## CROSS JOIN: Cartesian Product
+
+    **What is CROSS JOIN?**
+
+    CROSS JOIN produces all possible combinations of rows from both tables.
+
+    **Use case:** Generating test data, combinations, or when you need every pair.
+
+    ```sql
+    SELECT u.username, c.name as course_name
     FROM users u
     CROSS JOIN courses c;
     ```
 
-    ## Best Practices
+    **Result:** Every user paired with every course (even if they're not enrolled).
 
-    1. **Use foreign keys**: Enforce referential integrity
-    2. **Index foreign keys**: Speed up joins
-    3. **Choose appropriate ON DELETE**: CASCADE, RESTRICT, or SET NULL
-    4. **Normalize data**: Avoid redundancy
-    5. **Use junction tables**: For many-to-many relationships
+    **Warning:** Can produce HUGE result sets!
+    - 100 users × 50 courses = 5,000 rows
+    - Use with caution!
 
-    **Practice**: Try the Schema Design lab!
+    **When to use:**
+    - Generating all possible combinations
+    - Creating test data
+    - Calendar/date ranges with other data
+
+    ## Multiple JOINs
+
+    **Joining 3+ tables:**
+
+    ```sql
+    -- Get student names, course names, and grades
+    SELECT s.name as student, c.name as course, e.grade
+    FROM students s
+    INNER JOIN enrollments e ON s.id = e.student_id
+    INNER JOIN courses c ON e.course_id = c.id
+    WHERE e.grade IS NOT NULL
+    ORDER BY s.name, c.name;
+    ```
+
+    **Order matters:** Join in logical order (students → enrollments → courses).
+
+    ## JOIN Performance Tips
+
+    1. **Index foreign keys:**
+       ```sql
+       CREATE INDEX idx_posts_user_id ON posts(user_id);
+       ```
+
+    2. **Use WHERE to filter early:**
+       ```sql
+       -- Good: Filter before joining
+       SELECT u.username, p.title
+       FROM users u
+       INNER JOIN posts p ON u.id = p.user_id
+       WHERE u.is_active = TRUE;
+       ```
+
+    3. **Avoid unnecessary JOINs:**
+       ```sql
+       -- Bad: Joining when not needed
+       SELECT u.username
+       FROM users u
+       INNER JOIN posts p ON u.id = p.user_id;
+
+       -- Good: No JOIN needed
+       SELECT username FROM users;
+       ```
+
+    **Key takeaways:**
+    1. Self-joins join a table to itself (use aliases!)
+    2. WITH RECURSIVE queries hierarchical data
+    3. CROSS JOIN creates all combinations (use carefully!)
+    4. Multiple JOINs combine 3+ tables
+    5. Index foreign keys for better performance
+
+    **Next**: Move to Module 3 to learn about query optimization and indexes!
   MARKDOWN
-  lesson.key_concepts = ['relationships', 'foreign keys', 'joins', 'one-to-many', 'many-to-many', 'normalization']
+  lesson.key_concepts = ['self-join', 'recursive queries', 'CROSS JOIN', 'multiple joins', 'performance']
 end
 
 # Adding comprehensive quizzes for Module 2 and 3...
@@ -2116,11 +2008,19 @@ puts "Linking lessons and quizzes to modules..."
 
 # Module 1: PostgreSQL Fundamentals
 ModuleItem.find_or_create_by!(course_module: module1, item: lesson1_1, sequence_order: 1)
-ModuleItem.find_or_create_by!(course_module: module1, item: quiz1_1, sequence_order: 2)
+ModuleItem.find_or_create_by!(course_module: module1, item: lesson1_2, sequence_order: 2)
+ModuleItem.find_or_create_by!(course_module: module1, item: lesson1_3, sequence_order: 3)
+ModuleItem.find_or_create_by!(course_module: module1, item: lesson1_4, sequence_order: 4)
+ModuleItem.find_or_create_by!(course_module: module1, item: lesson1_5, sequence_order: 5)
+ModuleItem.find_or_create_by!(course_module: module1, item: lesson1_6, sequence_order: 6)
+ModuleItem.find_or_create_by!(course_module: module1, item: quiz1_1, sequence_order: 7)
 
 # Module 2: Schema Design
 ModuleItem.find_or_create_by!(course_module: module2, item: lesson2_1, sequence_order: 1)
-ModuleItem.find_or_create_by!(course_module: module2, item: quiz2_1, sequence_order: 2)
+ModuleItem.find_or_create_by!(course_module: module2, item: lesson2_2, sequence_order: 2)
+ModuleItem.find_or_create_by!(course_module: module2, item: lesson2_3, sequence_order: 3)
+ModuleItem.find_or_create_by!(course_module: module2, item: lesson2_4, sequence_order: 4)
+ModuleItem.find_or_create_by!(course_module: module2, item: quiz2_1, sequence_order: 5)
 
 # Module 3: Query Optimization
 ModuleItem.find_or_create_by!(course_module: module3, item: lesson3_1, sequence_order: 1)
@@ -2132,7 +2032,7 @@ ModuleItem.find_or_create_by!(course_module: module3, item: quiz3_1, sequence_or
 
 puts "Linking PostgreSQL labs to modules..."
 
-pg_labs = HandsOnLab.where(lab_type: 'postgresql').order(:sequence_order)
+pg_labs = HandsOnLab.where(lab_type: 'postgresql')
 
 if pg_labs.any?
   pg_labs.each_with_index do |lab, index|

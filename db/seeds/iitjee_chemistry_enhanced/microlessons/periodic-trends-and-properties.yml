@@ -1,0 +1,344 @@
+slug: periodic-trends-and-properties
+title: Periodic Trends and Properties
+sequence_order: 2
+estimated_minutes: 25
+difficulty: medium
+key_concepts:
+  - Atomic radius
+  - Ionic radius
+  - Ionization energy
+  - Electron affinity
+  - Electronegativity
+  - Metallic character
+content_md: |
+  # Periodic Trends and Properties
+
+  Understanding periodic trends is ESSENTIAL for predicting chemical behavior. These trends form the foundation for all inorganic chemistry.
+
+  ## 1. Atomic Radius
+
+  **Definition**: Distance from the nucleus to the outermost electron shell.
+
+  ### Trends:
+  - **Across a period (→)**: DECREASES
+    - Same number of shells, but more protons
+    - Greater nuclear charge pulls electrons closer
+    - Example: Li (152 pm) > Be (112 pm) > B (88 pm) > C (77 pm)
+
+  - **Down a group (↓)**: INCREASES
+    - More electron shells added
+    - Shielding effect increases
+    - Example: Li (152 pm) < Na (186 pm) < K (227 pm)
+
+  ### Exceptions:
+  - Noble gases have larger van der Waals radii (no covalent bonds)
+  - d-block contraction: Elements after d-block are smaller than expected
+
+  ## 2. Ionic Radius
+
+  **Cations (positive ions)**: SMALLER than parent atom
+  - Loss of electrons, remaining electrons pulled closer
+  - Example: Na (186 pm) → Na⁺ (102 pm)
+
+  **Anions (negative ions)**: LARGER than parent atom
+  - Gain of electrons, increased electron-electron repulsion
+  - Example: Cl (99 pm) → Cl⁻ (181 pm)
+
+  ### Isoelectronic Species (Same number of electrons):
+  Order by nuclear charge - more protons = smaller radius
+  - O²⁻ > F⁻ > Ne > Na⁺ > Mg²⁺ > Al³⁺ (all have 10 electrons)
+
+  ## 3. Ionization Energy (IE)
+
+  **Definition**: Energy required to remove the outermost electron from a gaseous atom.
+
+  M(g) → M⁺(g) + e⁻     ΔH = IE₁ (First Ionization Energy)
+
+  ### Trends:
+  - **Across a period (→)**: INCREASES
+    - Smaller radius, electrons held more tightly
+    - Example: Na (496 kJ/mol) < Mg (738) < Al (578) < Si (786) < P (1012) < S (1000) < Cl (1251)
+
+  - **Down a group (↓)**: DECREASES
+    - Larger radius, electrons farther from nucleus
+    - Example: Li (520 kJ/mol) > Na (496) > K (419) > Rb (403)
+
+  ### Important Exceptions:
+  1. **Be > B**: B loses electron from 2p (easier than 2s)
+  2. **N > O**: O has paired electrons in 2p (easier to remove one)
+  3. **Mg > Al**: Al loses electron from 2p (easier than paired 2s)
+
+  ### Successive Ionization Energies:
+  IE₁ < IE₂ < IE₃ < IE₄ ...
+  - Each successive electron is harder to remove
+  - Large jump when removing from a noble gas configuration
+
+  ## 4. Electron Affinity (EA)
+
+  **Definition**: Energy change when an electron is added to a gaseous atom.
+
+  X(g) + e⁻ → X⁻(g)     ΔH = EA
+
+  ### Trends (generally):
+  - **Across a period (→)**: Becomes more NEGATIVE (more exothermic)
+  - **Down a group (↓)**: Becomes less NEGATIVE (less exothermic)
+
+  ### Important Values:
+  - **Chlorine has highest EA**: -349 kJ/mol
+  - **Noble gases**: ~0 or positive (stable, don't want electrons)
+  - **Group 2**: Very low EA (stable s² configuration)
+
+  ### Exceptions:
+  - F has lower EA than Cl (small size, electron repulsion)
+  - O has lower EA than S (same reason)
+
+  ## 5. Electronegativity
+
+  **Definition**: Tendency of an atom to attract shared electrons in a bond.
+
+  ### Pauling Scale (most common):
+  - F = 4.0 (highest)
+  - O = 3.5
+  - N = 3.0
+  - Cl = 3.0
+  - C = 2.5
+
+  ### Trends:
+  - **Across a period (→)**: INCREASES
+  - **Down a group (↓)**: DECREASES
+
+  ### Applications:
+  - **Bond polarity**: Difference in electronegativity determines polarity
+  - **Ionic vs Covalent**: Large difference (>1.7) = ionic character
+
+  ## 6. Metallic Character
+
+  **Definition**: Tendency to lose electrons and form positive ions.
+
+  ### Trends:
+  - **Across a period (→)**: DECREASES
+    - Elements become more non-metallic
+  - **Down a group (↓)**: INCREASES
+    - Easier to lose electrons
+
+  ### Non-metallic Character: Opposite trends
+
+  ## Summary Table
+
+  | Property | Across Period (→) | Down Group (↓) |
+  |----------|-------------------|----------------|
+  | Atomic radius | Decreases | Increases |
+  | Ionization energy | Increases | Decreases |
+  | Electron affinity | More negative | Less negative |
+  | Electronegativity | Increases | Decreases |
+  | Metallic character | Decreases | Increases |
+
+  ## Key Points for IIT JEE
+
+  1. **IE exceptions**: Be > B, N > O, Mg > Al (memorize these!)
+  2. **EA**: Cl > F (due to small size of F)
+  3. **Isoelectronic**: Compare by nuclear charge
+  4. **Diagonal relationships**: Li-Mg, Be-Al, B-Si have similar properties
+  5. **d-block contraction**: Makes post-transition elements smaller
+
+exercises:
+  - type: mcq
+    slug: ie-trend-period
+    sequence_order: 1
+    question: Which element has the highest first ionization energy in Period 2?
+    options:
+      - Lithium (Li)
+      - Carbon (C)
+      - Nitrogen (N)
+      - Neon (Ne)
+    correct_answer_index: 3
+    explanation: Neon has the highest IE in Period 2 because it has the smallest atomic radius and a completely filled stable electron configuration. IE generally increases across a period.
+    difficulty: easy
+
+  - type: mcq
+    slug: ie-exception-be-b
+    sequence_order: 2
+    question: Why is the first ionization energy of Beryllium (Be) greater than Boron (B)?
+    options:
+      - Be has more protons than B
+      - B loses an electron from 2p orbital which is higher in energy than 2s
+      - Be has a smaller atomic radius
+      - B has more electron-electron repulsion
+    correct_answer_index: 1
+    explanation: Boron's outermost electron is in the 2p orbital (higher energy, easier to remove) while Beryllium's is in the more stable 2s orbital. This makes Be's electron harder to remove, giving it higher IE.
+    difficulty: medium
+
+  - type: mcq
+    slug: ie-exception-n-o
+    sequence_order: 3
+    question: The first ionization energy of Nitrogen is higher than Oxygen because:
+    options:
+      - Nitrogen has more protons
+      - Nitrogen has a smaller atomic radius
+      - Oxygen has a paired electron in 2p orbital that experiences repulsion
+      - Oxygen has a lower electronegativity
+    correct_answer_index: 2
+    explanation: Oxygen has the configuration 2s²2p⁴ with one paired electron in 2p. The electron-electron repulsion in this paired orbital makes it easier to remove, lowering the IE compared to Nitrogen (2s²2p³ with all unpaired).
+    difficulty: medium
+
+  - type: mcq
+    slug: atomic-radius-trend
+    sequence_order: 4
+    question: Arrange in order of INCREASING atomic radius - Na, Mg, Al, Si
+    options:
+      - Si < Al < Mg < Na
+      - Na < Mg < Al < Si
+      - Al < Si < Mg < Na
+      - Mg < Al < Si < Na
+    correct_answer_index: 0
+    explanation: Atomic radius DECREASES across a period due to increasing nuclear charge. So Si (smallest) < Al < Mg < Na (largest). All are in Period 3.
+    difficulty: easy
+
+  - type: mcq
+    slug: isoelectronic-radius
+    sequence_order: 5
+    question: Arrange the isoelectronic species in order of INCREASING ionic radius - Na⁺, F⁻, O²⁻, Mg²⁺
+    options:
+      - Mg²⁺ < Na⁺ < F⁻ < O²⁻
+      - O²⁻ < F⁻ < Na⁺ < Mg²⁺
+      - Na⁺ < Mg²⁺ < F⁻ < O²⁻
+      - F⁻ < O²⁻ < Mg²⁺ < Na⁺
+    correct_answer_index: 0
+    explanation: All have 10 electrons. More protons = smaller radius. Mg²⁺ (12 protons) < Na⁺ (11) < F⁻ (9) < O²⁻ (8). The species with fewer protons has a larger radius.
+    difficulty: hard
+
+  - type: mcq
+    slug: electron-affinity-cl-f
+    sequence_order: 6
+    question: Why does Chlorine have a more negative electron affinity than Fluorine?
+    options:
+      - Chlorine has more protons
+      - Fluorine is too small, causing electron-electron repulsion
+      - Chlorine has a higher electronegativity
+      - Fluorine has a noble gas configuration
+    correct_answer_index: 1
+    explanation: Fluorine's very small size means the incoming electron experiences significant repulsion from existing electrons in the compact 2p orbital. Chlorine's larger size (3p orbital) provides more space, reducing repulsion.
+    difficulty: medium
+
+  - type: numerical
+    slug: successive-ie-jump
+    sequence_order: 7
+    question: For Magnesium (Mg), which ionization energy shows the largest jump - IE₂ to IE₃ or IE₁ to IE₂? Enter 2 for IE₂→IE₃ or 1 for IE₁→IE₂.
+    correct_answer: "2"
+    explanation: Mg has configuration [Ne]3s². After removing 2 electrons (Mg²⁺), we have the stable [Ne] configuration. Removing the 3rd electron breaks into the noble gas core, requiring MUCH more energy. IE₃ >> IE₂.
+    difficulty: medium
+
+  - type: mcq
+    slug: electronegativity-trend
+    sequence_order: 8
+    question: Which of the following has the highest electronegativity?
+    options:
+      - Oxygen (O)
+      - Nitrogen (N)
+      - Fluorine (F)
+      - Chlorine (Cl)
+    correct_answer_index: 2
+    explanation: Fluorine has the highest electronegativity (4.0 on Pauling scale) of all elements. It's the smallest halogen with the highest effective nuclear charge for attracting electrons.
+    difficulty: easy
+
+  - type: mcq
+    slug: metallic-character
+    sequence_order: 9
+    question: Which element has the highest metallic character?
+    options:
+      - Sodium (Na)
+      - Potassium (K)
+      - Magnesium (Mg)
+      - Calcium (Ca)
+    correct_answer_index: 1
+    explanation: Metallic character increases down a group and decreases across a period. Potassium (Group 1, Period 4) has higher metallic character than Na (Period 3), and Group 1 > Group 2.
+    difficulty: easy
+
+  - type: mcq
+    slug: diagonal-relationship
+    sequence_order: 10
+    question: Lithium shows diagonal relationship with which element?
+    options:
+      - Sodium (Na)
+      - Beryllium (Be)
+      - Magnesium (Mg)
+      - Aluminum (Al)
+    correct_answer_index: 2
+    explanation: Diagonal relationships exist between Li-Mg, Be-Al, and B-Si. Li and Mg have similar charge/radius ratios and show similar properties (e.g., both form nitrides directly with N₂).
+    difficulty: medium
+
+  - type: mcq
+    slug: cation-anion-size
+    sequence_order: 11
+    question: Which statement is CORRECT about ionic radii?
+    options:
+      - Cations are larger than their parent atoms
+      - Anions are smaller than their parent atoms
+      - Na⁺ is larger than Na
+      - Cl⁻ is larger than Cl
+    correct_answer_index: 3
+    explanation: Anions gain electrons, increasing electron-electron repulsion and expanding the electron cloud. Cl (99 pm) → Cl⁻ (181 pm). Cations lose electrons and become smaller.
+    difficulty: easy
+
+  - type: mcq
+    slug: second-ie
+    sequence_order: 12
+    question: Which element has the highest second ionization energy (IE₂)?
+    options:
+      - Sodium (Na)
+      - Magnesium (Mg)
+      - Aluminum (Al)
+      - Silicon (Si)
+    correct_answer_index: 0
+    explanation: Na has configuration [Ne]3s¹. After losing one electron, Na⁺ = [Ne]. Removing a second electron means breaking into the stable noble gas core, requiring enormous energy.
+    difficulty: hard
+
+  - type: mcq
+    slug: ea-group2
+    sequence_order: 13
+    question: Why do Group 2 elements (Be, Mg, Ca) have very low (almost zero) electron affinities?
+    options:
+      - They have very large atomic radii
+      - They have stable fully-filled s-orbitals (ns²)
+      - They have high ionization energies
+      - They are metals
+    correct_answer_index: 1
+    explanation: Group 2 elements have stable ns² configuration. Adding an electron would go into a higher energy p-orbital, which is energetically unfavorable. Hence, their EA is nearly zero or positive.
+    difficulty: medium
+
+  - type: mcq
+    slug: effective-nuclear-charge
+    sequence_order: 14
+    question: Effective nuclear charge (Zeff) across a period:
+    options:
+      - Decreases due to shielding
+      - Increases due to poor shielding by same-shell electrons
+      - Remains constant
+      - First increases then decreases
+    correct_answer_index: 1
+    explanation: Across a period, electrons are added to the same shell while protons increase. Electrons in the same shell shield each other poorly, so Zeff increases. This explains why atomic radius decreases across a period.
+    difficulty: medium
+
+  - type: mcq
+    slug: d-block-contraction
+    sequence_order: 15
+    question: Due to d-block contraction, which pair has similar atomic radii?
+    options:
+      - Ca and Sc
+      - Zr and Hf
+      - Ti and Zr
+      - Fe and Ru
+    correct_answer_index: 1
+    explanation: Lanthanoid contraction (similar to d-block contraction) causes Hf to have almost the same atomic radius as Zr, despite being one period below. The 4f electrons provide poor shielding.
+    difficulty: hard
+
+objectives:
+  - Master all periodic trends and their directions
+  - Explain exceptions in ionization energy
+  - Compare sizes of isoelectronic species
+  - Apply diagonal relationships
+  - Predict properties using periodic trends
+
+next_recommended:
+  - types-of-chemical-bonds
+  - periodictrends-practice

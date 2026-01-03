@@ -1,55 +1,341 @@
 slug: modern-periodic-law-and-classification
 title: Modern Periodic Law and Classification
-sequence_order: 24
-estimated_minutes: 2
+sequence_order: 1
+estimated_minutes: 30
 difficulty: easy
-content_md: "# Modern Periodic Law and Classification \U0001F680\n\n# Modern Periodic\
-  \ Law and Classification\n\n    ## Modern Periodic Law\n\n    **Statement**: \"\
-  The physical and chemical properties of elements are periodic functions of their\
-  \ atomic numbers.\"\n\n    This was proposed by Henry Moseley (1913) and replaced\
-  \ Mendeleev's periodic law based on atomic mass.\n\n    ## Structure of Modern Periodic\
-  \ Table\n\n    ### Periods (Horizontal Rows)\n    - **7 periods** numbered 1 to\
-  \ 7\n    - Period number = Number of shells/energy levels\n    - Example: Na (Period\
-  \ 3) has 3 shells: K, L, M\n\n    ### Groups (Vertical Columns)\n    - **18 groups**\
-  \ numbered 1 to 18 (IUPAC)\n    - Group number indicates valence electrons (for\
-  \ main group elements)\n    - Example: Group 1 = 1 valence electron (alkali metals)\n\
-  \n    ## Block Classification\n\n    Elements are classified into four blocks based\
-  \ on the subshell being filled:\n\n    ### s-Block Elements\n    - Groups 1 and\
-  \ 2\n    - ns¹ and ns² configurations\n    - Includes alkali metals and alkaline\
-  \ earth metals\n    - Highly reactive metals\n\n    ### p-Block Elements\n    -\
-  \ Groups 13 to 18\n    - ns²np¹⁻⁶ configurations\n    - Includes metals, metalloids,\
-  \ and non-metals\n    - Most diverse block\n\n    ### d-Block Elements (Transition\
-  \ Elements)\n    - Groups 3 to 12\n    - (n-1)d¹⁻¹⁰ns¹⁻² configurations\n    - All\
-  \ are metals\n    - Show variable oxidation states\n\n    ### f-Block Elements (Inner\
-  \ Transition Elements)\n    - Lanthanoids: 4f series (58-71)\n    - Actinoids: 5f\
-  \ series (90-103)\n    - (n-2)f¹⁻¹⁴(n-1)d⁰⁻¹ns² configurations\n\n    ## Metallic\
-  \ and Non-metallic Character\n\n    ### Metallic Character\n    - **Increases**\
-  \ down a group (easier to lose electrons)\n    - **Decreases** across a period (harder\
-  \ to lose electrons)\n    - Metals are on the left and bottom of the periodic table\n\
-  \n    ### Non-metallic Character\n    - **Decreases** down a group\n    - **Increases**\
-  \ across a period\n    - Non-metals are on the right and top of the periodic table\n\
-  \n    ### Metalloids/Semi-metals\n    - Elements with intermediate properties\n\
-  \    - Examples: B, Si, Ge, As, Sb, Te, Po, At\n    - Form a diagonal line separating\
-  \ metals from non-metals\n\n    ## Key Points for IIT JEE\n\n    1. Modern periodic\
-  \ law is based on **atomic number**, not atomic mass\n    2. Period number = Number\
-  \ of shells\n    3. Group number (1-2, 13-18) = Valence electrons\n    4. Transition\
-  \ elements (d-block) show variable oxidation states\n    5. Metallic character increases\
-  \ down and left; non-metallic increases up and right\n\n## Key Points\n\n- Modern\
-  \ periodic law\n\n- Periods and groups\n\n- Block classification"
+key_concepts:
+  - Modern periodic law
+  - Periods and groups
+  - Block classification
+  - Electron configuration patterns
+content_md: |
+  # The Periodic Table: Your Ultimate Cheat Sheet for IIT JEE
+
+  ## Why This Topic is CRITICAL for JEE
+
+  **JEE Weightage**: 2-4 marks directly + Foundation for 30+ marks of Inorganic Chemistry
+
+  Here's the truth: The Periodic Table is not just another topic to memorize. It's the **GPS of Chemistry**. Once you master it, you can PREDICT:
+  - Which elements react with what
+  - Why some elements are metals and others are not
+  - The formulas of compounds without memorizing them
+  - Properties of elements you've never even heard of
+
+  **JEE Pattern**: Questions often ask you to identify elements from their position, predict properties, or find anomalies. This lesson teaches you the LOGIC behind these predictions.
+
+  ---
+
+  ## The Big Picture: What is the Periodic Table?
+
+  Think of it as a **seating arrangement** where 118 elements are placed based on ONE simple rule:
+
+  **Modern Periodic Law (Moseley, 1913)**:
+  > "Properties of elements are periodic functions of their ATOMIC NUMBER."
+
+  **Why atomic number and not atomic mass?**
+  - Mendeleev used atomic mass (1869) but had to swap some elements (like Te and I) to make properties match
+  - Moseley discovered that nuclear charge (protons = atomic number) is what actually determines chemical behavior
+  - This fixed all of Mendeleev's anomalies
+
+  **JEE Trap**: Questions may ask why Ar (mass 40) comes before K (mass 39). Answer: We arrange by atomic number (Ar=18, K=19), not mass!
+
+  ---
+
+  ## The Structure: Rows and Columns
+
+  ### PERIODS (Horizontal Rows) - 7 in total
+
+  **The Golden Rule**: Period number = Number of electron shells
+
+  | Period | Shells | Example | Configuration |
+  |--------|--------|---------|---------------|
+  | 1 | 1 (K) | H, He | 1s |
+  | 2 | 2 (K, L) | Li to Ne | 1s 2s 2p |
+  | 3 | 3 (K, L, M) | Na to Ar | ...3s 3p |
+  | 4 | 4 (K, L, M, N) | K to Kr | ...4s 3d 4p |
+  | 5 | 5 | Rb to Xe | ...5s 4d 5p |
+  | 6 | 6 | Cs to Rn | ...6s 4f 5d 6p |
+  | 7 | 7 | Fr onwards | ...7s 5f 6d 7p |
+
+  **JEE Shortcut**: Given electron configuration, identify period from the highest shell number.
+  Example: [Ar] 3d10 4s2 4p3 → Period 4 (highest shell = 4)
+
+  ### GROUPS (Vertical Columns) - 18 in total
+
+  **The Golden Rule**: Group number tells you valence electrons (for main group)
+
+  | Group | Valence e⁻ | Name | Example |
+  |-------|------------|------|---------|
+  | 1 | 1 | Alkali metals | Li, Na, K |
+  | 2 | 2 | Alkaline earth | Be, Mg, Ca |
+  | 13 | 3 | Boron family | B, Al, Ga |
+  | 14 | 4 | Carbon family | C, Si, Ge |
+  | 15 | 5 | Pnictogens | N, P, As |
+  | 16 | 6 | Chalcogens | O, S, Se |
+  | 17 | 7 | Halogens | F, Cl, Br |
+  | 18 | 8 | Noble gases | He, Ne, Ar |
+
+  **JEE Formula**: For groups 1-2: Group = Valence electrons
+  For groups 13-18: Valence electrons = Group - 10
+
+  ---
+
+  ## The Four Blocks: s, p, d, f
+
+  This is where the periodic table becomes POWERFUL. Elements are grouped by which orbital is being filled.
+
+  ### s-Block (Groups 1-2)
+  - **Configuration**: ns¹ or ns²
+  - **Character**: Highly reactive metals (lose electrons easily)
+  - **JEE Focus**: Flame colors, reactions with water, diagonal relationships
+
+  ### p-Block (Groups 13-18)
+  - **Configuration**: ns² np¹⁻⁶
+  - **Character**: Most diverse - metals, nonmetals, metalloids
+  - **JEE Focus**: Highest weightage in Inorganic! Anomalous behavior of first element, oxidation states
+
+  ### d-Block (Groups 3-12) - Transition Elements
+  - **Configuration**: (n-1)d¹⁻¹⁰ ns¹⁻²
+  - **Character**: All metals, variable oxidation states, colored compounds
+  - **JEE Focus**: Color of ions, magnetic properties, complex formation
+
+  ### f-Block - Inner Transition Elements
+  - **Lanthanoids**: Ce to Lu (4f filling)
+  - **Actinoids**: Th to Lr (5f filling)
+  - **JEE Focus**: Lanthanoid contraction, +3 most stable oxidation state
+
+  ---
+
+  ## Quick Identification Tricks for JEE
+
+  **Given atomic number, find block:**
+  1. Write electron configuration
+  2. See which subshell is being filled LAST
+  3. That's your block!
+
+  **Example**: Z = 26 (Fe)
+  - Config: [Ar] 3d⁶ 4s²
+  - Last filled: 3d (even though 4s is written last, 3d is being filled)
+  - Block: d-block
+
+  **Example**: Z = 35 (Br)
+  - Config: [Ar] 3d¹⁰ 4s² 4p⁵
+  - Last filled: 4p
+  - Block: p-block
+
+  ---
+
+  ## What You'll Learn Next
+
+  Now that you understand the MAP, we'll explore:
+  1. **Periodic Trends** - How properties change across periods and down groups
+  2. **Chemical Bonding** - Why and how atoms combine
+  3. **p-Block Elements** - The most JEE-heavy section
+
+  Each builds on this foundation. Master this, and you'll see patterns everywhere!
+
+  ---
+
+  ## Key Takeaways for JEE
+
+  1. **Modern periodic law uses ATOMIC NUMBER** (not mass)
+  2. **Period = Number of shells** in an atom
+  3. **Group = Valence electrons** (with the Group-10 formula for p-block)
+  4. **Block = Which orbital is being filled last**
+  5. Elements in the same group have similar properties (same valence electrons)
+
 exercises:
-- type: mcq
-  slug: modern-periodic-law-and-classification-mcq
-  sequence_order: 1
-  question: Pick the correct statement based on this concept.
-  options:
-  - Statement A
-  - Statement B
-  - Statement C
-  - Statement D
-  correct_answer_index: 0
-  explanation: Review the definition and common exceptions.
+  - type: mcq
+    slug: modern-law-basis
+    sequence_order: 1
+    question: Modern periodic law is based on which property?
+    options:
+      - Atomic mass
+      - Atomic number
+      - Number of neutrons
+      - Atomic radius
+    correct_answer_index: 1
+    explanation: Moseley (1913) established that atomic number (protons) determines chemical properties, not atomic mass. This explained anomalies like Ar-K and Co-Ni pairs.
+    difficulty: easy
+
+  - type: mcq
+    slug: period-identification
+    sequence_order: 2
+    question: An element has configuration [Ne] 3s² 3p⁴. Which period is it in?
+    options:
+      - Period 2
+      - Period 3
+      - Period 4
+      - Period 6
+    correct_answer_index: 1
+    explanation: The highest principal quantum number is 3 (3s and 3p). Period number = highest shell number = 3. This element is Sulfur (S).
+    difficulty: easy
+
+  - type: mcq
+    slug: group-valence-electrons
+    sequence_order: 3
+    question: An element in Group 16 has how many valence electrons?
+    options:
+      - 4
+      - 6
+      - 8
+      - 16
+    correct_answer_index: 1
+    explanation: For groups 13-18, valence electrons = Group number - 10. So Group 16 = 16 - 10 = 6 valence electrons. These are chalcogens (O, S, Se, Te).
+    difficulty: easy
+
+  - type: mcq
+    slug: s-block-identification
+    sequence_order: 4
+    question: Which elements are s-block elements?
+    options:
+      - Fe and Cu
+      - Na and Ca
+      - Cl and Br
+      - C and N
+    correct_answer_index: 1
+    explanation: s-block includes Groups 1 and 2. Na (Group 1) and Ca (Group 2) are s-block. Fe, Cu are d-block; Cl, Br are p-block.
+    difficulty: easy
+
+  - type: mcq
+    slug: d-block-config
+    sequence_order: 5
+    question: Which configuration represents a d-block element?
+    options:
+      - "[Ne] 3s² 3p⁵"
+      - "[Ar] 4s²"
+      - "[Ar] 3d⁵ 4s²"
+      - "[Kr] 5s² 5p³"
+    correct_answer_index: 2
+    explanation: d-block elements have (n-1)d orbitals being filled. [Ar] 3d⁵ 4s² shows 3d filling (this is Mn). The others are p-block (Cl), s-block (Ca), and p-block (Sb).
+    difficulty: medium
+
+  - type: mcq
+    slug: period-elements-count
+    sequence_order: 6
+    question: How many elements are in Period 3?
+    options:
+      - 2
+      - 8
+      - 18
+      - 32
+    correct_answer_index: 1
+    explanation: Period 3 has 8 elements (Na to Ar). It fills 3s (2 elements) and 3p (6 elements) = 8 total. Period 1 has 2, Periods 2-3 have 8, Periods 4-5 have 18, Periods 6-7 have 32.
+    difficulty: medium
+
+  - type: mcq
+    slug: ar-k-anomaly
+    sequence_order: 7
+    question: Argon (mass 40) is placed BEFORE Potassium (mass 39) because periodic table is arranged by
+    options:
+      - Atomic mass in increasing order
+      - Atomic number in increasing order
+      - Number of neutrons
+      - Electronegativity
+    correct_answer_index: 1
+    explanation: Modern periodic table arranges by atomic number. Ar (Z=18) comes before K (Z=19) even though Ar is heavier. This was an anomaly in Mendeleev's mass-based table.
+    difficulty: medium
+
+  - type: numerical
+    slug: atomic-number-group15-period3
+    sequence_order: 8
+    question: What is the atomic number of the element in Group 15, Period 3?
+    correct_answer: "15"
+    explanation: This element is Phosphorus (P). Period 3 starts at Na (Z=11). Group 15 in Period 3 means we add 4 more elements (Si=14, then P=15).
+    difficulty: easy
+
+  - type: mcq
+    slug: block-from-config
+    sequence_order: 9
+    question: An element has configuration [Xe] 4f¹⁴ 5d¹⁰ 6s² 6p². Which block does it belong to?
+    options:
+      - s-block
+      - p-block
+      - d-block
+      - f-block
+    correct_answer_index: 1
+    explanation: The LAST orbital being filled determines the block. Here 6p is being filled last (6p²), so it's p-block. This is Lead (Pb). The 4f and 5d are already full.
+    difficulty: hard
+
+  - type: mcq
+    slug: transition-element-definition
+    sequence_order: 10
+    question: Transition elements are defined as elements that
+    options:
+      - Are in the d-block
+      - Have partially filled d-orbitals in any oxidation state
+      - Are all metals
+      - Have high melting points
+    correct_answer_index: 1
+    explanation: True transition elements have partially filled d-orbitals in the elemental state OR in any common oxidation state. Zn (d¹⁰ always) is d-block but not a true transition element.
+    difficulty: hard
+
+  - type: mcq
+    slug: lanthanoid-position
+    sequence_order: 11
+    question: Lanthanoids belong to which period of the periodic table?
+    options:
+      - Period 4
+      - Period 5
+      - Period 6
+      - Period 7
+    correct_answer_index: 2
+    explanation: Lanthanoids (Ce to Lu, Z=58-71) are in Period 6. They fill the 4f orbital. Actinoids (Th to Lr) are in Period 7 and fill 5f.
+    difficulty: medium
+
+  - type: mcq
+    slug: metalloid-identification
+    sequence_order: 12
+    question: Which of the following is a metalloid?
+    options:
+      - Aluminum (Al)
+      - Silicon (Si)
+      - Phosphorus (P)
+      - Sulfur (S)
+    correct_answer_index: 1
+    explanation: Metalloids are B, Si, Ge, As, Sb, Te, Po. They have properties intermediate between metals and non-metals. Si is the most common metalloid (used in semiconductors).
+    difficulty: easy
+
+  - type: mcq
+    slug: noble-gas-config
+    sequence_order: 13
+    question: Which group has elements with completely filled valence shell?
+    options:
+      - Group 1
+      - Group 14
+      - Group 17
+      - Group 18
+    correct_answer_index: 3
+    explanation: Group 18 (noble gases) have complete valence shells - ns²np⁶ (except He which is 1s²). This makes them chemically inert.
+    difficulty: easy
+
+  - type: mcq
+    slug: diagonal-relationship-block
+    sequence_order: 14
+    question: Diagonal relationships exist between elements of
+    options:
+      - Same group
+      - Same period
+      - Period 2 and Period 3 in adjacent groups
+      - d-block elements only
+    correct_answer_index: 2
+    explanation: Diagonal relationships exist between Li-Mg, Be-Al, B-Si. Moving diagonally, the increase in size (down) is compensated by increase in charge (right), giving similar properties.
+    difficulty: hard
+
+  - type: numerical
+    slug: p-block-groups-count
+    sequence_order: 15
+    question: How many groups are there in the p-block?
+    correct_answer: "6"
+    explanation: p-block includes Groups 13, 14, 15, 16, 17, and 18 - a total of 6 groups. Each group fills one p-orbital electron (p¹ to p⁶).
+    difficulty: easy
+
 objectives:
-- Define the core idea
-- Identify governing formulae or rules
-- Practice with mixed-difficulty problems
-next_recommended: []
+  - Understand why the periodic table is essential for JEE Inorganic Chemistry
+  - Master period and group identification from electron configuration
+  - Classify elements into s, p, d, and f blocks confidently
+  - Apply quick tricks to solve JEE questions on element identification
+
+next_recommended:
+  - periodic-trends-and-properties
+  - types-of-chemical-bonds

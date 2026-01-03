@@ -308,6 +308,15 @@ Rails.application.routes.draw do
       get  'microlessons/by_module', to: 'microlessons#by_module'
       get  'microlessons/:id',       to: 'microlessons#show'
       post 'exercises/:id/attempt',  to: 'exercise_attempts#create'
+      
+      # Track-based Courses API (e.g., /api/v1/kubernetes/courses)
+      get ':track/courses', to: 'courses#index_by_track'
+      get ':track/courses/:slug', to: 'courses#show_by_track'
+      get ':track/courses/:course_slug/modules', to: 'courses#modules_by_track'
+      get ':track/courses/:course_slug/modules/:module_slug', to: 'courses#module_by_track'
+      get ':track/labs', to: 'labs#index_by_track'
+      get ':track/labs/:id', to: 'labs#show_by_track'
+      
       # Generic Courses API (published courses across all tracks)
       get    'courses',                                    to: 'courses#index'
       get    'courses/:slug',                              to: 'courses#show'

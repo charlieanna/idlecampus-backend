@@ -1,37 +1,130 @@
 slug: ligands-practice
-title: ligands — Practice
-sequence_order: 22
-estimated_minutes: 2
-difficulty: hard
-content_md: '# ligands — Practice 🚀
+title: Ligands - Practice
+sequence_order: 5
+estimated_minutes: 15
+difficulty: medium
+key_concepts:
+  - Ligand types
+  - Denticity
+  - Chelates
+  - EDTA
+content_md: |
+  # Ligands - Practice
 
+  ## What are Ligands?
 
-  EDTA (ethylenediaminetetraacetic acid) is hexadentate with 2 N and 4 O donor atoms.
-  Forms highly stable 6-membered chelate rings due to chelate effect.
+  Ligands are ions or molecules with lone pairs that donate electrons to a central metal atom/ion, forming coordinate bonds.
 
+  ## Classification by Denticity
 
-  ## Key Points
+  | Type | Donor Atoms | Examples |
+  |------|-------------|----------|
+  | **Monodentate** | 1 | NH₃, H₂O, Cl⁻, CN⁻, CO |
+  | **Bidentate** | 2 | en (ethylenediamine), ox (oxalate C₂O₄²⁻) |
+  | **Tridentate** | 3 | dien (diethylenetriamine) |
+  | **Tetradentate** | 4 | trien (triethylenetetramine) |
+  | **Hexadentate** | 6 | EDTA (ethylenediaminetetraacetic acid) |
 
+  ## Common Ligand Names
 
-  - Re-read the question carefully.
+  ### Neutral Ligands
+  - H₂O → aqua
+  - NH₃ → ammine
+  - CO → carbonyl
+  - NO → nitrosyl
+  - py (pyridine) → pyridine
 
+  ### Anionic Ligands (add -o suffix)
+  - Cl⁻ → chlorido/chloro
+  - Br⁻ → bromido/bromo
+  - CN⁻ → cyanido/cyano
+  - OH⁻ → hydroxido/hydroxo
+  - O²⁻ → oxido/oxo
 
-  - Recall the relevant formula or rule.
+  ## Ambidentate Ligands
 
+  Ligands that can bind through different atoms:
+  - **NO₂⁻**: nitro (N-bonded) or nitrito (O-bonded)
+  - **SCN⁻**: thiocyanato (S-bonded) or isothiocyanato (N-bonded)
 
-  - Review the explanation once you answer.'
+  ## Chelates and Chelate Effect
+
+  - **Chelate**: Complex with polydentate ligands forming ring structures
+  - **Chelate Effect**: Chelates are MORE stable than complexes with equivalent monodentate ligands
+  - Reason: Entropy factor - releasing more molecules when chelate forms
+
+  ## EDTA - The Most Important Hexadentate Ligand
+
+  - **Structure**: 2 nitrogen atoms + 4 carboxylate oxygen atoms = 6 donor atoms
+  - Forms very stable complexes (used in medicine, water softening)
+  - Can wrap around a metal ion completely
+
+  ## Key Points for Practice
+
+  1. Coordination number = Number of DONOR ATOMS (not ligands!)
+  2. Bidentate ligands count as 2 toward CN
+  3. Chelates are more stable (chelate effect)
+  4. EDTA is hexadentate with 6 donor atoms
+
 exercises:
-- type: mcq
-  sequence_order: 1
-  question: Which of the following are true about EDTA?
-  options:
-  - It is a hexadentate ligand
-  - It forms very stable chelate complexes
-  - It is a monodentate ligand
-  - It has 6 donor atoms
-  correct_answer_index: 3
+  - type: mcq
+    slug: bidentate-ligands
+    sequence_order: 1
+    question: Which of the following are bidentate ligands?
+    options:
+      - Ethylenediamine (en) and Oxalate (C₂O₄²⁻)
+      - Ammonia (NH₃) and Water (H₂O)
+      - Chloride (Cl⁻) and Cyanide (CN⁻)
+      - Carbon monoxide (CO) and Nitric oxide (NO)
+    correct_answer_index: 0
+    explanation: Bidentate ligands have 2 donor atoms. Ethylenediamine (H₂N-CH₂-CH₂-NH₂) has 2 N atoms. Oxalate (⁻O₂C-CO₂⁻) has 2 O atoms. The others are monodentate.
+    difficulty: medium
+
+  - type: mcq
+    slug: edta-properties
+    sequence_order: 2
+    question: Which statements about EDTA are correct?
+    options:
+      - It is hexadentate with 6 donor atoms
+      - It is monodentate with 1 donor atom
+      - It is bidentate with 2 donor atoms
+      - It is tetradentate with 4 donor atoms
+    correct_answer_index: 0
+    explanation: EDTA (ethylenediaminetetraacetic acid) is hexadentate with 2 N and 4 O donor atoms (total 6). It forms highly stable chelate complexes.
+    difficulty: medium
+
+  - type: mcq
+    slug: coordination-number-en
+    sequence_order: 3
+    question: What is the coordination number in [Pt(en)₂]²⁺? (en = ethylenediamine)
+    options:
+      - 2
+      - 4
+      - 6
+      - 8
+    correct_answer_index: 1
+    explanation: en is bidentate (2 donor atoms per ligand). 2 en ligands = 2×2 = 4 donor atoms. CN = 4, not 2!
+    difficulty: medium
+
+  - type: mcq
+    slug: chelate-stability
+    sequence_order: 4
+    question: Why are chelate complexes more stable than complexes with monodentate ligands?
+    options:
+      - Entropy effect - more molecules released
+      - Chelates have stronger bonds
+      - Chelates are always anionic
+      - Monodentate ligands are weak donors
+    correct_answer_index: 0
+    explanation: The chelate effect is primarily entropic. When a chelate forms, it releases more monodentate ligands, increasing entropy and making the reaction more favorable.
+    difficulty: hard
+
 objectives:
-- Define the core idea
-- Identify governing formulae or rules
-- Practice with mixed-difficulty problems
-next_recommended: []
+  - Classify ligands by denticity
+  - Identify common ligand names
+  - Understand chelate effect
+  - Calculate coordination numbers with polydentate ligands
+
+next_recommended:
+  - coordinationnumber-practice
+  - nomenclature-practice

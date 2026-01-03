@@ -109,6 +109,9 @@ seed_files = [
   'golang_course.rb',
   'golang_code_labs.rb',
   
+  # PostgreSQL Database Course
+  'postgresql_course_complete.rb',
+  
   # IIT JEE Chemistry
   'iit_jee/iit_jee_inorganic_chemistry.rb',
   'organic/module_01_goc.rb',

@@ -1,0 +1,425 @@
+slug: molecular-orbital-theory-basics
+title: Molecular Orbital Theory (MOT)
+sequence_order: 5
+estimated_minutes: 40
+difficulty: hard
+key_concepts:
+  - Molecular Orbital Theory
+  - LCAO method
+  - Bonding and antibonding orbitals
+  - Bond order
+  - Magnetic properties
+  - MO diagrams
+content_md: |
+  # Molecular Orbital Theory (MOT): The Complete Picture
+
+  ## Why MOT is a JEE Favorite
+
+  **JEE Weightage**: 3-5 marks (direct questions on bond order, magnetic properties)
+
+  Here's why JEE loves MOT questions:
+  - **VBT fails to explain why O₂ is attracted to magnets** (paramagnetic)
+  - MOT gives you the REAL picture of molecular bonding
+  - Bond order calculations are scoring questions if you know the formula
+
+  **Classic JEE Question**: "Why is O₂ paramagnetic when its Lewis structure shows all electrons paired?"
+
+  **Answer**: MOT shows O₂ has 2 unpaired electrons in antibonding orbitals!
+
+  ---
+
+  ## The Big Idea: Electrons Belong to the Molecule
+
+  **MOT** says electrons don't belong to individual atoms - they spread across the ENTIRE molecule in molecular orbitals.
+
+  ### Key Principles
+
+  1. **Atomic orbitals combine** to form molecular orbitals (MOs)
+  2. **Number of MOs = Number of AOs** that combine
+  3. **Electrons fill MOs** following Aufbau principle, Hund's rule, and Pauli exclusion
+  4. **Bonding MOs** are lower in energy (constructive interference)
+  5. **Antibonding MOs** are higher in energy (destructive interference)
+
+  ## Linear Combination of Atomic Orbitals (LCAO)
+
+  When two atomic orbitals (ψA and ψB) combine:
+
+  **Bonding MO**: ψb = ψA + ψB (in-phase, additive)
+  - Lower energy than parent AOs
+  - Electron density concentrated BETWEEN nuclei
+  - Stabilizes the molecule
+
+  **Antibonding MO**: ψ* = ψA - ψB (out-of-phase, subtractive)
+  - Higher energy than parent AOs
+  - Electron density concentrated AWAY from internuclear region
+  - Node between nuclei
+  - Destabilizes the molecule
+
+  ## Types of Molecular Orbitals
+
+  ### Sigma (σ) Molecular Orbitals
+  - Formed from head-on overlap
+  - Symmetrical around internuclear axis
+  - **σ bonding** and **σ* antibonding**
+
+  ### Pi (π) Molecular Orbitals
+  - Formed from sideways overlap of p-orbitals
+  - Electron density above and below internuclear axis
+  - **π bonding** and **π* antibonding**
+
+  ## MO Energy Level Diagrams
+
+  ### For O₂, F₂, Ne₂ (and molecules with ≥15 electrons)
+
+  **Standard Order** (σ2p is below π2p):
+  ```
+  σ*2p  ↑↓
+  π*2p  ↑↓ ↑↓
+  σ2p   ↑↓
+  π2p   ↑↓ ↑↓
+  σ*2s  ↑↓
+  σ2s   ↑↓
+  ```
+
+  Energy order: σ1s < σ*1s < σ2s < σ*2s < σ2p < π2p < π*2p < σ*2p
+
+  ### For N₂, C₂, B₂, Be₂, Li₂ (molecules with <15 electrons)
+
+  **Modified Order** (π2p is below σ2p due to s-p mixing):
+  ```
+  σ*2p
+  π*2p  ↑↓ ↑↓
+  σ2p   ↑↓
+  π2p   ↑↓ ↑↓
+  σ*2s  ↑↓
+  σ2s   ↑↓
+  ```
+
+  Energy order: σ1s < σ*1s < σ2s < σ*2s < π2p < σ2p < π*2p < σ*2p
+
+  ## Bond Order
+
+  **Bond Order = ½(Nb - Na)**
+
+  Where:
+  - Nb = Number of electrons in bonding MOs
+  - Na = Number of electrons in antibonding MOs
+
+  ### Significance of Bond Order
+  - **Bond Order = 0**: Molecule doesn't exist (He₂, Be₂)
+  - **Higher bond order**: Stronger bond, shorter bond length
+  - **Fractional bond order**: Possible (O₂⁺ has BO = 2.5)
+
+  ## MO Configuration of Important Molecules
+
+  ### H₂ (2 electrons)
+  - Configuration: σ1s²
+  - Bond Order = ½(2-0) = 1
+  - Diamagnetic
+
+  ### He₂ (4 electrons)
+  - Configuration: σ1s² σ*1s²
+  - Bond Order = ½(2-2) = 0
+  - **Does NOT exist**
+
+  ### Li₂ (6 electrons)
+  - Configuration: σ1s² σ*1s² σ2s²
+  - Bond Order = ½(4-2) = 1
+  - Diamagnetic
+
+  ### Be₂ (8 electrons)
+  - Configuration: σ1s² σ*1s² σ2s² σ*2s²
+  - Bond Order = ½(4-4) = 0
+  - **Does NOT exist**
+
+  ### B₂ (10 electrons)
+  - Configuration: σ1s² σ*1s² σ2s² σ*2s² π2p¹ π2p¹
+  - Bond Order = ½(6-4) = 1
+  - **Paramagnetic** (2 unpaired electrons)
+
+  ### C₂ (12 electrons)
+  - Configuration: σ1s² σ*1s² σ2s² σ*2s² π2p² π2p²
+  - Bond Order = ½(8-4) = 2
+  - Diamagnetic
+
+  ### N₂ (14 electrons)
+  - Configuration: σ1s² σ*1s² σ2s² σ*2s² π2p² π2p² σ2p²
+  - Bond Order = ½(10-4) = 3
+  - Diamagnetic
+  - **Strongest diatomic bond** (triple bond)
+
+  ### O₂ (16 electrons)
+  - Configuration: σ1s² σ*1s² σ2s² σ*2s² σ2p² π2p² π2p² π*2p¹ π*2p¹
+  - Bond Order = ½(10-6) = 2
+  - **Paramagnetic** (2 unpaired electrons in π*2p)
+  - This explains O₂'s paramagnetism (VBT cannot!)
+
+  ### F₂ (18 electrons)
+  - Configuration: σ1s² σ*1s² σ2s² σ*2s² σ2p² π2p² π2p² π*2p² π*2p²
+  - Bond Order = ½(10-8) = 1
+  - Diamagnetic
+
+  ### Ne₂ (20 electrons)
+  - Configuration: All MOs filled
+  - Bond Order = ½(10-10) = 0
+  - **Does NOT exist**
+
+  ## Molecular Ions
+
+  ### O₂⁺ (15 electrons)
+  - Remove one electron from π*2p
+  - Bond Order = ½(10-5) = 2.5
+  - Paramagnetic (1 unpaired electron)
+  - Shorter and stronger bond than O₂
+
+  ### O₂⁻ (17 electrons)
+  - Add one electron to π*2p
+  - Bond Order = ½(10-7) = 1.5
+  - Paramagnetic
+  - Longer and weaker bond than O₂
+
+  ### O₂²⁻ (18 electrons)
+  - Add two electrons to π*2p
+  - Bond Order = ½(10-8) = 1
+  - Diamagnetic
+  - Peroxide ion
+
+  ## Bond Order, Bond Length, and Bond Energy
+
+  | Species | Bond Order | Bond Length (pm) | Bond Energy (kJ/mol) |
+  |---------|------------|------------------|----------------------|
+  | O₂⁺ | 2.5 | 112 | 643 |
+  | O₂ | 2.0 | 121 | 498 |
+  | O₂⁻ | 1.5 | 128 | 395 |
+  | O₂²⁻ | 1.0 | 149 | 142 |
+
+  **Trend**: Higher bond order → Shorter bond → Stronger bond
+
+  ## Magnetic Properties
+
+  - **Diamagnetic**: All electrons paired (repelled by magnetic field)
+  - **Paramagnetic**: Unpaired electrons present (attracted to magnetic field)
+
+  MOT successfully explains O₂'s paramagnetism, which VBT cannot explain!
+
+  ## MOT vs VBT
+
+  | Aspect | VBT | MOT |
+  |--------|-----|-----|
+  | Orbital view | Localized bonds | Delocalized MOs |
+  | Paramagnetism of O₂ | Cannot explain | Explains correctly |
+  | Bond order | Always whole numbers | Can be fractional |
+  | Resonance | Needs special treatment | Naturally handled |
+
+  ## Key Points for IIT JEE
+
+  1. **Memorize MO energy order** for <15 and ≥15 electron molecules
+  2. **Bond order formula**: BO = ½(Nb - Na)
+  3. **O₂ is paramagnetic** - classic MOT question!
+  4. **Higher BO = shorter bond = stronger bond**
+  5. **B₂ is paramagnetic** (π2p has unpaired electrons)
+  6. **He₂ and Be₂ don't exist** (BO = 0)
+  7. **N₂ has the strongest bond** among homonuclear diatomics
+
+exercises:
+  - type: mcq
+    slug: mot-bond-order-o2
+    sequence_order: 1
+    question: What is the bond order of O₂?
+    options:
+      - 1
+      - 2
+      - 3
+      - 2.5
+    correct_answer_index: 1
+    explanation: O₂ has 16 electrons. Configuration ends with π*2p¹ π*2p¹. Bond Order = ½(10-6) = 2. The 2 unpaired electrons in π*2p make it paramagnetic.
+    difficulty: easy
+
+  - type: mcq
+    slug: mot-paramagnetism-o2
+    sequence_order: 2
+    question: Why is O₂ paramagnetic?
+    options:
+      - It has a double bond
+      - It has 2 unpaired electrons in π*2p orbitals
+      - It has high electronegativity
+      - It is a diatomic molecule
+    correct_answer_index: 1
+    explanation: O₂ has the MO configuration with 2 unpaired electrons in the degenerate π*2p orbitals (one in each). These unpaired electrons make O₂ paramagnetic. VBT cannot explain this!
+    difficulty: medium
+
+  - type: mcq
+    slug: mot-he2-existence
+    sequence_order: 3
+    question: He₂ molecule does not exist because its bond order is:
+    options:
+      - 1
+      - 0.5
+      - 0
+      - -1
+    correct_answer_index: 2
+    explanation: He₂ has 4 electrons in σ1s² σ*1s². Bond Order = ½(2-2) = 0. Zero bond order means no net bonding, so the molecule is unstable.
+    difficulty: easy
+
+  - type: mcq
+    slug: mot-n2-bond-order
+    sequence_order: 4
+    question: The bond order in N₂ is:
+    options:
+      - 1
+      - 2
+      - 3
+      - 4
+    correct_answer_index: 2
+    explanation: N₂ has 14 electrons. Using the modified MO diagram (π2p below σ2p), BO = ½(10-4) = 3. This triple bond makes N₂ the strongest diatomic molecule.
+    difficulty: easy
+
+  - type: mcq
+    slug: mot-b2-magnetic
+    sequence_order: 5
+    question: B₂ molecule is paramagnetic because:
+    options:
+      - It has zero bond order
+      - It has 2 unpaired electrons in π2p orbitals
+      - It has antibonding electrons only
+      - Boron is a metal
+    correct_answer_index: 1
+    explanation: B₂ has 10 electrons. The last 2 electrons go into the two degenerate π2p orbitals (one each, Hund's rule). These 2 unpaired electrons make B₂ paramagnetic.
+    difficulty: medium
+
+  - type: mcq
+    slug: mot-o2-plus-bond-order
+    sequence_order: 6
+    question: The bond order of O₂⁺ is:
+    options:
+      - 1.5
+      - 2.0
+      - 2.5
+      - 3.0
+    correct_answer_index: 2
+    explanation: O₂⁺ has 15 electrons (16-1). One electron is removed from the antibonding π*2p. Bond Order = ½(10-5) = 2.5. This is why O₂⁺ has a shorter, stronger bond than O₂.
+    difficulty: medium
+
+  - type: mcq
+    slug: mot-bond-length-order
+    sequence_order: 7
+    question: Arrange in order of INCREASING bond length - O₂, O₂⁺, O₂⁻, O₂²⁻
+    options:
+      - O₂⁺ < O₂ < O₂⁻ < O₂²⁻
+      - O₂²⁻ < O₂⁻ < O₂ < O₂⁺
+      - O₂ < O₂⁺ < O₂⁻ < O₂²⁻
+      - O₂⁻ < O₂ < O₂⁺ < O₂²⁻
+    correct_answer_index: 0
+    explanation: Bond length is inversely related to bond order. O₂⁺ (BO=2.5) < O₂ (BO=2) < O₂⁻ (BO=1.5) < O₂²⁻ (BO=1). Higher bond order = shorter bond.
+    difficulty: hard
+
+  - type: mcq
+    slug: mot-c2-configuration
+    sequence_order: 8
+    question: The MO electronic configuration of C₂ is:
+    options:
+      - σ1s² σ*1s² σ2s² σ*2s² σ2p²
+      - σ1s² σ*1s² σ2s² σ*2s² π2p⁴
+      - σ1s² σ*1s² σ2s² σ*2s² σ2p² π2p²
+      - σ1s² σ*1s² σ2s² σ*2s² π2p² π2p²
+    correct_answer_index: 1
+    explanation: C₂ has 12 electrons. For molecules with <15 electrons, π2p is below σ2p. So configuration is σ1s² σ*1s² σ2s² σ*2s² π2p⁴ (or π2p² π2p²). Bond order = 2.
+    difficulty: hard
+
+  - type: mcq
+    slug: mot-diamagnetic-species
+    sequence_order: 9
+    question: Which of the following is diamagnetic?
+    options:
+      - O₂
+      - B₂
+      - N₂
+      - O₂⁻
+    correct_answer_index: 2
+    explanation: N₂ has all electrons paired in its MO configuration. O₂ has 2 unpaired electrons in π*2p, B₂ has 2 unpaired in π2p, and O₂⁻ has 1 unpaired electron. Only N₂ is diamagnetic.
+    difficulty: medium
+
+  - type: numerical
+    slug: mot-bond-order-no
+    sequence_order: 10
+    question: What is the bond order of NO (nitric oxide)? Enter as a decimal.
+    correct_answer: "2.5"
+    explanation: NO has 15 electrons (7+8). Configuration similar to O₂ but with one less electron in π*2p. Bond Order = ½(10-5) = 2.5. NO is paramagnetic with 1 unpaired electron.
+    difficulty: medium
+
+  - type: mcq
+    slug: mot-strongest-bond
+    sequence_order: 11
+    question: Which homonuclear diatomic molecule has the strongest bond?
+    options:
+      - O₂
+      - N₂
+      - F₂
+      - Cl₂
+    correct_answer_index: 1
+    explanation: N₂ has bond order 3 (triple bond), the highest among diatomics. O₂ has BO=2, F₂ has BO=1, Cl₂ has BO=1. Higher bond order means stronger bond.
+    difficulty: easy
+
+  - type: mcq
+    slug: mot-antibonding-effect
+    sequence_order: 12
+    question: Antibonding molecular orbitals:
+    options:
+      - Have lower energy than bonding orbitals
+      - Have electron density concentrated between nuclei
+      - Have a nodal plane between nuclei
+      - Stabilize the molecule
+    correct_answer_index: 2
+    explanation: Antibonding MOs form by destructive interference, creating a nodal plane (zero electron density) between nuclei. They are higher in energy and destabilize the molecule.
+    difficulty: medium
+
+  - type: mcq
+    slug: mot-f2-vs-f2-minus
+    sequence_order: 13
+    question: Compared to F₂, F₂⁻ would have:
+    options:
+      - Higher bond order and shorter bond length
+      - Lower bond order and longer bond length
+      - Same bond order but different magnetic property
+      - F₂⁻ does not exist
+    correct_answer_index: 1
+    explanation: F₂⁻ has 19 electrons (18+1). Extra electron goes to σ*2p. Bond order = ½(10-9) = 0.5. Lower than F₂ (BO=1), so longer and weaker bond.
+    difficulty: hard
+
+  - type: mcq
+    slug: mot-cn-minus-isoelectronic
+    sequence_order: 14
+    question: CN⁻ is isoelectronic with:
+    options:
+      - CO
+      - NO
+      - O₂
+      - N₂
+    correct_answer_index: 0
+    explanation: CN⁻ has 6+7+1 = 14 electrons. CO also has 6+8 = 14 electrons. Both are isoelectronic with N₂ (14 electrons) and have bond order 3.
+    difficulty: medium
+
+  - type: mcq
+    slug: mot-why-modified-order
+    sequence_order: 15
+    question: Why is the MO energy order different for N₂ compared to O₂?
+    options:
+      - N₂ has fewer protons
+      - s-p mixing is significant in N₂, raising σ2p above π2p
+      - O₂ is paramagnetic
+      - N₂ has a triple bond
+    correct_answer_index: 1
+    explanation: In molecules with <15 electrons (like N₂), s-p orbital mixing is significant because the energy gap between 2s and 2p is small. This pushes σ2p above π2p in energy.
+    difficulty: hard
+
+objectives:
+  - Understand Molecular Orbital Theory principles
+  - Draw MO energy level diagrams for homonuclear diatomics
+  - Calculate bond order from MO configuration
+  - Predict magnetic properties using MOT
+  - Compare VBT and MOT approaches
+  - Explain why certain molecules don't exist
+
+next_recommended:
+  - coordinatebonding-practice
+  - crystalfieldtheory-practice

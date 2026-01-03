@@ -32,6 +32,123 @@ module Api
         end
       end
 
+      # GET /api/v1/:track/courses
+      # List courses filtered by track (e.g., kubernetes, docker, linux)
+      def index_by_track
+        track = params[:track]
+        
+        # First try file-based courses
+        all_courses = CourseFileReaderService.all_courses
+        
+        # Filter courses by track (check tags or slug prefix)
+        track_courses = all_courses.select do |c|
+          c[:tags]&.include?(track) || 
+          c[:slug]&.include?(track) ||
+          c[:track] == track
+        end
+        
+        # Also query database courses that match the track
+        db_courses = Course.where(published: true).where(
+          "slug LIKE :track OR certification_track = :track",
+          track: "%#{track}%"
+        )
+        
+        # Convert database courses to hash format and add if not already in file-based courses
+        db_courses.each do |c|
+          next if track_courses.any? { |tc| tc[:slug] == c.slug }
+          track_courses << db_course_to_hash(c)
+        end
+        
+        render json: { courses: track_courses.map { |c| course_summary(c) }, total: track_courses.count }
+      end
+
+      # GET /api/v1/:track/courses/:slug
+      # Get course details filtered by track
+      def show_by_track
+        track = params[:track]
+        
+        # First try file-based course
+        course = CourseFileReaderService.find_course(params[:slug])
+        
+        # Verify course belongs to the track
+        if course && (course[:tags]&.include?(track) || course[:slug]&.include?(track) || course[:track] == track)
+          render json: { course: course_detail(course) }
+        else
+          # Fallback to database course
+          db_course = Course.find_by(slug: params[:slug], published: true)
+          if db_course && (db_course.slug.include?(track) || db_course.certification_track == track)
+            render json: { course: course_detail(db_course_to_hash(db_course)) }
+          else
+            not_found
+          end
+        end
+      end
+
+      # GET /api/v1/:track/courses/:course_slug/modules
+      # Get modules for a course filtered by track
+      def modules_by_track
+        track = params[:track]
+
+        # First try file-based course
+        course = CourseFileReaderService.course_with_modules(params[:course_slug])
+
+        # Verify course belongs to the track
+        if course && (course[:tags]&.include?(track) || course[:slug]&.include?(track) || course[:track] == track)
+          render json: {
+            course: { slug: course[:slug], title: course[:title] },
+            modules: course[:modules],
+            total: course[:modules_count]
+          }
+        else
+          # Fallback to database course
+          db_course = Course.includes(course_modules: { module_items: :item }).find_by(slug: params[:course_slug], published: true)
+          if db_course && (db_course.slug.include?(track) || db_course.certification_track == track)
+            course_hash = db_course_with_modules_to_hash(db_course)
+            render json: {
+              course: { slug: course_hash[:slug], title: course_hash[:title] },
+              modules: course_hash[:modules],
+              total: course_hash[:modules_count]
+            }
+          else
+            not_found
+          end
+        end
+      end
+
+      # GET /api/v1/:track/courses/:course_slug/modules/:module_slug
+      # Get a specific module for a course filtered by track
+      def module_by_track
+        track = params[:track]
+        course_slug = params[:course_slug]
+        module_slug = params[:module_slug]
+
+        # First try file-based course
+        course = CourseFileReaderService.course_with_modules(course_slug)
+
+        if course && (course[:tags]&.include?(track) || course[:slug]&.include?(track) || course[:track] == track)
+          # Find the specific module
+          mod = course[:modules]&.find { |m| m[:slug] == module_slug }
+          if mod
+            render json: { module: mod }
+          else
+            render json: { error: 'Module not found' }, status: :not_found
+          end
+        else
+          # Fallback to database course
+          db_course = Course.includes(course_modules: { module_items: :item }).find_by(slug: course_slug, published: true)
+          if db_course && (db_course.slug.include?(track) || db_course.certification_track == track)
+            db_module = db_course.course_modules.find_by(slug: module_slug)
+            if db_module
+              render json: { module: db_module_to_hash(db_module) }
+            else
+              render json: { error: 'Module not found' }, status: :not_found
+            end
+          else
+            not_found
+          end
+        end
+      end
+
       # POST /api/v1/courses/:slug/enroll
       # Enroll user in a course
       def enroll
@@ -242,6 +359,58 @@ module Api
       def module_summary(m)
         m.slice(:slug, :title, :description, :sequence_order, :estimated_hours,
                 :estimated_minutes, :lessons_count)
+      end
+
+      # Convert database Course to hash format compatible with file-based courses
+      def db_course_to_hash(course)
+        {
+          slug: course.slug,
+          title: course.title,
+          description: course.description,
+          difficulty_level: course.difficulty_level,
+          estimated_hours: course.estimated_hours,
+          tags: [course.slug.split('-').first, course.certification_track].compact,
+          modules_count: course.course_modules.count,
+          total_lessons: course.course_modules.sum { |m| m.module_items.where(item_type: 'CourseLesson').count },
+          learning_objectives: JSON.parse(course.learning_objectives || '[]'),
+          prerequisites: JSON.parse(course.prerequisites || '[]'),
+          related_courses: [],
+          recommended_next: nil,
+          modules: []
+        }
+      end
+
+      # Convert database Course with modules to hash format
+      def db_course_with_modules_to_hash(course)
+        base = db_course_to_hash(course)
+        base[:modules] = course.course_modules.order(:sequence_order).map do |m|
+          db_module_to_hash(m)
+        end
+        base
+      end
+
+      # Convert database module to hash format
+      def db_module_to_hash(m)
+        {
+          slug: m.slug,
+          title: m.title,
+          description: m.description,
+          sequence_order: m.sequence_order,
+          estimated_hours: m.estimated_minutes.to_f / 60,
+          estimated_minutes: m.estimated_minutes,
+          lessons_count: m.module_items.where(item_type: 'CourseLesson').count,
+          items: m.module_items.order(:sequence_order).includes(:item).map do |mi|
+            {
+              id: mi.id,
+              sequence_order: mi.sequence_order,
+              item_type: mi.item_type,
+              title: mi.item&.respond_to?(:title) ? mi.item.title : "Item #{mi.id}",
+              description: mi.item&.respond_to?(:description) ? mi.item.description : nil,
+              content: mi.item&.respond_to?(:content) ? mi.item.content : nil,
+              estimated_minutes: mi.item&.respond_to?(:reading_time_minutes) ? mi.item.reading_time_minutes : nil
+            }
+          end
+        }
       end
     end
   end

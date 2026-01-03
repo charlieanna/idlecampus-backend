@@ -1,43 +1,266 @@
 slug: nomenclature-practice
-title: nomenclature — Practice
-sequence_order: 19
-estimated_minutes: 2
+title: IUPAC Nomenclature of Coordination Compounds - Practice
+sequence_order: 6
+estimated_minutes: 25
 difficulty: medium
-content_md: '# nomenclature — Practice 🚀
+key_concepts:
+  - IUPAC naming rules
+  - Ligand naming conventions
+  - Metal oxidation state
+  - Anionic vs cationic complexes
+content_md: |
+  # IUPAC Nomenclature - Practice
 
+  ## Naming Rules Summary
 
-  IUPAC nomenclature: (1) List ligands alphabetically, (2) add prefixes for multiple
-  ligands, (3) name metal with oxidation state, (4) add -ate for anionic complexes.
+  ### Order of Naming
+  1. **Cation first**, then anion (like ionic compounds)
+  2. Within complex: ligands (alphabetically) → metal → oxidation state
 
+  ### Ligand Names
+  | Ligand | Neutral Name | In Complex |
+  |--------|-------------|------------|
+  | H₂O | water | aqua |
+  | NH₃ | ammonia | ammine |
+  | CO | carbon monoxide | carbonyl |
+  | Cl⁻ | chloride | chlorido/chloro |
+  | CN⁻ | cyanide | cyanido/cyano |
+  | OH⁻ | hydroxide | hydroxido/hydroxo |
+  | NO₂⁻ | nitrite | nitro (N) / nitrito (O) |
 
-  ## Key Points
+  ### Prefixes for Multiple Ligands
+  - **Simple ligands**: di-, tri-, tetra-, penta-, hexa-
+  - **Complex ligands**: bis-, tris-, tetrakis- (in parentheses)
 
+  ### Metal Naming
+  - **Cationic/neutral complex**: Element name + (oxidation state)
+  - **Anionic complex**: Element name + "-ate" + (oxidation state)
 
-  - Re-read the question carefully.
+  | Metal | In Anionic Complex |
+  |-------|-------------------|
+  | Fe | ferrate |
+  | Cu | cuprate |
+  | Au | aurate |
+  | Ag | argentate |
+  | Pb | plumbate |
+  | Sn | stannate |
 
-
-  - Recall the relevant formula or rule.
-
-
-  - Review the explanation once you answer.'
 exercises:
-- type: short_answer
-  sequence_order: 1
-  question: 'Arrange the following steps for naming a coordination compound in correct
-    order:'
-- type: mcq
-  slug: nomenclature-practice-mcq
-  sequence_order: 2
-  question: Pick the correct statement based on this concept.
-  options:
-  - Statement A
-  - Statement B
-  - Statement C
-  - Statement D
-  correct_answer_index: 0
-  explanation: Review the definition and common exceptions.
+  - type: mcq
+    slug: nom-tetraamminecopper
+    sequence_order: 1
+    question: "The IUPAC name of [Cu(NH₃)₄]²⁺ is:"
+    options:
+      - Copper(II) tetraammine
+      - Tetraammine copper(II) ion
+      - Tetraamminecopper(II) ion
+      - Cuprate(II) tetraammine ion
+    correct_answer_index: 2
+    explanation: Ligands come before metal. NH₃ = ammine. 4 NH₃ = tetraammine. Metal = copper. Oxidation state = II. Name is tetraamminecopper(II) ion.
+    difficulty: easy
+
+  - type: mcq
+    slug: nom-hexacyanoferrate
+    sequence_order: 2
+    question: "The IUPAC name of [Fe(CN)₆]⁴⁻ is:"
+    options:
+      - Hexacyanoiron(II) ion
+      - Hexacyanidoferrate(II) ion
+      - Iron(II) hexacyanide
+      - Ferrate hexacyano(II) ion
+    correct_answer_index: 1
+    explanation: Anionic complex → use "-ate" for metal. CN⁻ = cyanido. 6 CN = hexacyanido. Fe in anionic = ferrate. Oxidation state = II.
+    difficulty: medium
+
+  - type: mcq
+    slug: nom-potassium-ferricyanide
+    sequence_order: 3
+    question: "K₃[Fe(CN)₆] is named as:"
+    options:
+      - Potassium hexacyanoferrate(II)
+      - Potassium hexacyanidoferrate(III)
+      - Tripotassium hexacyanoiron(III)
+      - Potassium ferricyanide(III)
+    correct_answer_index: 1
+    explanation: Cation (K⁺) first. Complex anion [Fe(CN)₆]³⁻ has Fe in +3 state. Name = potassium hexacyanidoferrate(III).
+    difficulty: medium
+
+  - type: mcq
+    slug: nom-pentaaquachlorochromium
+    sequence_order: 4
+    question: "The formula for pentaaquachloridochromium(III) chloride is:"
+    options:
+      - "[Cr(H₂O)₅Cl]Cl₂"
+      - "[CrCl(H₂O)₅]Cl₂"
+      - "[Cr(H₂O)₅]Cl₃"
+      - "[CrCl₃(H₂O)₅]"
+    correct_answer_index: 0
+    explanation: "pentaaqua = 5 H₂O, chlorido = 1 Cl⁻ in complex. Cr(III) needs 3 negative charges total. 1 Cl inside + 2 Cl outside = 3."
+    difficulty: medium
+
+  - type: mcq
+    slug: nom-alphabetical-order
+    sequence_order: 5
+    question: "In IUPAC nomenclature, ligands are listed in:"
+    options:
+      - Order of increasing charge
+      - Order of denticity
+      - Alphabetical order (ignoring prefixes)
+      - Anionic ligands first, then neutral
+    correct_answer_index: 2
+    explanation: IUPAC rule - list ligands alphabetically ignoring prefixes like di-, tri-, bis-, tris-. Example - ammine before chlorido.
+    difficulty: easy
+
+  - type: mcq
+    slug: nom-cisplatin
+    sequence_order: 6
+    question: "The IUPAC name of cisplatin [Pt(NH₃)₂Cl₂] is:"
+    options:
+      - Diamminedichloridoplatinum(II)
+      - cis-diamminedichloridoplatinum(II)
+      - Dichloridodiammineplatinum(II)
+      - Platinum(II) diammine dichloride
+    correct_answer_index: 1
+    explanation: Alphabetically - ammine before chlorido. Prefix cis- indicates geometry. Pt(II). Full name - cis-diamminedichloridoplatinum(II).
+    difficulty: hard
+
+  - type: mcq
+    slug: nom-thiocyanato
+    sequence_order: 7
+    question: "When SCN⁻ bonds through S atom, it is named:"
+    options:
+      - Cyanido
+      - Isothiocyanato
+      - Thiocyanato
+      - Sulfidocyano
+    correct_answer_index: 2
+    explanation: SCN⁻ is ambidentate. S-bonded = thiocyanato-κS. N-bonded = isothiocyanato-κN.
+    difficulty: medium
+
+  - type: mcq
+    slug: nom-nitro-nitrito
+    sequence_order: 8
+    question: "In [Co(NH₃)₅(NO₂)]²⁺, if NO₂⁻ is bonded through nitrogen, the correct name is:"
+    options:
+      - Pentaamminenitritocopper(III) ion
+      - Pentaamminenitrocobalt(III) ion
+      - Pentaamminenitritocobalt(III) ion
+      - Nitropentaamminecobalt(III) ion
+    correct_answer_index: 1
+    explanation: NO₂⁻ bonded through N = nitro. Alphabetically - ammine before nitro. Name = pentaamminenitrocobalt(III) ion.
+    difficulty: hard
+
+  - type: mcq
+    slug: nom-bis-ethylenediamine
+    sequence_order: 9
+    question: "The prefix used for 2 ethylenediamine (en) ligands is:"
+    options:
+      - di-
+      - bis-
+      - bi-
+      - duo-
+    correct_answer_index: 1
+    explanation: Complex ligand names (already containing prefixes or multiple words) use bis-, tris-, tetrakis-. en = ethylenediamine, so bis(ethylenediamine).
+    difficulty: medium
+
+  - type: mcq
+    slug: nom-platinum-complex
+    sequence_order: 10
+    question: "The IUPAC name of [Pt(en)₂Cl₂]²⁺ is:"
+    options:
+      - Dichlorobis(ethylenediamine)platinum(IV) ion
+      - Bis(ethylenediamine)dichloridoplatinum(IV) ion
+      - Dichloridodiethylenediamineplatinum(IV) ion
+      - Platinum(IV) bis(ethylenediamine) dichloride
+    correct_answer_index: 1
+    explanation: bis(ethylenediamine) alphabetically before dichlorido. Pt(IV). Name = bis(ethylenediamine)dichloridoplatinum(IV) ion.
+    difficulty: hard
+
+  - type: mcq
+    slug: nom-carbonyl
+    sequence_order: 11
+    question: "The IUPAC name of [Ni(CO)₄] is:"
+    options:
+      - Nickel tetracarbonyl
+      - Tetracarbonylnickel(0)
+      - Nickel(0) carbonyl
+      - Carbonylnickel tetra
+    correct_answer_index: 1
+    explanation: CO = carbonyl. 4 CO = tetracarbonyl. Ni in 0 oxidation state (neutral complex with neutral ligands). Name = tetracarbonylnickel(0).
+    difficulty: medium
+
+  - type: mcq
+    slug: nom-oxalato
+    sequence_order: 12
+    question: "The IUPAC name of [Cr(C₂O₄)₃]³⁻ is:"
+    options:
+      - Chromium trioxalate(III) ion
+      - Trioxalatochromate(III) ion
+      - Tris(oxalato)chromate(III) ion
+      - Chromate(III) trisoxalato ion
+    correct_answer_index: 2
+    explanation: Oxalate (C₂O₄²⁻) = oxalato. 3 oxalato = tris(oxalato) since oxalato is complex. Anionic → chromate. Name = tris(oxalato)chromate(III) ion.
+    difficulty: hard
+
+  - type: mcq
+    slug: nom-formula-from-name
+    sequence_order: 13
+    question: "The formula for tetraamminecarbonatocobalt(III) chloride is:"
+    options:
+      - "[Co(NH₃)₄CO₃]Cl"
+      - "[Co(NH₃)₄(CO₃)]Cl"
+      - "[Co(CO₃)(NH₃)₄]Cl"
+      - "[CoCl(NH₃)₄CO₃]"
+    correct_answer_index: 1
+    explanation: tetraammine = 4 NH₃, carbonato = CO₃²⁻. Co(III) needs +3 charge. CO₃²⁻ provides -2, so 1 Cl⁻ outside to balance.
+    difficulty: medium
+
+  - type: mcq
+    slug: nom-aqua-hydroxo
+    sequence_order: 14
+    question: "The correct alphabetical order for naming [Fe(H₂O)₄(OH)₂]⁺ is:"
+    options:
+      - Tetraaquadihydroxidoiron(III)
+      - Dihydroxidotetraaquairon(III)
+      - Tetraaquadihydroxoiron(III)
+      - Hydroxotetraaquairon(III)
+    correct_answer_index: 0
+    explanation: Alphabetically - aqua before hydroxido. tetraaqua + dihydroxido + iron(III). 2020 IUPAC uses hydroxido, older uses hydroxo.
+    difficulty: medium
+
+  - type: mcq
+    slug: nom-bridging-ligand
+    sequence_order: 15
+    question: "In the name [(NH₃)₅Co-OH-Co(NH₃)₅]⁵⁺, the bridging OH is indicated by:"
+    options:
+      - κ-hydroxido
+      - η-hydroxido
+      - μ-hydroxido
+      - σ-hydroxido
+    correct_answer_index: 2
+    explanation: Greek letter μ (mu) indicates bridging ligands connecting two metal centers. μ-hydroxido-bis(pentaamminecobalt)(5+).
+    difficulty: hard
+
+  - type: mcq
+    slug: nom-tetrahydroxidozincate
+    sequence_order: 16
+    question: "Na₂[Zn(OH)₄] is named as:"
+    options:
+      - Disodium tetrahydroxidozinc(II)
+      - Sodium tetrahydroxidozincate(II)
+      - Disodium zinc tetrahydroxide
+      - Zincate sodium tetrahydroxido
+    correct_answer_index: 1
+    explanation: Cation first = sodium. Anionic complex uses -ate = zincate. Name = sodium tetrahydroxidozincate(II).
+    difficulty: medium
+
 objectives:
-- Define the core idea
-- Identify governing formulae or rules
-- Practice with mixed-difficulty problems
-next_recommended: []
+  - Apply IUPAC naming rules to coordination compounds
+  - Name ligands correctly (anionic -o/-ido suffix)
+  - Use correct prefixes for multiple ligands
+  - Determine oxidation states from formulas
+  - Write formulas from IUPAC names
+
+next_recommended:
+  - isomerism-practice
+  - wernertheory-practice

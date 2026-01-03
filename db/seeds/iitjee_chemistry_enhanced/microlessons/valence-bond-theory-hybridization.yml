@@ -1,0 +1,382 @@
+slug: valence-bond-theory-hybridization
+title: Valence Bond Theory and Hybridization
+sequence_order: 4
+estimated_minutes: 35
+difficulty: medium
+key_concepts:
+  - Valence Bond Theory
+  - Sigma and Pi bonds
+  - Hybridization types
+  - sp, sp², sp³ hybridization
+  - sp³d, sp³d² hybridization
+content_md: |
+  # Valence Bond Theory (VBT) and Hybridization
+
+  ## Valence Bond Theory - Basic Concept
+
+  **VBT states**: A covalent bond forms when half-filled atomic orbitals of two atoms overlap, sharing electrons.
+
+  ### Types of Orbital Overlap
+
+  **1. Sigma (σ) Bond**
+  - Head-on/axial overlap
+  - Electron density along the internuclear axis
+  - Stronger bond (more overlap)
+  - Free rotation possible
+
+  **2. Pi (π) Bond**
+  - Sideways/lateral overlap
+  - Electron density above and below the internuclear axis
+  - Weaker than sigma bond
+  - No free rotation (restricts geometry)
+
+  ### Bond Composition
+  - **Single bond** = 1 σ bond
+  - **Double bond** = 1 σ + 1 π bond
+  - **Triple bond** = 1 σ + 2 π bonds
+
+  ## Hybridization
+
+  **Definition**: Mixing of atomic orbitals of similar energies to form new equivalent hybrid orbitals.
+
+  ### Why Hybridization?
+
+  Carbon has configuration: 1s² 2s² 2p²
+  - Ground state: Only 2 unpaired electrons
+  - But carbon forms 4 bonds (CH₄)!
+
+  **Solution**: One 2s electron is promoted to 2p, then orbitals hybridize to form 4 equivalent sp³ orbitals.
+
+  ## Types of Hybridization
+
+  ### sp Hybridization (Linear)
+  - **Orbitals involved**: 1s + 1p = 2 sp hybrid orbitals
+  - **Geometry**: Linear
+  - **Bond angle**: 180°
+  - **Unhybridized orbitals**: 2p (for π bonds)
+
+  **Examples**:
+  - BeCl₂, BeH₂
+  - CO₂ (C is sp)
+  - C₂H₂ (acetylene)
+  - HCN
+
+  ### sp² Hybridization (Trigonal Planar)
+  - **Orbitals involved**: 1s + 2p = 3 sp² hybrid orbitals
+  - **Geometry**: Trigonal planar
+  - **Bond angle**: 120°
+  - **Unhybridized orbitals**: 1p (for π bond)
+
+  **Examples**:
+  - BF₃, BCl₃, AlCl₃
+  - C₂H₄ (ethene)
+  - Graphite (each C is sp²)
+  - SO₃, NO₃⁻, CO₃²⁻
+
+  ### sp³ Hybridization (Tetrahedral)
+  - **Orbitals involved**: 1s + 3p = 4 sp³ hybrid orbitals
+  - **Geometry**: Tetrahedral
+  - **Bond angle**: 109.5°
+  - **Unhybridized orbitals**: None
+
+  **Examples**:
+  - CH₄, CCl₄, SiH₄
+  - NH₃ (1 LP in sp³ orbital)
+  - H₂O (2 LPs in sp³ orbitals)
+  - NH₄⁺, SO₄²⁻, PO₄³⁻, ClO₄⁻
+  - Diamond (each C is sp³)
+
+  ### sp³d Hybridization (Trigonal Bipyramidal)
+  - **Orbitals involved**: 1s + 3p + 1d = 5 sp³d hybrid orbitals
+  - **Geometry**: Trigonal bipyramidal
+  - **Bond angles**: 90° (axial-equatorial), 120° (equatorial-equatorial)
+
+  **Examples**:
+  - PCl₅, PF₅, SbCl₅
+  - SF₄ (1 LP → see-saw)
+  - ClF₃ (2 LPs → T-shaped)
+  - XeF₂ (3 LPs → linear)
+
+  ### sp³d² Hybridization (Octahedral)
+  - **Orbitals involved**: 1s + 3p + 2d = 6 sp³d² hybrid orbitals
+  - **Geometry**: Octahedral
+  - **Bond angle**: 90°
+
+  **Examples**:
+  - SF₆, SeF₆
+  - [PtCl₆]²⁻, [Fe(CN)₆]⁴⁻
+  - BrF₅ (1 LP → square pyramidal)
+  - XeF₄ (2 LPs → square planar)
+
+  ## Special Hybridization Types (for Coordination)
+
+  ### dsp² Hybridization (Square Planar)
+  - **Orbitals involved**: 1d + 1s + 2p
+  - **Geometry**: Square planar
+  - Used in d⁸ metal complexes
+
+  **Examples**:
+  - [Ni(CN)₄]²⁻
+  - [PtCl₄]²⁻
+  - [Pt(NH₃)₄]²⁺
+
+  ### d²sp³ Hybridization (Octahedral - Inner)
+  - Uses inner d-orbitals
+  - Strong field ligands
+  - Low spin complexes
+
+  ### sp³d² Hybridization (Octahedral - Outer)
+  - Uses outer d-orbitals
+  - Weak field ligands
+  - High spin complexes
+
+  ## Determining Hybridization
+
+  ### Method 1: Count electron domains (Steric Number)
+  | Steric Number | Hybridization |
+  |---------------|---------------|
+  | 2 | sp |
+  | 3 | sp² |
+  | 4 | sp³ |
+  | 5 | sp³d |
+  | 6 | sp³d² |
+
+  ### Method 2: Formula
+  **Steric Number = ½[V + M - C + A]**
+
+  Where:
+  - V = Valence electrons of central atom
+  - M = Number of monovalent atoms attached
+  - C = Charge (positive)
+  - A = Charge (negative)
+
+  **Examples**:
+  - CO₂: ½[4 + 0] = 2 → sp
+  - NH₃: ½[5 + 3] = 4 → sp³
+  - SO₄²⁻: ½[6 + 0 + 2] = 4 → sp³
+  - PCl₅: ½[5 + 5] = 5 → sp³d
+
+  ## Hybridization in Multiple Bonds
+
+  ### Ethene (C₂H₄)
+  - Each C: sp² hybridized
+  - C-C: 1 σ (sp²-sp²) + 1 π (p-p)
+  - C-H: σ (sp²-s)
+  - Planar molecule
+
+  ### Ethyne (C₂H₂)
+  - Each C: sp hybridized
+  - C-C: 1 σ (sp-sp) + 2 π (p-p)
+  - C-H: σ (sp-s)
+  - Linear molecule
+
+  ### Benzene (C₆H₆)
+  - Each C: sp² hybridized
+  - Delocalized π electrons (6 p-orbitals)
+  - Planar, aromatic
+
+  ## Key Points for IIT JEE
+
+  1. **Always identify σ and π bonds separately**
+  2. **Hybridization = Steric Number (for main group)**
+  3. **Lone pairs occupy hybrid orbitals**
+  4. **π bonds use unhybridized p-orbitals**
+  5. **Coordination compounds may use d-orbitals**
+  6. **dsp² ≠ sp³ (different geometries!)**
+
+exercises:
+  - type: mcq
+    slug: vbt-ch4-hybridization
+    sequence_order: 1
+    question: What is the hybridization of carbon in CH₄?
+    options:
+      - sp
+      - sp²
+      - sp³
+      - sp³d
+    correct_answer_index: 2
+    explanation: Carbon in CH₄ has 4 bonds and no lone pairs (SN=4). It forms 4 equivalent bonds using sp³ hybrid orbitals, giving tetrahedral geometry with 109.5° bond angles.
+    difficulty: easy
+
+  - type: mcq
+    slug: vbt-co2-hybridization
+    sequence_order: 2
+    question: The hybridization of carbon in CO₂ is:
+    options:
+      - sp
+      - sp²
+      - sp³
+      - unhybridized
+    correct_answer_index: 0
+    explanation: In CO₂, carbon forms 2 double bonds with oxygen atoms. SN = 2 (2 bonding domains). Carbon uses sp hybridization, giving linear geometry (180°). The 2 unhybridized p-orbitals form π bonds with oxygen.
+    difficulty: easy
+
+  - type: mcq
+    slug: vbt-ethene-bonds
+    sequence_order: 3
+    question: In ethene (C₂H₄), the C=C double bond consists of:
+    options:
+      - 2 sigma bonds
+      - 2 pi bonds
+      - 1 sigma + 1 pi bond
+      - 1 sigma + 2 pi bonds
+    correct_answer_index: 2
+    explanation: A double bond always consists of 1 sigma bond (sp²-sp² overlap) and 1 pi bond (p-p sideways overlap). The sigma bond is stronger; the pi bond restricts rotation.
+    difficulty: easy
+
+  - type: mcq
+    slug: vbt-bf3-hybridization
+    sequence_order: 4
+    question: What is the hybridization of boron in BF₃?
+    options:
+      - sp
+      - sp²
+      - sp³
+      - dsp²
+    correct_answer_index: 1
+    explanation: Boron in BF₃ has 3 bonds and no lone pairs (SN=3). It uses sp² hybridization, giving trigonal planar geometry. Boron is electron deficient with only 6 electrons.
+    difficulty: easy
+
+  - type: mcq
+    slug: vbt-h2o-hybridization
+    sequence_order: 5
+    question: What is the hybridization of oxygen in H₂O?
+    options:
+      - sp
+      - sp²
+      - sp³
+      - sp³d
+    correct_answer_index: 2
+    explanation: Oxygen in H₂O has 2 bonds + 2 lone pairs (SN=4). It uses sp³ hybridization. The 2 lone pairs occupy 2 of the 4 sp³ orbitals, giving bent molecular geometry.
+    difficulty: easy
+
+  - type: numerical
+    slug: vbt-sigma-pi-count
+    sequence_order: 6
+    question: How many sigma bonds are present in C₂H₂ (acetylene)?
+    correct_answer: "3"
+    explanation: C₂H₂ has 1 C-C triple bond (1 σ + 2 π) and 2 C-H bonds (each is 1 σ). Total σ bonds = 1 + 2 = 3. Total π bonds = 2.
+    difficulty: medium
+
+  - type: mcq
+    slug: vbt-pcl5-hybridization
+    sequence_order: 7
+    question: The hybridization in PCl₅ is:
+    options:
+      - sp³
+      - sp³d
+      - sp³d²
+      - dsp³
+    correct_answer_index: 1
+    explanation: Phosphorus in PCl₅ has 5 bonds (SN=5). It uses sp³d hybridization (1s + 3p + 1d = 5 orbitals), giving trigonal bipyramidal geometry.
+    difficulty: medium
+
+  - type: mcq
+    slug: vbt-sf6-hybridization
+    sequence_order: 8
+    question: What hybridization does sulfur have in SF₆?
+    options:
+      - sp³d
+      - sp³d²
+      - d²sp³
+      - sp³
+    correct_answer_index: 1
+    explanation: Sulfur in SF₆ has 6 bonds (SN=6). It uses sp³d² hybridization (1s + 3p + 2d = 6 orbitals), giving octahedral geometry with 90° bond angles.
+    difficulty: medium
+
+  - type: mcq
+    slug: vbt-xef4-hybridization
+    sequence_order: 9
+    question: XeF₄ has which hybridization on xenon?
+    options:
+      - sp³
+      - sp³d
+      - sp³d²
+      - dsp²
+    correct_answer_index: 2
+    explanation: Xe in XeF₄ has 4 bonds + 2 lone pairs (SN=6). It uses sp³d² hybridization. The 2 lone pairs occupy axial positions, giving square planar molecular geometry.
+    difficulty: medium
+
+  - type: mcq
+    slug: vbt-ni-cn-4-hybridization
+    sequence_order: 10
+    question: In [Ni(CN)₄]²⁻, the hybridization of Ni is:
+    options:
+      - sp³
+      - dsp²
+      - sp³d
+      - sp³d²
+    correct_answer_index: 1
+    explanation: [Ni(CN)₄]²⁻ has Ni²⁺ (d⁸) with 4 strong-field CN⁻ ligands. It uses dsp² hybridization (1d + 1s + 2p) giving square planar geometry. This is characteristic of d⁸ complexes with strong ligands.
+    difficulty: hard
+
+  - type: mcq
+    slug: vbt-benzene-hybridization
+    sequence_order: 11
+    question: Each carbon atom in benzene (C₆H₆) is:
+    options:
+      - sp hybridized
+      - sp² hybridized
+      - sp³ hybridized
+      - unhybridized
+    correct_answer_index: 1
+    explanation: Each carbon in benzene has 3 sigma bonds (2 C-C + 1 C-H) and participates in the delocalized π system. SN=3 → sp² hybridization. The unhybridized p-orbital overlaps to form the aromatic π cloud.
+    difficulty: medium
+
+  - type: numerical
+    slug: vbt-pi-bonds-benzene
+    sequence_order: 12
+    question: How many pi bonds are present in one benzene molecule?
+    correct_answer: "3"
+    explanation: Benzene has 6 carbon atoms, each contributing 1 electron to the delocalized π system. This forms 3 π bonds (or equivalently, a delocalized system with 6 π electrons).
+    difficulty: medium
+
+  - type: mcq
+    slug: vbt-steric-number-formula
+    sequence_order: 13
+    question: Using the formula SN = ½(V + M - C + A), what is the steric number of S in SO₄²⁻?
+    options:
+      - 2
+      - 3
+      - 4
+      - 6
+    correct_answer_index: 2
+    explanation: For SO₄²⁻: V=6 (S valence), M=0 (no monovalent atoms, O is divalent), C=0, A=2 (negative charge). SN = ½(6 + 0 + 2) = 4 → sp³ hybridization, tetrahedral geometry.
+    difficulty: hard
+
+  - type: mcq
+    slug: vbt-sigma-pi-difference
+    sequence_order: 14
+    question: Which statement about sigma and pi bonds is CORRECT?
+    options:
+      - Pi bonds are stronger than sigma bonds
+      - Sigma bonds allow free rotation, pi bonds don't
+      - Sigma bonds form by sideways overlap
+      - Pi bonds form before sigma bonds
+    correct_answer_index: 1
+    explanation: Sigma bonds form by head-on overlap (stronger, more electron density between nuclei, allows rotation). Pi bonds form by sideways overlap (weaker, restricts rotation). Sigma bonds always form first.
+    difficulty: medium
+
+  - type: mcq
+    slug: vbt-triple-bond
+    sequence_order: 15
+    question: In HCN, the C≡N triple bond consists of:
+    options:
+      - 3 sigma bonds
+      - 3 pi bonds
+      - 1 sigma + 2 pi bonds
+      - 2 sigma + 1 pi bond
+    correct_answer_index: 2
+    explanation: A triple bond always consists of 1 sigma bond (sp-sp overlap along the axis) and 2 pi bonds (from 2 sets of p-p sideways overlap). Carbon in HCN is sp hybridized.
+    difficulty: medium
+
+objectives:
+  - Understand Valence Bond Theory principles
+  - Distinguish between sigma and pi bonds
+  - Determine hybridization from molecular formula
+  - Apply hybridization to predict geometry
+  - Recognize special hybridization in coordination compounds
+
+next_recommended:
+  - molecular-orbital-theory-basics
+  - coordinatebonding-practice

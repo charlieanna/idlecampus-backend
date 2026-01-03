@@ -1,0 +1,353 @@
+slug: vsepr-theory-molecular-geometry
+title: VSEPR Theory and Molecular Geometry
+sequence_order: 3
+estimated_minutes: 30
+difficulty: medium
+key_concepts:
+  - VSEPR theory
+  - Electron pair geometry
+  - Molecular geometry
+  - Bond angles
+  - Lone pair effects
+content_md: |
+  # VSEPR Theory and Molecular Geometry
+
+  **VSEPR** = Valence Shell Electron Pair Repulsion
+
+  ## Core Principle
+
+  Electron pairs (both bonding and lone pairs) around a central atom repel each other and arrange themselves to **minimize repulsion** by maximizing the distance between them.
+
+  ## Key Terms
+
+  - **Steric Number (SN)** = Number of atoms bonded + Number of lone pairs
+  - **Electron Pair Geometry**: Arrangement of ALL electron pairs
+  - **Molecular Geometry**: Arrangement of ATOMS only (ignores lone pairs)
+
+  ## Order of Repulsion
+
+  **Lone pair-Lone pair > Lone pair-Bond pair > Bond pair-Bond pair**
+
+  This is why lone pairs compress bond angles!
+
+  ## VSEPR Geometries Table
+
+  | SN | Lone Pairs | Molecular Geometry | Bond Angle | Examples |
+  |----|------------|-------------------|------------|----------|
+  | 2 | 0 | Linear | 180° | BeCl₂, CO₂, HCN |
+  | 3 | 0 | Trigonal planar | 120° | BF₃, SO₃, NO₃⁻ |
+  | 3 | 1 | Bent/Angular | <120° (~117°) | SO₂, O₃, NO₂⁻ |
+  | 4 | 0 | Tetrahedral | 109.5° | CH₄, NH₄⁺, SO₄²⁻ |
+  | 4 | 1 | Trigonal pyramidal | <109.5° (~107°) | NH₃, PH₃, PCl₃ |
+  | 4 | 2 | Bent/Angular | <109.5° (~104.5°) | H₂O, H₂S, OF₂ |
+  | 5 | 0 | Trigonal bipyramidal | 90°, 120° | PCl₅, PF₅ |
+  | 5 | 1 | See-saw | <90°, <120° | SF₄, TeCl₄ |
+  | 5 | 2 | T-shaped | <90° | ClF₃, BrF₃ |
+  | 5 | 3 | Linear | 180° | XeF₂, I₃⁻ |
+  | 6 | 0 | Octahedral | 90° | SF₆, [PtCl₆]²⁻ |
+  | 6 | 1 | Square pyramidal | <90° | BrF₅, IF₅ |
+  | 6 | 2 | Square planar | 90° | XeF₄, [ICl₄]⁻ |
+
+  ## Detailed Analysis by Steric Number
+
+  ### SN = 2: Linear Geometry
+  - **Electron pair geometry**: Linear
+  - **Examples**: BeCl₂, CO₂, HCN, C₂H₂
+  - **Bond angle**: 180°
+  - **Hybridization**: sp
+
+  ### SN = 3: Trigonal Planar Family
+
+  **No lone pairs → Trigonal Planar (120°)**
+  - BF₃, BCl₃, AlCl₃, SO₃, NO₃⁻, CO₃²⁻
+  - Hybridization: sp²
+
+  **1 lone pair → Bent (~117°)**
+  - SO₂, O₃, NO₂⁻, SnCl₂
+  - Lone pair compresses bond angle below 120°
+
+  ### SN = 4: Tetrahedral Family
+
+  **No lone pairs → Tetrahedral (109.5°)**
+  - CH₄, CCl₄, SiH₄, NH₄⁺, SO₄²⁻, PO₄³⁻, ClO₄⁻
+  - Hybridization: sp³
+
+  **1 lone pair → Trigonal Pyramidal (~107°)**
+  - NH₃, NF₃, PH₃, PCl₃, AsH₃
+  - Lone pair reduces bond angle
+
+  **2 lone pairs → Bent/V-shaped (~104.5°)**
+  - H₂O, H₂S, OF₂, SCl₂
+  - Two lone pairs compress angle further
+
+  ### SN = 5: Trigonal Bipyramidal Family
+
+  **Positions**: Axial (top/bottom, 90° from equatorial) and Equatorial (middle plane, 120° apart)
+
+  **Lone pairs prefer EQUATORIAL positions** (more space, less repulsion)
+
+  **No lone pairs → Trigonal Bipyramidal**
+  - PCl₅, PF₅, SbCl₅
+  - Hybridization: sp³d
+
+  **1 lone pair → See-saw (distorted)**
+  - SF₄, TeCl₄, IF₄⁺
+  - Lone pair in equatorial position
+
+  **2 lone pairs → T-shaped**
+  - ClF₃, BrF₃, ICl₃
+  - Both lone pairs equatorial
+
+  **3 lone pairs → Linear**
+  - XeF₂, I₃⁻, ICl₂⁻
+  - Three lone pairs equatorial, atoms axial
+
+  ### SN = 6: Octahedral Family
+
+  **No lone pairs → Octahedral (90°)**
+  - SF₆, SeF₆, [PtCl₆]²⁻, [Fe(CN)₆]⁴⁻
+  - Hybridization: sp³d²
+
+  **1 lone pair → Square Pyramidal**
+  - BrF₅, IF₅, XeOF₄
+  - Lone pair in one axial position
+
+  **2 lone pairs → Square Planar**
+  - XeF₄, [ICl₄]⁻, [PtCl₄]²⁻ (also d⁸ complexes)
+  - Lone pairs in opposite axial positions
+
+  ## Effect of Electronegativity on Bond Angle
+
+  More electronegative atoms pull bonding electrons closer to themselves, reducing bond pair-bond pair repulsion:
+
+  - **NF₃ (102°) < NH₃ (107°)**: F is more electronegative than H
+  - **OF₂ (103°) < H₂O (104.5°)**: F pulls electrons away from O
+
+  ## Special Cases
+
+  ### Why is H₂O bent but CO₂ linear?
+  - CO₂: C has no lone pairs, SN = 2 → Linear
+  - H₂O: O has 2 lone pairs, SN = 4 → Bent
+
+  ### XeF₂ vs XeF₄
+  - XeF₂: SN = 5 (2 bonds + 3 LP) → Linear
+  - XeF₄: SN = 6 (4 bonds + 2 LP) → Square planar
+
+  ## Steps to Predict Geometry
+
+  1. Draw Lewis structure
+  2. Count bonding pairs and lone pairs on central atom
+  3. Calculate Steric Number = bonds + lone pairs
+  4. Determine electron pair geometry
+  5. Determine molecular geometry (exclude lone pairs)
+  6. Predict approximate bond angles
+
+  ## Key Points for IIT JEE
+
+  1. **Lone pairs occupy more space than bond pairs**
+  2. **Lone pairs prefer equatorial positions in TBP**
+  3. **Bond angle decreases with more lone pairs**
+  4. **XeF₂ is linear (not bent) due to 3 equatorial lone pairs**
+  5. **Square planar can arise from SN=6 with 2 LP (not SN=4)**
+
+exercises:
+  - type: mcq
+    slug: vsepr-h2o-geometry
+    sequence_order: 1
+    question: What is the molecular geometry of H₂O?
+    options:
+      - Linear
+      - Trigonal planar
+      - Bent/Angular
+      - Tetrahedral
+    correct_answer_index: 2
+    explanation: H₂O has 2 bonding pairs and 2 lone pairs on oxygen (SN=4). The electron pair geometry is tetrahedral, but the molecular geometry (considering only atoms) is bent with bond angle ~104.5°.
+    difficulty: easy
+
+  - type: mcq
+    slug: vsepr-bf3-geometry
+    sequence_order: 2
+    question: The molecular geometry of BF₃ is:
+    options:
+      - Tetrahedral
+      - Trigonal pyramidal
+      - Trigonal planar
+      - T-shaped
+    correct_answer_index: 2
+    explanation: BF₃ has 3 bonding pairs and 0 lone pairs on boron (SN=3). This gives trigonal planar geometry with 120° bond angles. B is electron deficient (only 6 electrons).
+    difficulty: easy
+
+  - type: mcq
+    slug: vsepr-nh3-angle
+    sequence_order: 3
+    question: Why is the bond angle in NH₃ (107°) less than the tetrahedral angle (109.5°)?
+    options:
+      - NH₃ has sp² hybridization
+      - The lone pair on N repels bonding pairs more strongly
+      - N-H bonds are shorter than C-H bonds
+      - NH₃ is a weak base
+    correct_answer_index: 1
+    explanation: The lone pair on nitrogen occupies more space and repels the N-H bonding pairs, compressing the H-N-H bond angle from 109.5° to about 107°. Lone pair-bond pair repulsion > bond pair-bond pair repulsion.
+    difficulty: medium
+
+  - type: mcq
+    slug: vsepr-sf4-geometry
+    sequence_order: 4
+    question: What is the molecular geometry of SF₄?
+    options:
+      - Tetrahedral
+      - Square planar
+      - See-saw
+      - Trigonal bipyramidal
+    correct_answer_index: 2
+    explanation: SF₄ has 4 bonding pairs and 1 lone pair (SN=5). The electron pair geometry is trigonal bipyramidal. The lone pair occupies an equatorial position, giving a see-saw molecular geometry.
+    difficulty: medium
+
+  - type: mcq
+    slug: vsepr-xef2-geometry
+    sequence_order: 5
+    question: XeF₂ has which molecular geometry?
+    options:
+      - Bent
+      - Linear
+      - T-shaped
+      - Trigonal planar
+    correct_answer_index: 1
+    explanation: XeF₂ has 2 bonding pairs and 3 lone pairs (SN=5). The 3 lone pairs occupy equatorial positions in the trigonal bipyramidal arrangement, leaving the 2 F atoms in axial positions → Linear geometry (180°).
+    difficulty: medium
+
+  - type: mcq
+    slug: vsepr-xef4-geometry
+    sequence_order: 6
+    question: What is the geometry of XeF₄?
+    options:
+      - Tetrahedral
+      - Square planar
+      - See-saw
+      - Square pyramidal
+    correct_answer_index: 1
+    explanation: XeF₄ has 4 bonding pairs and 2 lone pairs (SN=6). The electron pair geometry is octahedral. The 2 lone pairs occupy opposite axial positions to minimize repulsion, giving square planar molecular geometry.
+    difficulty: medium
+
+  - type: mcq
+    slug: vsepr-clf3-geometry
+    sequence_order: 7
+    question: The molecular geometry of ClF₃ is:
+    options:
+      - Trigonal planar
+      - Trigonal pyramidal
+      - T-shaped
+      - Bent
+    correct_answer_index: 2
+    explanation: ClF₃ has 3 bonding pairs and 2 lone pairs (SN=5). Both lone pairs occupy equatorial positions in the trigonal bipyramidal arrangement, giving T-shaped molecular geometry.
+    difficulty: hard
+
+  - type: mcq
+    slug: vsepr-lone-pair-position
+    sequence_order: 8
+    question: In trigonal bipyramidal geometry, lone pairs preferentially occupy:
+    options:
+      - Axial positions
+      - Equatorial positions
+      - Either position equally
+      - The position closer to the most electronegative atom
+    correct_answer_index: 1
+    explanation: Lone pairs occupy equatorial positions because they have only 2 neighbors at 90° (less repulsion) compared to axial positions which have 3 neighbors at 90°.
+    difficulty: medium
+
+  - type: numerical
+    slug: vsepr-steric-number
+    sequence_order: 9
+    question: What is the steric number of the central atom in PCl₅?
+    correct_answer: "5"
+    explanation: PCl₅ has phosphorus bonded to 5 chlorine atoms with no lone pairs on P. Steric number = 5 bonds + 0 lone pairs = 5. This gives trigonal bipyramidal geometry.
+    difficulty: easy
+
+  - type: mcq
+    slug: vsepr-co2-vs-h2o
+    sequence_order: 10
+    question: CO₂ is linear but H₂O is bent because:
+    options:
+      - CO₂ has double bonds while H₂O has single bonds
+      - Carbon has no lone pairs while oxygen has 2 lone pairs
+      - CO₂ is nonpolar while H₂O is polar
+      - Carbon is less electronegative than oxygen
+    correct_answer_index: 1
+    explanation: In CO₂, carbon has 2 double bonds and no lone pairs (SN=2) → Linear. In H₂O, oxygen has 2 bonds and 2 lone pairs (SN=4) → Bent. The presence of lone pairs changes the molecular geometry.
+    difficulty: medium
+
+  - type: mcq
+    slug: vsepr-if5-geometry
+    sequence_order: 11
+    question: What is the molecular geometry of IF₅?
+    options:
+      - Trigonal bipyramidal
+      - Square pyramidal
+      - Octahedral
+      - Pentagonal planar
+    correct_answer_index: 1
+    explanation: IF₅ has 5 bonding pairs and 1 lone pair on iodine (SN=6). The electron pair geometry is octahedral. With one lone pair, the molecular geometry is square pyramidal.
+    difficulty: medium
+
+  - type: mcq
+    slug: vsepr-bond-angle-order
+    sequence_order: 12
+    question: Arrange in order of DECREASING bond angle - CH₄, NH₃, H₂O
+    options:
+      - CH₄ > NH₃ > H₂O
+      - H₂O > NH₃ > CH₄
+      - NH₃ > CH₄ > H₂O
+      - CH₄ > H₂O > NH₃
+    correct_answer_index: 0
+    explanation: CH₄ (0 LP) = 109.5° > NH₃ (1 LP) ≈ 107° > H₂O (2 LP) ≈ 104.5°. More lone pairs = smaller bond angle due to greater LP-BP repulsion.
+    difficulty: medium
+
+  - type: mcq
+    slug: vsepr-nf3-vs-nh3
+    sequence_order: 13
+    question: The bond angle in NF₃ (102°) is less than in NH₃ (107°) because:
+    options:
+      - F atoms are larger than H atoms
+      - F is more electronegative, pulling bonding electrons closer to itself
+      - NF₃ has more lone pairs than NH₃
+      - N-F bonds are longer than N-H bonds
+    correct_answer_index: 1
+    explanation: Fluorine's high electronegativity pulls the bonding electrons closer to F and away from N. This reduces bond pair-bond pair repulsion, allowing the lone pair to compress the bond angle more.
+    difficulty: hard
+
+  - type: mcq
+    slug: vsepr-i3-minus
+    sequence_order: 14
+    question: What is the geometry of I₃⁻ ion?
+    options:
+      - Bent
+      - Linear
+      - Trigonal planar
+      - T-shaped
+    correct_answer_index: 1
+    explanation: I₃⁻ has the central iodine bonded to 2 I atoms with 3 lone pairs (SN=5). The 3 lone pairs occupy equatorial positions, placing the 2 I atoms in axial positions → Linear geometry.
+    difficulty: hard
+
+  - type: mcq
+    slug: vsepr-hybridization
+    sequence_order: 15
+    question: Which molecule has sp³d² hybridization?
+    options:
+      - PCl₅
+      - SF₆
+      - BrF₃
+      - XeF₂
+    correct_answer_index: 1
+    explanation: SF₆ has SN=6 (6 bonds, 0 lone pairs) and requires 6 hybrid orbitals → sp³d² hybridization, giving octahedral geometry with 90° bond angles.
+    difficulty: medium
+
+objectives:
+  - Predict molecular geometry using VSEPR theory
+  - Distinguish between electron pair and molecular geometry
+  - Explain effect of lone pairs on bond angles
+  - Apply VSEPR to complex molecules and ions
+  - Connect geometry to hybridization
+
+next_recommended:
+  - valence-bond-theory-hybridization
+  - bondparameters-practice

@@ -1,289 +1,353 @@
 ---
 course:
   slug: inorganic-chemistry-complete
-  title: Inorganic Chemistry - JEE/NEET Complete
-  description: Complete inorganic chemistry covering periodic trends, s/p/d/f block
-    elements, coordination compounds, and qualitative analysis. JEE and NEET focused
-    content.
-  estimated_hours: 18
+  title: IIT JEE Inorganic Chemistry - Complete Course
+  description: >
+    Comprehensive Inorganic Chemistry course for IIT JEE Main and Advanced preparation.
+    Covers all JEE 2025 syllabus topics with 15+ practice questions per topic.
+    Structured for first-time learners with logical progression from foundations to advanced topics.
+  estimated_hours: 40
   level: intermediate
   prerequisites:
-  - Basic chemistry concepts
-  - Periodic table familiarity
+    - Basic atomic structure (orbitals, quantum numbers)
+    - Class 11 Chemistry fundamentals
+    - Understanding of electron configuration
   learning_outcomes:
-  - Master periodic trends and element properties
-  - Understand coordination chemistry (VBT, CFT)
-  - Analyze s, p, d, f block element reactions
-  - Perform qualitative analysis of salts
-  - Apply metallurgy concepts
+    - Master periodic trends and predict element properties
+    - Apply VBT, MOT, and CFT to explain bonding
+    - Understand coordination chemistry nomenclature and isomerism
+    - Analyze p-block element reactions and compounds
+    - Explain d-block and f-block properties
+    - Perform systematic qualitative analysis
+    - Apply metallurgical principles
   tags:
-  - chemistry
-  - inorganic-chemistry
-  - JEE
-  - NEET
-  - periodic-table
-  - coordination-compounds
-  - metallurgy
+    - chemistry
+    - inorganic-chemistry
+    - JEE
+    - JEE-Main
+    - JEE-Advanced
+    - IIT-JEE
   exam_prep:
-  - JEE Advanced
-  - JEE Main
-  - NEET
+    - JEE Advanced
+    - JEE Main
   related_courses:
-  - physical-chemistry-complete
-  - organic-chemistry-complete
+    - physical-chemistry-complete
+    - organic-chemistry-complete
   recommended_next: physical-chemistry-complete
+
 modules:
-- slug: periodic-table
-  title: Periodic Table & Classification
-  description: Periodic trends, properties, and element classification
-  order: 1
-  estimated_hours: 3
-  lessons:
-  - ligands-practice
-  - types-of-chemical-bonds
-  - introduction-to-coordination-compounds
-  - modern-periodic-law-and-classification
-  - types-of-chemical-bonds
-  - introduction-to-coordination-compounds
-  - periodiclaw-practice
-  - blockclassification-practice
-  - valenceelectrons-practice
-  - periodictrends-practice
-  - ionicbonding-practice
-  - bondparameters-practice
-  - coordinatebonding-practice
-  - fajansrules-practice
-  - coordinationnumber-practice
-  - ligands-practice
-  - oxidationstates-practice
-  - eanrule-practice
-  - nomenclature-practice
-  - wernertheory-practice
-  - coordinationnumber-practice
-  - ligands-practice
-  - coordinationnumber-practice
-  - modern-periodic-law-and-classification
-- slug: s-block-elements
-  title: S-Block Elements
-  description: Alkali and alkaline earth metals - properties and reactions
-  order: 2
-  estimated_hours: 3
-  lessons:
-  - chemicalreactivity-practice
-  - group-2-alkaline-earth-metals-be-mg-ca-sr-ba-ra
-  - group-1-alkali-metals-li-na-k-rb-cs-fr
-  - group-2-alkaline-earth-metals-be-mg-ca-sr-ba-ra
-  - periodictrends-practice
-  - anomalousbehavior-practice
-  - flamecolors-practice
-  - reducingpower-practice
-  - chemicalreactions-practice
-  - diagonalrelationship-practice
-  - chemicalequations-practice
-  - chemicalproperties-practice
-  - physicalproperties-practice
-  - specialproperties-practice
-  - anomalousbehavior-practice
-  - solubilitytrends-practice
-  - importantcompounds-practice
-  - hardnessofwater-practice
-  - thermalstability-practice
-  - flamecolors-practice
-  - diagonalrelationship-practice
-  - chemicalequations-practice
-  - chemicalproperties-practice
-  - importantcompounds-practice
-  - hardnessofwater-practice
-  - anomalousbehavior-practice
-  - hardnessofwater-practice
-  - biologicalimportance-practice
-  - group-1-alkali-metals-li-na-k-rb-cs-fr
-- slug: p-block-elements
-  title: P-Block Elements
-  description: Groups 13-18 elements, properties, and reactions
-  order: 3
-  estimated_hours: 5
-  lessons:
-  - allotropy-practice
-  - group-14-carbon-family-c-si-ge-sn-pb
-  - group-13-boron-family-b-al-ga-in-tl
-  - group-14-carbon-family-c-si-ge-sn-pb
-  - inertpaireffect-practice
-  - boroncompounds-practice
-  - uses-practice
-  - group-17-halogens-f-cl-br-i-at
-  - group-18-noble-gases-he-ne-ar-kr-xe-rn
-  - group-15-nitrogen-family-n-p-as-sb-bi
-  - group-17-halogens-f-cl-br-i-at
-  - group-18-noble-gases-he-ne-ar-kr-xe-rn
-  - allotropy-practice
-  - chemicaltests-practice
-  - ammonia-practice
-  - chemicalequations-practice
-  - hydrogenhalides-practice
-  - chlorinecompounds-practice
-  - periodictrends-practice
-  - displacementreactions-practice
-  - xenoncompounds-practice
-  - electronicconfiguration-practice
-  - group-15-nitrogen-family-n-p-as-sb-bi
-  - environmentalchemistry-practice
-  - group-16-elements-oxygen-and-sulfur
-  - group-17-elements-halogens
-  - group-18-elements-noble-gases
-  - group-15-elements-properties-and-trends
-  - group-16-elements-oxygen-and-sulfur
-  - group-17-elements-halogens
-  - group-18-elements-noble-gases
-  - group15-practice
-  - nitrogenanomalous-practice
-  - ammonia-practice
-  - phosphorus-practice
-  - nitricacid-practice
-  - group16-practice
-  - sulfurcompounds-practice
-  - halogens-practice
-  - noblegases-practice
-  - industrialprocesses-practice
-  - group-15-elements-properties-and-trends
-- slug: d-f-block-elements
-  title: D & F Block Elements
-  description: Transition metals, lanthanoids, and actinoids
-  order: 4
-  estimated_hours: 4
-  lessons:
-  - volumetricanalysis-practice
-  - actinoidoccurrence-practice
-  - f-block-elements-lanthanoids-and-actinoids
-  - d-block-elements-electronic-configuration-and-general-properties
-  - f-block-elements-lanthanoids-and-actinoids
-  - electronicconfiguration-practice
-  - transitionelements-practice
-  - magneticproperties-practice
-  - oxidationstates-practice
-  - coloredcompounds-practice
-  - catalyticproperties-practice
-  - lanthanoidcontraction-practice
-  - lanthanoidcontraction-practice
-  - oxidationstates-practice
-  - actinoidsvslanthanoids-practice
-  - coloredions-practice
-  - d-block-elements-electronic-configuration-and-general-properties
-  - cationgroups-practice
-  - lanthanoids-and-actinoids-properties-and-contraction
-  - cation-and-anion-analysis-group-reagents-and-tests
-  - iron-and-copper-compounds
-  - lanthanoids-and-actinoids-properties-and-contraction
-  - cation-and-anion-analysis-group-reagents-and-tests
-  - coppercompounds-practice
-  - coppercompounds-practice
-  - lanthanoidcontraction-practice
-  - oxidationstates-practice
-  - actinoids-practice
-  - concentration-practice
-  - conversiontooxide-practice
-  - refining-practice
-  - groupreagents-practice
-  - aniontests-practice
-  - iron-and-copper-compounds
-  - principles-of-metallurgy-and-extraction-methods
-  - principles-of-metallurgy-and-extraction-methods
-- slug: coordination-compounds
-  title: Coordination Compounds
-  description: Nomenclature, VBT, CFT, and isomerism
-  order: 5
-  estimated_hours: 2
-  lessons:
-  - magneticproperties-practice
-  - nomenclature-and-isomerism-in-coordination-compounds
-  - bonding-in-coordination-compounds-vbt-and-cft
-  - introduction-to-coordination-compounds
-  - nomenclature-and-isomerism-in-coordination-compounds
-  - bonding-in-coordination-compounds-vbt-and-cft
-  - ligands-practice
-  - oxidationstate-practice
-  - isomerism-practice
-  - crystalfieldtheory-practice
-  - crystalfieldtheory-practice
-  - introduction-to-coordination-compounds
-- slug: hydrogen-chemistry
-  title: Hydrogen Chemistry
-  description: Hydrides, water, hydrogen peroxide, and heavy water
-  order: 6
-  estimated_hours: 2
-  lessons:
-  - hydrogenfuel-practice
-  - hydrides-water-chemistry-and-heavy-water
-  - hydrogen-peroxide-ho-and-hydrogen-as-fuel
-  - hydrogen-position-isotopes-and-preparation
-  - hydrides-water-chemistry-and-heavy-water
-  - hydrogen-peroxide-ho-and-hydrogen-as-fuel
-  - hydrogenisotopes-practice
-  - hydridesclassification-practice
-  - heavywater-practice
-  - waterchemistry-practice
-  - hydrogenperoxide-practice
-  - hydrogenperoxidereactions-practice
-  - covalenthydrides-practice
-  - hydrogenpreparation-practice
-  - heavywaterproperties-practice
-  - hydrogen-position-isotopes-and-preparation
-- slug: metallurgy-analysis
-  title: Metallurgy & Qualitative Analysis
-  description: Metal extraction, Ellingham diagrams, and salt analysis
-  order: 7
-  estimated_hours: 4
-  lessons:
-  - electrolyticrefining-practice
-  - ellingham-diagrams-and-thermodynamics-of-reduction
-  - extraction-of-specific-metals-fe-cu-al-zn
-  - introduction-to-metallurgy
-  - ellingham-diagrams-and-thermodynamics-of-reduction
-  - extraction-of-specific-metals-fe-cu-al-zn
-  - concentrationmethods-practice
-  - extractionprocesses-practice
-  - extractionmethods-practice
-  - ellinghamdiagrams-practice
-  - aluminumextraction-practice
-  - ironextraction-practice
-  - copperextraction-practice
-  - chemicalequations-practice
-  - refiningmethods-practice
-  - extractionsequence-practice
-  - introduction-to-metallurgy
-  - chemicalprinciples-practice
-  - cation-group-analysis-groups-0-vi
-  - introduction-to-qualitative-analysis
-  - cation-group-analysis-groups-0-vi
-  - groupreagents-practice
-  - cationgroups-practice
-  - preliminarytests-practice
-  - groupseparation-practice
-  - systematicanalysis-practice
-  - confirmatorytests-practice
-  - groupidentification-practice
-  - groupreagents-practice
-  - confirmatorytests-practice
-  - introduction-to-qualitative-analysis
-- slug: environmental-chemistry
-  title: Environmental Chemistry
-  description: Pollution, green chemistry, and environmental issues
-  order: 8
-  estimated_hours: 2
-  lessons:
-  - greenchemistry-practice
-  - water-pollution-and-soil-pollution
-  - green-chemistry-principles-and-applications
-  - air-pollution-tropospheric-and-stratospheric
-  - water-pollution-and-soil-pollution
-  - green-chemistry-principles-and-applications
-  - greenhousegases-practice
-  - acidrain-practice
-  - acidrain-practice
-  - smog-practice
-  - ozonedepletion-practice
-  - bodcalculation-practice
-  - bodcod-practice
-  - eutrophication-practice
-  - atomeconomy-practice
-  - air-pollution-tropospheric-and-stratospheric
+  # ============================================================================
+  # MODULE 1: PERIODIC TABLE & PERIODICITY (Foundation)
+  # ============================================================================
+  - slug: periodic-table
+    title: Periodic Table & Periodicity
+    description: >
+      Foundation module covering modern periodic law, element classification,
+      and periodic trends. Essential for understanding all subsequent topics.
+    order: 1
+    estimated_hours: 3
+    prerequisites: []
+    learning_outcomes:
+      - Understand modern periodic law (atomic number basis)
+      - Classify elements into s, p, d, f blocks
+      - Master periodic trends (IE, EA, electronegativity, atomic radius)
+      - Apply trends to predict element behavior
+    lessons:
+      # Theory lessons first
+      - modern-periodic-law-and-classification
+      - periodic-trends-and-properties
+      # Practice lessons after theory
+      - periodiclaw-practice
+      - blockclassification-practice
+      - valenceelectrons-practice
+      - periodictrends-practice
+
+  # ============================================================================
+  # MODULE 2: CHEMICAL BONDING (Foundation for Coordination Chemistry)
+  # ============================================================================
+  - slug: chemical-bonding
+    title: Chemical Bonding
+    description: >
+      Essential bonding concepts including ionic, covalent, and coordinate bonds.
+      Covers VBT, MOT, and VSEPR theory - prerequisites for coordination chemistry.
+    order: 2
+    estimated_hours: 4
+    prerequisites:
+      - periodic-table
+    learning_outcomes:
+      - Understand types of chemical bonds
+      - Apply VSEPR theory for molecular geometry
+      - Master Valence Bond Theory and hybridization
+      - Understand Molecular Orbital Theory basics
+      - Apply Fajans' rules to predict bond character
+    lessons:
+      # Theory lessons first
+      - types-of-chemical-bonds
+      - vsepr-theory-molecular-geometry
+      - valence-bond-theory-hybridization
+      - molecular-orbital-theory-basics
+      # Practice lessons after theory
+      - ionicbonding-practice
+      - bondparameters-practice
+      - coordinatebonding-practice
+      - fajansrules-practice
+
+  # ============================================================================
+  # MODULE 3: COORDINATION CHEMISTRY (High Weightage)
+  # ============================================================================
+  - slug: coordination-compounds
+    title: Coordination Chemistry
+    description: >
+      Comprehensive coverage of coordination compounds including Werner's theory,
+      nomenclature, isomerism, and bonding theories (VBT and CFT).
+      High-weightage topic for JEE.
+    order: 3
+    estimated_hours: 5
+    prerequisites:
+      - chemical-bonding
+    learning_outcomes:
+      - Understand Werner's coordination theory
+      - Master IUPAC nomenclature of complexes
+      - Identify all types of isomerism
+      - Apply Crystal Field Theory (CFT)
+      - Calculate CFSE and magnetic moments
+    lessons:
+      # Theory lessons first
+      - introduction-to-coordination-compounds
+      - nomenclature-and-isomerism-in-coordination-compounds
+      - bonding-in-coordination-compounds-vbt-and-cft
+      # Practice lessons after theory
+      - coordinationnumber-practice
+      - ligands-practice
+      - wernertheory-practice
+      - oxidationstate-practice
+      - eanrule-practice
+      - nomenclature-practice
+      - isomerism-practice
+      - crystalfieldtheory-practice
+      - magneticproperties-practice
+
+  # ============================================================================
+  # MODULE 4: P-BLOCK ELEMENTS - GROUPS 13-14
+  # ============================================================================
+  - slug: p-block-groups-13-14
+    title: P-Block Elements - Groups 13 & 14
+    description: >
+      Boron and Carbon families - properties, compounds, and reactions.
+      Covers inert pair effect, diagonal relationships, and important compounds.
+    order: 4
+    estimated_hours: 3
+    prerequisites:
+      - periodic-table
+      - chemical-bonding
+    learning_outcomes:
+      - Master Group 13 (Boron family) chemistry
+      - Understand Group 14 (Carbon family) properties
+      - Explain inert pair effect
+      - Know diagonal relationships (B-Si)
+      - Identify important compounds and reactions
+    lessons:
+      # Theory lessons first
+      - group-13-boron-family-b-al-ga-in-tl
+      - group-14-carbon-family-c-si-ge-sn-pb
+      # Practice lessons after theory
+      - allotropy-practice
+      - inertpaireffect-practice
+      - boroncompounds-practice
+      - uses-practice
+      - chemicaltests-practice
+
+  # ============================================================================
+  # MODULE 5: P-BLOCK ELEMENTS - GROUPS 15-16 (HIGHEST WEIGHTAGE - 50%)
+  # ============================================================================
+  - slug: p-block-groups-15-16
+    title: P-Block Elements - Groups 15 & 16
+    description: >
+      HIGHEST WEIGHTAGE MODULE (~50% of inorganic chemistry marks).
+      Nitrogen and Oxygen families - anomalous behavior, important compounds,
+      and industrial processes (Haber, Ostwald, Contact process).
+    order: 5
+    estimated_hours: 5
+    prerequisites:
+      - p-block-groups-13-14
+    learning_outcomes:
+      - Master Group 15 (Nitrogen family) chemistry
+      - Understand nitrogen anomalous behavior
+      - Know ammonia, nitric acid, phosphorus chemistry
+      - Master Group 16 (Oxygen family) properties
+      - Understand sulfuric acid and industrial processes
+    lessons:
+      # Theory lessons first
+      - group-15-nitrogen-family-n-p-as-sb-bi
+      - group-15-elements-properties-and-trends
+      - group-16-elements-oxygen-and-sulfur
+      # Practice lessons after theory
+      - group15-practice
+      - nitrogenanomalous-practice
+      - ammonia-practice
+      - phosphorus-practice
+      - nitricacid-practice
+      - group16-practice
+      - sulfurcompounds-practice
+      - industrialprocesses-practice
+
+  # ============================================================================
+  # MODULE 6: P-BLOCK ELEMENTS - GROUPS 17-18
+  # ============================================================================
+  - slug: p-block-groups-17-18
+    title: P-Block Elements - Groups 17 & 18
+    description: >
+      Halogens and Noble Gases - properties, compounds, and reactions.
+      Covers interhalogen compounds, oxoacids, and xenon fluorides.
+    order: 6
+    estimated_hours: 3
+    prerequisites:
+      - p-block-groups-15-16
+    learning_outcomes:
+      - Master halogen (Group 17) chemistry
+      - Understand hydrogen halides and acid strength
+      - Know interhalogen compounds and oxoacids
+      - Explain noble gas compound formation
+      - Understand XeF2, XeF4, XeF6 structures
+    lessons:
+      # Theory lessons first
+      - group-17-halogens-f-cl-br-i-at
+      - group-17-elements-halogens
+      - group-18-noble-gases-he-ne-ar-kr-xe-rn
+      - group-18-elements-noble-gases
+      # Practice lessons after theory
+      - halogens-practice
+      - hydrogenhalides-practice
+      - chlorinecompounds-practice
+      - displacementreactions-practice
+      - noblegases-practice
+      - xenoncompounds-practice
+
+  # ============================================================================
+  # MODULE 7: D-BLOCK ELEMENTS (Transition Metals)
+  # ============================================================================
+  - slug: d-block-elements
+    title: D-Block Elements - Transition Metals
+    description: >
+      Transition metal chemistry - electronic configuration, variable oxidation states,
+      colored compounds, magnetic properties, and catalytic behavior.
+    order: 7
+    estimated_hours: 4
+    prerequisites:
+      - periodic-table
+      - coordination-compounds
+    learning_outcomes:
+      - Master electronic configuration and exceptions (Cr, Cu)
+      - Understand variable oxidation states
+      - Calculate magnetic moments
+      - Explain colored compound formation
+      - Know catalytic properties and important compounds
+    lessons:
+      # Theory lessons first
+      - d-block-elements-electronic-configuration-and-general-properties
+      - iron-and-copper-compounds
+      # Practice lessons after theory
+      - electronicconfiguration-practice
+      - transitionelements-practice
+      - oxidationstates-practice
+      - magneticproperties-practice
+      - coloredcompounds-practice
+      - catalyticproperties-practice
+      - coloredions-practice
+      - coppercompounds-practice
+
+  # ============================================================================
+  # MODULE 8: F-BLOCK ELEMENTS (Lanthanoids & Actinoids)
+  # ============================================================================
+  - slug: f-block-elements
+    title: F-Block Elements - Lanthanoids & Actinoids
+    description: >
+      Inner transition elements - lanthanoid contraction, oxidation states,
+      and comparison between lanthanoids and actinoids.
+    order: 8
+    estimated_hours: 2
+    prerequisites:
+      - d-block-elements
+    learning_outcomes:
+      - Understand lanthanoid contraction and its consequences
+      - Know oxidation state patterns
+      - Compare lanthanoids vs actinoids
+      - Understand radioactivity of actinoids
+    lessons:
+      # Theory lessons first
+      - f-block-elements-lanthanoids-and-actinoids
+      - lanthanoids-and-actinoids-properties-and-contraction
+      # Practice lessons after theory
+      - lanthanoidcontraction-practice
+      - actinoidsvslanthanoids-practice
+      - actinoids-practice
+      - actinoidoccurrence-practice
+
+  # ============================================================================
+  # MODULE 9: QUALITATIVE ANALYSIS
+  # ============================================================================
+  - slug: qualitative-analysis
+    title: Qualitative Analysis
+    description: >
+      Systematic analysis of cations and anions - group reagents, separation,
+      and confirmatory tests. Essential for practical chemistry.
+    order: 9
+    estimated_hours: 3
+    prerequisites:
+      - p-block-groups-13-14
+      - p-block-groups-15-16
+      - p-block-groups-17-18
+      - d-block-elements
+    learning_outcomes:
+      - Master systematic cation group analysis
+      - Know group reagents and conditions
+      - Perform confirmatory tests
+      - Identify anions using specific tests
+    lessons:
+      # Theory lessons first
+      - introduction-to-qualitative-analysis
+      - cation-group-analysis-groups-0-vi
+      # Practice lessons after theory
+      - groupreagents-practice
+      - cationgroups-practice
+      - preliminarytests-practice
+      - groupseparation-practice
+      - systematicanalysis-practice
+      - confirmatorytests-practice
+      - groupidentification-practice
+      - aniontests-practice
+
+  # ============================================================================
+  # MODULE 10: METALLURGY
+  # ============================================================================
+  - slug: metallurgy
+    title: Metallurgy & Metal Extraction
+    description: >
+      Principles of metallurgy - ore concentration, Ellingham diagrams,
+      extraction of Fe, Cu, Al, Zn, and refining methods.
+    order: 10
+    estimated_hours: 3
+    prerequisites:
+      - d-block-elements
+    learning_outcomes:
+      - Understand ore concentration methods
+      - Interpret Ellingham diagrams
+      - Know extraction processes for important metals
+      - Understand refining methods
+    lessons:
+      # Theory lessons first
+      - introduction-to-metallurgy
+      - ellingham-diagrams-and-thermodynamics-of-reduction
+      - extraction-of-specific-metals-fe-cu-al-zn
+      - principles-of-metallurgy-and-extraction-methods
+      # Practice lessons after theory
+      - concentrationmethods-practice
+      - extractionprocesses-practice
+      - extractionmethods-practice
+      - ellinghamdiagrams-practice
+      - aluminumextraction-practice
+      - ironextraction-practice
+      - copperextraction-practice
+      - refiningmethods-practice
+      - electrolyticrefining-practice
+      - extractionsequence-practice

@@ -1,38 +1,250 @@
 slug: ionicbonding-practice
-title: ionic_bonding — Practice
-sequence_order: 11
-estimated_minutes: 2
-difficulty: easy
-content_md: '# ionic_bonding — Practice 🚀
+title: Ionic Bonding - Practice
+sequence_order: 5
+estimated_minutes: 20
+difficulty: medium
+key_concepts:
+  - Ionic bond formation
+  - Lattice energy
+  - Properties of ionic compounds
+  - Born-Haber cycle
+content_md: |
+  # Ionic Bonding - Practice
 
+  ## Key Concepts
 
-  Ionic compounds are polar and dissolve in polar solvents (like water) due to ion-dipole
-  interactions. They do NOT conduct in solid state (ions are fixed), have HIGH melting
-  points, and exist as solids.
+  ### Formation of Ionic Bonds
+  - Transfer of electrons from metal to non-metal
+  - Electrostatic attraction between cation and anion
+  - Favored when ionization energy is low (metals) and electron affinity is high (non-metals)
 
+  ### Lattice Energy
+  **Definition**: Energy released when gaseous ions combine to form 1 mole of solid ionic compound.
 
-  ## Key Points
+  **Factors affecting lattice energy**:
+  - Smaller ions → Higher lattice energy
+  - Higher charges → Higher lattice energy
 
+  **Formula**: U ∝ (q₁ × q₂) / (r₁ + r₂)
 
-  - Re-read the question carefully.
-
-
-  - Recall the relevant formula or rule.
-
-
-  - Review the explanation once you answer.'
-exercises:
-- type: mcq
-  sequence_order: 1
-  question: Which property is characteristic of ionic compounds?
-  options:
-  - Conduct electricity in solid state
-  - Low melting points
+  ### Properties of Ionic Compounds
+  - High melting and boiling points
+  - Conduct electricity when molten or dissolved (not solid)
   - Soluble in polar solvents
-  - Exist as gases at room temperature
-  correct_answer_index: 2
+  - Hard but brittle
+  - Crystalline structure
+
+exercises:
+  - type: mcq
+    slug: ionic-property-characteristic
+    sequence_order: 1
+    question: Which property is characteristic of ionic compounds?
+    options:
+      - Conduct electricity in solid state
+      - Low melting points
+      - Soluble in polar solvents
+      - Exist as gases at room temperature
+    correct_answer_index: 2
+    explanation: Ionic compounds dissolve in polar solvents (like water) due to ion-dipole interactions. They don't conduct in solid state (ions fixed), have HIGH melting points, and are solids.
+    difficulty: easy
+
+  - type: mcq
+    slug: ionic-conductivity
+    sequence_order: 2
+    question: Ionic compounds conduct electricity when:
+    options:
+      - In solid state only
+      - In molten state or dissolved in water
+      - Only when heated above 1000°C
+      - Never, they are insulators
+    correct_answer_index: 1
+    explanation: In solid state, ions are fixed in lattice positions. When molten or dissolved, ions are free to move and conduct electricity.
+    difficulty: easy
+
+  - type: mcq
+    slug: ionic-lattice-energy-factor
+    sequence_order: 3
+    question: Lattice energy increases with:
+    options:
+      - Larger ionic radii
+      - Lower ionic charges
+      - Smaller ionic radii and higher charges
+      - Higher temperature
+    correct_answer_index: 2
+    explanation: Lattice energy U ∝ q₁q₂/(r₁+r₂). Smaller ions get closer, higher charges attract more strongly. Both increase lattice energy.
+    difficulty: medium
+
+  - type: mcq
+    slug: ionic-lattice-energy-order
+    sequence_order: 4
+    question: Arrange in order of INCREASING lattice energy - NaCl, MgO, KCl, CaO
+    options:
+      - KCl < NaCl < MgO < CaO
+      - KCl < NaCl < CaO < MgO
+      - NaCl < KCl < CaO < MgO
+      - MgO < CaO < NaCl < KCl
+    correct_answer_index: 1
+    explanation: KCl (large ions, +1/-1) < NaCl (smaller, +1/-1) < CaO (larger than Mg, +2/-2) < MgO (smallest +2/-2 ions). Higher charge and smaller size increase lattice energy.
+    difficulty: hard
+
+  - type: mcq
+    slug: ionic-born-haber
+    sequence_order: 5
+    question: In the Born-Haber cycle for NaCl formation, which step releases energy?
+    options:
+      - Ionization of Na
+      - Dissociation of Cl₂
+      - Electron affinity of Cl
+      - Sublimation of Na
+    correct_answer_index: 2
+    explanation: Electron affinity is the energy released when Cl gains an electron to form Cl⁻. Ionization, dissociation, and sublimation all require energy input.
+    difficulty: medium
+
+  - type: mcq
+    slug: ionic-formation-condition
+    sequence_order: 6
+    question: Ionic bond formation is favored when:
+    options:
+      - Both elements have high ionization energy
+      - Metal has low IE and non-metal has high EA
+      - Both elements are non-metals
+      - Elements have similar electronegativity
+    correct_answer_index: 1
+    explanation: Metal should easily lose electrons (low IE), non-metal should readily accept electrons (high EA). Large electronegativity difference favors ionic bonding.
+    difficulty: easy
+
+  - type: mcq
+    slug: ionic-electronegativity-diff
+    sequence_order: 7
+    question: For a bond to be predominantly ionic, the electronegativity difference should be:
+    options:
+      - Less than 0.5
+      - Between 0.5 and 1.7
+      - Greater than 1.7
+      - Exactly zero
+    correct_answer_index: 2
+    explanation: Electronegativity difference > 1.7 indicates predominantly ionic character. Between 0.5-1.7 is polar covalent. Less than 0.5 is non-polar covalent.
+    difficulty: medium
+
+  - type: mcq
+    slug: ionic-mp-comparison
+    sequence_order: 8
+    question: Which has the highest melting point?
+    options:
+      - NaCl
+      - MgO
+      - KBr
+      - LiF
+    correct_answer_index: 1
+    explanation: MgO has +2/-2 charges and small ion sizes, giving the highest lattice energy. Higher lattice energy = higher melting point. MgO melts at 2852°C vs NaCl at 801°C.
+    difficulty: medium
+
+  - type: mcq
+    slug: ionic-crystal-brittleness
+    sequence_order: 9
+    question: Why are ionic crystals brittle?
+    options:
+      - Weak bonds between ions
+      - Displacement brings like charges adjacent, causing repulsion
+      - They have low lattice energy
+      - Ions are loosely packed
+    correct_answer_index: 1
+    explanation: When force is applied, ionic layers shift. Like charges (+ facing + or - facing -) come adjacent, repel each other, and the crystal shatters.
+    difficulty: medium
+
+  - type: numerical
+    slug: ionic-coordination-number
+    sequence_order: 10
+    question: In NaCl crystal structure, each Na⁺ ion is surrounded by how many Cl⁻ ions?
+    correct_answer: "6"
+    explanation: NaCl has rock salt structure with coordination number 6. Each Na⁺ is surrounded by 6 Cl⁻ ions in an octahedral arrangement.
+    difficulty: easy
+
+  - type: mcq
+    slug: ionic-solubility-rule
+    sequence_order: 11
+    question: Which statement about ionic compound solubility is correct?
+    options:
+      - All ionic compounds are soluble in water
+      - Lattice energy alone determines solubility
+      - Solubility depends on lattice energy vs hydration energy
+      - Ionic compounds are always insoluble in organic solvents
+    correct_answer_index: 2
+    explanation: Solubility requires hydration energy > lattice energy. If hydration releases more energy than needed to break lattice, the compound dissolves.
+    difficulty: hard
+
+  - type: mcq
+    slug: ionic-hydration-energy
+    sequence_order: 12
+    question: Hydration energy is highest for:
+    options:
+      - K⁺
+      - Na⁺
+      - Li⁺
+      - Cs⁺
+    correct_answer_index: 2
+    explanation: Smaller ions have higher charge density, attracting water molecules more strongly. Li⁺ is smallest, so highest hydration energy. Order - Li⁺ > Na⁺ > K⁺ > Cs⁺.
+    difficulty: medium
+
+  - type: mcq
+    slug: ionic-thermal-stability
+    sequence_order: 13
+    question: Among Group 2 carbonates (BeCO₃, MgCO₃, CaCO₃, BaCO₃), thermal stability:
+    options:
+      - Increases down the group
+      - Decreases down the group
+      - Remains constant
+      - Is maximum for MgCO₃
+    correct_answer_index: 0
+    explanation: Smaller cations have higher polarizing power, distorting CO₃²⁻ more, making decomposition easier. Stability order - BaCO₃ > CaCO₃ > MgCO₃ > BeCO₃.
+    difficulty: hard
+
+  - type: mcq
+    slug: ionic-vs-covalent-character
+    sequence_order: 14
+    question: Which compound has the most covalent character?
+    options:
+      - NaCl
+      - MgCl₂
+      - AlCl₃
+      - KCl
+    correct_answer_index: 2
+    explanation: Al³⁺ is small with +3 charge (high polarizing power). It distorts Cl⁻ electron cloud significantly, increasing covalent character. AlCl₃ is actually covalent (exists as dimer).
+    difficulty: hard
+
+  - type: mcq
+    slug: ionic-crystal-structures
+    sequence_order: 15
+    question: Which crystal structure has coordination number 8:8?
+    options:
+      - NaCl (rock salt)
+      - ZnS (zinc blende)
+      - CsCl (cesium chloride)
+      - CaF₂ (fluorite)
+    correct_answer_index: 2
+    explanation: CsCl structure has Cs⁺ at center of a cube with 8 Cl⁻ at corners. Both ions have CN = 8. NaCl has 6:6, ZnS has 4:4, CaF₂ has 8:4.
+    difficulty: hard
+
+  - type: mcq
+    slug: ionic-electron-transfer
+    sequence_order: 16
+    question: In the formation of MgO, how many electrons are transferred per formula unit?
+    options:
+      - 1
+      - 2
+      - 3
+      - 4
+    correct_answer_index: 1
+    explanation: Mg loses 2 electrons (Mg → Mg²⁺ + 2e⁻), O gains 2 electrons (O + 2e⁻ → O²⁻). Total 2 electrons transferred per MgO formula unit.
+    difficulty: easy
+
 objectives:
-- Define the core idea
-- Identify governing formulae or rules
-- Practice with mixed-difficulty problems
-next_recommended: []
+  - Understand ionic bond formation mechanism
+  - Apply lattice energy concepts
+  - Predict properties of ionic compounds
+  - Compare ionic character in different compounds
+  - Explain crystal structure and coordination numbers
+
+next_recommended:
+  - fajansrules-practice
+  - bondparameters-practice

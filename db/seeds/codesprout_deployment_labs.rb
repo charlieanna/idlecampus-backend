@@ -4,25 +4,24 @@
 puts "🧪 Creating CodeSprout Deployment Labs..."
 
 # Lab 4.1: Run CodeSprout Frontend
-lab_4_1 = HandsOnLab.create!(
-  title: "Lab 4.1: Deploy CodeSprout Frontend",
-  slug: "codesprout-frontend-deployment",
-  description: "Build and deploy the CodeSprout React frontend, making it accessible at localhost:3000",
-  lab_type: "docker",
-  difficulty: "easy",
-  estimated_minutes: 20,
-  category: "deployment",
-  is_active: true,
-  points_reward: 200,
-  learning_objectives: [
+lab_4_1 = HandsOnLab.find_or_create_by!(slug: "codesprout-frontend-deployment") do |lab|
+  lab.title = "Lab 4.1: Deploy CodeSprout Frontend"
+  lab.description = "Build and deploy the CodeSprout React frontend, making it accessible at localhost:3000"
+  lab.lab_type = "docker"
+  lab.difficulty = "easy"
+  lab.estimated_minutes = 20
+  lab.category = "deployment"
+  lab.is_active = true
+  lab.points_reward = 200
+  lab.learning_objectives = [
     "Build a frontend image from a Dockerfile",
     "Run a web server container with port mapping",
     "Configure containers with environment variables"
-  ],
-  prerequisites: ["Build", "Run containers", "Port mapping"],
-  required_tools: ["docker", "curl"],
-  certification_exam: "DCA",
-  steps: [
+  ]
+  lab.prerequisites = ["Build", "Run containers", "Port mapping"]
+  lab.required_tools = ["docker", "curl"]
+  lab.certification_exam = "DCA"
+  lab.steps = [
     {
       step_number: 1,
       title: "Build the frontend image",
@@ -82,38 +81,37 @@ lab_4_1 = HandsOnLab.create!(
         "Look for startup messages"
       ]
     }
-  ],
-  validation_rules: {
+  ]
+  lab.validation_rules = {
     required_containers: ["codesprout-web"],
     required_images: ["codesprout/frontend:1.0"],
     required_ports: ["3000"],
     max_time_minutes: 20
-  },
-  success_criteria: "Frontend accessible at localhost:3000 with API_URL configured"
-)
+  }
+  lab.success_criteria = "Frontend accessible at localhost:3000 with API_URL configured"
+end
 
 puts "  ✓ Created: #{lab_4_1.title}"
 
 # Lab 4.2: Connect Frontend to Backend
-lab_4_2 = HandsOnLab.create!(
-  title: "Lab 4.2: Connect Frontend to Backend API",
-  slug: "codesprout-backend-connection",
-  description: "Deploy the backend API and connect it to the frontend using a Docker network",
-  lab_type: "docker",
-  difficulty: "medium",
-  estimated_minutes: 25,
-  category: "networking",
-  is_active: true,
-  points_reward: 250,
-  learning_objectives: [
+lab_4_2 = HandsOnLab.find_or_create_by!(slug: "codesprout-backend-connection") do |lab|
+  lab.title = "Lab 4.2: Connect Frontend to Backend API"
+  lab.description = "Deploy the backend API and connect it to the frontend using a Docker network"
+  lab.lab_type = "docker"
+  lab.difficulty = "medium"
+  lab.estimated_minutes = 25
+  lab.category = "networking"
+  lab.is_active = true
+  lab.points_reward = 250
+  lab.learning_objectives = [
     "Build and run backend API containers",
     "Create custom Docker networks",
     "Enable service-to-service communication using DNS"
-  ],
-  prerequisites: ["Docker networks", "Multi-container applications"],
-  required_tools: ["docker", "curl"],
-  certification_exam: "DCA",
-  steps: [
+  ]
+  lab.prerequisites = ["Docker networks", "Multi-container applications"]
+  lab.required_tools = ["docker", "curl"]
+  lab.certification_exam = "DCA"
+  lab.steps = [
     {
       step_number: 1,
       title: "Create a custom network",
@@ -173,37 +171,36 @@ lab_4_2 = HandsOnLab.create!(
         "Check logs with 'docker logs codesprout-web' if issues"
       ]
     }
-  ],
-  validation_rules: {
+  ]
+  lab.validation_rules = {
     required_containers: ["codesprout-web", "codesprout-api"],
     required_networks: ["codesprout-net"],
     max_time_minutes: 25
-  },
-  success_criteria: "Frontend and backend communicating on custom network"
-)
+  }
+  lab.success_criteria = "Frontend and backend communicating on custom network"
+end
 
 puts "  ✓ Created: #{lab_4_2.title}"
 
 # Lab 4.3: Add PostgreSQL Database
-lab_4_3 = HandsOnLab.create!(
-  title: "Lab 4.3: Deploy Full Stack with Database",
-  slug: "codesprout-database-integration",
-  description: "Add PostgreSQL database with persistent storage and connect the backend to it",
-  lab_type: "docker",
-  difficulty: "medium",
-  estimated_minutes: 30,
-  category: "data",
-  is_active: true,
-  points_reward: 300,
-  learning_objectives: [
+lab_4_3 = HandsOnLab.find_or_create_by!(slug: "codesprout-database-integration") do |lab|
+  lab.title = "Lab 4.3: Deploy Full Stack with Database"
+  lab.description = "Add PostgreSQL database with persistent storage and connect the backend to it"
+  lab.lab_type = "docker"
+  lab.difficulty = "medium"
+  lab.estimated_minutes = 30
+  lab.category = "data"
+  lab.is_active = true
+  lab.points_reward = 300
+  lab.learning_objectives = [
     "Run database containers with persistent volumes",
     "Configure database credentials securely",
     "Connect backend services to databases"
-  ],
-  prerequisites: ["Docker volumes", "Environment variables", "Networking"],
-  required_tools: ["docker"],
-  certification_exam: "DCA",
-  steps: [
+  ]
+  lab.prerequisites = ["Docker volumes", "Environment variables", "Networking"]
+  lab.required_tools = ["docker"]
+  lab.certification_exam = "DCA"
+  lab.steps = [
     {
       step_number: 1,
       title: "Create a volume for database data",
@@ -272,37 +269,36 @@ lab_4_3 = HandsOnLab.create!(
         "The volume preserves data across restarts"
       ]
     }
-  ],
-  validation_rules: {
+  ]
+  lab.validation_rules = {
     required_containers: ["codesprout-web", "codesprout-api", "codesprout-db"],
     required_volumes: ["codesprout-data"],
     max_time_minutes: 30
-  },
-  success_criteria: "Complete 3-tier application (frontend, backend, database) running with persistent data"
-)
+  }
+  lab.success_criteria = "Complete 3-tier application (frontend, backend, database) running with persistent data"
+end
 
 puts "  ✓ Created: #{lab_4_3.title}"
 
 # Lab 4.4: Docker Compose Orchestration
-lab_4_4 = HandsOnLab.create!(
-  title: "Lab 4.4: Deploy with Docker Compose",
-  slug: "codesprout-compose-deployment",
-  description: "Use Docker Compose to orchestrate the entire CodeSprout stack with a single command",
-  lab_type: "docker-compose",
-  difficulty: "medium",
-  estimated_minutes: 35,
-  category: "orchestration",
-  is_active: true,
-  points_reward: 350,
-  learning_objectives: [
+lab_4_4 = HandsOnLab.find_or_create_by!(slug: "codesprout-compose-deployment") do |lab|
+  lab.title = "Lab 4.4: Deploy with Docker Compose"
+  lab.description = "Use Docker Compose to orchestrate the entire CodeSprout stack with a single command"
+  lab.lab_type = "docker-compose"
+  lab.difficulty = "medium"
+  lab.estimated_minutes = 35
+  lab.category = "orchestration"
+  lab.is_active = true
+  lab.points_reward = 350
+  lab.learning_objectives = [
     "Write docker-compose.yml for multi-container applications",
     "Define service dependencies and startup order",
     "Manage entire application stacks with single commands"
-  ],
-  prerequisites: ["Docker Compose basics", "Multi-container networking"],
-  required_tools: ["docker", "docker-compose"],
-  certification_exam: "DCA",
-  steps: [
+  ]
+  lab.prerequisites = ["Docker Compose basics", "Multi-container networking"]
+  lab.required_tools = ["docker", "docker-compose"]
+  lab.certification_exam = "DCA"
+  lab.steps = [
     {
       step_number: 1,
       title: "Stop all running containers",
@@ -386,36 +382,35 @@ lab_4_4 = HandsOnLab.create!(
         "Volumes are preserved"
       ]
     }
-  ],
-  validation_rules: {
+  ]
+  lab.validation_rules = {
     required_files: ["docker-compose.yml"],
     max_time_minutes: 35
-  },
-  success_criteria: "Complete CodeSprout stack managed with Docker Compose"
-)
+  }
+  lab.success_criteria = "Complete CodeSprout stack managed with Docker Compose"
+end
 
 puts "  ✓ Created: #{lab_4_4.title}"
 
 # Lab 4.5: Manage and Scale the Application
-lab_4_5 = HandsOnLab.create!(
-  title: "Lab 4.5: Manage and Scale CodeSprout",
-  slug: "codesprout-management-scaling",
-  description: "Update services, check logs, and scale the backend to handle more traffic",
-  lab_type: "docker-compose",
-  difficulty: "medium",
-  estimated_minutes: 25,
-  category: "operations",
-  is_active: true,
-  points_reward: 300,
-  learning_objectives: [
+lab_4_5 = HandsOnLab.find_or_create_by!(slug: "codesprout-management-scaling") do |lab|
+  lab.title = "Lab 4.5: Manage and Scale CodeSprout"
+  lab.description = "Update services, check logs, and scale the backend to handle more traffic"
+  lab.lab_type = "docker-compose"
+  lab.difficulty = "medium"
+  lab.estimated_minutes = 25
+  lab.category = "operations"
+  lab.is_active = true
+  lab.points_reward = 300
+  lab.learning_objectives = [
     "Update and restart services without downtime",
     "Debug applications using logs",
     "Scale services horizontally to handle load"
-  ],
-  prerequisites: ["Docker Compose", "Multi-container operations"],
-  required_tools: ["docker", "docker-compose"],
-  certification_exam: "DCA",
-  steps: [
+  ]
+  lab.prerequisites = ["Docker Compose", "Multi-container operations"]
+  lab.required_tools = ["docker", "docker-compose"]
+  lab.certification_exam = "DCA"
+  lab.steps = [
     {
       step_number: 1,
       title: "Start the CodeSprout stack",
@@ -497,12 +492,12 @@ lab_4_5 = HandsOnLab.create!(
         "Data in volumes is preserved"
       ]
     }
-  ],
-  validation_rules: {
+  ]
+  lab.validation_rules = {
     max_time_minutes: 25
-  },
-  success_criteria: "Successfully scaled and managed CodeSprout services"
-)
+  }
+  lab.success_criteria = "Successfully scaled and managed CodeSprout services"
+end
 
 puts "  ✓ Created: #{lab_4_5.title}"
 

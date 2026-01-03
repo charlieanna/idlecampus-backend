@@ -2,7 +2,97 @@ module Api
   module V1
     class LabsController < ApplicationController
       before_action :authenticate_user!
+      before_action :set_cors_headers, only: [:index_by_track, :show_by_track]
+      skip_before_action :authenticate_user!, only: [:index_by_track, :show_by_track]
       
+      # GET /api/v1/:track/labs
+      # Returns list of labs filtered by track (no auth required for listing)
+      def index_by_track
+        track = params[:track]
+        labs = HandsOnLab.active
+        
+        # Filter by track based on lab_type or category
+        case track
+        when 'kubernetes'
+          labs = labs.where(lab_type: 'kubernetes')
+        when 'docker'
+          labs = labs.where(lab_type: ['docker', 'docker-compose'])
+        when 'linux'
+          labs = labs.where(lab_type: 'linux').or(labs.where(category: 'linux'))
+        else
+          # Try to match by lab_type first, then category
+          labs = labs.where(lab_type: track).or(labs.where('category ILIKE ?', "%#{track}%"))
+        end
+        
+        # Apply additional filters
+        labs = labs.by_difficulty(params[:difficulty]) if params[:difficulty].present?
+        labs = labs.by_category(params[:category]) if params[:category].present?
+        
+        # Sorting
+        case params[:sort_by]
+        when 'difficulty'
+          labs = labs.order(:difficulty)
+        when 'duration'
+          labs = labs.order(:estimated_minutes)
+        when 'popularity'
+          labs = labs.order(times_completed: :desc)
+        else
+          labs = labs.order(:created_at)
+        end
+        
+        render json: {
+          success: true,
+          labs: labs.map { |lab| format_lab(lab) },
+          total_count: labs.count
+        }, status: :ok
+      rescue => e
+        render json: {
+          success: false,
+          error: "Failed to get labs: #{e.message}"
+        }, status: :internal_server_error
+      end
+
+      # GET /api/v1/:track/labs/:id
+      # Returns detailed information about a specific lab (no auth required)
+      def show_by_track
+        lab = HandsOnLab.find(params[:id])
+        track = params[:track]
+        
+        # Verify lab belongs to track
+        belongs_to_track = case track
+        when 'kubernetes'
+          lab.lab_type == 'kubernetes'
+        when 'docker'
+          ['docker', 'docker-compose'].include?(lab.lab_type)
+        when 'linux'
+          lab.lab_type == 'linux' || lab.category&.downcase&.include?('linux')
+        else
+          lab.lab_type == track || lab.category&.downcase&.include?(track.downcase)
+        end
+        
+        unless belongs_to_track
+          return render json: {
+            success: false,
+            error: 'Lab not found for this track'
+          }, status: :not_found
+        end
+        
+        render json: {
+          success: true,
+          lab: format_lab_detailed(lab)
+        }, status: :ok
+      rescue ActiveRecord::RecordNotFound
+        render json: {
+          success: false,
+          error: 'Lab not found'
+        }, status: :not_found
+      rescue => e
+        render json: {
+          success: false,
+          error: "Failed to get lab: #{e.message}"
+        }, status: :internal_server_error
+      end
+
       # GET /api/v1/labs
       # Returns list of available hands-on labs with filtering
       def index
@@ -11,19 +101,19 @@ module Api
         # Apply filters
         labs = labs.by_difficulty(params[:difficulty]) if params[:difficulty].present?
         labs = labs.by_category(params[:category]) if params[:category].present?
-        labs = labs.where(requires_docker: true) if params[:requires_docker] == 'true'
-        labs = labs.where(requires_kubernetes: true) if params[:requires_kubernetes] == 'true'
+        labs = labs.where(lab_type: ['docker', 'docker-compose']) if params[:requires_docker] == 'true'
+        labs = labs.where(lab_type: 'kubernetes') if params[:requires_kubernetes] == 'true'
         
         # Sorting
         case params[:sort_by]
         when 'difficulty'
-          labs = labs.order(:difficulty_score)
+          labs = labs.order(:difficulty)
         when 'duration'
-          labs = labs.order(:estimated_duration_minutes)
+          labs = labs.order(:estimated_minutes)
         when 'popularity'
-          labs = labs.order(completion_count: :desc)
+          labs = labs.order(times_completed: :desc)
         else
-          labs = labs.order(:sequence_order)
+          labs = labs.order(:created_at)
         end
         
         # Include user progress if requested
@@ -405,6 +495,12 @@ module Api
       
       private
       
+      def set_cors_headers
+        headers['Access-Control-Allow-Origin'] = '*'
+        headers['Access-Control-Allow-Methods'] = 'GET, POST, OPTIONS'
+        headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
+      end
+      
       # Format lab for list view
       def format_lab(lab)
         {
@@ -412,12 +508,12 @@ module Api
           title: lab.title,
           difficulty: lab.difficulty,
           category: lab.category,
-          estimated_duration_minutes: lab.estimated_duration_minutes,
-          requires_docker: lab.requires_docker,
-          requires_kubernetes: lab.requires_kubernetes,
-          sequence_order: lab.sequence_order,
-          completion_count: lab.completion_count,
-          average_score: lab.average_score
+          estimated_duration_minutes: lab.estimated_minutes,
+          requires_docker: ['docker', 'docker-compose'].include?(lab.lab_type),
+          requires_kubernetes: lab.lab_type == 'kubernetes',
+          sequence_order: 0, # Not in schema, using default
+          completion_count: lab.times_completed || 0,
+          average_score: lab.average_success_rate || 0.0
         }
       end
       

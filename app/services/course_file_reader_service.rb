@@ -26,13 +26,36 @@
 # ==================================================================================
 class CourseFileReaderService
   CONSOLIDATED_DIR = Rails.root.join('db', 'seeds', 'consolidated_courses')
-  # Only scan Linux-related directories to avoid slow loading from unrelated courses
-  MICROLESSONS_DIRS = [
-    Rails.root.join('db', 'seeds', 'converted_microlessons', 'linux-basics-navigation'),
-    Rails.root.join('db', 'seeds', 'converted_microlessons', 'intro-linux-shell'),
-    Rails.root.join('db', 'seeds', 'converted_microlessons', 'bash-basics'),
-    Rails.root.join('db', 'seeds', 'linux_complete_enhanced')
-  ].freeze
+  SEEDS_DIR = Rails.root.join('db', 'seeds')
+
+  # Dynamically find all microlessons directories
+  def self.microlessons_dirs
+    @microlessons_dirs ||= begin
+      dirs = []
+
+      # Scan converted_microlessons directory
+      converted_dir = SEEDS_DIR.join('converted_microlessons')
+      if Dir.exist?(converted_dir)
+        Dir.glob(converted_dir.join('*')).each do |subdir|
+          dirs << Pathname.new(subdir) if File.directory?(subdir)
+        end
+      end
+
+      # Add other enhanced course directories
+      %w[
+        iitjee_chemistry_enhanced
+        linux_complete_enhanced
+        python_complete_enhanced
+        security_complete_enhanced
+        networking_complete_enhanced
+      ].each do |enhanced_dir|
+        path = SEEDS_DIR.join(enhanced_dir)
+        dirs << path if Dir.exist?(path)
+      end
+
+      dirs
+    end
+  end
   CACHE_KEY = 'course_file_reader:all_courses'
   LESSON_CACHE_KEY = 'course_file_reader:lesson_index'
   CACHE_DURATION = 1.hour # Cache for 1 hour in development, can be longer in production
@@ -78,16 +101,26 @@ class CourseFileReaderService
   def self.build_lesson_index
     index = {}
 
-    MICROLESSONS_DIRS.each do |base_dir|
+    microlessons_dirs.each do |base_dir|
       next unless Dir.exist?(base_dir)
 
-      # Find all microlesson YAML files
-      Dir.glob(base_dir.join('**', 'microlessons', '*.yml')).each do |file_path|
+      # Find all microlesson YAML files in microlessons subdirectory
+      Dir.glob(base_dir.join('microlessons', '*.yml')).each do |file_path|
         lesson_data = load_microlesson(file_path)
         next unless lesson_data
 
         slug = lesson_data[:slug]
         index[slug] = lesson_data if slug.present?
+      end
+
+      # Also check for nested microlessons (e.g., in subdirectories)
+      Dir.glob(base_dir.join('**', 'microlessons', '*.yml')).each do |file_path|
+        lesson_data = load_microlesson(file_path)
+        next unless lesson_data
+
+        slug = lesson_data[:slug]
+        # Don't overwrite if already exists (first match wins)
+        index[slug] ||= lesson_data if slug.present?
       end
     end
 

@@ -1,41 +1,242 @@
 slug: wernertheory-practice
-title: werner_theory — Practice
-sequence_order: 20
-estimated_minutes: 2
-difficulty: easy
-content_md: '# werner_theory — Practice 🚀
+title: Werner's Theory - Practice
+sequence_order: 3
+estimated_minutes: 20
+difficulty: medium
+key_concepts:
+  - Primary valence
+  - Secondary valence
+  - Coordination sphere
+  - Ionizable vs non-ionizable groups
+content_md: |
+  # Werner's Theory - Practice
 
+  ## Key Concepts
 
-  Primary valence = oxidation state = ionizable bonds. Complex has +3 charge (to balance
-  3 Cl⁻), so primary valence = 3.
+  ### Werner's Postulates
+  1. **Primary Valence**: Oxidation state of metal, satisfied by anionic groups (ionizable)
+  2. **Secondary Valence**: Coordination number, satisfied by ligands in coordination sphere (non-ionizable)
+  3. Ligands can satisfy both primary and secondary valence
 
+  ### Notation
+  - **[ ]** = Coordination sphere (non-ionizable)
+  - Groups outside brackets = Counter ions (ionizable)
 
-  ## Key Points
+  ### Example: [Co(NH₃)₆]Cl₃
+  - **Primary valence** = 3 (Co³⁺, satisfied by 3 Cl⁻ outside)
+  - **Secondary valence** = 6 (6 NH₃ in coordination sphere)
 
-
-  - Re-read the question carefully.
-
-
-  - Recall the relevant formula or rule.
-
-
-  - Review the explanation once you answer.'
 exercises:
-- type: short_answer
-  sequence_order: 1
-- type: mcq
-  slug: wernertheory-practice-mcq
-  sequence_order: 2
-  question: Pick the correct statement based on this concept.
-  options:
-  - Statement A
-  - Statement B
-  - Statement C
-  - Statement D
-  correct_answer_index: 0
-  explanation: Review the definition and common exceptions.
+  - type: mcq
+    slug: werner-primary-valence
+    sequence_order: 1
+    question: In [Co(NH₃)₆]Cl₃, the primary valence of cobalt is:
+    options:
+      - 2
+      - 3
+      - 6
+      - 9
+    correct_answer_index: 1
+    explanation: Primary valence = oxidation state. Complex has +3 charge (balances 3 Cl⁻), so Co is +3 and primary valence = 3.
+    difficulty: easy
+
+  - type: mcq
+    slug: werner-secondary-valence
+    sequence_order: 2
+    question: The secondary valence in [Co(NH₃)₆]Cl₃ is:
+    options:
+      - 3
+      - 6
+      - 9
+      - 12
+    correct_answer_index: 1
+    explanation: Secondary valence = coordination number = number of donor atoms directly bonded to metal. 6 NH₃ ligands give CN = 6.
+    difficulty: easy
+
+  - type: mcq
+    slug: werner-ionizable-groups
+    sequence_order: 3
+    question: In [Pt(NH₃)₄Cl₂]Cl₂, how many Cl⁻ ions are ionizable?
+    options:
+      - 0
+      - 2
+      - 4
+      - 6
+    correct_answer_index: 1
+    explanation: Only Cl⁻ outside the coordination sphere (brackets) are ionizable. 2 Cl are inside (non-ionizable), 2 Cl are outside (ionizable).
+    difficulty: medium
+
+  - type: mcq
+    slug: werner-agno3-test
+    sequence_order: 4
+    question: "On adding AgNO₃ to [Co(NH₃)₅Cl]Cl₂ solution, how many moles of AgCl precipitate per mole of complex?"
+    options:
+      - 1
+      - 2
+      - 3
+      - 0
+    correct_answer_index: 1
+    explanation: Only ionizable Cl⁻ (outside brackets) precipitate with AgNO₃. 2 Cl are outside, 1 Cl is inside the coordination sphere. So 2 moles AgCl form.
+    difficulty: medium
+
+  - type: mcq
+    slug: werner-coordination-sphere
+    sequence_order: 5
+    question: In [Fe(CN)₆]⁴⁻, which species are in the coordination sphere?
+    options:
+      - Fe only
+      - CN⁻ only
+      - Both Fe and CN⁻
+      - Neither
+    correct_answer_index: 2
+    explanation: The coordination sphere includes the central metal AND all ligands directly bonded to it. Both Fe and 6 CN⁻ are in the coordination sphere.
+    difficulty: easy
+
+  - type: mcq
+    slug: werner-dual-valence
+    sequence_order: 6
+    question: In [CoCl(NH₃)₅]Cl₂, one Cl⁻ satisfies:
+    options:
+      - Only primary valence
+      - Only secondary valence
+      - Both primary and secondary valence
+      - Neither valence
+    correct_answer_index: 2
+    explanation: The Cl⁻ inside the coordination sphere donates to Co (secondary valence) and also provides -1 charge helping balance Co's +3 (primary valence). It satisfies both.
+    difficulty: hard
+
+  - type: numerical
+    slug: werner-calculate-cn
+    sequence_order: 7
+    question: What is the coordination number in [Cr(en)₂Cl₂]⁺?
+    correct_answer: "6"
+    explanation: en is bidentate (2 donor atoms). 2 en × 2 + 2 Cl × 1 = 4 + 2 = CN = 6.
+    difficulty: medium
+
+  - type: mcq
+    slug: werner-isomers-cocl3-nh3-6
+    sequence_order: 8
+    question: CoCl₃·6NH₃ (Werner's complex) shows how many ionizable chloride ions?
+    options:
+      - 0
+      - 1
+      - 2
+      - 3
+    correct_answer_index: 3
+    explanation: This is [Co(NH₃)₆]Cl₃. All 6 NH₃ are in coordination sphere, all 3 Cl are outside (ionizable). Conductivity and AgNO₃ tests confirm 3 ionizable Cl⁻.
+    difficulty: medium
+
+  - type: mcq
+    slug: werner-series-comparison
+    sequence_order: 9
+    question: "Among CoCl₃·6NH₃, CoCl₃·5NH₃, CoCl₃·4NH₃, which has the highest molar conductivity?"
+    options:
+      - CoCl₃·6NH₃
+      - CoCl₃·5NH₃
+      - CoCl₃·4NH₃
+      - All have same conductivity
+    correct_answer_index: 0
+    explanation: CoCl₃·6NH₃ = [Co(NH₃)₆]Cl₃ has 4 ions (1 cation + 3 anions). More ions = higher conductivity. Others have fewer ionizable ions.
+    difficulty: hard
+
+  - type: mcq
+    slug: werner-non-electrolyte
+    sequence_order: 10
+    question: Which complex is a non-electrolyte?
+    options:
+      - "[Co(NH₃)₆]Cl₃"
+      - "[Pt(NH₃)₄]Cl₂"
+      - "[Pt(NH₃)₂Cl₂]"
+      - "K₂[PtCl₄]"
+    correct_answer_index: 2
+    explanation: "[Pt(NH₃)₂Cl₂] is neutral - no ions outside the coordination sphere. It doesn't dissociate in solution, so it's a non-electrolyte."
+    difficulty: medium
+
+  - type: mcq
+    slug: werner-number-of-ions
+    sequence_order: 11
+    question: How many ions are produced when [Co(NH₃)₄Cl₂]Cl dissolves in water?
+    options:
+      - 1
+      - 2
+      - 3
+      - 4
+    correct_answer_index: 1
+    explanation: "[Co(NH₃)₄Cl₂]Cl → [Co(NH₃)₄Cl₂]⁺ + Cl⁻. One complex cation and one chloride anion = 2 ions total."
+    difficulty: medium
+
+  - type: mcq
+    slug: werner-satisfying-valences
+    sequence_order: 12
+    question: In [Co(NH₃)₃Cl₃], chloride ions satisfy:
+    options:
+      - Only primary valence
+      - Only secondary valence
+      - Both primary and secondary valences
+      - Neither valence
+    correct_answer_index: 2
+    explanation: All 3 Cl⁻ are inside the coordination sphere (secondary valence) and also contribute -3 charge balancing Co³⁺ (primary valence). They satisfy both.
+    difficulty: hard
+
+  - type: mcq
+    slug: werner-prediction
+    sequence_order: 13
+    question: Werner predicted that [Co(NH₃)₆]Cl₃ has what geometry?
+    options:
+      - Planar hexagonal
+      - Trigonal prismatic
+      - Octahedral
+      - Cubic
+    correct_answer_index: 2
+    explanation: Werner correctly proposed octahedral geometry for CN = 6 complexes. This was later confirmed by X-ray crystallography.
+    difficulty: easy
+
+  - type: mcq
+    slug: werner-cocl3-4nh3-isomers
+    sequence_order: 14
+    question: CoCl₃·4NH₃ can exist as [Co(NH₃)₄Cl₂]Cl. How many geometric isomers does it have?
+    options:
+      - 1
+      - 2
+      - 3
+      - 4
+    correct_answer_index: 1
+    explanation: "[Co(NH₃)₄Cl₂]⁺ is octahedral with CN = 6. It has cis and trans isomers (2 geometric isomers). Werner's work on isomers proved his theory."
+    difficulty: hard
+
+  - type: mcq
+    slug: werner-effective-atomic-number
+    sequence_order: 15
+    question: According to Sidgwick's EAN rule, a stable complex has EAN equal to:
+    options:
+      - Atomic number of the metal
+      - 18
+      - Nearest noble gas atomic number
+      - Always 36
+    correct_answer_index: 2
+    explanation: The Effective Atomic Number (EAN) rule states that stable complexes tend to have total electrons equal to nearest noble gas. For first row metals, this is often 36 (Kr).
+    difficulty: medium
+
+  - type: mcq
+    slug: werner-historical
+    sequence_order: 16
+    question: Werner's coordination theory was proposed in:
+    options:
+      - 1850
+      - 1893
+      - 1913
+      - 1953
+    correct_answer_index: 1
+    explanation: Alfred Werner proposed his coordination theory in 1893, for which he received the Nobel Prize in Chemistry in 1913.
+    difficulty: easy
+
 objectives:
-- Define the core idea
-- Identify governing formulae or rules
-- Practice with mixed-difficulty problems
-next_recommended: []
+  - Distinguish primary and secondary valence
+  - Identify ionizable and non-ionizable groups
+  - Predict number of ions from complex formula
+  - Understand Werner's contributions to coordination chemistry
+  - Apply EAN rule to coordination compounds
+
+next_recommended:
+  - coordinationnumber-practice
+  - nomenclature-practice

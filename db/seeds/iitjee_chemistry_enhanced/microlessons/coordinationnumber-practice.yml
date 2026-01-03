@@ -1,43 +1,249 @@
 slug: coordinationnumber-practice
-title: coordination_number — Practice
-sequence_order: 23
-estimated_minutes: 2
+title: Coordination Number - Practice
+sequence_order: 4
+estimated_minutes: 20
 difficulty: medium
-content_md: '# coordination_number — Practice 🚀
+key_concepts:
+  - Coordination number definition
+  - Counting donor atoms
+  - Polydentate ligands
+  - Common coordination numbers
+content_md: |
+  # Coordination Number - Practice
 
+  ## Key Concept
 
-  FALSE. Coordination number = number of DONOR ATOMS, not number of ligands. Example:
-  [Co(en)₃]³⁺ has 3 ligands but CN = 6 (each en donates 2 atoms).
+  **Coordination Number (CN)** = Total number of **DONOR ATOMS** directly bonded to the central metal atom/ion.
 
+  **Important**: CN counts donor atoms, NOT ligands!
 
-  ## Key Points
+  ## Common Coordination Numbers
 
+  | CN | Geometry | Examples |
+  |----|----------|----------|
+  | 2 | Linear | [Ag(NH₃)₂]⁺, [CuCl₂]⁻ |
+  | 4 | Tetrahedral or Square planar | [NiCl₄]²⁻, [Pt(NH₃)₄]²⁺ |
+  | 6 | Octahedral | [Fe(CN)₆]⁴⁻, [Co(NH₃)₆]³⁺ |
 
-  - Re-read the question carefully.
+  ## Calculating CN with Polydentate Ligands
 
+  - **Monodentate** (1 donor atom): NH₃, H₂O, Cl⁻, CN⁻
+  - **Bidentate** (2 donor atoms): en, ox, phen
+  - **Hexadentate** (6 donor atoms): EDTA
 
-  - Recall the relevant formula or rule.
+  **Example**: [Co(en)₃]³⁺
+  - 3 bidentate ligands × 2 donor atoms each = **CN = 6**
 
-
-  - Review the explanation once you answer.'
 exercises:
-- type: short_answer
-  sequence_order: 1
-  question: The coordination number depends on the number of ligands, not the number
-    of donor atoms.
-- type: mcq
-  slug: coordinationnumber-practice-mcq
-  sequence_order: 2
-  question: Pick the correct statement based on this concept.
-  options:
-  - Statement A
-  - Statement B
-  - Statement C
-  - Statement D
-  correct_answer_index: 0
-  explanation: Review the definition and common exceptions.
+  - type: mcq
+    slug: cn-basic-definition
+    sequence_order: 1
+    question: What is the coordination number in [Co(NH₃)₆]³⁺?
+    options:
+      - 3
+      - 6
+      - 9
+      - 18
+    correct_answer_index: 1
+    explanation: Each NH₃ is monodentate (1 donor atom). 6 NH₃ ligands × 1 donor atom = CN = 6.
+    difficulty: easy
+
+  - type: mcq
+    slug: cn-bidentate-ligand
+    sequence_order: 2
+    question: The coordination number in [Pt(en)₂]²⁺ is (en = ethylenediamine):
+    options:
+      - 2
+      - 4
+      - 6
+      - 8
+    correct_answer_index: 1
+    explanation: Ethylenediamine (en) is bidentate (2 donor N atoms). 2 en ligands × 2 donor atoms = CN = 4.
+    difficulty: medium
+
+  - type: mcq
+    slug: cn-vs-ligands
+    sequence_order: 3
+    question: For [Co(en)₃]³⁺, the number of ligands and coordination number are respectively:
+    options:
+      - 3 and 3
+      - 3 and 6
+      - 6 and 6
+      - 6 and 3
+    correct_answer_index: 1
+    explanation: There are 3 en ligands, but en is bidentate. CN = 3 × 2 = 6. Always count donor atoms for CN!
+    difficulty: medium
+
+  - type: mcq
+    slug: cn-edta-complex
+    sequence_order: 4
+    question: What is the coordination number of Fe in [Fe(EDTA)]⁻?
+    options:
+      - 1
+      - 4
+      - 6
+      - 8
+    correct_answer_index: 2
+    explanation: EDTA is hexadentate (6 donor atoms - 2 N and 4 O). One EDTA wraps around Fe with CN = 6.
+    difficulty: medium
+
+  - type: mcq
+    slug: cn-mixed-ligands
+    sequence_order: 5
+    question: The coordination number in [CoCl₂(en)₂]⁺ is:
+    options:
+      - 4
+      - 5
+      - 6
+      - 7
+    correct_answer_index: 2
+    explanation: 2 Cl⁻ (monodentate) + 2 en (bidentate) = 2(1) + 2(2) = 2 + 4 = CN = 6.
+    difficulty: medium
+
+  - type: numerical
+    slug: cn-calculate-oxalate
+    sequence_order: 6
+    question: Calculate the coordination number in [Cr(ox)₃]³⁻ where ox = oxalate (C₂O₄²⁻, bidentate).
+    correct_answer: "6"
+    explanation: Oxalate is bidentate (2 donor O atoms). 3 ox × 2 donor atoms = CN = 6.
+    difficulty: medium
+
+  - type: mcq
+    slug: cn-linear-complex
+    sequence_order: 7
+    question: Which complex has CN = 2?
+    options:
+      - "[Cu(NH₃)₄]²⁺"
+      - "[Ag(CN)₂]⁻"
+      - "[Fe(CN)₆]⁴⁻"
+      - "[Ni(CO)₄]"
+    correct_answer_index: 1
+    explanation: "[Ag(CN)₂]⁻ has 2 CN⁻ ligands bonded to Ag⁺. Each CN⁻ is monodentate, so CN = 2 (linear geometry)."
+    difficulty: easy
+
+  - type: mcq
+    slug: cn-tetrahedral-vs-sp
+    sequence_order: 8
+    question: Both [NiCl₄]²⁻ and [Ni(CN)₄]²⁻ have CN = 4. Which geometry do they adopt?
+    options:
+      - Both tetrahedral
+      - Both square planar
+      - "[NiCl₄]²⁻ is tetrahedral, [Ni(CN)₄]²⁻ is square planar"
+      - "[NiCl₄]²⁻ is square planar, [Ni(CN)₄]²⁻ is tetrahedral"
+    correct_answer_index: 2
+    explanation: Weak field Cl⁻ gives tetrahedral [NiCl₄]²⁻. Strong field CN⁻ causes pairing, giving square planar [Ni(CN)₄]²⁻.
+    difficulty: hard
+
+  - type: mcq
+    slug: cn-common-cn6
+    sequence_order: 9
+    question: Which of the following does NOT have coordination number 6?
+    options:
+      - "[Fe(CN)₆]⁴⁻"
+      - "[Co(en)₃]³⁺"
+      - "[Pt(NH₃)₂Cl₂]"
+      - "[Cr(H₂O)₆]³⁺"
+    correct_answer_index: 2
+    explanation: "[Pt(NH₃)₂Cl₂] has 2 NH₃ + 2 Cl = 4 donor atoms. CN = 4 (square planar). All others have CN = 6."
+    difficulty: medium
+
+  - type: mcq
+    slug: cn-dmg-complex
+    sequence_order: 10
+    question: In the complex [Ni(DMG)₂], if DMG (dimethylglyoxime) is bidentate, the CN is:
+    options:
+      - 2
+      - 4
+      - 6
+      - 8
+    correct_answer_index: 1
+    explanation: DMG is bidentate. 2 DMG × 2 donor atoms = CN = 4. This is the famous red nickel-DMG test complex.
+    difficulty: medium
+
+  - type: mcq
+    slug: cn-carbonyl-complex
+    sequence_order: 11
+    question: The coordination number of Ni in [Ni(CO)₄] is:
+    options:
+      - 1
+      - 2
+      - 4
+      - 8
+    correct_answer_index: 2
+    explanation: CO is a monodentate ligand bonding through C. 4 CO × 1 donor atom = CN = 4. Tetrahedral geometry.
+    difficulty: easy
+
+  - type: mcq
+    slug: cn-triethylenetetramine
+    sequence_order: 12
+    question: Triethylenetetramine (trien) has 4 nitrogen donor atoms. What is the CN in [Co(trien)Cl₂]⁺?
+    options:
+      - 4
+      - 5
+      - 6
+      - 7
+    correct_answer_index: 2
+    explanation: trien is tetradentate (4 N atoms) + 2 Cl⁻ (monodentate) = 4 + 2 = CN = 6.
+    difficulty: hard
+
+  - type: mcq
+    slug: cn-pentacyano
+    sequence_order: 13
+    question: What is the coordination number in [Fe(CN)₅(NO)]²⁻?
+    options:
+      - 5
+      - 6
+      - 7
+      - 8
+    correct_answer_index: 1
+    explanation: 5 CN⁻ (monodentate) + 1 NO (monodentate via N) = 5 + 1 = CN = 6.
+    difficulty: medium
+
+  - type: mcq
+    slug: cn-glycinato
+    sequence_order: 14
+    question: Glycine (gly) acts as a bidentate ligand using N and O. The CN in [Cu(gly)₂] is:
+    options:
+      - 2
+      - 4
+      - 6
+      - 8
+    correct_answer_index: 1
+    explanation: Glycine is bidentate (N and O donor atoms). 2 gly × 2 = CN = 4.
+    difficulty: medium
+
+  - type: mcq
+    slug: cn-diethylenetriamine
+    sequence_order: 15
+    question: Diethylenetriamine (dien) is tridentate. What is CN in [Co(dien)₂]³⁺?
+    options:
+      - 3
+      - 4
+      - 5
+      - 6
+    correct_answer_index: 3
+    explanation: dien is tridentate (3 N donors). 2 dien × 3 = CN = 6. Octahedral geometry.
+    difficulty: hard
+
+  - type: mcq
+    slug: cn-aqua-complex
+    sequence_order: 16
+    question: In [Al(H₂O)₆]³⁺, water acts as:
+    options:
+      - Hexadentate ligand with CN = 6
+      - Monodentate ligand with CN = 6
+      - Bidentate ligand with CN = 12
+      - Monodentate ligand with CN = 12
+    correct_answer_index: 1
+    explanation: Each H₂O is monodentate (donates through O). 6 H₂O × 1 = CN = 6. Water cannot be hexadentate.
+    difficulty: easy
+
 objectives:
-- Define the core idea
-- Identify governing formulae or rules
-- Practice with mixed-difficulty problems
-next_recommended: []
+  - Calculate coordination number from complex formula
+  - Distinguish between number of ligands and CN
+  - Apply denticity of common ligands
+  - Predict geometry from CN
+
+next_recommended:
+  - ligands-practice
+  - nomenclature-practice

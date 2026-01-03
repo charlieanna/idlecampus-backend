@@ -1,43 +1,255 @@
 slug: fajansrules-practice
-title: fajans_rules — Practice
-sequence_order: 14
-estimated_minutes: 2
+title: Fajans' Rules - Practice
+sequence_order: 8
+estimated_minutes: 20
 difficulty: medium
-content_md: '# fajans_rules — Practice 🚀
+key_concepts:
+  - Polarizing power
+  - Polarizability
+  - Covalent character in ionic bonds
+  - Fajans' rules applications
+content_md: |
+  # Fajans' Rules - Practice
 
+  ## Key Concept
 
-  Smaller cations have higher charge density (polarizing power) and distort the electron
-  cloud of anions more, increasing covalent character. Example: Li⁺ (small) gives
-  more covalent compounds than Na⁺ (larger).
+  **Fajans' Rules** predict when an ionic bond will have significant covalent character.
 
+  ### Polarization
+  - **Polarizing power**: Ability of cation to distort the electron cloud of anion
+  - **Polarizability**: Ability of anion to be distorted
 
-  ## Key Points
+  ### Factors Increasing Covalent Character
 
+  | Factor | Effect | Reason |
+  |--------|--------|--------|
+  | Small cation | ↑ Covalent | Higher charge density |
+  | Large anion | ↑ Covalent | Easily distorted electron cloud |
+  | High cation charge | ↑ Covalent | Greater polarizing power |
+  | High anion charge | ↑ Covalent | More electrons to distort |
+  | Cation with d or f electrons | ↑ Covalent | Poor shielding, high Zeff |
 
-  - Re-read the question carefully.
+  ### Polarizing Power Order
+  - Li⁺ > Na⁺ > K⁺ > Rb⁺ > Cs⁺ (smaller = higher)
+  - Al³⁺ > Mg²⁺ > Na⁺ (higher charge = higher)
+  - Cu⁺ > Na⁺ (same size, but d electrons in Cu⁺)
 
-
-  - Recall the relevant formula or rule.
-
-
-  - Review the explanation once you answer.'
 exercises:
-- type: short_answer
-  sequence_order: 1
-  question: According to Fajans\
-- type: mcq
-  slug: fajansrules-practice-mcq
-  sequence_order: 2
-  question: Pick the correct statement based on this concept.
-  options:
-  - Statement A
-  - Statement B
-  - Statement C
-  - Statement D
-  correct_answer_index: 0
-  explanation: Review the definition and common exceptions.
+  - type: mcq
+    slug: fajans-basic-concept
+    sequence_order: 1
+    question: According to Fajans' rules, covalent character increases with:
+    options:
+      - Large cation and small anion
+      - Small cation and large anion
+      - Large cation and large anion
+      - Equal sized cation and anion
+    correct_answer_index: 1
+    explanation: Small cations have high charge density (polarizing power) and large anions have diffuse electron clouds (easily polarized). Both increase covalent character.
+    difficulty: easy
+
+  - type: mcq
+    slug: fajans-lithium-vs-sodium
+    sequence_order: 2
+    question: Which compound has more covalent character?
+    options:
+      - NaCl
+      - LiCl
+      - KCl
+      - RbCl
+    correct_answer_index: 1
+    explanation: Li⁺ is smaller than Na⁺, K⁺, Rb⁺. Smaller cation = higher polarizing power = more covalent character. Order of covalent character - LiCl > NaCl > KCl > RbCl.
+    difficulty: easy
+
+  - type: mcq
+    slug: fajans-halide-comparison
+    sequence_order: 3
+    question: Among NaF, NaCl, NaBr, NaI, which has the highest covalent character?
+    options:
+      - NaF
+      - NaCl
+      - NaBr
+      - NaI
+    correct_answer_index: 3
+    explanation: I⁻ is the largest halide ion (most easily polarized). Larger anion = more covalent character. Order - NaI > NaBr > NaCl > NaF.
+    difficulty: easy
+
+  - type: mcq
+    slug: fajans-charge-effect
+    sequence_order: 4
+    question: Among Na₂O, MgO, Al₂O₃, which has the most covalent character?
+    options:
+      - Na₂O
+      - MgO
+      - Al₂O₃
+      - All have equal covalent character
+    correct_answer_index: 2
+    explanation: Al³⁺ has highest charge and smallest size (highest polarizing power). Covalent character order - Al₂O₃ > MgO > Na₂O.
+    difficulty: medium
+
+  - type: mcq
+    slug: fajans-silver-halides
+    sequence_order: 5
+    question: Why are silver halides (AgCl, AgBr, AgI) colored and insoluble?
+    options:
+      - Ag⁺ is a large cation
+      - Ag⁺ has d¹⁰ configuration with high polarizing power
+      - Silver is a transition metal
+      - Halides are unstable
+    correct_answer_index: 1
+    explanation: Ag⁺ has d¹⁰ configuration with poor shielding, giving it high polarizing power despite moderate size. This causes significant covalent character, making silver halides colored and insoluble.
+    difficulty: hard
+
+  - type: mcq
+    slug: fajans-licl-vs-nacl
+    sequence_order: 6
+    question: LiCl is more soluble in organic solvents than NaCl because:
+    options:
+      - LiCl has higher lattice energy
+      - LiCl has more covalent character
+      - Li⁺ is smaller and more ionic
+      - NaCl has lower melting point
+    correct_answer_index: 1
+    explanation: Higher covalent character makes compounds more soluble in non-polar/organic solvents. Li⁺'s high polarizing power gives LiCl significant covalent character.
+    difficulty: medium
+
+  - type: mcq
+    slug: fajans-mp-comparison
+    sequence_order: 7
+    question: Which has the lowest melting point among - NaCl, MgCl₂, AlCl₃?
+    options:
+      - NaCl
+      - MgCl₂
+      - AlCl₃
+      - All have same melting point
+    correct_answer_index: 2
+    explanation: AlCl₃ has the most covalent character (Al³⁺ highly polarizing). Covalent compounds have lower melting points than ionic ones. AlCl₃ sublimes at 180°C.
+    difficulty: medium
+
+  - type: mcq
+    slug: fajans-d-electron-effect
+    sequence_order: 8
+    question: Cu⁺ and Na⁺ have similar ionic radii. Which forms more covalent compounds?
+    options:
+      - Na⁺
+      - Cu⁺
+      - Both equal
+      - Cannot be determined
+    correct_answer_index: 1
+    explanation: Cu⁺ has d¹⁰ configuration. d-electrons provide poor shielding, increasing effective nuclear charge and polarizing power. Cu⁺ compounds are more covalent than Na⁺ compounds.
+    difficulty: hard
+
+  - type: mcq
+    slug: fajans-beryllium
+    sequence_order: 9
+    question: Why do beryllium compounds show anomalous properties (more covalent than expected)?
+    options:
+      - Be has noble gas configuration
+      - Be²⁺ is extremely small with high charge density
+      - Be is not in s-block
+      - Be forms only coordinate bonds
+    correct_answer_index: 1
+    explanation: Be²⁺ has the smallest ionic radius and +2 charge, giving exceptionally high polarizing power. BeCl₂ is covalent, not ionic.
+    difficulty: medium
+
+  - type: mcq
+    slug: fajans-diagonal-relationship
+    sequence_order: 10
+    question: Li shows diagonal relationship with Mg because:
+    options:
+      - Both are in same period
+      - Both have similar ionic radii
+      - Both have similar charge/radius ratio (polarizing power)
+      - Both form colored compounds
+    correct_answer_index: 2
+    explanation: Li⁺ and Mg²⁺ have similar charge/radius ratios (polarizing power). This causes similar properties - both form covalent organometallic compounds, nitrides with N₂, etc.
+    difficulty: hard
+
+  - type: mcq
+    slug: fajans-color-prediction
+    sequence_order: 11
+    question: Which compound is expected to be colored?
+    options:
+      - NaCl
+      - KBr
+      - AgI
+      - CaF₂
+    correct_answer_index: 2
+    explanation: AgI has significant covalent character (Ag⁺ is highly polarizing). Covalent character leads to smaller HOMO-LUMO gap, absorbing visible light and appearing colored.
+    difficulty: medium
+
+  - type: mcq
+    slug: fajans-polarizability-order
+    sequence_order: 12
+    question: Arrange the halide ions in order of INCREASING polarizability - F⁻, Cl⁻, Br⁻, I⁻
+    options:
+      - I⁻ < Br⁻ < Cl⁻ < F⁻
+      - F⁻ < Cl⁻ < Br⁻ < I⁻
+      - Cl⁻ < F⁻ < Br⁻ < I⁻
+      - All have equal polarizability
+    correct_answer_index: 1
+    explanation: Larger ions have more diffuse electron clouds and are more easily polarized. I⁻ is largest, F⁻ is smallest. Polarizability - F⁻ < Cl⁻ < Br⁻ < I⁻.
+    difficulty: easy
+
+  - type: mcq
+    slug: fajans-pbi2-color
+    sequence_order: 13
+    question: PbI₂ is yellow while PbCl₂ is white because:
+    options:
+      - Pb²⁺ has different oxidation states
+      - I⁻ is more polarizable than Cl⁻
+      - PbCl₂ has higher lattice energy
+      - Lead is a transition metal
+    correct_answer_index: 1
+    explanation: I⁻ is larger and more polarizable than Cl⁻. Greater polarization in PbI₂ causes more covalent character, smaller band gap, and absorption of blue light (appears yellow).
+    difficulty: hard
+
+  - type: mcq
+    slug: fajans-caco3-stability
+    sequence_order: 14
+    question: Among Group 2 carbonates, BeCO₃ decomposes most easily because:
+    options:
+      - Be is not a true alkaline earth metal
+      - Be²⁺ highly polarizes CO₃²⁻, destabilizing it
+      - BeCO₃ has lowest lattice energy
+      - Beryllium is radioactive
+    correct_answer_index: 1
+    explanation: Be²⁺ is tiny with +2 charge (highest polarizing power in Group 2). It strongly polarizes CO₃²⁻, weakening C-O bonds and facilitating decomposition to BeO + CO₂.
+    difficulty: hard
+
+  - type: mcq
+    slug: fajans-summary
+    sequence_order: 15
+    question: Which combination gives MAXIMUM covalent character?
+    options:
+      - Large cation + Small anion + Low charges
+      - Small cation + Large anion + High charges
+      - Large cation + Large anion + High charges
+      - Small cation + Small anion + Low charges
+    correct_answer_index: 1
+    explanation: Maximum covalent character requires - small cation (high polarizing power), large anion (high polarizability), and high charges (more electron distortion).
+    difficulty: medium
+
+  - type: mcq
+    slug: fajans-alcl3-dimer
+    sequence_order: 16
+    question: AlCl₃ exists as Al₂Cl₆ dimer because:
+    options:
+      - Al³⁺ is very large
+      - High covalent character allows sharing of Cl atoms
+      - AlCl₃ is ionic
+      - Aluminum has incomplete octet
+    correct_answer_index: 1
+    explanation: Al³⁺ is small with +3 charge (very high polarizing power). AlCl₃ is essentially covalent, and Al achieves octet by forming coordinate bonds with Cl of another AlCl₃ unit.
+    difficulty: hard
+
 objectives:
-- Define the core idea
-- Identify governing formulae or rules
-- Practice with mixed-difficulty problems
-next_recommended: []
+  - Apply Fajans' rules to predict bond character
+  - Compare polarizing power of cations
+  - Compare polarizability of anions
+  - Predict physical properties from covalent character
+  - Explain anomalous properties using polarization
+
+next_recommended:
+  - ionicbonding-practice
+  - coordinatebonding-practice

@@ -1,42 +1,243 @@
 slug: periodictrends-practice
-title: periodic_trends — Practice
-sequence_order: 10
-estimated_minutes: 2
+title: Periodic Trends - Practice
+sequence_order: 4
+estimated_minutes: 25
 difficulty: medium
-content_md: '# periodic_trends — Practice 🚀
+key_concepts:
+  - Atomic radius trends
+  - Ionization energy trends
+  - Electron affinity trends
+  - Electronegativity trends
+  - Metallic character
+content_md: |
+  # Periodic Trends - Practice
 
+  ## Summary of Trends
 
-  Metallic character increases down a group. Li < Na < K < Rb. Larger atoms lose electrons
-  more easily.
+  | Property | Across Period (→) | Down Group (↓) |
+  |----------|-------------------|----------------|
+  | Atomic radius | Decreases | Increases |
+  | Ionization energy | Increases | Decreases |
+  | Electron affinity | More negative | Less negative |
+  | Electronegativity | Increases | Decreases |
+  | Metallic character | Decreases | Increases |
 
+  ## Key Exceptions to Remember
+  - **IE**: Be > B, N > O, Mg > Al
+  - **EA**: Cl > F (small size of F causes repulsion)
+  - **Isoelectronic**: More protons = smaller radius
 
-  ## Key Points
-
-
-  - Re-read the question carefully.
-
-
-  - Recall the relevant formula or rule.
-
-
-  - Review the explanation once you answer.'
 exercises:
-- type: short_answer
-  sequence_order: 1
-  question: 'Arrange the following in order of INCREASING metallic character:'
-- type: mcq
-  slug: periodictrends-practice-mcq
-  sequence_order: 2
-  question: Pick the correct statement based on this concept.
-  options:
-  - Statement A
-  - Statement B
-  - Statement C
-  - Statement D
-  correct_answer_index: 0
-  explanation: Review the definition and common exceptions.
+  - type: mcq
+    slug: pt-metallic-order
+    sequence_order: 1
+    question: Arrange in order of INCREASING metallic character - Li, Na, K, Rb
+    options:
+      - Li < Na < K < Rb
+      - Rb < K < Na < Li
+      - Na < Li < K < Rb
+      - K < Rb < Na < Li
+    correct_answer_index: 0
+    explanation: Metallic character increases down a group as atoms become larger and lose electrons more easily. Order - Li < Na < K < Rb.
+    difficulty: easy
+
+  - type: mcq
+    slug: pt-atomic-radius-period
+    sequence_order: 2
+    question: Arrange in order of INCREASING atomic radius - Na, Mg, Al, Si
+    options:
+      - Na < Mg < Al < Si
+      - Si < Al < Mg < Na
+      - Al < Si < Mg < Na
+      - Mg < Al < Si < Na
+    correct_answer_index: 1
+    explanation: Atomic radius DECREASES across a period due to increasing nuclear charge. Si (smallest) < Al < Mg < Na (largest).
+    difficulty: easy
+
+  - type: mcq
+    slug: pt-ie-exception-be-b
+    sequence_order: 3
+    question: Why is the first ionization energy of Be greater than B?
+    options:
+      - Be has more protons
+      - B loses an electron from 2p (higher energy) vs Be's 2s
+      - Be has larger atomic radius
+      - B has higher electronegativity
+    correct_answer_index: 1
+    explanation: B's outermost electron is in the 2p orbital (higher energy, easier to remove) while Be's is in the more stable 2s orbital.
+    difficulty: medium
+
+  - type: mcq
+    slug: pt-ie-exception-n-o
+    sequence_order: 4
+    question: The first ionization energy of N is higher than O because:
+    options:
+      - N has more protons
+      - N has smaller atomic radius
+      - O has paired electrons in 2p causing repulsion
+      - N has higher electronegativity
+    correct_answer_index: 2
+    explanation: O (2s²2p⁴) has one paired 2p electron. The repulsion makes it easier to remove, lowering IE. N (2s²2p³) has all unpaired 2p electrons.
+    difficulty: medium
+
+  - type: mcq
+    slug: pt-ea-cl-vs-f
+    sequence_order: 5
+    question: Why does Cl have more negative electron affinity than F?
+    options:
+      - Cl is more electronegative
+      - F is too small causing electron-electron repulsion
+      - Cl has more protons
+      - F has noble gas configuration
+    correct_answer_index: 1
+    explanation: F is very small, so adding an electron to the compact 2p orbital causes significant repulsion. Cl's larger 3p orbital has more space.
+    difficulty: medium
+
+  - type: mcq
+    slug: pt-isoelectronic-radius
+    sequence_order: 6
+    question: Arrange isoelectronic species in order of INCREASING ionic radius - O²⁻, F⁻, Na⁺, Mg²⁺
+    options:
+      - Mg²⁺ < Na⁺ < F⁻ < O²⁻
+      - O²⁻ < F⁻ < Na⁺ < Mg²⁺
+      - Na⁺ < F⁻ < O²⁻ < Mg²⁺
+      - F⁻ < O²⁻ < Mg²⁺ < Na⁺
+    correct_answer_index: 0
+    explanation: All have 10 electrons. More protons = smaller radius. Mg²⁺(12p) < Na⁺(11p) < F⁻(9p) < O²⁻(8p).
+    difficulty: hard
+
+  - type: mcq
+    slug: pt-electronegativity-highest
+    sequence_order: 7
+    question: Which element has the highest electronegativity?
+    options:
+      - Oxygen
+      - Nitrogen
+      - Fluorine
+      - Chlorine
+    correct_answer_index: 2
+    explanation: Fluorine has the highest electronegativity (4.0 on Pauling scale) of all elements due to smallest size and highest effective nuclear charge in Period 2.
+    difficulty: easy
+
+  - type: mcq
+    slug: pt-diagonal-relationship
+    sequence_order: 8
+    question: Li shows diagonal relationship with:
+    options:
+      - Na
+      - Be
+      - Mg
+      - Al
+    correct_answer_index: 2
+    explanation: Li and Mg have similar charge/radius ratios (polarizing power). Both form nitrides with N₂, both form covalent organometallic compounds.
+    difficulty: medium
+
+  - type: mcq
+    slug: pt-cation-anion-size
+    sequence_order: 9
+    question: Which statement about ionic radii is CORRECT?
+    options:
+      - Cations are larger than parent atoms
+      - Anions are smaller than parent atoms
+      - Na⁺ is larger than Na
+      - Cl⁻ is larger than Cl
+    correct_answer_index: 3
+    explanation: Anions gain electrons, increasing electron-electron repulsion and expanding the electron cloud. Cations lose electrons and shrink.
+    difficulty: easy
+
+  - type: mcq
+    slug: pt-second-ie-jump
+    sequence_order: 10
+    question: For which element is the jump from IE₂ to IE₃ largest?
+    options:
+      - Na
+      - Mg
+      - Al
+      - Si
+    correct_answer_index: 1
+    explanation: Mg is [Ne]3s². After losing 2 electrons (Mg²⁺ = [Ne]), removing a 3rd electron breaks into the noble gas core, requiring huge energy.
+    difficulty: hard
+
+  - type: mcq
+    slug: pt-atomic-radius-group
+    sequence_order: 11
+    question: Atomic radius increases down a group because:
+    options:
+      - Nuclear charge decreases
+      - More electron shells are added
+      - Electronegativity increases
+      - Ionization energy increases
+    correct_answer_index: 1
+    explanation: Going down a group adds new principal energy levels (shells). Although nuclear charge increases, the shielding effect and larger shells cause radius to increase.
+    difficulty: easy
+
+  - type: mcq
+    slug: pt-zeff-across-period
+    sequence_order: 12
+    question: Effective nuclear charge (Zeff) across a period:
+    options:
+      - Decreases due to shielding
+      - Increases due to poor shielding by same-shell electrons
+      - Remains constant
+      - First increases then decreases
+    correct_answer_index: 1
+    explanation: Across a period, electrons are added to the same shell while protons increase. Same-shell electrons shield poorly, so Zeff increases.
+    difficulty: medium
+
+  - type: mcq
+    slug: pt-group2-ea
+    sequence_order: 13
+    question: Group 2 elements have nearly zero electron affinity because:
+    options:
+      - They have large atomic radii
+      - Their ns² configuration is stable
+      - They are metals
+      - They have high ionization energy
+    correct_answer_index: 1
+    explanation: Group 2 elements have stable ns² configuration. Adding an electron would go to a higher energy np orbital, which is unfavorable.
+    difficulty: medium
+
+  - type: numerical
+    slug: pt-valence-electrons
+    sequence_order: 14
+    question: How many valence electrons does sulfur (S) have?
+    correct_answer: "6"
+    explanation: Sulfur is in Group 16 (VIA). Elements in Group 16 have 6 valence electrons (ns²np⁴ configuration).
+    difficulty: easy
+
+  - type: mcq
+    slug: pt-lanthanoid-contraction
+    sequence_order: 15
+    question: Due to lanthanoid contraction, which pair has similar atomic radii?
+    options:
+      - Ti and Zr
+      - Zr and Hf
+      - Fe and Ru
+      - Sc and Y
+    correct_answer_index: 1
+    explanation: Lanthanoid contraction causes Hf (Period 6) to have nearly the same radius as Zr (Period 5). The 4f electrons provide poor shielding.
+    difficulty: hard
+
+  - type: mcq
+    slug: pt-ie-trend-period
+    sequence_order: 16
+    question: Which element has the highest first ionization energy in Period 2?
+    options:
+      - Li
+      - C
+      - N
+      - Ne
+    correct_answer_index: 3
+    explanation: Ne has the highest IE in Period 2 - smallest radius and completely filled, stable electron configuration. IE generally increases across a period.
+    difficulty: easy
+
 objectives:
-- Define the core idea
-- Identify governing formulae or rules
-- Practice with mixed-difficulty problems
-next_recommended: []
+  - Apply periodic trends to compare element properties
+  - Explain exceptions in ionization energy trends
+  - Order isoelectronic species by radius
+  - Understand diagonal relationships
+  - Predict properties using trends
+
+next_recommended:
+  - blockclassification-practice
+  - periodiclaw-practice

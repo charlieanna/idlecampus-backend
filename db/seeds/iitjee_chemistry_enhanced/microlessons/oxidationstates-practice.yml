@@ -1,41 +1,248 @@
 slug: oxidationstates-practice
-title: oxidation_states — Practice
-sequence_order: 17
-estimated_minutes: 2
+title: Oxidation States in Coordination Compounds - Practice
+sequence_order: 4
+estimated_minutes: 20
 difficulty: medium
-content_md: '# oxidation_states — Practice 🚀
+key_concepts:
+  - Oxidation state calculation
+  - Common ligand charges
+  - Metal oxidation states
+  - Charge balance
+content_md: |
+  # Oxidation States - Practice
 
+  ## Key Formula
 
-  Let oxidation state of Cr = x. H₂O is neutral. Complex has +3 charge (to balance
-  3 Cl⁻). x + 6(0) = +3, so x = +3.
+  **Sum of oxidation states = Overall charge of complex**
 
+  ## Common Ligand Charges
 
-  ## Key Points
+  | Ligand | Charge |
+  |--------|--------|
+  | NH₃, H₂O, CO, py | 0 (neutral) |
+  | Cl⁻, Br⁻, I⁻, CN⁻, OH⁻, NO₂⁻ | -1 |
+  | SO₄²⁻, CO₃²⁻, C₂O₄²⁻ (ox), S₂O₃²⁻ | -2 |
+  | en, phen | 0 (neutral) |
+  | EDTA⁴⁻ | -4 |
+  | NO⁺ | +1 |
 
+  ## Calculation Method
 
-  - Re-read the question carefully.
+  1. Identify the overall charge of the complex
+  2. Sum up all ligand charges
+  3. Metal oxidation state = Overall charge - Ligand charges
 
-
-  - Recall the relevant formula or rule.
-
-
-  - Review the explanation once you answer.'
 exercises:
-- type: short_answer
-  sequence_order: 1
-- type: mcq
-  slug: oxidationstates-practice-mcq
-  sequence_order: 2
-  question: Pick the correct statement based on this concept.
-  options:
-  - Statement A
-  - Statement B
-  - Statement C
-  - Statement D
-  correct_answer_index: 0
-  explanation: Review the definition and common exceptions.
+  - type: mcq
+    slug: os-hexaaquachromium
+    sequence_order: 1
+    question: What is the oxidation state of Cr in [Cr(H₂O)₆]Cl₃?
+    options:
+      - +2
+      - +3
+      - +4
+      - +6
+    correct_answer_index: 1
+    explanation: H₂O is neutral (0). Complex has +3 charge (balances 3 Cl⁻). Cr + 6(0) = +3, so Cr = +3.
+    difficulty: easy
+
+  - type: mcq
+    slug: os-ferricyanide
+    sequence_order: 2
+    question: The oxidation state of Fe in [Fe(CN)₆]³⁻ is:
+    options:
+      - +2
+      - +3
+      - +4
+      - +6
+    correct_answer_index: 1
+    explanation: CN⁻ has -1 charge. Complex has -3 charge. Fe + 6(-1) = -3, so Fe + (-6) = -3, Fe = +3.
+    difficulty: easy
+
+  - type: mcq
+    slug: os-ferrocyanide
+    sequence_order: 3
+    question: What is the oxidation state of Fe in K₄[Fe(CN)₆]?
+    options:
+      - +2
+      - +3
+      - +4
+      - 0
+    correct_answer_index: 0
+    explanation: 4 K⁺ means complex is [Fe(CN)₆]⁴⁻. Fe + 6(-1) = -4, so Fe = -4 + 6 = +2.
+    difficulty: easy
+
+  - type: numerical
+    slug: os-calculate-nickel
+    sequence_order: 4
+    question: What is the oxidation state of Ni in [Ni(CO)₄]?
+    correct_answer: "0"
+    explanation: CO is neutral. Complex is overall neutral. Ni + 4(0) = 0, so Ni = 0. This is a classic example of metal in zero oxidation state.
+    difficulty: medium
+
+  - type: mcq
+    slug: os-platinum-complex
+    sequence_order: 5
+    question: The oxidation state of Pt in [Pt(NH₃)₄Cl₂]²⁺ is:
+    options:
+      - +2
+      - +3
+      - +4
+      - +6
+    correct_answer_index: 2
+    explanation: NH₃ is neutral, Cl⁻ is -1. Pt + 4(0) + 2(-1) = +2. Pt - 2 = +2, so Pt = +4.
+    difficulty: medium
+
+  - type: mcq
+    slug: os-cobalt-ammine
+    sequence_order: 6
+    question: In [Co(NH₃)₅Cl]Cl₂, the oxidation state of Co is:
+    options:
+      - +1
+      - +2
+      - +3
+      - +4
+    correct_answer_index: 2
+    explanation: 2 Cl⁻ outside means complex is [Co(NH₃)₅Cl]²⁺. But wait - 5 NH₃(0) + 1 Cl(-1) + Co = +2 is wrong. Actually complex = +2, so Co + 0 + (-1) = +2, Co = +3.
+    difficulty: medium
+
+  - type: mcq
+    slug: os-oxalate-complex
+    sequence_order: 7
+    question: What is the oxidation state of Cr in K₃[Cr(C₂O₄)₃]?
+    options:
+      - +2
+      - +3
+      - +4
+      - +6
+    correct_answer_index: 1
+    explanation: 3 K⁺ means complex is [Cr(C₂O₄)₃]³⁻. Oxalate (C₂O₄²⁻) has -2 charge. Cr + 3(-2) = -3, so Cr = -3 + 6 = +3.
+    difficulty: medium
+
+  - type: mcq
+    slug: os-negative-complex
+    sequence_order: 8
+    question: The oxidation state of Pt in [PtCl₄]²⁻ is:
+    options:
+      - +2
+      - +3
+      - +4
+      - 0
+    correct_answer_index: 0
+    explanation: Cl⁻ is -1. Pt + 4(-1) = -2. Pt - 4 = -2, so Pt = +2.
+    difficulty: easy
+
+  - type: mcq
+    slug: os-edta-complex
+    sequence_order: 9
+    question: What is the oxidation state of Ca in [Ca(EDTA)]²⁻?
+    options:
+      - 0
+      - +1
+      - +2
+      - +3
+    correct_answer_index: 2
+    explanation: EDTA⁴⁻ has -4 charge. Ca + (-4) = -2, so Ca = +2.
+    difficulty: medium
+
+  - type: mcq
+    slug: os-mixed-ligands
+    sequence_order: 10
+    question: The oxidation state of Mn in [Mn(H₂O)₄Cl₂]⁺ is:
+    options:
+      - +1
+      - +2
+      - +3
+      - +4
+    correct_answer_index: 2
+    explanation: H₂O is neutral, Cl⁻ is -1. Mn + 4(0) + 2(-1) = +1. Mn - 2 = +1, so Mn = +3.
+    difficulty: medium
+
+  - type: mcq
+    slug: os-carbonyl-complex
+    sequence_order: 11
+    question: In [Fe(CO)₅], the oxidation state of Fe is:
+    options:
+      - +2
+      - +1
+      - 0
+      - -2
+    correct_answer_index: 2
+    explanation: CO is neutral. Complex is neutral. Fe + 5(0) = 0, so Fe = 0. Iron pentacarbonyl has Fe in zero oxidation state.
+    difficulty: easy
+
+  - type: mcq
+    slug: os-nitrosyl-complex
+    sequence_order: 12
+    question: If NO is treated as NO⁺ in [Fe(CN)₅(NO)]²⁻, what is the oxidation state of Fe?
+    options:
+      - +1
+      - +2
+      - +3
+      - +4
+    correct_answer_index: 1
+    explanation: CN⁻ is -1, NO⁺ is +1. Fe + 5(-1) + (+1) = -2. Fe - 5 + 1 = -2, Fe - 4 = -2, Fe = +2.
+    difficulty: hard
+
+  - type: mcq
+    slug: os-variable-oxidation
+    sequence_order: 13
+    question: Which transition metal shows the maximum number of different oxidation states?
+    options:
+      - Fe
+      - Cr
+      - Mn
+      - Co
+    correct_answer_index: 2
+    explanation: Mn shows oxidation states from 0 to +7 (the widest range). KMnO₄ has Mn in +7, MnO₂ has +4, Mn²⁺ in solution is +2.
+    difficulty: medium
+
+  - type: mcq
+    slug: os-comparison
+    sequence_order: 14
+    question: In which complex does Fe have the highest oxidation state?
+    options:
+      - "[Fe(H₂O)₆]²⁺"
+      - "[Fe(CN)₆]³⁻"
+      - "[FeO₄]²⁻"
+      - "[Fe(CO)₅]"
+    correct_answer_index: 2
+    explanation: "[Fe(H₂O)₆]²⁺ has Fe²⁺, [Fe(CN)₆]³⁻ has Fe³⁺, [FeO₄]²⁻ (ferrate) has Fe⁶⁺ (highest), [Fe(CO)₅] has Fe⁰."
+    difficulty: hard
+
+  - type: mcq
+    slug: os-peroxide-complex
+    sequence_order: 15
+    question: In K₂[Ni(CN)₄], the oxidation state of Ni is:
+    options:
+      - 0
+      - +1
+      - +2
+      - +4
+    correct_answer_index: 2
+    explanation: 2 K⁺ means complex is [Ni(CN)₄]²⁻. Ni + 4(-1) = -2, so Ni = +2.
+    difficulty: easy
+
+  - type: mcq
+    slug: os-chromate
+    sequence_order: 16
+    question: What is the oxidation state of Cr in K₂CrO₄?
+    options:
+      - +3
+      - +4
+      - +5
+      - +6
+    correct_answer_index: 3
+    explanation: K is +1, O is -2. 2(+1) + Cr + 4(-2) = 0. 2 + Cr - 8 = 0, Cr = +6.
+    difficulty: easy
+
 objectives:
-- Define the core idea
-- Identify governing formulae or rules
-- Practice with mixed-difficulty problems
-next_recommended: []
+  - Calculate oxidation state from complex formula
+  - Apply charge balance method
+  - Identify common ligand charges
+  - Recognize unusual oxidation states
+  - Compare oxidation states across complexes
+
+next_recommended:
+  - coordinationnumber-practice
+  - nomenclature-practice
