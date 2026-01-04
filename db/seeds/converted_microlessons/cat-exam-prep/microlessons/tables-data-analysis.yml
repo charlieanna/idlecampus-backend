@@ -1,0 +1,249 @@
+slug: tables-data-analysis
+title: Tables & Data Analysis
+difficulty: medium
+sequence_order: 7
+estimated_minutes: 25
+key_concepts:
+- Table Reading
+- Percentage Growth
+- Market Share Analysis
+- CAGR Calculations
+- Data Comparison
+prerequisites:
+- seating-arrangements-linear-circular
+content_md: |
+  # Tables & Data Analysis
+
+  Master data interpretation from tables - extract insights quickly and accurately.
+
+  ---
+
+  ## Overview
+
+  **Module:** Data Interpretation & Logical Reasoning
+  **Topic:** Table Analysis
+  **CAT Weightage:** 20-25% of DILR section
+  **Difficulty Range:** Easy to Hard
+
+  ---
+
+  ## Types of Data Tables
+
+  ### Simple Tables
+
+  Single variable relationships
+  - Sales data over years
+  - Population statistics
+  - Production figures
+
+  ### Multi-Variable Tables
+
+  Multiple dimensions of data
+  - Product-wise, Region-wise sales
+  - Year-wise, Category-wise growth
+  - Cross-tabulated information
+
+  ### Incomplete Tables
+
+  Missing data to be calculated
+  - Requires logical deduction
+  - Uses relationships between cells
+  - CAT favorite type
+
+  ---
+
+  ## Core Calculation Skills
+
+  ### Percentage Calculations
+
+  **Growth Rate:**
+  ((New - Old) / Old) × 100
+
+  **Share/Proportion:**
+  (Part / Total) × 100
+
+  **CAGR (Compound Annual Growth Rate):**
+  [(Final/Initial)^(1/n) - 1] × 100
+
+  ### Ratio Analysis
+
+  **Comparing ratios across categories:**
+  - Identify patterns
+  - Find outliers
+  - Track trends
+
+  ### Average and Weighted Average
+
+  **Simple Average:** Sum / Count
+
+  **Weighted Average:** Σ(Value × Weight) / Σ(Weight)
+
+  ---
+
+  ## Problem-Solving Framework
+
+  ### Step 1: Understand Table Structure
+
+  - What are row headers?
+  - What are column headers?
+  - What units are used?
+  - Are there totals/subtotals?
+
+  ### Step 2: Quick Scan
+
+  - Maximum/Minimum values
+  - Obvious patterns
+  - Missing data
+  - Outliers
+
+  ### Step 3: Read Questions First
+
+  - Understand what's being asked
+  - Identify relevant data
+  - Plan calculation approach
+
+  ### Step 4: Calculate Strategically
+
+  - Approximate when possible
+  - Use shortcuts
+  - Verify logic
+
+  ---
+
+  ## CAT-Specific Strategies
+
+  ### Mental Math Shortcuts
+
+  **Percentage Approximations:**
+  - 10% = divide by 10
+  - 5% = half of 10%
+  - 25% = divide by 4
+  - 33.33% = divide by 3
+  - 12.5% = divide by 8
+
+  **Quick Division:**
+  - Divide by 5 = multiply by 2, divide by 10
+  - Divide by 25 = multiply by 4, divide by 100
+
+  ### Comparison Without Full Calculation
+
+  **Ratio Comparison:**
+  Instead of calculating exact percentages, compare:
+  a/b vs c/d
+  Cross multiply: ad vs bc
+
+  **Growth Comparison:**
+  Look at absolute change relative to base, not exact percentage
+
+  ---
+
+  ## Common Question Types
+
+  ### Type 1: Direct Reading
+  "What was the sales in 2020?"
+  - Read from table directly
+  - Check units
+
+  ### Type 2: Percentage Change
+  "What was the growth rate from 2019 to 2020?"
+  - Calculate: (2020-2019)/2019 × 100
+
+  ### Type 3: Proportion
+  "What percentage of total sales came from Product A?"
+  - Calculate: Product A / Total × 100
+
+  ### Type 4: Ranking
+  "Which region had the highest growth?"
+  - Calculate growth for each
+  - Compare and rank
+
+  ### Type 5: Multi-Step
+  "If growth continues at same rate, what will be 2025 sales?"
+  - Project using growth pattern
+  - Apply formula consistently
+
+  ---
+
+  ## Sample Data Analysis
+
+  **Sales Data (in Rs. Crores)**
+
+  | Product | 2018 | 2019 | 2020 | 2021 | 2022 |
+  |---------|------|------|------|------|------|
+  | A       | 120  | 138  | 150  | 165  | 182  |
+  | B       | 85   | 92   | 104  | 115  | 125  |
+  | C       | 200  | 210  | 225  | 240  | 260  |
+  | D       | 95   | 105  | 118  | 130  | 145  |
+  | Total   | 500  | 545  | 597  | 650  | 712  |
+
+  **Analysis Examples:**
+  - Growth of A from 2018-2019: (138-120)/120 × 100 = 15%
+  - Market share of C in 2022: 260/712 × 100 ≈ 36.5%
+  - CAGR of B (4 years): (125/85)^(1/4) - 1 ≈ 10%
+
+  ---
+
+  ## Key Takeaways
+
+  - Scan table structure before diving into calculations
+  - Read questions first to focus effort
+  - Use approximations for faster solving
+  - Practice mental math for common percentages
+  - Verify answers with logical sense-checking
+
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: If sales grew from Rs. 200 crores to Rs. 250 crores, what is the percentage growth?
+  options:
+  - '25%'
+  - '20%'
+  - '30%'
+  - '50%'
+  correct_answer: '25%'
+  explanation: "Growth = (250-200)/200 × 100 = 50/200 × 100 = 25%"
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: Product A has sales of 150 out of total 600. What is A's market share?
+  options:
+  - '25%'
+  - '20%'
+  - '30%'
+  - '15%'
+  correct_answer: '25%'
+  explanation: "Market share = 150/600 × 100 = 25%"
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: Value grows from 100 to 121 in 2 years. What is the CAGR?
+  options:
+  - '10%'
+  - '10.5%'
+  - '21%'
+  - '11%'
+  correct_answer: '10%'
+  explanation: "CAGR = (121/100)^(1/2) - 1 = 1.1 - 1 = 0.1 = 10%"
+  require_pass: true
+- type: mcq
+  sequence_order: 4
+  question: To find 12.5% of a number quickly, you should:
+  options:
+  - 'Divide by 8'
+  - 'Divide by 10'
+  - 'Divide by 5'
+  - 'Divide by 12'
+  correct_answer: 'Divide by 8'
+  explanation: "12.5% = 1/8, so divide by 8. Example: 12.5% of 800 = 800/8 = 100"
+  require_pass: true
+- type: mcq
+  sequence_order: 5
+  question: Which shows higher growth - from 80 to 100, or from 100 to 125?
+  options:
+  - 'First one (80 to 100)'
+  - 'Second one (100 to 125)'
+  - 'Both are equal'
+  - 'Cannot determine'
+  correct_answer: 'Both are equal'
+  explanation: "First: (100-80)/80 = 25%. Second: (125-100)/100 = 25%. Both are 25% growth."
+  require_pass: true

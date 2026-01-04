@@ -1,0 +1,176 @@
+slug: averages-mixtures-alligation
+title: Averages, Mixtures & Alligation
+difficulty: medium
+sequence_order: 11
+estimated_minutes: 20
+key_concepts:
+- Simple Average
+- Weighted Average
+- Alligation Rule
+- Mixture Problems
+- Successive Replacement
+prerequisites:
+- ratio-proportion-variation
+content_md: |
+  # Averages, Mixtures & Alligation
+
+  Master weighted averages and mixture problems - essential for CAT quantitative section.
+
+  ---
+
+  ## Core Concepts
+
+  ### Simple Average
+
+  **Formula:** Average = Sum of values / Number of values
+
+  **Properties:**
+  - Sum = Average × Count
+  - If all values equal to average, sum remains same
+  - Average lies between minimum and maximum values
+
+  ### Weighted Average
+
+  **Formula:**
+  Weighted Average = Σ(Value × Weight) / Σ(Weight)
+
+  **Applications:**
+  - Class average when sections have different sizes
+  - Portfolio returns with different investments
+  - Mixture problems
+
+  ### Alligation Rule
+
+  **Visual Method:**
+  ```
+    Cheaper -------- Mean -------- Dearer
+             \              /
+        (Dearer-Mean) : (Mean-Cheaper)
+  ```
+
+  **Formula:**
+  Ratio = (Dearer - Mean) : (Mean - Cheaper)
+
+  ---
+
+  ## Important Formulas
+
+  ### Change in Average
+
+  **When one value changes:**
+  New Average = Old Average + (Change in value / n)
+
+  **When item added:**
+  New Average = (Old Sum + New Item) / (n + 1)
+
+  **When item removed:**
+  New Average = (Old Sum - Removed Item) / (n - 1)
+
+  ### Mixture Problems
+
+  **Final Concentration:**
+  C_final = (C₁V₁ + C₂V₂) / (V₁ + V₂)
+
+  **Successive Replacement:**
+  After n replacements of quantity x from vessel of capacity V:
+  Final concentration = Initial × (1 - x/V)^n
+
+  ---
+
+  ## Practice Problems
+
+  ### 1. Simple Average [Easy]
+  The average of 5 numbers is 24. If one number is excluded, average becomes 23. Find excluded number.
+
+  **Solution:**
+  Sum of 5 numbers = 5 × 24 = 120
+  Sum of 4 numbers = 4 × 23 = 92
+  Excluded number = 120 - 92 = 28
+
+  ### 2. Weighted Average [Medium]
+  In a class of 30 boys and 20 girls, boys' average score is 65 and girls' is 75. Find class average.
+
+  **Solution:**
+  Weighted Average = (30×65 + 20×75) / 50
+  = (1950 + 1500) / 50 = 69
+
+  ### 3. Alligation [Medium]
+  In what ratio should water be mixed with wine costing Rs. 60/liter to get mixture worth Rs. 40/liter?
+
+  **Solution:**
+  Water costs Rs. 0, Wine costs Rs. 60, Mean is Rs. 40
+  Ratio = (60-40) : (40-0) = 20 : 40 = 1 : 2
+  Water : Wine = 1 : 2
+
+  ### 4. Successive Replacement [Hard]
+  A vessel contains 60L milk. 12L is removed and replaced with water. This is done 3 times. Find milk remaining.
+
+  **Solution:**
+  Milk remaining = 60 × (1 - 12/60)³
+  = 60 × (0.8)³ = 60 × 0.512 = 30.72L
+
+  ---
+
+  ## Key Takeaways
+
+  - Alligation is powerful for mixture proportion problems
+  - Weighted average accounts for relative importance
+  - Successive replacement follows exponential decay
+  - Average lies between extreme values
+
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: The average of 5 numbers is 24. If one number is excluded, average becomes 23. What is the excluded number?
+  options:
+  - '26'
+  - '28'
+  - '30'
+  - '25'
+  correct_answer: '28'
+  explanation: "Sum of 5 = 120. Sum of 4 = 92. Excluded = 120 - 92 = 28"
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: In a class of 30 boys (avg 65) and 20 girls (avg 75), what is the class average?
+  options:
+  - '68'
+  - '69'
+  - '70'
+  - '71'
+  correct_answer: '69'
+  explanation: "Weighted avg = (30×65 + 20×75)/50 = 3450/50 = 69"
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: In what ratio should water be mixed with wine at Rs.60/L to get mixture at Rs.40/L?
+  options:
+  - '1:2'
+  - '2:1'
+  - '1:3'
+  - '3:1'
+  correct_answer: '1:2'
+  explanation: "Using alligation: (60-40):(40-0) = 20:40 = 1:2"
+  require_pass: true
+- type: mcq
+  sequence_order: 4
+  question: A vessel has 60L milk. 12L removed and replaced with water, done 3 times. Milk remaining?
+  options:
+  - '30.72L'
+  - '28.8L'
+  - '32L'
+  - '36L'
+  correct_answer: '30.72L'
+  explanation: "60 × (1-12/60)³ = 60 × 0.8³ = 60 × 0.512 = 30.72L"
+  require_pass: true
+- type: mcq
+  sequence_order: 5
+  question: If a new student with marks 85 joins a class of 20 students with average 70, what is the new average?
+  options:
+  - '70.71'
+  - '71.43'
+  - '72'
+  - '70.5'
+  correct_answer: '70.71'
+  explanation: "New avg = (20×70 + 85)/21 = 1485/21 ≈ 70.71"
+  require_pass: true

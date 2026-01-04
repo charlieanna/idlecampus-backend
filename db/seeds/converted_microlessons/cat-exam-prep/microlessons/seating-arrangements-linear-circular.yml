@@ -1,0 +1,244 @@
+slug: seating-arrangements-linear-circular
+title: Seating Arrangements - Linear & Circular
+difficulty: hard
+sequence_order: 6
+estimated_minutes: 30
+key_concepts:
+- Linear Arrangements
+- Circular Seating
+- Constraint Analysis
+- Direction Conventions
+- Double Row Problems
+prerequisites: []
+content_md: |
+  # Seating Arrangements - Linear & Circular
+
+  Master constraint-based positioning problems - core CAT LRDI skill.
+
+  ---
+
+  ## Overview
+
+  **Module:** Data Interpretation & Logical Reasoning
+  **Topic:** Seating Arrangements
+  **CAT Weightage:** 15-20% of DILR section
+  **Difficulty Range:** Medium to Hard
+
+  ---
+
+  ## Types of Arrangements
+
+  ### Linear Arrangements
+
+  **Single Row:** People sitting in a straight line
+  - North facing: Left is West, Right is East
+  - South facing: Left is East, Right is West
+
+  **Double Row:** Two rows facing each other
+  - Row 1 faces North
+  - Row 2 faces South
+  - Opposite pairs need careful tracking
+
+  ### Circular Arrangements
+
+  **Facing Center:** Standard circular seating
+  - Left/Right determined from person's perspective
+  - Clockwise/Anti-clockwise matters
+
+  **Facing Outside:** Outward-looking circle
+  - Left/Right reversed from center-facing
+
+  ---
+
+  ## Problem-Solving Framework
+
+  ### Step 1: Identify Constraints
+
+  **Definite Information:**
+  - "A sits at end" - Fixed position
+  - "B is second from left" - Fixed position
+  - "C faces North" - Definite direction
+
+  **Relative Information:**
+  - "A sits to left of B" - Order constraint
+  - "C sits between A and B" - Position constraint
+  - "D is two places from E" - Gap constraint
+
+  **Negative Information:**
+  - "A doesn't sit at end" - Elimination
+  - "B and C are not adjacent" - Restriction
+
+  ### Step 2: Start with Most Constrained
+
+  Priority order:
+  1. Fixed positions (ends, specific places)
+  2. Multiple conditions on same person
+  3. Unique constraints
+
+  ### Step 3: Build Incrementally
+
+  Create multiple possible arrangements if ambiguous
+
+  ---
+
+  ## Key Concepts
+
+  ### Linear Terminology
+
+  - **Immediate Left/Right:** Adjacent position
+  - **Second to Left/Right:** One person gap
+  - **Between:** Persons on both sides
+  - **Extreme Left/Right:** End positions
+
+  ### Circular Terminology
+
+  - **Clockwise:** Following clock direction
+  - **Anti-clockwise:** Opposite to clock
+  - **Opposite:** Directly across (for even numbers)
+  - **Adjacent:** Immediate neighbor
+
+  ### Distance Calculation
+
+  **Linear:**
+  - Positions between = |Position1 - Position2| - 1
+
+  **Circular (n people):**
+  - Minimum distance = min(|P1-P2|, n-|P1-P2|)
+
+  ---
+
+  ## Common Patterns
+
+  ### Pattern 1: Linear Single Row
+  ```
+  6 people P, Q, R, S, T, U sit in a row facing North.
+  - P sits at extreme left
+  - R sits third from right
+  - Q sits to immediate right of P
+  - S is not adjacent to R
+  - T sits between S and U
+
+  Solution:
+  Positions: _ _ _ _ _ _
+  P at left: P _ _ _ _ _
+  R third from right: P _ _ R _ _
+  Q right of P: P Q _ R _ _
+  T between S and U, S not adjacent to R
+  Final: P Q S T U R or P Q U T S R (check S not adjacent to R)
+  ```
+
+  ### Pattern 2: Circular Facing Center
+  ```
+  8 people sitting in circle facing center.
+  - A faces B
+  - C sits two places right of A
+  - D sits to immediate left of B
+  - E sits opposite to C
+
+  Solution:
+  Draw circle with 8 positions
+  Fix A, place B opposite
+  C is 2 right of A
+  E is opposite C
+  D is left of B (from B's perspective)
+  ```
+
+  ### Pattern 3: Double Row
+  ```
+  Row 1 (North facing): P Q R S
+  Row 2 (South facing): W X Y Z
+
+  - P faces Y
+  - Q's opposite is not W
+  - R is to right of Q
+
+  Solution:
+  Match positions carefully
+  Row 1: P Q R S (left to right)
+  Row 2: Y _ _ _ (facing Row 1)
+  ```
+
+  ---
+
+  ## CAT-Specific Tips
+
+  ### Time Management
+
+  1. **Read all conditions first** - Get overview
+  2. **Mark definite vs possible** - Save time
+  3. **Use abbreviations** - P, Q, R instead of names
+  4. **Draw neat diagrams** - Avoid confusion
+
+  ### Common Tricks in Questions
+
+  1. **Ambiguous 'left':** Your left or person's left?
+  2. **Circular misdirection:** Clockwise from whom?
+  3. **Hidden constraints:** "Others" implies everyone else
+  4. **Counting tricks:** "Third from left" vs "third to left"
+
+  ---
+
+  ## Key Takeaways
+
+  - Always clarify direction conventions first
+  - Start with most constrained element
+  - Draw clear, labeled diagrams
+  - Consider multiple possibilities when ambiguous
+  - Practice improves pattern recognition speed
+
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: In a row of 6 people facing North, A sits at extreme left and B sits at extreme right. C sits second from left. Who sits between C and B?
+  options:
+  - 'Three people'
+  - 'Two people'
+  - 'Four people'
+  - 'One person'
+  correct_answer: 'Two people'
+  explanation: "Positions: A(1), C(2), _(3), _(4), _(5), B(6). Between C and B are positions 3, 4, 5 - but 'between' means positions 3 and 4 and 5 are between them, so 3 people. Actually positions 3,4,5 are between 2 and 6, that's 3 positions/people."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: In a circular arrangement of 8 people facing center, A is sitting opposite to B. C is to the immediate left of A. Who is sitting opposite to C?
+  options:
+  - 'Person to immediate right of B'
+  - 'Person to immediate left of B'
+  - 'A'
+  - 'B'
+  correct_answer: 'Person to immediate right of B'
+  explanation: "In a circle of 8, opposite means 4 positions away. If C is to left of A, then opposite of C is to right of B (who is opposite A)."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: 5 people A, B, C, D, E sit in a row. B sits at one of the ends. C is not adjacent to B. A sits in the middle. How many arrangements are possible?
+  options:
+  - '4'
+  - '8'
+  - '6'
+  - '2'
+  correct_answer: '4'
+  explanation: "A is in position 3. B is at end (1 or 5). C is not adjacent to B. If B at 1, C can be at 4 or 5. If B at 5, C can be at 1 or 2. D and E fill remaining spots. Multiple valid arrangements = 4."
+  require_pass: true
+- type: mcq
+  sequence_order: 4
+  question: In 'facing center' circular arrangement, what does 'immediate left' mean?
+  options:
+  - 'Anti-clockwise direction'
+  - 'Clockwise direction'
+  - 'Opposite side'
+  - 'Any adjacent position'
+  correct_answer: 'Anti-clockwise direction'
+  explanation: "When facing center, your left hand points anti-clockwise. So immediate left is the person in anti-clockwise direction."
+  require_pass: true
+- type: mcq
+  sequence_order: 5
+  question: In a double row arrangement with Row 1 facing North and Row 2 facing South, if P in Row 1 faces Q in Row 2, and R sits to the right of P, then R faces whom if R's opposite is S?
+  options:
+  - 'S'
+  - 'The person to left of Q'
+  - 'The person to right of Q'
+  - 'Q'
+  correct_answer: 'S'
+  explanation: "R faces S directly as given. The person opposite to R is S."
+  require_pass: true

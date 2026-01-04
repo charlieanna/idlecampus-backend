@@ -1,0 +1,228 @@
+slug: time-speed-distance
+title: Time, Speed & Distance
+difficulty: medium
+sequence_order: 4
+estimated_minutes: 28
+key_concepts:
+- Speed Distance Time Relationship
+- Relative Speed
+- Average Speed
+- Trains and Boats
+- Circular Track Problems
+prerequisites:
+- ratio-proportion-variation
+content_md: |
+  # Time, Speed & Distance
+
+  Master motion problems - one of the most frequent CAT topics with diverse applications.
+
+  ---
+
+  ## Overview
+
+  **Module:** Quantitative Aptitude
+  **Topic:** Time, Speed & Distance
+  **CAT Weightage:** 12-18% of QA section
+  **Difficulty Range:** Medium to Hard
+
+  ---
+
+  ## Core Concepts
+
+  ### Basic Relationship
+
+  **Speed = Distance / Time**
+  **Distance = Speed × Time**
+  **Time = Distance / Speed**
+
+  ### Unit Conversions
+
+  **km/hr to m/s:** Multiply by 5/18
+  **m/s to km/hr:** Multiply by 18/5
+
+  Example: 72 km/hr = 72 × 5/18 = 20 m/s
+
+  ### Average Speed
+
+  **For same distance at different speeds:**
+  Average Speed = 2S₁S₂/(S₁ + S₂)
+
+  **For same time at different speeds:**
+  Average Speed = (S₁ + S₂)/2
+
+  **General:**
+  Average Speed = Total Distance/Total Time
+
+  ---
+
+  ## Types of Problems
+
+  ### 1. Relative Speed
+
+  **Same Direction:**
+  Relative Speed = |S₁ - S₂|
+
+  **Opposite Direction:**
+  Relative Speed = S₁ + S₂
+
+  **Applications:**
+  - Trains crossing each other
+  - Boats and streams
+  - Races and competitions
+
+  ### 2. Trains
+
+  **Crossing a Stationary Object:**
+  Time = Length of Train / Speed of Train
+
+  **Crossing a Platform/Bridge:**
+  Time = (Length of Train + Length of Platform) / Speed
+
+  **Two Trains Crossing:**
+  Time = (L₁ + L₂) / Relative Speed
+
+  ### 3. Boats and Streams
+
+  **Downstream (with stream):** Speed = B + S
+  **Upstream (against stream):** Speed = B - S
+
+  Where B = Speed of boat in still water
+        S = Speed of stream
+
+  **Speed of Boat:** B = (Downstream + Upstream)/2
+  **Speed of Stream:** S = (Downstream - Upstream)/2
+
+  ### 4. Circular Motion
+
+  **First Meeting Time:**
+  - Same Direction: Length/(|S₁ - S₂|)
+  - Opposite Direction: Length/(S₁ + S₂)
+
+  ---
+
+  ## Problem-Solving Patterns
+
+  ### Pattern 1: Distance Constant
+  ```
+  Problem: A travels at 40 km/hr and B at 60 km/hr.
+  B starts 2 hours after A. When does B catch A?
+
+  Solution:
+  A's head start = 40 × 2 = 80 km
+  Relative speed = 60 - 40 = 20 km/hr
+  Time for B to catch = 80/20 = 4 hours
+  Total time from A's start = 6 hours
+  ```
+
+  ### Pattern 2: Meeting Point
+  ```
+  Problem: A and B start from opposite ends of 100 km path.
+  Speeds are 20 and 30 km/hr. Where do they meet?
+
+  Solution:
+  Combined speed = 50 km/hr
+  Meeting time = 100/50 = 2 hours
+  A covers = 20 × 2 = 40 km from start
+  ```
+
+  ### Pattern 3: Late/Early Arrival
+  ```
+  Problem: Walking at 5 km/hr, person is 10 min late.
+  At 6 km/hr, reaches 10 min early. Find distance.
+
+  Solution:
+  Difference in time = 20 min = 1/3 hour
+  D/5 - D/6 = 1/3
+  D/30 = 1/3
+  D = 10 km
+  ```
+
+  ---
+
+  ## CAT-Specific Strategies
+
+  ### Shortcut Formulas
+
+  1. **If speed changes from S to kS, time becomes T/k**
+
+  2. **Races:**
+     - A beats B by d meters in L meter race
+     - A's speed : B's speed = L : (L-d)
+
+  3. **Clocks:**
+     - Minute hand gains 5.5° per minute over hour hand
+     - Overlap every 65 5/11 minutes
+
+  ### Mental Math Tips
+
+  - 36 km/hr = 10 m/s
+  - 54 km/hr = 15 m/s
+  - 72 km/hr = 20 m/s
+  - 90 km/hr = 25 m/s
+
+  ---
+
+  ## Key Takeaways
+
+  - Always check and convert units first
+  - Relative speed simplifies two-body motion problems
+  - Average speed for same distance uses harmonic mean
+  - Train problems need total length calculation
+  - Draw diagrams for complex motion scenarios
+
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: A person travels half distance at 40 km/hr and half at 60 km/hr. What is the average speed?
+  options:
+  - '48 km/hr'
+  - '50 km/hr'
+  - '45 km/hr'
+  - '52 km/hr'
+  correct_answer: '48 km/hr'
+  explanation: "Average speed for same distance = 2×40×60/(40+60) = 4800/100 = 48 km/hr"
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: A 200m train at 72 km/hr crosses a platform in 25 seconds. What is the platform length?
+  options:
+  - '300m'
+  - '350m'
+  - '250m'
+  - '400m'
+  correct_answer: '300m'
+  explanation: "72 km/hr = 20 m/s. Distance covered = 20 × 25 = 500m. Platform = 500 - 200 = 300m"
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: A boat goes 30 km downstream in 3 hrs and returns in 5 hrs. What is the speed of the stream?
+  options:
+  - '2 km/hr'
+  - '3 km/hr'
+  - '4 km/hr'
+  - '1 km/hr'
+  correct_answer: '2 km/hr'
+  explanation: "Downstream speed = 10 km/hr, Upstream speed = 6 km/hr. Stream speed = (10-6)/2 = 2 km/hr"
+  require_pass: true
+- type: mcq
+  sequence_order: 4
+  question: Convert 90 km/hr to m/s
+  options:
+  - '25 m/s'
+  - '20 m/s'
+  - '30 m/s'
+  - '15 m/s'
+  correct_answer: '25 m/s'
+  explanation: "90 × 5/18 = 450/18 = 25 m/s"
+  require_pass: true
+- type: mcq
+  sequence_order: 5
+  question: Two trains 100 km apart move towards each other at 25 and 35 km/hr. In how many hours will they meet?
+  options:
+  - '5/3 hours'
+  - '2 hours'
+  - '3 hours'
+  - '4 hours'
+  correct_answer: '5/3 hours'
+  explanation: "Combined speed = 60 km/hr. Time = 100/60 = 5/3 hours"
+  require_pass: true

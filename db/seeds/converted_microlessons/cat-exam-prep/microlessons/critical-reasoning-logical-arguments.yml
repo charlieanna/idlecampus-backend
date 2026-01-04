@@ -1,0 +1,238 @@
+slug: critical-reasoning-logical-arguments
+title: Critical Reasoning & Logical Arguments
+difficulty: hard
+sequence_order: 10
+estimated_minutes: 28
+key_concepts:
+- Argument Structure
+- Assumptions
+- Logical Fallacies
+- Strengthen/Weaken Arguments
+- Drawing Inferences
+prerequisites:
+- para-jumbles-sentence-ordering
+content_md: |
+  # Critical Reasoning & Logical Arguments
+
+  Develop skills to analyze arguments, identify assumptions, and evaluate conclusions.
+
+  ---
+
+  ## Overview
+
+  **Module:** Verbal Ability & Reading Comprehension
+  **Topic:** Critical Reasoning
+  **CAT Weightage:** 5-10% of VARC section
+  **Difficulty Range:** Medium to Hard
+
+  ---
+
+  ## Argument Structure
+
+  ### Basic Components
+
+  **Premise:** Facts or statements given as true
+  **Conclusion:** What is being argued/claimed
+  **Assumption:** Unstated premise that connects premise to conclusion
+
+  **Example:**
+  - Premise: All employees completed the training.
+  - Premise: Training improves performance.
+  - Assumption: The training was effective for all employees.
+  - Conclusion: All employees will show improved performance.
+
+  ---
+
+  ## Types of CR Questions
+
+  ### 1. Assumption Questions
+
+  **Pattern:** "Which assumption does the argument depend on?"
+
+  **Strategy:**
+  - Identify premise and conclusion
+  - Find the gap between them
+  - The assumption bridges this gap
+
+  **Test:** Negate the answer - if argument falls apart, it's the assumption
+
+  ### 2. Strengthen Questions
+
+  **Pattern:** "Which would most strengthen the argument?"
+
+  **Strategy:**
+  - Find conclusion
+  - Look for evidence that supports it
+  - Good answer adds credibility to conclusion
+
+  ### 3. Weaken Questions
+
+  **Pattern:** "Which would most weaken the argument?"
+
+  **Strategy:**
+  - Identify the reasoning
+  - Find evidence that undermines conclusion
+  - Look for alternative explanations or counterexamples
+
+  ### 4. Inference Questions
+
+  **Pattern:** "Which can be logically inferred?"
+
+  **Strategy:**
+  - Stick close to given information
+  - Don't over-extend reasoning
+  - Must be necessarily true
+
+  ### 5. Flaw Questions
+
+  **Pattern:** "The reasoning is flawed because..."
+
+  **Strategy:**
+  - Identify logical error
+  - Common flaws: correlation/causation, hasty generalization, false dichotomy
+
+  ---
+
+  ## Common Logical Fallacies
+
+  ### 1. Correlation vs Causation
+
+  **Error:** Assuming A causes B just because they occur together
+
+  **Example:**
+  "Ice cream sales and drowning deaths both increase in summer. Therefore, ice cream causes drowning."
+
+  **Reality:** Both caused by hot weather (confounding variable)
+
+  ### 2. Hasty Generalization
+
+  **Error:** Drawing broad conclusion from limited evidence
+
+  **Example:**
+  "I met two rude taxi drivers in City X. People in City X are rude."
+
+  ### 3. False Dichotomy
+
+  **Error:** Presenting only two options when more exist
+
+  **Example:**
+  "Either we cut the education budget or we go bankrupt."
+
+  ### 4. Ad Hominem
+
+  **Error:** Attacking person rather than argument
+
+  **Example:**
+  "You can't trust his economic analysis; he's never run a business."
+
+  ### 5. Circular Reasoning
+
+  **Error:** Conclusion is restated premise
+
+  **Example:**
+  "This is a good book because it's well-written, and well-written books are good."
+
+  ### 6. Appeal to Authority
+
+  **Error:** Using irrelevant authority as evidence
+
+  **Example:**
+  "This diet works because a famous actor recommends it."
+
+  ---
+
+  ## Problem-Solving Framework
+
+  ### Step 1: Identify Argument Type
+
+  - Causal reasoning?
+  - Statistical argument?
+  - Analogy-based?
+  - Definition-based?
+
+  ### Step 2: Map the Logic
+
+  - What is stated (premises)?
+  - What is concluded?
+  - What is assumed?
+
+  ### Step 3: Apply Question Type Strategy
+
+  - For strengthen: Add supporting evidence
+  - For weaken: Add contradicting evidence
+  - For assumption: Find the bridge
+  - For flaw: Identify the error
+
+  ### Step 4: Eliminate Wrong Answers
+
+  - Out of scope (introduces irrelevant information)
+  - Opposite effect (strengthens when asked to weaken)
+  - Too extreme (always, never, completely)
+  - Premise restatement (doesn't add new information)
+
+  ---
+
+  ## Key Takeaways
+
+  - Arguments have structure: premises, assumptions, conclusions
+  - Different question types require different approaches
+  - Logical fallacies appear frequently in CAT
+  - Elimination is powerful for CR questions
+  - Practice identifying assumptions - it's the most common question type
+
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: "Argument: 'Company X's profits increased after implementing flexible work hours. Therefore, flexible work hours boost profitability.' What assumption is made?"
+  options:
+  - 'Employees prefer flexible hours'
+  - 'No other factors caused the profit increase'
+  - 'The CEO supported the policy'
+  - 'Competitors also use flexible hours'
+  correct_answer: 'No other factors caused the profit increase'
+  explanation: "The argument assumes causation from correlation. The key assumption is that nothing else (economic conditions, new products, etc.) caused the profit increase."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: Which logical fallacy is this? 'Either we ban all cars or accept pollution. There's no middle ground.'
+  options:
+  - 'Ad hominem'
+  - 'False dichotomy'
+  - 'Circular reasoning'
+  - 'Hasty generalization'
+  correct_answer: 'False dichotomy'
+  explanation: "False dichotomy presents only two options when others exist (electric cars, emission standards, public transport, etc.)."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: To weaken an argument, you should find evidence that:
+  options:
+  - 'Supports the conclusion'
+  - 'Restates the premise'
+  - 'Undermines the conclusion or provides alternative explanation'
+  - 'Changes the topic entirely'
+  correct_answer: 'Undermines the conclusion or provides alternative explanation'
+  explanation: "Weakening requires showing the conclusion doesn't follow from premises, often by providing counterexamples or alternative explanations."
+  require_pass: true
+- type: mcq
+  sequence_order: 4
+  question: What is the 'negation test' used for?
+  options:
+  - 'Finding the conclusion'
+  - 'Identifying premises'
+  - 'Verifying if something is a necessary assumption'
+  - 'Calculating probabilities'
+  correct_answer: 'Verifying if something is a necessary assumption'
+  explanation: "If negating a statement makes the argument fall apart, that statement is a necessary assumption of the argument."
+  require_pass: true
+- type: mcq
+  sequence_order: 5
+  question: "'Studies show people who eat breakfast are healthier. Therefore, eating breakfast makes you healthy.' This is an example of:"
+  options:
+  - 'Valid causal reasoning'
+  - 'Correlation mistaken for causation'
+  - 'Circular reasoning'
+  - 'Appeal to authority'
+  correct_answer: 'Correlation mistaken for causation'
+  explanation: "The argument assumes breakfast causes health, but the correlation might be due to other factors (healthy people tend to have regular habits including breakfast)."
+  require_pass: true

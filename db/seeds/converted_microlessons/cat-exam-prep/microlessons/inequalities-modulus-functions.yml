@@ -1,0 +1,170 @@
+slug: inequalities-modulus-functions
+title: Inequalities & Modulus Functions
+difficulty: hard
+sequence_order: 16
+estimated_minutes: 20
+key_concepts:
+- Linear Inequalities
+- Quadratic Inequalities
+- Modulus Properties
+- Sign Analysis
+- Absolute Value
+prerequisites:
+- arithmetic-geometric-progressions
+content_md: |
+  # Inequalities & Modulus Functions
+
+  Master inequality manipulation and absolute value problems for CAT.
+
+  ---
+
+  ## Linear Inequalities
+
+  ### Basic Rules
+
+  1. **Addition/Subtraction:** Inequality preserved
+     - a < b → a + c < b + c
+
+  2. **Multiplication/Division by positive:** Inequality preserved
+     - a < b and c > 0 → ac < bc
+
+  3. **Multiplication/Division by negative:** Inequality reverses
+     - a < b and c < 0 → ac > bc
+
+  ---
+
+  ## Quadratic Inequalities
+
+  ### Method
+  1. Solve as equation to find roots
+  2. Place roots on number line
+  3. Check sign in each interval
+  4. Determine solution region
+
+  **Example:** x² - 5x + 6 < 0
+  - Roots: x = 2, x = 3
+  - Solution: 2 < x < 3
+
+  ### Sign Rules
+  - (x-a)(x-b) > 0: x < a or x > b
+  - (x-a)(x-b) < 0: a < x < b (when a < b)
+
+  ---
+
+  ## Modulus (Absolute Value)
+
+  ### Definition
+  |x| = x if x ≥ 0
+  |x| = -x if x < 0
+
+  ### Key Properties
+  1. |x| ≥ 0 always
+  2. |ab| = |a| × |b|
+  3. |a/b| = |a|/|b|
+  4. |a + b| ≤ |a| + |b| (Triangle Inequality)
+
+  ### Solving Modulus Equations
+
+  **|x| = a (where a > 0):**
+  x = a or x = -a
+
+  **|x - a| = b:**
+  x = a + b or x = a - b
+
+  ### Solving Modulus Inequalities
+
+  **|x| < a (a > 0):**
+  -a < x < a
+
+  **|x| > a (a > 0):**
+  x < -a or x > a
+
+  **|x - a| < b:**
+  a - b < x < a + b
+
+  ---
+
+  ## Practice Problems
+
+  ### 1. Linear Inequality
+  Solve: 3x - 7 > 2x + 5
+  Solution: x > 12
+
+  ### 2. Quadratic Inequality
+  Solve: x² - 4x - 5 ≥ 0
+  Factoring: (x-5)(x+1) ≥ 0
+  Solution: x ≤ -1 or x ≥ 5
+
+  ### 3. Modulus Equation
+  Solve: |2x - 3| = 7
+  x = 5 or x = -2
+
+  ### 4. Modulus Inequality
+  Solve: |x - 4| < 3
+  Solution: 1 < x < 7
+
+  ---
+
+  ## Key Takeaways
+
+  - Inequality direction changes with negative multiplication
+  - Quadratic inequalities use sign analysis
+  - Modulus converts to piecewise equations
+  - Triangle inequality is frequently tested
+
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: Solve 3x - 7 > 2x + 5
+  options:
+  - 'x > 10'
+  - 'x > 12'
+  - 'x < 12'
+  - 'x > 2'
+  correct_answer: 'x > 12'
+  explanation: "3x - 2x > 5 + 7, so x > 12"
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: Solve |2x - 3| = 7
+  options:
+  - 'x = 5 only'
+  - 'x = -2 only'
+  - 'x = 5 or x = -2'
+  - 'x = 2 or x = -5'
+  correct_answer: 'x = 5 or x = -2'
+  explanation: "2x-3=7 gives x=5. 2x-3=-7 gives x=-2."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: Solve |x - 4| < 3
+  options:
+  - 'x < 7'
+  - 'x > 1'
+  - '1 < x < 7'
+  - 'x < 1 or x > 7'
+  correct_answer: '1 < x < 7'
+  explanation: "|x-4| < 3 means -3 < x-4 < 3, so 1 < x < 7"
+  require_pass: true
+- type: mcq
+  sequence_order: 4
+  question: When multiplying both sides of an inequality by a negative number:
+  options:
+  - 'Inequality sign stays same'
+  - 'Inequality sign reverses'
+  - 'Inequality becomes equation'
+  - 'Result is undefined'
+  correct_answer: 'Inequality sign reverses'
+  explanation: "Multiplying/dividing by negative reverses the inequality direction."
+  require_pass: true
+- type: mcq
+  sequence_order: 5
+  question: Solve x² - 4x - 5 ≥ 0
+  options:
+  - '-1 ≤ x ≤ 5'
+  - 'x ≤ -1 or x ≥ 5'
+  - 'x < -1 or x > 5'
+  - '-5 ≤ x ≤ 1'
+  correct_answer: 'x ≤ -1 or x ≥ 5'
+  explanation: "(x-5)(x+1) ≥ 0. Roots are -1 and 5. Parabola opens up, so solution is outside roots."
+  require_pass: true

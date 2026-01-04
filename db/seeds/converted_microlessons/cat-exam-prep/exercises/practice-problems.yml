@@ -1,0 +1,691 @@
+course_id: cat-exam-prep
+title: CAT Practice Problems
+description: Comprehensive practice problems covering all CAT sections - QA, DILR, and VARC
+total_problems: 50
+
+problems:
+# ============================================
+# QUANTITATIVE APTITUDE - NUMBER SYSTEMS
+# ============================================
+
+- id: cat-qa-ns-001
+  topic: Quantitative Aptitude
+  subtopic: Number Systems
+  difficulty: easy
+  question: How many factors does 180 have?
+  options: ['16', '18', '20', '24']
+  correct_answer: '18'
+  solution: |
+    180 = 2² × 3² × 5¹
+    Number of factors = (2+1)(2+1)(1+1) = 3 × 3 × 2 = 18
+  hint: First find the prime factorization, then use formula (a+1)(b+1)(c+1)...
+  time_seconds: 60
+  points: 10
+  tags: [factors, prime-factorization, basic]
+
+- id: cat-qa-ns-002
+  topic: Quantitative Aptitude
+  subtopic: Number Systems
+  difficulty: easy
+  question: What is the unit digit of 3⁴⁷?
+  options: ['1', '3', '7', '9']
+  correct_answer: '7'
+  solution: |
+    Unit digit pattern of 3: 3→9→7→1→3 (cycle of 4)
+    47 mod 4 = 3
+    Third in cycle = 7
+  hint: 3 has a cycle of 4 for unit digits. Find 47 mod 4.
+  time_seconds: 45
+  points: 10
+  tags: [unit-digit, cyclicity, basic]
+
+- id: cat-qa-ns-003
+  topic: Quantitative Aptitude
+  subtopic: Number Systems
+  difficulty: medium
+  question: How many trailing zeros are there in 125!?
+  options: ['25', '30', '31', '32']
+  correct_answer: '31'
+  solution: |
+    Trailing zeros = ⌊125/5⌋ + ⌊125/25⌋ + ⌊125/125⌋
+    = 25 + 5 + 1 = 31
+  hint: Count factors of 5 using ⌊n/5⌋ + ⌊n/25⌋ + ⌊n/125⌋...
+  time_seconds: 90
+  points: 20
+  tags: [factorial, trailing-zeros, intermediate]
+
+- id: cat-qa-ns-004
+  topic: Quantitative Aptitude
+  subtopic: Number Systems
+  difficulty: medium
+  question: The HCF of two numbers is 18 and their LCM is 3780. If one number is 270, find the other number.
+  options: ['242', '252', '262', '272']
+  correct_answer: '252'
+  solution: |
+    HCF × LCM = Product of two numbers
+    18 × 3780 = 270 × x
+    x = (18 × 3780) / 270 = 252
+  hint: Use the property HCF × LCM = Product of the two numbers
+  time_seconds: 90
+  points: 20
+  tags: [hcf, lcm, intermediate]
+
+- id: cat-qa-ns-005
+  topic: Quantitative Aptitude
+  subtopic: Number Systems
+  difficulty: hard
+  question: What is the remainder when 7¹⁰⁰ is divided by 13?
+  options: ['1', '7', '9', '12']
+  correct_answer: '9'
+  solution: |
+    By Fermat's Little Theorem: 7¹² ≡ 1 (mod 13)
+    100 = 12 × 8 + 4
+    7¹⁰⁰ = (7¹²)⁸ × 7⁴ ≡ 1 × 2401 (mod 13)
+    2401 mod 13 = 9
+  hint: Use Fermat's Little Theorem for prime modulus
+  time_seconds: 150
+  points: 30
+  tags: [remainder, fermat-theorem, advanced]
+
+- id: cat-qa-ns-006
+  topic: Quantitative Aptitude
+  subtopic: Number Systems
+  difficulty: hard
+  question: How many factors of 1800 are perfect squares?
+  options: ['6', '8', '10', '12']
+  correct_answer: '8'
+  solution: |
+    1800 = 2³ × 3² × 5²
+    For perfect square factors, powers must be even.
+    2: 0 or 2 (2 choices)
+    3: 0 or 2 (2 choices)
+    5: 0 or 2 (2 choices)
+    Total = 2 × 2 × 2 = 8
+  hint: Only even powers of primes give perfect squares
+  time_seconds: 120
+  points: 30
+  tags: [perfect-square, factors, advanced]
+
+# ============================================
+# QUANTITATIVE APTITUDE - PERCENTAGES & P/L
+# ============================================
+
+- id: cat-qa-ppl-001
+  topic: Quantitative Aptitude
+  subtopic: Percentages
+  difficulty: easy
+  question: If 35% of a number is 280, what is 55% of that number?
+  options: ['400', '420', '440', '460']
+  correct_answer: '440'
+  solution: |
+    Number = 280/0.35 = 800
+    55% of 800 = 0.55 × 800 = 440
+  hint: First find the original number, then calculate 55% of it
+  time_seconds: 60
+  points: 10
+  tags: [percentage, basic, calculation]
+
+- id: cat-qa-ppl-002
+  topic: Quantitative Aptitude
+  subtopic: Percentages
+  difficulty: easy
+  question: A price increases by 20% and then decreases by 20%. What is the net percentage change?
+  options: ['0%', '-4%', '+4%', '-2%']
+  correct_answer: '-4%'
+  solution: |
+    Net change = 20 + (-20) + (20 × -20)/100 = -4%
+    OR: 100 × 1.2 × 0.8 = 96, so 4% decrease
+  hint: Use formula a + b + (ab/100) for successive percentage changes
+  time_seconds: 45
+  points: 10
+  tags: [successive-change, percentage, basic]
+
+- id: cat-qa-ppl-003
+  topic: Quantitative Aptitude
+  subtopic: Profit and Loss
+  difficulty: medium
+  question: A shopkeeper marks goods 50% above cost price and gives 20% discount. What is the profit percentage?
+  options: ['15%', '18%', '20%', '25%']
+  correct_answer: '20%'
+  solution: |
+    Let CP = 100
+    MP = 150 (50% above)
+    SP = 150 × 0.8 = 120 (20% discount)
+    Profit = 20, Profit% = 20%
+  hint: Track CP → MP (markup) → SP (discount). Profit% is always on CP.
+  time_seconds: 90
+  points: 20
+  tags: [profit, markup, discount, intermediate]
+
+- id: cat-qa-ppl-004
+  topic: Quantitative Aptitude
+  subtopic: Profit and Loss
+  difficulty: medium
+  question: A man sells two items at Rs. 1980 each. On one he gains 10% and on other loses 10%. Find net profit or loss percentage.
+  options: ['1% loss', '1% profit', 'No profit no loss', '2% loss']
+  correct_answer: '1% loss'
+  solution: |
+    When two articles sold at same SP with x% profit and x% loss:
+    Net Loss% = x²/100 = 10²/100 = 1%
+  hint: Use shortcut when SP is same - loss% = x²/100
+  time_seconds: 90
+  points: 20
+  tags: [profit-loss, two-articles, intermediate]
+
+# ============================================
+# QUANTITATIVE APTITUDE - TIME SPEED DISTANCE
+# ============================================
+
+- id: cat-qa-tsd-001
+  topic: Quantitative Aptitude
+  subtopic: Time Speed Distance
+  difficulty: easy
+  question: A train covers 480 km in 8 hours. What is its speed in m/s?
+  options: ['15 m/s', '16.67 m/s', '18 m/s', '20 m/s']
+  correct_answer: '16.67 m/s'
+  solution: |
+    Speed = 480/8 = 60 km/hr
+    Converting to m/s: 60 × 5/18 = 50/3 ≈ 16.67 m/s
+  hint: First find speed in km/hr, then convert using × 5/18 to get m/s
+  time_seconds: 60
+  points: 10
+  tags: [speed, basic, calculation]
+
+- id: cat-qa-tsd-002
+  topic: Quantitative Aptitude
+  subtopic: Time Speed Distance
+  difficulty: easy
+  question: A person travels from A to B at 30 km/hr and returns at 50 km/hr. What is the average speed?
+  options: ['37.5 km/hr', '38.5 km/hr', '40 km/hr', '42 km/hr']
+  correct_answer: '37.5 km/hr'
+  solution: |
+    For same distance, average speed = 2S₁S₂/(S₁+S₂)
+    = 2 × 30 × 50 / (30 + 50) = 3000/80 = 37.5 km/hr
+  hint: Use harmonic mean formula for average speed when distance is same
+  time_seconds: 60
+  points: 10
+  tags: [average-speed, harmonic-mean, basic]
+
+- id: cat-qa-tsd-003
+  topic: Quantitative Aptitude
+  subtopic: Time Speed Distance
+  difficulty: medium
+  question: A 300m long train running at 90 km/hr crosses a platform in 36 seconds. Find the length of the platform.
+  options: ['500m', '600m', '700m', '800m']
+  correct_answer: '600m'
+  solution: |
+    Speed = 90 km/hr = 90 × 5/18 = 25 m/s
+    Distance covered = 25 × 36 = 900m
+    Platform length = 900 - 300 = 600m
+  hint: Total distance = Train length + Platform length
+  time_seconds: 90
+  points: 20
+  tags: [trains, platform, intermediate]
+
+- id: cat-qa-tsd-004
+  topic: Quantitative Aptitude
+  subtopic: Time Speed Distance
+  difficulty: medium
+  question: A boat travels 36 km downstream in 4 hours and returns in 6 hours. Find the speed of the stream.
+  options: ['1.5 km/hr', '2 km/hr', '2.5 km/hr', '3 km/hr']
+  correct_answer: '1.5 km/hr'
+  solution: |
+    Downstream speed = 36/4 = 9 km/hr
+    Upstream speed = 36/6 = 6 km/hr
+    Stream speed = (9-6)/2 = 1.5 km/hr
+  hint: Stream speed = (Downstream - Upstream)/2
+  time_seconds: 90
+  points: 20
+  tags: [boats, streams, intermediate]
+
+# ============================================
+# QUANTITATIVE APTITUDE - TIME AND WORK
+# ============================================
+
+- id: cat-qa-tw-001
+  topic: Quantitative Aptitude
+  subtopic: Time and Work
+  difficulty: easy
+  question: A can complete a work in 12 days, B in 18 days. Working together, they complete it in how many days?
+  options: ['6 days', '7.2 days', '8 days', '9 days']
+  correct_answer: '7.2 days'
+  solution: |
+    Combined time = (12 × 18)/(12 + 18) = 216/30 = 7.2 days
+  hint: Time = (A × B)/(A + B) for two workers
+  time_seconds: 60
+  points: 10
+  tags: [work, combined, basic]
+
+- id: cat-qa-tw-002
+  topic: Quantitative Aptitude
+  subtopic: Time and Work
+  difficulty: medium
+  question: Pipe A fills a tank in 15 minutes, B empties it in 20 minutes. If both are opened, how long to fill the tank?
+  options: ['45 min', '50 min', '55 min', '60 min']
+  correct_answer: '60 min'
+  solution: |
+    A fills 1/15 per minute, B empties 1/20 per minute
+    Net filling rate = 1/15 - 1/20 = 1/60 per minute
+    Time = 60 minutes
+  hint: Inlet adds, outlet subtracts. Net rate = 1/15 - 1/20
+  time_seconds: 90
+  points: 20
+  tags: [pipes, cisterns, intermediate]
+
+- id: cat-qa-tw-003
+  topic: Quantitative Aptitude
+  subtopic: Time and Work
+  difficulty: medium
+  question: A is twice as efficient as B. Together they finish work in 6 days. How many days does A alone take?
+  options: ['8 days', '9 days', '10 days', '12 days']
+  correct_answer: '9 days'
+  solution: |
+    Let B's time = 2x days, A's time = x days
+    x × 2x / (x + 2x) = 6
+    2x/3 = 6, x = 9 days
+  hint: If A is twice efficient, A takes half the time B takes
+  time_seconds: 90
+  points: 20
+  tags: [efficiency, ratio, intermediate]
+
+# ============================================
+# QUANTITATIVE APTITUDE - GEOMETRY & ALGEBRA
+# ============================================
+
+- id: cat-qa-geo-001
+  topic: Quantitative Aptitude
+  subtopic: Geometry
+  difficulty: medium
+  question: A triangle has sides 13, 14, and 15. Find its area.
+  options: ['84', '85', '86', '87']
+  correct_answer: '84'
+  solution: |
+    Using Heron's formula:
+    s = (13+14+15)/2 = 21
+    Area = √[s(s-a)(s-b)(s-c)] = √[21×8×7×6] = √7056 = 84
+  hint: Use Heron's formula with semi-perimeter
+  time_seconds: 120
+  points: 20
+  tags: [geometry, triangle, area]
+
+- id: cat-qa-geo-002
+  topic: Quantitative Aptitude
+  subtopic: Geometry
+  difficulty: medium
+  question: Two chords AB and CD intersect at P inside a circle. If AP=6cm, PB=8cm, CP=12cm, find PD.
+  options: ['3cm', '4cm', '5cm', '6cm']
+  correct_answer: '4cm'
+  solution: |
+    For intersecting chords: AP × PB = CP × PD
+    6 × 8 = 12 × PD
+    PD = 48/12 = 4cm
+  hint: Use intersecting chords theorem
+  time_seconds: 90
+  points: 20
+  tags: [circle, chord, intermediate]
+
+- id: cat-qa-algebra-001
+  topic: Quantitative Aptitude
+  subtopic: Algebra
+  difficulty: easy
+  question: If roots of x² - 7x + k = 0 are 3 and 4, find k.
+  options: ['10', '11', '12', '14']
+  correct_answer: '12'
+  solution: |
+    Product of roots = 3 × 4 = 12
+    So k = 12
+  hint: Product of roots = c/a for ax² + bx + c = 0
+  time_seconds: 45
+  points: 10
+  tags: [quadratic, roots, basic]
+
+- id: cat-qa-pc-001
+  topic: Quantitative Aptitude
+  subtopic: Permutations and Combinations
+  difficulty: medium
+  question: In how many ways can 6 people sit around a circular table?
+  options: ['120', '720', '360', '60']
+  correct_answer: '120'
+  solution: |
+    Circular permutations = (n-1)! = (6-1)! = 5! = 120
+  hint: For circular arrangements, use (n-1)!
+  time_seconds: 60
+  points: 15
+  tags: [permutations, arrangement, intermediate]
+
+- id: cat-qa-pc-002
+  topic: Quantitative Aptitude
+  subtopic: Permutations and Combinations
+  difficulty: easy
+  question: In how many ways can 3 boys be selected from 8 boys?
+  options: ['56', '120', '336', '504']
+  correct_answer: '56'
+  solution: |
+    ⁸C₃ = 8!/(3!×5!) = (8×7×6)/(3×2×1) = 56
+  hint: Use combination formula ⁿCᵣ = n!/(r!(n-r)!)
+  time_seconds: 60
+  points: 10
+  tags: [combinations, selection, basic]
+
+- id: cat-qa-prob-001
+  topic: Quantitative Aptitude
+  subtopic: Probability
+  difficulty: easy
+  question: A die is thrown once. What is the probability of getting a number greater than 4?
+  options: ['1/6', '1/3', '1/2', '2/3']
+  correct_answer: '1/3'
+  solution: |
+    Numbers greater than 4: {5, 6}
+    Favorable = 2, Total = 6
+    Probability = 2/6 = 1/3
+  hint: Probability = Favorable outcomes / Total outcomes
+  time_seconds: 45
+  points: 10
+  tags: [probability, dice, basic]
+
+- id: cat-qa-prob-002
+  topic: Quantitative Aptitude
+  subtopic: Probability
+  difficulty: medium
+  question: Two cards are drawn from a deck of 52 cards. Probability that both are aces?
+  options: ['1/169', '1/221', '1/256', '1/132']
+  correct_answer: '1/221'
+  solution: |
+    P(first ace) = 4/52
+    P(second ace | first ace) = 3/51
+    P(both aces) = (4/52) × (3/51) = 1/221
+  hint: Use conditional probability P(A and B) = P(A) × P(B|A)
+  time_seconds: 120
+  points: 20
+  tags: [probability, cards, intermediate]
+
+- id: cat-qa-log-001
+  topic: Quantitative Aptitude
+  subtopic: Logarithms
+  difficulty: easy
+  question: Find the value of log₂(32).
+  options: ['4', '5', '6', '8']
+  correct_answer: '5'
+  solution: |
+    32 = 2⁵
+    log₂(32) = 5
+  hint: Express 32 as power of 2
+  time_seconds: 30
+  points: 10
+  tags: [logarithm, basic, calculation]
+
+- id: cat-qa-log-002
+  topic: Quantitative Aptitude
+  subtopic: Logarithms
+  difficulty: medium
+  question: If log₁₀(2) = 0.3010, find log₁₀(50).
+  options: ['1.6990', '1.3010', '2.3010', '0.6990']
+  correct_answer: '1.6990'
+  solution: |
+    log₁₀(50) = log₁₀(100/2) = log₁₀(100) - log₁₀(2)
+    = 2 - 0.3010 = 1.6990
+  hint: Use log(a/b) = log(a) - log(b). Express 50 = 100/2.
+  time_seconds: 90
+  points: 20
+  tags: [logarithm, properties, intermediate]
+
+- id: cat-qa-set-001
+  topic: Quantitative Aptitude
+  subtopic: Set Theory
+  difficulty: medium
+  question: In a class of 100 students, 60 like cricket, 50 like football, and 30 like both. How many like neither?
+  options: ['10', '15', '20', '25']
+  correct_answer: '20'
+  solution: |
+    n(C ∪ F) = 60 + 50 - 30 = 80
+    Like neither = 100 - 80 = 20
+  hint: Use n(A ∪ B) = n(A) + n(B) - n(A ∩ B)
+  time_seconds: 90
+  points: 20
+  tags: [sets, venn-diagram, intermediate]
+
+- id: cat-qa-si-ci-001
+  topic: Quantitative Aptitude
+  subtopic: Simple and Compound Interest
+  difficulty: easy
+  question: Find simple interest on Rs. 5000 at 8% per annum for 3 years.
+  options: ['Rs. 1000', 'Rs. 1100', 'Rs. 1200', 'Rs. 1250']
+  correct_answer: 'Rs. 1200'
+  solution: |
+    SI = PRT/100 = 5000 × 8 × 3 / 100 = Rs. 1200
+  hint: SI = (Principal × Rate × Time) / 100
+  time_seconds: 45
+  points: 10
+  tags: [simple-interest, basic, calculation]
+
+- id: cat-qa-si-ci-002
+  topic: Quantitative Aptitude
+  subtopic: Simple and Compound Interest
+  difficulty: medium
+  question: Find compound interest on Rs. 8000 at 10% p.a. for 2 years compounded annually.
+  options: ['Rs. 1600', 'Rs. 1680', 'Rs. 1700', 'Rs. 1750']
+  correct_answer: 'Rs. 1680'
+  solution: |
+    A = P(1 + R/100)ⁿ = 8000(1.1)² = 9680
+    CI = 9680 - 8000 = Rs. 1680
+  hint: Amount = P(1 + r/100)^n, CI = Amount - Principal
+  time_seconds: 90
+  points: 20
+  tags: [compound-interest, intermediate, calculation]
+
+# ============================================
+# DATA INTERPRETATION & LOGICAL REASONING
+# ============================================
+
+- id: cat-dilr-sa-001
+  topic: Logical Reasoning
+  subtopic: Seating Arrangement
+  difficulty: easy
+  question: Five people A, B, C, D, E sit in a row facing north. A is at extreme right. C is immediate left of A. B is not adjacent to C. Who is in the middle?
+  options: ['B', 'D', 'E', 'Cannot be determined']
+  correct_answer: 'Cannot be determined'
+  solution: |
+    From right: _ _ _ C A
+    Multiple valid arrangements exist, middle position varies.
+  hint: Draw the arrangement. Multiple valid arrangements may exist.
+  time_seconds: 120
+  points: 15
+  tags: [linear, seating, basic]
+
+- id: cat-dilr-di-001
+  topic: Data Interpretation
+  subtopic: Table Analysis
+  difficulty: easy
+  question: Sales in 2020 were Rs. 450 crores. In 2021, sales increased by 12%. In 2022, sales increased by 15% over 2021. What were 2022 sales?
+  options: ['Rs. 504 crores', 'Rs. 540 crores', 'Rs. 571.5 crores', 'Rs. 579.6 crores']
+  correct_answer: 'Rs. 579.6 crores'
+  solution: |
+    2021 = 450 × 1.12 = 504 crores
+    2022 = 504 × 1.15 = 579.6 crores
+  hint: Apply percentage increases successively
+  time_seconds: 60
+  points: 10
+  tags: [percentage, growth, basic]
+
+- id: cat-dilr-di-002
+  topic: Data Interpretation
+  subtopic: Table Analysis
+  difficulty: medium
+  question: Company A has 35% market share worth Rs. 420 crores. Company B has 25% share. What is B's sales?
+  options: ['Rs. 280', 'Rs. 300', 'Rs. 320', 'Rs. 350']
+  correct_answer: 'Rs. 300'
+  solution: |
+    Total market = 420/0.35 = 1200 crores
+    B's sales = 1200 × 0.25 = 300 crores
+  hint: First find total market size, then calculate B's share
+  time_seconds: 90
+  points: 20
+  tags: [market-share, percentage, intermediate]
+
+- id: cat-dilr-puzzle-001
+  topic: Logical Reasoning
+  subtopic: Blood Relations
+  difficulty: medium
+  question: A is father of B. B is not son of A. C is brother of B. D is mother of C. What is D to A?
+  options: ['Sister', 'Wife', 'Mother', 'Daughter']
+  correct_answer: 'Wife'
+  solution: |
+    A is father of B, B is not son (so daughter).
+    C is brother of B, so C is son of A.
+    D is mother of C. So D is wife of A.
+  hint: Build family tree step by step
+  time_seconds: 90
+  points: 15
+  tags: [blood-relations, family, intermediate]
+
+- id: cat-dilr-coding-001
+  topic: Logical Reasoning
+  subtopic: Coding-Decoding
+  difficulty: easy
+  question: If APPLE is coded as ELPPA, how is MANGO coded?
+  options: ['OGNAM', 'GNAMO', 'NAMOG', 'MOANG']
+  correct_answer: 'OGNAM'
+  solution: |
+    Pattern: Word is reversed
+    MANGO → OGNAM
+  hint: Look for pattern - reverse, shift, or replacement?
+  time_seconds: 60
+  points: 10
+  tags: [coding, pattern, basic]
+
+- id: cat-dilr-series-001
+  topic: Logical Reasoning
+  subtopic: Series Pattern
+  difficulty: easy
+  question: Find next term - 2, 6, 12, 20, 30, ?
+  options: ['40', '42', '44', '46']
+  correct_answer: '42'
+  solution: |
+    Differences: 4, 6, 8, 10, ?
+    Second difference: 2, 2, 2 (constant)
+    Next difference = 12
+    Next term = 30 + 12 = 42
+  hint: Look at differences between consecutive terms
+  time_seconds: 60
+  points: 10
+  tags: [series, pattern, basic]
+
+# ============================================
+# VERBAL ABILITY & READING COMPREHENSION
+# ============================================
+
+- id: cat-varc-rc-001
+  topic: Verbal Ability
+  subtopic: Reading Comprehension
+  difficulty: medium
+  question: A passage discusses how social media has transformed political discourse, noting both increased citizen participation and the spread of misinformation. The main idea is:
+  options:
+    - 'Social media is entirely harmful'
+    - 'Social media has complex effects on politics'
+    - 'Political discourse was better before social media'
+    - 'Misinformation is the biggest problem today'
+  correct_answer: 'Social media has complex effects on politics'
+  solution: |
+    The passage presents both positive and negative effects,
+    indicating a balanced, complex view.
+  hint: Look for the option that captures both aspects mentioned
+  time_seconds: 60
+  points: 15
+  tags: [main-idea, comprehension, intermediate]
+
+- id: cat-varc-pj-001
+  topic: Verbal Ability
+  subtopic: Para Jumbles
+  difficulty: easy
+  question: |
+    Arrange:
+    A. It is estimated to be 4.5 billion years old.
+    B. The Earth is the third planet from the Sun.
+    C. This age was determined using radiometric dating.
+    D. Scientists continue to study its formation.
+  options: ['BACD', 'BCAD', 'ABCD', 'DACB']
+  correct_answer: 'BACD'
+  solution: |
+    B introduces Earth (no backward reference)
+    A gives detail about Earth ("It" refers to Earth)
+    C explains how age was determined ("This age")
+    D continues about studying Earth
+  hint: Look for pronoun references - 'It', 'This' to find sequence
+  time_seconds: 90
+  points: 15
+  tags: [para-jumbles, pronouns, basic]
+
+- id: cat-varc-cr-001
+  topic: Verbal Ability
+  subtopic: Critical Reasoning
+  difficulty: medium
+  question: |
+    Argument: 'Since employee satisfaction increased after implementing work-from-home policy, the policy should be continued.'
+    The assumption is:
+  options:
+    - 'All employees prefer working from home'
+    - 'Employee satisfaction is the only metric that matters'
+    - 'The increase in satisfaction was caused by the policy'
+    - 'Work-from-home reduces operational costs'
+  correct_answer: 'The increase in satisfaction was caused by the policy'
+  solution: |
+    The argument assumes causation from correlation.
+    The satisfaction increase could be due to other factors.
+  hint: Look for the causal link assumption
+  time_seconds: 90
+  points: 20
+  tags: [assumption, argument, intermediate]
+
+- id: cat-varc-fij-001
+  topic: Verbal Ability
+  subtopic: Critical Reasoning
+  difficulty: medium
+  question: "Classify: 'The government should increase education spending to improve literacy rates.'"
+  options: ['Fact', 'Inference', 'Judgment']
+  correct_answer: 'Judgment'
+  solution: |
+    The word 'should' indicates an opinion/recommendation.
+    This is a judgment statement.
+  hint: Look for opinion words like 'should', 'must', 'ought to'
+  time_seconds: 45
+  points: 15
+  tags: [fact, inference, judgment]
+
+- id: cat-varc-odd-001
+  topic: Verbal Ability
+  subtopic: Para Coherence
+  difficulty: medium
+  question: |
+    Find the odd sentence:
+    A. Climate change is affecting crop yields globally.
+    B. Rising temperatures are causing glaciers to melt.
+    C. The new smartphone has impressive battery life.
+    D. Sea levels are rising due to thermal expansion.
+  options: ['A', 'B', 'C', 'D']
+  correct_answer: 'C'
+  solution: |
+    A, B, D discuss climate change effects.
+    C discusses smartphone features - different topic.
+  hint: Identify the common theme. Which breaks thematic unity?
+  time_seconds: 90
+  points: 15
+  tags: [odd-sentence, coherence, intermediate]
+
+- id: cat-varc-summary-001
+  topic: Verbal Ability
+  subtopic: Comprehension
+  difficulty: hard
+  question: |
+    Summarize: 'Artificial intelligence has made remarkable progress with applications from healthcare to autonomous vehicles. However, concerns about job displacement and ethical implications have sparked debates. While AI promises efficiency, its employment impact remains uncertain.'
+  options:
+    - 'AI is dangerous and should be banned'
+    - 'AI shows progress but raises concerns about jobs and ethics'
+    - 'Healthcare has improved due to AI'
+    - 'Autonomous vehicles are the future'
+  correct_answer: 'AI shows progress but raises concerns about jobs and ethics'
+  solution: |
+    Option B captures both positive (progress) and concerns (jobs, ethics) = balanced summary.
+  hint: Good summary captures main idea without being too narrow or broad
+  time_seconds: 120
+  points: 25
+  tags: [summarization, main-idea, advanced]

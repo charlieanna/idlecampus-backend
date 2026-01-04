@@ -1,0 +1,205 @@
+slug: ratio-proportion-variation
+title: Ratio, Proportion & Variation
+difficulty: medium
+sequence_order: 3
+estimated_minutes: 22
+key_concepts:
+- Ratio Properties
+- Proportion Laws
+- Direct and Inverse Variation
+- Partnership Problems
+- Mixture and Alligation
+prerequisites:
+- percentages-profit-loss
+content_md: |
+  # Ratio, Proportion & Variation
+
+  Understand relationships between quantities - essential for CAT problem solving.
+
+  ---
+
+  ## Overview
+
+  **Module:** Quantitative Aptitude
+  **Topic:** Ratio, Proportion & Variation
+  **CAT Weightage:** 8-12% of QA section
+  **Difficulty Range:** Easy to Hard
+
+  ---
+
+  ## Core Concepts
+
+  ### Ratio Basics
+
+  **Definition:** A ratio compares two quantities by division
+  - Written as a:b or a/b
+  - Order matters: a:b ≠ b:a (unless a = b)
+  - Ratios are dimensionless
+
+  **Properties:**
+  - a:b = ka:kb (multiplying by same number)
+  - a:b = a/k : b/k (dividing by same number)
+  - If a:b = c:d, then ad = bc (cross multiplication)
+
+  **Types:**
+  - **Duplicate Ratio:** a²:b²
+  - **Sub-duplicate Ratio:** √a:√b
+  - **Triplicate Ratio:** a³:b³
+  - **Inverse Ratio:** b:a
+
+  ### Proportion
+
+  **Definition:** Equality of two ratios
+  a:b = c:d or a/b = c/d
+
+  **Key Properties:**
+  - **Componendo:** (a+b)/b = (c+d)/d
+  - **Dividendo:** (a-b)/b = (c-d)/d
+  - **Componendo-Dividendo:** (a+b)/(a-b) = (c+d)/(c-d)
+  - **Alternendo:** a/c = b/d
+  - **Invertendo:** b/a = d/c
+
+  **Mean Proportional:**
+  If a:x = x:b, then x = √(ab) is the mean proportional
+
+  **Third Proportional:**
+  If a:b = b:c, then c is the third proportional
+  c = b²/a
+
+  ---
+
+  ## Variation
+
+  ### Direct Variation
+  If x ∝ y, then x = ky (k is constant)
+  - x increases → y increases
+  - x₁/y₁ = x₂/y₂
+
+  ### Inverse Variation
+  If x ∝ 1/y, then xy = k (constant)
+  - x increases → y decreases
+  - x₁y₁ = x₂y₂
+
+  ### Joint Variation
+  If z ∝ xy, then z = kxy
+  If z ∝ x/y, then z = kx/y
+
+  ---
+
+  ## Problem-Solving Patterns
+
+  ### Pattern 1: Finding Ratio from Equations
+  ```
+  Problem: If 3x = 4y = 5z, find x:y:z
+  Solution:
+  Let 3x = 4y = 5z = k
+  x = k/3, y = k/4, z = k/5
+  x:y:z = 1/3 : 1/4 : 1/5
+  = 20:15:12 (multiply by LCM 60)
+  ```
+
+  ### Pattern 2: Partnership Problems
+  ```
+  Problem: A and B invest in ratio 2:3. A's investment time is twice B's.
+  Find profit sharing ratio.
+
+  Solution:
+  Profit ratio = (Capital × Time) ratio
+  = (2 × 2t) : (3 × t) = 4:3
+  ```
+
+  ### Pattern 3: Mixture Problems
+  ```
+  Problem: Mixing two alloys with gold ratio 2:5 and 3:7
+  In what ratio to get alloy with gold ratio 1:2?
+
+  Solution:
+  Alloy 1: Gold = 2/7
+  Alloy 2: Gold = 3/10
+  Desired: Gold = 1/3
+
+  Using alligation:
+  Alloy1 : Alloy2 = (3/10 - 1/3) : (1/3 - 2/7)
+  ```
+
+  ---
+
+  ## CAT-Specific Strategies
+
+  ### Quick Calculations
+  1. **If ratio is a:b:c and sum is S:**
+     - First quantity = (a/(a+b+c)) × S
+
+  2. **If ratio changes from a:b to c:d:**
+     - Use the constant quantity to find relationship
+
+  3. **Income:Expense:Savings problems:**
+     - Savings = Income - Expense
+     - Set up ratio equations carefully
+
+  ---
+
+  ## Key Takeaways
+
+  - Ratios express relative magnitudes, proportions express equality
+  - Variation problems follow specific mathematical relationships
+  - Partnership uses Capital × Time principle
+  - Componendo-Dividendo is powerful for ratio manipulation
+  - Mixture problems often need alligation approach
+
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: If a:b = 2:3 and b:c = 4:5, find a:b:c
+  options:
+  - '8:12:15'
+  - '2:3:5'
+  - '4:6:5'
+  - '8:12:10'
+  correct_answer: '8:12:15'
+  explanation: "Make b common: a:b = 8:12, b:c = 12:15. So a:b:c = 8:12:15"
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: Divide Rs. 3600 among A, B, C in ratio 3:4:5. What is B's share?
+  options:
+  - 'Rs. 1200'
+  - 'Rs. 1500'
+  - 'Rs. 900'
+  - 'Rs. 1800'
+  correct_answer: 'Rs. 1200'
+  explanation: "Total parts = 12. B's share = 3600 × 4/12 = Rs. 1200"
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: Find the mean proportional between 4 and 25.
+  options:
+  - '10'
+  - '14.5'
+  - '12'
+  - '8'
+  correct_answer: '10'
+  explanation: "Mean proportional = √(4 × 25) = √100 = 10"
+  require_pass: true
+- type: mcq
+  sequence_order: 4
+  question: If (a+b)/(a-b) = 7/3, find a/b
+  options:
+  - '5/2'
+  - '7/3'
+  - '3/2'
+  - '4/3'
+  correct_answer: '5/2'
+  explanation: "Using componendo-dividendo inversely: a/b = (7+3)/(7-3) = 10/4 = 5/2"
+  require_pass: true
+- type: mcq
+  sequence_order: 5
+  question: A starts business with Rs. 5000. B joins after 3 months with Rs. 6000. In what ratio should they share yearly profit?
+  options:
+  - '10:9'
+  - '5:6'
+  - '5:4'
+  - '3:4'
+  correct_answer: '10:9'
+  explanation: "Profit ratio = Capital × Time. A: 5000×12 = 60000. B: 6000×9 = 54000. Ratio = 60000:54000 = 10:9"
+  require_pass: true

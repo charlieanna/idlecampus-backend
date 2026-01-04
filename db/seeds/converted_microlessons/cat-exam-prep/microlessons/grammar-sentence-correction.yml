@@ -1,0 +1,167 @@
+slug: grammar-sentence-correction
+title: Grammar & Sentence Correction
+difficulty: medium
+sequence_order: 15
+estimated_minutes: 22
+key_concepts:
+- Subject-Verb Agreement
+- Pronoun Usage
+- Parallelism
+- Modifiers
+- Tense Consistency
+prerequisites:
+- reading-comprehension-strategies
+content_md: |
+  # Grammar & Sentence Correction
+
+  Master English grammar rules for error-free CAT verbal section performance.
+
+  ---
+
+  ## Subject-Verb Agreement
+
+  ### Basic Rules
+
+  1. **Singular subject → Singular verb**
+     - The cat runs. (NOT run)
+
+  2. **Plural subject → Plural verb**
+     - The cats run. (NOT runs)
+
+  3. **Compound subjects with 'and' → Plural**
+     - Tom and Jerry are friends.
+
+  ### Tricky Cases
+
+  1. **Either/Or, Neither/Nor**
+     - Verb agrees with nearest subject
+     - Neither the teacher nor the students were happy.
+
+  2. **Collective Nouns**
+     - Usually singular: The team is winning.
+
+  3. **Indefinite Pronouns**
+     - Singular: Everyone, someone, nobody, each
+     - Plural: Both, few, many, several
+
+  4. **Words between subject and verb**
+     - The box of apples is heavy. (NOT are)
+
+  ---
+
+  ## Tense Consistency
+
+  ### Common Errors
+
+  1. **Mixing past and present**
+     - Wrong: He walked to the store and buys milk.
+     - Right: He walked to the store and bought milk.
+
+  2. **Conditional sentences**
+     - If + present, will + base verb
+     - If + past, would + base verb
+
+  ---
+
+  ## Pronoun Errors
+
+  ### Agreement
+  - Pronoun must agree with antecedent
+  - Wrong: Everyone should bring their book.
+  - Right: Everyone should bring his or her book.
+
+  ### Case Errors
+  - Subject case: I, he, she, we, they
+  - Object case: me, him, her, us, them
+  - Wrong: Him and me went to store.
+  - Right: He and I went to the store.
+
+  ---
+
+  ## Parallelism
+
+  ### Rule
+  Items in a series should have the same grammatical form.
+
+  **Examples:**
+  - Wrong: She likes swimming, to run, and biking.
+  - Right: She likes swimming, running, and biking.
+
+  ---
+
+  ## Modifier Placement
+
+  ### Dangling Modifiers
+  - Wrong: Walking to school, the rain started.
+  - Right: Walking to school, I got caught in the rain.
+
+  ### Misplaced Modifiers
+  - Wrong: She almost ate the whole cake.
+  - Right: She ate almost the whole cake.
+
+  ---
+
+  ## Key Takeaways
+
+  - Subject-verb agreement is fundamental
+  - Pronouns must clearly refer to antecedents
+  - Parallel structure maintains balance
+  - Modifiers must logically connect
+  - Practice identifying common error patterns
+
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: "Identify the error: 'The list of items are on the table.'"
+  options:
+  - '"list" should be "lists"'
+  - '"are" should be "is"'
+  - '"items" should be "item"'
+  - 'No error'
+  correct_answer: '"are" should be "is"'
+  explanation: "Subject is 'list' (singular), so verb should be 'is'. 'of items' is a prepositional phrase."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: "Correct the parallelism: 'She likes swimming, to run, and biking.'"
+  options:
+  - 'She likes swimming, running, and biking.'
+  - 'She likes to swim, to run, and to bike.'
+  - 'Both A and B are correct'
+  - 'Original is correct'
+  correct_answer: 'Both A and B are correct'
+  explanation: "Both options maintain parallel structure - either all gerunds or all infinitives."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: "Which is correct?"
+  options:
+  - 'Him and me went to the store'
+  - 'He and I went to the store'
+  - 'Him and I went to the store'
+  - 'He and me went to the store'
+  correct_answer: 'He and I went to the store'
+  explanation: "Subject pronouns (He, I) are needed as subjects of the verb 'went'."
+  require_pass: true
+- type: mcq
+  sequence_order: 4
+  question: "Fix the dangling modifier: 'Walking to school, the rain started.'"
+  options:
+  - 'Walking to school, I got caught in the rain.'
+  - 'The rain started walking to school.'
+  - 'Original is correct'
+  - 'Walking to school, it rained.'
+  correct_answer: 'Walking to school, I got caught in the rain.'
+  explanation: "The modifier 'Walking to school' must refer to a person, not 'rain'."
+  require_pass: true
+- type: mcq
+  sequence_order: 5
+  question: "Either the manager or the employees ___ responsible."
+  options:
+  - 'is'
+  - 'are'
+  - 'was'
+  - 'has been'
+  correct_answer: 'are'
+  explanation: "With either/or, verb agrees with nearest subject ('employees' = plural), so 'are'."
+  require_pass: true

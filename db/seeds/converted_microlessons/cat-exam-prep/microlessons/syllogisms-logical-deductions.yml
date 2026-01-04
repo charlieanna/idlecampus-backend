@@ -1,0 +1,184 @@
+slug: syllogisms-logical-deductions
+title: Syllogisms & Logical Deductions
+difficulty: hard
+sequence_order: 14
+estimated_minutes: 25
+key_concepts:
+- Syllogism Structure
+- Universal vs Particular
+- Venn Diagrams
+- Valid Conclusions
+- Logical Rules
+prerequisites:
+- seating-arrangements-linear-circular
+content_md: |
+  # Syllogisms & Logical Deductions
+
+  Master formal logical reasoning - standard CAT LRDI question type.
+
+  ---
+
+  ## Understanding Syllogisms
+
+  ### Definition
+  A syllogism is a logical argument where conclusion is derived from two premises.
+
+  ### Standard Form
+  - Major Premise: All A are B
+  - Minor Premise: All B are C
+  - Conclusion: All A are C
+
+  ---
+
+  ## Types of Statements
+
+  ### Universal Affirmative (A)
+  "All A are B"
+  - Every member of A belongs to B
+  - Some B may not be A
+
+  ### Universal Negative (E)
+  "No A is B"
+  - No member of A belongs to B
+  - No member of B belongs to A
+
+  ### Particular Affirmative (I)
+  "Some A are B"
+  - At least one A is B
+  - At least one B is A
+
+  ### Particular Negative (O)
+  "Some A are not B"
+  - At least one A is not B
+  - Says nothing about B
+
+  ---
+
+  ## Venn Diagram Method
+
+  ### Drawing Conventions
+  - Circle for each category
+  - Shading for empty regions
+  - X for "at least one exists"
+
+  ### Universal Statements
+  - "All A are B": A circle inside B circle
+  - "No A is B": Circles don't overlap
+
+  ### Particular Statements
+  - "Some A are B": Circles overlap with X in intersection
+  - "Some A are not B": A extends outside B with X
+
+  ---
+
+  ## Common Valid Conclusions
+
+  ### From Two Universals
+  1. All A are B + All B are C → All A are C
+  2. All A are B + No B is C → No A is C
+  3. No A is B + All B are C → Some C are not A
+
+  ### Important Rules
+  - Two particular premises → No conclusion
+  - Two negative premises → No conclusion
+  - One negative premise → Negative conclusion (if any)
+
+  ---
+
+  ## Practice Problems
+
+  ### 1. Basic Syllogism [Easy]
+  Premises: All dogs are animals. All animals breathe.
+  Conclusion: All dogs breathe.
+  **Valid?** Yes - follows AAA pattern
+
+  ### 2. Negative Premise [Medium]
+  Premises: All managers are employees. No employee is lazy.
+  Conclusion: No manager is lazy.
+  **Valid?** Yes - All M are E, No E is L → No M is L
+
+  ### 3. Complex Deduction [Hard]
+  Premises:
+  - Some cats are black
+  - All black things are beautiful
+  - No beautiful thing is cheap
+
+  Which follows?
+  A) Some cats are beautiful ✓
+  B) Some cats are not cheap ✓
+  Answer: Both A and B
+
+  ---
+
+  ## CAT-Specific Tips
+
+  1. Draw Venn diagrams quickly
+  2. Check all possible diagrams for particular statements
+  3. "Only A are B" means "All B are A"
+  4. "All A are B" doesn't mean "All B are A"
+
+  ---
+
+  ## Key Takeaways
+
+  - Syllogisms follow strict logical rules
+  - Venn diagrams visualize relationships
+  - Two negatives or two particulars yield no conclusion
+  - Practice improves pattern recognition
+
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: "Premises: All dogs are animals. All animals breathe. What can we conclude?"
+  options:
+  - 'All animals are dogs'
+  - 'All dogs breathe'
+  - 'Some dogs do not breathe'
+  - 'No conclusion possible'
+  correct_answer: 'All dogs breathe'
+  explanation: "All A are B + All B are C → All A are C. All dogs are animals, all animals breathe → all dogs breathe."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: "What does 'Only A are B' mean in syllogism terms?"
+  options:
+  - 'All A are B'
+  - 'All B are A'
+  - 'Some A are B'
+  - 'No A is B'
+  correct_answer: 'All B are A'
+  explanation: "'Only A are B' means B is exclusively within A, so All B are A."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: What happens with two negative premises?
+  options:
+  - 'Always gives positive conclusion'
+  - 'No definite conclusion possible'
+  - 'Always gives negative conclusion'
+  - 'Gives universal conclusion'
+  correct_answer: 'No definite conclusion possible'
+  explanation: "Two negative premises cannot yield any valid conclusion in syllogistic logic."
+  require_pass: true
+- type: mcq
+  sequence_order: 4
+  question: "Premises: All managers are employees. No employee is lazy. Conclusion?"
+  options:
+  - 'Some managers are lazy'
+  - 'No manager is lazy'
+  - 'All lazy people are managers'
+  - 'No conclusion possible'
+  correct_answer: 'No manager is lazy'
+  explanation: "All M are E, No E is L → No M is L (valid syllogism)"
+  require_pass: true
+- type: mcq
+  sequence_order: 5
+  question: In Venn diagrams for syllogisms, 'X' mark represents:
+  options:
+  - 'Empty region'
+  - 'At least one element exists'
+  - 'All elements'
+  - 'No elements'
+  correct_answer: 'At least one element exists'
+  explanation: "X marks indicate that at least one element exists in that region (used for particular statements)."
+  require_pass: true

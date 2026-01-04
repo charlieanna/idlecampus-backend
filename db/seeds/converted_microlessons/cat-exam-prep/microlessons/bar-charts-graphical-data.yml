@@ -1,0 +1,182 @@
+slug: bar-charts-graphical-data
+title: Bar Charts & Graphical Data Interpretation
+difficulty: medium
+sequence_order: 13
+estimated_minutes: 18
+key_concepts:
+- Bar Chart Types
+- Growth Calculation
+- CAGR
+- Trend Analysis
+- Data Comparison
+prerequisites:
+- tables-data-analysis
+content_md: |
+  # Bar Charts & Graphical Data Interpretation
+
+  Master visual data analysis - critical for CAT DILR section.
+
+  ---
+
+  ## Types of Bar Charts
+
+  ### Simple Bar Chart
+  - Single data series
+  - Easy comparison of values
+  - Height represents magnitude
+
+  ### Grouped Bar Chart
+  - Multiple series side by side
+  - Compare categories across groups
+  - Common baseline
+
+  ### Stacked Bar Chart
+  - Series stacked on top
+  - Shows composition and total
+  - Requires careful reading
+
+  ### Horizontal Bar Chart
+  - Categories on Y-axis
+  - Values on X-axis
+  - Good for long category names
+
+  ---
+
+  ## Reading Strategies
+
+  ### Quick Scan (30 seconds)
+  1. Understand axes labels and units
+  2. Note scale and intervals
+  3. Identify maximum and minimum
+  4. Spot obvious patterns
+
+  ### Calculation Techniques
+
+  **Percentage Change:**
+  ((New - Old) / Old) × 100
+
+  **Comparison:**
+  - Visual estimation first
+  - Calculate only when necessary
+  - Use ratios for quick comparison
+
+  **Trends:**
+  - Increasing/Decreasing pattern
+  - Cyclical patterns
+  - Anomalies or outliers
+
+  ---
+
+  ## Common Question Types
+
+  ### 1. Direct Reading
+  "What was sales in 2020?"
+  - Read directly from chart
+
+  ### 2. Percentage Change
+  "What was growth rate from 2019 to 2020?"
+  - Calculate: (V₂-V₁)/V₁ × 100
+
+  ### 3. Ranking
+  "Which year had highest growth?"
+  - Calculate growth for each
+  - Compare and rank
+
+  ### 4. Cumulative
+  "What is total sales over 5 years?"
+  - Add all values
+  - Watch for units
+
+  ### 5. Ratio Comparison
+  "Which product has highest sales to cost ratio?"
+  - Calculate ratio for each
+  - Compare
+
+  ---
+
+  ## Practice Set
+
+  **Sample Chart Data:**
+  Company Revenue (Rs. Crores)
+  - 2018: 150
+  - 2019: 180
+  - 2020: 165
+  - 2021: 198
+  - 2022: 225
+
+  ### Q1. Highest Growth Year
+  2019: (180-150)/150 = 20%
+  2020: (165-180)/180 = -8.3%
+  2021: (198-165)/165 = 20%
+  2022: (225-198)/198 = 13.6%
+  Answer: 2019 or 2021 (both 20%)
+
+  ### Q2. CAGR Calculation
+  CAGR = [(225/150)^(1/4) - 1] × 100 ≈ 10.7%
+
+  ---
+
+  ## Key Takeaways
+
+  - Always check units and scale first
+  - Visual estimation saves time
+  - Percentage change requires base value
+  - Look for patterns and anomalies
+  - Practice improves speed
+
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: Revenue grew from 150 to 180. What is the percentage growth?
+  options:
+  - '15%'
+  - '20%'
+  - '25%'
+  - '30%'
+  correct_answer: '20%'
+  explanation: "(180-150)/150 × 100 = 30/150 × 100 = 20%"
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: Which shows a decline - growth from 180 to 165, or from 165 to 198?
+  options:
+  - 'First one (180 to 165)'
+  - 'Second one (165 to 198)'
+  - 'Both show growth'
+  - 'Both show decline'
+  correct_answer: 'First one (180 to 165)'
+  explanation: "180 to 165 is a decrease of 15 (negative growth). 165 to 198 is an increase."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: In a stacked bar chart, what does the total height represent?
+  options:
+  - 'Average of all components'
+  - 'Sum of all components'
+  - 'Maximum component'
+  - 'Difference between components'
+  correct_answer: 'Sum of all components'
+  explanation: "In stacked bar charts, components are stacked on top of each other, so total height = sum of all."
+  require_pass: true
+- type: mcq
+  sequence_order: 4
+  question: CAGR from 100 to 121 over 2 years is:
+  options:
+  - '10%'
+  - '10.5%'
+  - '21%'
+  - '11%'
+  correct_answer: '10%'
+  explanation: "CAGR = (121/100)^(1/2) - 1 = 1.1 - 1 = 10%"
+  require_pass: true
+- type: mcq
+  sequence_order: 5
+  question: What should you check FIRST when reading a bar chart?
+  options:
+  - 'The tallest bar'
+  - 'Axes labels and units'
+  - 'The shortest bar'
+  - 'Number of bars'
+  correct_answer: 'Axes labels and units'
+  explanation: "Understanding what the axes represent and their units is essential before any analysis."
+  require_pass: true

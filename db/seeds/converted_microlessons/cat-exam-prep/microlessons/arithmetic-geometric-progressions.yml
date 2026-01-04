@@ -1,0 +1,170 @@
+slug: arithmetic-geometric-progressions
+title: Arithmetic & Geometric Progressions
+difficulty: medium
+sequence_order: 12
+estimated_minutes: 22
+key_concepts:
+- Arithmetic Progression
+- Geometric Progression
+- Sum Formulas
+- Infinite Series
+- Mean Proportional
+prerequisites:
+- number-systems-fundamentals
+content_md: |
+  # Arithmetic & Geometric Progressions
+
+  Understand sequences and series - frequently tested in CAT quantitative section.
+
+  ---
+
+  ## Arithmetic Progression (AP)
+
+  ### Definition
+  Sequence where difference between consecutive terms is constant.
+  a, a+d, a+2d, a+3d, ...
+
+  **Key Terms:**
+  - First term (a)
+  - Common difference (d)
+  - nth term = a + (n-1)d
+
+  ### Important Formulas
+
+  **nth Term:** Tₙ = a + (n-1)d
+
+  **Sum of n terms:** Sₙ = n/2 [2a + (n-1)d]
+  OR Sₙ = n/2 [first term + last term]
+
+  **Properties:**
+  - If three numbers in AP: 2b = a + c
+  - Middle term = Average of AP
+  - Sum of first n natural numbers = n(n+1)/2
+  - Sum of first n odd numbers = n²
+  - Sum of first n even numbers = n(n+1)
+
+  ---
+
+  ## Geometric Progression (GP)
+
+  ### Definition
+  Sequence where ratio between consecutive terms is constant.
+  a, ar, ar², ar³, ...
+
+  **Key Terms:**
+  - First term (a)
+  - Common ratio (r)
+  - nth term = arⁿ⁻¹
+
+  ### Important Formulas
+
+  **nth Term:** Tₙ = arⁿ⁻¹
+
+  **Sum of n terms:**
+  - If r ≠ 1: Sₙ = a(rⁿ - 1)/(r - 1) or a(1 - rⁿ)/(1 - r)
+  - If r = 1: Sₙ = na
+
+  **Sum of infinite GP (|r| < 1):**
+  S∞ = a/(1 - r)
+
+  **Properties:**
+  - If three numbers in GP: b² = ac
+  - Geometric mean of a and c: √(ac)
+
+  ---
+
+  ## Practice Problems
+
+  ### 1. AP Term Finding [Easy]
+  Find the 20th term of AP: 3, 7, 11, 15...
+
+  **Solution:**
+  a = 3, d = 4
+  T₂₀ = 3 + (20-1)×4 = 3 + 76 = 79
+
+  ### 2. AP Sum [Medium]
+  Find sum of first 50 terms of AP: 1, 3, 5, 7...
+
+  **Solution:**
+  This is sum of first 50 odd numbers = 50² = 2500
+
+  ### 3. GP Finding [Medium]
+  In GP, third term is 24 and sixth term is 192. Find first term.
+
+  **Solution:**
+  ar² = 24, ar⁵ = 192
+  Dividing: r³ = 8, r = 2
+  a = 24/4 = 6
+
+  ### 4. Infinite GP [Hard]
+  Find sum: 1/2 + 1/4 + 1/8 + ... to infinity
+
+  **Solution:**
+  a = 1/2, r = 1/2
+  S∞ = (1/2)/(1 - 1/2) = 1
+
+  ---
+
+  ## Key Takeaways
+
+  - AP has constant difference, GP has constant ratio
+  - AP sum formula involves first and last term
+  - Infinite GP sum exists only if |r| < 1
+  - Many CAT problems combine AP/GP with other concepts
+
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: Find the 20th term of AP: 3, 7, 11, 15...
+  options:
+  - '75'
+  - '79'
+  - '83'
+  - '77'
+  correct_answer: '79'
+  explanation: "a=3, d=4. T₂₀ = 3 + 19×4 = 3 + 76 = 79"
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: Find sum of first 50 odd numbers (1, 3, 5, 7...)
+  options:
+  - '2450'
+  - '2500'
+  - '2550'
+  - '2400'
+  correct_answer: '2500'
+  explanation: "Sum of first n odd numbers = n² = 50² = 2500"
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: In a GP, if third term is 24 and sixth term is 192, what is the first term?
+  options:
+  - '4'
+  - '6'
+  - '8'
+  - '3'
+  correct_answer: '6'
+  explanation: "ar²=24, ar⁵=192. r³=8, r=2. a=24/4=6"
+  require_pass: true
+- type: mcq
+  sequence_order: 4
+  question: Find sum of infinite GP: 1/2 + 1/4 + 1/8 + ...
+  options:
+  - '1/2'
+  - '1'
+  - '2'
+  - '3/2'
+  correct_answer: '1'
+  explanation: "a=1/2, r=1/2. S∞ = (1/2)/(1-1/2) = 1"
+  require_pass: true
+- type: mcq
+  sequence_order: 5
+  question: Sum of first 10 natural numbers is:
+  options:
+  - '50'
+  - '55'
+  - '45'
+  - '60'
+  correct_answer: '55'
+  explanation: "n(n+1)/2 = 10×11/2 = 55"
+  require_pass: true

@@ -1,0 +1,34 @@
+course:
+  slug: cat-exam-prep
+  title: CAT Exam Preparation
+  description: Comprehensive preparation course for the Common Admission Test (CAT) covering Quantitative Aptitude, Data Interpretation & Logical Reasoning, and Verbal Ability & Reading Comprehension.
+  estimated_hours: 50
+  level: intermediate
+modules:
+- slug: quantitative-aptitude
+  title: Quantitative Aptitude (QA)
+  lessons:
+  - number-systems-fundamentals
+  - percentages-profit-loss
+  - ratio-proportion-variation
+  - time-speed-distance
+  - time-work-pipes-cisterns
+  - averages-mixtures-alligation
+  - arithmetic-geometric-progressions
+  - inequalities-modulus-functions
+  - functions-graphs
+- slug: data-interpretation-logical-reasoning
+  title: Data Interpretation & Logical Reasoning (DILR)
+  lessons:
+  - seating-arrangements-linear-circular
+  - tables-data-analysis
+  - bar-charts-graphical-data
+  - syllogisms-logical-deductions
+- slug: verbal-ability-reading-comprehension
+  title: Verbal Ability & Reading Comprehension (VARC)
+  lessons:
+  - reading-comprehension-strategies
+  - para-jumbles-sentence-ordering
+  - critical-reasoning-logical-arguments
+  - grammar-sentence-correction
+  - vocabulary-building-word-usage

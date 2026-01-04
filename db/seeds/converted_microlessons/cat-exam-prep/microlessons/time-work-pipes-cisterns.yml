@@ -1,0 +1,211 @@
+slug: time-work-pipes-cisterns
+title: Time & Work, Pipes & Cisterns
+difficulty: medium
+sequence_order: 5
+estimated_minutes: 25
+key_concepts:
+- Work Rate Formula
+- Combined Work
+- Pipes and Cisterns
+- Efficiency Ratios
+- LCM Method
+prerequisites:
+- time-speed-distance
+content_md: |
+  # Time & Work, Pipes & Cisterns
+
+  Master work efficiency and rate problems - fundamental CAT quantitative concepts.
+
+  ---
+
+  ## Overview
+
+  **Module:** Quantitative Aptitude
+  **Topic:** Time & Work
+  **CAT Weightage:** 8-12% of QA section
+  **Difficulty Range:** Easy to Hard
+
+  ---
+
+  ## Core Concepts
+
+  ### Basic Work Principles
+
+  **Fundamental Relationship:**
+  - Work = Rate × Time
+  - Rate = Work / Time
+  - Time = Work / Rate
+
+  **Efficiency Concept:**
+  If A completes work in n days, A's daily work = 1/n
+
+  **Combined Work:**
+  If A does 1/a work per day and B does 1/b per day:
+  Together: 1/a + 1/b = (a+b)/(ab) per day
+  Time together = ab/(a+b)
+
+  ### Important Formulas
+
+  **Two Workers:**
+  Time = (A × B)/(A + B) where A and B are individual times
+
+  **Three Workers:**
+  Time = (A × B × C)/(AB + BC + CA)
+
+  **Efficiency Relationship:**
+  If M₁ workers in D₁ days do W₁ work:
+  M₁D₁/W₁ = M₂D₂/W₂
+
+  Extended: M₁D₁H₁/W₁ = M₂D₂H₂/W₂
+  (H = hours per day)
+
+  ---
+
+  ## Pipes and Cisterns
+
+  ### Basic Concepts
+
+  **Inlet Pipe:** Fills tank (positive work)
+  **Outlet Pipe:** Empties tank (negative work)
+
+  **Combined Rate:**
+  - Two inlets: Add rates
+  - Two outlets: Add rates (both negative)
+  - Inlet + Outlet: Subtract rates
+
+  ### Key Formulas
+
+  **If pipe A fills in a hours and B empties in b hours:**
+  - Both open: Time = ab/(b-a) [if b > a, fills]
+  - Both open: Time = ab/(a-b) [if a > b, empties]
+
+  ---
+
+  ## Problem-Solving Patterns
+
+  ### Pattern 1: LCM Method (Recommended)
+  ```
+  Problem: A does work in 20 days, B in 30 days. Together?
+
+  Solution:
+  Total work = LCM(20, 30) = 60 units
+  A's rate = 60/20 = 3 units/day
+  B's rate = 60/30 = 2 units/day
+  Combined = 5 units/day
+  Time = 60/5 = 12 days
+  ```
+
+  ### Pattern 2: Work Left Behind
+  ```
+  Problem: A and B start together. A leaves after 6 days,
+  B finishes remaining in 8 days. A alone takes 12 days.
+  Find B's time.
+
+  Solution:
+  Let B takes x days
+  In 6 days: 6/12 + 6/x = part done
+  B alone in 8 days: 8/x
+  Total: 6/12 + 6/x + 8/x = 1
+  1/2 + 14/x = 1
+  x = 28 days
+  ```
+
+  ### Pattern 3: Alternate Working
+  ```
+  Problem: A and B take 12 and 15 days. If they work on
+  alternate days starting with A, when is work done?
+
+  Solution:
+  Work = LCM(12,15) = 60 units
+  A = 5 units/day, B = 4 units/day
+  Two-day cycle = 9 units
+  After 6 cycles (12 days) = 54 units
+  Day 13 (A's turn): +5 units = 59 units
+  Day 14 (B's turn): needs 1 unit, B does 4/day
+  Time = 13 + 1/4 days
+  ```
+
+  ---
+
+  ## CAT-Specific Strategies
+
+  ### Efficiency Variations
+
+  1. **If efficiency of A is x times B:**
+     - A's time = B's time / x
+     - A does x times more work per day
+
+  2. **Wages Division:**
+     - Wages proportional to work done
+     - If work ratio is a:b:c, wages ratio is a:b:c
+
+  3. **Men-Women-Children:**
+     - Set up efficiency ratios
+     - Common: 3M = 4W = 6C
+
+  ---
+
+  ## Key Takeaways
+
+  - LCM method simplifies most work problems
+  - Pipes follow same logic as work (inlet = positive, outlet = negative)
+  - Efficiency is inversely proportional to time
+  - Wages are distributed based on work contribution
+  - Draw timeline for complex multi-worker scenarios
+
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: A completes work in 10 days, B in 15 days. Working together, how many days to complete?
+  options:
+  - '6 days'
+  - '5 days'
+  - '8 days'
+  - '7 days'
+  correct_answer: '6 days'
+  explanation: "Time together = 10×15/(10+15) = 150/25 = 6 days"
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: Pipe A fills tank in 20 min, B in 30 min. Both open together, time to fill?
+  options:
+  - '12 minutes'
+  - '15 minutes'
+  - '10 minutes'
+  - '18 minutes'
+  correct_answer: '12 minutes'
+  explanation: "Time = 20×30/(20+30) = 600/50 = 12 minutes"
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: Pipe A fills in 10 hrs, B empties in 15 hrs. Both open, time to fill?
+  options:
+  - '30 hours'
+  - '25 hours'
+  - '20 hours'
+  - '35 hours'
+  correct_answer: '30 hours'
+  explanation: "Net filling rate = 1/10 - 1/15 = 1/30. Time = 30 hours"
+  require_pass: true
+- type: mcq
+  sequence_order: 4
+  question: A is twice as efficient as B. Together they finish in 12 days. How many days for A alone?
+  options:
+  - '18 days'
+  - '24 days'
+  - '36 days'
+  - '15 days'
+  correct_answer: '18 days'
+  explanation: "If B takes x days, A takes x/2 days. (x/2)×x/(x/2+x) = 12. Solving: x/3 = 12, x = 36. A = 18 days"
+  require_pass: true
+- type: mcq
+  sequence_order: 5
+  question: A and B together finish in 10 days. A alone in 15 days. Total wage Rs. 3000. What is A's share?
+  options:
+  - 'Rs. 2000'
+  - 'Rs. 1500'
+  - 'Rs. 1800'
+  - 'Rs. 2500'
+  correct_answer: 'Rs. 2000'
+  explanation: "A's rate = 1/15, B's rate = 1/10 - 1/15 = 1/30. Work ratio = 2:1. A's share = 3000 × 2/3 = Rs. 2000"
+  require_pass: true

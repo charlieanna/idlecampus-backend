@@ -1,0 +1,230 @@
+slug: para-jumbles-sentence-ordering
+title: Para Jumbles & Sentence Ordering
+difficulty: medium
+sequence_order: 9
+estimated_minutes: 25
+key_concepts:
+- Sentence Linking
+- Logical Flow
+- Transition Words
+- Pronoun References
+- Coherence Patterns
+prerequisites:
+- reading-comprehension-strategies
+content_md: |
+  # Para Jumbles & Sentence Ordering
+
+  Master the art of arranging sentences logically - a key VARC skill for CAT.
+
+  ---
+
+  ## Overview
+
+  **Module:** Verbal Ability & Reading Comprehension
+  **Topic:** Para Jumbles
+  **CAT Weightage:** 10-15% of VARC section
+  **Difficulty Range:** Medium to Hard
+
+  ---
+
+  ## Understanding Para Jumbles
+
+  ### What is Tested?
+
+  - Logical flow of ideas
+  - Coherence and cohesion
+  - Understanding of transitions
+  - Grammatical connections
+  - Contextual relationships
+
+  ### Types of Questions
+
+  1. **4 Sentence Jumbles:** Most common
+  2. **5 Sentence Jumbles:** More complex
+  3. **6 Sentence Jumbles:** Rarely seen, very difficult
+
+  ---
+
+  ## Key Linking Devices
+
+  ### Pronouns
+
+  **Look for:**
+  - "This" - refers to something mentioned before
+  - "These" - plural reference
+  - "It" - specific noun reference
+  - "They" - people/things mentioned earlier
+  - "Such" - preceding example/concept
+
+  **Example:**
+  Sentence A: "Scientists discovered a new species."
+  Sentence B: "It lives in deep ocean trenches."
+  Order: A before B ("It" refers to species)
+
+  ### Articles
+
+  **Definite Article (The):**
+  - Indicates specific reference
+  - Usually follows introduction with "a/an"
+
+  **Example:**
+  "A researcher proposed a theory." -> "The theory gained acceptance."
+
+  ### Transition Words
+
+  **Continuation:** Furthermore, Moreover, Additionally, Also
+  **Contrast:** However, Nevertheless, Despite, Although
+  **Cause-Effect:** Therefore, Hence, Consequently, Thus
+  **Chronology:** Initially, Subsequently, Finally, Later
+  **Example:** For instance, Such as, Specifically
+
+  ---
+
+  ## Problem-Solving Strategy
+
+  ### Step 1: Read All Sentences
+
+  Get overview of topic and arguments
+
+  ### Step 2: Identify Clear Links
+
+  **Look for:**
+  - Opening sentence (introduces topic, no backward reference)
+  - Closing sentence (concludes, summarizes)
+  - Definite pairs (pronoun references, articles)
+  - Cause-effect relationships
+
+  ### Step 3: Eliminate Options
+
+  If question format gives options (ABCD, ACBD, etc.):
+  - Find one clear link
+  - Eliminate options that violate it
+  - Narrow down choices
+
+  ### Step 4: Verify Flow
+
+  Read final sequence for:
+  - Logical progression
+  - Grammatical coherence
+  - No abrupt jumps
+
+  ---
+
+  ## Common Patterns
+
+  ### Pattern 1: Problem-Solution
+  ```
+  1. Problem introduction
+  2. Problem details/impact
+  3. Solution proposed
+  4. Benefits of solution
+  ```
+
+  ### Pattern 2: Chronological
+  ```
+  1. Historical context
+  2. Early development
+  3. Key turning point
+  4. Current situation
+  ```
+
+  ### Pattern 3: General to Specific
+  ```
+  1. Broad concept
+  2. Narrowing focus
+  3. Specific example
+  4. Implications
+  ```
+
+  ### Pattern 4: Claim-Evidence
+  ```
+  1. Main claim
+  2. Supporting evidence 1
+  3. Supporting evidence 2
+  4. Conclusion/Restatement
+  ```
+
+  ---
+
+  ## Practice Example
+
+  **Sentences:**
+  A. However, this abundance has led to information overload for many users.
+  B. The digital age has democratized access to information.
+  C. Solutions include developing better curation tools and digital literacy programs.
+  D. People now have unprecedented access to knowledge at their fingertips.
+
+  **Solution Approach:**
+  - B introduces the topic (digital age, democratized access)
+  - D expands on B (gives more detail about access)
+  - A contrasts with "However" (problem emerges)
+  - C provides solutions to the problem in A
+
+  **Order: BDAC**
+
+  ---
+
+  ## Key Takeaways
+
+  - Pronouns and articles are strong sequence indicators
+  - Transition words reveal logical relationships
+  - Opening sentences rarely have backward references
+  - Closing sentences often summarize or conclude
+  - Practice improves pattern recognition significantly
+
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: Which word indicates a sentence likely comes AFTER another sentence?
+  options:
+  - 'A'
+  - 'The'
+  - 'Some'
+  - 'Many'
+  correct_answer: 'The'
+  explanation: "'The' (definite article) indicates specific reference to something already introduced. It usually follows an introduction with 'a' or 'an'."
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: "If sentence X says 'This phenomenon...' it should come:"
+  options:
+  - 'At the beginning'
+  - 'After a sentence describing a phenomenon'
+  - 'Anywhere in the paragraph'
+  - 'At the very end'
+  correct_answer: 'After a sentence describing a phenomenon'
+  explanation: "'This' is a demonstrative pronoun that refers back to something already mentioned, so it must follow its reference."
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: Which transition word indicates contrast?
+  options:
+  - 'Furthermore'
+  - 'Therefore'
+  - 'However'
+  - 'Subsequently'
+  correct_answer: 'However'
+  explanation: "'However' indicates contrast or exception to what was stated before. 'Furthermore' continues, 'Therefore' shows cause-effect, 'Subsequently' shows time sequence."
+  require_pass: true
+- type: mcq
+  sequence_order: 4
+  question: An opening sentence typically does NOT have:
+  options:
+  - 'A topic introduction'
+  - 'General statement'
+  - 'Pronoun referring back'
+  - 'New concept'
+  correct_answer: 'Pronoun referring back'
+  explanation: "Opening sentences introduce topics and cannot have backward references (like 'this', 'these', 'it' referring to previous content) since there's nothing before them."
+  require_pass: true
+- type: mcq
+  sequence_order: 5
+  question: In a 4-sentence jumble, if you identify that B must come immediately after A, how many options can you eliminate?
+  options:
+  - 'None necessarily'
+  - 'At least half'
+  - 'All wrong options with A not followed by B'
+  - 'Only one option'
+  correct_answer: 'All wrong options with A not followed by B'
+  explanation: "If A-B is a definite pair, any option where B doesn't immediately follow A must be wrong. This can eliminate multiple options."
+  require_pass: true

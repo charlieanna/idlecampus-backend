@@ -1,0 +1,179 @@
+slug: functions-graphs
+title: Functions & Graphs
+difficulty: hard
+sequence_order: 17
+estimated_minutes: 22
+key_concepts:
+- Function Types
+- Domain and Range
+- Even Odd Functions
+- Composite Functions
+- Graph Transformations
+prerequisites:
+- inequalities-modulus-functions
+content_md: |
+  # Functions & Graphs
+
+  Understand function properties and graphical analysis for CAT quantitative section.
+
+  ---
+
+  ## Function Basics
+
+  ### Definition
+  A function f: A → B assigns each element in A to exactly one element in B.
+
+  ### Notation
+  - f(x) = value of function at x
+  - Domain = set of valid inputs
+  - Range = set of possible outputs
+
+  ---
+
+  ## Types of Functions
+
+  ### Linear Function
+  f(x) = ax + b
+  - Graph is straight line
+  - a = slope, b = y-intercept
+
+  ### Quadratic Function
+  f(x) = ax² + bx + c
+  - Graph is parabola
+  - Opens up if a > 0, down if a < 0
+  - Vertex at x = -b/(2a)
+
+  ### Exponential Function
+  f(x) = aˣ
+  - Always positive
+  - Growth if a > 1, decay if 0 < a < 1
+
+  ### Logarithmic Function
+  f(x) = logₐ(x)
+  - Inverse of exponential
+  - Domain: x > 0
+
+  ---
+
+  ## Important Properties
+
+  ### Even and Odd Functions
+
+  **Even:** f(-x) = f(x)
+  - Symmetric about y-axis
+  - Examples: x², cos(x), |x|
+
+  **Odd:** f(-x) = -f(x)
+  - Symmetric about origin
+  - Examples: x³, sin(x), x
+
+  ### Composite Functions
+  f(g(x)) - apply g first, then f
+
+  **Example:**
+  f(x) = x², g(x) = x + 1
+  f(g(x)) = (x+1)²
+  g(f(x)) = x² + 1
+
+  ### Inverse Functions
+  If y = f(x), then x = f⁻¹(y)
+
+  **Finding Inverse:**
+  1. Write y = f(x)
+  2. Solve for x in terms of y
+  3. Swap x and y
+
+  ---
+
+  ## Graph Transformations
+
+  - f(x) + k: Shift up by k
+  - f(x) - k: Shift down by k
+  - f(x + k): Shift left by k
+  - f(x - k): Shift right by k
+  - -f(x): Reflect across x-axis
+  - f(-x): Reflect across y-axis
+  - kf(x): Vertical stretch by k
+  - f(kx): Horizontal compression by k
+
+  ---
+
+  ## Practice Problems
+
+  ### 1. Function Value
+  If f(x) = 3x² - 2x + 1, find f(2).
+  f(2) = 12 - 4 + 1 = 9
+
+  ### 2. Composite Function
+  f(x) = 2x + 1, g(x) = x². Find f(g(3)).
+  g(3) = 9, f(9) = 19
+
+  ### 3. Even/Odd Function
+  Is f(x) = x³ + x odd?
+  f(-x) = -x³ - x = -(x³ + x) = -f(x). Yes, odd.
+
+  ---
+
+  ## Key Takeaways
+
+  - Functions map inputs to unique outputs
+  - Graph shape reveals function properties
+  - Composition order matters
+  - Inverse undoes function effect
+
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: If f(x) = 3x² - 2x + 1, find f(2)
+  options:
+  - '7'
+  - '9'
+  - '11'
+  - '13'
+  correct_answer: '9'
+  explanation: "f(2) = 3(4) - 2(2) + 1 = 12 - 4 + 1 = 9"
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: If f(x) = 2x + 1 and g(x) = x², find f(g(3))
+  options:
+  - '17'
+  - '19'
+  - '21'
+  - '49'
+  correct_answer: '19'
+  explanation: "g(3) = 9. f(9) = 2(9) + 1 = 19"
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: Is f(x) = x³ + x even, odd, or neither?
+  options:
+  - 'Even'
+  - 'Odd'
+  - 'Neither'
+  - 'Both'
+  correct_answer: 'Odd'
+  explanation: "f(-x) = -x³ - x = -(x³ + x) = -f(x), so it's odd."
+  require_pass: true
+- type: mcq
+  sequence_order: 4
+  question: The graph of f(x-3) compared to f(x) is shifted:
+  options:
+  - '3 units left'
+  - '3 units right'
+  - '3 units up'
+  - '3 units down'
+  correct_answer: '3 units right'
+  explanation: "f(x-k) shifts the graph k units to the right."
+  require_pass: true
+- type: mcq
+  sequence_order: 5
+  question: What is the domain of f(x) = log(x-2)?
+  options:
+  - 'x > 0'
+  - 'x > 2'
+  - 'x ≥ 2'
+  - 'All real numbers'
+  correct_answer: 'x > 2'
+  explanation: "Logarithm requires positive argument: x-2 > 0, so x > 2"
+  require_pass: true

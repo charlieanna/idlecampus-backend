@@ -1,0 +1,204 @@
+slug: percentages-profit-loss
+title: Percentages, Profit & Loss
+difficulty: medium
+sequence_order: 2
+estimated_minutes: 25
+key_concepts:
+- Percentage Calculations
+- Profit and Loss
+- Successive Changes
+- Discounts
+- Markup Pricing
+prerequisites:
+- number-systems-fundamentals
+content_md: |
+  # Percentages, Profit & Loss
+
+  Master percentage calculations and business mathematics - high-frequency CAT topics.
+
+  ---
+
+  ## Overview
+
+  **Module:** Quantitative Aptitude
+  **Topic:** Percentages, Profit & Loss
+  **CAT Weightage:** 10-15% of QA section
+  **Difficulty Range:** Easy to Hard
+
+  ---
+
+  ## Core Concepts
+
+  ### Percentage Basics
+
+  **Definition:** Percentage means "per hundred" or "out of 100"
+
+  **Key Formulas:**
+  - Percentage = (Part/Whole) × 100
+  - Part = (Percentage × Whole)/100
+  - Whole = (Part × 100)/Percentage
+
+  **Fraction-Percentage Equivalents (Memorize!):**
+  - 1/2 = 50%
+  - 1/3 = 33.33%
+  - 1/4 = 25%
+  - 1/5 = 20%
+  - 1/6 = 16.67%
+  - 1/8 = 12.5%
+  - 1/10 = 10%
+  - 1/12 = 8.33%
+
+  ### Percentage Change
+
+  **Increase:** New Value = Original × (1 + r/100)
+  **Decrease:** New Value = Original × (1 - r/100)
+  **Percentage Change = [(New - Old)/Old] × 100**
+
+  **Successive Changes:**
+  If price changes by a% then b%, net change = a + b + (ab/100)%
+
+  ---
+
+  ## Profit and Loss
+
+  ### Basic Terms
+
+  - **Cost Price (CP):** Price at which article is bought
+  - **Selling Price (SP):** Price at which article is sold
+  - **Marked Price (MP):** Price written on the article
+  - **Profit:** SP > CP, Profit = SP - CP
+  - **Loss:** CP > SP, Loss = CP - SP
+
+  ### Important Formulas
+
+  **Profit/Loss Percentage (always on CP):**
+  - Profit% = (Profit/CP) × 100
+  - Loss% = (Loss/CP) × 100
+
+  **Relation between SP and CP:**
+  - SP = CP × (1 + Profit%/100)
+  - SP = CP × (1 - Loss%/100)
+
+  **Discount:**
+  - Discount = MP - SP
+  - Discount% = (Discount/MP) × 100
+  - SP = MP × (1 - Discount%/100)
+
+  ### Special Cases
+
+  **False Weight:**
+  Profit% = [(True Weight - False Weight)/False Weight] × 100
+
+  **Two Articles Same SP:**
+  - One sold at x% profit, other at x% loss
+  - Net result is always LOSS
+  - Loss% = x²/100
+
+  ---
+
+  ## Problem-Solving Patterns
+
+  ### Pattern 1: Successive Discounts
+  ```
+  Problem: Two successive discounts of 20% and 10%
+  Solution:
+  Net discount = 20 + 10 - (20×10/100) = 28%
+  OR
+  Final price = Original × 0.8 × 0.9 = 0.72 × Original
+  Discount = 28%
+  ```
+
+  ### Pattern 2: Profit on MP vs CP
+  ```
+  Problem: MP is 50% above CP, Discount is 20%. Find profit%
+  Solution:
+  Let CP = 100
+  MP = 150
+  SP = 150 × 0.8 = 120
+  Profit = 20, Profit% = 20%
+  ```
+
+  ### Pattern 3: Population Growth
+  ```
+  Problem: Population increases 10% annually. Find after 3 years.
+  Solution:
+  Final = Initial × (1.1)³ = Initial × 1.331
+  Increase = 33.1%
+  ```
+
+  ---
+
+  ## CAT-Specific Tricks
+
+  ### Quick Percentage Calculations
+  - 15% of X = 10% of X + 5% of X = 0.1X + 0.05X
+  - 37.5% = 3/8, 62.5% = 5/8, 87.5% = 7/8
+  - To increase by 25%, multiply by 1.25 (or 5/4)
+  - To decrease by 20%, multiply by 0.8 (or 4/5)
+
+  ---
+
+  ## Key Takeaways
+
+  - Memorize fraction-percentage conversions for speed
+  - Always calculate profit/loss percentage on Cost Price
+  - Successive changes use multiplication, not addition
+  - Break complex problems into simple percentage steps
+  - Practice mental math for common percentages
+
+exercises:
+- type: mcq
+  sequence_order: 1
+  question: A salary increases by 10% and then by 20%. What is the net percentage increase?
+  options:
+  - '30%'
+  - '32%'
+  - '28%'
+  - '25%'
+  correct_answer: '32%'
+  explanation: "Using successive change formula: Net = 10 + 20 + (10×20/100) = 10 + 20 + 2 = 32%"
+  require_pass: true
+- type: mcq
+  sequence_order: 2
+  question: A shopkeeper marks goods 40% above CP and gives 15% discount. What is his profit percentage?
+  options:
+  - '25%'
+  - '19%'
+  - '22%'
+  - '17%'
+  correct_answer: '19%'
+  explanation: "Let CP = 100. MP = 140. SP = 140 × 0.85 = 119. Profit = 19, Profit% = 19%"
+  require_pass: true
+- type: mcq
+  sequence_order: 3
+  question: A man sells two watches at Rs. 1200 each. On one he gains 20% and on other loses 20%. What is the net result?
+  options:
+  - '4% loss'
+  - '4% profit'
+  - 'No profit no loss'
+  - '2% loss'
+  correct_answer: '4% loss'
+  explanation: "When same SP with equal profit and loss percentages, there's always a loss = x²/100 = 20²/100 = 4% loss"
+  require_pass: true
+- type: mcq
+  sequence_order: 4
+  question: Three successive discounts of 10%, 20%, and 25% are equivalent to what single discount?
+  options:
+  - '55%'
+  - '46%'
+  - '50%'
+  - '42%'
+  correct_answer: '46%'
+  explanation: "Final factor = 0.9 × 0.8 × 0.75 = 0.54. Single discount = 100 - 54 = 46%"
+  require_pass: true
+- type: mcq
+  sequence_order: 5
+  question: If 40% of a number is 120, what is 65% of that number?
+  options:
+  - '195'
+  - '180'
+  - '210'
+  - '175'
+  correct_answer: '195'
+  explanation: "Number = 120/0.4 = 300. 65% of 300 = 0.65 × 300 = 195"
+  require_pass: true
